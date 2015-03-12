@@ -1,0 +1,43 @@
+{
+	"objName": "Girl3",
+	"sounds": [{
+			"soundName": "pop",
+			"soundID": -1,
+			"md5": "83a9787d4cb6f3b7632b4ddfebf74367.wav",
+			"sampleCount": 258,
+			"rate": 11025,
+			"format": ""
+		}],
+	"costumes": [{
+			"costumeName": "girl3-a",
+			"baseLayerID": -1,
+			"baseLayerMD5": "f5179c8da35affc8fd9ce744c943363d.png",
+			"rotationCenterX": 69,
+			"rotationCenterY": 63
+		},
+		{
+			"costumeName": "girl3-b",
+			"baseLayerID": -1,
+			"baseLayerMD5": "2dd2bbe715ee1a75638a0fbb35c5c837.png",
+			"rotationCenterX": 24,
+			"rotationCenterY": 80
+		},
+		{
+			"costumeName": "girl3-c",
+			"baseLayerID": -1,
+			"baseLayerMD5": "27a36765888576c7706f5e966c7687c6.png",
+			"rotationCenterX": 85,
+			"rotationCenterY": 65
+		}],
+	"currentCostumeIndex": 0,
+	"scratchX": 0,
+	"scratchY": 0,
+	"scale": 1,
+	"direction": 90,
+	"rotationStyle": "normal",
+	"isDraggable": false,
+	"indexInLibrary": 100000,
+	"visible": true,
+	"spriteInfo": {
+	}
+}

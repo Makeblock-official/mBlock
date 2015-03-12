@@ -1,0 +1,36 @@
+{
+	"objName": "Boy3",
+	"sounds": [{
+			"soundName": "pop",
+			"soundID": -1,
+			"md5": "83a9787d4cb6f3b7632b4ddfebf74367.wav",
+			"sampleCount": 258,
+			"rate": 11025,
+			"format": ""
+		}],
+	"costumes": [{
+			"costumeName": "boy3-a",
+			"baseLayerID": -1,
+			"baseLayerMD5": "5e934cb9ca1ba5168a568b3cfacb37b1.png",
+			"rotationCenterX": 67,
+			"rotationCenterY": 90
+		},
+		{
+			"costumeName": "boy3-b",
+			"baseLayerID": -1,
+			"baseLayerMD5": "a22a3328eab1d0998913afcf69e94260.png",
+			"rotationCenterX": 48,
+			"rotationCenterY": 78
+		}],
+	"currentCostumeIndex": 0,
+	"scratchX": 0,
+	"scratchY": 0,
+	"scale": 1,
+	"direction": 90,
+	"rotationStyle": "normal",
+	"isDraggable": false,
+	"indexInLibrary": 100000,
+	"visible": true,
+	"spriteInfo": {
+	}
+}

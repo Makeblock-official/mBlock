@@ -1,0 +1,22 @@
+{
+	"objName": "Cat-Walk",
+	"costumes": [{
+			"costumeName": "Cat-Walk-a",
+			"baseLayerID": -1,
+			"baseLayerMD5": "Cat-Walk-a.svg",
+			"bitmapResolution": 1,
+			"rotationCenterX": 80,
+			"rotationCenterY": 80
+		}],
+	"currentCostumeIndex": 0,
+	"scratchX": 0,
+	"scratchY": 0,
+	"scale": 1,
+	"direction": 90,
+	"rotationStyle": "normal",
+	"isDraggable": false,
+	"indexInLibrary": 100000,
+	"visible": true,
+	"spriteInfo": {
+	}
+}

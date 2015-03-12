@@ -1,0 +1,30 @@
+{
+	"objName": "Dog Puppy",
+	"sounds": [{
+			"soundName": "dog2",
+			"soundID": -1,
+			"md5": "cd8fa8390b0efdd281882533fbfcfcfb.wav",
+			"sampleCount": 3168,
+			"rate": 22050,
+			"format": ""
+		}],
+	"costumes": [{
+			"costumeName": "dog puppy",
+			"baseLayerID": -1,
+			"baseLayerMD5": "1cf4fb213dc016c44a136a0ff27196ae.png",
+			"bitmapResolution": 2,
+			"rotationCenterX": 107,
+			"rotationCenterY": 103
+		}],
+	"currentCostumeIndex": 0,
+	"scratchX": 0,
+	"scratchY": 0,
+	"scale": 1,
+	"direction": 90,
+	"rotationStyle": "normal",
+	"isDraggable": false,
+	"indexInLibrary": 100000,
+	"visible": true,
+	"spriteInfo": {
+	}
+}

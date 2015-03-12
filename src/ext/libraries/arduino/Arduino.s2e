@@ -1,0 +1,94 @@
+{	"extensionName": "Arduino",
+	"sort":1,
+	"extensionPort": 0,
+	"firmware":"1.1.103",
+	"blockSpecs": [
+		["h","Arduino Program","arduino/main"],
+		
+		["B", "read digital pin %n","get/digital","9",
+		{"encode":"{d0}","setup":"pinMode({0},INPUT);\n","inc":"","def":"","work":"digitalRead({0})","loop":""}],
+		
+		["R", "read analog pin (A)%n","get/analog","0",
+		{"encode":"{d0}","setup":"pinMode(A{0},INPUT);\n","inc":"","def":"","work":"analogRead(A{0})","loop":""}],
+		
+		["w", "set digital pin %n output as %d.digital","run/digital", "9", "HIGH",
+		{"encode":"{d0}{d1}","setup":"\tpinMode({0},OUTPUT);\n","inc":"","def":"","work":"digitalWrite({0},{1});\n","loop":""}],
+		
+		["w", "set pwm pin %n output as %d.pwmvalue","run/pwm", "5", 0,
+		{"encode":"{d0}{d1}","setup":"pinMode({0},OUTPUT);\n","inc":"","def":"","work":"analogWrite({0},{1});\n","loop":""}],
+		
+		["w", "play tone pin %n on note %d.notes beat %d.beats","run/tone", "9", "C4","Half",
+		{"encode":"{d0}{s1}{s2}","setup":"pinMode({0},OUTPUT);\n","inc":"","def":"","work":"tone({0},{1},{2});\ndelay({2});\n","loop":""}],
+		
+		["w", "set servo pin %n angle as %d.servovalue","run/servo_pin", "9", 90,
+		{"encode":"{d0}{d1}","setup":"servo_{0}.attach({0});\n","inc":"","def":"Servo servo_{0};\n","work":"servo_{0}.write({1});\n","loop":""}],
+		
+		["R", "timer","get/timer", "0",
+		{"encode":"{n0}","setup":"","inc":"","def":"double currentTime = 0;\ndouble lastTime = 0;\n","work":"currentTime","loop":"currentTime = millis()/1000.0 - lastTime;"}],
+		
+		["w", "reset timer","run/timer", "0",
+		{"encode":"{n0}","setup":"","inc":"","def":"double currentTime = 0;\ndouble lastTime = 0;\n","work":"lastTime = millis();\n","loop":""}]
+	],
+	"menus": {
+		"beats":["500","250","125","1000","2000","0"],
+		"servovalue":["0","45","90","135","180"],
+		"pwmvalue":["0","50","100","150","255"],
+		"digital":["HIGH","LOW"],
+		"notes":["C2","D2","E2","F2","G2","A2","B2","C3","D3","E3","F3","G3","A3","B3","C4","D4","E4","F4","G4","A4","B4","C5","D5","E5","F5","G5","A5","B5","C6","D6","E6","F6","G6","A6","B6","C7","D7","E7","F7","G7","A7","B7","C8","D8"],
+		"beats":["Half","Quater","Eighth","Whole","Double","Zero"]
+	},
+	"values":{
+		"run":2,
+		"get":1,
+		"digital":30,
+		"analog":31,
+		"pwm":32,
+		"servo_pin":33,
+		"tone":34,
+		"timer":50,
+		"HIGH":1,"LOW":0,
+		"B0":31,"C1":33,"D1":37,"E1":41,"F1":44,"G1":49,"A1":55,"B1":62,
+			"C2":65,"D2":73,"E2":82,"F2":87,"G2":98,"A2":110,"B2":123,
+			"C3":131,"D3":147,"E3":165,"F3":175,"G3":196,"A3":220,"B3":247,
+			"C4":262,"D4":294,"E4":330,"F4":349,"G4":392,"A4":440,"B4":494,
+			"C5":523,"D5":587,"E5":659,"F5":698,"G5":784,"A5":880,"B5":988,
+			"C6":1047,"D6":1175,"E6":1319,"F6":1397,"G6":1568,"A6":1760,"B6":1976,
+			"C7":2093,"D7":2349,"E7":2637,"F7":2794,"G7":3136,"A7":3520,"B7":3951,
+			"C8":4186,"D8":4699,
+		"Half":500,"Quater":250,"Eighth":125,"Whole":1000,"Double":2000,"Zero":0
+	},
+	"translators":{
+		"zh_CN":{
+			"HIGH":"高电平",
+			"LOW":"低电平",
+			"play tone pin %n on note %d.notes beat %d.beats":"播放引脚 %n 音调为 %d.notes 节拍为 %d.beats",
+			"read digital pin %n":"数字口 %n",
+			"read analog pin (A)%n":"模拟口 (A)%n",
+			"set digital pin %n output as %d.digital":"设置 数字口 %n 输出为 %d.digital",
+			"set pwm pin %n output as %d.pwmvalue":"设置 PWM %n 输出为 %d.pwmvalue",
+			"set servo pin %n angle as %d.servovalue":"设置舵机引脚 %n 输出角度为 %d.servovalue",
+			"play tone pin %n on note %d.notes beat %d.beats":"播放引脚 %n 音调为 %d.notes 节拍为 %d.beats"
+		},
+		"zh_TW":{
+			"HIGH":"高電位",
+			"LOW":"低電位",
+			"play tone pin %n on note %d.notes beat %d.beats":"播放腳位 %n 音調為 %d.notes 節拍為 %d.beats",
+			"read digital pin %n":"數位腳位 %n",
+			"read analog pin (A)%n":"模擬腳位 (A)%n",
+			"set digital pin %n output as %d.digital":"設置 數位腳位 %n 輸出為 %d.digital",
+			"set pwm pin %n output as %d.pwmvalue":"設置 PWM %n 輸出為 %d.pwmvalue",
+			"set servo pin %n angle as %d.servovalue":"設置舵機腳位 %n 輸出角度為 %d.servovalue",
+			"play tone pin %n on note %d.notes beat %d.beats":"播放腳位 %n 音調為 %d.notes 節拍為 %d.beats"
+		},
+		"fr_FR":{
+			"HIGH":"haut",
+			"LOW":"bas",
+			"play tone pin %n on note %d.notes beat %d.beats":"jouer un son sur la broche %n : note %d.notes fréquence %d.beats",
+			"read digital pin %n":"lire l'état logique de la broche %n",
+			"read analog pin (A)%n":"lire la valeur sur la broche Analogique %n",
+			"set digital pin %n output as %d.digital":"mettre l'état logique de la broche %n à %d.digital",
+			"set pwm pin %n output as %d.pwmvalue":"envoyer sur la broche PWM~ %n la valeur %d.pwmvalue",
+			"set servo pin %n angle as %d.servovalue":"orienter le servo-moteur de la broche %n à un angle de %d.servovalue °"
+		}
+	}
+}

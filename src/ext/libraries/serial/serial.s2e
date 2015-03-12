@@ -1,0 +1,68 @@
+{	"extensionName": "Communication",
+	"extensionPort": 0,
+	"extensionHost": "127.0.0.1",
+	"extensionType":"serial",
+	"sort":4,
+	"firmware":"1.1.102",
+	"blockSpecs": [
+		["h", "when data received","serial/received",
+		{"setup":"","inc":"","def":"","work":"","loop":""}],
+		
+		["b","data available?","serial/read/available",
+		{"setup":"Serial.begin(115200);\n","inc":"#include \"MeSerial.h\"\n","def":"MeSerial se;\n","work":"se.dataLineAvailable()","loop":""}],
+		
+		["b","%s is equal %s?","serial/read/equal","","",
+		{"setup":"Serial.begin(115200);\n","inc":"#include \"MeSerial.h\"\n","def":"MeSerial se;\n","work":"se.equalString({0},{1})","loop":""}],
+		
+		["r","read line","serial/read/line",
+		{"setup":"Serial.begin(115200);\n","inc":"#include \"MeSerial.h\"\n","def":"MeSerial se;\n","work":"se.readDataLine()","loop":""}],
+		
+		["w", "write line %s","serial/write/line", "hello",
+		{"setup":"Serial.begin(115200);\n","inc":"#include \"MeSerial.h\"\n","def":"MeSerial se;\n","work":"Serial.println({0});\n","loop":""}],
+		
+		["w", "send command %s = %s","serial/write/command","var","value",
+		{"setup":"Serial.begin(115200);\n","inc":"#include \"MeSerial.h\"\n","def":"MeSerial se;\n","work":"Serial.print({0});Serial.print(\"=\");Serial.println({1});\n","loop":""}],
+		
+		["r", "read command %s","serial/read/command", "var",
+		{"setup":"Serial.begin(115200);\n","inc":"#include \"MeSerial.h\"\n","def":"MeSerial se;\n","work":"se.getValue({0})","loop":""}],
+		
+		["w", "clear buffer","serial/clear",
+		{"setup":"","inc":"","def":"","work":"","loop":""}]
+	],
+	"menus": {
+	},
+	"translators":{
+		"zh_CN":{
+			"Communication":"通讯",
+			"data available?":"有数据可读?",
+			"read line":"读取一行数据",
+			"%s is equal %s?":"%s 是否等于%s ?",
+			"read command %s":"读取变量 %s 的值",
+			"write line %s":"写一行数据 %s",
+			"send command %s = %s":"发送变量 %s = %s",
+			"clear buffer":"清空数据"
+		},
+		"zh_TW":{
+			"when data received":"當收到數據時",
+			"Communication":"通訊",
+			"data available?":"有數據可讀?",
+			"read line":"讀取壹行數據",
+			"%s is equal %s?":"%s 是否等於%s ?",
+			"read command %s":"讀取變量 %s 的值",
+			"write line %s":"寫壹行數據 %s",
+			"send command %s = %s":"發送變量 %s = %s",
+			"clear buffer":"清空數據"
+		},
+		"de_DE":{
+			"when data received":"wenn Daten empfangen werden",
+			"Communication":"Kommunikation",
+			"data available?":"Daten verfügbar?",
+			"read line":"Lese Zeile",
+			"%s is equal %s?":"%s ist gleich%s ?",
+			"write line %s":"schreibe Zeile%s",
+			"send command %s = %s":"sende Kommando %s = %s",
+			"read command %s":"lese Kommando %s",
+			"clear buffer":"lösche Puffer"
+		}
+	}
+}

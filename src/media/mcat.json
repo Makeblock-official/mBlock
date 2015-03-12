@@ -1,0 +1,35 @@
+{
+	"objName": "M-Cat",
+	"sounds": [{
+			"soundName": "meow",
+			"soundID": -1,
+			"md5": "83c36d806dc92327b9e7049a565c6bff.wav",
+			"sampleCount": 18688,
+			"rate": 22050,
+			"format": ""
+		}],
+	"costumes": [{
+			"costumeName": "cat-a",
+			"baseLayerID": -1,
+			"baseLayerMD5": "b2ea43be1b1c00cb2b3dc20bf337f96e.svg",
+			"rotationCenterX": 0,
+			"rotationCenterY": 0
+		},{
+			"costumeName": "cat-b",
+			"baseLayerID": -1,
+			"baseLayerMD5": "41ab45d91d43a4be11748e7c15fc6615.svg",
+			"rotationCenterX": 0,
+			"rotationCenterY": 0
+		}],
+	"currentCostumeIndex": 0,
+	"scratchX": 0,
+	"scratchY": 0,
+	"scale": 1,
+	"direction": 90,
+	"rotationStyle": "normal",
+	"isDraggable": false,
+	"indexInLibrary": 100000,
+	"visible": true,
+	"spriteInfo": {
+	}
+}
