@@ -14,4 +14,4 @@ Mac OSX : [Download](http://makeblock.sinaapp.com/mblock/installer_mac.php)
 [http://www.mblock.cc](http://mblock.cc) Using Scratch to Program Arduino. 
 
 #Screenshot
-![](http://mblock.cc/wp-content/uploads/2014/08/Mblock_web_04.jpg =400)
+![](http://mblock.cc/wp-content/uploads/2014/08/Mblock_web_04.jpg)
