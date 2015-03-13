@@ -76,7 +76,7 @@ package extensions
 			datagramSocket.addEventListener( DatagramSocketDataEvent.DATA, dataReceived );
 			//Bind the socket to the local network interface and port 
 			try{
-				datagramSocket.bind();// _clientPort, localIP ); 
+				datagramSocket.bind(_clientPort);// _clientPort, localIP ); 
 				//Listen for incoming datagrams 
 				datagramSocket.receive();
 			}catch(e:*){
