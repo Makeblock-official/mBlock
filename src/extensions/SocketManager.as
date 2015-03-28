@@ -203,9 +203,9 @@ package extensions
 		}
 		public function update():void{
 			if(connected()){
-				MBlock.app.topBarPart.setSocketConnectedTitle(Translator.map("Network")+" "+Translator.map("Connected"));
+//				MBlock.app.topBarPart.setSocketConnectedTitle(Translator.map("Network")+" "+Translator.map("Connected"));
 			}else{
-				MBlock.app.topBarPart.setSocketConnectedTitle("Network");
+//				MBlock.app.topBarPart.setSocketConnectedTitle("Network");
 			}
 		}
 		public function close():int{
@@ -280,11 +280,13 @@ package extensions
 				var wifiModule:String = evt.srcAddress+":"+evt.srcPort+":"+srcName;
 				if(_list.toString().indexOf(evt.srcAddress)==-1)
 				{
-					_list.push(wifiModule);
-					var data:ByteArray = new ByteArray();
-					data.writeUTFBytes(MBlock.app.projectName());
-					//Send the datagram message
-					datagramSocket.send( data, 0, data.length, evt.srcAddress, evt.srcPort);
+					if(srcName.length>1){
+						_list.push(wifiModule);
+						var data:ByteArray = new ByteArray();
+						data.writeUTFBytes(MBlock.app.projectName());
+						//Send the datagram message
+						datagramSocket.send( data, 0, data.length, evt.srcAddress, evt.srcPort);
+					}
 				}
 			}
 		}

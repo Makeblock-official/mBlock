@@ -56,7 +56,7 @@ package util.version
 				res.load();
 			}else{
 				trace("finish");
-				MBlock.app.extensionManager.clearImportedExtensions();
+				//MBlock.app.extensionManager.clearImportedExtensions();
 				MBlock.app.extensionManager.importExtension();
 				
 			}
