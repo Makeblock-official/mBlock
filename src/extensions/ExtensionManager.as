@@ -368,7 +368,7 @@ public class ExtensionManager {
 		}
 		ext.javascriptURL = extObj.javascriptURL;	
 		if (extObj.host) ext.host = extObj.host; // non-local host allowed but not saved in project
-		if(ext.port==0){
+		if(ext.port==0&&ext.javascriptURL!=""){
 			ext.useSerial = true;
 		}else{
 			ext.useSerial = false;
@@ -685,27 +685,27 @@ public class ExtensionManager {
 		function errorHandler(e:Event):void { } // ignore errors
 		var url:String ;
 		var arg:*;
-		if(ext.useSerial){
-			url = '' + op;
-			for each ( arg in args) {
-				url += '/' + ((arg is String) ? escape(arg) : arg);
-			}
-			var objs:Array = MBlock.app.extensionManager.specForCmd(ext.name+"."+op);
-			if(op.indexOf("reset_all")>-1){
-				ParseManager.sharedManager().parse("reset_all");
-			}
-			if(objs==null){
-				return;
-			}
-			var obj:Object = objs[objs.length-1];
-			obj = obj[obj.length-1];
-			++ext.nextID;
-			if(obj!=null && obj.encode!="" && obj.encode!=null){
-				ParseManager.sharedManager().parseEncode(url,obj.encode,ext.nextID,args,ext);
-			}else{
-				ParseManager.sharedManager().parse(url);
-			}
-		}else{
+//		if(ext.useSerial){
+//			url = '' + op;
+//			for each ( arg in args) {
+//				url += '/' + ((arg is String) ? escape(arg) : arg);
+//			}
+//			var objs:Array = MBlock.app.extensionManager.specForCmd(ext.name+"."+op);
+//			if(op.indexOf("reset_all")>-1){
+//				ParseManager.sharedManager().parse("reset_all");
+//			}
+//			if(objs==null){
+//				return;
+//			}
+//			var obj:Object = objs[objs.length-1];
+//			obj = obj[obj.length-1];
+//			++ext.nextID;
+//			if(obj!=null && obj.encode!="" && obj.encode!=null){
+//				ParseManager.sharedManager().parseEncode(url,obj.encode,ext.nextID,args,ext);
+//			}else{
+//				ParseManager.sharedManager().parse(url);
+//			}
+//		}else{
 			if(!ext.js){
 				url = 'http://' + ext.host + ':' + ext.port + '/' + encodeURIComponent(op);
 				for each ( arg in args) {
@@ -718,7 +718,7 @@ public class ExtensionManager {
 			}else{
 				ext.js.call(op,args,ext);
 			}
-		}
+//		}
 //		var loader:URLLoader = new URLLoader();
 //		loader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, errorHandler);
 //		loader.addEventListener(IOErrorEvent.IO_ERROR, errorHandler);

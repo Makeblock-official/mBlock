@@ -127,7 +127,7 @@ package ui.parts {
 		public function updateVersion():void{
 			if (offlineNotice) 
 			{
-				offlineNotice.visible = true;
+				offlineNotice.visible = false;
 				offlineNotice.defaultTextFormat = offlineNoticeFormat;
 				if(ParseManager.sharedManager().firmVersion.split(".").length<=1){
 					offlineNotice.text = Translator.map('Unknown Firmware');
