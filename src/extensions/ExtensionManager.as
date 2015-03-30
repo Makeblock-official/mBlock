@@ -514,13 +514,12 @@ public class ExtensionManager {
 			if(b.isRequester==true){
 				if(b.requestState == 2) {
 					b.requestState = 0;
+					request(extName, primOrVarName, args, b);
 					var v:* = b.response;
 					return v;
 				}else{
-					if(b.requestState==0){
-						request(extName, primOrVarName, args, b);
-					}
-					return null;
+					request(extName, primOrVarName, args, b);
+					return b.response;
 				}
 				// Returns null if we just made a request or we're still waiting
 				return b.response;//==null?0:b.response;
@@ -531,7 +530,7 @@ public class ExtensionManager {
 					for each (var a:* in args) {
 						sensorName += '/' + encodeURIComponent(a); // append menu args
 					}
-					trace("sensor:",sensorName);
+//					trace("sensor:",sensorName);
 					value = ext.stateVars[sensorName];
 				}
 				if(ext.useSerial){

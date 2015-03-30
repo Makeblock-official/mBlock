@@ -216,7 +216,7 @@ package {
 				NativeApplication.nativeApplication.activeWindow.addEventListener(Event.CLOSING,onExiting);
 				SocketManager.sharedManager();
 			},100);
-			var ver:String = "03.27.001";
+			var ver:String = "03.30.001";
 			if(!SharedObjectManager.sharedManager().getObject(versionString+".0."+ver,false)){
 				SharedObjectManager.sharedManager().clear();
 				SharedObjectManager.sharedManager().setObject(versionString+".0."+ver,true);
@@ -938,8 +938,8 @@ package {
 			m.addItem('Arduino', '', false, false);
 			m.addItem('Arduino Uno', 'arduino_uno', true, DeviceManager.sharedManager().checkCurrentBoard('arduino_uno'));
 			m.addItem('Arduino Leonardo', 'arduino_leonardo', true, DeviceManager.sharedManager().checkCurrentBoard('arduino_leonardo'));
-			m.addItem('Arduino Nano (mega328p)', 'arduino_nano328', true, DeviceManager.sharedManager().checkCurrentBoard('arduino_nano328'));
-			m.addItem('Arduino Nano (mega168)', 'arduino_nano168', true, DeviceManager.sharedManager().checkCurrentBoard('arduino_nano168'));
+			m.addItem('Arduino Nano ( Mega 328P )', 'arduino_nano328', true, DeviceManager.sharedManager().checkCurrentBoard('arduino_nano328'));
+//			m.addItem('Arduino Nano (mega168)', 'arduino_nano168', true, DeviceManager.sharedManager().checkCurrentBoard('arduino_nano168'));
 			m.addItem('Arduino Mega 1280', 'arduino_mega1280', true, DeviceManager.sharedManager().checkCurrentBoard('arduino_mega1280'));
 			m.addItem('Arduino Mega 2560', 'arduino_mega2560', true, DeviceManager.sharedManager().checkCurrentBoard('arduino_mega2560'));
 			m.addLine();

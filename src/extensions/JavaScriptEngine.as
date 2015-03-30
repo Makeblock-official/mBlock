@@ -103,7 +103,6 @@ package extensions
 					v = _ext[method](param[0],param[1]);
 					break;
 				}
-					
 				case 3:{
 					v = _ext[method](param[0],param[1],param[2]);
 					break;
@@ -169,6 +168,9 @@ package extensions
 			_htmlLoader.window.parseFloat = readFloat;
 			_htmlLoader.window.parseShort = readShort;
 			_htmlLoader.window.parseDouble = readDouble;
+			_htmlLoader.window.float2array = float2array;
+			_htmlLoader.window.short2array = short2array;
+			_htmlLoader.window.string2array = string2array;
 			ConnectionManager.sharedManager().removeEventListener(Event.CONNECT,onConnected);
 			ConnectionManager.sharedManager().removeEventListener(Event.REMOVED,onRemoved);
 			ConnectionManager.sharedManager().addEventListener(Event.CLOSE,onClosed);
@@ -197,9 +199,37 @@ package extensions
 				buffer.writeByte(bytes[i]);
 			}
 			if(buffer.length>=2){
-				return buffer.readShort();
+				var v:Number = buffer.readShort();
+				buffer.clear();
+				return v;
 			}
 			return 0;
+		}
+		public function float2array(v:Number):Array{
+			var buffer:ByteArray = new ByteArray;
+			buffer.endian = Endian.LITTLE_ENDIAN;
+			buffer.writeFloat(v);
+			var array:Array = [buffer[0],buffer[1],buffer[2],buffer[3]];
+			buffer.clear();
+			return array;
+		}
+		public function short2array(v:Number):Array{
+			var buffer:ByteArray = new ByteArray;
+			buffer.endian = Endian.LITTLE_ENDIAN;
+			buffer.writeShort(v);
+			var array:Array = [buffer[0],buffer[1]];
+			buffer.clear();
+			return array;
+		}
+		public function string2array(v:String):Array{
+			var buffer:ByteArray = new ByteArray;
+			buffer.writeUTFBytes(v);
+			var array:Array = [];
+			for(var i:uint=0;i<buffer.length;i++){
+				array[i] = buffer[i];
+			}
+			buffer.clear();
+			return array;
 		}
 //		public static function sharedManager():JavaScriptManager{
 //			if(_instance==null){

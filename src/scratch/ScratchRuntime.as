@@ -332,8 +332,8 @@ package scratch {
 						(('video motion' == sensorName) && (VideoMotionPrims.readMotionSensor('motion', target) > threshold)));
 //			} else if ('whenSensorConnected' == hat.op) {
 //				triggerCondition = getBooleanSensor(interp.arg(hat, 0));
-			} else if('Communication.serial/received' == hat.op){
-				triggerCondition = getBooleanSerialReceived();
+//			} else if('Communication.serial/received' == hat.op){
+//				triggerCondition = getBooleanSerialReceived();
 			}else if('whenIReceive' == hat.op){
 				triggerCondition = getBooleanBroadcastReceived(""+(hat.args[0] as BlockArg).argValue);
 			} else if (true) {
