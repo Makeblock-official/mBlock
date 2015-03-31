@@ -51,7 +51,8 @@
 	var nextID = 0;
 	var versionIndex = 0xFA;
     ext.resetAll = function(){};
-	
+	ext.runArduino = function(){
+	}
 	ext.runMotor = function(port,slot,speed) {
         runPackage(10,ports[port],slots[slot],short2array(speed));
     };

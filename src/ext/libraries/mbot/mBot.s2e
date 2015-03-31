@@ -4,10 +4,13 @@
 	"firmware":"1.2.103",
 	"javascriptURL":"js/mbot.js",
 	"blockSpecs": [
-		["h","mBot Program","arduino/main",{"src":"mbot","inc":"#include \"mBot.h\"\n#include \"MePort.h\"\nMeBoard myBoard(mBot);\n","def":"","setup":"","loop":""}],
+		["h","mBot Program","runArduino",{"src":"mbot","inc":"#include \"mBot.h\"\n#include \"MePort.h\"\nMeBoard myBoard(mBot);\n","def":"","setup":"","loop":""}],
 		
 		["-"],
 	
+		["w", "%m.direction at speed %d.motorvalue","runBot", "run forward", 100,
+		{"encode":"{d0}{s1}","setup":"","inc":"#include \"MeDCMotor.h\"\n","def":"MeDCMotor motor((MEPORT)0);\n","work":"motor.move({0},{1});\n","loop":""}],
+		
 		["w", "set motor%d.motorPort speed %d.motorvalue","runMotor", "M1", 0,
 		{"encode":"{d0}{s1}","setup":"","inc":"#include \"MeDCMotor.h\"\n","def":"MeDCMotor motor_{0}((MEPORT){0});\n","work":"motor_{0}.run({1});\n","loop":""}],
 		
@@ -36,10 +39,10 @@
 		["R", "line follower %d.port","getLinefollower","Port1",
 		{"encode":"{d0}","setup":"","inc":"#include \"MePort.h\"\n","def":"MePort linefollower_{0}((MEPORT){0});\n","work":"linefollower_{0}.dRead1()*2+linefollower_{0}.dRead2()","loop":""}],
 		
-		["R", "joystick %d.port %d.Axis","getJoystick","Port1","X-Axis",
+		["R", "joystick %d.aport %d.Axis","getJoystick","Port1","X-Axis",
 		{"encode":"{d0}{d1}","setup":"","inc":"#include \"MePort.h\"\n","def":"MePort joystick_{0}((MEPORT){0});\n","work":"joystick_{0}.aRead{1}()","loop":""}],
 		
-		["R", "potentiometer %d.port","getPotentiometer","Port1",
+		["R", "potentiometer %d.aport","getPotentiometer","Port1",
 		{"encode":"{d0}","setup":"","inc":"#include \"MePort.h\"\n","def":"MePort potentiometer_{0}((MEPORT){0});\n","work":"potentiometer_{0}.aRead2()","loop":""}],
 		
 		["R", "pir motion sensor %d.port","getPirmotion","Port1",
@@ -73,6 +76,8 @@
 		"index":["all",1,2],
 		"Axis":["X-Axis","Y-Axis"],
 		"port":["Port1","Port2","Port3","Port4"],
+		"aport":["Port3","Port4"],
+		"direction":["run forward","run backward","turn right","turn left"],
 		"note":["C2","D2","E2","F2","G2","A2","B2","C3","D3","E3","F3","G3","A3","B3","C4","D4","E4","F4","G4","A4","B4","C5","D5","E5","F5","G5","A5","B5","C6","D6","E6","F6","G6","A6","B6","C7","D7","E7","F7","G7","A7","B7","C8","D8"],
 		"beats":["Half","Quater","Eighth","Whole","Double","Zero"],
 		"servovalue":[0,45,90,135,180],
@@ -124,6 +129,10 @@
 		"X-Axis":1,
 		"Y-Axis":2,
 		"Z-Axis":3,
+		"run forward":1,
+		"run backward":2,
+		"turn left":3,
+		"turn right":4,
 		"B0":31,"C1":33,"D1":37,"E1":41,"F1":44,"G1":49,"A1":55,"B1":62,
 			"C2":65,"D2":73,"E2":82,"F2":87,"G2":98,"A2":110,"B2":123,
 			"C3":131,"D3":147,"E3":165,"F3":175,"G3":196,"A3":220,"B3":247,
@@ -157,6 +166,7 @@
 	"translators":{
 		"zh_CN":{
 			"mBot Program":"mBot 主程序",
+			"%m.direction at speed %d.motorvalue":"%m.direction 转速为 %d.motorvalue",
 			"set motor%d.motorPort speed %d.motorvalue":"设置电机%d.motorPort 转速为 %d.motorvalue",
 			"set led %d.index red%d.value green%d.value blue%d.value":"设置LED %d.index 红色%d.value 绿色%d.value 蓝色%d.value",
 			"light intensity":"光线强度",
@@ -164,8 +174,8 @@
 			"sound sensor %d.port":"音量传感器%d.port",
 			"line follower %d.port":"巡线传感器%d.port",
 			"limit switch %d.port %d.slot":"限位开关 %d.port %d.slot",
-			"potentiometer %d.port":"电位器 %d.port",
-			"joystick %d.port %d.Axis":"摇杆 %d.port %d.Axis",
+			"potentiometer %d.aport":"电位器 %d.aport",
+			"joystick %d.aport %d.Axis":"摇杆 %d.aport %d.Axis",
 			"pir motion sensor %d.port":"人体红外传感器 %d.port",
 			"temperature %d.port%d.slot °C":"当前温度 %d.port%d.slot °C",
 			"send ir message %s":"发送红外消息 %s",
@@ -177,12 +187,17 @@
 			"Setting":"设置",
 			"code":"数字",
 			"message":"消息",
+			"run forward":"前进",
+			"run backward":"后退",
+			"turn left":"左转",
+			"turn right":"右转",
 			"all":"所有",
 			"play tone on note %d.note":"播放 音调为 %d.note",
 			"stop tone":"停止播放"
 		},
 		"zh_TW":{
 			"mBot Program":"mBot 主程式",
+			"%m.direction at speed %d.motorvalue":"%m.direction 轉速為 %d.motorvalue",
 			"set motor%d.motorPort speed %d.motorvalue":"設置馬達%d.motorPort 轉速為 %d.motorvalue",
 			"set led %d.index red%d.value green%d.value blue%d.value":"設置LED %d.index 紅色%d.value 綠色%d.value 藍色%d.value",
 			"light intensity":"光線強度",
@@ -190,8 +205,8 @@
 			"sound sensor %d.port":"音量感應器%d.port",
 			"line follower %d.port":"巡線感應器%d.port",
 			"limit switch %d.port %d.slot":"限位開關 %d.port %d.slot",
-			"potentiometer %d.port":"可調電阻器 %d.port",
-			"joystick %d.port %d.Axis":"搖桿 %d.port %d.Axis",
+			"potentiometer %d.aport":"可調電阻器 %d.aport",
+			"joystick %d.aport %d.Axis":"搖桿 %d.aport %d.Axis",
 			"pir motion sensor %d.port":"人體紅外感應器 %d.port",
 			"temperature %d.port%d.slot °C":"當前溫度 %d.port%d.slot °C",
 			"send ir message %s":"發送紅外消息 %s",
@@ -203,6 +218,10 @@
 			"Setting":"設置",
 			"code":"數字",
 			"message":"消息",
+			"run forward":"前進",
+			"run backward":"後退",
+			"turn left":"左轉",
+			"turn right":"右轉",
 			"all":"所有",
 			"play tone on note %d.note":"播放 音調為 %d.note",
 			"stop tone":"停止播放"
@@ -215,8 +234,8 @@
 			"button %m.button_state":"Taste %m.button_state",
 			"ultrasonic sensor %d.port distance":"Ultraschall-Sensor%d.port Entfernung",
 			"line follower %d.port":"Line-Follower-Sensor%d.port",
-			"joystick %d.port %d.Axis":"Joystick %d.port %d.Axis",
-			"potentiometer %d.port":"Potentiometer %d.port",
+			"joystick %d.aport %d.Axis":"Joystick %d.aport %d.Axis",
+			"potentiometer %d.aport":"Potentiometer %d.aport",
 			"pir motion sensor %d.port":"PIR Bewegungs-Sensor %d.port",
 			"ir remote %m.ircode pressed":"Infrarot Fernbedienung%m.ircode gedrückt",
 			"send ir message %s":"sende Infrarot-Nachricht %s",

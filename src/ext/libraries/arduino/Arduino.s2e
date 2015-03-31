@@ -4,7 +4,7 @@
 	"firmware":"1.1.103",
 	"javascriptURL":"js/arduino.js",
 	"blockSpecs": [
-		["h","Arduino Program","arduino/main"],
+		["h","Arduino Program","runArduino"],
 		
 		["B", "read digital pin %n","getDigital","9",
 		{"encode":"{d0}","setup":"pinMode({0},INPUT);\n","inc":"","def":"","work":"digitalRead({0})","loop":""}],

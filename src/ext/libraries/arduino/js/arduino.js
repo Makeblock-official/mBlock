@@ -56,6 +56,9 @@
 	var versionIndex = 0xFA;
     ext.resetAll = function(){};
 	
+	ext.runArduino = function(){
+		
+	};
 	ext.runDigital = function(pin,level) {
         runPackage(30,pin,typeof level=="number"?level:levels[level]);
     };

@@ -60,9 +60,28 @@
 	var startTimer = 0;
 	var versionIndex = 0xFA;
     ext.resetAll = function(){};
-	
-	ext.runMotor = function(port,slot,speed) {
-        runPackage(10,ports[port],slots[slot],short2array(speed));
+	ext.runArduino = function(){
+	};
+	ext.runBot = function(direction,speed) {
+		var leftSpeed = 0;
+		var rightSpeed = 0;
+		if(direction=="run forward"){
+			leftSpeed = speed;
+			rightSpeed = -speed;
+		}else if(direction=="run backward"){
+			leftSpeed = -speed;
+			rightSpeed = speed;
+		}else if(direction=="turn left"){
+			leftSpeed = speed;
+			rightSpeed = speed;
+		}else if(direction=="turn right"){
+			leftSpeed = -speed;
+			rightSpeed = -speed;
+		}
+        runPackage(5,short2array(leftSpeed),short2array(rightSpeed));
+    };
+	ext.runMotor = function(port,speed) {
+        runPackage(10,ports[port],short2array(speed));
     };
     ext.runServo = function(port,slot,angle) {
         runPackage(11,ports[port],slots[slot],angle);
@@ -76,8 +95,8 @@
 	ext.runSevseg = function(port,display){
 		runPackage(9,ports[port],float2array(display));
 	};
-	ext.runLed = function(port,ledIndex,red,green,blue){
-		runPackage(8,ports[port],ledIndex=="all"?0:ledIndex,red,green,blue);
+	ext.runLed = function(ledIndex,red,green,blue){
+		runPackage(8,7,ledIndex=="all"?0:ledIndex,red,green,blue);
 	};
 	ext.runLightSensor = function(port,status){
 		runPackage(3,ports[port],switchStatus[status]);

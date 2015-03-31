@@ -9,6 +9,7 @@ class MeDCMotor: public MePort
 	    MeDCMotor(MEPORT port);
 	    MeDCMotor(uint8_t pwmPin,uint8_t dirPin);
 	    void run(int speed);
+	    void move(int direction, int speed);
 	    void stop();
 	private:
 		uint8_t _dirPin;
