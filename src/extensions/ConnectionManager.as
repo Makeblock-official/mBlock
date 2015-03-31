@@ -2,7 +2,12 @@ package extensions
 {
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
+	import flash.filesystem.File;
+	import flash.net.URLRequest;
+	import flash.net.navigateToURL;
 	import flash.utils.ByteArray;
+	
+	import util.ApplicationManager;
 
 	public class ConnectionManager extends EventDispatcher
 	{
@@ -34,8 +39,22 @@ package extensions
 					SocketManager.sharedManager().probe("custom");
 					break;
 				}
+				case "driver":{
+					MBlock.app.track("/OpenSerial/InstallDriver");
+					if(ApplicationManager.sharedManager().system==ApplicationManager.MAC_OS){
+						navigateToURL(new URLRequest("https://github.com/Makeblock-official/Makeblock-USB-Driver"));
+					}else{
+						var fileDriver:File = new File(File.applicationDirectory.nativePath+"/drivers/Driver_for_Windows.exe");
+						fileDriver.openWithDefaultApplication();
+					}
+					break;
+				}
 				case "connect_hid":{
-					
+					if(!HIDManager.sharedManager().isConnected){
+						HIDManager.sharedManager().onOpen();
+					}else{
+						HIDManager.sharedManager().onClose();
+					}
 					break;
 				}
 				default:{
@@ -45,6 +64,9 @@ package extensions
 					if(name.indexOf("bt_")>-1){
 						BluetoothManager.sharedManager().connect(name.split("bt_").join(""));
 					}
+					if(name.indexOf("net_")>-1){
+						SocketManager.sharedManager().probe(name.split("net_")[1]);
+					}
 				}
 			}
 		}
@@ -53,6 +75,8 @@ package extensions
 				return SerialManager.sharedManager().open(port,baud);
 			}else if(port.indexOf(" (")>-1){
 				return BluetoothManager.sharedManager().open(port);
+			}else if(port.indexOf("HID")>-1){
+				return HIDManager.sharedManager().open();
 			}
 			return false;
 		}
@@ -78,6 +102,8 @@ package extensions
 				SerialManager.sharedManager().sendBytes(bytes);
 			}else if(BluetoothManager.sharedManager().isConnected){
 				BluetoothManager.sharedManager().sendBytes(bytes);
+			}else if(HIDManager.sharedManager().isConnected){
+				HIDManager.sharedManager().sendBytes(bytes);
 			}
 		}
 		public function readBytes():ByteArray{

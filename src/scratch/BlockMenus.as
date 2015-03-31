@@ -516,7 +516,7 @@ public class BlockMenus implements DragClient {
 		m.addLine();
 		if (!isInPalette(block)) {
 			if (!block.isProcDef()) {
-				if(block.op.indexOf("arduino/main")>-1){
+				if(block.op.indexOf("runArduino")>-1){
 					ArduinoManager.sharedManager().mainX = block.x;
 					ArduinoManager.sharedManager().mainY = block.y;
 					if(!app.stageIsArduino)

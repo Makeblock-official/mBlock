@@ -23,7 +23,7 @@
 	<!-- The name that is displayed in the AIR application installer. 
 	May have multiple values for each language. See samples or xsd schema file. Optional. -->
 	<name>
-        <text xml:lang="zh-CN">mBlock - 猫友汇</text>
+        <text xml:lang="zh-CN">mBlock - 创客工场</text>
 		<text xml:lang="EN">mBlock - Based On Scratch From the MIT Media Lab</text>
 	</name>
 	

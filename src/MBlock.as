@@ -21,6 +21,7 @@ package {
 	import flash.filesystem.File;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.media.H264VideoStreamSettings;
 	import flash.net.FileReference;
 	import flash.net.LocalConnection;
 	import flash.net.URLRequest;
@@ -155,6 +156,7 @@ package {
 			this.addEventListener(Event.ADDED_TO_STAGE,initStage);
 		}
 		private function initStage(evt:Event):void{
+			ApplicationManager.sharedManager().isCatVersion = NativeApplication.nativeApplication.applicationDescriptor.toString().indexOf("猫友")>-1;
 			ga = new GATracker(this,"UA-54268669-1","AS3",false);
 			track("/app/launch");
 			loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, uncaughtErrorHandler);
@@ -216,7 +218,7 @@ package {
 				NativeApplication.nativeApplication.activeWindow.addEventListener(Event.CLOSING,onExiting);
 				SocketManager.sharedManager();
 			},100);
-			var ver:String = "03.30.001";
+			var ver:String = "03.31.002";
 			if(!SharedObjectManager.sharedManager().getObject(versionString+".0."+ver,false)){
 				SharedObjectManager.sharedManager().clear();
 				SharedObjectManager.sharedManager().setObject(versionString+".0."+ver,true);
@@ -226,6 +228,7 @@ package {
 			if(!SharedObjectManager.sharedManager().available("first-launch")){
 				SharedObjectManager.sharedManager().setObject("first-launch",true);
 			}
+			
 			if(SharedObjectManager.sharedManager().getObject("first-launch",false)==true){
 				SharedObjectManager.sharedManager().setObject("first-launch",false);
 				openWelcome();
@@ -237,9 +240,9 @@ package {
 			
 		}
 		private function openWelcome():void{
-//			_welcomeView = new Loader();
-//			_welcomeView.load(new URLRequest("welcome.swf"));
-//			_welcomeView.contentLoaderInfo.addEventListener(Event.COMPLETE,onWelcomeLoaded);
+			_welcomeView = new Loader();
+			_welcomeView.load(new URLRequest("welcome.swf"));
+			_welcomeView.contentLoaderInfo.addEventListener(Event.COMPLETE,onWelcomeLoaded);
 		}
 		public function openOrion():void{
 			_welcomeView = new Loader();
@@ -917,20 +920,21 @@ package {
 			m.addItem('Discover', 'discover_bt', true, false);
 			m.addLine();
 			m.addItem('2.4G Serial', '', false, false);
-			m.addItem('Connect', 'connect_hid', true, false);
+			m.addItem('Connect', 'connect_hid', true, HIDManager.sharedManager().isConnected);
 			m.addLine();
 			m.addItem('Network', '', false, false);
 			arr = SocketManager.sharedManager().list;
 			for(i=0;i<arr.length;i++){
 				var ips:Array = arr[i].split(":");
 				if(ips.length<3)continue;
-				m.addItem(ips[0]+" - "+ips[2], arr[i], true, SocketManager.sharedManager().connected(ips[0]));
+				m.addItem(ips[0]+" - "+ips[2], "net_"+arr[i], true, SocketManager.sharedManager().connected(ips[0]));
 			}
 			m.addItem('Custom Connect', 'connect_network', true, false);
 			m.addLine();
 			m.addItem('Firmware', '', false, false);
 			m.addItem('Upgrade Firmware', 'upgrade_firmware', SerialManager.sharedManager().isConnected, false);
 			m.addItem('View Source', 'view_source', DeviceManager.sharedManager().currentBoard.indexOf("unknown")>-1?false:true, false);
+			m.addItem('Install Arduino Driver', 'driver', true, false);
 			m.showOnStage(stage, b.x, topBarPart.bottom() - 1);
 		}
 		public function  showBoardMenu(b:*):void {
@@ -938,7 +942,7 @@ package {
 			m.addItem('Arduino', '', false, false);
 			m.addItem('Arduino Uno', 'arduino_uno', true, DeviceManager.sharedManager().checkCurrentBoard('arduino_uno'));
 			m.addItem('Arduino Leonardo', 'arduino_leonardo', true, DeviceManager.sharedManager().checkCurrentBoard('arduino_leonardo'));
-			m.addItem('Arduino Nano ( Mega 328P )', 'arduino_nano328', true, DeviceManager.sharedManager().checkCurrentBoard('arduino_nano328'));
+			m.addItem('Arduino Nano ( mega328 )', 'arduino_nano328', true, DeviceManager.sharedManager().checkCurrentBoard('arduino_nano328'));
 //			m.addItem('Arduino Nano (mega168)', 'arduino_nano168', true, DeviceManager.sharedManager().checkCurrentBoard('arduino_nano168'));
 			m.addItem('Arduino Mega 1280', 'arduino_mega1280', true, DeviceManager.sharedManager().checkCurrentBoard('arduino_mega1280'));
 			m.addItem('Arduino Mega 2560', 'arduino_mega2560', true, DeviceManager.sharedManager().checkCurrentBoard('arduino_mega2560'));

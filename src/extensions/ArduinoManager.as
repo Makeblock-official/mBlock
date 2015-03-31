@@ -823,7 +823,7 @@ void updateVar(char * varName,double * var)
 			var isArduinoCode:Boolean = false;
 			for(var i:int;i<blks.length;i++){
 				var b:Object = blks[i];
-				if(b[0].indexOf("arduino/main")>-1){
+				if(b[0].indexOf("runArduino")>-1){
 					ccode_pointer="setup";
 					isArduinoCode = true;
 					
@@ -901,6 +901,7 @@ void updateVar(char * varName,double * var)
 			var retcode:String
 			ccode_setup=""
 			ccode_setup_fun = "";
+			ccode_setup_def = "";
 			ccode_loop=""
 			ccode_inc=""
 			ccode_def=""
@@ -923,7 +924,7 @@ void updateVar(char * varName,double * var)
 				if("scripts" in child){
 					for(var j:uint=0;j<child.scripts.length;j++){
 						var scr:Object = child.scripts[j][2];
-						if(scr[0][0].indexOf("arduino/main")==-1){
+						if(scr[0][0].indexOf("runArduino")==-1){
 							if(scr[0][0]=="procDef"){
 								addFunction(scr as Array);
 								parseModules(scr);
@@ -955,7 +956,7 @@ void updateVar(char * varName,double * var)
 			//			buildAll(retcode, requiredCpp);
 		}
 		private function buildCodes():void{
-			buildInclude();
+			buildInclude();			
 			buildDefine();
 			ccode_setup+=ccode_setup_def;
 			buildSetup();
@@ -964,7 +965,7 @@ void updateVar(char * varName,double * var)
 			ccode_loop+=buildLoopMaintance();
 		}
 		private function buildSetup():String{
-			var modInitCode:String = ""
+			var modInitCode:String = "";
 			for(var i:int=0;i<moduleList.length;i++){
 				var m:Object = moduleList[i];
 				var code:* = m["code"]["setup"];

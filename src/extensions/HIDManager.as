@@ -3,7 +3,10 @@ package extensions
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.utils.ByteArray;
-
+	import flash.utils.setTimeout;
+	
+	import translation.Translator;
+	
 	public class HIDManager extends EventDispatcher
 	{
 		private static var _instance:HIDManager;
@@ -17,7 +20,8 @@ package extensions
 		private var _isConnected:Boolean = false;
 		public function HIDManager()
 		{
-			init();
+			_hid = new AirHID();
+			setTimeout(init,500);
 		}
 		
 		public function setMBlock(mBlock:MBlock):void{
@@ -55,27 +59,64 @@ package extensions
 		private function hidRx(evt:Event):void{
 			var t:String = "";
 			try{
-				var bytes:ByteArray = _hid.ReadHID()
-				for(var i:uint=0;i<bytes.length;i++){
-					t += String.fromCharCode(bytes.readByte());
+				var bytes:ByteArray = _hid.ReadHID();
+				//				for(var i:uint=0;i<bytes.length;i++){
+				//					t += String.fromCharCode(bytes.readByte());
+				//				}
+				//				trace("hid rx"+bytes.length+" : "+t);
+				if(bytes.length>0){
+					ConnectionManager.sharedManager().onReceived(bytes);
 				}
-	//			trace("hid rx"+bytes.length+" : "+t)
-				ParseManager.sharedManager().parseBuffer(bytes);
 			}catch(e:*){
 				trace(e);
 			}
 		}
+		private function onError(evt:Event):void{
+			
+			//setTimeout(init,5000);
+		}
 		private function init():void{
 			// test of hid
-			_hid = new AirHID();
+			
+		}
+		public function open():Boolean{
 			var res:int = _hid.OpenHID();
 			if(res==0){
-				ParseManager.sharedManager().queryVersion();
-				_hid.addEventListener(AirHID.EVENT_RXDATA,hidRx);   
-//				var bytes:ByteArray = new ByteArray;
-//				bytes.writeUTF("hello world\n")
-//				res = _hid.WriteHID(bytes)
-//				trace("write hid:"+res);
+				trace("hid opened")
+				MBlock.app.topBarPart.setConnectedTitle(Translator.map("2.4G Serial")+" "+Translator.map("Connected"));
+				//				ParseManager.sharedManager().queryVersion();
+				_hid.removeEventListener(AirHID.EVENT_RXDATA,hidRx);  
+				_hid.removeEventListener(AirHID.EVENT_RXERROR,onError);
+				_hid.addEventListener(AirHID.EVENT_RXDATA,hidRx);  
+				_hid.addEventListener(AirHID.EVENT_RXERROR,onError);
+				//				var bytes:ByteArray = new ByteArray;
+				//				bytes.writeUTF("hello world\n")
+				//				res = _hid.WriteHID(bytes)
+				//				trace("write hid:"+res);
+				return true;
+			}
+			return false;
+		}
+		public function onOpen():void{
+			if(SerialDevice.sharedDevice().port=="HID"&&isConnected){
+				SerialDevice.sharedDevice().port = "";
+				onClose();
+			}else{
+				ConnectionManager.sharedManager().onOpen("HID");
+			}
+		}
+		public function onClose():void{
+			if(isConnected){
+				MBlock.app.topBarPart.setDisconnectedTitle();
+				_hid.removeEventListener(AirHID.EVENT_RXDATA,hidRx);  
+				_hid.removeEventListener(AirHID.EVENT_RXERROR,onError);
+				ConnectionManager.sharedManager().onClose();
+				close();
+			}
+		}
+		public function close():void{
+			if(_hid){
+				_hid.CloseHID();
 			}
 		}
 	}

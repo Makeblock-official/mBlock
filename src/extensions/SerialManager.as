@@ -449,7 +449,7 @@ package extensions
 		public function onErrorData(event:ProgressEvent):void
 		{
 			var msg:String = process.standardError.readUTFBytes(process.standardError.bytesAvailable);
-			var arr:Array = msg.split(DeviceManager.sharedManager().currentDevice.indexOf("leonardo")>-1?"Send: B [42] . [00] . [":"Send: d [64] . [00] . [");
+			var arr:Array = msg.split(DeviceManager.sharedManager().currentDevice.indexOf("leonardo")>-1?"Send: B [42] . [00] . [":(DeviceManager.sharedManager().currentDevice.indexOf("nano")>-1?"Send: t [74] . [00] . [":"Send: d [64] . [00] . ["));
 			if(msg.indexOf("writing flash (")>0){
 				_upgradeBytesTotal = Math.max(3000,Number(msg.split("writing flash (")[1].split(" bytes)")[0]));
 				

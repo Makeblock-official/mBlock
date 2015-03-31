@@ -111,8 +111,10 @@ package ui.parts {
 	//				removeChild(bluetoothMenu);
 				}
 				removeChild(extensionMenu);
-				removeChild(shareMenu);
-				removeChild(faqMenu);
+				if(ApplicationManager.sharedManager().isCatVersion){
+					removeChild(shareMenu);
+					removeChild(faqMenu);
+				}
 				removeChild(aboutMenu);
 				removeChild(offlineNotice);
 			}
@@ -184,13 +186,15 @@ package ui.parts {
 			extensionMenu.y = buttonY;
 			nextX += extensionMenu.width + buttonSpace;
 			
-			shareMenu.x = nextX;
-			shareMenu.y = buttonY;
-			nextX += shareMenu.width + buttonSpace;
-			
-			faqMenu.x = nextX;
-			faqMenu.y = buttonY;
-			nextX += faqMenu.width + buttonSpace;
+			if(ApplicationManager.sharedManager().isCatVersion){
+				shareMenu.x = nextX;
+				shareMenu.y = buttonY;
+				nextX += shareMenu.width + buttonSpace;
+				
+				faqMenu.x = nextX;
+				faqMenu.y = buttonY;
+				nextX += faqMenu.width + buttonSpace;
+			}
 			
 			aboutMenu.x = nextX;
 			aboutMenu.y = buttonY;
@@ -229,8 +233,10 @@ package ui.parts {
 	//		addChild(socketMenu = makeMenuButton('Network',app.showNetworkMenu,true));
 			addChild(deviceMenu = makeMenuButton('Boards',app.showBoardMenu,true));
 			addChild(extensionMenu = makeMenuButton('Extensions',app.showExtensionMenu,true));
-			addChild(shareMenu = makeMenuButton('Share Your Project', app.openShare, false));
-			addChild(faqMenu = makeMenuButton('FAQ', app.openFaq, false));
+			if(ApplicationManager.sharedManager().isCatVersion){
+				addChild(shareMenu = makeMenuButton('Share Your Project', app.openShare, false));
+				addChild(faqMenu = makeMenuButton('FAQ', app.openFaq, false));
+			}
 			addChild(aboutMenu = makeMenuButton('Help', app.openAbout, true));
 			addChild(offlineNotice);
 			offlineNotice.visible = false;
