@@ -24,7 +24,7 @@
 		["w", "set led %d.normalPort %d.index red%d.value green%d.value blue%d.value","runLed", "Port3","all",0,0,0,
 		{"encode":"{d0}{d1}{d2}{d3}{d4}","setup":"rgbled_{0}.setNumber(32);\n","inc":"#include \"MeRGBLed.h\"\n","def":"MeRGBLed rgbled_{0}({0});\n","work":"rgbled_{0}.setColor({1},{2},{3},{4});\nrgbled_{0}.show();\n","loop":""}],
 		
-		["w", "set light sensor %d.normalPort led as %d.switch","runLightSensor", "Port3", "On",
+		["w", "set light sensor %d.normalPort led as %d.switch","runLightsensor", "Port3", "On",
 		{"encode":"{d0}{d1}","setup":"","inc":"#include \"MePort.h\"\n","def":"MePort lightsensor_{0}({0});\n","work":"lightsensor_{0}.dWrite1({1});\n","loop":""}],
 		
 		["w", "set camera shutter %d.normalPort as %d.shutter","runShutter","Port6", "Press",

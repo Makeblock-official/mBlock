@@ -71,7 +71,7 @@
 	ext.runLed = function(port,ledIndex,red,green,blue){
 		runPackage(8,ports[port],ledIndex=="all"?0:ledIndex,red,green,blue);
 	};
-	ext.runLightSensor = function(port,status){
+	ext.runLightsensor = function(port,status){
 		runPackage(3,ports[port],switchStatus[status]);
 	};
 	ext.runShutter = function(port,status){
@@ -271,7 +271,9 @@
 						}
 							break;
 					}
-					values[indexs[extId]] = value;
+					if(type<=5){
+						values[indexs[extId]] = value;
+					}
 					_rxBuf = [];
 				}
 			} 

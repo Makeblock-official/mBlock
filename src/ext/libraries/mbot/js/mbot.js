@@ -338,7 +338,9 @@
 						}
 							break;
 					}
-					values[indexs[extId]] = value;
+					if(type<=5){
+						values[indexs[extId]] = value;
+					}
 					_rxBuf = [];
 				}
 			} 
