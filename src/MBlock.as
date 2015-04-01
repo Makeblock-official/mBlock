@@ -903,6 +903,7 @@ package {
 		}
 		public function  showConnectMenu(b:*):void {
 			SocketManager.sharedManager().probe();
+			HIDManager.sharedManager();
 			var m:Menu = new Menu(ConnectionManager.sharedManager().onConnect, 'Connect', CSS.topBarColor, 28);
 			m.addItem('Serial Port', '', false, false);
 			var arr:Array = SerialManager.sharedManager().list;
