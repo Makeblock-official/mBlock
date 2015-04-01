@@ -81,6 +81,7 @@ package extensions
 				return false;
 			}
 			var v:*=getValue(method,param,ext);
+			trace("value:",v);
 			MBlock.app.runtime.exitRequest();
 			MBlock.app.extensionManager.reporterCompleted(ext.name,ext.nextID,v);
 			return true;

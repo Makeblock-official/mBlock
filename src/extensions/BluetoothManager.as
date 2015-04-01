@@ -142,7 +142,6 @@ package extensions
 			if(_bt!=null){
 				if(_bt.connected){
 					//					MBlock.app.topBarPart.setBluetoothTitle(false);
-					MBlock.app.topBarPart.setDisconnectedTitle();
 					ConnectionManager.sharedManager().onClose();
 					_bt.disconnect();
 				}

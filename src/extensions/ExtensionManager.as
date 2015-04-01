@@ -42,7 +42,6 @@ import translation.Translator;
 
 import uiwidgets.IndicatorLight;
 
-import util.ApplicationManager;
 import util.JSON;
 import util.ReadStream;
 import util.SharedObjectManager;
@@ -133,7 +132,7 @@ public class ExtensionManager {
 	public function stopButtonPressed():* {
 		// Send a reset_all command to all active extensions.
 		for each (var ext:ScratchExtension in enabledExtensions()) {
-			call(ext.name, 'reset_all', []);
+			call(ext.name, 'resetAll', []);
 		}
 	}
 
@@ -480,7 +479,6 @@ public class ExtensionManager {
 		if(ext.useSerial){
 			if (!ParseManager.sharedManager().connected) {
 				indicator.setColorAndMsg(0xE00000, Translator.map('Disconnect'));
-				MBlock.app.topBarPart.setDisconnectedTitle();
 //				MBlock.app.topBarPart.setBluetoothTitle(false);
 			}
 			else if (ext.problem != '') indicator.setColorAndMsg(0xE0E000, ext.problem);
@@ -516,10 +514,14 @@ public class ExtensionManager {
 					b.requestState = 0;
 					request(extName, primOrVarName, args, b);
 					var v:* = b.response;
+					trace("resp:",v);
 					return v;
 				}else{
 					request(extName, primOrVarName, args, b);
-					return b.response;
+					
+					var v:* = b.response;
+					trace(v);
+					return v;
 				}
 				// Returns null if we just made a request or we're still waiting
 				return b.response;//==null?0:b.response;
@@ -575,7 +577,7 @@ public class ExtensionManager {
 		if (ext == null) return; // unknown extension
 		
 		var activeThread:Thread = app.interp.activeThread;
-		if(activeThread && op != 'reset_all') {
+		if(activeThread && op != 'resetAll') {
 			if(activeThread.firstTime) {
 				httpCall(ext, op, args);
 				activeThread.firstTime = false;
@@ -610,6 +612,7 @@ public class ExtensionManager {
 			}
 			b.nextID.push(ext.nextID);
 			MBlock.app.runtime.enterRequest();
+			trace("op name:",op,ext.nextID);
 			ext.js.requestValue(op,args,ext);
 			//'ScratchExtensions.getReporterAsync', ext.name, op, args, ext.nextID);
 		}
@@ -691,8 +694,8 @@ public class ExtensionManager {
 //				url += '/' + ((arg is String) ? escape(arg) : arg);
 //			}
 //			var objs:Array = MBlock.app.extensionManager.specForCmd(ext.name+"."+op);
-//			if(op.indexOf("reset_all")>-1){
-//				ParseManager.sharedManager().parse("reset_all");
+//			if(op.indexOf("resetAll")>-1){
+//				ParseManager.sharedManager().parse("resetAll");
 //			}
 //			if(objs==null){
 //				return;

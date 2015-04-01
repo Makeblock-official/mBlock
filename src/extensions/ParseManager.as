@@ -157,7 +157,7 @@ package extensions
 			bytes.endian = Endian.LITTLE_ENDIAN;
 			bytes.writeByte(0xff);
 			bytes.writeByte(0x55);
-			if(url=="reset_all"){
+			if(url=="resetAll"){
 				bytes.writeByte(0x2);
 				bytes.writeByte(0x0);
 				bytes.writeByte(0x4);

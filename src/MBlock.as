@@ -218,12 +218,12 @@ package {
 				NativeApplication.nativeApplication.activeWindow.addEventListener(Event.CLOSING,onExiting);
 				SocketManager.sharedManager();
 			},100);
-			var ver:String = "03.31.002";
+			var ver:String = "04.01.001";
 			if(!SharedObjectManager.sharedManager().getObject(versionString+".0."+ver,false)){
 				SharedObjectManager.sharedManager().clear();
 				SharedObjectManager.sharedManager().setObject(versionString+".0."+ver,true);
-				SharedObjectManager.sharedManager().setObject("device","uno");
-				SerialManager.sharedManager().device = "uno";
+//				SharedObjectManager.sharedManager().setObject("device","uno");
+				setTimeout(DeviceManager.sharedManager().onSelectBoard,1000,"mbot_uno");
 			}
 			if(!SharedObjectManager.sharedManager().available("first-launch")){
 				SharedObjectManager.sharedManager().setObject("first-launch",true);
@@ -279,7 +279,7 @@ package {
 		} 
 		public function track(msg:String):void{
 			if(ga!=null){
-				ga.trackPageview("/myh/"+MBlock.versionString+""+msg);
+				ga.trackPageview((ApplicationManager.sharedManager().isCatVersion?"/myh/":"/")+MBlock.versionString+""+msg);
 			}
 		}
 		private function onInvoked(evt:InvokeEvent):void{

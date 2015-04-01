@@ -33,7 +33,9 @@ package ui.parts {
 	
 	import assets.Resources;
 	
+	import extensions.ConnectionManager;
 	import extensions.ParseManager;
+	import extensions.SerialDevice;
 	
 	import translation.Translator;
 	
@@ -226,6 +228,15 @@ package ui.parts {
 			addChild(editMenu = makeMenuButton('Edit', app.showEditMenu, true));
 	//		addChild(examplesMenu = makeMenuButton('Examples', app.showExamplesMenu, false));
 			addChild(connectMenu = makeMenuButton('Connect',app.showConnectMenu,true));
+			if(SerialDevice.sharedDevice().port&&SerialDevice.sharedDevice().port!=""){
+				if(SerialDevice.sharedDevice().port.indexOf("COM")>-1){
+					setConnectedTitle(SerialDevice.sharedDevice().port+" "+Translator.map("Connected"));
+				}else if(SerialDevice.sharedDevice().port.indexOf("HID")>-1){
+					setConnectedTitle(Translator.map("2.4G Serial")+" "+Translator.map("Connected"));
+				}else if(SerialDevice.sharedDevice().port.indexOf(" (")>-1){
+					setConnectedTitle(SerialDevice.sharedDevice().port+" "+Translator.map("Connected"));
+				}
+			}
 	//		addChild(serialMenu = makeMenuButton(SerialManager.sharedManager().isConnected?(SerialManager.sharedManager().currentPort+" "+Translator.map('Connected')):'Serial Port', app.showSerialMenu, true));
 	//		if(ApplicationManager.sharedManager().system==ApplicationManager.WINDOWS){
 	//			addChild(bluetoothMenu = makeMenuButton(!SerialManager.sharedManager().isBluetoothSupported?"No Bluetooth":(SerialManager.sharedManager().isBluetoothConnected?'Disconnect Bluetooth':'Bluetooth'), app.openBluetooth, false));
