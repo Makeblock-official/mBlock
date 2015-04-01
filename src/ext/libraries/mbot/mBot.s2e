@@ -39,13 +39,13 @@
 		["R", "line follower %d.port","getLinefollower","Port1",
 		{"encode":"{d0}","setup":"","inc":"#include \"MePort.h\"\n","def":"MePort linefollower_{0}((MEPORT){0});\n","work":"linefollower_{0}.dRead1()*2+linefollower_{0}.dRead2()","loop":""}],
 		
-		["R", "joystick %d.aport %d.Axis","getJoystick","Port1","X-Axis",
+		["R", "joystick %d.aport %d.Axis","getJoystick","Port3","X-Axis",
 		{"encode":"{d0}{d1}","setup":"","inc":"#include \"MePort.h\"\n","def":"MePort joystick_{0}((MEPORT){0});\n","work":"joystick_{0}.aRead{1}()","loop":""}],
 		
-		["R", "potentiometer %d.aport","getPotentiometer","Port1",
+		["R", "potentiometer %d.aport","getPotentiometer","Port4",
 		{"encode":"{d0}","setup":"","inc":"#include \"MePort.h\"\n","def":"MePort potentiometer_{0}((MEPORT){0});\n","work":"potentiometer_{0}.aRead2()","loop":""}],
 		
-		["R", "pir motion sensor %d.port","getPirmotion","Port1",
+		["R", "pir motion sensor %d.port","getPirmotion","Port2",
 		{"encode":"{d0}","setup":"","inc":"#include \"MePort.h\"\n","def":"MePort pir_{0}((MEPORT){0});\n","work":"pir_{0}.dRead2()","loop":""}],
 		
 		["-"],
