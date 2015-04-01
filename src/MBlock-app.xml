@@ -166,7 +166,7 @@
 			 <extension>sb2</extension> 
 			
 			<!-- The description of the file type. Optional. -->
-			 <description>mBlok Project File</description> 
+			 <description>mBlock Project File</description> 
 			
 			<!-- The MIME content type. -->
 			 <contentType>application/mblock.project-file</contentType> 

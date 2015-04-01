@@ -32,8 +32,8 @@
         </excludedEntries>
       </libraryPathEntry>
       <libraryPathEntry kind="5" linkType="2" path="libs/AIRHID.ane"/>
-      <libraryPathEntry kind="5" linkType="2" path="libs/AIRSerial.ane"/>
-      <libraryPathEntry kind="5" linkType="2" path="libs/BluetoothManager_win.ane"/>
+      <libraryPathEntry kind="5" linkType="2" path="libs/AIRSerial_mac.ane"/>
+      <libraryPathEntry kind="5" linkType="2" path="libs/BluetoothManager.ane"/>
     </libraryPath>
     <sourceAttachmentPath/>
   </compiler>
@@ -52,8 +52,8 @@
         <airExcludes/>
         <anePaths>
           <anePathEntry path="libs/AIRHID.ane"/>
-          <anePathEntry path="libs/AIRSerial.ane"/>
-          <anePathEntry path="libs/BluetoothManager_win.ane"/>
+          <anePathEntry path="libs/AIRSerial_mac.ane"/>
+          <anePathEntry path="libs/BluetoothManager.ane"/>
         </anePaths>
         <newLaunchParams/>
         <modifiedLaunchParams/>
