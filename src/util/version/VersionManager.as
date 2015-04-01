@@ -4,6 +4,9 @@ package util.version
 	import flash.events.IOErrorEvent;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
+	import flash.utils.setTimeout;
+	
+	import extensions.DeviceManager;
 	
 	import util.SharedObjectManager;
 
@@ -57,8 +60,8 @@ package util.version
 			}else{
 				trace("finish");
 				//MBlock.app.extensionManager.clearImportedExtensions();
+				setTimeout(DeviceManager.sharedManager().onSelectBoard,1000,DeviceManager.sharedManager().currentBoard);
 				MBlock.app.extensionManager.importExtension();
-				
 			}
 		}
 		private function onComplete(evt:Event):void{

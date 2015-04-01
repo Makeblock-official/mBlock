@@ -222,7 +222,6 @@ package {
 				SharedObjectManager.sharedManager().clear();
 				SharedObjectManager.sharedManager().setObject(versionString+".0."+ver,true);
 //				SharedObjectManager.sharedManager().setObject("device","uno");
-				setTimeout(DeviceManager.sharedManager().onSelectBoard,1000,"mbot_uno");
 			}
 			if(!SharedObjectManager.sharedManager().available("first-launch")){
 				SharedObjectManager.sharedManager().setObject("first-launch",true);
