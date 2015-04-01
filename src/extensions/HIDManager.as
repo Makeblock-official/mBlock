@@ -80,20 +80,24 @@ package extensions
 			
 		}
 		public function open():Boolean{
-			var res:int = _hid.OpenHID();
-			if(res==0){
-				trace("hid opened")
-				MBlock.app.topBarPart.setConnectedTitle(Translator.map("2.4G Serial")+" "+Translator.map("Connected"));
-				//				ParseManager.sharedManager().queryVersion();
-				_hid.removeEventListener(AirHID.EVENT_RXDATA,hidRx);  
-				_hid.removeEventListener(AirHID.EVENT_RXERROR,onError);
-				_hid.addEventListener(AirHID.EVENT_RXDATA,hidRx);  
-				_hid.addEventListener(AirHID.EVENT_RXERROR,onError);
-				//				var bytes:ByteArray = new ByteArray;
-				//				bytes.writeUTF("hello world\n")
-				//				res = _hid.WriteHID(bytes)
-				//				trace("write hid:"+res);
-				return true;
+			try{
+				var res:int = _hid.OpenHID();
+				if(res==0){
+					trace("hid opened")
+					MBlock.app.topBarPart.setConnectedTitle(Translator.map("2.4G Serial")+" "+Translator.map("Connected"));
+					//				ParseManager.sharedManager().queryVersion();
+					_hid.removeEventListener(AirHID.EVENT_RXDATA,hidRx);  
+					_hid.removeEventListener(AirHID.EVENT_RXERROR,onError);
+					_hid.addEventListener(AirHID.EVENT_RXDATA,hidRx);  
+					_hid.addEventListener(AirHID.EVENT_RXERROR,onError);
+					//				var bytes:ByteArray = new ByteArray;
+					//				bytes.writeUTF("hello world\n")
+					//				res = _hid.WriteHID(bytes)
+					//				trace("write hid:"+res);
+					return true;
+				}
+			}catch(err:*){
+				trace(err);
 			}
 			return false;
 		}
