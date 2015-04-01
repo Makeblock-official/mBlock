@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
-<application xmlns="http://ns.adobe.com/air/application/15.0">
+<application xmlns="http://ns.adobe.com/air/application/17.0">
 
 <!-- Adobe AIR Application Descriptor File Template.
 
@@ -23,7 +23,7 @@
 	<!-- The name that is displayed in the AIR application installer. 
 	May have multiple values for each language. See samples or xsd schema file. Optional. -->
 	<name>
-        <text xml:lang="zh-CN">mBlock - 猫友汇</text>
+        <text xml:lang="zh-CN">mBlock - 创客工场</text>
 		<text xml:lang="EN">mBlock - Based On Scratch From the MIT Media Lab</text>
 	</name>
 	
@@ -237,8 +237,8 @@
     <!-- </android> -->
 	<!-- End of the schema for adding the android specific tags in AndroidManifest.xml file -->
 	<extensions>
-   		<extensionID>cc.makeblock.AirHID</extensionID>
 	    <extensionID>cc.makeblock.AIRSerial</extensionID>
     	<extensionID>cc.makeblock.BluetoothExt</extensionID>
+	    <extensionID>cc.makeblock.AirHID</extensionID>
     </extensions>
 </application>

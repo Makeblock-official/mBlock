@@ -1,23 +1,23 @@
 {
-	"objName": "M-Cat",
+	"objName": "M-Panda",
 	"sounds": [{
-			"soundName": "meow",
+			"soundName": "eat",
 			"soundID": -1,
-			"md5": "83c36d806dc92327b9e7049a565c6bff.wav",
+			"md5": "714e598d28e493cc50babc17f2c4895d.wav",
 			"sampleCount": 18688,
 			"rate": 22050,
 			"format": ""
 		}],
 	"costumes": [{
-			"costumeName": "cat-a",
+			"costumeName": "Panda-a",
 			"baseLayerID": -1,
-			"baseLayerMD5": "b2ea43be1b1c00cb2b3dc20bf337f96e.svg",
+			"baseLayerMD5": "panda_a.svg",
 			"rotationCenterX": 0,
 			"rotationCenterY": 0
 		},{
-			"costumeName": "cat-b",
+			"costumeName": "Panda-b",
 			"baseLayerID": -1,
-			"baseLayerMD5": "41ab45d91d43a4be11748e7c15fc6615.svg",
+			"baseLayerMD5": "panda_b.svg",
 			"rotationCenterX": 0,
 			"rotationCenterY": 0
 		}],

@@ -21,7 +21,7 @@
 #include "MeRGBLed.h"
 #include "MeInfraredReceiver.h"
 #include "MeStepper.h"
-#if defined(__AVR_ATmega328P__)
+#if defined(__AVR_ATmega328P__) or defined(__AVR_ATmega168__)
   #include "MeEncoderMotor.h"
 #endif
 Servo servo;  
@@ -62,9 +62,13 @@ union{
 MeModule modules[12];
 #if defined(__AVR_ATmega32U4__) 
   int analogs[12]={A0,A1,A2,A3,A4,A5,A6,A7,A8,A9,A10,A11};
-#else
+#endif
+#if defined(__AVR_ATmega328P__) or defined(__AVR_ATmega168__)
   int analogs[8]={A0,A1,A2,A3,A4,A5,A6,A7};
   MeEncoderMotor encoders[2];
+#endif
+#if defined(__AVR_ATmega1280__)|| defined(__AVR_ATmega2560__)
+  int analogs[16]={A0,A1,A2,A3,A4,A5,A6,A7,A8,A9,A10,A11,A12,A13,A14,A15};
 #endif
 String mVersion = "1.1.103";
 boolean isAvailable = false;
@@ -129,7 +133,7 @@ void setup(){
 //  buzzerOff();
   steppers[0] = MeStepper();
   steppers[1] = MeStepper();
-  #if defined(__AVR_ATmega328P__)
+  #if defined(__AVR_ATmega328P__) or defined(__AVR_ATmega168__)
     encoders[0] = MeEncoderMotor(SLOT_1);
     encoders[1] = MeEncoderMotor(SLOT_2);
     encoders[0].begin();
@@ -334,6 +338,15 @@ void runModule(int device){
      dc.reset(port);
      dc.run(speed);
    } 
+    break;
+    case JOYSTICK:{
+     int leftSpeed = readShort(6);
+     dc.reset(M1);
+     dc.run(leftSpeed);
+     int rightSpeed = readShort(8);
+     dc.reset(M2);
+     dc.run(rightSpeed);
+    }
     break;
     case STEPPER:{
      int maxSpeed = readShort(7);

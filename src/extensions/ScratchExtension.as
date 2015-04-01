@@ -58,7 +58,7 @@ public class ScratchExtension {
 	public var firmware:String = "";
 	public var thumbnailMD5:String = ''; // md5 has for extension image shown in extension library
 	public var url:String = ''; // URL for extension documentation page (with helper app download link, if appropriate)
-	public var javascriptURL:String = ''; // URL to load a javascript extension
+	private var _javascriptURL:String = ''; // URL to load a javascript extension
 	public var tags:Array = []; // tags for the extension library filter
 	public var isBusy:Boolean = false;
 	// Runtime state
@@ -68,10 +68,11 @@ public class ScratchExtension {
 	public var success:String = 'Okay';
 	public var nextID:int;
 	public var srcPath:String = "";
+	public var docPath:String = "";
 	public var busy:Array = [];
 	public var waiting:Dictionary = new Dictionary(true);
 	public var useSerial:Boolean = false;
-	
+	private var _jsEngine:JavaScriptEngine = new JavaScriptEngine;
 	public function ScratchExtension(name:String, port:int) {
 		this.name = name;
 		this.port = port;
@@ -94,6 +95,18 @@ public class ScratchExtension {
 			return label;
 		}
 		return n;
+	}
+	public function get javascriptURL():String{
+		return _javascriptURL;
+	}
+	public function set javascriptURL(v:String):void{
+		if(v){
+			_jsEngine.loadJS(this.docPath+v);
+		}
+		_javascriptURL = v;
+	}
+	public function get js():JavaScriptEngine{
+		return _jsEngine;
 	}
 	public static function PicoBoard():ScratchExtension {
 		// Return a descriptor for the Scratch PicoBoard extension.

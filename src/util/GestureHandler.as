@@ -67,6 +67,7 @@ package util {
 	
 	import blocks.Block;
 	
+	import scratch.ScratchComment;
 	import scratch.ScratchObj;
 	import scratch.ScratchSprite;
 	import scratch.ScratchStage;
@@ -440,7 +441,11 @@ public class GestureHandler {
 			if (b.parent is Block) Block(b.parent).removeBlock(b);
 			if (b.parent != null) b.parent.removeChild(b);
 			app.scriptsPane.prepareToDrag(b);
-		} else {
+		}else if (obj is ScratchComment) {
+			var c:ScratchComment = ScratchComment(obj);
+			if (c.parent != null) c.parent.removeChild(c);
+			app.scriptsPane.prepareToDragComment(c);
+		}  else {
 			var inStage:Boolean = (obj.parent == app.stagePane);
 			if (obj.parent != null) {
 				if(obj is ScratchSprite && app.isIn3D)

@@ -153,8 +153,8 @@ public class BlockArg extends Sprite {
 			field.text = (label) ? label : s;
 			if(value is String)
 			if(label==null&&menuName==null){
-				value = type=="s"?Translator.map(s):s;
-				field.text = value;
+				value = s;
+				field.text = type=="s"?Translator.map(value):value;
 			}
 			if (menuName && !label && (value is String) && (value != '')) {
 				if (BlockMenus.shouldTranslateItemForMenu(value, menuName)) {

@@ -4,10 +4,15 @@
 ///@brief Class for DC Motor Module
 class MeDCMotor: public MePort
 {
-public:
-	MeDCMotor();
-    MeDCMotor(uint8_t port);
-    void run(int speed);
-    void stop();
+	public:
+            MeDCMotor();
+	    MeDCMotor(MEPORT port);
+	    MeDCMotor(uint8_t pwmPin,uint8_t dirPin);
+	    void run(int speed);
+	    void move(int direction, int speed);
+	    void stop();
+	private:
+		uint8_t _dirPin;
+		uint8_t _pwmPin;
 };
 #endif

@@ -616,7 +616,12 @@ public class ScratchStage extends ScratchObj {
 			'83c36d806dc92327b9e7049a565c6bff.wav',
 			'0aa976d536ad6667ce05f9f2174ceb3d.svg',	// new empty backdrop
 			'790f7842ea100f71b34e5b9a5bfbcaa1.svg', // even newer empty backdrop
-			'c969115cb6a3b75470f8897fbda5c9c9.svg'	// new empty costume
+			'c969115cb6a3b75470f8897fbda5c9c9.svg',	// new empty costume
+			'09f6edf0b816a18abd6c79ef2bcf2fb3.svg',
+			'panda_b.svg',
+			'714e598d28e493cc50babc17f2c4895d.wav',
+			'739b5e2a2435f6e1ec2993791b423146.png',
+			'83a9787d4cb6f3b7632b4ddfebf74367.wav'
 		];
 		if (sprites().length > 1) return false;
 		if (scriptCount() > 0) return false;

@@ -1,70 +1,72 @@
 {	"extensionName": "Makeblock",
 	"extensionPort": 0,
 	"sort":2,
-	"firmware":"1.1.103",
+	"firmware":"1.2.103",
+	"javascriptURL":"js/makeblock.js",
 	"blockSpecs": [
-		["h","Makeblock Program","arduino/main"],
+		["h","Makeblock Program","runArduino"],
 		
-		["w", "set motor%d.motorPort speed %d.motorvalue","run/motor", "M1", 0,
+		["w", "set motor%d.motorPort speed %d.motorvalue","runMotor", "M1", 0,
 		{"encode":"{d0}{s1}","setup":"","inc":"#include \"MeDCMotor.h\"\n","def":"MeDCMotor motor_{0}({0});\n","work":"motor_{0}.run({1});\n","loop":""}],
 		
-		["w", "set servo %d.servoPort %d.slot angle %d.servovalue","run/servo", "Port1","Slot1", 90,
+		["w", "set servo %d.servoPort %d.slot angle %d.servovalue","runServo", "Port1","Slot1", 90,
 		{"encode":"{d0}{d1}{d2}","setup":"servo_{0}_{1}.attach(port_{0}.pin{1}());\n","inc":"#include \"MePort.h\"\n","def":"Servo servo_{0}_{1};\nMePort port_{0}({0});\n","work":"servo_{0}_{1}.write({2});\n","loop":""}],
 		
-		["w", "set stepper motor%d.exMotorPort speed %d.stepperSpeed distance %n","run/steppermotor", "Port1", 3000, 1000,
+		["w", "set stepper motor%d.exMotorPort speed %d.stepperSpeed distance %n","runStepperMotor", "Port1", 3000, 1000,
 		{"encode":"{d0}{s1}{s2}","setup":"","inc":"#include \"MeStepper.h\"\n","def":"MeStepper stepper_{0}({0});\n","work":"stepper_{0}.setMaxSpeed({1});\nstepper_{0}.moveTo({2});\n","loop":"stepper_{0}.run();"}],
 		
-		["w", "set encoder motor%d.slot speed %d.encoderSpeed distance %n","run/encodermotor", "Slot1", 100, 1000,
+		["w", "set encoder motor%d.slot speed %d.encoderSpeed distance %n","runEncoderMotor", "Slot1", 100, 1000,
 		{"encode":"{d0}{s1}{s2}","setup":"encoder_{0}.begin();\nencoder_{0}.runSpeed(0);\n","inc":"#include \"MeEncoderMotor.h\"\n","def":"MeEncoderMotor encoder_{0}({0});\n","work":"encoder_{0}.move({2},{1});\n","loop":""}],
 		
-		["w", "set 7-segments display%d.normalPort number %n","run/sevseg", "Port3", 100,
+		["w", "set 7-segments display%d.normalPort number %n","runSevseg", "Port3", 100,
 		{"encode":"{d0}{f1}","setup":"","inc":"#include \"Me7SegmentDisplay.h\"\n","def":"Me7SegmentDisplay seg7_{0}({0});\n","work":"seg7_{0}.display({1});\n","loop":""}],
 		
-		["w", "set led %d.normalPort %d.index red%d.value green%d.value blue%d.value","run/led", "Port3","all",0,0,0,
+		["w", "set led %d.normalPort %d.index red%d.value green%d.value blue%d.value","runLed", "Port3","all",0,0,0,
 		{"encode":"{d0}{d1}{d2}{d3}{d4}","setup":"rgbled_{0}.setNumber(32);\n","inc":"#include \"MeRGBLed.h\"\n","def":"MeRGBLed rgbled_{0}({0});\n","work":"rgbled_{0}.setColor({1},{2},{3},{4});\nrgbled_{0}.show();\n","loop":""}],
 		
-		["w", "set light sensor %d.normalPort led as %d.switch","run/lightsensor", "Port3", "On",
+		["w", "set light sensor %d.normalPort led as %d.switch","runLightsensor", "Port3", "On",
 		{"encode":"{d0}{d1}","setup":"","inc":"#include \"MePort.h\"\n","def":"MePort lightsensor_{0}({0});\n","work":"lightsensor_{0}.dWrite1({1});\n","loop":""}],
 		
-		["w", "set camera shutter %d.normalPort as %d.shutter","run/shutter","Port6", "Press",
+		["w", "set camera shutter %d.normalPort as %d.shutter","runShutter","Port6", "Press",
 		{"encode":"{d0}{d1}","setup":"","inc":"#include \"MePort.h\"\n","def":"MePort shutter_{0}({0});\n","work":"shutter_{0}.dWrite1({1});\n","loop":""}],
 		
 		["-"],
 		["-"],
-		["R", "ultrasonic sensor %d.normalPort distance","get/ultrasonic","Port3",
+		["R", "ultrasonic sensor %d.normalPort distance","getUltrasonic","Port3",
 		{"encode":"{d0}","setup":"","inc":"#include \"MeUltrasonic.h\"\n","def":"MeUltrasonic ultrasonic_{0}({0});\n","work":"ultrasonic_{0}.distanceCm()","loop":""}],
 		
-		["R", "line follower %d.normalPort","get/linefollower","Port3",
+		["R", "line follower %d.normalPort","getLinefollower","Port3",
 		{"encode":"{d0}","setup":"","inc":"#include \"MePort.h\"\n","def":"MePort linefollower_{0}({0});\n","work":"linefollower_{0}.dRead1()*2+linefollower_{0}.dRead2()","loop":""}],
 		
-		["R", "light sensor %d.normalPort","get/lightsensor","Port6",
+		["R", "light sensor %d.normalPort","getLightsensor","Port6",
 		{"encode":"{d0}","setup":"","inc":"#include \"MePort.h\"\n","def":"MePort lightsensor_{0}({0});\n","work":"lightsensor_{0}.aRead2()","loop":""}],
 		
-		["R", "joystick %d.normalPort %d.Axis","get/joystick","Port6","X-Axis",
+		["R", "joystick %d.normalPort %d.Axis","getJoystick","Port6","X-Axis",
 		{"encode":"{d0}{d1}","setup":"","inc":"#include \"MePort.h\"\n","def":"MePort joystick_{0}({0});\n","work":"joystick_{0}.aRead{1}()","loop":""}],
 		
-		["R", "potentiometer %d.normalPort","get/potentiometer","Port7",
+		["R", "potentiometer %d.normalPort","getPotentiometer","Port7",
 		{"encode":"{d0}","setup":"","inc":"#include \"MePort.h\"\n","def":"MePort potentiometer_{0}({0});\n","work":"potentiometer_{0}.aRead2()","loop":""}],
 		
-		["R", "sound sensor %d.normalPort","get/soundsensor","Port6",
+		["R", "sound sensor %d.normalPort","getSoundsensor","Port6",
 		{"encode":"{d0}","setup":"","inc":"#include \"MePort.h\"\n","def":"MePort soundsensor_{0}({0});\n","work":"soundsensor_{0}.aRead2()","loop":""}],
 		
-		["R", "infrared receiver %d.normalPort","get/infrared","Port6",
+		["R", "infrared receiver %d.normalPort","getInfrared","Port6",
 		{"encode":"{d0}","setup":"","inc":"#include \"MeInfraredReceiver.h\"\n","def":"MeInfraredReceiver ir_{0}({0});\n","work":"ir_{0}.getCode()","loop":"ir_{0}.loop();\n"}],
 		
-		["B", "limit switch %d.normalPort %d.slot","get/limitswitch","Port6","Slot1",
+		["B", "limit switch %d.normalPort %d.slot","getLimitswitch","Port6","Slot1",
 		{"encode":"{d0}{d1}","setup":"","inc":"#include \"MePort.h\"\n","def":"MePort sw_{0}_{1}({0});\n","work":"sw_{0}_{1}.dRead{1}()","loop":""}],
 		
-		["R", "pir motion sensor %d.normalPort","get/pirmotion","Port6",
+		["R", "pir motion sensor %d.normalPort","getPirmotion","Port6",
 		{"encode":"{d0}","setup":"","inc":"#include \"MePort.h\"\n","def":"MePort pir_{0}({0});\n","work":"pir_{0}.dRead2()","loop":""}],
 		
-		["R", "temperature %d.normalPort%d.slot °C","get/temperature","Port3","Slot1",
+		["R", "temperature %d.normalPort%d.slot °C","getTemperature","Port3","Slot1",
 		{"encode":"{d0}{d1}","setup":"","inc":"#include \"MeTemperature.h\"\n","def":"MeTemperature temperature_{0}_{1}({0},{1});\n","work":"temperature_{0}_{1}.temperature()","loop":""}],
 		
-		["R", "3-axis gyro %d.GyroAxis angle","get/gyro","X-Axis",
+		["R", "3-axis gyro %d.GyroAxis angle","getGyro","X-Axis",
 		{"encode":"{d0}","setup":"gyro.begin();\n","inc":"#include \"MeGyro.h\"\n","def":"MeGyro gyro;\n","work":"gyro.getAngle({0})","loop":"gyro.update();\n"}]
-	],
-	"menus": {
+		
+        ],
+    "menus": {
 		"normalPort":["Port3","Port4","Port5","Port6","Port7","Port8"],
 		"motorPort":["M1","M2","Port1","Port2"],
 		"exMotorPort":["Port1","Port2"],
@@ -88,8 +90,8 @@
 		"stepType":["time","steps"],
 		"stepperSpeed":[100,500,1000,1500,3000],
 		"encoderSpeed":[0,50,100,150,300]
-	},
-	"values":{
+        },
+		"values":{
 		"all":0,
 		"On":1,
 		"Off":0,
@@ -186,4 +188,4 @@
 			"limit switch %d.normalPort %d.slot":"Endschalter%d.normalPort%d.slot"
 		}
 	}
-}
+ }

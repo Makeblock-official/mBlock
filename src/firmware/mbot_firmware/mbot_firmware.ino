@@ -342,6 +342,15 @@ void runModule(int device){
      dc.run(speed);
    } 
     break;
+    case JOYSTICK:{
+     int leftSpeed = readShort(6);
+     dc.reset(M1);
+     dc.run(leftSpeed);
+     int rightSpeed = readShort(8);
+     dc.reset(M2);
+     dc.run(rightSpeed);
+    }
+    break;
    case RGBLED:{
      int idx = readBuffer(7);
      int r = readBuffer(8);

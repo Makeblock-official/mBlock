@@ -36,7 +36,7 @@ package extensions
 		private var _isInitUpgrade:Boolean = false;
 		private var _dialog:DialogBox = new DialogBox();
 		private var _hexToDownload:String = ""
-		private var _bluetooth:BluetoothExt;
+			
 		private var _isMacOs:Boolean = ApplicationManager.sharedManager().system==ApplicationManager.MAC_OS;
 		private var _avrdude:String = "";
 		private var _avrdudeConfig:String = "";
@@ -53,29 +53,7 @@ package extensions
 			_serial = new AIRSerial();
 			_avrdude = _isMacOs?"avrdude":"avrdude.exe";
 			_avrdudeConfig = _isMacOs?"avrdude_mac.conf":"avrdude.conf";
-			if(ApplicationManager.sharedManager().system==ApplicationManager.WINDOWS){
-				for each(var fs:File in File.getRootDirectories()){
-					var file:File =  new File(fs.url+"Windows/Microsoft.NET/Framework");
-					if(file.exists){
-						for each(var f:File in file.getDirectoryListing()){
-							if(f.name.substr(0,1)=="v"){
-								if(Number(f.name.substr(1,3))>=4.0){
-//									_bluetooth = new BluetoothExtEmpty();
-									_bluetooth = new BluetoothExt();
-									break;
-								}
-							}
-						}
-					}
-					if(_bluetooth!=null){
-						break;
-					}
-				}
-			}
-			if(_bluetooth!=null){
-				_bluetooth.addEventListener(Event.CHANGE,onDiscoverChanged);
-				_bluetooth.addEventListener("RECEIVED_DATA",onDataReceived);
-			}
+			
 			_board = SharedObjectManager.sharedManager().getObject("board","uno");
 			_device = SharedObjectManager.sharedManager().getObject("device","uno");
 		}
@@ -85,6 +63,10 @@ package extensions
 		public var asciiString:String = "";
 		private function onChanged(evt:Event):void{
 			var len:uint = _serial.getAvailable();
+			if(len>0){
+				ConnectionManager.sharedManager().onReceived(_serial.readBytes());
+			}
+			return;
 			if(len>0){
 				var bytes:ByteArray = _serial.readBytes();
 				bytes.position = 0;
@@ -104,18 +86,7 @@ package extensions
 			}
 		}
 		public function get isConnected():Boolean{
-			if(_bluetooth==null){
-				return _serial.isConnected;
-			}
-			return _serial.isConnected||_bluetooth.connected;
-		}
-		public function get isSerialConnected():Boolean{
 			return _serial.isConnected;
-		}
-		public function get isBluetoothSupported():Boolean{
-			if(_bluetooth!=null)
-			return _bluetooth.supported;
-			return false;
 		}
 		public function get list():Array{
 			try{
@@ -136,54 +107,28 @@ package extensions
 			});
 		}
 		public function update():void{
-			if(_bluetooth!=null){
-				if(_bluetooth.connected){
-					MBlock.app.topBarPart.setBluetoothTitle(true);
-					MBlock.app.topBarPart.setConnectedTitle(_bluetooth.connectName+" "+Translator.map("Connected"));
-				}else{
-					MBlock.app.topBarPart.setBluetoothTitle(false);
-					if(!_serial.isConnected){
-						MBlock.app.topBarPart.setDisconnectedTitle();
-						return;
-					}else{
-						MBlock.app.topBarPart.setConnectedTitle(this.currentPort+" "+Translator.map("Connected"));
-					}
-				}
+			if(!_serial.isConnected){
+				MBlock.app.topBarPart.setDisconnectedTitle();
+				return;
 			}else{
-				if(!_serial.isConnected){
-					MBlock.app.topBarPart.setDisconnectedTitle();
-					return;
-				}else{
-					MBlock.app.topBarPart.setConnectedTitle(this.currentPort+" "+Translator.map("Connected"));
-				}
+				MBlock.app.topBarPart.setConnectedTitle(this.currentPort+" "+Translator.map("Connected"));
 			}
 		}
 		public function sendBytes(bytes:ByteArray):int{
-			if(_bluetooth!=null){
-				if(_bluetooth.connected){
-					return _bluetooth.writeBuffer(bytes);
-				}else{
-					if(_serial.isConnected){
-						return _serial.writeBytes(bytes);
-					}
-				}
-			}else{
-				if(_serial.isConnected){
-					return _serial.writeBytes(bytes);
-				}
+			if(_serial.isConnected){
+				return _serial.writeBytes(bytes);
 			}
 			return 0;
 		}
 		public function sendString(msg:String):int{
-			if(_bluetooth!=null){
-				if(_bluetooth.connected){
-					return _bluetooth.writeString(msg);
-				}else{
-					return _serial.writeString(msg);
-				}
-			}else{
-				return _serial.writeString(msg);
+			return _serial.writeString(msg);
+		}
+		public function readBytes():ByteArray{
+			var len:uint = _serial.getAvailable();
+			if(len>0){
+				return _serial.readBytes();
 			}
+			return new ByteArray;
 		}
 		public function get board():String{
 			return _board;
@@ -197,7 +142,34 @@ package extensions
 		public function get device():String{
 			return _device;
 		}
-		public function connect(port:String,baudrate:uint=115200,hexFile:String=""):int{
+		public function open(port:String,baud:uint=115200):Boolean{
+			if(_serial.isConnected){
+				_serial.close();
+			}
+			_serial.removeEventListener(Event.CHANGE,onChanged);
+			_serial.addEventListener(Event.CHANGE,onChanged);
+			var r:uint = _serial.open(port,baud);
+			_selectPort = port;
+			if(r==0){
+				MBlock.app.topBarPart.setConnectedTitle(port+" "+Translator.map("Connected"));
+			}
+			return r == 0;
+		}
+		public function close():void{
+			if(_serial.isConnected){
+				_serial.removeEventListener(Event.CHANGE,onChanged);
+				ConnectionManager.sharedManager().onClose();
+				_serial.close();
+			}
+		}
+		public function connect(port:String):int{
+			if(SerialDevice.sharedDevice().port==port&&_serial.isConnected){
+				SerialDevice.sharedDevice().port = "";
+				close();
+			}else{
+				ConnectionManager.sharedManager().onOpen(port);
+			}
+			return 0;
 			var tempPort:String = port;
 			if(port=="orion"||port=="mbot"){
 				if(port=="orion"){
@@ -227,75 +199,19 @@ package extensions
 			}
 			if(port.indexOf("source")>-1){
 				
-				MBlock.app.track("/OpenSerial/ViewSource");
-				var file:File = new File(File.documentsDirectory.nativePath+"/mBlock/firmware/"+(_device=="mbot"?"mbot_firmware":"mblock_firmware"));
-				file.openWithDefaultApplication();
 				return 0;
 			}
 			var result:int;
 			
 			if(_serial.isConnected){
-				if(port.indexOf("upgrade")>-1){
-					MBlock.app.track("/OpenSerial/Upgrade");
-					executeUpgrade();
-					_hexToDownload = hexFile;
-					MBlock.app.topBarPart.setDisconnectedTitle();
-					ArduinoManager.sharedManager().isUploading = false;
-					if(_device=="leonardo"||_device=="baseboard"){
-						_serial.close();
-						setTimeout(function():void{
-							_serial.open(currentPort,1200);
-							setTimeout(function():void{
-								_serial.close();	
-								if(ApplicationManager.sharedManager().system==ApplicationManager.WINDOWS){
-									var timer:Timer = new Timer(500,20);
-									timer.addEventListener(TimerEvent.TIMER,checkAvailablePort);
-									function onCLoseDialog(e:TimerEvent):void{
-										_dialog.cancel();
-									}
-									timer.addEventListener(TimerEvent.TIMER_COMPLETE,onCLoseDialog);
-									timer.start();
-								}
-							},100);
-						},100);
-						if(ApplicationManager.sharedManager().system==ApplicationManager.MAC_OS){
-							setTimeout(upgradeFirmware,2000);
-						}
-						
-					}else{
-						_serial.close();
-						upgradeFirmware();
-						currentPort = "";
-					}
-				}else{
-					if(port==currentPort){
-						disconnect();
-					}else{
-						if(port.indexOf("COM")>-1|| port.indexOf("/dev/tty.")>-1){
-							_serial.close();
-							closeBluetooth();
-							MBlock.app.track("/OpenSerial/OpenConnect");
-							_selectPort = port;
-							result = _serial.open(port,baudrate,true);
-							if(result==0){
-								currentPort = port;
-								_serial.addEventListener(Event.CHANGE,onChanged);
-								MBlock.app.topBarPart.setConnectedTitle(port+" "+Translator.map("Connected"));
-								ParseManager.sharedManager().queryVersion();
-							}else{
-								currentPort = "";
-							}
-							return result;
-						}
-					}
-				}
+				
 			}else{
 				if(port.indexOf("COM")>-1 || port.indexOf("/dev/tty.")>-1){
 					_serial.close();
 					
-					closeBluetooth();
+					BluetoothManager.sharedManager().close();
 					MBlock.app.track("/OpenSerial/OpenConnect");
-					result = _serial.open(port,baudrate,true);
+					result = _serial.open(port,115200,true);
 					_selectPort = port;
 					if(result==0){
 						currentPort = port;
@@ -311,141 +227,62 @@ package extensions
 			
 			return 0;
 		}
+		public function upgrade(hexFile:String=""):void{
+			if(!isConnected){
+				return;
+			}
+			MBlock.app.track("/OpenSerial/Upgrade");
+			executeUpgrade();
+			_hexToDownload = hexFile;
+			MBlock.app.topBarPart.setDisconnectedTitle();
+			ArduinoManager.sharedManager().isUploading = false;
+			if(DeviceManager.sharedManager().currentDevice.indexOf("leonardo")>-1){
+				_serial.close();
+				setTimeout(function():void{
+					_serial.open(currentPort,1200);
+					setTimeout(function():void{
+						_serial.close();
+						if(ApplicationManager.sharedManager().system==ApplicationManager.WINDOWS){
+							var timer:Timer = new Timer(500,20);
+							timer.addEventListener(TimerEvent.TIMER,checkAvailablePort);
+							function onCLoseDialog(e:TimerEvent):void{
+								_dialog.cancel();
+							}
+							timer.addEventListener(TimerEvent.TIMER_COMPLETE,onCLoseDialog);
+							timer.start();
+						}
+					},100);
+				},100);
+				if(ApplicationManager.sharedManager().system==ApplicationManager.MAC_OS){
+					setTimeout(upgradeFirmware,2000);
+				}
+			}else{
+				_serial.close();
+				upgradeFirmware();
+				currentPort = "";
+			}
+		}
+		public function openSource():void{
+			MBlock.app.track("/OpenSerial/ViewSource");
+			var file:File = new File(File.documentsDirectory.nativePath+"/mBlock/firmware/"+(DeviceManager.sharedManager().currentBoard.indexOf("mbot")>-1?"mbot_firmware":"mblock_firmware"));
+			file.openWithDefaultApplication();
+		}
 		public function disconnect():void{
 			currentPort = "";
 			MBlock.app.topBarPart.setDisconnectedTitle();
-			MBlock.app.topBarPart.setBluetoothTitle(false);
+//			MBlock.app.topBarPart.setBluetoothTitle(false);
 			ArduinoManager.sharedManager().isUploading = false;
 			_serial.close();
 			_serial.removeEventListener(Event.CHANGE,onChanged);
-			if(_bluetooth!=null){
-				if(_bluetooth.connected){
-					_bluetooth.disconnect();
-				}
-			}
 		}
 		public function reconnectSerial():void{
 			if(_serial.isConnected){
 				_serial.close();
-				setTimeout(function():void{connect(currentPort,115200);},50);
+				setTimeout(function():void{connect(currentPort);},50);
 				//setTimeout(function():void{_serial.close();},1000);
 			}
 		}
-		public function beginDiscover():void{
-			if(!SerialManager.sharedManager().isBluetoothSupported){
-				return;
-			}
-			if(_bluetooth.connected){
-				closeBluetooth();
-			}else{
-				if(!_bluetooth.isDiscovering){
-					
-					MBlock.app.track("/OpenBluetooth");
-					function cancel():void{
-						SerialManager.sharedManager().removeDiscoverDialogbox(d);
-						d.cancel();
-					}
-					var d:DialogBox = new DialogBox();
-					d.addTitle(Translator.map('Discovering Bluetooth') + '...');
-					d.addButton('Cancel', cancel);
-					d.showOnStage(MBlock.app.stage);
-					SerialManager.sharedManager().addDiscoverDialogbox(d);
-					_bluetooth.beginDiscover();
-				}
-			}
-		}
-		private var _dialogboxDiscover:Array = [];
-		public function addDiscoverDialogbox(d:DialogBox):void{
-			_dialogboxDiscover.push(d);
-		}
-		public function removeDiscoverDialogbox(d:DialogBox):void{
-			for(var i:* in _dialogboxDiscover){
-				if(d==_dialogboxDiscover[i]){
-					delete _dialogboxDiscover[i];
-				}
-			}
-		}
-		public function openConnect(index:uint):void{
-			_bluetooth.connect(index);
-			var i:uint = 0;
-			function checkName():void{
-				if(_bluetooth.connected){
-					currentPort = _bluetooth.connectName;
-					MBlock.app.topBarPart.setBluetoothTitle(true);
-					MBlock.app.topBarPart.setConnectedTitle(_bluetooth.connectName+" "+Translator.map("Connected"));
-				}else{
-					if(i<10){
-						setTimeout(checkName,500);
-					}
-					i++;
-				}
-			}
-			setTimeout(checkName,1000);
-		}
-		public function get isBluetoothConnected():Boolean{
-			if(_bluetooth!=null){
-				return _bluetooth.connected;
-			}
-			return false;
-		}
-		public function closeBluetooth():void{
-			if(_bluetooth!=null){
-				if(_bluetooth.connected){
-					MBlock.app.topBarPart.setBluetoothTitle(false);
-					MBlock.app.topBarPart.setDisconnectedTitle();
-					_bluetooth.disconnect();
-				}
-			}
-		}
-		private function onDiscoverChanged(evt:Event):void{
-			
-			var str:String = _bluetooth.discoverResult();
-			if(str.length<3){
-				return;
-			}
-			var list:Array = str.split(",");
-			trace("device list:",list);
-			for(var i:uint=0;i<list.length;i++){
-				for(var j:* in _dialogboxDiscover){
-					var d:DialogBox = _dialogboxDiscover[j];
-					
-					if(i==0){
-						d.clearButtons();
-					}
-					d.addButtonExt(list[i],""+i,onClickConnect);
-					if(i==list.length-1){
-						function onClose():void{
-							d.cancel();
-						}
-						d.addButton("Cancel",onClose);
-						d.fixLayout();
-					}
-				}
-			}
-			
-			function onClickConnect(data:String):void{
-				openConnect(Number(data));
-				d.cancel();
-			}
-			
-			if(list.length>0){
-				if(d!=null)
-				d.setTitle(Translator.map("Click The Device From List To Connect"));
-			}else{
-				if(d!=null)
-				d.setTitle(Translator.map("Device Not Found"));
-			}
-			_dialogboxDiscover = [];
-		}
-		private function onDataReceived(evt:Event):void{
-			var bytes:ByteArray = _bluetooth.receivedBuffer();
-			if(bytes.length>0){
-//				trace("data length:",bytes.length);
-				ParseManager.sharedManager().parseBuffer(bytes);
-			}else{
-				trace("no data");
-			}
-		}
+		
 		private var process:NativeProcess;
 		private function checkAvailablePort(evt:TimerEvent):void{
 			
@@ -471,8 +308,14 @@ package extensions
 			var path:File = file.resolvePath("tools");
 			var filePath:String = path.nativePath;//.split("\\").join("/")+"/";
 			file = path.resolvePath(_avrdude);//外部程序名
-			trace("avrdude:",file.nativePath,filePath+"/"+_avrdudeConfig,"\n");
+			if(!file.exists){
+				trace("upgrade fail!");
+				return;
+			}
 			var tf:File;
+			var currentDevice:String = DeviceManager.sharedManager().currentDevice;
+			currentPort = SerialDevice.sharedDevice().port;
+			trace("avrdude:",file.nativePath,currentDevice,currentPort,"\n");
 			if(NativeProcess.isSupported) {
 				var nativeProcessStartupInfo:NativeProcessStartupInfo =new NativeProcessStartupInfo();
 				nativeProcessStartupInfo.executable = file;
@@ -483,7 +326,7 @@ package extensions
 				v.push("-v");
 				v.push("-v");
 				v.push("-v");
-				if(_device=="leonardo"||_device=="baseboard"){
+				if(currentDevice=="leonardo"){
 					v.push("-patmega32u4");
 					v.push("-cavr109");
 					v.push("-P"+currentPort);
@@ -498,7 +341,7 @@ package extensions
 						tf = new File(_hexToDownload);
 						v.push("flash:w:"+_hexToDownload+":i");
 					}
-				}else{
+				}else if(currentDevice=="uno"){
 					v.push("-patmega328p");
 					v.push("-carduino"); 
 					v.push("-P"+currentPort);
@@ -507,7 +350,7 @@ package extensions
 					v.push("-V");
 					v.push("-U");
 					if(_hexToDownload.length==0){
-						if(_device=="mbot"){
+						if(DeviceManager.sharedManager().currentBoard.indexOf("mbot")>-1){
 							var hexFile_mbot:String = (File.documentsDirectory.nativePath+"/mBlock/tools/hex/mbot.hex");//.split("\\").join("/");
 							v.push("flash:w:"+hexFile_mbot+":i");
 							tf = new File(hexFile_mbot);
@@ -519,6 +362,66 @@ package extensions
 					}else{
 						v.push("flash:w:"+_hexToDownload+":i");
 						tf = new File(_hexToDownload);
+					}
+				}else if(currentDevice=="mega1280"){
+					v.push("-patmega1280");
+					v.push("-cwiring");
+					v.push("-P"+currentPort);
+					v.push("-b57600");
+					v.push("-D");
+					v.push("-U");
+					if(_hexToDownload.length==0){
+						var hexFile_mega1280:String = (File.documentsDirectory.nativePath+"/mBlock/tools/hex/mega1280.hex");//.split("\\").join("/");
+						tf = new File(hexFile_mega1280);
+						v.push("flash:w:"+hexFile_mega1280+":i");
+					}else{
+						tf = new File(_hexToDownload);
+						v.push("flash:w:"+_hexToDownload+":i");
+					}
+				}else if(currentDevice=="mega2560"){
+					v.push("-patmega2560");
+					v.push("-cwiring");
+					v.push("-P"+currentPort);
+					v.push("-b115200");
+					v.push("-D");
+					v.push("-U");
+					if(_hexToDownload.length==0){
+						var hexFile_mega2560:String = (File.documentsDirectory.nativePath+"/mBlock/tools/hex/mega2560.hex");//.split("\\").join("/");
+						tf = new File(hexFile_mega2560);
+						v.push("flash:w:"+hexFile_mega2560+":i");
+					}else{
+						tf = new File(_hexToDownload);
+						v.push("flash:w:"+_hexToDownload+":i");
+					}
+				}else if(currentDevice=="nano328"){
+					v.push("-patmega328p");
+					v.push("-carduino");
+					v.push("-P"+currentPort);
+					v.push("-b57600");
+					v.push("-D");
+					v.push("-U");
+					if(_hexToDownload.length==0){
+						var hexFile_nano328:String = (File.documentsDirectory.nativePath+"/mBlock/tools/hex/nano328.hex");//.split("\\").join("/");
+						tf = new File(hexFile_nano328);
+						v.push("flash:w:"+hexFile_nano328+":i");
+					}else{
+						tf = new File(_hexToDownload);
+						v.push("flash:w:"+_hexToDownload+":i");
+					}
+				}else if(currentDevice=="nano168"){
+					v.push("-patmega168");
+					v.push("-carduino");
+					v.push("-P"+currentPort);
+					v.push("-b19200");
+					v.push("-D");
+					v.push("-U");
+					if(_hexToDownload.length==0){
+						var hexFile_nano168:String = (File.documentsDirectory.nativePath+"/mBlock/tools/hex/nano168.hex");//.split("\\").join("/");
+						tf = new File(hexFile_nano168);
+						v.push("flash:w:"+hexFile_nano168+":i");
+					}else{
+						tf = new File(_hexToDownload);
+						v.push("flash:w:"+_hexToDownload+":i");
 					}
 				}
 				if(tf!=null){
@@ -550,7 +453,7 @@ package extensions
 		public function onErrorData(event:ProgressEvent):void
 		{
 			var msg:String = process.standardError.readUTFBytes(process.standardError.bytesAvailable);
-			var arr:Array = msg.split(_board=="leonardo"?"Send: B [42] . [00] . [":"Send: d [64] . [00] . [");
+			var arr:Array = msg.split(DeviceManager.sharedManager().currentDevice.indexOf("leonardo")>-1?"Send: B [42] . [00] . [":(DeviceManager.sharedManager().currentDevice.indexOf("nano")>-1?"Send: t [74] . [00] . [":"Send: d [64] . [00] . ["));
 			if(msg.indexOf("writing flash (")>0){
 				_upgradeBytesTotal = Math.max(3000,Number(msg.split("writing flash (")[1].split(" bytes)")[0]));
 				
@@ -573,7 +476,7 @@ package extensions
 			ArduinoManager.sharedManager().isUploading = false;
 			LogManager.sharedManager().log("Process exited with "+event.exitCode);
 			_dialog.setText(Translator.map('Upload Finish')+" ... "+100+"%");
-			setTimeout(connect,2000,_selectPort);
+			setTimeout(open,2000,_selectPort);
 			//setTimeout(_dialog.cancel,2000);
 		}
 		

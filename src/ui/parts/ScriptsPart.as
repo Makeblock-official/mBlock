@@ -189,7 +189,7 @@ public class ScriptsPart extends UIPart {
 		return arduinoFrame.visible;
 	}
 	private function onCompileArduino(evt:MouseEvent):void{
-		if(SerialManager.sharedManager().isConnected&&!SerialManager.sharedManager().isBluetoothConnected){
+		if(SerialManager.sharedManager().isConnected){
 			if(ArduinoManager.sharedManager().isUploading==false){
 				messageTextPane.clear();
 				if(showArduinoCode()){

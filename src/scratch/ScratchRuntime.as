@@ -43,7 +43,9 @@ package scratch {
 	import blocks.Block;
 	import blocks.BlockArg;
 	
+	import extensions.ConnectionManager;
 	import extensions.ParseManager;
+	import extensions.ScratchExtension;
 	import extensions.SerialManager;
 	
 	import interpreter.Interpreter;
@@ -329,13 +331,13 @@ package scratch {
 						(('loudness' == sensorName) && (soundLevel() > threshold)) ||
 						(('timer' == sensorName) && (timer() > threshold)) ||
 						(('video motion' == sensorName) && (VideoMotionPrims.readMotionSensor('motion', target) > threshold)));
-			} else if ('whenSensorConnected' == hat.op) {
-				triggerCondition = getBooleanSensor(interp.arg(hat, 0));
-			} else if('Communication.serial/received' == hat.op){
-				triggerCondition = getBooleanSerialReceived();
+//			} else if ('whenSensorConnected' == hat.op) {
+//				triggerCondition = getBooleanSensor(interp.arg(hat, 0));
+//			} else if('Communication.serial/received' == hat.op){
+//				triggerCondition = getBooleanSerialReceived();
 			}else if('whenIReceive' == hat.op){
 				triggerCondition = getBooleanBroadcastReceived(""+(hat.args[0] as BlockArg).argValue);
-			} else if (app.jsEnabled) {
+			} else if (true) {
 				var dotIndex:int = hat.op.indexOf('.');
 				if (dotIndex > -1) {
 					var extName:String = hat.op.substr(0, dotIndex);
@@ -343,10 +345,11 @@ package scratch {
 						var op:String = hat.op.substr(dotIndex+1);
 						var args:Array = hat.args;
 						var finalArgs:Array = new Array(args.length);
-						for (var i:uint=0; i<args.length; ++i)
+						for (var i:uint=0; i<args.length; ++i){
 							finalArgs[i] = interp.arg(hat, i);
-	
-						if (ExternalInterface.call('ScratchExtensions.getReporter', extName, op, finalArgs)) {
+						}
+						var ext:ScratchExtension = app.extensionManager.extensionByName(extName);
+						if(ext.js.getValue(op,finalArgs,ext)==true){
 							triggerCondition = true;
 						}
 					}
@@ -453,6 +456,7 @@ package scratch {
 			app.loadInProgress = true;
 			installProjectFromData(data);
 			app.setProjectName(fileName);
+			setTimeout(ConnectionManager.sharedManager().onReOpen,1000);
 		}
 	
 		public function installProjectFromData(data:ByteArray, saveForRevert:Boolean = true):void {
@@ -510,7 +514,7 @@ package scratch {
 				if (spr) spr.setDirection(spr.direction);
 			}
 	
-			app.extensionManager.clearImportedExtensions();
+			//app.extensionManager.clearImportedExtensions();
 			app.extensionManager.loadSavedExtensions(project.info.savedExtensions);
 			app.extensionManager.importExtension();
 			app.installStage(project);

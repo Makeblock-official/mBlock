@@ -4,29 +4,30 @@
 	"extensionType":"serial",
 	"sort":4,
 	"firmware":"1.1.102",
+	"javascriptURL":"js/serial.js",
 	"blockSpecs": [
-		["h", "when data received","serial/received",
+		["h", "when data received","whenReceived",
 		{"setup":"","inc":"","def":"","work":"","loop":""}],
 		
-		["b","data available?","serial/read/available",
+		["b","data available?","isAvailable",
 		{"setup":"Serial.begin(115200);\n","inc":"#include \"MeSerial.h\"\n","def":"MeSerial se;\n","work":"se.dataLineAvailable()","loop":""}],
 		
-		["b","%s is equal %s?","serial/read/equal","","",
+		["b","%s is equal %s?","isEqual","","",
 		{"setup":"Serial.begin(115200);\n","inc":"#include \"MeSerial.h\"\n","def":"MeSerial se;\n","work":"se.equalString({0},{1})","loop":""}],
 		
-		["r","read line","serial/read/line",
+		["R","read line","readLine",
 		{"setup":"Serial.begin(115200);\n","inc":"#include \"MeSerial.h\"\n","def":"MeSerial se;\n","work":"se.readDataLine()","loop":""}],
 		
-		["w", "write line %s","serial/write/line", "hello",
+		["w", "write line %s","writeLine", "hello",
 		{"setup":"Serial.begin(115200);\n","inc":"#include \"MeSerial.h\"\n","def":"MeSerial se;\n","work":"Serial.println({0});\n","loop":""}],
 		
-		["w", "send command %s = %s","serial/write/command","var","value",
+		["w", "send command %s = %s","writeCommand","var","value",
 		{"setup":"Serial.begin(115200);\n","inc":"#include \"MeSerial.h\"\n","def":"MeSerial se;\n","work":"Serial.print({0});Serial.print(\"=\");Serial.println({1});\n","loop":""}],
 		
-		["r", "read command %s","serial/read/command", "var",
+		["R", "read command %s","readCommand", "var",
 		{"setup":"Serial.begin(115200);\n","inc":"#include \"MeSerial.h\"\n","def":"MeSerial se;\n","work":"se.getValue({0})","loop":""}],
 		
-		["w", "clear buffer","serial/clear",
+		["w", "clear buffer","clearBuffer",
 		{"setup":"","inc":"","def":"","work":"","loop":""}]
 	],
 	"menus": {

@@ -58,7 +58,7 @@ package extensions
 		{
 			//get lan ip, and construct broadcast ip
 			var networkInfo:NetworkInfo = NetworkInfo.networkInfo;
-		
+			
 			var interfaces:Vector.<NetworkInterface> = networkInfo.findInterfaces();
 			var address:InterfaceAddress;
 			for each(var n:NetworkInterface in interfaces){
@@ -76,11 +76,11 @@ package extensions
 			datagramSocket.addEventListener( DatagramSocketDataEvent.DATA, dataReceived );
 			//Bind the socket to the local network interface and port 
 			try{
-				datagramSocket.bind();// _clientPort, localIP ); 
+				datagramSocket.bind(_clientPort); 
 				//Listen for incoming datagrams 
 				datagramSocket.receive();
 			}catch(e:*){
-				trace(e);
+				
 			}
 			
 			NativeApplication.nativeApplication.addEventListener(Event.EXITING,onExiting);
@@ -89,7 +89,7 @@ package extensions
 				_server.bind(_clientPort);
 				_server.listen();
 			}catch(e:*){
-				
+				trace(e);
 			}
 			_server.addEventListener(ServerSocketConnectEvent.CONNECT,onConnected);
 		}
@@ -113,7 +113,7 @@ package extensions
 					try{
 						datagramSocket.send(data, 0, 0, tempIp, _clientPort);//Send the message(it's IP) to all ip-adresses on the current network.
 					}catch(err:Error){
-						trace(err);
+						trace("probe:",err,tempIp,_clientPort);
 					}
 				}
 			}
@@ -126,11 +126,7 @@ package extensions
 					data.writeUTFBytes("mBlock");
 					//Send the datagram message
 					if(broadCastIp!=""){
-						try{
-							datagramSocket.send( data, 0, data.length, broadCastIp, _clientPort);
-						}catch(e:*){
-							trace(e,broadCastIp,_clientPort);
-						}
+						datagramSocket.send( data, 0, 0, broadCastIp, _clientPort);
 					}
 				}else{
 					broadcastIP("mBlock");
@@ -170,7 +166,7 @@ package extensions
 					configureListeners(socket);
 					socket.connect(temp[0], temp[1]);
 					_sockets.push(socket);
-//					trace("connecting:",host);
+					//					trace("connecting:",host);
 				}
 			}
 			return 0
@@ -178,7 +174,7 @@ package extensions
 		private function disconnect():void{
 			for each(var socket:Socket in _sockets){
 				if(socket.connected)
-				socket.close();
+					socket.close();
 			}
 			_sockets = [];
 			update();
@@ -196,16 +192,16 @@ package extensions
 			return false;
 		}
 		private function onConnected(evt:ServerSocketConnectEvent):void{
-//			 trace(evt);
-			 configureListeners(evt.socket);
-			 _sockets.push(evt.socket);
-			 update();
+			//			 trace(evt);
+			configureListeners(evt.socket);
+			_sockets.push(evt.socket);
+			update();
 		}
 		public function update():void{
 			if(connected()){
-				MBlock.app.topBarPart.setSocketConnectedTitle(Translator.map("Network")+" "+Translator.map("Connected"));
+				MBlock.app.topBarPart.setConnectedTitle(Translator.map("Network")+" "+Translator.map("Connected"));
 			}else{
-				MBlock.app.topBarPart.setSocketConnectedTitle("Network");
+				MBlock.app.topBarPart.setConnectedTitle("Network");
 			}
 		}
 		public function close():int{
@@ -268,7 +264,7 @@ package extensions
 			var socket:Socket = evt.target as Socket;
 			socket.readBytes(bytes);
 			ParseManager.sharedManager().parseBuffer(bytes);
-//			trace("socketDataHandler: " + evt);
+			//			trace("socketDataHandler: " + evt);
 		}
 		
 		private function dataReceived( evt:DatagramSocketDataEvent ):void 
@@ -276,15 +272,17 @@ package extensions
 			var srcName:String = evt.data.readUTFBytes( evt.data.bytesAvailable );
 			//Read the data from the datagram
 			if(evt.srcAddress!=_currentIp){
-//				trace("Received from " + evt.srcAddress + ":" + evt.srcPort + "> " + srcName );
+				//				trace("Received from " + evt.srcAddress + ":" + evt.srcPort + "> " + srcName );
 				var wifiModule:String = evt.srcAddress+":"+evt.srcPort+":"+srcName;
 				if(_list.toString().indexOf(evt.srcAddress)==-1)
 				{
-					_list.push(wifiModule);
-					var data:ByteArray = new ByteArray();
-					data.writeUTFBytes(MBlock.app.projectName());
-					//Send the datagram message
-					datagramSocket.send( data, 0, data.length, evt.srcAddress, evt.srcPort);
+					if(srcName.length>1){
+						_list.push(wifiModule);
+						var data:ByteArray = new ByteArray();
+						data.writeUTFBytes(MBlock.app.projectName());
+						//Send the datagram message
+						datagramSocket.send( data, 0, data.length, evt.srcAddress, evt.srcPort);
+					}
 				}
 			}
 		}

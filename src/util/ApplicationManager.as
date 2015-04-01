@@ -11,6 +11,7 @@ package util{
 		public var launchTime:uint = 0;
 		public var contractedOffsetX:int = -480;
 		public var contractedOffsetY:int = 0;
+		public var isCatVersion:Boolean = false;
 		public static function sharedManager():ApplicationManager{
 			if(_instance==null){
 				_instance = new ApplicationManager;

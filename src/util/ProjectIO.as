@@ -27,18 +27,29 @@
 // of separate elements.
 
 package util {
-import flash.display.*;
-import flash.events.*;
+import flash.display.BitmapData;
+import flash.display.Loader;
+import flash.events.Event;
 import flash.net.URLLoader;
 import flash.net.URLLoaderDataFormat;
 import flash.net.URLRequest;
-import flash.utils.*;
-import scratch.*;
+import flash.utils.ByteArray;
+import flash.utils.Dictionary;
+import flash.utils.setTimeout;
+
+import extensions.DeviceManager;
+
+import scratch.ScratchCostume;
+import scratch.ScratchObj;
+import scratch.ScratchSound;
+import scratch.ScratchSprite;
+import scratch.ScratchStage;
 
 import sound.WAVFile;
 import sound.mp3.MP3Loader;
 
-import svgutils.*;
+import svgutils.SVGElement;
+import svgutils.SVGImporter;
 
 import translation.Translator;
 
@@ -153,6 +164,14 @@ public class ProjectIO {
 			if (fName.slice(-5) == '.json') jsonData = contents.readUTFBytes(contents.length);
 		}
 		if (jsonData == null) return null;
+		jsonData = fixForNewExtension(jsonData);
+		if(jsonData.indexOf("PicoBoard")>-1){
+			DeviceManager.sharedManager().onSelectBoard("picoboard_unknown");
+		}else if(jsonData.indexOf("Makeblock")>-1){
+			DeviceManager.sharedManager().onSelectBoard("me/orion_uno");
+		}else if(jsonData.indexOf("Arduino")>-1){
+			DeviceManager.sharedManager().onSelectBoard("arduino_uno");
+		}
 		var jsonObj:Object = util.JSON.parse(jsonData);
 		if (jsonObj['children']) { // project JSON
 			var proj:ScratchStage = new ScratchStage();
@@ -171,7 +190,47 @@ public class ProjectIO {
 		}
 		return null;
 	}
-
+	private var fixList:Array = [
+		["arduino\\/main","runArduino"],
+		["get\\/timer","getTimer"],
+		["run\\/timer","resetTimer"],
+		["get\\/digital","getDigital"],
+		["get\\/analog","getAnalog"],
+		["run\\/servo_pin","runServo"],
+		["run\\/tone","runTone"],
+		["run\\/digital","runDigital"],
+		["run\\/pwm","runPwm"],
+		["run\\/motor","runMotor"],
+		["run\\/servo","runServo"],
+		["run\\/steppermotor","runStepperMotor"],
+		["run\\/encodermotor","runEncoderMotor"],
+		["run\\/sevseg","runSevseg"],
+		["run\\/led","runLed"],
+		["run\\/lightsensor","runLightsensor"],
+		["run\\/shutter","runShutter"],
+		["get\\/ultrasonic","getUltrasonic"],
+		["get\\/linefollower","getLinefollower"],
+		["get\\/lightsensor","getLightsensor"],
+		["get\\/joystick","getJoystick"],
+		["get\\/potentiometer","getPotentiometer"],
+		["get\\/soundsensor","getSoundsensor"],
+		["get\\/infrared","getInfrared"],
+		["get\\/limitswitch","getLimitswitch"],
+		["get\\/pirmotion","getPirmotion"],
+		["get\\/temperature","getTemperature"],
+		["get\\/gyro","getGyro"],
+		["run\\/buzzer","runBuzzer"],
+		["stop\\/buzzer","stopBuzzer"],
+		["get\\/irremote","getIrRemote"],
+		["run\\/ir","runIR"],
+		["get\\/ir","getIR"]
+	];
+	private function fixForNewExtension(json:String):String{
+		for(var i:uint=0;i<fixList.length;i++){
+			json = json.split(fixList[i][0]).join(fixList[i][1]);
+		}
+		return json.split("arduino\\/main").join("runArduino");
+	}
 	private function integerName(s:String):String {
 		// Return the substring of digits preceding the last '.' in the given string.
 		// For example integerName('123.jpg') -> '123'.
