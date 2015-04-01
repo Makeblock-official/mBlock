@@ -35,6 +35,8 @@ package extensions
 				openedHandle(this);
 				ConnectionManager.sharedManager().removeEventListener(Event.CHANGE,onReceived);
 				ConnectionManager.sharedManager().addEventListener(Event.CHANGE,onReceived);
+			}else{
+				ConnectionManager.sharedManager().onClose();
 			}
 		}
 		private var _receiveHandlers:Array=[];

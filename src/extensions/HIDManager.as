@@ -99,6 +99,7 @@ package extensions
 			}catch(err:*){
 				trace(err);
 			}
+			trace("hid fail")
 			return false;
 		}
 		public function onOpen():void{
