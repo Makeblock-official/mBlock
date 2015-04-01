@@ -308,10 +308,14 @@ package extensions
 			var path:File = file.resolvePath("tools");
 			var filePath:String = path.nativePath;//.split("\\").join("/")+"/";
 			file = path.resolvePath(_avrdude);//外部程序名
-			trace("avrdude:",file.nativePath,filePath+"/"+_avrdudeConfig,"\n");
+			if(!file.exists){
+				trace("upgrade fail!");
+				return;
+			}
 			var tf:File;
 			var currentDevice:String = DeviceManager.sharedManager().currentDevice;
 			currentPort = SerialDevice.sharedDevice().port;
+			trace("avrdude:",file.nativePath,currentDevice,currentPort,"\n");
 			if(NativeProcess.isSupported) {
 				var nativeProcessStartupInfo:NativeProcessStartupInfo =new NativeProcessStartupInfo();
 				nativeProcessStartupInfo.executable = file;

@@ -239,6 +239,6 @@
 	<extensions>
 	    <extensionID>cc.makeblock.AIRSerial</extensionID>
     	<extensionID>cc.makeblock.BluetoothExt</extensionID>
-    <extensionID>com.makeblock.AirHID</extensionID>
+	    <extensionID>cc.makeblock.AirHID</extensionID>
     </extensions>
 </application>

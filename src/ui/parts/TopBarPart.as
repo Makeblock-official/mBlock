@@ -229,7 +229,7 @@ package ui.parts {
 	//		addChild(examplesMenu = makeMenuButton('Examples', app.showExamplesMenu, false));
 			addChild(connectMenu = makeMenuButton('Connect',app.showConnectMenu,true));
 			if(SerialDevice.sharedDevice().port&&SerialDevice.sharedDevice().port!=""){
-				if(SerialDevice.sharedDevice().port.indexOf("COM")>-1){
+				if(SerialDevice.sharedDevice().port.indexOf("COM")>-1||SerialDevice.sharedDevice().port.indexOf("/dev/tty.")>-1){
 					setConnectedTitle(SerialDevice.sharedDevice().port+" "+Translator.map("Connected"));
 				}else if(SerialDevice.sharedDevice().port.indexOf("HID")>-1){
 					setConnectedTitle(Translator.map("2.4G Serial")+" "+Translator.map("Connected"));

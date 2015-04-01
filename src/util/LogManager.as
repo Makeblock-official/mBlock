@@ -21,7 +21,7 @@ package util
 			return _instance;
 		}
 		public function log(msg:String):void{
-			//trace(msg);
+			trace(msg);
 			//stream.writeUTFBytes(msg);
 		}
 		public function save():void{

@@ -21,7 +21,6 @@ package {
 	import flash.filesystem.File;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-	import flash.media.H264VideoStreamSettings;
 	import flash.net.FileReference;
 	import flash.net.LocalConnection;
 	import flash.net.URLRequest;
@@ -911,13 +910,15 @@ package {
 				m.addItem(arr[i], "serial_"+arr[i], true, arr[i]==SerialDevice.sharedDevice().port&&SerialManager.sharedManager().isConnected);
 			}
 			m.addLine();
-			m.addItem('Bluetooth', '', false, false);
-			arr = BluetoothManager.sharedManager().list;
-			for(i=0;i<arr.length;i++){
-				m.addItem(arr[i], "bt_"+arr[i], true, arr[i]==BluetoothManager.sharedManager().currentBluetooth&&BluetoothManager.sharedManager().isConnected);
+			if(ApplicationManager.sharedManager().system == ApplicationManager.WINDOWS){
+				m.addItem('Bluetooth', '', false, false);
+				arr = BluetoothManager.sharedManager().list;
+				for(i=0;i<arr.length;i++){
+					m.addItem(arr[i], "bt_"+arr[i], true, arr[i]==BluetoothManager.sharedManager().currentBluetooth&&BluetoothManager.sharedManager().isConnected);
+				}
+				m.addItem('Discover', 'discover_bt', true, false);
+				m.addLine();
 			}
-			m.addItem('Discover', 'discover_bt', true, false);
-			m.addLine();
 			m.addItem('2.4G Serial', '', false, false);
 			m.addItem('Connect', 'connect_hid', true, HIDManager.sharedManager().isConnected);
 			m.addLine();
@@ -971,9 +972,7 @@ package {
 			
 			var arr:Array = SerialManager.sharedManager().list;
 			for(var i:uint=0;i<arr.length;i++){
-				//if(arr[i].indexOf("COM")>-1){
 				m.addItem(arr[i], arr[i], true, arr[i]==SerialManager.sharedManager().currentPort&&SerialManager.sharedManager().isConnected);
-				//}
 			}
 			m.addLine();
 			var device:String = SharedObjectManager.sharedManager().getObject("device","uno");
