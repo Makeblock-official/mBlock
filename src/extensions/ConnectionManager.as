@@ -92,6 +92,11 @@ package extensions
 			SerialDevice.sharedDevice().port = port;
 			this.dispatchEvent(new Event(Event.CONNECT));
 		}
+		public function onReOpen():void{
+			if(SerialDevice.sharedDevice().port!=""){
+				this.dispatchEvent(new Event(Event.CONNECT));
+			}
+		}
 		private var _bytes:ByteArray;
 		public function onReceived(bytes:ByteArray):void{
 			_bytes = bytes;

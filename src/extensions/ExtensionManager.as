@@ -513,15 +513,10 @@ public class ExtensionManager {
 				if(b.requestState == 2) {
 					b.requestState = 0;
 					request(extName, primOrVarName, args, b);
-					var v:* = b.response;
-					trace("resp:",v);
-					return v;
+					return b.response;
 				}else{
 					request(extName, primOrVarName, args, b);
-					
-					var v:* = b.response;
-					trace(v);
-					return v;
+					return b.response;
 				}
 				// Returns null if we just made a request or we're still waiting
 				return b.response;//==null?0:b.response;
@@ -612,7 +607,6 @@ public class ExtensionManager {
 			}
 			b.nextID.push(ext.nextID);
 			MBlock.app.runtime.enterRequest();
-			trace("op name:",op,ext.nextID);
 			ext.js.requestValue(op,args,ext);
 			//'ScratchExtensions.getReporterAsync', ext.name, op, args, ext.nextID);
 		}

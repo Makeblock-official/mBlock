@@ -43,6 +43,7 @@ package scratch {
 	import blocks.Block;
 	import blocks.BlockArg;
 	
+	import extensions.ConnectionManager;
 	import extensions.ParseManager;
 	import extensions.ScratchExtension;
 	import extensions.SerialManager;
@@ -455,6 +456,7 @@ package scratch {
 			app.loadInProgress = true;
 			installProjectFromData(data);
 			app.setProjectName(fileName);
+			setTimeout(ConnectionManager.sharedManager().onReOpen,1000);
 		}
 	
 		public function installProjectFromData(data:ByteArray, saveForRevert:Boolean = true):void {

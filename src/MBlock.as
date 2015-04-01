@@ -218,7 +218,7 @@ package {
 				NativeApplication.nativeApplication.activeWindow.addEventListener(Event.CLOSING,onExiting);
 				SocketManager.sharedManager();
 			},100);
-			var ver:String = "04.01.001";
+			var ver:String = "04.01.002";
 			if(!SharedObjectManager.sharedManager().getObject(versionString+".0."+ver,false)){
 				SharedObjectManager.sharedManager().clear();
 				SharedObjectManager.sharedManager().setObject(versionString+".0."+ver,true);
@@ -228,7 +228,6 @@ package {
 			if(!SharedObjectManager.sharedManager().available("first-launch")){
 				SharedObjectManager.sharedManager().setObject("first-launch",true);
 			}
-			
 			if(SharedObjectManager.sharedManager().getObject("first-launch",false)==true){
 				SharedObjectManager.sharedManager().setObject("first-launch",false);
 				openWelcome();
