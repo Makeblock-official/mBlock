@@ -201,7 +201,7 @@ package extensions
 			if(connected()){
 				MBlock.app.topBarPart.setConnectedTitle(Translator.map("Network")+" "+Translator.map("Connected"));
 			}else{
-				MBlock.app.topBarPart.setConnectedTitle("Network");
+				MBlock.app.topBarPart.setDisconnectedTitle();
 			}
 		}
 		public function close():int{
