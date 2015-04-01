@@ -30,7 +30,7 @@ package util
 			return _instance;
 		}
 		public function checkForUpdate():void {  
-			_appUpdater.updateURL = "http://makeblock.vipsinaapp.com/scratch/update_myh.xml?temp="+new Date().time; 
+			_appUpdater.updateURL = "http://makeblock.vipsinaapp.com/scratch/update"+(ApplicationManager.sharedManager().isCatVersion?"_myh":"")+".xml?temp="+new Date().time; 
 			_appUpdater.addEventListener(DownloadErrorEvent.DOWNLOAD_ERROR, onError);
 			_appUpdater.addEventListener(ProgressEvent.PROGRESS,onProgress);
 			_appUpdater.addEventListener(UpdateEvent.DOWNLOAD_START, onDownloadStart);
