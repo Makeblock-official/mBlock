@@ -66,6 +66,7 @@ package interpreter {
 	import blocks.Block;
 	import blocks.BlockArg;
 	
+	import extensions.ConnectionManager;
 	import extensions.ParseManager;
 	import extensions.SerialManager;
 	
@@ -152,7 +153,7 @@ public class Interpreter {
 			clearWarpBlock();
 		} else {
 			if (b.op == 'whenGreenFlag') {
-				ParseManager.sharedManager().parse("start");
+				//
 			}
 			b.showRunFeedback();
 			threads.push(new Thread(b, targetObj, startupDelay));
