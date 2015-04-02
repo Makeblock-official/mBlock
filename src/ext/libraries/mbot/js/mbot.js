@@ -39,6 +39,26 @@
 			"C6":1047,"D6":1175,"E6":1319,"F6":1397,"G6":1568,"A6":1760,"B6":1976,
 			"C7":2093,"D7":2349,"E7":2637,"F7":2794,"G7":3136,"A7":3520,"B7":3951,
 	"C8":4186,"D8":4699};
+	var ircodes = {	"A":69,
+		"B":70,
+		"C":71,
+		"D":68,
+		"E":67,
+		"F":13,
+		"↑":64,
+		"↓":25,
+		"←":7,
+		"→":9,
+		"R0":22,
+		"R1":12,
+		"R2":24,
+		"R3":94,
+		"R4":8,
+		"R5":28,
+		"R6":90,
+		"R7":66,
+		"R8":82,
+		"R9":74};
 	var axis = {
 		'X-Axis':1,
 		'Y-Axis':2,
@@ -215,7 +235,7 @@
 		var deviceId = 14;
 		indexs[nextID] = "v_"+deviceId;
 		var v = values[indexs[nextID]];
-		getPackage(nextID,deviceId,ircodes[code]);
+		getPackage(nextID,deviceId,0,ircodes[code]);
         return v;
 	}
 	ext.getIR = function(){
@@ -264,32 +284,6 @@
 			nextID=0;
 		}
 	}
-    ext.whenSensorPass = function(which, sign, level) {
-        if (sign == '<') return getSensor(which) < level;
-        return getSensor(which) > level;
-    };
-
-    // Reporters
-    ext.sensorPressed = function(which) {
-        return getSensorPressed(which);
-    };
-
-    ext.sensor = function(which) { return getSensor(which); };
-
-    // Private logic
-    function getSensorPressed(which) {
-        if (device == null) return false;
-        if (which == 'button pressed' && getSensor('button') < 1) return true;
-        if (which == 'A connected' && getSensor('resistance-A') < 10) return true;
-        if (which == 'B connected' && getSensor('resistance-B') < 10) return true;
-        if (which == 'C connected' && getSensor('resistance-C') < 10) return true;
-        if (which == 'D connected' && getSensor('resistance-D') < 10) return true;
-        return false;
-    }
-
-    function getSensor(which) {
-        return inputs[which];
-    }
 
     var inputArray = [];
 	var _isParseStart = false;

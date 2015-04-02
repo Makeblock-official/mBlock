@@ -190,32 +190,7 @@
 			nextID=0;
 		}
 	}
-    ext.whenSensorPass = function(which, sign, level) {
-        if (sign == '<') return getSensor(which) < level;
-        return getSensor(which) > level;
-    };
-
-    // Reporters
-    ext.sensorPressed = function(which) {
-        return getSensorPressed(which);
-    };
-
-    ext.sensor = function(which) { return getSensor(which); };
-
-    // Private logic
-    function getSensorPressed(which) {
-        if (device == null) return false;
-        if (which == 'button pressed' && getSensor('button') < 1) return true;
-        if (which == 'A connected' && getSensor('resistance-A') < 10) return true;
-        if (which == 'B connected' && getSensor('resistance-B') < 10) return true;
-        if (which == 'C connected' && getSensor('resistance-C') < 10) return true;
-        if (which == 'D connected' && getSensor('resistance-D') < 10) return true;
-        return false;
-    }
-
-    function getSensor(which) {
-        return inputs[which];
-    }
+    
 
     var inputArray = [];
 	var _isParseStart = false;
