@@ -117,10 +117,17 @@
 		getPackage(nextID,deviceId,6);
         return v;
 	}
-	ext.getButtonOnBoard = function(){
-		var deviceId = 30;
-		indexs[nextID] = "v_"+deviceId+"_d7";
-		var v = values[indexs[nextID]];
+	ext.whenButtonPressed = function(status){
+		var deviceId = 31;
+		indexs[nextID] = "v_"+deviceId+"_a7";
+		var v = status=="pressed"?(values[indexs[nextID]]<500):(values[indexs[nextID]]>500);
+		getPackage(nextID,deviceId,7);
+        return v;
+	}
+	ext.getButtonOnBoard = function(status){
+		var deviceId = 31;
+		indexs[nextID] = "v_"+deviceId+"_a7";
+		var v = status=="pressed"?(values[indexs[nextID]]<500):(values[indexs[nextID]]>500);
 		getPackage(nextID,deviceId,7);
         return v;
 	}
@@ -128,6 +135,9 @@
 		var deviceId = 1;
 		indexs[nextID] = "v_"+deviceId+"_"+ports[port];
 		var v = values[indexs[nextID]];
+		if(v<1){
+			v = 0;
+		}
 		getPackage(nextID,deviceId,ports[port]);
         return v;
 	};
@@ -329,7 +339,7 @@
 						case 4:{
 							var l = _rxBuf[position];
 							position++;
-							value = readString(_rxBuf,posiont,l);
+							value = readString(_rxBuf,position,l);
 						}
 							break;
 						case 5:{

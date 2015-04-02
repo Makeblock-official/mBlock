@@ -203,7 +203,7 @@
 						case 4:{
 							var l = _rxBuf[position];
 							position++;
-							value = readString(_rxBuf,posiont,l);
+							value = readString(_rxBuf,position,l);
 						}
 							break;
 						case 5:{

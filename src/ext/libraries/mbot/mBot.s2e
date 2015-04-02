@@ -27,7 +27,7 @@
 		
 		["R", "light intensity","getLightOnBoard",
 		{"encode":"{n6}","setup":"pinMode(A6,INPUT);\n","inc":"","def":"","work":"analogRead(A6)","loop":""}],
-		
+		["h", "when button %m.button_state","whenButtonPressed","pressed"],
 		["B", "button %m.button_state","getButtonOnBoard","pressed",
 		{"encode":"{n7}{d0}","setup":"pinMode(A7,INPUT);\n","inc":"","def":"","work":"({0}^(analogRead(A7)>10?0:1))","loop":""}],
 		
@@ -182,6 +182,7 @@
 			"ir message received":"接收到的红外消息",
 			"ir remote %m.ircode pressed":"红外遥控器按下%m.ircode 键",
 			"button %m.button_state":"按钮%m.button_state",
+			"when button %m.button_state":"当按钮%m.button_state",
 			"pressed":"已按下",
 			"released":"已松开",
 			"Setting":"设置",
@@ -213,6 +214,7 @@
 			"ir message received":"接收到的紅外消息",
 			"ir remote %m.ircode pressed":"紅外遙控器按下%m.ircode 鍵",
 			"button %m.button_state":"按鈕%m.button_state",
+			"when button %m.button_state":"當按鈕%m.button_state",
 			"pressed":"已按下",
 			"released":"已松開",
 			"Setting":"設置",

@@ -81,6 +81,9 @@
 		var deviceId = 1;
 		indexs[nextID] = "v_"+deviceId+"_"+ports[port];
 		var v = values[indexs[nextID]];
+		if(v<1){
+			v = 0;
+		}
 		getPackage(nextID,deviceId,ports[port]);
         return v;
 	};
@@ -262,7 +265,7 @@
 						case 4:{
 							var l = _rxBuf[position];
 							position++;
-							value = readString(_rxBuf,posiont,l);
+							value = readString(_rxBuf,position,l);
 						}
 							break;
 						case 5:{
