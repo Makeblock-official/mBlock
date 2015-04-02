@@ -72,10 +72,11 @@ public class ScratchExtension {
 	public var busy:Array = [];
 	public var waiting:Dictionary = new Dictionary(true);
 	public var useSerial:Boolean = false;
-	private var _jsEngine:JavaScriptEngine = new JavaScriptEngine;
+	private var _jsEngine:JavaScriptEngine;
 	public function ScratchExtension(name:String, port:int) {
 		this.name = name;
 		this.port = port;
+		_jsEngine = new JavaScriptEngine(name);
 	}
 	
 	public function set showBlocks(v:Boolean):void{

@@ -1,5 +1,6 @@
 package {
 	import com.google.analytics.GATracker;
+	import com.google.analytics.debug.Background;
 	
 	import flash.desktop.NativeApplication;
 	import flash.display.DisplayObject;
@@ -82,6 +83,8 @@ package {
 	import uiwidgets.ScriptsPane;
 	
 	import util.ApplicationManager;
+	import util.Clicker;
+	import util.ClickerManager;
 	import util.GestureHandler;
 	import util.LogManager;
 	import util.ProjectIO;
@@ -217,7 +220,7 @@ package {
 				NativeApplication.nativeApplication.activeWindow.addEventListener(Event.CLOSING,onExiting);
 				SocketManager.sharedManager();
 			},100);
-			var ver:String = "04.01.002";
+			var ver:String = "04.02.001";
 			if(!SharedObjectManager.sharedManager().getObject(versionString+".0."+ver,false)){
 				SharedObjectManager.sharedManager().clear();
 				SharedObjectManager.sharedManager().setObject(versionString+".0."+ver,true);
@@ -234,6 +237,7 @@ package {
 			//Analyze.collectAssets(0, 119110);
 			//Analyze.checkProjects(56086, 64220);
 			//Analyze.countMissingAssets();
+			ClickerManager.sharedManager().update();
 			
 		}
 		private function openWelcome():void{
@@ -1080,6 +1084,9 @@ package {
 				navigateToURL(url,"_blank");
 			}else if(v=="features"){
 				openWelcome();
+			}else if(v.indexOf("http")>-1){
+				url = new URLRequest(v);
+				navigateToURL(url,"_blank");
 			}
 			track("/OpenHelp/"+v);
 		}
@@ -1093,7 +1100,19 @@ package {
 			m.addItem('Acknowledgements', 'acknowledgements', true, false);
 //			m.addItem('Features','features',true,false);
 			m.addItem('About', 'about', true, false);
-			
+			if(ClickerManager.sharedManager().list){
+				var hasLine:Boolean = true;
+				for(var i:uint=0;i<ClickerManager.sharedManager().list.length;i++){
+					var clicker:Clicker = ClickerManager.sharedManager().list[i];
+					if(clicker.type=="all"||clicker.type=="menu"){
+						if(hasLine){
+							m.addLine();
+							hasLine = false;
+						}
+						m.addItem(clicker.desc, clicker.link, true, false);
+					}
+				}
+			}
 			//			SerialManager.sharedManager().board = SharedObjectManager.sharedManager().getObject("board","uno");
 			//			SerialManager.sharedManager().device = SharedObjectManager.sharedManager().getObject("device","mbot");
 			

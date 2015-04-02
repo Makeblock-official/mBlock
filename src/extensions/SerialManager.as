@@ -167,7 +167,11 @@ package extensions
 				SerialDevice.sharedDevice().port = "";
 				close();
 			}else{
-				ConnectionManager.sharedManager().onOpen(port);
+				if(_serial.isConnected){
+					SerialDevice.sharedDevice().port = "";
+					close();
+				}
+				setTimeout(ConnectionManager.sharedManager().onOpen,100,port);
 			}
 			return 0;
 			var tempPort:String = port;

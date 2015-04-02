@@ -31,6 +31,7 @@ import flash.filesystem.File;
 import flash.net.URLLoader;
 import flash.net.URLRequest;
 import flash.utils.getTimer;
+import flash.utils.setTimeout;
 
 import blocks.Block;
 
@@ -390,7 +391,7 @@ public class ExtensionManager {
 		}
 	}
 	public function unloadRawExtension(extObj:Object):void{
-		ConnectionManager.sharedManager().onRemoved();
+		ConnectionManager.sharedManager().onRemoved(extObj.extensionName);
 		delete extensionDict[extObj.extensionName];
 		MBlock.app.extensionManager.parseAllTranslators();
 		MBlock.app.translationChanged();

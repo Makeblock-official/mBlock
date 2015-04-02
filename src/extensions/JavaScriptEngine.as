@@ -16,8 +16,10 @@ package extensions
 		private var _htmlLoader:HTMLLoader = new HTMLLoader;
 		private var _ext:Object;
 		private var _timer:Timer = new Timer(1000);
-		public function JavaScriptEngine()
+		private var _name:String = "";
+		public function JavaScriptEngine(name:String="")
 		{
+			_name = name;
 			_htmlLoader.placeLoadStringContentInApplicationSandbox = true;
 			_timer.addEventListener(TimerEvent.TIMER,onTimer);
 		}
@@ -136,13 +138,18 @@ package extensions
 			}
 		}
 		private function onRemoved(evt:Event):void{
-			if(_ext){
+			if(_ext&&ConnectionManager.sharedManager().extensionName==_name){
+				ConnectionManager.sharedManager().removeEventListener(Event.CONNECT,onConnected);
+				ConnectionManager.sharedManager().removeEventListener(Event.REMOVED,onRemoved);
+				ConnectionManager.sharedManager().removeEventListener(Event.CLOSE,onClosed);
 				_htmlLoader.removeEventListener(Event.COMPLETE,onComplete);
-				_htmlLoader.loadString("");
 				var dev:SerialDevice = SerialDevice.sharedDevice();
 				_ext._deviceRemoved(dev);
 				_ext = null;
 			}
+		}
+		private function uncaughtScriptExceptionHandler(evt:Event):void{
+			
 		}
 		public function loadJS(path:String=""):void{
 			var urlloader:URLLoader = new URLLoader;
@@ -173,7 +180,7 @@ package extensions
 			_htmlLoader.window.string2array = string2array;
 			ConnectionManager.sharedManager().removeEventListener(Event.CONNECT,onConnected);
 			ConnectionManager.sharedManager().removeEventListener(Event.REMOVED,onRemoved);
-			ConnectionManager.sharedManager().addEventListener(Event.CLOSE,onClosed);
+			ConnectionManager.sharedManager().removeEventListener(Event.CLOSE,onClosed);
 			ConnectionManager.sharedManager().addEventListener(Event.CONNECT,onConnected);
 			ConnectionManager.sharedManager().addEventListener(Event.REMOVED,onRemoved);
 			ConnectionManager.sharedManager().addEventListener(Event.CLOSE,onClosed);

@@ -12,6 +12,7 @@ package extensions
 	public class ConnectionManager extends EventDispatcher
 	{
 		private static var _instance:ConnectionManager;
+		public var extensionName:String = "";
 		public function ConnectionManager()
 		{
 		}
@@ -85,7 +86,8 @@ package extensions
 			MBlock.app.topBarPart.setDisconnectedTitle();
 			this.dispatchEvent(new Event(Event.CLOSE));
 		}
-		public function onRemoved():void{
+		public function onRemoved(extName:String = ""):void{
+			extensionName = extName;
 			this.dispatchEvent(new Event(Event.REMOVED));
 		}
 		public function onOpen(port:String):void{

@@ -28,8 +28,11 @@ package ui.parts {
 	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
+	import flash.net.URLRequest;
+	import flash.net.navigateToURL;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
+	import flash.utils.setTimeout;
 	
 	import assets.Resources;
 	
@@ -45,6 +48,8 @@ package ui.parts {
 	import uiwidgets.SimpleTooltips;
 	
 	import util.ApplicationManager;
+	import util.Clicker;
+	import util.ClickerManager;
 
 	public class TopBarPart extends UIPart {
 	
@@ -74,6 +79,7 @@ package ui.parts {
 		private var toolOnMouseDown:String;
 	
 		private var offlineNotice:TextField = new TextField;
+		private var mcNotice:Sprite = new Sprite;
 		private const offlineNoticeFormat:TextFormat = new TextFormat(CSS.font, 12, CSS.white, true,null,null,null,null,"right");
 	
 		public function TopBarPart(app:MBlock) {
@@ -118,7 +124,8 @@ package ui.parts {
 					removeChild(faqMenu);
 				}
 				removeChild(aboutMenu);
-				removeChild(offlineNotice);
+				removeChild(mcNotice);
+				mcNotice.removeEventListener(MouseEvent.CLICK,onClickLink); 
 			}
 		}
 	
@@ -131,16 +138,35 @@ package ui.parts {
 		public function updateVersion():void{
 			if (offlineNotice) 
 			{
-				offlineNotice.visible = false;
-				offlineNotice.defaultTextFormat = offlineNoticeFormat;
-				if(ParseManager.sharedManager().firmVersion.split(".").length<=1){
-					offlineNotice.text = Translator.map('Unknown Firmware');
-				}else{
-					var hardwareVer:uint = ParseManager.sharedManager().firmVersion.split(".")[1];
-					offlineNotice.text = Translator.map('Current Firmware') + ' v '+ParseManager.sharedManager().firmVersion+(hardwareVer==1?" (Arduino)":" (mBot)");
-				}
-				offlineNotice.selectable = false;
+//				offlineNotice.visible = false;
+//				offlineNotice.defaultTextFormat = offlineNoticeFormat;
+//				if(ParseManager.sharedManager().firmVersion.split(".").length<=1){
+//					offlineNotice.text = Translator.map('Unknown Firmware');
+//				}else{
+//					var hardwareVer:uint = ParseManager.sharedManager().firmVersion.split(".")[1];
+//					offlineNotice.text = Translator.map('Current Firmware') + ' v '+ParseManager.sharedManager().firmVersion+(hardwareVer==1?" (Arduino)":" (mBot)");
+//				}
+//				offlineNotice.selectable = false;
 			}
+		}
+		private var _clicker:Clicker ;
+		public function updateClicker():void{
+			offlineNotice.visible = false;
+			for(var i:uint=0;i<ClickerManager.sharedManager().list.length;i++){
+				_clicker = ClickerManager.sharedManager().list[i];
+				if(_clicker.isShow()){
+					offlineNotice.defaultTextFormat = offlineNoticeFormat;
+					offlineNotice.text = _clicker.desc;
+					offlineNotice.selectable = false;
+					offlineNotice.visible = true;
+					return;
+				}
+			}
+			_clicker = null;
+		}
+		private function onClickLink(evt:MouseEvent):void{
+			_clicker.click();
+			setTimeout(updateClicker,2000);
 		}
 		public function setWidthHeight(w:int, h:int):void {
 			this.w = w;
@@ -210,9 +236,9 @@ package ui.parts {
 			//helpTool.x = shrinkTool.right() + space;
 			copyTool.y = cutTool.y = shrinkTool.y = growTool.y = 32;//buttonY - 3;
 	
-			if(offlineNotice) {
-				offlineNotice.x = w - offlineNotice.width - 5;
-				offlineNotice.y = 5;
+			if(mcNotice) {
+				mcNotice.x = w - offlineNotice.width - 5;
+				mcNotice.y = 5;
 			}
 		}
 	
@@ -249,9 +275,16 @@ package ui.parts {
 				addChild(faqMenu = makeMenuButton('FAQ', app.openFaq, false));
 			}
 			addChild(aboutMenu = makeMenuButton('Help', app.openAbout, true));
-			addChild(offlineNotice);
-			offlineNotice.visible = false;
-			offlineNotice.width = 250;
+			addChild(mcNotice);
+			mcNotice.addChild(offlineNotice);
+			mcNotice.addEventListener(MouseEvent.CLICK,onClickLink); 
+			mcNotice.buttonMode = true;
+			mcNotice.useHandCursor = true;
+			mcNotice.mouseChildren = false;
+			mcNotice.mouseEnabled = true;
+			offlineNotice.visible = true;
+			offlineNotice.width = 400;
+			offlineNotice.height = 30;
 		}
 	
 		private function addToolButtons():void {
