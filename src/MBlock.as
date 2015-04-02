@@ -915,12 +915,16 @@ package {
 			}
 			m.addLine();
 			if(ApplicationManager.sharedManager().system == ApplicationManager.WINDOWS){
-				m.addItem('Bluetooth', '', false, false);
-				arr = BluetoothManager.sharedManager().list;
-				for(i=0;i<arr.length;i++){
-					m.addItem(arr[i], "bt_"+arr[i], true, arr[i]==BluetoothManager.sharedManager().currentBluetooth&&BluetoothManager.sharedManager().isConnected);
+				if(BluetoothManager.sharedManager().isSupported){
+					m.addItem('Bluetooth', '', false, false);
+					arr = BluetoothManager.sharedManager().list;
+					for(i=0;i<arr.length;i++){
+						m.addItem(arr[i], "bt_"+arr[i], true, arr[i]==BluetoothManager.sharedManager().currentBluetooth&&BluetoothManager.sharedManager().isConnected);
+					}
+					m.addItem('Discover', 'discover_bt', true, false);
+				}else{
+					m.addItem('No Bluetooth', '', false, false);
 				}
-				m.addItem('Discover', 'discover_bt', true, false);
 				m.addLine();
 			}
 			m.addItem('2.4G Serial', '', false, false);
