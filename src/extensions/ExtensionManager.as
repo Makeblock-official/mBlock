@@ -328,10 +328,13 @@ public class ExtensionManager {
 					var block:Block = b as Block;
 					if(block.nextID.indexOf(id)>-1) {
 						if(retval!=null){
-							delete ext.waiting[b];
-							block.nextID = [];
-							block.response = retval;
-							block.requestState = 2;
+							//if(block.response!=retval){
+								delete ext.waiting[b];
+								block.nextID = [];
+								block.response = retval;
+								block.requestState = 2;
+								MBlock.app.runtime.exitRequest();
+							//}
 						}
 					}
 				}
@@ -513,14 +516,14 @@ public class ExtensionManager {
 			if(b.isRequester==true){
 				if(b.requestState == 2) {
 					b.requestState = 0;
-					request(extName, primOrVarName, args, b);
+					//request(extName, primOrVarName, args, b);
 					return b.response;
 				}else{
 					request(extName, primOrVarName, args, b);
-					return b.response;
+					//return null;//b.response;
 				}
 				// Returns null if we just made a request or we're still waiting
-				return b.response;//==null?0:b.response;
+				return null;//b.response;//==null?0:b.response;
 			}else{
 				var sensorName:String = primOrVarName;
 				if(ext.port > 0) {  // we were checking ext.isInternal before, should we?
@@ -603,12 +606,12 @@ public class ExtensionManager {
 			++ext.nextID;
 			ext.busy.push(ext.nextID);
 			ext.waiting[b] = ext.nextID;
-			if(ext.nextID>41){
-				ext.nextID = 0;
-			}
 			b.nextID.push(ext.nextID);
 			MBlock.app.runtime.enterRequest();
 			ext.js.requestValue(op,args,ext);
+			if(ext.nextID>100){
+				ext.nextID = 0;
+			}
 			//'ScratchExtensions.getReporterAsync', ext.name, op, args, ext.nextID);
 		}
 //		if (ext.port > 0) {

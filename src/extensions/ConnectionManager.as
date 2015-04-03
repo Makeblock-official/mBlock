@@ -72,12 +72,14 @@ package extensions
 			}
 		}
 		public function open(port:String,baud:uint=115200):Boolean{
-			if(port.indexOf("COM")>-1||port.indexOf("/dev/tty.")>-1){
-				return SerialManager.sharedManager().open(port,baud);
-			}else if(port.indexOf(" (")>-1){
-				return BluetoothManager.sharedManager().open(port);
-			}else if(port.indexOf("HID")>-1){
-				return HIDManager.sharedManager().open();
+			if(port){
+				if(port.indexOf("COM")>-1||port.indexOf("/dev/tty.")>-1){
+					return SerialManager.sharedManager().open(port,baud);
+				}else if(port.indexOf(" (")>-1){
+					return BluetoothManager.sharedManager().open(port);
+				}else if(port.indexOf("HID")>-1){
+					return HIDManager.sharedManager().open();
+				}
 			}
 			return false;
 		}

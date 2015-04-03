@@ -1,7 +1,5 @@
 package {
 	import com.google.analytics.GATracker;
-	import com.google.analytics.debug.Background;
-	
 	import flash.desktop.NativeApplication;
 	import flash.display.DisplayObject;
 	import flash.display.Graphics;
@@ -220,7 +218,7 @@ package {
 				NativeApplication.nativeApplication.activeWindow.addEventListener(Event.CLOSING,onExiting);
 				SocketManager.sharedManager();
 			},100);
-			var ver:String = "04.02.001";
+			var ver:String = "04.03.001";
 			if(!SharedObjectManager.sharedManager().getObject(versionString+".0."+ver,false)){
 				SharedObjectManager.sharedManager().clear();
 				SharedObjectManager.sharedManager().setObject(versionString+".0."+ver,true);

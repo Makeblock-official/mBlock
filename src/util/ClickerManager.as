@@ -26,7 +26,7 @@ package util
 			urlloader.addEventListener(Event.COMPLETE,onComplete);
 			urlloader.addEventListener(IOErrorEvent.IO_ERROR,onError);
 			urlloader.addEventListener(SecurityErrorEvent.SECURITY_ERROR,onError);
-			urlloader.load(new URLRequest("http://makeblock.sinaapp.com/scratch/click.php?time="+Math.floor(new Date().time/100000)));
+			urlloader.load(new URLRequest("http://makeblock.sinaapp.com/scratch/click"+(ApplicationManager.sharedManager().isCatVersion?"_myh":"")+".php?time="+Math.floor(new Date().time/100000)));
 		}
 		private function onComplete(evt:Event):void{
 			try{

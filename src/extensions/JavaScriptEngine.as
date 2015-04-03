@@ -82,8 +82,7 @@ package extensions
 			if(!this.connected){
 				return false;
 			}
-			var v:*=getValue(method,param,ext);
-			MBlock.app.runtime.exitRequest();
+			var v:* = getValue(method,param,ext);
 			MBlock.app.extensionManager.reporterCompleted(ext.name,ext.nextID,v);
 			return true;
 		}
