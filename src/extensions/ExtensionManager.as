@@ -209,23 +209,23 @@ public class ExtensionManager {
 			}
 		}
 	}
-	public function importExtension():void {
-		_extensionList = [];
-		if(SharedObjectManager.sharedManager().getObject("first-launch",false)==true){
-			var srcFile:File = File.applicationDirectory.resolvePath("ext/libraries/");
-			for each(var sf:File in srcFile.getDirectoryListing()){
-				var tf:File = File.documentsDirectory.resolvePath("mBlock/libraries/"+sf.name);
-				if(!tf.exists){
+	public function copyLocalFiles():void{
+		trace("copy local files!");
+		var srcFile:File = File.applicationDirectory.resolvePath("ext/libraries/");
+		for each(var sf:File in srcFile.getDirectoryListing()){
+			var tf:File = File.documentsDirectory.resolvePath("mBlock/libraries/"+sf.name);
+			if(!tf.exists){
+				sf.copyTo(tf,true);
+			}else{
+				if(sf.modificationDate.time>tf.modificationDate.time+10000){
 					sf.copyTo(tf,true);
-				}else{
-					if(sf.modificationDate.time>tf.modificationDate.time+10000){
-						sf.copyTo(tf,true);
-					}
 				}
 			}
-			copyFirmwareAndHex();
-			SharedObjectManager.sharedManager().setObject("first-launch",false);
 		}
+		copyFirmwareAndHex();
+	}
+	public function importExtension():void {
+		_extensionList = [];
 		if(File.documentsDirectory.resolvePath("mBlock/libraries/").exists){
 			var docs:Array =  File.documentsDirectory.resolvePath("mBlock/libraries/").getDirectoryListing();
 			for each(var doc:File in docs){
@@ -291,6 +291,9 @@ public class ExtensionManager {
 		var hexFile:File = File.applicationDirectory.resolvePath("firmware/hex/");
 		var htf:File = File.documentsDirectory.resolvePath("mBlock/tools/hex/");
 		hexFile.copyTo(htf,true);
+		var localsFile:File = File.applicationDirectory.resolvePath("locale/");
+		var ltf:File = File.documentsDirectory.resolvePath("mBlock/locale/");
+		localsFile.copyTo(ltf,true);
 	}
 	public function extensionsToSave():Array {
 		// Answer an array of extension descriptor objects for imported extensions to be saved with the project.

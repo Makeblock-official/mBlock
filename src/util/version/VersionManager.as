@@ -16,6 +16,7 @@ package util.version
 		private var _reqLoader:URLLoader = new URLLoader();
 		private var _list:Array = [];
 		private var _requestIndex:uint = 0;
+		private var _isFirst:Boolean;
 		public function VersionManager()
 		{
 		}
@@ -27,6 +28,7 @@ package util.version
 		}
 		public function start():void{
 //			SharedObjectManager.sharedManager().clear();
+			_isFirst = SharedObjectManager.sharedManager().getObject("first-launch",true);
 			var req:URLRequest = new URLRequest("http://makeblock.sinaapp.com/scratch/mblock_resources_v3.php");
 			_reqLoader.load(req);
 			_reqLoader.addEventListener(IOErrorEvent.IO_ERROR,onReqError);
@@ -49,7 +51,11 @@ package util.version
 			startRequest();
 		}
 		private function onReqError(evt:Event):void{
-			SharedObjectManager.sharedManager().setObject("first-launch",false);
+			trace("req error!")
+			if(_isFirst){
+				MBlock.app.extensionManager.copyLocalFiles();
+				SharedObjectManager.sharedManager().setObject("first-launch",false);
+			}
 			MBlock.app.extensionManager.clearImportedExtensions();
 			MBlock.app.extensionManager.importExtension();
 		}
