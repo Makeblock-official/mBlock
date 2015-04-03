@@ -85,6 +85,7 @@ package extensions
 		}
 		public function onClose():void{
 			SerialDevice.sharedDevice().port = "";
+			SerialDevice.sharedDevice().clear();
 			MBlock.app.topBarPart.setDisconnectedTitle();
 			this.dispatchEvent(new Event(Event.CLOSE));
 		}

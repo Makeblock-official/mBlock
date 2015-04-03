@@ -24,15 +24,15 @@
 	ext.clearBuffer = function(){
 		lines = [""];
 	};
-	ext.whenReceived = function(){
+	ext.whenReceived = function(nextID){
 		var temp = isReceived;
 		isReceived = false;
-        return temp;
+		responseValue(nextID,temp);
 	};
-	ext.isAvailable = function() {
-        return lines.length>0&&lines[0]!="";
+	ext.isAvailable = function(nextID) {
+		responseValue(nextID,lines.length>0&&lines[0]!="");
     };
-	ext.readLine = function(){
+	ext.readLine = function(nextID){
 		/*lines.shift();
 		if(lines.length>0){
 			if(lines[0]!=""){
@@ -40,15 +40,15 @@
 				return lines[1];
 			}
 		}*/
-		return lastLine;
+		responseValue(nextID,lastLine);
 	}
-	ext.readCommand = function(key){
+	ext.readCommand = function(nextID,key){
 		var v = lastLine;
 		var idx = v.indexOf(key+"=");
 		if(idx>-1){
-			return v.substring(idx+key.length+1,v.length);
+			responseValue(nextID,v.substring(idx+key.length+1,v.length));
 		}
-		return "";
+		responseValue(nextID, "");
 	};
 	
     var inputArray = [];
@@ -122,7 +122,7 @@
             tryNextDevice();
             return;
         }
-        device.set_receive_handler(function(data) {
+        device.set_receive_handler('serial',function(data) {
             processData(data);
         });
     };

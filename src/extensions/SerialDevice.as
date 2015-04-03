@@ -40,11 +40,18 @@ package extensions
 			}
 		}
 		private var _receiveHandlers:Array=[];
-		public function set_receive_handler(receiveHandler:Function):void{
+		public function clear():void{
+			_receiveHandlers = [];
+		}
+		public function set_receive_handler(name:String,receiveHandler:Function):void{
 			if(receiveHandler!=null){
-				if(_receiveHandlers.indexOf(receiveHandler)==-1){
-					_receiveHandlers.push(receiveHandler);
+				for(var i:uint = 0;i<_receiveHandlers.length;i++){
+					if(name==_receiveHandlers[i].name){
+						_receiveHandlers.splice(i);
+						break;
+					}
 				}
+				_receiveHandlers.push({name:name,handler:receiveHandler});
 			}
 		}
 		public function send(bytes:Array):void{
@@ -71,7 +78,7 @@ package extensions
 //					trace("time:",getTimer()-l,_receivedBuffer.length);
 //					l = getTimer();
 					for(var i:uint=0;i<_receiveHandlers.length;i++){
-						var receiveHandler:Function = _receiveHandlers[i];
+						var receiveHandler:Function = _receiveHandlers[i].handler;
 						if(receiveHandler!=null){
 							try{
 								receiveHandler(_receivedBytes);

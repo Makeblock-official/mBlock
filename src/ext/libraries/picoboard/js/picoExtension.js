@@ -43,11 +43,13 @@
     };
 
     // Reporters
-    ext.sensorPressed = function(which) {
-        return getSensorPressed(which);
+    ext.sensorPressed = function(nextID,which) {
+        responseValue(nextID, getSensorPressed(which));
     };
 
-    ext.sensor = function(which) { return getSensor(which); };
+    ext.sensor = function(nextID, which) { 
+		responseValue(nextID,	getSensor(which));
+	};
 
     // Private logic
     function getSensorPressed(which) {
@@ -83,7 +85,6 @@
 
         if (watchdog && (inputArray[15] == 0x04)) {
             // Seems to be a valid PicoBoard.
-			air.trace("remove watchdog");
             clearTimeout(watchdog);
             watchdog = null;
         }
@@ -140,7 +141,7 @@
             tryNextDevice();
             return;
         }
-        device.set_receive_handler(function(data) {
+        device.set_receive_handler('picoboard',function(data) {
             if(!rawData || rawData.length == 18) rawData = data;
             else rawData = appendBuffer(rawData, data);
             if(rawData.length >= 18) {
@@ -165,7 +166,6 @@
             device = null;
             tryNextDevice();
         }, 250);
-		air.trace("add watchdog");
     };
 
     ext._deviceRemoved = function(dev) {
@@ -185,20 +185,6 @@
         if(watchdog) return {status: 1, msg: 'Probing for PicoBoard'};
         return {status: 2, msg: 'PicoBoard connected'};
     }
-
-    var descriptor = {
-        blocks: [
-            ['h', 'when %m.booleanSensor',         'whenSensorConnected', 'button pressed'],
-            ['h', 'when %m.sensor %m.lessMore %n', 'whenSensorPass',      'slider', '>', 50],
-            ['b', 'sensor %m.booleanSensor?',      'sensorPressed',       'button pressed'],
-            ['r', '%m.sensor sensor value',        'sensor',              'slider']
-        ],
-        menus: {
-            booleanSensor: ['button pressed', 'A connected', 'B connected', 'C connected', 'D connected'],
-            sensor: ['slider', 'light', 'sound', 'resistance-A', 'resistance-B', 'resistance-C', 'resistance-D'],
-            lessMore: ['>', '<']
-        },
-        url: '/info/help/studio/tips/ext/PicoBoard/'
-    };
+    var descriptor = {};
 	ScratchExtensions.register('PicoBoard', descriptor, ext, {type: 'serial'});
 })({});

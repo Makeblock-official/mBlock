@@ -27,7 +27,7 @@ package util.version
 		}
 		public function start():void{
 //			SharedObjectManager.sharedManager().clear();
-			var req:URLRequest = new URLRequest("http://makeblock.sinaapp.com/scratch/mblock_resources_v2.php");
+			var req:URLRequest = new URLRequest("http://makeblock.sinaapp.com/scratch/mblock_resources_v3.php");
 			_reqLoader.load(req);
 			_reqLoader.addEventListener(IOErrorEvent.IO_ERROR,onReqError);
 			_reqLoader.addEventListener(Event.COMPLETE,onReqComplete);

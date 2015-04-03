@@ -76,14 +76,18 @@ package extensions
 					_ext[method](param[0],param[1],param[2],param[3],param[4]);
 					break;
 				}
+				case 6:{
+					_ext[method](param[0],param[1],param[2],param[3],param[4],param[5]);
+					break;
+				}
 			}
 		}
 		public function requestValue(method:String,param:Array,ext:ScratchExtension):Boolean{
 			if(!this.connected){
 				return false;
 			}
-			var v:* = getValue(method,param,ext);
-			MBlock.app.extensionManager.reporterCompleted(ext.name,ext.nextID,v);
+			getValue(method,[ext.nextID].concat(param),ext);
+			//MBlock.app.extensionManager.reporterCompleted(ext.name,ext.nextID,v);
 			return true;
 		}
 		public function getValue(method:String,param:Array,ext:ScratchExtension):*{
@@ -116,6 +120,10 @@ package extensions
 					v = _ext[method](param[0],param[1],param[2],param[3],param[4]);
 					break;
 				}
+				case 6:{
+					v = _ext[method](param[0],param[1],param[2],param[3],param[4],param[5]);
+					break;
+				}
 			}
 			return v;
 		}
@@ -134,6 +142,7 @@ package extensions
 			if(_ext){
 				var dev:SerialDevice = SerialDevice.sharedDevice();
 				_ext._deviceRemoved(dev);
+				trace("unregister:",_name);
 			}
 		}
 		private function onRemoved(evt:Event):void{
@@ -177,12 +186,16 @@ package extensions
 			_htmlLoader.window.float2array = float2array;
 			_htmlLoader.window.short2array = short2array;
 			_htmlLoader.window.string2array = string2array;
+			_htmlLoader.window.responseValue = responseValue;
 			ConnectionManager.sharedManager().removeEventListener(Event.CONNECT,onConnected);
 			ConnectionManager.sharedManager().removeEventListener(Event.REMOVED,onRemoved);
 			ConnectionManager.sharedManager().removeEventListener(Event.CLOSE,onClosed);
 			ConnectionManager.sharedManager().addEventListener(Event.CONNECT,onConnected);
 			ConnectionManager.sharedManager().addEventListener(Event.REMOVED,onRemoved);
 			ConnectionManager.sharedManager().addEventListener(Event.CLOSE,onClosed);
+		}
+		public function responseValue(extId:uint,value:*):void{
+			MBlock.app.extensionManager.reporterCompleted(_name,extId,value);
 		}
 		public function readFloat(bytes:Array):Number{
 			var buffer:ByteArray = new ByteArray();

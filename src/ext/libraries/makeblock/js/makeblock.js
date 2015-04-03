@@ -48,7 +48,6 @@
     };
 	var values = {};
 	var indexs = [];
-	var nextID = 0;
 	var versionIndex = 0xFA;
     ext.resetAll = function(){};
 	ext.runArduino = function(){
@@ -77,85 +76,55 @@
 	ext.runShutter = function(port,status){
 		runPackage(20,shutterStatus[status]);
 	};
-	ext.getUltrasonic = function(port){
+	ext.getUltrasonic = function(nextID,port){
 		var deviceId = 1;
-		indexs[nextID] = "v_"+deviceId+"_"+ports[port];
-		var v = values[indexs[nextID]];
-		if(v<1){
-			v = 0;
+		values[indexs[nextID]] = function(v){
+			if(v<1){
+				v = 0;
+			}
+			return v;
 		}
 		getPackage(nextID,deviceId,ports[port]);
-        return v;
 	};
-	ext.getPotentiometer = function(port) {
+	ext.getPotentiometer = function(nextID,port) {
 		var deviceId = 4;
-		indexs[nextID] = "v_"+deviceId+"_"+ports[port];
-		var v = values[indexs[nextID]];
 		getPackage(nextID,deviceId,ports[port]);
-        return v;
     };
-	ext.getLinefollower = function(port) {
+	ext.getLinefollower = function(nextID,port) {
 		var deviceId = 17;
-		indexs[nextID] = "v_"+deviceId+"_"+ports[port];
-		var v = values[indexs[nextID]];
 		getPackage(nextID,deviceId,ports[port]);
-        return v;
     };
-	ext.getLightsensor = function(port) {
+	ext.getLightsensor = function(nextID,port) {
 		var deviceId = 3;
-		indexs[nextID] = "v_"+deviceId+"_"+ports[port];
-		var v = values[indexs[nextID]];
 		getPackage(nextID,deviceId,ports[port]);
-        return v;
     };
-	ext.getJoystick = function(port,ax) {
+	ext.getJoystick = function(nextID,port,ax) {
 		var deviceId = 5;
-		indexs[nextID] = "v_"+deviceId+"_"+ports[port]+"_"+axis[ax];
-		var v = values[indexs[nextID]];
 		getPackage(nextID,deviceId,ports[port],axis[ax]);
-        return v;
     };
-	ext.getSoundsensor = function(port) {
+	ext.getSoundsensor = function(nextID,port) {
 		var deviceId = 7;
-		indexs[nextID] = "v_"+deviceId+"_"+ports[port];
-		var v = values[indexs[nextID]];
 		getPackage(nextID,deviceId,ports[port],axis[ax]);
-        return v;
     };
-	ext.getInfrared = function(port) {
+	ext.getInfrared = function(nextID,port) {
 		var deviceId = 16;
-		indexs[nextID] = "v_"+deviceId+"_"+ports[port];
-		var v = values[indexs[nextID]];
 		getPackage(nextID,deviceId,ports[port]);
-        return v;
     };
-	ext.getLimitswitch = function(port) {
+	ext.getLimitswitch = function(nextID,port) {
 		var deviceId = 21;
-		indexs[nextID] = "v_"+deviceId+"_"+ports[port];
-		var v = values[indexs[nextID]];
 		getPackage(nextID,deviceId,ports[port]);
-        return v;
     };
-	ext.getPirmotion = function(port) {
+	ext.getPirmotion = function(nextID,port) {
 		var deviceId = 15;
-		indexs[nextID] = "v_"+deviceId+"_"+ports[port];
-		var v = values[indexs[nextID]];
 		getPackage(nextID,deviceId,ports[port]);
-        return v;
     };
-	ext.getTemperature = function(port,slot) {
+	ext.getTemperature = function(nextID,port,slot) {
 		var deviceId = 2;
-		indexs[nextID] = "v_"+deviceId+"_"+ports[port]+"_"+slots[slot];
-		var v = values[indexs[nextID]];
 		getPackage(nextID,deviceId,ports[port],slots[slot]);
-        return v;
     };
-	ext.getGyro = function(ax) {
+	ext.getGyro = function(nextID,ax) {
 		var deviceId = 6;
-		indexs[nextID] = "v_"+deviceId+"_"+axis[ax];
-		var v = values[indexs[nextID]];
 		getPackage(nextID,deviceId,ports[port],slots[slot]);
-        return v;
     };
 	function runPackage(){
 		var bytes = [];
@@ -185,13 +154,8 @@
 			bytes.push(arguments[i]);
 		}
 		device.send(bytes);
-		nextID++;
-		if(nextID>50){
-			nextID=0;
-		}
 	}
     
-
     var inputArray = [];
 	var _isParseStart = false;
 	var _isParseStartIndex = 0;
@@ -250,7 +214,12 @@
 							break;
 					}
 					if(type<=5){
-						values[indexs[extId]] = value;
+						if(values[extId]!=undefined){
+							responseValue(extId,values[extId](value));
+						}else{
+							responseValue(extId,value);
+						}
+						values[extId] = null;
 					}
 					_rxBuf = [];
 				}
@@ -305,7 +274,7 @@
             tryNextDevice();
             return;
         }
-        device.set_receive_handler(function(data) {
+        device.set_receive_handler('makeblock',function(data) {
             processData(data);
         });
     };

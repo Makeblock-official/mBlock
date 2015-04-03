@@ -51,7 +51,7 @@
 	var beats = {"Half":500,"Quater":250,"Eighth":125,"Whole":1000,"Double":2000,"Zero":0};
 	var values = {};
 	var indexs = [];
-	var nextID = 0;
+	
 	var startTimer = 0;
 	var versionIndex = 0xFA;
     ext.resetAll = function(){};
@@ -74,25 +74,19 @@
 	ext.resetTimer = function(){
 		startTimer = new Date().getTime();
 	};
-	ext.getDigital = function(pin){
+	ext.getDigital = function(nextID,pin){
 		var deviceId = 30;
-		indexs[nextID] = "v_"+deviceId+"_"+pin;
-		var v = values[indexs[nextID]];
 		getPackage(nextID,deviceId,pin);
-        return v;
 	};
-	ext.getAnalog = function(pin) {
+	ext.getAnalog = function(nextID,pin) {
 		var deviceId = 31;
-		indexs[nextID] = "v_"+deviceId+"_"+pin;
-		var v = values[indexs[nextID]];
 		getPackage(nextID,deviceId,pin);
-        return v;
     };
-	ext.getTimer = function(){
+	ext.getTimer = function(nextID){
 		if(startTimer==0){
 			startTimer = new Date().getTime();
 		}
-		return new Date().getTime()-startTimer;
+		responseValue(nextID,new Date().getTime()-startTimer);
 	}
 	
 	function runPackage(){
@@ -187,7 +181,12 @@
 							break;
 					}
 					if(type<=5){
-						values[indexs[extId]] = value;
+						if(values[extId]!=undefined){
+							responseValue(extId,values[extId](value));
+						}else{
+							responseValue(extId,value);
+						}
+						values[extId] = null;
 					}
 					_rxBuf = [];
 				}
@@ -242,7 +241,7 @@
             tryNextDevice();
             return;
         }
-        device.set_receive_handler(function(data) {
+        device.set_receive_handler('arduino',function(data) {
             processData(data);
         });
     };
