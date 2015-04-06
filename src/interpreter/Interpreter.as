@@ -470,7 +470,14 @@ public class Interpreter {
 		primTable["doForeverIf"]		= function(b:*):* { if (arg(b, 0)) startCmdList(b.subStack1, true); else yield = true; };
 		primTable["doForLoop"]			= primForLoop;
 		primTable["doIf"]				= function(b:*):* { if (arg(b, 0)) startCmdList(b.subStack1); };
-		primTable["doIfElse"]			= function(b:*):* { if (arg(b, 0)) startCmdList(b.subStack1); else startCmdList(b.subStack2); };
+		primTable["doIfElse"]			= function(b:*):* { 
+			var v:* = arg(b, 0);
+			if (v){
+				startCmdList(b.subStack1);
+			}else{
+				startCmdList(b.subStack2); 
+			}
+		};
 		primTable["doWaitUntil"]		= function(b:*):* { if (!arg(b, 0)) yield = true; };
 		primTable["doWhile"]			= function(b:*):* { if (arg(b, 0)) startCmdList(b.subStack1, true); };
 		primTable["doUntil"]			= function(b:*):* { if (!arg(b, 0)) startCmdList(b.subStack1, true); };

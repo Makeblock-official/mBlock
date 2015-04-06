@@ -208,6 +208,7 @@ public class ProjectIO {
 		["run\\/led","runLed"],
 		["run\\/lightsensor","runLightsensor"],
 		["run\\/shutter","runShutter"],
+		["get\\/button_inner","getButtonOnBoard"],
 		["get\\/ultrasonic","getUltrasonic"],
 		["get\\/linefollower","getLinefollower"],
 		["get\\/lightsensor","getLightsensor"],
@@ -223,7 +224,9 @@ public class ProjectIO {
 		["stop\\/buzzer","stopBuzzer"],
 		["get\\/irremote","getIrRemote"],
 		["run\\/ir","runIR"],
-		["get\\/ir","getIR"]
+		["get\\/ir","getIR"],
+		["mBot.get\\/analog","mBot.getLightOnBoard"],
+		["mBot.getAnalog","mBot.getLightOnBoard"],
 	];
 	private function fixForNewExtension(json:String):String{
 		for(var i:uint=0;i<fixList.length;i++){

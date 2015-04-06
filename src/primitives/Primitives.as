@@ -94,13 +94,17 @@ package primitives {
 				if(r1==null||r2==null){
 					return null;
 				}
-				var arg:BlockArg = (b as Block).args[0];
-				if(arg.argValue==""||arg.argValue.indexOf(" ")>-1){
-					r1 = arg.argValue;
-				}
-				arg = (b as Block).args[1];
-				if(arg.argValue==""||arg.argValue.indexOf(" ")>-1){
-					r2 = arg.argValue;
+				try{
+					var arg:BlockArg = (b as Block).args[0];
+					if(arg.argValue==""||arg.argValue.indexOf(" ")>-1){
+						r1 = arg.argValue;
+					}
+					arg = (b as Block).args[1];
+					if(arg.argValue==""||arg.argValue.indexOf(" ")>-1){
+						r2 = arg.argValue;
+					}
+				}catch(e:*){
+					
 				}
 				return ("" + r1 + r2).substr(0, 10240);
 			};

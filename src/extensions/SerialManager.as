@@ -111,7 +111,7 @@ package extensions
 				MBlock.app.topBarPart.setDisconnectedTitle();
 				return;
 			}else{
-				MBlock.app.topBarPart.setConnectedTitle(this.currentPort+" "+Translator.map("Connected"));
+				MBlock.app.topBarPart.setConnectedTitle(SerialDevice.sharedDevice().port+" "+Translator.map("Connected"));
 			}
 		}
 		public function sendBytes(bytes:ByteArray):int{

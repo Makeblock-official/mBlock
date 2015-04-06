@@ -136,8 +136,8 @@ package extensions
 			return str;
 		}
 		public function parse(url:String):void{
-			SerialManager.sharedManager().update();
-			SocketManager.sharedManager().update();
+			//SerialManager.sharedManager().update();
+			//SocketManager.sharedManager().update();
 			if(url.indexOf("serial")>-1){
 				var c:Array = url.split("/");
 				var buf:ByteArray = new ByteArray();

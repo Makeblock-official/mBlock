@@ -528,7 +528,7 @@ public class ExtensionManager {
 //					return b.response;
 				}
 				// Returns null if we just made a request or we're still waiting
-				return null;//b.response;//==null?0:b.response;
+				return b.response;//==null?0:b.response;
 			}else{
 				var sensorName:String = primOrVarName;
 				if(ext.port > 0) {  // we were checking ext.isInternal before, should we?
