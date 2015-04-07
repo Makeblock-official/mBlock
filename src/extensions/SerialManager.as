@@ -240,10 +240,11 @@ package extensions
 			_hexToDownload = hexFile;
 			MBlock.app.topBarPart.setDisconnectedTitle();
 			ArduinoManager.sharedManager().isUploading = false;
+			trace(DeviceManager.sharedManager().currentDevice);
 			if(DeviceManager.sharedManager().currentDevice.indexOf("leonardo")>-1){
 				_serial.close();
 				setTimeout(function():void{
-					_serial.open(currentPort,1200);
+					_serial.open(SerialDevice.sharedDevice().port,1200);
 					setTimeout(function():void{
 						_serial.close();
 						if(ApplicationManager.sharedManager().system==ApplicationManager.WINDOWS){
@@ -299,9 +300,10 @@ package extensions
 			}
 			if(lastList.length>0&&lastList[0].indexOf("COM")>-1){
 				Timer(evt.target).stop();
-				currentPort = lastList[0];
+				var temp:String = SerialDevice.sharedDevice().port;
+				SerialDevice.sharedDevice().port = lastList[0];
 				upgradeFirmware();
-				currentPort = "";
+				SerialDevice.sharedDevice().port = temp;
 			}
 			
 			
