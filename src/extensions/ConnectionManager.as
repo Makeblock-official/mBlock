@@ -28,6 +28,10 @@ package extensions
 					BluetoothManager.sharedManager().discover();
 					break;
 				}
+				case "netframework":{
+					navigateToURL(new URLRequest("http://www.microsoft.com/en-us/download/details.aspx?id=30653"));
+					break;
+				}
 				case "view_source":{
 					SerialManager.sharedManager().openSource();
 					break;

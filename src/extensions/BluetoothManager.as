@@ -17,18 +17,24 @@ package extensions
 		private var _bt:BluetoothExt;
 		private var _list:Array = [];
 		private var _currentBluetooth:String;
+		private var _hasNetFramework:Boolean = false;
 		public function BluetoothManager()
 		{
 			if(ApplicationManager.sharedManager().system==ApplicationManager.WINDOWS){
 				for each(var fs:File in File.getRootDirectories()){
 					var file:File =  new File(fs.url+"Windows/Microsoft.NET/Framework");
 					if(file.exists){
+						_hasNetFramework = false;
 						for each(var f:File in file.getDirectoryListing()){
 							if(f.name.substr(0,1)=="v"){
 								if(Number(f.name.substr(1,3))>=4.0){
 									//									_bluetooth = new BluetoothExtEmpty();
-									_bt = new BluetoothExt();
-									break;
+									var buildFile:File = new File(f.url+"/MSBuild");
+									if(buildFile.exists){
+										_bt = new BluetoothExt();
+										_hasNetFramework = true;
+										break;
+									}
 								}
 							}
 						}
@@ -54,6 +60,9 @@ package extensions
 				return _bt.supported;
 			}
 			return false;
+		}
+		public function get hasNetFramework():Boolean{
+			return _hasNetFramework;
 		}
 		public function discover():void{
 			if(_bt){

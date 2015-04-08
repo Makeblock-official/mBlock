@@ -921,7 +921,11 @@ package {
 					}
 					m.addItem('Discover', 'discover_bt', true, false);
 				}else{
-					m.addItem('No Bluetooth', '', false, false);
+					if(BluetoothManager.sharedManager().hasNetFramework){
+						m.addItem('No Bluetooth', '', false, false);
+					}else{
+						m.addItem('Bluetooth need to install .Net Framework 4.0', 'netframework', true, false);
+					}
 				}
 				m.addLine();
 			}
