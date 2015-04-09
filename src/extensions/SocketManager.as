@@ -126,7 +126,11 @@ package extensions
 					data.writeUTFBytes("mBlock");
 					//Send the datagram message
 					if(broadCastIp!=""){
-						datagramSocket.send( data, 0, 0, broadCastIp, _clientPort);
+						try{
+							datagramSocket.send( data, 0, 0, broadCastIp, _clientPort);
+						}catch(e:Error){
+							trace(e);
+						}
 					}
 				}else{
 					broadcastIP("mBlock");

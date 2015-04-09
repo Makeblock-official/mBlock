@@ -21,31 +21,19 @@ extern MePort_Sig mePort[11];//mePort[0] is nonsense
 
 #define NC 					-1
 
-// #define PORT_1 				0x01
-// #define PORT_2 				0x02
-// #define PORT_3 				0x03
-// #define PORT_4 				0x04
-// #define PORT_5 				0x05
-// #define PORT_6 				0x06
-// #define PORT_7 				0x07
-// #define PORT_8 				0x08
-// #define M1     				0x09
-// #define M2     				0x0a
+ #define PORT_0 				0x00
+ #define PORT_1 				0x01
+ #define PORT_2 				0x02
+ #define PORT_3 				0x03
+ #define PORT_4 				0x04
+ #define PORT_5 				0x05
+ #define PORT_6 				0x06
+ #define PORT_7 				0x07
+ #define PORT_8 				0x08
+ #define M1     				0x09
+ #define M2     				0x0a
 
-typedef enum
-{
-    PORT_0,
-    PORT_1,
-    PORT_2,
-    PORT_3,
-    PORT_4,
-    PORT_5,
-    PORT_6,
-    PORT_7,
-    PORT_8,
-    M1,
-    M2,
-}MEPORT;
+
 
 // #if defined(__AVR_ATmega32U4__) 
 // // buzzer 
@@ -86,8 +74,8 @@ public:
 	MePort();
     ///@brief initialize the Port
     ///@param port port number of device
-    MePort(MEPORT port);
-    MePort(MEPORT port,uint8_t slot);
+    MePort(uint8_t port);
+    MePort(uint8_t port,uint8_t slot);
     ///@return the level of pin 1 of port
     ///@retval true on HIGH.
     ///@retval false on LOW.

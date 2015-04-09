@@ -38,7 +38,7 @@
 class MeInfraredReceiver:public MePort{
 	public :
 		MeInfraredReceiver();
-		MeInfraredReceiver(MEPORT port);
+		MeInfraredReceiver(uint8_t port);
 		int available();
 		unsigned char read();
 		unsigned char poll();

@@ -20,6 +20,7 @@ extern MePort_Sig mePort[11];//mePort[0] is nonsense
 
 #define NC 					-1
 
+#define PORT_0 				0x00
 #define PORT_1 				0x01
 #define PORT_2 				0x02
 #define PORT_3 				0x03

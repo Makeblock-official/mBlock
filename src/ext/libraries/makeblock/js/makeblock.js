@@ -52,8 +52,8 @@
     ext.resetAll = function(){};
 	ext.runArduino = function(){
 	}
-	ext.runMotor = function(port,slot,speed) {
-        runPackage(10,ports[port],slots[slot],short2array(speed));
+	ext.runMotor = function(port,speed) {
+        runPackage(10,ports[port],short2array(speed));
     };
     ext.runServo = function(port,slot,angle) {
         runPackage(11,ports[port],slots[slot],angle);
@@ -82,8 +82,9 @@
 			if(v<1){
 				v = 0;
 			}
+			air.trace(v);
 			return v;
-		}
+		};
 		getPackage(nextID,deviceId,ports[port]);
 	};
 	ext.getPotentiometer = function(nextID,port) {

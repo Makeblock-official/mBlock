@@ -18,10 +18,10 @@ class Me7SegmentDisplay:public MePort
 	public:
 		Me7SegmentDisplay();
 		Me7SegmentDisplay(uint8_t dataPin,uint8_t clkPin);
-		Me7SegmentDisplay(MEPORT port);
+		Me7SegmentDisplay(uint8_t port);
 		void init(void); //To clear the display
 		void set(uint8_t = BRIGHT_TYPICAL,uint8_t = 0x40,uint8_t = 0xc0);//To take effect the next time it displays.
-		void reset(MEPORT port);
+		void reset(uint8_t port);
 		void write(int8_t SegData[]);
     	void write(uint8_t BitAddr, int8_t SegData);
 		void display(uint16_t value);

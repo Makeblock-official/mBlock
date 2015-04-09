@@ -7,9 +7,9 @@
 class MeTemperature:public MePort{
 	public:
 		MeTemperature();
-		MeTemperature(MEPORT port);
-		MeTemperature(uint8_t pin);
-		MeTemperature(MEPORT port,uint8_t slot);
+		MeTemperature(uint8_t port);
+//		MeTemperature(uint8_t pin);
+		MeTemperature(uint8_t port,uint8_t slot);
 		void reset(uint8_t port, uint8_t slot);
 		///@brief get the celsius of temperature
 		float temperature();

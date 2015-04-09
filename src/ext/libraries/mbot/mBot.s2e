@@ -9,13 +9,13 @@
 		["-"],
 	
 		["w", "%m.direction at speed %d.motorvalue","runBot", "run forward", 100,
-		{"encode":"{d0}{s1}","setup":"","inc":"#include \"MeDCMotor.h\"\n","def":"MeDCMotor motor((MEPORT)0);\n","work":"motor.move({0},{1});\n","loop":""}],
+		{"encode":"{d0}{s1}","setup":"","inc":"#include \"MeDCMotor.h\"\n","def":"MeDCMotor motor(0);\n","work":"motor.move({0},{1});\n","loop":""}],
 		
 		["w", "set motor%d.motorPort speed %d.motorvalue","runMotor", "M1", 0,
-		{"encode":"{d0}{s1}","setup":"","inc":"#include \"MeDCMotor.h\"\n","def":"MeDCMotor motor_{0}((MEPORT){0});\n","work":"motor_{0}.run({1});\n","loop":""}],
+		{"encode":"{d0}{s1}","setup":"","inc":"#include \"MeDCMotor.h\"\n","def":"MeDCMotor motor_{0}({0});\n","work":"motor_{0}.run({1});\n","loop":""}],
 		
 		["w", "set led %d.index red%d.value green%d.value blue%d.value","runLed","all",0,0,0,
-		{"encode":"{n7}{d0}{d1}{d2}{d3}","setup":"rgbled_7.setNumber(2);\n","inc":"#include \"MeRGBLed.h\"\n","def":"MeRGBLed rgbled_7((MEPORT)7);\n","work":"rgbled_7.setColor({0},{1},{2},{3});\nrgbled_7.show();\n","loop":""}],
+		{"encode":"{n7}{d0}{d1}{d2}{d3}","setup":"rgbled_7.setNumber(2);\n","inc":"#include \"MeRGBLed.h\"\n","def":"MeRGBLed rgbled_7(7);\n","work":"rgbled_7.setColor({0},{1},{2},{3});\nrgbled_7.show();\n","loop":""}],
 		
 		["w", "play tone on note %d.note","runBuzzer", "C4",
 		{"encode":"{s0}","setup":"","inc":"#include \"MeBuzzer.h\"\n","def":"MeBuzzer buzzer;\n","work":"buzzer.tone({0});\n","loop":""}],
@@ -34,19 +34,19 @@
 		["-"],
 		
 		["R", "ultrasonic sensor %d.port distance","getUltrasonic","Port1",
-		{"encode":"{d0}","setup":"","inc":"#include \"MeUltrasonic.h\"\n","def":"MeUltrasonic ultrasonic_{0}((MEPORT){0});\n","work":"ultrasonic_{0}.distanceCm()","loop":""}],
+		{"encode":"{d0}","setup":"","inc":"#include \"MeUltrasonic.h\"\n","def":"MeUltrasonic ultrasonic_{0}({0});\n","work":"ultrasonic_{0}.distanceCm()","loop":""}],
 		
 		["R", "line follower %d.port","getLinefollower","Port1",
-		{"encode":"{d0}","setup":"","inc":"#include \"MePort.h\"\n","def":"MePort linefollower_{0}((MEPORT){0});\n","work":"linefollower_{0}.dRead1()*2+linefollower_{0}.dRead2()","loop":""}],
+		{"encode":"{d0}","setup":"","inc":"#include \"MePort.h\"\n","def":"MePort linefollower_{0}({0});\n","work":"linefollower_{0}.dRead1()*2+linefollower_{0}.dRead2()","loop":""}],
 		
 		["R", "joystick %d.aport %d.Axis","getJoystick","Port3","X-Axis",
-		{"encode":"{d0}{d1}","setup":"","inc":"#include \"MePort.h\"\n","def":"MePort joystick_{0}((MEPORT){0});\n","work":"joystick_{0}.aRead{1}()","loop":""}],
+		{"encode":"{d0}{d1}","setup":"","inc":"#include \"MePort.h\"\n","def":"MePort joystick_{0}({0});\n","work":"joystick_{0}.aRead{1}()","loop":""}],
 		
 		["R", "potentiometer %d.aport","getPotentiometer","Port4",
-		{"encode":"{d0}","setup":"","inc":"#include \"MePort.h\"\n","def":"MePort potentiometer_{0}((MEPORT){0});\n","work":"potentiometer_{0}.aRead2()","loop":""}],
+		{"encode":"{d0}","setup":"","inc":"#include \"MePort.h\"\n","def":"MePort potentiometer_{0}({0});\n","work":"potentiometer_{0}.aRead2()","loop":""}],
 		
 		["R", "pir motion sensor %d.port","getPirmotion","Port2",
-		{"encode":"{d0}","setup":"","inc":"#include \"MePort.h\"\n","def":"MePort pir_{0}((MEPORT){0});\n","work":"pir_{0}.dRead2()","loop":""}],
+		{"encode":"{d0}","setup":"","inc":"#include \"MePort.h\"\n","def":"MePort pir_{0}({0});\n","work":"pir_{0}.dRead2()","loop":""}],
 		
 		["-"],
 		
