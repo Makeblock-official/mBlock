@@ -43,6 +43,7 @@ import translation.Translator;
 
 import uiwidgets.IndicatorLight;
 
+import util.ApplicationManager;
 import util.JSON;
 import util.ReadStream;
 import util.SharedObjectManager;
@@ -157,6 +158,9 @@ public class ExtensionManager {
 			SharedObjectManager.sharedManager().setObject(name+"_selected",extensionSelected);
 			if(extensionSelected){
 				loadRawExtension(ext);
+				if(SerialDevice.sharedDevice().connected){
+					setTimeout(ConnectionManager.sharedManager().onReOpen,1000);
+				}
 			}else{
 				unloadRawExtension(ext);
 			}
@@ -183,8 +187,8 @@ public class ExtensionManager {
 	}
 	private function refreshList():void{
 		_extensionList = [];
-		if(File.documentsDirectory.resolvePath("mBlock/libraries/").exists){
-			var docs:Array =  File.documentsDirectory.resolvePath("mBlock/libraries/").getDirectoryListing();
+		if(ApplicationManager.sharedManager().documents.resolvePath("mBlock/libraries/").exists){
+			var docs:Array =  ApplicationManager.sharedManager().documents.resolvePath("mBlock/libraries/").getDirectoryListing();
 			for each(var doc:File in docs){
 				if(!doc.isDirectory){
 					continue;
@@ -213,7 +217,7 @@ public class ExtensionManager {
 		trace("copy local files!");
 		var srcFile:File = File.applicationDirectory.resolvePath("ext/libraries/");
 		for each(var sf:File in srcFile.getDirectoryListing()){
-			var tf:File = File.documentsDirectory.resolvePath("mBlock/libraries/"+sf.name);
+			var tf:File = ApplicationManager.sharedManager().documents.resolvePath("mBlock/libraries/"+sf.name);
 			if(!tf.exists){
 				sf.copyTo(tf,true);
 			}else{
@@ -226,8 +230,8 @@ public class ExtensionManager {
 	}
 	public function importExtension():void {
 		_extensionList = [];
-		if(File.documentsDirectory.resolvePath("mBlock/libraries/").exists){
-			var docs:Array =  File.documentsDirectory.resolvePath("mBlock/libraries/").getDirectoryListing();
+		if(ApplicationManager.sharedManager().documents.resolvePath("mBlock/libraries/").exists){
+			var docs:Array =  ApplicationManager.sharedManager().documents.resolvePath("mBlock/libraries/").getDirectoryListing();
 			for each(var doc:File in docs){
 				if(!doc.isDirectory){
 					continue;
@@ -283,16 +287,16 @@ public class ExtensionManager {
 	}
 	private function copyFirmwareAndHex():void{
 		var srcFile:File = File.applicationDirectory.resolvePath("firmware/mblock_firmware/");
-		var tf:File = File.documentsDirectory.resolvePath("mBlock/firmware/mblock_firmware/");
+		var tf:File = ApplicationManager.sharedManager().documents.resolvePath("mBlock/firmware/mblock_firmware/");
 		srcFile.copyTo(tf,true);
 		var botFile:File = File.applicationDirectory.resolvePath("firmware/mbot_firmware/");
-		var bottf:File = File.documentsDirectory.resolvePath("mBlock/firmware/mbot_firmware/");
+		var bottf:File = ApplicationManager.sharedManager().documents.resolvePath("mBlock/firmware/mbot_firmware/");
 		botFile.copyTo(bottf,true);
 		var hexFile:File = File.applicationDirectory.resolvePath("firmware/hex/");
-		var htf:File = File.documentsDirectory.resolvePath("mBlock/tools/hex/");
+		var htf:File = ApplicationManager.sharedManager().documents.resolvePath("mBlock/tools/hex/");
 		hexFile.copyTo(htf,true);
 		var localsFile:File = File.applicationDirectory.resolvePath("locale/");
-		var ltf:File = File.documentsDirectory.resolvePath("mBlock/locale/");
+		var ltf:File = ApplicationManager.sharedManager().documents.resolvePath("mBlock/locale/");
 		localsFile.copyTo(ltf,true);
 	}
 	public function extensionsToSave():Array {

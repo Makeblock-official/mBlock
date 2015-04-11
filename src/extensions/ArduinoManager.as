@@ -1146,7 +1146,7 @@ void updateVar(char * varName,double * var)
 			if(!workdir.exists){
 				workdir.createDirectory(); 
 			}
-			var srcdir:File = File.documentsDirectory.resolvePath("mBlock/libraries/"+_extSrcPath+"/src");
+			var srcdir:File = ApplicationManager.sharedManager().documents.resolvePath("mBlock/libraries/"+_extSrcPath+"/src");
 			//			var srcdir:File = File.applicationDirectory.resolvePath("compiler"); 
 			if(!workdir.exists){
 				return;
@@ -1253,7 +1253,7 @@ void updateVar(char * varName,double * var)
 				workdir.createDirectory(); 
 			} 
 			
-			var srcdir:File = File.documentsDirectory.resolvePath("mBlock/libraries/"+_extSrcPath+"/src");
+			var srcdir:File = ApplicationManager.sharedManager().documents.resolvePath("mBlock/libraries/"+_extSrcPath+"/src");
 			//			var srcdir:File = File.applicationDirectory.resolvePath("compiler"); 
 			if(!workdir.exists){
 				return "workdir not exists";

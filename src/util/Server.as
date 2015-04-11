@@ -124,7 +124,7 @@ public class Server implements IServer {
 	//------------------------------
 
 	public function getLanguageList(whenDone:Function):void {
-		var file:File = File.documentsDirectory.resolvePath("mBlock/locale");
+		var file:File = ApplicationManager.sharedManager().documents.resolvePath("mBlock/locale");
 		if(file.exists){
 			fetchAsset(file.url+'/lang_list.txt', whenDone);
 		}else{
@@ -133,7 +133,7 @@ public class Server implements IServer {
 	}
 
 	public function getPOFile(lang:String, whenDone:Function):void {
-		var file:File = File.documentsDirectory.resolvePath("mBlock/locale");
+		var file:File = ApplicationManager.sharedManager().documents.resolvePath("mBlock/locale");
 		if(file.exists){
 			fetchAsset(file.url+"/"+  lang +'.po', whenDone);
 		}else{

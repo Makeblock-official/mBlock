@@ -15,6 +15,7 @@ package util.version
 	import deng.fzip.FZipEvent;
 	import deng.fzip.FZipFile;
 	
+	import util.ApplicationManager;
 	import util.SharedObjectManager;
 
 	public class VerResource extends EventDispatcher
@@ -50,7 +51,7 @@ package util.version
 		private function onFileComplete(evt:Event):void{
 			_list = [];
 			var zipProcess:FZip = evt.target as FZip;
-			var documentPath:String = File.documentsDirectory.nativePath+"/mBlock/"+path+"/";
+			var documentPath:String = ApplicationManager.sharedManager().documents.nativePath+"/mBlock/"+path+"/";
 			
 			for(var i:uint = 0;i<zipProcess.getFileCount();i++){
 				var file:FZipFile = zipProcess.getFileAt(i);

@@ -84,7 +84,7 @@
 			}
 			air.trace(v);
 			return v;
-		};
+		}
 		getPackage(nextID,deviceId,ports[port]);
 	};
 	ext.getPotentiometer = function(nextID,port) {
@@ -105,7 +105,7 @@
     };
 	ext.getSoundsensor = function(nextID,port) {
 		var deviceId = 7;
-		getPackage(nextID,deviceId,ports[port],axis[ax]);
+		getPackage(nextID,deviceId,ports[port]);
     };
 	ext.getInfrared = function(nextID,port) {
 		var deviceId = 16;
@@ -125,7 +125,7 @@
     };
 	ext.getGyro = function(nextID,ax) {
 		var deviceId = 6;
-		getPackage(nextID,deviceId,ports[port],slots[slot]);
+		getPackage(nextID,deviceId,0,ax);
     };
 	function runPackage(){
 		var bytes = [];
