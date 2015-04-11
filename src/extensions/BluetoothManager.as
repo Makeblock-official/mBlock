@@ -101,7 +101,10 @@ package extensions
 				ConnectionManager.sharedManager().onClose();
 				close();
 			}else{
-				ConnectionManager.sharedManager().onOpen(port);
+				if(isConnected){
+					close();
+				}
+				setTimeout(ConnectionManager.sharedManager().onOpen,200,port);
 			}
 		}
 		private var _isBusy:Boolean = false;
@@ -125,7 +128,6 @@ package extensions
 				function checkName():void{
 					if(_bt.connected){
 						_isBusy = false;
-						//					MBlock.app.topBarPart.setBluetoothTitle(true);
 						MBlock.app.topBarPart.setConnectedTitle(_bt.connectName+" "+Translator.map("Connected"));
 					}else{
 						if(i<10){

@@ -91,6 +91,9 @@ package extensions
 				_receivedBuffer.clear();
 			}
 		}
+		public function get connected():Boolean{
+			return SerialManager.sharedManager().isConnected||HIDManager.sharedManager().isConnected||BluetoothManager.sharedManager().isConnected||SocketManager.sharedManager().isConnected;
+		}
 		public function close():void{
 //			ConnectionManager.sharedManager().close();
 		}

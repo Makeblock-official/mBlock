@@ -484,7 +484,7 @@ public class ExtensionManager {
 		
 		var msecsSinceLastResponse:uint = getTimer() - ext.lastPollResponseTime;
 		if(ext.useSerial){
-			if (!ParseManager.sharedManager().connected) {
+			if (!SerialDevice.sharedDevice().connected) {
 				indicator.setColorAndMsg(0xE00000, Translator.map('Disconnect'));
 //				MBlock.app.topBarPart.setBluetoothTitle(false);
 			}
@@ -599,7 +599,7 @@ public class ExtensionManager {
 
 	public function request(extensionName:String, op:String, args:Array, b:Block):void {
 		var ext:ScratchExtension = extensionDict[extensionName];
-		if (ext == null||(ext.useSerial&&!ParseManager.sharedManager().connected)||app.runtime.isRequest){
+		if (ext == null||(ext.useSerial&&!SerialDevice.sharedDevice().connected)||app.runtime.isRequest){
 			// unknown extension, skip the block
 //			b.requestState = 2;
 //			b.response = 0;

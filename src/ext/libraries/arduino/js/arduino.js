@@ -117,10 +117,6 @@
 			bytes.push(arguments[i]);
 		}
 		device.send(bytes);
-		nextID++;
-		if(nextID>50){
-			nextID=0;
-		}
 	}
 
     var inputArray = [];
