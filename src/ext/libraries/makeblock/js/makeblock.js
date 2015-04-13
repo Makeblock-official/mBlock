@@ -52,8 +52,8 @@
     ext.resetAll = function(){};
 	ext.runArduino = function(){
 	}
-	ext.runMotor = function(port,slot,speed) {
-        runPackage(10,ports[port],slots[slot],short2array(speed));
+	ext.runMotor = function(port,speed) {
+        runPackage(10,ports[port],short2array(speed));
     };
     ext.runServo = function(port,slot,angle) {
         runPackage(11,ports[port],slots[slot],angle);
@@ -82,6 +82,7 @@
 			if(v<1){
 				v = 0;
 			}
+			air.trace(v);
 			return v;
 		}
 		getPackage(nextID,deviceId,ports[port]);
@@ -104,7 +105,7 @@
     };
 	ext.getSoundsensor = function(nextID,port) {
 		var deviceId = 7;
-		getPackage(nextID,deviceId,ports[port],axis[ax]);
+		getPackage(nextID,deviceId,ports[port]);
     };
 	ext.getInfrared = function(nextID,port) {
 		var deviceId = 16;
@@ -124,7 +125,7 @@
     };
 	ext.getGyro = function(nextID,ax) {
 		var deviceId = 6;
-		getPackage(nextID,deviceId,ports[port],slots[slot]);
+		getPackage(nextID,deviceId,0,ax);
     };
 	function runPackage(){
 		var bytes = [];

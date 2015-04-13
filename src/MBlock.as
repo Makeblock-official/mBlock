@@ -1,5 +1,6 @@
 package {
 	import com.google.analytics.GATracker;
+	
 	import flash.desktop.NativeApplication;
 	import flash.display.DisplayObject;
 	import flash.display.Graphics;
@@ -167,6 +168,7 @@ package {
 			this.addEventListener(Event.CLOSING,onExiting);
 			isOffline = loaderInfo.url.indexOf('http:') == -1;
 			checkFlashVersion();
+			LogManager.sharedManager().log("checkFlashVersion");
 			VersionManager.sharedManager().start();
 			initServer();
 			stage.align = StageAlign.TOP_LEFT;
@@ -189,36 +191,41 @@ package {
 			gh = new GestureHandler(this, (loaderInfo.parameters['inIE'] == 'true'));
 			initInterpreter();
 			initRuntime();
-			extensionManager = new ExtensionManager(this);
-			SerialManager.sharedManager().setMBlock(this);
-			HIDManager.sharedManager().setMBlock(this);
-	//		extensionManager.importExtension();
-			Translator.initializeLanguageList();
-			playerBG = new Shape(); // create, but don't add
-			addParts();
-			stage.addEventListener(MouseEvent.MOUSE_DOWN, gh.mouseDown);
-			stage.addEventListener(MouseEvent.MOUSE_MOVE, gh.mouseMove);
-			stage.addEventListener(MouseEvent.MOUSE_UP, gh.mouseUp);
-			stage.addEventListener(MouseEvent.MOUSE_WHEEL, gh.mouseWheel);
-			stage.addEventListener('rightClick', gh.rightMouseClick);
-			stage.addEventListener(KeyboardEvent.KEY_DOWN, runtime.keyDown);
-			stage.addEventListener(KeyboardEvent.KEY_UP, runtime.keyUp);
-			stage.addEventListener(KeyboardEvent.KEY_DOWN, keyDown); // to handle escape key
-			stage.addEventListener(Event.ENTER_FRAME, step);
-			stage.addEventListener(Event.RESIZE, onResize);
-			setEditMode(startInEditMode());
-			
+			try{
+				extensionManager = new ExtensionManager(this);
+		//		extensionManager.importExtension();
+				Translator.initializeLanguageList();
+				playerBG = new Shape(); // create, but don't add
+				addParts();
+				stage.addEventListener(MouseEvent.MOUSE_DOWN, gh.mouseDown);
+				stage.addEventListener(MouseEvent.MOUSE_MOVE, gh.mouseMove);
+				stage.addEventListener(MouseEvent.MOUSE_UP, gh.mouseUp);
+				stage.addEventListener(MouseEvent.MOUSE_WHEEL, gh.mouseWheel);
+				stage.addEventListener('rightClick', gh.rightMouseClick);
+				stage.addEventListener(KeyboardEvent.KEY_DOWN, runtime.keyDown);
+				stage.addEventListener(KeyboardEvent.KEY_UP, runtime.keyUp);
+				stage.addEventListener(KeyboardEvent.KEY_DOWN, keyDown); // to handle escape key
+				stage.addEventListener(Event.ENTER_FRAME, step);
+				stage.addEventListener(Event.RESIZE, onResize);
+				setEditMode(startInEditMode());
+			}catch(e:*){
+				var textField:TextField = new TextField;
+				textField.width = 600;
+				textField.text = "The current issue should be due to that the user has his documents folder pointing (right click \"my documents\" -> properties -> location tab) to a folder on a remote drive that's not alway accessible. For example, pointing the folder to X: (\\orc-fs\temp) and then right-clicking on X to disconnect the drive."
+				addChild(textField);
+			}
 			// install project before calling fixLayout()
 			if (editMode) runtime.installNewProject();
 			else runtime.installEmptyProject();
 			
 			fixLayout();
+			LogManager.sharedManager().log("init fixLayout");
 			UpdaterManager.sharedManager().checkForUpdate();
 			setTimeout(function():void{
 				NativeApplication.nativeApplication.activeWindow.addEventListener(Event.CLOSING,onExiting);
 				SocketManager.sharedManager();
 			},100);
-			var ver:String = "04.07.001";
+			var ver:String = "04.11.002";
 			if(!SharedObjectManager.sharedManager().getObject(versionString+".0."+ver,false)){
 				SharedObjectManager.sharedManager().clear();
 				SharedObjectManager.sharedManager().setObject(versionString+".0."+ver,true);
@@ -235,8 +242,12 @@ package {
 			//Analyze.collectAssets(0, 119110);
 			//Analyze.checkProjects(56086, 64220);
 			//Analyze.countMissingAssets();
+			initExtension();
+		}
+		private function initExtension():void{
 			ClickerManager.sharedManager().update();
-			
+			SerialManager.sharedManager().setMBlock(this);
+			HIDManager.sharedManager().setMBlock(this);
 		}
 		private function openWelcome():void{
 			_welcomeView = new Loader();
@@ -921,7 +932,11 @@ package {
 					}
 					m.addItem('Discover', 'discover_bt', true, false);
 				}else{
-					m.addItem('No Bluetooth', '', false, false);
+					if(BluetoothManager.sharedManager().hasNetFramework){
+						m.addItem('No Bluetooth', '', false, false);
+					}else{
+						m.addItem('Bluetooth need to install .Net Framework 4.0', 'netframework', true, false);
+					}
 				}
 				m.addLine();
 			}

@@ -22,7 +22,7 @@ package util
 		}
 		public function log(msg:String):void{
 			trace(msg);
-//			stream.writeUTFBytes(msg);
+			//stream.writeUTFBytes(msg+"\r\n");
 		}
 		public function save():void{
 //			stream.close();

@@ -7,8 +7,8 @@ class MeUltrasonic: public MePort
 {
 	public:
 		MeUltrasonic();
-		MeUltrasonic(uint8_t pin);
-	    MeUltrasonic(MEPORT port);
+		//MeUltrasonic(uint8_t pin);
+	    MeUltrasonic(uint8_t port);
 	    double distanceCm();
 	    double distanceInch();
 	    double distanceCm(uint16_t maxCm);

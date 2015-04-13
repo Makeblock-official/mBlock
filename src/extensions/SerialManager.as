@@ -269,7 +269,7 @@ package extensions
 		}
 		public function openSource():void{
 			MBlock.app.track("/OpenSerial/ViewSource");
-			var file:File = new File(File.documentsDirectory.nativePath+"/mBlock/firmware/"+(DeviceManager.sharedManager().currentBoard.indexOf("mbot")>-1?"mbot_firmware":"mblock_firmware"));
+			var file:File = new File(ApplicationManager.sharedManager().documents.nativePath+"/mBlock/firmware/"+(DeviceManager.sharedManager().currentBoard.indexOf("mbot")>-1?"mbot_firmware":"mblock_firmware"));
 			file.openWithDefaultApplication();
 		}
 		public function disconnect():void{
@@ -340,7 +340,7 @@ package extensions
 					v.push("-D");
 					v.push("-U");
 					if(_hexToDownload.length==0){
-						var hexFile:String = (File.documentsDirectory.nativePath+"/mBlock/tools/hex/leonardo.hex");//.split("\\").join("/");
+						var hexFile:String = (ApplicationManager.sharedManager().documents.nativePath+"/mBlock/tools/hex/leonardo.hex");//.split("\\").join("/");
 						tf = new File(hexFile);
 						v.push("flash:w:"+hexFile+":i");
 					}else{
@@ -357,11 +357,11 @@ package extensions
 					v.push("-U");
 					if(_hexToDownload.length==0){
 						if(DeviceManager.sharedManager().currentBoard.indexOf("mbot")>-1){
-							var hexFile_mbot:String = (File.documentsDirectory.nativePath+"/mBlock/tools/hex/mbot.hex");//.split("\\").join("/");
+							var hexFile_mbot:String = (ApplicationManager.sharedManager().documents.nativePath+"/mBlock/tools/hex/mbot.hex");//.split("\\").join("/");
 							v.push("flash:w:"+hexFile_mbot+":i");
 							tf = new File(hexFile_mbot);
 						}else{
-							var hexFile_uno:String = (File.documentsDirectory.nativePath+"/mBlock/tools/hex/uno.hex");//.split("\\").join("/");
+							var hexFile_uno:String = (ApplicationManager.sharedManager().documents.nativePath+"/mBlock/tools/hex/uno.hex");//.split("\\").join("/");
 							v.push("flash:w:"+hexFile_uno+":i");
 							tf = new File(hexFile_uno);
 						}
@@ -377,7 +377,7 @@ package extensions
 					v.push("-D");
 					v.push("-U");
 					if(_hexToDownload.length==0){
-						var hexFile_mega1280:String = (File.documentsDirectory.nativePath+"/mBlock/tools/hex/mega1280.hex");//.split("\\").join("/");
+						var hexFile_mega1280:String = (ApplicationManager.sharedManager().documents.nativePath+"/mBlock/tools/hex/mega1280.hex");//.split("\\").join("/");
 						tf = new File(hexFile_mega1280);
 						v.push("flash:w:"+hexFile_mega1280+":i");
 					}else{
@@ -392,7 +392,7 @@ package extensions
 					v.push("-D");
 					v.push("-U");
 					if(_hexToDownload.length==0){
-						var hexFile_mega2560:String = (File.documentsDirectory.nativePath+"/mBlock/tools/hex/mega2560.hex");//.split("\\").join("/");
+						var hexFile_mega2560:String = (ApplicationManager.sharedManager().documents.nativePath+"/mBlock/tools/hex/mega2560.hex");//.split("\\").join("/");
 						tf = new File(hexFile_mega2560);
 						v.push("flash:w:"+hexFile_mega2560+":i");
 					}else{
@@ -407,7 +407,7 @@ package extensions
 					v.push("-D");
 					v.push("-U");
 					if(_hexToDownload.length==0){
-						var hexFile_nano328:String = (File.documentsDirectory.nativePath+"/mBlock/tools/hex/nano328.hex");//.split("\\").join("/");
+						var hexFile_nano328:String = (ApplicationManager.sharedManager().documents.nativePath+"/mBlock/tools/hex/nano328.hex");//.split("\\").join("/");
 						tf = new File(hexFile_nano328);
 						v.push("flash:w:"+hexFile_nano328+":i");
 					}else{
@@ -422,7 +422,7 @@ package extensions
 					v.push("-D");
 					v.push("-U");
 					if(_hexToDownload.length==0){
-						var hexFile_nano168:String = (File.documentsDirectory.nativePath+"/mBlock/tools/hex/nano168.hex");//.split("\\").join("/");
+						var hexFile_nano168:String = (ApplicationManager.sharedManager().documents.nativePath+"/mBlock/tools/hex/nano168.hex");//.split("\\").join("/");
 						tf = new File(hexFile_nano168);
 						v.push("flash:w:"+hexFile_nano168+":i");
 					}else{

@@ -1,9 +1,9 @@
 #include "MeDCMotor.h"
- MeDCMotor::MeDCMotor(): MePort(PORT_0)
+ MeDCMotor::MeDCMotor(): MePort(0)
  {
 
  }
-MeDCMotor::MeDCMotor(MEPORT port): MePort(port)
+MeDCMotor::MeDCMotor(uint8_t port): MePort(port)
 {
     pinMode(_dirPin,OUTPUT);
 }

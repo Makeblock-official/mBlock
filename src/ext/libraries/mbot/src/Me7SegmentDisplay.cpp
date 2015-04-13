@@ -21,14 +21,14 @@ Me7SegmentDisplay::Me7SegmentDisplay(uint8_t dataPin,uint8_t clkPin)
     set();
     clearDisplay();
 }
-Me7SegmentDisplay::Me7SegmentDisplay(MEPORT port): MePort(port)
+Me7SegmentDisplay::Me7SegmentDisplay(uint8_t port): MePort(port)
 {   
     pinMode(s2, OUTPUT);
     pinMode(s1, OUTPUT);
     set();
     clearDisplay();
 }
-void Me7SegmentDisplay::reset(MEPORT port)
+void Me7SegmentDisplay::reset(uint8_t port)
 {
     reset(port);
     s2 = s2;

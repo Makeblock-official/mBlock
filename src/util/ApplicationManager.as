@@ -1,4 +1,5 @@
 package util{
+	import flash.filesystem.File;
 	import flash.system.Capabilities;
 
 	public class ApplicationManager{
@@ -17,6 +18,17 @@ package util{
 				_instance = new ApplicationManager;
 			}
 			return _instance;
+		}
+		private var _file:File;
+		public function get documents():File{
+			if(_file==null){
+				try{
+					_file = File.documentsDirectory;
+				}catch(err:Error){
+					_file = File.applicationStorageDirectory;
+				}
+			}
+			return _file;
 		}
 		public function get system():uint{
 			if(Capabilities.os.indexOf("Window")>-1){
