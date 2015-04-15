@@ -35,6 +35,7 @@ package util.version
 			_reqLoader.addEventListener(Event.COMPLETE,onReqComplete);
 		}
 		private function onReqComplete(evt:Event):void{
+//			trace(evt.target.data);
 			var xml:XML = new XML(evt.target.data);
 			_list = [];
 			for(var i:uint = 0;i<xml[0].resource.length();i++){

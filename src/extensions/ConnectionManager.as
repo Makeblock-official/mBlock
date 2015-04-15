@@ -63,6 +63,7 @@ package extensions
 					break;
 				}
 				default:{
+					
 					if(name.indexOf("serial_")>-1){
 						SerialManager.sharedManager().connect(name.split("serial_").join(""));
 					}

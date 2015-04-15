@@ -952,9 +952,11 @@ package {
 			}
 			m.addItem('Custom Connect', 'connect_network', true, false);
 			m.addLine();
-			m.addItem('Firmware', '', false, false);
-			m.addItem('Upgrade Firmware', 'upgrade_firmware', SerialManager.sharedManager().isConnected, false);
-			m.addItem('View Source', 'view_source', DeviceManager.sharedManager().currentBoard.indexOf("unknown")>-1?false:true, false);
+			if(DeviceManager.sharedManager().currentName!=""){
+				m.addItem('Firmware', '', false, false);
+				m.addItem(Translator.map('Upgrade Firmware')+" ( "+DeviceManager.sharedManager().currentName+" )", 'upgrade_firmware', SerialManager.sharedManager().isConnected, false);
+				m.addItem('View Source', 'view_source', DeviceManager.sharedManager().currentBoard.indexOf("unknown")>-1?false:true, false);
+			}
 			m.addItem('Install Arduino Driver', 'driver', true, false);
 			m.showOnStage(stage, b.x, topBarPart.bottom() - 1);
 		}

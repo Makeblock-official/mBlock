@@ -1,6 +1,6 @@
 #ifndef MeWire_h
 #define MeWire_h
-#include <Wire.h>
+#include "Wire.h"
 #include "MePort.h"
 //Wire Setup
 #define BEGIN_FLAG  		0x1E

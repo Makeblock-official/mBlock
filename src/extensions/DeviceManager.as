@@ -7,6 +7,7 @@ package extensions
 		private static var _instance:DeviceManager;
 		private var _device:String = "";
 		private var _board:String = "";
+		private var _name:String = "";
 		public function DeviceManager()
 		{
 			_board = SharedObjectManager.sharedManager().getObject("board","mbot_uno");
@@ -47,6 +48,19 @@ package extensions
 		}
 		public function checkCurrentBoard(board:String):Boolean{
 			return _board==board;
+		}
+		public function get currentName():String{
+			_name = "";
+			if(_board.indexOf("mbot")>-1){
+				_name = "mBot";
+			}else if(_board.indexOf("orion")>-1){
+				_name = "Me Orion";
+			}else if(_board.indexOf("baseboard")>-1){
+				_name = "Me Baseboard";
+			}else if(_board.indexOf("arduino")>-1){
+				_name = "arduino "+_device;
+			}
+			return _name;
 		}
 		public function get currentBoard():String{
 			return _board;
