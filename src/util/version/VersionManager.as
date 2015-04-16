@@ -8,6 +8,8 @@ package util.version
 	
 	import extensions.DeviceManager;
 	
+	import util.ApplicationManager;
+	import util.LogManager;
 	import util.SharedObjectManager;
 
 	public class VersionManager 
@@ -27,9 +29,8 @@ package util.version
 			return _instance;
 		}
 		public function start():void{
-//			SharedObjectManager.sharedManager().clear();
 			_isFirst = SharedObjectManager.sharedManager().getObject("first-launch",true);
-			var req:URLRequest = new URLRequest("http://makeblock.sinaapp.com/scratch/mblock_resources_v3.php");
+			var req:URLRequest = new URLRequest("http://makeblock.sinaapp.com/scratch/mblock_resources_v4.php");
 			_reqLoader.load(req);
 			_reqLoader.addEventListener(IOErrorEvent.IO_ERROR,onReqError);
 			_reqLoader.addEventListener(Event.COMPLETE,onReqComplete);
@@ -48,15 +49,16 @@ package util.version
 				res.addEventListener("LOADED_ERROR",onError);
 				_list.push(res);
 			}
-			trace("onReqComplete");
+			LogManager.sharedManager().log("onReqComplete");
 			startRequest();
 		}
 		private function onReqError(evt:Event):void{
-			trace("req error!")
+			LogManager.sharedManager().log("req error!");
 			if(_isFirst){
 				MBlock.app.extensionManager.copyLocalFiles();
 				SharedObjectManager.sharedManager().setObject("first-launch",false);
 			}
+			setTimeout(DeviceManager.sharedManager().onSelectBoard,1000,DeviceManager.sharedManager().currentBoard);
 			MBlock.app.extensionManager.clearImportedExtensions();
 			MBlock.app.extensionManager.importExtension();
 		}

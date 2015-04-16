@@ -168,8 +168,6 @@ package {
 			this.addEventListener(Event.CLOSING,onExiting);
 			isOffline = loaderInfo.url.indexOf('http:') == -1;
 			checkFlashVersion();
-			LogManager.sharedManager().log("checkFlashVersion");
-			VersionManager.sharedManager().start();
 			initServer();
 			stage.align = StageAlign.TOP_LEFT;
 			stage.scaleMode = StageScaleMode.NO_SCALE;
@@ -219,18 +217,22 @@ package {
 			else runtime.installEmptyProject();
 			
 			fixLayout();
-			LogManager.sharedManager().log("init fixLayout");
 			UpdaterManager.sharedManager().checkForUpdate();
 			setTimeout(function():void{
 				NativeApplication.nativeApplication.activeWindow.addEventListener(Event.CLOSING,onExiting);
 				SocketManager.sharedManager();
 			},100);
-			var ver:String = "04.11.002";
+			var ver:String = "04.16.001";
+			var isFilesAvailable:Boolean = ApplicationManager.sharedManager().documents.resolvePath("mBlock").exists;
+			if(!isFilesAvailable){
+				SharedObjectManager.sharedManager().clear();
+			}
 			if(!SharedObjectManager.sharedManager().getObject(versionString+".0."+ver,false)){
 				SharedObjectManager.sharedManager().clear();
 				SharedObjectManager.sharedManager().setObject(versionString+".0."+ver,true);
-//				SharedObjectManager.sharedManager().setObject("device","uno");
+				//SharedObjectManager.sharedManager().setObject("board","mbot_uno");
 			}
+			VersionManager.sharedManager().start();
 			if(!SharedObjectManager.sharedManager().available("first-launch")){
 				SharedObjectManager.sharedManager().setObject("first-launch",true);
 			}
@@ -926,9 +928,12 @@ package {
 			if(ApplicationManager.sharedManager().system == ApplicationManager.WINDOWS){
 				if(BluetoothManager.sharedManager().isSupported){
 					m.addItem('Bluetooth', '', false, false);
-					arr = BluetoothManager.sharedManager().list;
+					arr = BluetoothManager.sharedManager().history;
 					for(i=0;i<arr.length;i++){
-						m.addItem(arr[i], "bt_"+arr[i], true, arr[i]==BluetoothManager.sharedManager().currentBluetooth&&BluetoothManager.sharedManager().isConnected);
+						m.addItem(arr[i].label, "bt_"+arr[i].label, true, arr[i].label==BluetoothManager.sharedManager().currentBluetooth&&BluetoothManager.sharedManager().isConnected);
+					}
+					if(arr.length>0){
+						m.addItem('Clear Bluetooth', 'clear_bt', true, false);
 					}
 					m.addItem('Discover', 'discover_bt', true, false);
 				}else{
@@ -982,6 +987,10 @@ package {
 		public function showExtensionMenu(b:*):void {
 			var m:Menu = new Menu(extensionManager.onSelectExtension, 'Extension', CSS.topBarColor, 28);
 			var list:Array = extensionManager.extensionList;
+			if(list.length==0){
+				MBlock.app.extensionManager.copyLocalFiles();
+				SharedObjectManager.sharedManager().setObject("first-launch",false);
+			}
 			for(var i:uint=0;i<list.length;i++){
 				var n:String = list[i].extensionName;
 				m.addItem(n, n, true, extensionManager.checkExtensionSelected(n));

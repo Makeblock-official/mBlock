@@ -1,5 +1,6 @@
 package extensions
 {
+	import util.LogManager;
 	import util.SharedObjectManager;
 
 	public class DeviceManager
@@ -63,6 +64,7 @@ package extensions
 			return _name;
 		}
 		public function get currentBoard():String{
+			LogManager.sharedManager().log("currentBoard:"+_board);
 			return _board;
 		}
 		public function get currentDevice():String{

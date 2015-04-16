@@ -1490,8 +1490,17 @@ void updateVar(char * varName,double * var)
 				}
 				return "";
 			}
+			var file:File = File.applicationDirectory.resolvePath("arduino");
+			if(file.exists){
+				tf.url = file.url+"/hardware/tools/avr/bin/avr-ar.exe"
+				if(tf.exists){
+					arduinoPath =(file.nativePath.split("\\").join("/"));
+					SharedObjectManager.sharedManager().setObject("arduinoPath",arduinoPath);
+					return arduinoPath;
+				}
+			}
 			var files:Array = File.getRootDirectories();
-			for each(var file:File in files){
+			for each(file in files){
 				if(file.isDirectory){
 					var tmp:Array = file.getDirectoryListing();
 					for each(var f:File in tmp){

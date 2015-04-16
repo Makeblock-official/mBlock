@@ -8,6 +8,8 @@ package extensions
 	import flash.utils.ByteArray;
 	
 	import util.ApplicationManager;
+	import util.LogManager;
+	import util.SharedObjectManager;
 
 	public class ConnectionManager extends EventDispatcher
 	{
@@ -26,6 +28,10 @@ package extensions
 			switch(name){
 				case "discover_bt":{
 					BluetoothManager.sharedManager().discover();
+					break;
+				}
+				case "clear_bt":{
+					BluetoothManager.sharedManager().clearHistory();
 					break;
 				}
 				case "netframework":{
@@ -63,7 +69,6 @@ package extensions
 					break;
 				}
 				default:{
-					
 					if(name.indexOf("serial_")>-1){
 						SerialManager.sharedManager().connect(name.split("serial_").join(""));
 					}
@@ -77,6 +82,7 @@ package extensions
 			}
 		}
 		public function open(port:String,baud:uint=115200):Boolean{
+			LogManager.sharedManager().log("connection:"+port);
 			if(port){
 				if(port.indexOf("COM")>-1||port.indexOf("/dev/tty.")>-1){
 					return SerialManager.sharedManager().open(port,baud);

@@ -136,6 +136,7 @@ package extensions
 			if(_ext){
 				var dev:SerialDevice = SerialDevice.sharedDevice();
 				_ext._deviceConnected(dev);
+				trace("register:",_name);
 			}
 		}
 		private function onClosed(evt:Event):void{
