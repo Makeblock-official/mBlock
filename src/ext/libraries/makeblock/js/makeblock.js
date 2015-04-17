@@ -82,7 +82,6 @@
 			if(v<1){
 				v = 0;
 			}
-			air.trace(v);
 			return v;
 		}
 		getPackage(nextID,deviceId,ports[port]);
@@ -125,7 +124,7 @@
     };
 	ext.getGyro = function(nextID,ax) {
 		var deviceId = 6;
-		getPackage(nextID,deviceId,0,ax);
+		getPackage(nextID,deviceId,0,axis[ax]);
     };
 	function runPackage(){
 		var bytes = [];

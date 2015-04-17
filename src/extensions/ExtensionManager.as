@@ -45,6 +45,7 @@ import uiwidgets.IndicatorLight;
 
 import util.ApplicationManager;
 import util.JSON;
+import util.LogManager;
 import util.ReadStream;
 import util.SharedObjectManager;
 
@@ -214,7 +215,7 @@ public class ExtensionManager {
 		}
 	}
 	public function copyLocalFiles():void{
-		trace("copy local files!");
+		LogManager.sharedManager().log("copy local files:"+File.applicationDirectory.url);
 		var srcFile:File = File.applicationDirectory.resolvePath("ext/libraries/");
 		for each(var sf:File in srcFile.getDirectoryListing()){
 			var tf:File = ApplicationManager.sharedManager().documents.resolvePath("mBlock/libraries/"+sf.name);
@@ -292,7 +293,7 @@ public class ExtensionManager {
 		var botFile:File = File.applicationDirectory.resolvePath("firmware/mbot_firmware/");
 		var bottf:File = ApplicationManager.sharedManager().documents.resolvePath("mBlock/firmware/mbot_firmware/");
 		botFile.copyTo(bottf,true);
-		var hexFile:File = File.applicationDirectory.resolvePath("firmware/hex/");
+		var hexFile:File = File.applicationDirectory.resolvePath("tools/hex/");
 		var htf:File = ApplicationManager.sharedManager().documents.resolvePath("mBlock/tools/hex/");
 		hexFile.copyTo(htf,true);
 		var localsFile:File = File.applicationDirectory.resolvePath("locale/");

@@ -7,4 +7,5 @@ de_DE,Deutsch
 ja_HIRA,にほんご
 ja,日本語
 ko,한국어
+nl_NL,Nederlands
 ru-RU,Русский

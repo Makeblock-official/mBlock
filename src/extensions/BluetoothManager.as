@@ -10,6 +10,8 @@ package extensions
 	import uiwidgets.DialogBox;
 	
 	import util.ApplicationManager;
+	import util.LogManager;
+	import util.SharedObjectManager;
 
 	public class BluetoothManager
 	{
@@ -97,6 +99,7 @@ package extensions
 			}
 		}
 		public function connect(port:String):void{
+			LogManager.sharedManager().log("bt:"+port);
 			if(SerialDevice.sharedDevice().port==port&&isConnected){
 				ConnectionManager.sharedManager().onClose();
 				close();
@@ -108,27 +111,67 @@ package extensions
 			}
 		}
 		private var _isBusy:Boolean = false;
+		private var _history:Array = [];
+		private function addBluetoothHistory():void{
+			var devName:String = _currentBluetooth.split("(")[1].split(")")[0];
+			var devAddr:String = _currentBluetooth.split("(")[0];
+			for(var i:uint=0;i<_history.length;i++){
+				var dev:Object = _history[i];
+				if(dev.addr == devAddr){
+					dev.name = devName;
+					dev.label = _currentBluetooth;
+					return;
+				}
+			}
+			dev = {};
+			dev.name = devName;
+			dev.addr = devAddr;
+			dev.label = _currentBluetooth;
+			_history.push(dev);
+			SharedObjectManager.sharedManager().setObject("btHistory",_history);
+		}
+		private function getBluetoothName(address:String):Object{
+			for(var i:uint=0;i<_history.length;i++){
+				var dev:Object = _history[i];
+				if(dev.addr == address){
+					dev.label = _currentBluetooth;
+					return dev;
+				}
+			}
+			return {};
+		}
+		public function get history():Array{
+			_history = SharedObjectManager.sharedManager().getObject("btHistory",[]);
+			return _history;
+		}
+		public function clearHistory():void{
+			SharedObjectManager.sharedManager().setObject("btHistory",[]);
+		}
 		public function open(port:String):Boolean{
-			trace("open:",port);
+			LogManager.sharedManager().log("bt open:"+port);
 			var status:Boolean = false;
 			if(_isBusy){
+				setTimeout(function():void{_isBusy=false;},2000);
 				return true;
 			}
 			_isBusy = true;
 			if(_bt.connected){
-				close();
 				if(_currentBluetooth==port){
-					return false;
+					return true;
+				}else{
+					close();
 				}
 			}
-			if(_list.indexOf(port)>-1){
-				_bt.connect(_list.indexOf(port));
+			//if(_list.indexOf(port)>-1){
+			LogManager.sharedManager().log("bt:"+port.split("( ")[1].split(" )")[0]);
+				_bt.connectByAddress(port.split("( ")[1].split(" )")[0]);
 				_currentBluetooth = port;
 				var i:uint = 0;
 				function checkName():void{
 					if(_bt.connected){
 						_isBusy = false;
-						MBlock.app.topBarPart.setConnectedTitle(_bt.connectName+" "+Translator.map("Connected"));
+						addBluetoothHistory();
+						MBlock.app.topBarPart.setConnectedTitle(_currentBluetooth+" "+Translator.map("Connected"));
 					}else{
 						if(i<10){
 							setTimeout(checkName,500);
@@ -140,7 +183,7 @@ package extensions
 				}
 				setTimeout(checkName,1000);
 				status = true;
-			}
+			//}
 			return status;
 		}
 		public function get isConnected():Boolean{

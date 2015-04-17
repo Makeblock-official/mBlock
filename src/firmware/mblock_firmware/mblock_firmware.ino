@@ -10,7 +10,7 @@
 * http://www.makeblock.cc/
 **************************************************************************/
 #include <Servo.h>
-#include <Wire.h>
+#include <SoftwareSerial.h>
 #include "MePort.h"
 #include "MeServo.h" 
 #include "MeDCMotor.h" 
@@ -21,10 +21,10 @@
 #include "MeRGBLed.h"
 #include "MeInfraredReceiver.h"
 #include "MeStepper.h"
-#if defined(__AVR_ATmega328P__) or defined(__AVR_ATmega168__)
-  #include "MeEncoderMotor.h"
-#endif
-Servo servo;  
+#include "MeEncoderMotor.h"
+Servo servo;
+Servo servos[8];
+int servoPins[8]={0,0,0,0,0,0,0,0};
 MeDCMotor dc;
 MeTemperature ts;
 MeRGBLed led;
@@ -60,12 +60,12 @@ union{
   short shortVal;
 }valShort;
 MeModule modules[12];
+MeEncoderMotor encoders[2];
 #if defined(__AVR_ATmega32U4__) 
   int analogs[12]={A0,A1,A2,A3,A4,A5,A6,A7,A8,A9,A10,A11};
 #endif
 #if defined(__AVR_ATmega328P__) or defined(__AVR_ATmega168__)
   int analogs[8]={A0,A1,A2,A3,A4,A5,A6,A7};
-  MeEncoderMotor encoders[2];
 #endif
 #if defined(__AVR_ATmega1280__)|| defined(__AVR_ATmega2560__)
   int analogs[16]={A0,A1,A2,A3,A4,A5,A6,A7,A8,A9,A10,A11,A12,A13,A14,A15};
@@ -95,7 +95,7 @@ char serialRead;
 #define SEVSEG 9
 #define MOTOR 10
 #define SERVO 11
-//#define ENCODER 12
+
 #define IR 13
 #define PIRMOTION 15
 #define INFRARED 16
@@ -133,21 +133,23 @@ void setup(){
 //  buzzerOff();
   steppers[0] = MeStepper();
   steppers[1] = MeStepper();
+  encoders[0] = MeEncoderMotor(SLOT_1);
+  encoders[1] = MeEncoderMotor(SLOT_2);
+  encoders[0].begin();
+  encoders[1].begin();
+  delay(500);
+  encoders[0].runSpeed(0);
+  encoders[1].runSpeed(0);
+  gyro.begin();
   #if defined(__AVR_ATmega328P__) or defined(__AVR_ATmega168__)
-    encoders[0] = MeEncoderMotor(SLOT_1);
-    encoders[1] = MeEncoderMotor(SLOT_2);
-    encoders[0].begin();
-    encoders[1].begin();
-    delay(500);
-    encoders[0].runSpeed(0);
-    encoders[1].runSpeed(0);
+    
   #else
     Serial1.begin(115200);
   #endif
 }
 void loop(){
   currentTime = millis()/1000.0-lastTime;
-  if(ir.buttonState()==1){ 
+  if(ir.buttonState()){ 
     if(ir.available()>0){
       irRead = ir.read();
     }
@@ -328,6 +330,26 @@ float readFloat(int idx){
   val.byteVal[3] = readBuffer(idx+3);
   return val.floatVal;
 }
+int getServoPin(uint8_t pin){
+  int i;
+  for(i=0;i<8;i++){
+    if(servoPins[i]==pin){
+     return i; 
+    }
+  }
+  for(i=0;i<8;i++){
+    if(servoPins[i]==0){
+      servoPins[i] = pin;
+      return i;
+    }
+  }
+  for(i=1;i<7;i++){
+    servoPins[i] = 0;
+  }
+  servoPins[0] = pin;
+  return 0;
+}
+
 void runModule(int device){
   //0xff 0x55 0x6 0x0 0x1 0xa 0x9 0x0 0x0 0xa 
   int port = readBuffer(6);
@@ -366,13 +388,11 @@ void runModule(int device){
       int maxSpeed = readShort(7);
       int distance = readShort(9);
       int slot = port;
-      #if defined(__AVR_ATmega328P__)
-        if(slot==SLOT_1){
-           encoders[0].move(distance,maxSpeed);
-        }else if(slot==SLOT_2){
-           encoders[1].move(distance,maxSpeed);
-        }
-      #endif
+      if(slot==SLOT_1){
+         encoders[0].move(distance,maxSpeed);
+      }else if(slot==SLOT_2){
+         encoders[1].move(distance,maxSpeed);
+      }
     }
     break;
    case RGBLED:{
@@ -394,6 +414,7 @@ void runModule(int device){
      pin = slot==1?mePort[port].s1:mePort[port].s2;
      int v = readBuffer(8);
      if(v>=0&&v<=180){
+       servo = servos[getServoPin(pin)];
        servo.attach(pin);
        servo.write(v);
      }
@@ -453,6 +474,7 @@ void runModule(int device){
    case SERVO_PIN:{
      int v = readBuffer(7);
      if(v>=0&&v<=180){
+       servo = servos[getServoPin(pin)];
        servo.attach(pin);
        servo.write(v);
      }
@@ -520,7 +542,8 @@ void readSensor(int device){
    break;
    case  INFRARED:{
      if(ir.getPort()!=port){
-       ir.reset(port);
+       ir = MeInfraredReceiver(port);
+       ir.begin(9600);
      }
      sendFloat(irRead);
    }

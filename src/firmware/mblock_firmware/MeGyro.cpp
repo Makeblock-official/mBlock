@@ -1,4 +1,5 @@
 #include "MeGyro.h"
+#include "Wire.h"
 static uint8_t buffers[14];
 static float angleX=0;
 static float angleY=0;
