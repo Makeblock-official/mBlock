@@ -37,6 +37,7 @@ package ui.parts {
 	import assets.Resources;
 	
 	import extensions.ConnectionManager;
+	import extensions.DeviceManager;
 	import extensions.ParseManager;
 	import extensions.SerialDevice;
 	
@@ -268,7 +269,7 @@ package ui.parts {
 	//			addChild(bluetoothMenu = makeMenuButton(!SerialManager.sharedManager().isBluetoothSupported?"No Bluetooth":(SerialManager.sharedManager().isBluetoothConnected?'Disconnect Bluetooth':'Bluetooth'), app.openBluetooth, false));
 	//		}
 	//		addChild(socketMenu = makeMenuButton('Network',app.showNetworkMenu,true));
-			addChild(deviceMenu = makeMenuButton('Boards',app.showBoardMenu,true));
+			addChild(deviceMenu = makeMenuButton(Translator.map('Boards')+" ( "+DeviceManager.sharedManager().currentName+" )",app.showBoardMenu,true));
 			addChild(extensionMenu = makeMenuButton('Extensions',app.showExtensionMenu,true));
 			if(ApplicationManager.sharedManager().isCatVersion){
 				addChild(shareMenu = makeMenuButton('Share Your Project', app.openShare, false));
@@ -371,6 +372,11 @@ package ui.parts {
 		public function setConnectedTitle(title:String):void{
 			removeChild(connectMenu);
 			addChild(connectMenu = makeMenuButton(title, app.showConnectMenu, true));
+			this.fixLayout();
+		}
+		public function setBoardTitle():void{
+			removeChild(deviceMenu);
+			addChild(deviceMenu = makeMenuButton(Translator.map('Boards')+" ( "+DeviceManager.sharedManager().currentName+" )",app.showBoardMenu,true));
 			this.fixLayout();
 		}
 	//	public function setSocketConnectedTitle(title:String):void{

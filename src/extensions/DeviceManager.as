@@ -46,6 +46,7 @@ package extensions
 					MBlock.app.extensionManager.onSelectExtension("PicoBoard");
 				}
 			}
+			MBlock.app.topBarPart.setBoardTitle();
 		}
 		public function checkCurrentBoard(board:String):Boolean{
 			return _board==board;
@@ -59,7 +60,9 @@ package extensions
 			}else if(_board.indexOf("baseboard")>-1){
 				_name = "Me Baseboard";
 			}else if(_board.indexOf("arduino")>-1){
-				_name = "arduino "+_device;
+				_name = "Arduino "+_device.substr(0,1).toLocaleUpperCase()+_device.substr(1,_device.length);
+			}else if(_board.indexOf("picoboard")>-1){
+				_name = "PicoBoard";
 			}
 			return _name;
 		}

@@ -50,7 +50,7 @@ void Timer2Init(uint32_t TimerFreq)
   MeBuzzer::MeBuzzer(uint8_t port, uint8_t slot):MePort(port)
  {
     buzzer_pin = s2;
-    if(slot == SLOT2)
+    if(slot == SLOT_2)
     {   
         buzzer_pin = s2;
     }else

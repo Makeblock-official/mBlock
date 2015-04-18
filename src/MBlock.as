@@ -957,7 +957,7 @@ package {
 			}
 			m.addItem('Custom Connect', 'connect_network', true, false);
 			m.addLine();
-			if(DeviceManager.sharedManager().currentName!=""){
+			if(DeviceManager.sharedManager().currentName!="PicoBoard"){
 				m.addItem('Firmware', '', false, false);
 				m.addItem(Translator.map('Upgrade Firmware')+" ( "+DeviceManager.sharedManager().currentName+" )", 'upgrade_firmware', SerialManager.sharedManager().isConnected, false);
 				m.addItem('View Source', 'view_source', DeviceManager.sharedManager().currentBoard.indexOf("unknown")>-1?false:true, false);
