@@ -7,6 +7,8 @@ package extensions
 	
 	import translation.Translator;
 	
+	import util.LogManager;
+	
 	public class HIDManager extends EventDispatcher
 	{
 		private static var _instance:HIDManager;
@@ -82,6 +84,7 @@ package extensions
 		public function open():Boolean{
 			try{
 				var res:int = _hid.OpenHID();
+				LogManager.sharedManager().log("hid connecting");
 				if(res==0){
 					trace("hid opened")
 					MBlock.app.topBarPart.setConnectedTitle(Translator.map("2.4G Serial")+" "+Translator.map("Connected"));
@@ -97,9 +100,9 @@ package extensions
 					return true;
 				}
 			}catch(err:*){
-				trace(err);
+				LogManager.sharedManager().log(err);
 			}
-			trace("hid fail")
+			LogManager.sharedManager().log("hid fail");
 			return false;
 		}
 		public function onOpen():void{
