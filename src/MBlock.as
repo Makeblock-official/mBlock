@@ -153,6 +153,7 @@ package {
 		public var ga:GATracker;
 		private var tabsPart:TabsPart;
 		private var _welcomeView:Loader;
+		private var _currentVer:String = "04.16.001";
 		public function MBlock() {
 			this.addEventListener(Event.ADDED_TO_STAGE,initStage);
 		}
@@ -222,7 +223,7 @@ package {
 				NativeApplication.nativeApplication.activeWindow.addEventListener(Event.CLOSING,onExiting);
 				SocketManager.sharedManager();
 			},100);
-			var ver:String = "04.16.001";
+			var ver:String = _currentVer;
 			var isFilesAvailable:Boolean = ApplicationManager.sharedManager().documents.resolvePath("mBlock").exists;
 			if(!isFilesAvailable){
 				SharedObjectManager.sharedManager().clear();
@@ -1128,6 +1129,8 @@ package {
 			m.addItem('Acknowledgements', 'acknowledgements', true, false);
 //			m.addItem('Features','features',true,false);
 			m.addItem('About', 'about', true, false);
+			m.addLine();
+			m.addItem(''+versionString+"."+_currentVer, 'version', false, false);
 			if(ClickerManager.sharedManager().list){
 				var hasLine:Boolean = true;
 				for(var i:uint=0;i<ClickerManager.sharedManager().list.length;i++){
