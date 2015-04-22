@@ -82,11 +82,18 @@ package extensions
 			
 		}
 		public function open():Boolean{
+			if(_isConnected){
+				return true;
+			}
+			if(this.isConnected){
+				_hid.CloseHID();
+			}
 			try{
 				var res:int = _hid.OpenHID();
 				LogManager.sharedManager().log("hid connecting");
 				if(res==0){
-					trace("hid opened")
+					trace("hid opened");
+					_isConnected = true;
 					MBlock.app.topBarPart.setConnectedTitle(Translator.map("2.4G Serial")+" "+Translator.map("Connected"));
 					//				ParseManager.sharedManager().queryVersion();
 					_hid.removeEventListener(AirHID.EVENT_RXDATA,hidRx);  
@@ -103,6 +110,7 @@ package extensions
 				LogManager.sharedManager().log(err);
 			}
 			LogManager.sharedManager().log("hid fail");
+			_isConnected = false;
 			return false;
 		}
 		public function onOpen():void{
@@ -110,7 +118,7 @@ package extensions
 				SerialDevice.sharedDevice().port = "";
 				onClose();
 			}else{
-				ConnectionManager.sharedManager().onOpen("HID");
+				setTimeout(ConnectionManager.sharedManager().onOpen,1000,"HID");
 			}
 		}
 		public function onClose():void{

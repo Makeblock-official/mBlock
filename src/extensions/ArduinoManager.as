@@ -1384,9 +1384,9 @@ void updateVar(char * varName,double * var)
 			processArgs.push(projectPath+"/"+projectDocumentName+".ino")
 			nativeProcessStartupInfo.arguments = processArgs;
 			process = new NativeProcess();
-			process.addEventListener(ProgressEvent.STANDARD_OUTPUT_DATA, onOutputData); 
-			process.addEventListener(ProgressEvent.STANDARD_ERROR_DATA, onErrorData);
-			process.addEventListener(NativeProcessExitEvent.EXIT, onExit);
+			process.addEventListener(ProgressEvent.STANDARD_OUTPUT_DATA, function(e:ProgressEvent):void{}); 
+			process.addEventListener(ProgressEvent.STANDARD_ERROR_DATA, function(e:ProgressEvent):void{});
+			process.addEventListener(NativeProcessExitEvent.EXIT, function(e:NativeProcessExitEvent):void{});
 			process.start(nativeProcessStartupInfo);
 			return ""
 		}

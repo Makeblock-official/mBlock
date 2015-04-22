@@ -151,6 +151,7 @@ package extensions
 			var r:uint = _serial.open(port,baud);
 			_selectPort = port;
 			if(r==0){
+				ArduinoManager.sharedManager().isUploading = false;
 				MBlock.app.topBarPart.setConnectedTitle(port+" "+Translator.map("Connected"));
 			}
 			return r == 0;
@@ -198,7 +199,6 @@ package extensions
 				LogManager.sharedManager().log("port:"+port+"\r\n");
 				LogManager.sharedManager().log("board:"+_board+"\r\n");
 				LogManager.sharedManager().log("state:"+_serial.isConnected+"\r\n");
-				
 				return 0;
 			}
 			if(port.indexOf("source")>-1){

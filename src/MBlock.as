@@ -153,7 +153,7 @@ package {
 		public var ga:GATracker;
 		private var tabsPart:TabsPart;
 		private var _welcomeView:Loader;
-		private var _currentVer:String = "04.16.001";
+		private var _currentVer:String = "04.22.002";
 		public function MBlock() {
 			this.addEventListener(Event.ADDED_TO_STAGE,initStage);
 		}
