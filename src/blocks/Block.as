@@ -765,8 +765,8 @@ public class Block extends Sprite {
 		else if (parent) parent.removeChild(this);
 		this.cacheAsBitmap = false;
 		// set position for undelete
-		x = top.x;
-		y = top.y;
+		x = top.originalX;
+		y = top.originalY;
 		if (top != this) x += top.width + 5;
 		removeComments();
 		app.runtime.recordForUndelete(this, x, y, 0, app.viewedObj());
