@@ -192,6 +192,7 @@ public class ProjectIO {
 	}
 	private var fixList:Array = [
 		["arduino\\/main","runArduino"],
+		["Robots.","Makeblock."],
 		["get\\/timer","getTimer"],
 		["run\\/timer","resetTimer"],
 		["get\\/digital","getDigital"],
