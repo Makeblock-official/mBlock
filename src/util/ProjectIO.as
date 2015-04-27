@@ -168,11 +168,22 @@ public class ProjectIO {
 		if(jsonData.indexOf("PicoBoard")>-1){
 			DeviceManager.sharedManager().onSelectBoard("picoboard_unknown");
 		}else if(jsonData.indexOf("Makeblock")>-1){
-			DeviceManager.sharedManager().onSelectBoard("me/orion_uno");
+			if(!MBlock.app.extensionManager.checkExtensionSelected("Makeblock")){
+				MBlock.app.extensionManager.onSelectExtension("Makeblock");
+			}
 		}else if(jsonData.indexOf("Arduino")>-1){
-			DeviceManager.sharedManager().onSelectBoard("arduino_uno");
+			if(!MBlock.app.extensionManager.checkExtensionSelected("Arduino")){
+				MBlock.app.extensionManager.onSelectExtension("Arduino");
+			}
 		}
 		var jsonObj:Object = util.JSON.parse(jsonData);
+		if(jsonObj['info']){
+			if(jsonObj['info']['boardVersion']){
+				DeviceManager.sharedManager().onSelectBoard(jsonObj['info']['boardVersion']);
+			}else{
+				DeviceManager.sharedManager().onSelectBoard("mbot_uno");
+			}
+		}
 		if (jsonObj['children']) { // project JSON
 			var proj:ScratchStage = new ScratchStage();
 			proj.readJSON(jsonObj);

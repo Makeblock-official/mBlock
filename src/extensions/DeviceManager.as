@@ -31,18 +31,15 @@ package extensions
 					if(!MBlock.app.extensionManager.checkExtensionSelected("mBot")){
 						MBlock.app.extensionManager.onSelectExtension("mBot");
 					}
-				}
-				if(_board.indexOf("arduino")>-1){
+				}else if(_board.indexOf("arduino")>-1){
 					if(!MBlock.app.extensionManager.checkExtensionSelected("Arduino")){
 						MBlock.app.extensionManager.onSelectExtension("Arduino");
 					}
-				}
-				if(_board.indexOf("me/")>-1){
+				}else if(_board.indexOf("me/")>-1){
 					if(!MBlock.app.extensionManager.checkExtensionSelected("Makeblock")){
 						MBlock.app.extensionManager.onSelectExtension("Makeblock");
 					}
-				}
-				if(MBlock.app.extensionManager.checkExtensionSelected("PicoBoard")){
+				}else if(MBlock.app.extensionManager.checkExtensionSelected("PicoBoard")){
 					MBlock.app.extensionManager.onSelectExtension("PicoBoard");
 				}
 			}

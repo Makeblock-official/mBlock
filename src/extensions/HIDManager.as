@@ -123,6 +123,7 @@ package extensions
 		}
 		public function onClose():void{
 			if(isConnected){
+				LogManager.sharedManager().log("hid closed!");
 				_hid.removeEventListener(AirHID.EVENT_RXDATA,hidRx);  
 				_hid.removeEventListener(AirHID.EVENT_RXERROR,onError);
 				ConnectionManager.sharedManager().onClose();

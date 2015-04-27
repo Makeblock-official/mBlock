@@ -959,8 +959,9 @@ void updateVar(char * varName,double * var)
 		private function buildCodes():void{
 			buildInclude();			
 			buildDefine();
-			ccode_setup+=ccode_setup_def;
 			buildSetup();
+			ccode_setup+=ccode_setup_def;
+			//buildSetup();
 			ccode_setup+=ccode_setup_fun;
 			ccode_setup_fun = "";
 			ccode_loop+=buildLoopMaintance();

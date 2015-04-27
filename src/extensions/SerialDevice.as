@@ -8,7 +8,7 @@ package extensions
 	public class SerialDevice
 	{
 		private static var _instance:SerialDevice;
-		private var _port:String;
+		private var _port:String="";
 		public function SerialDevice()
 		{
 		}

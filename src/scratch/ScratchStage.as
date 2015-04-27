@@ -23,25 +23,45 @@
 // A Scratch stage object. Supports a drawing surface for the pen commands.
 
 package scratch {
-	import flash.display.*;
+	import flash.display.Bitmap;
+	import flash.display.BitmapData;
+	import flash.display.DisplayObject;
+	import flash.display.Shape;
+	import flash.display.Sprite;
+	import flash.events.MouseEvent;
 	import flash.external.ExternalInterface;
 	import flash.filters.GlowFilter;
-	import flash.geom.*;
-	import flash.media.*;
-	import flash.events.*;
+	import flash.geom.ColorTransform;
+	import flash.geom.Matrix;
+	import flash.geom.Point;
+	import flash.geom.Rectangle;
+	import flash.media.Camera;
+	import flash.media.Video;
+	import flash.net.FileReference;
 	import flash.system.Capabilities;
 	import flash.utils.ByteArray;
-	import flash.net.FileReference;
+	
 	import blocks.Block;
-	import filters.FilterPack;
-	import translation.Translator;
-	import uiwidgets.Menu;
-	import ui.media.MediaInfo;
-	import util.*;
-	import watchers.*;
+	
+	import by.blooddy.crypto.MD5;
 	import by.blooddy.crypto.image.PNG24Encoder;
 	import by.blooddy.crypto.image.PNGFilter;
-	import by.blooddy.crypto.MD5;
+	
+	import extensions.DeviceManager;
+	
+	import filters.FilterPack;
+	
+	import translation.Translator;
+	
+	import ui.media.MediaInfo;
+	
+	import uiwidgets.Menu;
+	
+	import util.JSON;
+	import util.ProjectIO;
+	
+	import watchers.ListWatcher;
+	import watchers.Watcher;
 
 public class ScratchStage extends ScratchObj {
 
@@ -642,6 +662,7 @@ public class ScratchStage extends ScratchObj {
 		info.scriptCount = scriptCount();
 		info.spriteCount = spriteCount();
 		info.flashVersion = Capabilities.version;
+		info.boardVersion = DeviceManager.sharedManager().currentBoard;
 		if (MBlock.app.projectID != '') info.projectID = MBlock.app.projectID;
 		info.videoOn = isVideoOn();
 		info.swfVersion = MBlock.versionString;
