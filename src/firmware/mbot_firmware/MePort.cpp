@@ -24,13 +24,13 @@ MePort::MePort(){
     s2 = mePort[0].s2;
     _port = 0;
 }
-MePort::MePort(MEPORT port)
+MePort::MePort(uint8_t port)
 {
     s1 = mePort[port].s1;
     s2 = mePort[port].s2;
     _port = port;
 }
-MePort::MePort(MEPORT port,uint8_t slot)
+MePort::MePort(uint8_t port,uint8_t slot)
 {
     s1 = mePort[port].s1;
     s2 = mePort[port].s2;

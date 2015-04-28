@@ -7,7 +7,7 @@ MeRGBLed::MeRGBLed()
     setNumber(2);  
 }
 
-MeRGBLed::MeRGBLed(uint8_t pin)
+MeRGBLed::MeRGBLed(int pin)
 {
     s2 = pin;
     pinMask = digitalPinToBitMask(pin);
@@ -16,14 +16,14 @@ MeRGBLed::MeRGBLed(uint8_t pin)
     setNumber(4);
 }
 
-MeRGBLed::MeRGBLed(MEPORT port): MePort(port)
+MeRGBLed::MeRGBLed(uint8_t port): MePort(port)
 {
     pinMask = digitalPinToBitMask(s2);
     ws2812_port = portOutputRegister(digitalPinToPort(s2));
     pinMode(s2, OUTPUT);
     setNumber(4);
 }
-MeRGBLed::MeRGBLed(MEPORT port, uint8_t slot): MePort(port)
+MeRGBLed::MeRGBLed(uint8_t port, uint8_t slot): MePort(port)
 {
     if(slot == SLOT2)
     {
@@ -44,7 +44,7 @@ void MeRGBLed::reset(int pin){
     ws2812_port = portOutputRegister(digitalPinToPort(pin));
     pinMode(pin, OUTPUT);
 }
-void MeRGBLed::reset(MEPORT port)
+void MeRGBLed::reset(uint8_t port)
 {
     s2 = mePort[port].s2;
     s1 = mePort[port].s1;
@@ -53,7 +53,7 @@ void MeRGBLed::reset(MEPORT port)
     pinMode(s2, OUTPUT);
 }
 
-void MeRGBLed::reset(MEPORT port, uint8_t slot)
+void MeRGBLed::reset(uint8_t port, uint8_t slot)
 {
 	s2 = mePort[port].s2;
     s1 = mePort[port].s1;

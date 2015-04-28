@@ -6,7 +6,7 @@ class MeDCMotor: public MePort
 {
 	public:
             MeDCMotor();
-	    MeDCMotor(MEPORT port);
+	    MeDCMotor(uint8_t port);
 	    MeDCMotor(uint8_t pwmPin,uint8_t dirPin);
 	    void run(int speed);
 	    void stop();

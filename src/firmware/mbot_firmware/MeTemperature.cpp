@@ -11,13 +11,13 @@
 
 MeTemperature::MeTemperature():MePort(){
 }
-MeTemperature::MeTemperature(MEPORT port):MePort(port){
+MeTemperature::MeTemperature(uint8_t port):MePort(port){
 	
 }
-MeTemperature::MeTemperature(uint8_t pin){
+MeTemperature::MeTemperature(int pin){
 	_ts.reset(pin);
 }
-MeTemperature::MeTemperature(MEPORT port,uint8_t slot):MePort(port){
+MeTemperature::MeTemperature(uint8_t port,uint8_t slot):MePort(port){
 	MePort::reset(port, slot);
 	_ts.reset( slot == SLOT_2 ? s2 : s1);
 }
