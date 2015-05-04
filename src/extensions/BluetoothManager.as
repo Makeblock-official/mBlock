@@ -164,7 +164,7 @@ package extensions
 			}
 			//if(_list.indexOf(port)>-1){
 			LogManager.sharedManager().log("bt:"+port.split("( ")[1].split(" )")[0]);
-				//_bt.connectByAddress(port.split("( ")[1].split(" )")[0]);
+				_bt.connectByAddress(port.split("( ")[1].split(" )")[0]);
 				_currentBluetooth = port;
 				var i:uint = 0;
 				function checkName():void{
@@ -193,6 +193,7 @@ package extensions
 			return false;
 		}
 		public function close():void{
+			LogManager.sharedManager().log("bt close")
 			if(_bt!=null){
 				if(_bt.connected){
 					//					MBlock.app.topBarPart.setBluetoothTitle(false);

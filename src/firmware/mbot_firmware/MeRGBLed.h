@@ -17,7 +17,6 @@ public:
 	~MeRGBLed();
 	void reset(uint8_t port);
 	void reset(uint8_t port,uint8_t slot);
-        void reset(int pin);
 	///@brief set the count of leds.
 	void setNumber(uint8_t num_led);
 	///@brief get the count of leds.

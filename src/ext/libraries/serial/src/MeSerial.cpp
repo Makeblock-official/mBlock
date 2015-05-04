@@ -24,16 +24,18 @@ String MeSerial::readDataLine(){
 	return lastLine;
 }
 float MeSerial::getValue(String key){
-	String s = readDataLine();
-	if(stringLength(s)>2){
-		char * tmp;
-		char * str;
-		str = strtok_r((char*)s.c_str(), "=", &tmp);
-		if(str!=NULL && strcmp(str,key.c_str())==0){
-		  float v = atof(tmp);
-		  return v;
+	if(dataLineAvailable()){
+		String s = readDataLine();
+		if(stringLength(s)>2){
+			char * tmp;
+			char * str;
+			str = strtok_r((char*)s.c_str(), "=", &tmp);
+			if(str!=NULL && strcmp(str,key.c_str())==0){
+			  float v = atof(tmp);
+			  return v;
+			}
 		}
-	}
+    }
 	return 0;
 }
 boolean MeSerial::equalString(String s1,String s2){

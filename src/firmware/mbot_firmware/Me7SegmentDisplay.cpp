@@ -30,7 +30,7 @@ Me7SegmentDisplay::Me7SegmentDisplay(uint8_t port): MePort(port)
 }
 void Me7SegmentDisplay::reset(uint8_t port)
 {
-    _port = port;
+        _port = port;
 	s2 = mePort[port].s2;
 	s1 = mePort[port].s1;
 	pinMode(s2,OUTPUT);

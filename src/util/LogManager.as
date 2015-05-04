@@ -1,8 +1,15 @@
 package util
 {
+	import flash.events.Event;
 	import flash.filesystem.File;
 	import flash.filesystem.FileMode;
 	import flash.filesystem.FileStream;
+	import flash.net.URLRequest;
+	import flash.net.navigateToURL;
+	
+	import translation.Translator;
+	
+	import uiwidgets.DialogBox;
 
 	public class LogManager
 	{
@@ -33,6 +40,17 @@ package util
 			if(_isDebug){
 				stream.close();
 			}
+		}
+		public function alert(msg:String):void{
+			var dialog:DialogBox = new DialogBox();
+			dialog.addTitle("Message");
+			dialog.addText(msg);
+			function onCancel():void{
+				dialog.cancel();
+			}
+			
+			dialog.addButton("OK",onCancel);
+			dialog.showOnStage(MBlock.app.stage);
 		}
 	}
 }
