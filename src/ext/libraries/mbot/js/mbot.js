@@ -127,7 +127,7 @@
 		runPackage(13,string2array(message));
 	};
 	ext.resetTimer = function(){
-		startTimer = new Date().getTime();
+		startTimer = (new Date().getTime())/1000.0;
 	};
 	ext.getLightOnBoard = function(nextID){
 		var deviceId = 31;
@@ -222,9 +222,9 @@
 	}
 	ext.getTimer = function(nextID){
 		if(startTimer==0){
-			startTimer = new Date().getTime();
+			startTimer = (new Date().getTime())/1000.0;
 		}
-		responseValue(nextID,new Date().getTime()-startTimer);
+		responseValue(nextID,(new Date().getTime())/1000.0-startTimer);
 	}
 	function runPackage(){
 		var bytes = [];

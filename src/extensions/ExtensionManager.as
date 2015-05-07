@@ -526,7 +526,7 @@ public class ExtensionManager {
 					b.requestState = 0;
 					//request(extName, primOrVarName, args, b);
 					var v:* = b.response;
-					b.response = null;
+					//b.response = null;
 					return v;
 				}else{
 					request(extName, primOrVarName, args, b);
@@ -565,7 +565,7 @@ public class ExtensionManager {
 //					activeThread.tmp = id;
 //					app.interp.doYield();
 //					justStartedWait = true;
-//					args.unshift(id); // pass the ID as the first argument
+//					//args.unshift(id); // pass the ID as the first argument
 //				} else {
 //					if (ext.busy.indexOf(activeThread.tmp) > -1) {
 //						app.interp.doYield();
@@ -585,20 +585,19 @@ public class ExtensionManager {
 		
 		if (ext == null) return; // unknown extension
 		
-		var activeThread:Thread = app.interp.activeThread;
-		if(activeThread && op != 'resetAll') {
-			if(activeThread.firstTime) {
-				httpCall(ext, op, args);
-				activeThread.firstTime = false;
-				app.interp.doYield();
-			}
-			else {
-				activeThread.firstTime = true;
-			}
-		}
-		else{
+//		var activeThread:Thread = app.interp.activeThread;
+//		if(activeThread && op != 'resetAll') {
+//			if(activeThread.firstTime) {
+//				httpCall(ext, op, args);
+//				activeThread.firstTime = false;
+//				app.interp.doYield();
+//			}
+//			else {
+//				activeThread.firstTime = true;
+//			}
+//		}else{
 			httpCall(ext, op, args);
-		}
+//		}
 		
 	}
 
@@ -652,7 +651,7 @@ public class ExtensionManager {
 			}
 			//url+='/Ext'+ext.nextID;
 			
-			b.requestState = 2;
+			b.requestState = 1;
 			MBlock.app.runtime.enterRequest();
 			ParseManager.sharedManager().extNames[ext.nextID] = ext.name;
 			var objs:Array = MBlock.app.extensionManager.specForCmd(ext.name+"."+op);

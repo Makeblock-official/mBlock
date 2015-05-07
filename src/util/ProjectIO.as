@@ -171,7 +171,7 @@ public class ProjectIO {
 			if(!MBlock.app.extensionManager.checkExtensionSelected("Makeblock")){
 				MBlock.app.extensionManager.onSelectExtension("Makeblock");
 			}
-		}else if(jsonData.indexOf("Arduino")>-1){
+		}else if(jsonData.indexOf("Arduino.")>-1){
 			if(!MBlock.app.extensionManager.checkExtensionSelected("Arduino")){
 				MBlock.app.extensionManager.onSelectExtension("Arduino");
 			}
@@ -204,6 +204,7 @@ public class ProjectIO {
 	private var fixList:Array = [
 		["arduino\\/main","runArduino"],
 		["Robots.","Makeblock."],
+		["MBot.","mBot."],
 		["get\\/timer","getTimer"],
 		["run\\/timer","resetTimer"],
 		["get\\/digital","getDigital"],
@@ -237,6 +238,7 @@ public class ProjectIO {
 		["get\\/irremote","getIrRemote"],
 		["run\\/ir","runIR"],
 		["get\\/ir","getIR"],
+		['["mBot.getButtonOnBoard"]', '["mBot.getButtonOnBoard", "pressed"]'],
 		["mBot.get\\/analog","mBot.getLightOnBoard"],
 		["mBot.getAnalog","mBot.getLightOnBoard"],
 	];

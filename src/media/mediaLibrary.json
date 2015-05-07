@@ -1,5 +1,5 @@
 [
-{"name": "M-Cat", "md5": "mcat.json", "type": "sprite", "tags": ["animals", "drawing", "fantasy", "vector"], "info": [0, 1, 1]},
+{"name": "M-Panda", "md5": "mcat.json", "type": "sprite", "tags": ["animals", "drawing", "fantasy", "vector"], "info": [0, 1, 1]},
 {"name": "Amon", "md5": "02ea712d4ede8ec2c7eb408e3931d8c4.json", "type": "sprite", "tags": ["people", "flying", "photo", "bitmap"], "info": [0, 1, 1]},
 {"name": "Anna", "md5": "6ef382d80b6b96fd02ba3f471c2614a1.json", "type": "sprite", "tags": ["people", "music-and-dance", "city", "photo", "bitmap"], "info": [0, 2, 1]},
 {"name": "Ballerina", "md5": "090cd8a1cd780bd868b367ced0eb347b.json", "type": "sprite", "tags": ["people", "music-and-dance", "drawing", "vector"], "info": [0, 4, 1]},

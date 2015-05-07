@@ -153,7 +153,7 @@ package {
 		public var ga:GATracker;
 		private var tabsPart:TabsPart;
 		private var _welcomeView:Loader;
-		private var _currentVer:String = "05.04.001";
+		private var _currentVer:String = "05.07.001";
 		public function MBlock() {
 			this.addEventListener(Event.ADDED_TO_STAGE,initStage);
 		}
@@ -931,7 +931,7 @@ package {
 					m.addItem('Bluetooth', '', false, false);
 					arr = BluetoothManager.sharedManager().history;
 					for(i=0;i<arr.length;i++){
-						m.addItem(arr[i].label, "bt_"+arr[i].label, true, arr[i].label==BluetoothManager.sharedManager().currentBluetooth&&BluetoothManager.sharedManager().isConnected);
+						m.addItem(arr[i], "bt_"+arr[i], true, arr[i]==BluetoothManager.sharedManager().currentBluetooth&&BluetoothManager.sharedManager().isConnected);
 					}
 					if(arr.length>0){
 						m.addItem('Clear Bluetooth', 'clear_bt', true, false);

@@ -33,7 +33,7 @@
       </libraryPathEntry>
       <libraryPathEntry kind="5" linkType="2" path="libs/AIRSerial_win.ane"/>
       <libraryPathEntry kind="5" linkType="2" path="libs/HID2.4G_win.ane"/>
-      <libraryPathEntry kind="5" linkType="2" path="libs/BluetoothManager_win.ane"/>
+      <libraryPathEntry kind="5" linkType="2" path="libs/BluetoothManager.ane"/>
     </libraryPath>
     <sourceAttachmentPath/>
   </compiler>
@@ -53,7 +53,7 @@
         <anePaths>
           <anePathEntry path="libs/AIRSerial_win.ane"/>
           <anePathEntry path="libs/HID2.4G_win.ane"/>
-          <anePathEntry path="libs/BluetoothManager_win.ane"/>
+          <anePathEntry path="libs/BluetoothManager.ane"/>
         </anePaths>
         <newLaunchParams/>
         <modifiedLaunchParams/>

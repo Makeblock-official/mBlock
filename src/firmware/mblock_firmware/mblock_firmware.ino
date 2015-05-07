@@ -20,8 +20,10 @@
 #include "MeTemperature.h"
 #include "MeRGBLed.h"
 #include "MeInfraredReceiver.h"
-#include "MeStepper.h"
-#include "MeEncoderMotor.h"
+#if defined(__AVR_ATmega328P__)
+  #include "MeStepper.h"
+  #include "MeEncoderMotor.h"
+#endif
 Servo servo;
 Servo servos[8];
 int servoPins[8]={0,0,0,0,0,0,0,0};
@@ -33,7 +35,6 @@ Me7SegmentDisplay seg;
 MePort generalDevice;
 MeInfraredReceiver ir;
 MeGyro gyro;
-MeStepper steppers[2];
 typedef struct MeModule
 {
     int device;
@@ -60,7 +61,10 @@ union{
   short shortVal;
 }valShort;
 MeModule modules[12];
-MeEncoderMotor encoders[2];
+#if defined(__AVR_ATmega328P__) 
+  MeEncoderMotor encoders[2];
+  MeStepper steppers[2];
+#endif
 #if defined(__AVR_ATmega32U4__) 
   int analogs[12]={A0,A1,A2,A3,A4,A5,A6,A7,A8,A9,A10,A11};
 #endif
@@ -131,21 +135,23 @@ void setup(){
 //  buzzerOn();
 //  delay(100);
 //  buzzerOff();
-  steppers[0] = MeStepper();
-  steppers[1] = MeStepper();
-  encoders[0] = MeEncoderMotor(SLOT_1);
-  encoders[1] = MeEncoderMotor(SLOT_2);
-  encoders[0].begin();
-  encoders[1].begin();
   delay(500);
-  encoders[0].runSpeed(0);
-  encoders[1].runSpeed(0);
-  gyro.begin();
+  #if defined(__AVR_ATmega328P__)
+    steppers[0] = MeStepper();
+    steppers[1] = MeStepper();
+    encoders[0] = MeEncoderMotor(SLOT_1);
+    encoders[1] = MeEncoderMotor(SLOT_2);
+    encoders[0].begin();
+    encoders[1].begin();
+    encoders[0].runSpeed(0);
+    encoders[1].runSpeed(0);
+  #endif
   #if defined(__AVR_ATmega328P__) or defined(__AVR_ATmega168__)
     
   #else
     Serial1.begin(115200);
   #endif
+  gyro.begin();
 }
 void loop(){
   currentTime = millis()/1000.0-lastTime;
@@ -157,8 +163,11 @@ void loop(){
     irRead = 0;
   }
   readSerial();
-  steppers[0].run();
-  steppers[1].run();
+  
+  #if defined(__AVR_ATmega328P__)
+    steppers[0].run();
+    steppers[1].run();
+  #endif
   if(isAvailable){
     unsigned char c = serialRead&0xff;
     if(c==0x55&&isStart==false){
@@ -373,26 +382,32 @@ void runModule(int device){
     case STEPPER:{
      int maxSpeed = readShort(7);
      int distance = readShort(9);
-     if(port==PORT_1){
-      steppers[0] = MeStepper(PORT_1);
-      steppers[0].setMaxSpeed(maxSpeed);
-      steppers[0].moveTo(distance);
-     }else if(port==PORT_2){
-      steppers[1] = MeStepper(PORT_2);
-      steppers[1].setMaxSpeed(maxSpeed);
-      steppers[1].moveTo(distance);
-     }
+     #if defined(__AVR_ATmega328P__)
+       if(port==PORT_1){
+         
+        steppers[0] = MeStepper(PORT_1);
+        steppers[0].setMaxSpeed(maxSpeed);
+        steppers[0].moveTo(distance);
+       }else if(port==PORT_2){
+        steppers[1] = MeStepper(PORT_2);
+        steppers[1].setMaxSpeed(maxSpeed);
+        steppers[1].moveTo(distance);
+       }
+     #endif
    } 
     break;
     case ENCODER:{
-      int maxSpeed = readShort(7);
-      int distance = readShort(9);
-      int slot = port;
-      if(slot==SLOT_1){
-         encoders[0].move(distance,maxSpeed);
-      }else if(slot==SLOT_2){
-         encoders[1].move(distance,maxSpeed);
-      }
+      
+      #if defined(__AVR_ATmega328P__)
+        int maxSpeed = readShort(7);
+        int distance = readShort(9);
+        int slot = port;
+        if(slot==SLOT_1){
+           encoders[0].move(distance,maxSpeed);
+        }else if(slot==SLOT_2){
+           encoders[1].move(distance,maxSpeed);
+        }
+      #endif
     }
     break;
    case RGBLED:{
