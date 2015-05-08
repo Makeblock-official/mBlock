@@ -16,12 +16,14 @@ package extensions
 	import flash.net.ServerSocket;
 	import flash.net.Socket;
 	import flash.utils.ByteArray;
+	import flash.utils.setTimeout;
 	
 	import translation.Translator;
 	
 	import uiwidgets.DialogBox;
 	
 	import util.ApplicationManager;
+	import util.LogManager;
 	
 	public class SocketManager extends EventDispatcher
 	{
@@ -160,8 +162,19 @@ package extensions
 				}
 			}
 		}
-		
 		public function connect(host:String):int{
+			if(SerialDevice.sharedDevice().port==host&&isConnected){
+				ConnectionManager.sharedManager().onClose();
+				close();
+			}else{
+				if(isConnected){
+					close();
+				}
+				setTimeout(ConnectionManager.sharedManager().onOpen,200,host);
+			}
+			return 0
+		}
+		public function open(host:String):Boolean{
 			if(host.length>6){
 				var temp:Array = host.split(".");
 				if(temp.length>3){
@@ -173,7 +186,7 @@ package extensions
 					//					trace("connecting:",host);
 				}
 			}
-			return 0
+			return true;
 		}
 		private function disconnect():void{
 			for each(var socket:Socket in _sockets){
@@ -217,7 +230,6 @@ package extensions
 		}
 		
 		public function sendBytes(bytes:ByteArray):int{
-			
 			for each(var socket:Socket in _sockets){
 				if(socket){
 					if(socket.connected){
@@ -251,6 +263,7 @@ package extensions
 			trace("connectHandler: " + evt);
 			isConnected = true;
 			update();
+			dispatchEvent(new Event(Event.CONNECT));
 		}
 		
 		private function ioErrorHandler(evt:IOErrorEvent):void {
@@ -268,7 +281,7 @@ package extensions
 			var socket:Socket = evt.target as Socket;
 			socket.readBytes(bytes);
 			ParseManager.sharedManager().parseBuffer(bytes);
-			//			trace("socketDataHandler: " + evt);
+			trace("socketDataHandler: " + evt);
 		}
 		
 		private function dataReceived( evt:DatagramSocketDataEvent ):void 

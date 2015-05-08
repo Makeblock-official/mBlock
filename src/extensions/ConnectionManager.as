@@ -90,6 +90,8 @@ package extensions
 					return BluetoothManager.sharedManager().open(port);
 				}else if(port.indexOf("HID")>-1){
 					return HIDManager.sharedManager().open();
+				}else{
+					return SocketManager.sharedManager().open(port);
 				}
 			}
 			return false;
