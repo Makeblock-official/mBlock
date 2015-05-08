@@ -113,8 +113,10 @@ package extensions
 		private var _isBusy:Boolean = false;
 		private var _history:Array = [];
 		private function addBluetoothHistory():void{
-			var devName:String = _currentBluetooth.split("(")[1].split(")")[0];
-			var devAddr:String = _currentBluetooth.split("(")[0];
+			var devAddr:String = _currentBluetooth.split("(")[1].split(")")[0];
+			var devName:String = _currentBluetooth.split("(")[0];
+			devAddr = devAddr.split(" ").join("");
+			devName = devName.split(" ").join("");
 			for(var i:uint=0;i<_history.length;i++){
 				var dev:Object = _history[i];
 				if(dev.addr == devAddr){
@@ -142,7 +144,15 @@ package extensions
 		}
 		public function get history():Array{
 			_history = SharedObjectManager.sharedManager().getObject("btHistory",[]);
-			return _history;
+			var temp:Array = [];
+			for(var i:uint=0;i<_history.length;i++){
+				var dev:Object = _history[i];
+				trace(dev.addr,dev.name);
+				if(temp.indexOf(dev.addr)==-1){
+					temp.push(dev.label);
+				}
+			}
+			return temp;
 		}
 		public function clearHistory():void{
 			SharedObjectManager.sharedManager().setObject("btHistory",[]);
@@ -164,7 +174,7 @@ package extensions
 			}
 			//if(_list.indexOf(port)>-1){
 			LogManager.sharedManager().log("bt:"+port.split("( ")[1].split(" )")[0]);
-				//_bt.connectByAddress(port.split("( ")[1].split(" )")[0]);
+				_bt["connectByAddress"](port.split("( ")[1].split(" )")[0]);
 				_currentBluetooth = port;
 				var i:uint = 0;
 				function checkName():void{
@@ -193,6 +203,7 @@ package extensions
 			return false;
 		}
 		public function close():void{
+			LogManager.sharedManager().log("bt close")
 			if(_bt!=null){
 				if(_bt.connected){
 					//					MBlock.app.topBarPart.setBluetoothTitle(false);

@@ -29,6 +29,7 @@ package extensions
 	
 	import util.ApplicationManager;
 	import util.JSON;
+	import util.LogManager;
 	import util.SharedObjectManager;
 	
 	public class ArduinoManager extends EventDispatcher
@@ -959,8 +960,9 @@ void updateVar(char * varName,double * var)
 		private function buildCodes():void{
 			buildInclude();			
 			buildDefine();
-			ccode_setup+=ccode_setup_def;
 			buildSetup();
+			ccode_setup+=ccode_setup_def;
+			//buildSetup();
 			ccode_setup+=ccode_setup_fun;
 			ccode_setup_fun = "";
 			ccode_loop+=buildLoopMaintance();
@@ -1478,7 +1480,8 @@ void updateVar(char * varName,double * var)
 					return arduinoPath;
 				}else{
 					SharedObjectManager.sharedManager().setObject("arduinoPath","");
-					return "";
+					arduinoPath = "";
+					//return "";
 				}
 			}
 			var tf:File = new File(); 
@@ -1495,7 +1498,7 @@ void updateVar(char * varName,double * var)
 			if(file.exists){
 				tf.url = file.url+"/hardware/tools/avr/bin/avr-ar.exe"
 				if(tf.exists){
-					arduinoPath =(file.nativePath.split("\\").join("/"));
+					arduinoPath = "file:///"+file.nativePath.split("%20").join("\ ").split("\\").join("/");
 					SharedObjectManager.sharedManager().setObject("arduinoPath",arduinoPath);
 					return arduinoPath;
 				}

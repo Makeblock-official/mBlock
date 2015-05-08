@@ -74,7 +74,11 @@ package extensions
 			}
 		}
 		private function onError(evt:Event):void{
-			
+			MBlock.app.topBarPart.setDisconnectedTitle();
+			_hid.removeEventListener(AirHID.EVENT_RXDATA,hidRx);  
+			_hid.removeEventListener(AirHID.EVENT_RXERROR,onError);
+			ConnectionManager.sharedManager().onClose();
+			close();
 			//setTimeout(init,5000);
 		}
 		private function init():void{
@@ -124,11 +128,16 @@ package extensions
 		}
 		public function onClose():void{
 			if(isConnected){
-				LogManager.sharedManager().log("hid closed");
+				LogManager.sharedManager().log("hid closed!");
 				_hid.removeEventListener(AirHID.EVENT_RXDATA,hidRx);  
 				_hid.removeEventListener(AirHID.EVENT_RXERROR,onError);
 				_hid.CloseHID();
 				ConnectionManager.sharedManager().onClose();
+			}
+		}
+		public function close():void{
+			if(_hid){
+				_hid.CloseHID();
 			}
 		}
 	}

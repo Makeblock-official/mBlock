@@ -4,7 +4,7 @@ MeInfraredReceiver::MeInfraredReceiver():MePort(){
 
 }
 
-MeInfraredReceiver::MeInfraredReceiver(MEPORT port):MePort(port){
+MeInfraredReceiver::MeInfraredReceiver(uint8_t port):MePort(port){
 	pinMode(s1,INPUT);
 	pinMode(s2,INPUT);
 }

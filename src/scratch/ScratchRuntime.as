@@ -515,7 +515,7 @@ package scratch {
 			}
 	
 			//app.extensionManager.clearImportedExtensions();
-			app.extensionManager.loadSavedExtensions(project.info.savedExtensions);
+			//app.extensionManager.loadSavedExtensions(project.info.savedExtensions);
 			app.extensionManager.importExtension();
 			app.installStage(project);
 			app.updateSpriteLibrary(true);

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <actionScriptProperties analytics="false" mainApplicationPath="MBlock.as" projectUUID="9c722e95-ef5d-4289-b8ff-e3c0fce7a1d1" version="11">
-  <compiler additionalCompilerArguments="-locale en_US" advancedTelemetry="false" autoRSLOrdering="true" copyDependentFiles="true" fteInMXComponents="false" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="false" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderPath="bin-debug" removeUnusedRSL="true" sourceFolderPath="src" strict="true" targetPlayerVersion="0.0.0" useApolloConfig="true" useDebugRSLSwfs="true" useFlashSDK="true" verifyDigests="true" warn="true">
+  <compiler additionalCompilerArguments="-locale en_US" advancedTelemetry="false" autoRSLOrdering="true" copyDependentFiles="true" fteInMXComponents="false" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="false" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderPath="debug" removeUnusedRSL="true" sourceFolderPath="src" strict="true" targetPlayerVersion="0.0.0" useApolloConfig="true" useDebugRSLSwfs="true" useFlashSDK="true" verifyDigests="true" warn="true">
     <compilerSourcePath/>
     <libraryPath defaultLinkType="0">
       <libraryPathEntry kind="1" linkType="1" path="libs"/>
@@ -49,9 +49,7 @@
   <buildTargets>
     <buildTarget buildTargetName="default" platformId="default">
       <airSettings airCertificatePath="cert/air.p12" airTimestamp="true" anePathSet="true" version="1">
-        <airExcludes>
-          <pathEntry path=".DS_Store"/>
-        </airExcludes>
+        <airExcludes/>
         <anePaths>
           <anePathEntry path="libs/AIRSerial_mac.ane"/>
           <anePathEntry path="libs/BluetoothManager_mac.ane"/>

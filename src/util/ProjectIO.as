@@ -168,11 +168,22 @@ public class ProjectIO {
 		if(jsonData.indexOf("PicoBoard")>-1){
 			DeviceManager.sharedManager().onSelectBoard("picoboard_unknown");
 		}else if(jsonData.indexOf("Makeblock")>-1){
-			DeviceManager.sharedManager().onSelectBoard("me/orion_uno");
-		}else if(jsonData.indexOf("Arduino")>-1){
-			DeviceManager.sharedManager().onSelectBoard("arduino_uno");
+			if(!MBlock.app.extensionManager.checkExtensionSelected("Makeblock")){
+				MBlock.app.extensionManager.onSelectExtension("Makeblock");
+			}
+		}else if(jsonData.indexOf("Arduino.")>-1){
+			if(!MBlock.app.extensionManager.checkExtensionSelected("Arduino")){
+				MBlock.app.extensionManager.onSelectExtension("Arduino");
+			}
 		}
 		var jsonObj:Object = util.JSON.parse(jsonData);
+		if(jsonObj['info']){
+			if(jsonObj['info']['boardVersion']){
+				DeviceManager.sharedManager().onSelectBoard(jsonObj['info']['boardVersion']);
+			}else{
+				DeviceManager.sharedManager().onSelectBoard("mbot_uno");
+			}
+		}
 		if (jsonObj['children']) { // project JSON
 			var proj:ScratchStage = new ScratchStage();
 			proj.readJSON(jsonObj);
@@ -193,6 +204,7 @@ public class ProjectIO {
 	private var fixList:Array = [
 		["arduino\\/main","runArduino"],
 		["Robots.","Makeblock."],
+		["MBot.","mBot."],
 		["get\\/timer","getTimer"],
 		["run\\/timer","resetTimer"],
 		["get\\/digital","getDigital"],
@@ -226,6 +238,7 @@ public class ProjectIO {
 		["get\\/irremote","getIrRemote"],
 		["run\\/ir","runIR"],
 		["get\\/ir","getIR"],
+		['["mBot.getButtonOnBoard"]', '["mBot.getButtonOnBoard", "pressed"]'],
 		["mBot.get\\/analog","mBot.getLightOnBoard"],
 		["mBot.getAnalog","mBot.getLightOnBoard"],
 	];

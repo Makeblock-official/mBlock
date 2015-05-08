@@ -51,35 +51,39 @@ package extensions
 			if(!this.connected){
 				return;
 			}
-			switch(param.length){
-				case 0:{
-					_ext[method]();
-					break;
+			try{
+				switch(param.length){
+					case 0:{
+						_ext[method]();
+						break;
+					}
+					case 1:{
+						_ext[method](param[0]);
+						break;
+					}
+					case 2:{
+						_ext[method](param[0],param[1]);
+						break;
+					}
+					case 3:{
+						_ext[method](param[0],param[1],param[2]);
+						break;
+					}
+					case 4:{
+						_ext[method](param[0],param[1],param[2],param[3]);
+						break;
+					}
+					case 5:{
+						_ext[method](param[0],param[1],param[2],param[3],param[4]);
+						break;
+					}
+					case 6:{
+						_ext[method](param[0],param[1],param[2],param[3],param[4],param[5]);
+						break;
+					}
 				}
-				case 1:{
-					_ext[method](param[0]);
-					break;
-				}
-				case 2:{
-					_ext[method](param[0],param[1]);
-					break;
-				}
-				case 3:{
-					_ext[method](param[0],param[1],param[2]);
-					break;
-				}
-				case 4:{
-					_ext[method](param[0],param[1],param[2],param[3]);
-					break;
-				}
-				case 5:{
-					_ext[method](param[0],param[1],param[2],param[3],param[4]);
-					break;
-				}
-				case 6:{
-					_ext[method](param[0],param[1],param[2],param[3],param[4],param[5]);
-					break;
-				}
+			}catch(e:Error){
+				
 			}
 		}
 		public function requestValue(method:String,param:Array,ext:ScratchExtension):Boolean{

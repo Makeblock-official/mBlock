@@ -51,7 +51,7 @@
 		{"encode":"{d0}","setup":"","inc":"#include \"MePort.h\"\n","def":"MePort soundsensor_{0}({0});\n","work":"soundsensor_{0}.aRead2()","loop":""}],
 		
 		["R", "infrared receiver %d.normalPort","getInfrared","Port6",
-		{"encode":"{d0}","setup":"","inc":"#include \"MeInfraredReceiver.h\"\n","def":"MeInfraredReceiver ir_{0}({0});\n","work":"ir_{0}.getCode()","loop":""}],
+		{"encode":"{d0}","setup":"ir_{0}.begin(9600);\n","inc":"#include \"MeInfraredReceiver.h\"\n","def":"MeInfraredReceiver ir_{0}({0});\n","work":"ir_{0}.getCode()","loop":""}],
 		
 		["B", "limit switch %d.normalPort %d.slot","getLimitswitch","Port6","Slot1",
 		{"encode":"{d0}{d1}","setup":"","inc":"#include \"MePort.h\"\n","def":"MePort sw_{0}_{1}({0});\n","work":"sw_{0}_{1}.dRead{1}()","loop":""}],

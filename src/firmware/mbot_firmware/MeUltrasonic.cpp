@@ -3,11 +3,11 @@
  MeUltrasonic::MeUltrasonic(): MePort(PORT_0)
  {
  }
-MeUltrasonic::MeUltrasonic(uint8_t pin)
+MeUltrasonic::MeUltrasonic(int pin)
 {
     s2 = pin;
 }
-MeUltrasonic::MeUltrasonic(MEPORT port): MePort(port)
+MeUltrasonic::MeUltrasonic(uint8_t port): MePort(port)
 {
 }
 

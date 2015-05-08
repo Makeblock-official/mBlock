@@ -38,19 +38,18 @@ void Timer2Init(uint32_t TimerFreq)
  {
     buzzer_pin = 8;
  }
-MeBuzzer::MeBuzzer(uint8_t pin)
+MeBuzzer::MeBuzzer(int pin)
 {
     buzzer_pin = pin;
 }
-  MeBuzzer::MeBuzzer(MEPORT port):MePort(port)
+MeBuzzer::MeBuzzer(uint8_t port):MePort(port)
  {
     buzzer_pin = s2;
  }
-
-  MeBuzzer::MeBuzzer(MEPORT port, uint8_t slot):MePort(port)
+  MeBuzzer::MeBuzzer(uint8_t port, uint8_t slot):MePort(port)
  {
     buzzer_pin = s2;
-    if(slot == SLOT_2)
+    if(slot == SLOT2)
     {   
         buzzer_pin = s2;
     }else

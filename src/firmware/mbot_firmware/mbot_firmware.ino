@@ -25,8 +25,6 @@ MeBoard myBoard(mBot);
 
 MeBuzzer buzzer;
 Servo servo;  
-Servo servos[8];  
-int servoPins[8]={0,0,0,0,0,0,0,0};
 MeDCMotor dc;
 MeTemperature ts;
 MeRGBLed led;
@@ -331,25 +329,6 @@ float readFloat(int idx){
   val.byteVal[3] = readBuffer(idx+3);
   return val.floatVal;
 }
-int getServoPin(uint8_t pin){
-  int i;
-  for(i=0;i<8;i++){
-    if(servoPins[i]==pin){
-     return i; 
-    }
-  }
-  for(i=0;i<8;i++){
-    if(servoPins[i]==0){
-      servoPins[i] = pin;
-      return i;
-    }
-  }
-  for(i=1;i<7;i++){
-    servoPins[i] = 0;
-  }
-  servoPins[0] = pin;
-  return 0;
-}
 void runModule(int device){
   //0xff 0x55 0x6 0x0 0x2 0x22 0x9 0x0 0x0 0xa 
   int port = readBuffer(6);
@@ -377,7 +356,7 @@ void runModule(int device){
      int r = readBuffer(8);
      int g = readBuffer(9);
      int b = readBuffer(10);
-     led.reset((MEPORT)port);
+     led.reset(port);
      if(idx>0){
        led.setColorAt(idx-1,r,g,b); 
      }else{
@@ -391,7 +370,6 @@ void runModule(int device){
      pin = slot==1?mePort[port].s1:mePort[port].s2;
      int v = readBuffer(8);
      if(v>=0&&v<=180){
-       servo = servos[getServoPin(pin)];
        servo.attach(pin);
        servo.write(v);
      }
@@ -399,7 +377,7 @@ void runModule(int device){
    break;
    case SEVSEG:{
      if(seg.getPort()!=port){
-       seg.reset((MEPORT)port);
+       seg.reset(port);
      }
      float v = readFloat(7);
      seg.display(v);
@@ -459,7 +437,6 @@ void runModule(int device){
    case SERVO_PIN:{
      int v = readBuffer(7);
      if(v>=0&&v<=180){
-       servo = servos[getServoPin(pin)];
        servo.attach(pin);
        servo.write(v);
      }
