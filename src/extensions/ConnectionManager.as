@@ -90,6 +90,8 @@ package extensions
 					return BluetoothManager.sharedManager().open(port);
 				}else if(port.indexOf("HID")>-1){
 					return HIDManager.sharedManager().open();
+				}else{
+					return SocketManager.sharedManager().open(port);
 				}
 			}
 			return false;
@@ -125,6 +127,8 @@ package extensions
 				BluetoothManager.sharedManager().sendBytes(bytes);
 			}else if(HIDManager.sharedManager().isConnected){
 				HIDManager.sharedManager().sendBytes(bytes);
+			}else if(SocketManager.sharedManager().isConnected){
+				SocketManager.sharedManager().sendBytes(bytes);
 			}
 		}
 		public function readBytes():ByteArray{
