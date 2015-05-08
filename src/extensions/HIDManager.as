@@ -52,10 +52,10 @@ package extensions
 			return 0;
 		}
 		public function disconnect():void{
-			if(_isConnected){
-				_hid.removeEventListener(AirHID.EVENT_RXDATA,hidRx); 
-				_isConnected = false;
+			if(_hid.isConnected){
+				_hid.CloseHID(); 	
 			}
+			_isConnected = false;
 		}
 		private var _hid:AirHID;
 		private function hidRx(evt:Event):void{
@@ -86,6 +86,7 @@ package extensions
 				return true;
 			}
 			if(this.isConnected){
+				LogManager.sharedManager().log("hid reclosed");
 				_hid.CloseHID();
 			}
 			try{
@@ -123,15 +124,11 @@ package extensions
 		}
 		public function onClose():void{
 			if(isConnected){
+				LogManager.sharedManager().log("hid closed");
 				_hid.removeEventListener(AirHID.EVENT_RXDATA,hidRx);  
 				_hid.removeEventListener(AirHID.EVENT_RXERROR,onError);
-				ConnectionManager.sharedManager().onClose();
-				close();
-			}
-		}
-		public function close():void{
-			if(_hid){
 				_hid.CloseHID();
+				ConnectionManager.sharedManager().onClose();
 			}
 		}
 	}
