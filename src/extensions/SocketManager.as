@@ -165,10 +165,10 @@ package extensions
 		public function connect(host:String):int{
 			if(SerialDevice.sharedDevice().port==host&&isConnected){
 				ConnectionManager.sharedManager().onClose();
-				close();
+				disconnect();
 			}else{
 				if(isConnected){
-					close();
+					disconnect();
 				}
 				setTimeout(ConnectionManager.sharedManager().onOpen,200,host);
 			}
@@ -249,6 +249,11 @@ package extensions
 		}
 		
 		private function configureListeners(socket:Socket):void {
+			socket.removeEventListener(Event.CLOSE, closeHandler);
+			socket.removeEventListener(Event.CONNECT, connectHandler);
+			socket.removeEventListener(IOErrorEvent.IO_ERROR, ioErrorHandler);
+			socket.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, securityErrorHandler);
+			socket.removeEventListener(ProgressEvent.SOCKET_DATA, socketDataHandler);
 			socket.addEventListener(Event.CLOSE, closeHandler);
 			socket.addEventListener(Event.CONNECT, connectHandler);
 			socket.addEventListener(IOErrorEvent.IO_ERROR, ioErrorHandler);
@@ -263,7 +268,7 @@ package extensions
 			if(index>-1){
 				_sockets.splice(index,1);
 			}
-			close();
+			disconnect();
 			update();
 		}
 		
