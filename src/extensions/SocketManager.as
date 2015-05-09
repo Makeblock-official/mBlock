@@ -155,7 +155,7 @@ package extensions
 					dialog.showOnStage(MBlock.app.stage);
 				}else{
 					if(!this.connected(host.split(":")[0])){
-						this.connect(host);
+						this.connect(host.split(":")[0]+":"+host.split(":")[1]);
 					}else{
 						this.disconnect();
 					}
@@ -194,6 +194,8 @@ package extensions
 					socket.close();
 			}
 			_sockets = [];
+			isConnected = false;
+			ConnectionManager.sharedManager().onClose();
 			update();
 		}
 		public function connected(host:String=null):Boolean{
@@ -217,12 +219,9 @@ package extensions
 		public function update():void{
 			if(connected()){
 				MBlock.app.topBarPart.setConnectedTitle(Translator.map("Network")+" "+Translator.map("Connected"));
-			}else{
-				MBlock.app.topBarPart.setDisconnectedTitle();
 			}
 		}
 		public function close():int{
-			isConnected = false;
 			disconnect();
 			datagramSocket.close();
 			update();
@@ -256,6 +255,7 @@ package extensions
 			if(index>-1){
 				_sockets.splice(index,1);
 			}
+			close();
 			update();
 		}
 		
@@ -294,6 +294,7 @@ package extensions
 				if(_list.toString().indexOf(evt.srcAddress)==-1)
 				{
 					if(srcName.length>1){
+						//ConnectionManager.sharedManager().onOpen(evt.srcAddress+":"+evt.srcPort);
 						_list.push(wifiModule);
 						var data:ByteArray = new ByteArray();
 						data.writeUTFBytes(MBlock.app.projectName());
