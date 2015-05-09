@@ -223,7 +223,11 @@ package extensions
 		}
 		public function close():int{
 			disconnect();
-			datagramSocket.close();
+			try{
+				datagramSocket.close();
+			}catch(e:Error){
+				
+			}
 			update();
 			return 0;
 		}
