@@ -61,6 +61,7 @@ package scratch {
 	
 	import uiwidgets.DialogBox;
 	
+	import util.LogManager;
 	import util.ObjReader;
 	import util.OldProjectReader;
 	import util.ProjectIO;
@@ -358,7 +359,9 @@ package scratch {
 			if (triggerCondition) {
 				if (triggeredHats.indexOf(hat) == -1) { // not already trigged
 					// only start the stack if it is not already running
-					if (!interp.isRunning(hat, target)) interp.toggleThread(hat, target);
+					if (!interp.isRunning(hat, target)) {
+						interp.toggleThread(hat, target);
+					}
 				}
 				activeHats.push(hat);
 			}

@@ -15,19 +15,19 @@
     ext.resetAll = function(){};
 	
 	ext.writeLine = function(line) {
-		line+="\r\n";
+		line+="\n";
 		device.send(string2array(line));
     };
     ext.writeCommand = function(key,value) {
-        device.send(string2array(key+"="+value+"\r\n"));
+        device.send(string2array(key+"="+value+"\n"));
     };
 	ext.clearBuffer = function(){
 		lines = [""];
 	};
-	ext.whenReceived = function(nextID){
+	ext.whenReceived = function(){
 		var temp = isReceived;
 		isReceived = false;
-		responseValue(nextID,temp);
+		return temp;
 	};
 	ext.isAvailable = function(nextID) {
 		responseValue(nextID,lines.length>0&&lines[0]!="");
@@ -40,6 +40,7 @@
 				return lines[1];
 			}
 		}*/
+		air.trace("read:",nextID,lastLine);
 		responseValue(nextID,lastLine);
 	}
 	ext.readCommand = function(nextID,key){
@@ -58,7 +59,7 @@
 		var len = bytes.length;	
 		isReceived = true;
 		for(var index=0;index<bytes.length;index++){
-			if(bytes[index]==0xD){
+			if(bytes[index]==0xA){
 				lastLine = lines[0];
 				lines[0] = "";
 			}else{
@@ -68,6 +69,7 @@
 				}
 			}
 		}
+		air.trace("lastLine:",lastLine);
 		if(lines.length>0){
 			if(lines[0].length>254){
 				lines[0] = "";
