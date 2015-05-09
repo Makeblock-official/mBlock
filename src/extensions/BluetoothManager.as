@@ -98,10 +98,12 @@ package extensions
 				}
 			}
 		}
+		private var _port:String = "";
 		public function connect(port:String):void{
 			LogManager.sharedManager().log("bt:"+port);
+			_port = port;
 			if(SerialDevice.sharedDevice().port==port&&isConnected){
-				ConnectionManager.sharedManager().onClose();
+				ConnectionManager.sharedManager().onClose(_port);
 				close();
 			}else{
 				if(isConnected){
@@ -181,12 +183,12 @@ package extensions
 					if(_bt.connected){
 						_isBusy = false;
 						addBluetoothHistory();
-						MBlock.app.topBarPart.setConnectedTitle(_currentBluetooth+" "+Translator.map("Connected"));
+						MBlock.app.topBarPart.setConnectedTitle(Translator.map("Serial Port")+" "+Translator.map("Connected"));
 					}else{
 						if(i<10){
 							setTimeout(checkName,500);
 						}else{
-							ConnectionManager.sharedManager().onClose();
+							ConnectionManager.sharedManager().onClose(_port);
 						}
 						i++;
 					}
@@ -207,7 +209,7 @@ package extensions
 			if(_bt!=null){
 				if(_bt.connected){
 					//					MBlock.app.topBarPart.setBluetoothTitle(false);
-					ConnectionManager.sharedManager().onClose();
+					ConnectionManager.sharedManager().onClose(_port);
 					_bt.disconnect();
 				}
 			}

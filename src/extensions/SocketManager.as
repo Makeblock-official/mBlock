@@ -47,7 +47,7 @@ package extensions
 		private var _list:Array = [];
 		
 		private var _sockets:Array = [];
-		
+		private var _host:String = "";
 		private var _currentIp:String ;
 		public static function sharedManager():SocketManager{
 			if(_instance==null){
@@ -164,12 +164,13 @@ package extensions
 		}
 		public function connect(host:String):int{
 			if(SerialDevice.sharedDevice().port==host&&isConnected){
-				ConnectionManager.sharedManager().onClose();
+				ConnectionManager.sharedManager().onClose(host);
 				disconnect();
 			}else{
 				if(isConnected){
 					disconnect();
 				}
+				_host = host;
 				setTimeout(ConnectionManager.sharedManager().onOpen,200,host);
 			}
 			return 0
@@ -197,7 +198,7 @@ package extensions
 			}
 			_sockets = [];
 			isConnected = false;
-			ConnectionManager.sharedManager().onClose();
+			ConnectionManager.sharedManager().onClose(_host);
 			update();
 		}
 		public function connected(host:String=null):Boolean{
@@ -222,7 +223,9 @@ package extensions
 		}
 		public function update():void{
 			if(connected()){
-				MBlock.app.topBarPart.setConnectedTitle(Translator.map("Network")+" "+Translator.map("Connected"));
+				if(!SerialManager.sharedManager().isConnected&&!HIDManager.sharedManager().isConnected&&!BluetoothManager.sharedManager().isConnected){
+					MBlock.app.topBarPart.setConnectedTitle(Translator.map("Network")+" "+Translator.map("Connected"));
+				}
 			}
 		}
 		public function close():int{

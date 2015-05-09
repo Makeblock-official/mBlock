@@ -7,6 +7,8 @@ package extensions
 	import flash.net.navigateToURL;
 	import flash.utils.ByteArray;
 	
+	import translation.Translator;
+	
 	import util.ApplicationManager;
 	import util.LogManager;
 	import util.SharedObjectManager;
@@ -96,10 +98,17 @@ package extensions
 			}
 			return false;
 		}
-		public function onClose():void{
-			SerialDevice.sharedDevice().port = "";
-			SerialDevice.sharedDevice().clear();
-			MBlock.app.topBarPart.setDisconnectedTitle();
+		public function onClose(port:String):void{
+			SerialDevice.sharedDevice().clear(port);
+			if(!SerialDevice.sharedDevice().connected){
+				MBlock.app.topBarPart.setDisconnectedTitle();
+			}else{
+				if(SerialManager.sharedManager().isConnected||HIDManager.sharedManager().isConnected||BluetoothManager.sharedManager().isConnected){
+					MBlock.app.topBarPart.setConnectedTitle(Translator.map("Serial Port")+" "+Translator.map("Connected"));
+				}else{
+					MBlock.app.topBarPart.setConnectedTitle(Translator.map("Network")+" "+Translator.map("Connected"));
+				}
+			}
 			this.dispatchEvent(new Event(Event.CLOSE));
 		}
 		public function onRemoved(extName:String = ""):void{

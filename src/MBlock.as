@@ -923,7 +923,7 @@ package {
 			m.addItem('Serial Port', '', false, false);
 			var arr:Array = SerialManager.sharedManager().list;
 			for(var i:uint=0;i<arr.length;i++){
-				m.addItem(arr[i], "serial_"+arr[i], true, arr[i]==SerialDevice.sharedDevice().port&&SerialManager.sharedManager().isConnected);
+				m.addItem(arr[i], "serial_"+arr[i], true, SerialDevice.sharedDevice().ports.indexOf(arr[i])>-1&&SerialManager.sharedManager().isConnected);
 			}
 			m.addLine();
 			if(ApplicationManager.sharedManager().system == ApplicationManager.WINDOWS){

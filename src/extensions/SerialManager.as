@@ -111,7 +111,7 @@ package extensions
 				MBlock.app.topBarPart.setDisconnectedTitle();
 				return;
 			}else{
-				MBlock.app.topBarPart.setConnectedTitle(SerialDevice.sharedDevice().port+" "+Translator.map("Connected"));
+				MBlock.app.topBarPart.setConnectedTitle(Translator.map("Serial Port")+" "+Translator.map("Connected"));
 			}
 		}
 		public function sendBytes(bytes:ByteArray):int{
@@ -152,83 +152,26 @@ package extensions
 			_selectPort = port;
 			if(r==0){
 				ArduinoManager.sharedManager().isUploading = false;
-				MBlock.app.topBarPart.setConnectedTitle(port+" "+Translator.map("Connected"));
+				MBlock.app.topBarPart.setConnectedTitle(Translator.map("Serial Port")+" "+Translator.map("Connected"));
 			}
 			return r == 0;
 		}
 		public function close():void{
 			if(_serial.isConnected){
 				_serial.removeEventListener(Event.CHANGE,onChanged);
-				ConnectionManager.sharedManager().onClose();
 				_serial.close();
+				ConnectionManager.sharedManager().onClose(_selectPort);
 			}
 		}
 		public function connect(port:String):int{
-			if(SerialDevice.sharedDevice().port==port&&_serial.isConnected){
-				SerialDevice.sharedDevice().port = "";
+			if(SerialDevice.sharedDevice().ports.indexOf(port)>-1&&_serial.isConnected){
 				close();
 			}else{
 				if(_serial.isConnected){
-					SerialDevice.sharedDevice().port = "";
 					close();
 				}
 				setTimeout(ConnectionManager.sharedManager().onOpen,100,port);
 			}
-			return 0;
-			var tempPort:String = port;
-			if(port=="orion"||port=="mbot"){
-				if(port=="orion"){
-					MBlock.app.openOrion();
-				}
-				_device = port;
-				port = "uno";
-			}else if(port=="baseboard"){
-				_device = port;
-				port = "leonardo";
-			}else{
-				if(port.indexOf("uno")>-1||port.indexOf("leonardo")>-1){
-					_device = port;
-				}
-			}
-			if(port.indexOf("uno")>-1||port.indexOf("leonardo")>-1){
-				_board = port;
-				SharedObjectManager.sharedManager().setObject("board",(tempPort!=port)?tempPort:port);
-				SharedObjectManager.sharedManager().setObject("device",_device);
-//				MBlock.app.getPaletteBuilder().showBlocksForCategory(Specs.myBlocksCategory,true);
-				MBlock.app.scriptsPart.selector.select(Specs.myBlocksCategory,true);
-				LogManager.sharedManager().log("port:"+port+"\r\n");
-				LogManager.sharedManager().log("board:"+_board+"\r\n");
-				LogManager.sharedManager().log("state:"+_serial.isConnected+"\r\n");
-				return 0;
-			}
-			if(port.indexOf("source")>-1){
-				
-				return 0;
-			}
-			var result:int;
-			
-			if(_serial.isConnected){
-				
-			}else{
-				if(port.indexOf("COM")>-1 || port.indexOf("/dev/tty.")>-1){
-					_serial.close();
-					
-					BluetoothManager.sharedManager().close();
-					MBlock.app.track("/OpenSerial/OpenConnect");
-					result = _serial.open(port,115200,true);
-					_selectPort = port;
-					if(result==0){
-						currentPort = port;
-						_serial.addEventListener(Event.CHANGE,onChanged);
-						MBlock.app.topBarPart.setConnectedTitle(port+" "+Translator.map("Connected"));
-						ParseManager.sharedManager().queryVersion();
-					}else{
-						currentPort = "";
-					}
-					return result;
-				}
-			}
-			
 			return 0;
 		}
 		public function upgrade(hexFile:String=""):void{
@@ -240,7 +183,6 @@ package extensions
 			_hexToDownload = hexFile;
 			MBlock.app.topBarPart.setDisconnectedTitle();
 			ArduinoManager.sharedManager().isUploading = false;
-			trace(DeviceManager.sharedManager().currentDevice);
 			if(DeviceManager.sharedManager().currentDevice.indexOf("leonardo")>-1){
 				_serial.close();
 				setTimeout(function():void{

@@ -17,6 +17,7 @@ package extensions
 		private var _ext:Object;
 		private var _timer:Timer = new Timer(1000);
 		private var _name:String = "";
+		public var port:String = "";
 		public function JavaScriptEngine(name:String="")
 		{
 			_name = name;
