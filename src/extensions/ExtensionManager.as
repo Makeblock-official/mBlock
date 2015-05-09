@@ -522,13 +522,15 @@ public class ExtensionManager {
 		
 		if (b.isReporter==true) {
 			if(b.isRequester==true){
-				request(extName, primOrVarName, args, b);
 				if(b.requestState == 2) {
 					b.requestState = 0;
 					var v:* = b.response;
 					//b.response = null;
 					return v;
 				}else{
+					request(extName, primOrVarName, args, b);
+					
+					b.requestState = 0;
 //					return b.response;
 				}
 				// Returns null if we just made a request or we're still waiting

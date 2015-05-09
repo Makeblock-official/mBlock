@@ -77,7 +77,7 @@ package extensions
 			MBlock.app.topBarPart.setDisconnectedTitle();
 			_hid.removeEventListener(AirHID.EVENT_RXDATA,hidRx);  
 			_hid.removeEventListener(AirHID.EVENT_RXERROR,onError);
-			ConnectionManager.sharedManager().onClose();
+			ConnectionManager.sharedManager().onClose("HID");
 			close();
 			//setTimeout(init,5000);
 		}
@@ -99,7 +99,7 @@ package extensions
 				if(res==0){
 					trace("hid opened");
 					_isConnected = true;
-					MBlock.app.topBarPart.setConnectedTitle(Translator.map("2.4G Serial")+" "+Translator.map("Connected"));
+					MBlock.app.topBarPart.setConnectedTitle(Translator.map("Serial Port")+" "+Translator.map("Connected"));
 					//				ParseManager.sharedManager().queryVersion();
 					_hid.removeEventListener(AirHID.EVENT_RXDATA,hidRx);  
 					_hid.removeEventListener(AirHID.EVENT_RXERROR,onError);
@@ -132,7 +132,7 @@ package extensions
 				_hid.removeEventListener(AirHID.EVENT_RXDATA,hidRx);  
 				_hid.removeEventListener(AirHID.EVENT_RXERROR,onError);
 				_hid.CloseHID();
-				ConnectionManager.sharedManager().onClose();
+				ConnectionManager.sharedManager().onClose("HID");
 			}
 		}
 		public function close():void{

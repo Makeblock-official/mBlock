@@ -8,7 +8,7 @@ package extensions
 	public class SerialDevice
 	{
 		private static var _instance:SerialDevice;
-		private var _port:String="";
+		private var _ports:Array = [];
 		public function SerialDevice()
 		{
 		}
@@ -19,29 +19,40 @@ package extensions
 			return _instance;
 		}
 		public function set port(v:String):void{
-			_port = v;
+			if(_ports.indexOf(v)==-1){
+				_ports.push(v);
+			}
 		}
+		
 		public function get port():String{
-			return _port;
+			if(_ports.length>0){
+				return _ports[_ports.length-1];
+			}
+			return "";
+		}
+		public function get ports():Array{
+			return _ports;
 		}
 		public function onConnect(port:String):void{
-			_port = port;
+			this.port = port;
 		}
 		public function open(param:Object,openedHandle:Function):void{
 			var stopBits:uint = param.stopBits
 			var bitRate:uint = param.bitRate;
 			var ctsFlowControl:uint = param.ctsFlowControl;
-			if(ConnectionManager.sharedManager().open(_port,bitRate)){
+			if(ConnectionManager.sharedManager().open(this.port,bitRate)){
 				openedHandle(this);
 				ConnectionManager.sharedManager().removeEventListener(Event.CHANGE,onReceived);
 				ConnectionManager.sharedManager().addEventListener(Event.CHANGE,onReceived);
 			}else{
-				ConnectionManager.sharedManager().onClose();
+				ConnectionManager.sharedManager().onClose(this.port);
 			}
 		}
 		private var _receiveHandlers:Array=[];
-		public function clear():void{
-			_receiveHandlers = [];
+		public function clear(v:String):void{
+			var index:int = _ports.indexOf(v);
+			_ports.splice(index);
+			_receiveHandlers.splice(index);
 		}
 		public function set_receive_handler(name:String,receiveHandler:Function):void{
 			if(receiveHandler!=null){

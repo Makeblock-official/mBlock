@@ -153,7 +153,7 @@ package {
 		public var ga:GATracker;
 		private var tabsPart:TabsPart;
 		private var _welcomeView:Loader;
-		private var _currentVer:String = "05.07.001";
+		private var _currentVer:String = "05.09.001";
 		public function MBlock() {
 			this.addEventListener(Event.ADDED_TO_STAGE,initStage);
 		}
@@ -923,7 +923,7 @@ package {
 			m.addItem('Serial Port', '', false, false);
 			var arr:Array = SerialManager.sharedManager().list;
 			for(var i:uint=0;i<arr.length;i++){
-				m.addItem(arr[i], "serial_"+arr[i], true, arr[i]==SerialDevice.sharedDevice().port&&SerialManager.sharedManager().isConnected);
+				m.addItem(arr[i], "serial_"+arr[i], true, SerialDevice.sharedDevice().ports.indexOf(arr[i])>-1&&SerialManager.sharedManager().isConnected);
 			}
 			m.addLine();
 			if(ApplicationManager.sharedManager().system == ApplicationManager.WINDOWS){
