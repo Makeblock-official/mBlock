@@ -179,11 +179,13 @@ package extensions
 				var temp:Array = host.split(".");
 				if(temp.length>3){
 					temp = host.split(":");
-					var socket:Socket = new Socket()
-					configureListeners(socket);
-					socket.connect(temp[0], temp[1]);
-					_sockets.push(socket);
-					//					trace("connecting:",host);
+					if(_sockets.length==0){
+						var socket:Socket = new Socket()
+						configureListeners(socket);
+						socket.connect(temp[0], temp[1]);
+						_sockets.push(socket);
+					}
+					LogManager.sharedManager().log("socket connecting:"+host);
 				}
 			}
 			return true;
@@ -211,9 +213,11 @@ package extensions
 			return false;
 		}
 		private function onConnected(evt:ServerSocketConnectEvent):void{
-			//			 trace(evt);
+			trace("remote connected - "+evt.socket.remoteAddress+":"+evt.socket.remotePort);
+			isConnected = true;
 			configureListeners(evt.socket);
 			_sockets.push(evt.socket);
+			ConnectionManager.sharedManager().onOpen(evt.socket.remoteAddress+":"+evt.socket.remotePort);
 			update();
 		}
 		public function update():void{
@@ -280,7 +284,8 @@ package extensions
 			var bytes:ByteArray = new ByteArray();
 			var socket:Socket = evt.target as Socket;
 			socket.readBytes(bytes);
-			ParseManager.sharedManager().parseBuffer(bytes);
+			ConnectionManager.sharedManager().onReceived(bytes);
+//			ParseManager.sharedManager().parseBuffer(bytes);
 			trace("socketDataHandler: " + evt);
 		}
 		
