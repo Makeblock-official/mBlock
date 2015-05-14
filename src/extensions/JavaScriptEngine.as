@@ -10,6 +10,8 @@ package extensions
 	import flash.utils.Endian;
 	import flash.utils.Timer;
 	
+	import util.LogManager;
+	
 	public class JavaScriptEngine
 	{
 //		private static var _instance:JavaScriptManager;
@@ -26,12 +28,13 @@ package extensions
 		}
 		private function onTimer(evt:TimerEvent):void{
 			if(_ext){
-				trace("Status:",_ext._getStatus().msg);
+				LogManager.sharedManager().log("Status:"+_ext._getStatus().msg);
 			}
 		}
 		public function register(name:String,descriptor:Object,ext:Object,param:Object):void{
 			_ext = ext;
-			trace("registed:",_ext._getStatus().msg);
+			
+			LogManager.sharedManager().log("registed:"+_ext._getStatus().msg);
 			//trace(SerialManager.sharedManager().list());
 			//_timer.start();
 		}
@@ -141,14 +144,14 @@ package extensions
 			if(_ext){
 				var dev:SerialDevice = SerialDevice.sharedDevice();
 				_ext._deviceConnected(dev);
-				trace("register:",_name);
+				LogManager.sharedManager().log("register:"+_name);
 			}
 		}
 		private function onClosed(evt:Event):void{
 			if(_ext){
 				var dev:SerialDevice = SerialDevice.sharedDevice();
 				_ext._deviceRemoved(dev);
-				trace("unregister:",_name);
+				LogManager.sharedManager().log("unregister:"+_name);
 			}
 		}
 		private function onRemoved(evt:Event):void{
