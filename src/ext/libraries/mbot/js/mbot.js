@@ -106,7 +106,11 @@
         runPackage(11,ports[port],slots[slot],angle);
     };
 	ext.runBuzzer = function(tone){
-		runPackage(34,short2array(tones[tone]));
+		if(tone.constructor == "[class String]"){
+			runPackage(34,short2array(tones[tone]));
+		}else{
+			runPackage(34,short2array(tone));
+		}
 	};
 	ext.stopBuzzer = function(){
 		runPackage(34,short2array(0));
@@ -162,13 +166,23 @@
 		}
 		getPackage(nextID,deviceId,7);
 	}
+	var distPrev=0;
+	var dist=0;
+	var dist_output = 0;
 	ext.getUltrasonic = function(nextID,port){
 		var deviceId = 1;
-		values[indexs[nextID]] = function(v){
+		values[nextID] = function(v){
 			if(v<1){
 				v = 0;
 			}
-			return v;
+			distPrev = dist;
+			dist = v;
+			if(Math.abs(dist-distPrev)<200&&dist<400){
+				dist_output-=(dist_output-dist)*0.3;
+			}else{
+				dist = distPrev;
+			}
+			return dist_output;
 		}
 		getPackage(nextID,deviceId,ports[port]);
 	};

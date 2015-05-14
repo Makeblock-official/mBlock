@@ -76,13 +76,23 @@
 	ext.runShutter = function(port,status){
 		runPackage(20,shutterStatus[status]);
 	};
+	var distPrev=0;
+	var dist=0;
+	var dist_output = 0;
 	ext.getUltrasonic = function(nextID,port){
 		var deviceId = 1;
-		values[indexs[nextID]] = function(v){
+		values[nextID] = function(v){
 			if(v<1){
 				v = 0;
 			}
-			return v;
+			distPrev = dist;
+			dist = v;
+			if(Math.abs(dist-distPrev)<200&&dist<400){
+				dist_output-=(dist_output-dist)*0.3;
+			}else{
+				dist = distPrev;
+			}
+			return dist_output;
 		}
 		getPackage(nextID,deviceId,ports[port]);
 	};
