@@ -135,7 +135,10 @@ public class Interpreter {
 			var oldThread:Thread = activeThread;
 			activeThread = new Thread(b, targetObj);
 			var p:Point = b.localToGlobal(new Point(0, 0));
-			app.showBubble(String(evalCmd(b)), p.x, p.y, b.width);
+			var s:String = String(evalCmd(b));
+			if(s!="null"){
+				app.showBubble(s, p.x, p.y, b.width);
+			}
 			activeThread = oldThread;
 			return;
 		}
