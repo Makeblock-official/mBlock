@@ -457,6 +457,9 @@ msgstr "거리 %m.lessMore %n 일 때"
 msgid "when I receive %m.broadcast"
 msgstr "%m.broadcast 을(를) 받았을 때"
 
+msgid "when I receive %d.broadcast"
+msgstr "%d.broadcast 을(를) 받았을 때"
+
 msgid "when I start as a clone"
 msgstr "복제되었을 때"
 

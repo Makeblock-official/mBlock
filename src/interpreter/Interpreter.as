@@ -613,8 +613,15 @@ public class Interpreter {
 			var newThreads:Array = [];
 			msg = msg.toLowerCase();
 			var findReceivers:Function = function (stack:Block, target:ScratchObj):void {
-				if ((stack.op == "whenIReceive") && (stack.args[0].argValue.toLowerCase() == msg)) {
-					receivers.push([stack, target]);
+				try{
+					if ((stack.op == "whenIReceive") && (stack.args[0].argValue.toLowerCase() == msg)) {
+						receivers.push([stack, target]);
+					}
+				}catch(e:Error){
+					var b:Block = (stack.args[0] as Block);
+					if ((stack.op == "whenIReceive") && (evalCmd(b).toLowerCase() == msg)) {
+						receivers.push([stack, target]);
+					}
 				}
 			}
 			app.runtime.allStacksAndOwnersDo(findReceivers);

@@ -615,7 +615,7 @@ void updateVar(char * varName,double * var)
 			var c:String =  funcode.charAt(funcode.length-1)
 			if(ccode_pointer=="setup"){
 				if((ccode_setup.indexOf(funcode)==-1&&ccode_setup_fun.indexOf(funcode)==-1)||funcode.indexOf("delay")>-1||allowAdd){
-					if(funcode.indexOf("=")>-1){
+					if(funcode.indexOf("=")>-1&&funcode.indexOf("while")==-1){
 						ccode_setup_def=funcode+ccode_setup_def;
 					}else{
 						ccode_setup_fun+=funcode;
@@ -1134,13 +1134,8 @@ void updateVar(char * varName,double * var)
 		private var srcDocuments:Array = [];
 		private var numOfProcess:uint = 0;
 		private var numOfSuccess:uint = 0;
-		private var projectDocumentName:String = "";
+		private var _projectDocumentName:String = "";
 		private function prepareProjectDir(ccode:String):void{
-			var now:Date = new Date();
-			projectDocumentName = "project_"+ MBlock.app.projectName().split(" ").join("")+(now.getMonth()+"_"+now.getDay()+"_"+Math.floor(Math.random()*100).toString(16));
-			if(projectDocumentName=="project_"){
-				projectDocumentName = "project";
-			}
 			_currentDevice = DeviceManager.sharedManager().currentDevice;
 			
 			var cppList:Array =  requiredCpp;
@@ -1163,13 +1158,13 @@ void updateVar(char * varName,double * var)
 				if(srcdir.exists){
 					if(srcdir.isDirectory){
 						if(srcdir.getDirectoryListing().length>0){
-							trace("file:",path);
 							copyCompileFiles(srcdir.getDirectoryListing(),workdir);
 						}
 					}
 				}
 			}
 			var projCpp:File = File.applicationStorageDirectory.resolvePath("scratchTemp/"+projectDocumentName+"/"+projectDocumentName+".ino")
+			LogManager.sharedManager().log("projCpp:"+projCpp.nativePath);
 			var outStream:FileStream = new FileStream();
 			outStream.open(projCpp, FileMode.WRITE);
 			outStream.writeUTFBytes(ccode)
@@ -1183,7 +1178,8 @@ void updateVar(char * varName,double * var)
 				outStream.close()
 			}
 			
-			projectPath = workdir.nativePath
+			projectPath = workdir.nativePath;
+			LogManager.sharedManager().log("projectPath:"+projectPath);
 		}
 		
 		
@@ -1209,15 +1205,24 @@ void updateVar(char * varName,double * var)
 				}
 			}
 		}
+		public function get projectDocumentName():String{
+			var now:Date = new Date;
+			var pName:String = MBlock.app.projectName().split(" ").join("");
+			for(var i:uint=0;i<pName.length;i++){
+				if(pName.charCodeAt(i)>100){
+					pName = pName.split(pName.charAt(i)).join("_");
+				}
+			}
+			_projectDocumentName = "project_"+pName+ (now.getMonth()+"_"+now.getDay());
+			if(_projectDocumentName=="project_"){
+				_projectDocumentName = "project";
+			}
+			return _projectDocumentName;
+		}
 		public function buildAll(ccode:String):String
 		{
 			if(isUploading){
 				return "uploading";
-			}
-			var now:Date = new Date;
-			projectDocumentName = "project_"+ MBlock.app.projectName().split(" ").join("")+(now.getMonth()+"_"+now.getDay()+"_"+Math.floor(Math.random()*100).toString(16));
-			if(projectDocumentName=="project_"){
-				projectDocumentName = "project";
 			}
 			if(arduinoInstallPath==""){
 				var dialog:DialogBox = new DialogBox();

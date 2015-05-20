@@ -337,7 +337,11 @@ package scratch {
 //			} else if('Communication.serial/received' == hat.op){
 //				triggerCondition = getBooleanSerialReceived();
 			}else if('whenIReceive' == hat.op){
-				triggerCondition = getBooleanBroadcastReceived(""+(hat.args[0] as BlockArg).argValue);
+				try{
+					triggerCondition = getBooleanBroadcastReceived(""+(hat.args[0] as BlockArg).argValue);
+				}catch(e){
+					triggerCondition = getBooleanBroadcastReceived(""+(hat.args[0] as Block).response);
+				}
 			} else if (true) {
 				var dotIndex:int = hat.op.indexOf('.');
 				if (dotIndex > -1) {

@@ -41,6 +41,7 @@ package scratch {
 	
 	import uiwidgets.DialogBox;
 	import uiwidgets.Menu;
+	import uiwidgets.Piano;
 	
 	import util.DragClient;
 
@@ -88,7 +89,8 @@ public class BlockMenus implements DragClient {
 		if (menuName == 'listItem') menuHandler.listItem(evt, false);
 		if (menuName == 'mathOp') menuHandler.mathOpMenu(evt);
 		if (menuName == 'motorDirection') menuHandler.motorDirectionMenu(evt);
-		if (menuName == 'note') menuHandler.noteMenu(evt);
+		//if (menuName == 'note') menuHandler.noteMenu(evt);
+		if (menuName == 'note') menuHandler.notePicker(evt);
 		if (menuName == 'procMenu') menuHandler.procMenu(evt);
 		if (menuName == 'rotationStyle') menuHandler.rotationStyleMenu(evt);
 		if (menuName == 'scrollAlign') menuHandler.scrollAlignMenu(evt);
@@ -343,7 +345,14 @@ public class BlockMenus implements DragClient {
 		for each (var s:String in ops) m.addItem(s);
 		showMenu(m);
 	}
-
+	private function notePicker(evt:MouseEvent):void {
+		var piano:Piano = new Piano(block.base.color, app.viewedObj().instrument, setBlockArg);
+		if (!isNaN(blockArg.argValue)) {
+			piano.selectNote(int(blockArg.argValue));
+		}
+		var p:Point = blockArg.localToGlobal(new Point(blockArg.width, blockArg.height));
+		piano.showOnStage(app.stage, int(p.x - piano.width / 2), p.y);
+	}
 	private function noteMenu(evt:MouseEvent):void {
 		var notes:Array = [
 			['Low C', 48],

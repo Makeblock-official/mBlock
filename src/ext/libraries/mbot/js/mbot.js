@@ -106,7 +106,7 @@
         runPackage(11,ports[port],slots[slot],angle);
     };
 	ext.runBuzzer = function(tone){
-		if(tone.constructor == "[class String]"){
+		if(typeof tone == "string"){
 			runPackage(34,short2array(tones[tone]));
 		}else{
 			runPackage(34,short2array(tone));

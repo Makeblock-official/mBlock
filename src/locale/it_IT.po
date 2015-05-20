@@ -464,6 +464,9 @@ msgstr "quando la distanza è < %n"
 msgid "when I receive %m.broadcast"
 msgstr "quando ricevo %m.broadcast"
 
+msgid "when I receive %d.broadcast"
+msgstr "quando ricevo %d.broadcast"
+
 msgid "when I start as a clone"
 msgstr "quando vengo clonato"
 
