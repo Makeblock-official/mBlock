@@ -343,7 +343,9 @@ return true; // xxx disable this check for now; it was causing confusion at Scra
 		var dropType:String = droppedBlock.type;
 		var targetType:String = (target is Block) ? Block(target).type : BlockArg(target).type;
 		if (targetType == 'm') {
+			if(Block(target.parent).op.indexOf("whenIReceive")>-1)return true;
 			if (Block(target.parent).type == 'h') return false;
+			//可以拖动变量的菜单框
 			return menusThatAcceptReporters.indexOf(BlockArg(target).menuName) > -1;
 		}
 		if (targetType == 'b') return dropType == 'b'|| dropType=='B';

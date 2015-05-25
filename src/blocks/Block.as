@@ -682,7 +682,7 @@ public class Block extends Sprite {
 			if (argSpec == "c") return new BlockArg("c", c);
 			if (argSpec == "d") return new BlockArg("d", c, true, s.slice(3));
 			if (argSpec == "m") {
-				return new BlockArg("m", c, false, s.slice(3));
+				return new BlockArg("m", c, true, s.slice(3));
 			}
 			if (argSpec == "n") return new BlockArg("n", c, true);
 			if (argSpec == "s") return new BlockArg("s", c, true);

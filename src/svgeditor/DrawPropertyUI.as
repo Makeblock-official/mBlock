@@ -331,7 +331,7 @@ package svgeditor {
 					var fs:Array = Font.enumerateFonts(true);
 					for each(f in fs){
 						s = f.fontName;
-						if(s.indexOf("篆")>-1||s.indexOf("黑体")>-1||s.indexOf("楷体")>-1||s.indexOf("宋体")>-1||s.indexOf("仿宋")>-1||s.indexOf("雅黑")>-1){
+						if(s.indexOf("黑體")>-1||s.indexOf("黑體")>-1||s.indexOf("宋體")>-1||s.indexOf("楷體")>-1||s.indexOf("明體")>-1||s.indexOf("篆")>-1||s.indexOf("黑体")>-1||s.indexOf("楷体")>-1||s.indexOf("宋体")>-1||s.indexOf("仿宋")>-1||s.indexOf("雅黑")>-1){
 							if(s.length<8){
 								fonts.push(s);
 							}

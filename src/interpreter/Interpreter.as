@@ -722,14 +722,17 @@ public class Interpreter {
 	// a reference to the Variable object is cached in the target object.
 
 	private function primVarGet(b:Block):* {
-		var v:Variable = activeThread.target.varCache[b.spec];
-		
-		if (v == null) {
-			v = activeThread.target.varCache[b.spec] = activeThread.target.lookupOrCreateVar(b.spec);
-			if (v == null) return 0;
+		if(activeThread!=null){
+			var v:Variable = activeThread.target.varCache[b.spec];
+			
+			if (v == null) {
+				v = activeThread.target.varCache[b.spec] = activeThread.target.lookupOrCreateVar(b.spec);
+				if (v == null) return 0;
+			}
+			// XXX: Do we need a get() for persistent variables here ?
+			return v.value;
 		}
-		// XXX: Do we need a get() for persistent variables here ?
-		return v.value;
+		return null;
 	}
 
 	protected function primVarSet(b:Block):Variable {
