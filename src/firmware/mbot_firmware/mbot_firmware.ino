@@ -463,7 +463,7 @@ void readSensor(int device){
      if(us.getPort()!=port){
        us.reset(port);
      }
-     value = (float)us.distanceCm();
+     value = (float)us.distanceCm(50000);
      sendFloat(value);
    }
    break;

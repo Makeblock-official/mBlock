@@ -64,26 +64,56 @@ package extensions
 			return false;
 		}
 		public function get hasNetFramework():Boolean{
+			if(_bt!=null){
+				return _hasNetFramework;
+			}
+			if(ApplicationManager.sharedManager().system==ApplicationManager.WINDOWS){
+				for each(var fs:File in File.getRootDirectories()){
+					var file:File =  new File(fs.url+"Windows/Microsoft.NET/Framework");
+					if(file.exists){
+						_hasNetFramework = false;
+						for each(var f:File in file.getDirectoryListing()){
+							if(f.name.substr(0,1)=="v"){
+								if(Number(f.name.substr(1,3))>=4.0){
+									//									_bluetooth = new BluetoothExtEmpty();
+									var buildFile:File = new File(f.url+"/MSBuild");
+									if(buildFile.exists){
+										_bt = new BluetoothExt();
+										_hasNetFramework = true;
+										break;
+									}
+								}
+							}
+						}
+					}
+					if(_bt!=null){
+						break;
+					}
+				}
+			}
+			if(_bt!=null){
+				_bt.addEventListener(Event.CHANGE,onDiscoverChanged);
+				_bt.addEventListener("RECEIVED_DATA",onDataReceived);
+			}
 			return _hasNetFramework;
 		}
 		public function discover():void{
 			if(_bt){
 				if(_bt.connected){
 					close();
-				}else{
-					if(!_bt.isDiscovering){
-						MBlock.app.track("/OpenBluetooth");
-						function cancel():void{
-							removeDiscoverDialogbox(d);
-							d.cancel();
-						}
-						var d:DialogBox = new DialogBox();
-						d.addTitle(Translator.map('Discovering Bluetooth') + '...');
-						d.addButton('Cancel', cancel);
-						d.showOnStage(MBlock.app.stage);
-						addDiscoverDialogbox(d);
-						_bt.beginDiscover();
+				}
+				if(!_bt.isDiscovering){
+					MBlock.app.track("/OpenBluetooth");
+					function cancel():void{
+						removeDiscoverDialogbox(d);
+						d.cancel();
 					}
+					var d:DialogBox = new DialogBox();
+					d.addTitle(Translator.map('Discovering Bluetooth') + '...');
+					d.addButton('Cancel', cancel);
+					d.showOnStage(MBlock.app.stage);
+					addDiscoverDialogbox(d);
+					_bt.beginDiscover();
 				}
 			}
 		}
@@ -98,12 +128,11 @@ package extensions
 				}
 			}
 		}
-		private var _port:String = "";
 		public function connect(port:String):void{
-			LogManager.sharedManager().log("bt:"+port);
-			_port = port;
+			LogManager.sharedManager().log("connecting bt:"+port);
+			_currentBluetooth = port;
 			if(SerialDevice.sharedDevice().port==port&&isConnected){
-				ConnectionManager.sharedManager().onClose(_port);
+				LogManager.sharedManager().log("close bt:"+port);
 				close();
 			}else{
 				if(isConnected){
@@ -149,7 +178,6 @@ package extensions
 			var temp:Array = [];
 			for(var i:uint=0;i<_history.length;i++){
 				var dev:Object = _history[i];
-				trace(dev.addr,dev.name);
 				if(temp.indexOf(dev.addr)==-1){
 					temp.push(dev.label);
 				}
@@ -175,26 +203,29 @@ package extensions
 				}
 			}
 			//if(_list.indexOf(port)>-1){
-			LogManager.sharedManager().log("bt:"+port.split("( ")[1].split(" )")[0]);
-				_bt["connectByAddress"](port.split("( ")[1].split(" )")[0]);
-				_currentBluetooth = port;
-				var i:uint = 0;
-				function checkName():void{
-					if(_bt.connected){
-						_isBusy = false;
-						addBluetoothHistory();
-						MBlock.app.topBarPart.setConnectedTitle(Translator.map("Serial Port")+" "+Translator.map("Connected"));
+			var btAddr:String = port.split("( ")[1].split(" )")[0];
+			LogManager.sharedManager().log("bt opening:"+btAddr);
+			_bt["connectByAddress"](btAddr);
+			_currentBluetooth = port;
+			var i:uint = 0;
+			function checkName():void{
+				if(_bt.connected){
+					LogManager.sharedManager().log("bt opened:"+btAddr);
+					_isBusy = false;
+					addBluetoothHistory();
+					MBlock.app.topBarPart.setConnectedTitle(Translator.map("Serial Port")+" "+Translator.map("Connected"));
+				}else{
+					LogManager.sharedManager().log("bt checking:"+btAddr);
+					if(i<10){
+						setTimeout(checkName,500);
 					}else{
-						if(i<10){
-							setTimeout(checkName,500);
-						}else{
-							ConnectionManager.sharedManager().onClose(_port);
-						}
-						i++;
+						ConnectionManager.sharedManager().onClose(_currentBluetooth);
 					}
+					i++;
 				}
-				setTimeout(checkName,1000);
-				status = true;
+			}
+			setTimeout(checkName,1000);
+			status = true;
 			//}
 			return status;
 		}
@@ -205,12 +236,11 @@ package extensions
 			return false;
 		}
 		public function close():void{
-			LogManager.sharedManager().log("bt close")
+			LogManager.sharedManager().log("bt closed")
 			if(_bt!=null){
 				if(_bt.connected){
-					//					MBlock.app.topBarPart.setBluetoothTitle(false);
-					ConnectionManager.sharedManager().onClose(_port);
 					_bt.disconnect();
+					ConnectionManager.sharedManager().onClose(_currentBluetooth);
 				}
 			}
 		}
@@ -227,7 +257,7 @@ package extensions
 				return;
 			}
 			_list = str.split(",");
-			trace("device list:",_list);
+			LogManager.sharedManager().log("device list:"+_list);
 			for(var i:uint=0;i<_list.length;i++){
 				for(var j:* in _dialogboxDiscover){
 					var d:DialogBox = _dialogboxDiscover[j];

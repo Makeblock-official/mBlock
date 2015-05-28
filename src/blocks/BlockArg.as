@@ -36,12 +36,21 @@
 // arguments, it should set base to a BlockShape to support drag feedback.
 
 package blocks {
-	import flash.display.*;
-	import flash.events.*;
+	import flash.display.Graphics;
+	import flash.display.Shape;
+	import flash.display.Sprite;
+	import flash.events.Event;
+	import flash.events.FocusEvent;
+	import flash.events.MouseEvent;
 	import flash.filters.BevelFilter;
-	import flash.text.*;
+	import flash.text.TextField;
+	import flash.text.TextFieldAutoSize;
+	import flash.text.TextFieldType;
+	
 	import scratch.BlockMenus;
+	
 	import translation.Translator;
+	
 	import util.Color;
 
 public class BlockArg extends Sprite {
@@ -52,7 +61,7 @@ public class BlockArg extends Sprite {
 	public var base:BlockShape;
 	public var argValue:* = '';
 	public var isNumber:Boolean;
-	public var isEditable:Boolean;
+	private var _isEditable:Boolean;
 	public var field:TextField;
 	public var menuName:String;
 
@@ -68,7 +77,6 @@ public class BlockArg extends Sprite {
 	//	none of the above - custom subclass of BlockArg
 	public function BlockArg(type:String, color:int, editable:Boolean = false, menuName:String = '') {
 		this.type = type;
-
 		if (color == -1) { // copy for clone; omit graphics
 			if ((type == 'd') || (type == 'n')) isNumber = true;
 			return;
@@ -132,7 +140,7 @@ public class BlockArg extends Sprite {
 			if (isNumber) field.restrict = '0-9e.\\-'; // restrict to numeric characters
 			if (editable) {
 				base.setColor(0xFFFFFF); // if editable, set color to white
-				isEditable = true;
+				_isEditable = true;
 			}
 			field.addEventListener(FocusEvent.FOCUS_OUT, stopEditing);
 			addChild(field);
@@ -142,6 +150,12 @@ public class BlockArg extends Sprite {
 		}
 	}
 
+	public function get isEditable():Boolean {
+		return _isEditable;
+	}
+	public function set isEditable(v:Boolean):void{
+		_isEditable = v;
+	}
 	public function labelOrNull():String { return field ? field.text : null }
 
 	public function setArgValue(value:*, label:String = null):void {

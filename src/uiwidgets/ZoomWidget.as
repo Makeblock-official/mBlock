@@ -19,6 +19,8 @@
 
 package uiwidgets {
 	import flash.display.Sprite;
+	
+	import util.SharedObjectManager;
 
 public class ZoomWidget extends Sprite {
 
@@ -40,8 +42,8 @@ public class ZoomWidget extends Sprite {
 		smaller.isMomentary = true;
 		normal.isMomentary = true;
 		bigger.isMomentary = true;
+		changeZoomBy(SharedObjectManager.sharedManager().getObject("pane_zoom",0));
 	}
-
 	private function zoomOut(b:IconButton):void { changeZoomBy(-1) }
 	private function noZoom(b:IconButton):void { zoom = 0; changeZoomBy(0) }
 	private function zoomIn(b:IconButton):void { changeZoomBy(1) }
@@ -50,6 +52,7 @@ public class ZoomWidget extends Sprite {
 		const scaleFactors:Array = [25, 50, 75, 100, 125, 150, 200];
 		zoom += delta;
 		zoom = Math.max(-3, Math.min(zoom, 3));
+		SharedObjectManager.sharedManager().setObject("pane_zoom",zoom);
 		smaller.setDisabled(zoom < -2, 0.5);
 		bigger.setDisabled(zoom > 2, 0.5);
 		scriptsPane.setScale(scaleFactors[3 + zoom] / 100);

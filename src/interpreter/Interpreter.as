@@ -135,7 +135,10 @@ public class Interpreter {
 			var oldThread:Thread = activeThread;
 			activeThread = new Thread(b, targetObj);
 			var p:Point = b.localToGlobal(new Point(0, 0));
-			app.showBubble(String(evalCmd(b)), p.x, p.y, b.width);
+			var s:String = String(evalCmd(b));
+			if(s!="null"){
+				app.showBubble(s, p.x, p.y, b.width);
+			}
 			activeThread = oldThread;
 			return;
 		}
@@ -610,8 +613,15 @@ public class Interpreter {
 			var newThreads:Array = [];
 			msg = msg.toLowerCase();
 			var findReceivers:Function = function (stack:Block, target:ScratchObj):void {
-				if ((stack.op == "whenIReceive") && (stack.args[0].argValue.toLowerCase() == msg)) {
-					receivers.push([stack, target]);
+				try{
+					if ((stack.op == "whenIReceive") && (stack.args[0].argValue.toLowerCase() == msg)) {
+						receivers.push([stack, target]);
+					}
+				}catch(e:Error){
+					var b:Block = (stack.args[0] as Block);
+					if ((stack.op == "whenIReceive") && (evalCmd(b).toLowerCase() == msg)) {
+						receivers.push([stack, target]);
+					}
 				}
 			}
 			app.runtime.allStacksAndOwnersDo(findReceivers);
@@ -712,14 +722,17 @@ public class Interpreter {
 	// a reference to the Variable object is cached in the target object.
 
 	private function primVarGet(b:Block):* {
-		var v:Variable = activeThread.target.varCache[b.spec];
-		
-		if (v == null) {
-			v = activeThread.target.varCache[b.spec] = activeThread.target.lookupOrCreateVar(b.spec);
-			if (v == null) return 0;
+		if(activeThread!=null){
+			var v:Variable = activeThread.target.varCache[b.spec];
+			
+			if (v == null) {
+				v = activeThread.target.varCache[b.spec] = activeThread.target.lookupOrCreateVar(b.spec);
+				if (v == null) return 0;
+			}
+			// XXX: Do we need a get() for persistent variables here ?
+			return v.value;
 		}
-		// XXX: Do we need a get() for persistent variables here ?
-		return v.value;
+		return null;
 	}
 
 	protected function primVarSet(b:Block):Variable {

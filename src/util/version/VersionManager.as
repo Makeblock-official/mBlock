@@ -67,7 +67,7 @@ package util.version
 				var res:VerResource = _list[_requestIndex];
 				res.load();
 			}else{
-				trace("finish");
+				LogManager.sharedManager().log("finish");
 				//MBlock.app.extensionManager.clearImportedExtensions();
 				setTimeout(DeviceManager.sharedManager().onSelectBoard,1000,DeviceManager.sharedManager().currentBoard);
 				MBlock.app.extensionManager.importExtension();

@@ -457,6 +457,9 @@ msgstr "wanneer afstand < %n"
 msgid "when I receive %m.broadcast"
 msgstr "wanneer ik %m.broadcast ontvang"
 
+msgid "when I receive %d.broadcast"
+msgstr "wanneer ik %d.broadcast ontvang"
+
 msgid "when I start as a clone"
 msgstr "wanneer ik start als een kloon"
 

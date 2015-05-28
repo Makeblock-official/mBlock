@@ -469,6 +469,9 @@ msgstr "当距离 < %n"
 msgid "when I receive %m.broadcast"
 msgstr "当接收到 %m.broadcast"
 
+msgid "when I receive %d.broadcast"
+msgstr "当接收到 %d.broadcast"
+
 msgid "when I start as a clone"
 msgstr "当作为克隆体启动时"
 
@@ -1483,6 +1486,9 @@ msgstr "太空"
 
 msgid "Sports"
 msgstr "运动"
+
+msgid "Holiday"
+msgstr "假日"
 
 # 85%
 msgid "Sprite"

@@ -455,6 +455,9 @@ msgstr "когда дистанция < %n"
 msgid "when I receive %m.broadcast"
 msgstr "когда я получил %m.broadcast"
 
+msgid "when I receive %d.broadcast"
+msgstr "когда я получил %d.broadcast"
+
 msgid "when I start as a clone"
 msgstr "когда я начинаю как клон"
 

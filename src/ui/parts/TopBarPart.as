@@ -257,11 +257,11 @@ package ui.parts {
 			addChild(connectMenu = makeMenuButton('Connect',app.showConnectMenu,true));
 			if(SerialDevice.sharedDevice().port&&SerialDevice.sharedDevice().port!=""){
 				if(SerialDevice.sharedDevice().port.indexOf("COM")>-1||SerialDevice.sharedDevice().port.indexOf("/dev/tty.")>-1){
-					setConnectedTitle(SerialDevice.sharedDevice().port+" "+Translator.map("Connected"));
+					setConnectedTitle(Translator.map("Serial Port")+" "+Translator.map("Connected"));
 				}else if(SerialDevice.sharedDevice().port.indexOf("HID")>-1){
-					setConnectedTitle(Translator.map("2.4G Serial")+" "+Translator.map("Connected"));
+					setConnectedTitle(Translator.map("Serial Port")+" "+Translator.map("Connected"));
 				}else if(SerialDevice.sharedDevice().port.indexOf(" (")>-1){
-					setConnectedTitle(SerialDevice.sharedDevice().port+" "+Translator.map("Connected"));
+					setConnectedTitle(Translator.map("Serial Port")+" "+Translator.map("Connected"));
 				}
 			}
 	//		addChild(serialMenu = makeMenuButton(SerialManager.sharedManager().isConnected?(SerialManager.sharedManager().currentPort+" "+Translator.map('Connected')):'Serial Port', app.showSerialMenu, true));
