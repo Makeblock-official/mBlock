@@ -1382,6 +1382,9 @@ void updateVar(char * varName,double * var)
 				file.url = arduinoInstallPath+"/arduino.exe";
 			}else{
 				file.url = new File(arduinoInstallPath+"/../../MacOS/JavaApplicationStub").url;
+				if(!file.exists){
+					file.url = new File(arduinoInstallPath+"/../MacOS/Arduino").url; 
+				}
 			}
 			
 			var processArgs:Vector.<String> = new Vector.<String>(); 
@@ -1491,11 +1494,18 @@ void updateVar(char * varName,double * var)
 			}
 			var tf:File = new File(); 
 			if(ApplicationManager.sharedManager().system==ApplicationManager.MAC_OS){
-				tf.url = new File("/Applications/Arduino.app/Contents/Resources/Java/hardware/tools/avr/bin/avr-ar").url;
+				tf.url = new File("/Applications/Arduino.app/Contents/Java/hardware/tools/avr/bin/avr-ar").url;
 				if(tf.exists){
-					arduinoPath ="/Applications/Arduino.app/Contents/Resources/Java";
+					arduinoPath ="/Applications/Arduino.app/Contents/Java";
 					SharedObjectManager.sharedManager().setObject("arduinoPath",arduinoPath);
 					return arduinoPath;
+				}else{
+					tf.url = new File("/Applications/Arduino.app/Contents/Resources/Java/hardware/tools/avr/bin/avr-ar").url;
+					if(tf.exists){
+						arduinoPath ="/Applications/Arduino.app/Contents/Resources/Java";
+						SharedObjectManager.sharedManager().setObject("arduinoPath",arduinoPath);
+						return arduinoPath;
+					}
 				}
 				return "";
 			}

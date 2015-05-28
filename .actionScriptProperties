@@ -31,9 +31,9 @@
           <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/automation_agent.swc" useDefaultLinkType="false"/>
         </excludedEntries>
       </libraryPathEntry>
-      <libraryPathEntry kind="5" linkType="2" path="libs/AIRSerial_win.ane"/>
-      <libraryPathEntry kind="5" linkType="2" path="libs/BluetoothManager_win.ane"/>
-      <libraryPathEntry kind="5" linkType="2" path="libs/HID2.4G_win.ane"/>
+      <libraryPathEntry kind="5" linkType="2" path="libs/AIRSerial_mac.ane"/>
+      <libraryPathEntry kind="5" linkType="2" path="libs/BluetoothManager_mac.ane"/>
+      <libraryPathEntry kind="5" linkType="2" path="libs/HID2.4G_mac.ane"/>
     </libraryPath>
     <sourceAttachmentPath/>
   </compiler>
@@ -49,11 +49,13 @@
   <buildTargets>
     <buildTarget buildTargetName="default" platformId="default">
       <airSettings airCertificatePath="cert/air.p12" airTimestamp="true" anePathSet="true" version="1">
-        <airExcludes/>
+        <airExcludes>
+          <pathEntry path=".DS_Store"/>
+        </airExcludes>
         <anePaths>
-          <anePathEntry path="libs/AIRSerial_win.ane"/>
-          <anePathEntry path="libs/BluetoothManager_win.ane"/>
-          <anePathEntry path="libs/HID2.4G_win.ane"/>
+          <anePathEntry path="libs/AIRSerial_mac.ane"/>
+          <anePathEntry path="libs/BluetoothManager_mac.ane"/>
+          <anePathEntry path="libs/HID2.4G_mac.ane"/>
         </anePaths>
         <newLaunchParams/>
         <modifiedLaunchParams/>
