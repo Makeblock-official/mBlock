@@ -138,97 +138,168 @@
 		getPackage(nextID,deviceId,6);
 	}
 	var buttonPressed = false;
+	var buttonReleased = false;
 	ext.whenButtonPressed = function(status){
 		var deviceId = 31;
 		var nextID = 100;
-		if(status=="pressed"){
-			values[nextID] = function(v){
-				buttonPressed = v<500;
-			}
-		}else{
-			values[nextID] = function(v){
-				buttonPressed = v>500;
+		if(typeof status == "string"){
+			if(status=="pressed"){
+				status = 0;
+			}else if(status=="released"){
+				status = 1;
 			}
 		}
 		getPackage(nextID,deviceId,7);
-		return buttonPressed;
+		if(status==0){
+			values[nextID] = function(v,extId){
+				buttonPressed = v<500;
+				buttonReleased = !buttonPressed;
+			}
+			return buttonPressed;
+		}else{
+			values[nextID] = function(v,extId){
+				buttonReleased = v>500;
+				buttonPressed = !buttonReleased;
+			}
+			return buttonReleased;
+		}
 	}
 	ext.getButtonOnBoard = function(nextID,status){
 		var deviceId = 31;
-		if(status=="pressed"){
-			values[nextID] = function(v){
+		if(typeof status == "string"){
+			if(status=="pressed"){
+				status = 0;
+			}else if(status=="released"){
+				status = 1;
+			}
+		}
+		if(status==0){
+			values[nextID] = function(v,extId){
 				return v<500;
 			}
 		}else{
-			values[nextID] = function(v){
+			values[nextID] = function(v,extId){
 				return v>500;
 			}
 		}
 		getPackage(nextID,deviceId,7);
 	}
-	var distPrev=0;
-	var dist=0;
-	var dist_output = 0;
+	var distPrev=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+	var dist=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+	var dist_output =[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 	ext.getUltrasonic = function(nextID,port){
 		var deviceId = 1;
-		values[nextID] = function(v){
+		values[nextID] = function(v,extId){
+			
 			if(v<1){
 				v = 0;
 			}
-			distPrev = dist;
-			dist = v;
-			if(Math.abs(dist-distPrev)<200&&dist<400){
-				dist_output-=(dist_output-dist)*0.3;
+			distPrev[extId] = dist[extId];
+			dist[extId] = v;
+			if(Math.abs(dist[extId]-distPrev[extId])<400&&dist[extId]<400){
+				dist_output[extId]-=(dist_output[extId]-dist[extId])*0.4;
 			}else{
-				dist = distPrev;
+				dist[extId] = distPrev[extId];
 			}
-			return dist_output;
+			return dist_output[extId];
 		}
-		getPackage(nextID,deviceId,ports[port]);
+		if(typeof port == "string"){
+			getPackage(nextID,deviceId,ports[port]);
+		}else{
+			getPackage(nextID,deviceId,port);
+		}
 	};
 	ext.getPotentiometer = function(nextID,port) {
 		var deviceId = 4;
-		getPackage(nextID,deviceId,ports[port]);
+		if(typeof port == "string"){
+			getPackage(nextID,deviceId,ports[port]);
+		}else{
+			getPackage(nextID,deviceId,port);
+		}
     };
 	ext.getLinefollower = function(nextID,port) {
 		var deviceId = 17;
-		getPackage(nextID,deviceId,ports[port]);
+		if(typeof port == "string"){
+			getPackage(nextID,deviceId,ports[port]);
+		}else{
+			getPackage(nextID,deviceId,port);
+		}
     };
 	ext.getLightsensor = function(nextID,port) {
 		var deviceId = 3;
-		getPackage(nextID,deviceId,ports[port]);
+		if(typeof port == "string"){
+			getPackage(nextID,deviceId,ports[port]);
+		}else{
+			getPackage(nextID,deviceId,port);
+		}
     };
 	ext.getJoystick = function(nextID,port,ax) {
 		var deviceId = 5;
-		getPackage(nextID,deviceId,ports[port],axis[ax]);
+		if(typeof port=="string"){
+			port = ports[port];
+		}
+		if(typeof ax=="string"){
+			ax = axis[ax];
+		}
+		getPackage(nextID,deviceId,port,ax);
     };
 	ext.getSoundsensor = function(nextID,port) {
 		var deviceId = 7;
-		getPackage(nextID,deviceId,ports[port],axis[ax]);
+		if(typeof port=="string"){
+			port = ports[port];
+		}
+		if(typeof ax=="string"){
+			ax = axis[ax];
+		}
+		getPackage(nextID,deviceId,port,ax);
     };
 	ext.getInfrared = function(nextID,port) {
 		var deviceId = 16;
-		getPackage(nextID,deviceId,ports[port]);
+		if(typeof port=="string"){
+			port = ports[port];
+		}
+		getPackage(nextID,deviceId,port);
     };
 	ext.getLimitswitch = function(nextID,port) {
 		var deviceId = 21;
-		getPackage(nextID,deviceId,ports[port]);
+		if(typeof port=="string"){
+			port = ports[port];
+		}
+		getPackage(nextID,deviceId,port);
     };
 	ext.getPirmotion = function(nextID,port) {
 		var deviceId = 15;
-		getPackage(nextID,deviceId,ports[port]);
+		if(typeof port=="string"){
+			port = ports[port];
+		}
+		getPackage(nextID,deviceId,port);
     };
 	ext.getTemperature = function(nextID,port,slot) {
 		var deviceId = 2;
-		getPackage(nextID,deviceId,ports[port],slots[slot]);
+		if(typeof port=="string"){
+			port = ports[port];
+		}
+		if(typeof slot=="string"){
+			slot = slots[slot];
+		}
+		getPackage(nextID,deviceId,port,slot);
     };
 	ext.getGyro = function(nextID,ax) {
 		var deviceId = 6;
-		getPackage(nextID,deviceId,ports[port],slots[slot]);
+		if(typeof port=="string"){
+			port = ports[port];
+		}
+		if(typeof slot=="string"){
+			slot = slots[slot];
+		}
+		getPackage(nextID,deviceId,port,slot);
     };
 	ext.getIrRemote = function(nextID,code){
 		var deviceId = 14;
-		getPackage(nextID,deviceId,0,ircodes[code]);
+		if(typeof code=="string"){
+			code = ircodes[code];
+		}
+		getPackage(nextID,deviceId,0,code);
 	}
 	ext.getIR = function(nextID){
 		var deviceId = 13;
@@ -329,7 +400,7 @@
 					}
 					if(type<=5){
 						if(values[extId]!=undefined){
-							responseValue(extId,values[extId](value));
+							responseValue(extId,values[extId](value,extId));
 						}else{
 							responseValue(extId,value);
 						}

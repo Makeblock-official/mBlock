@@ -103,6 +103,9 @@ package extensions
 				return false;
 			}
 			var v:*;
+			for(var i:uint=0;i<param.length;i++){
+				param[i] = ext.getValue(param[i]);
+			}
 			switch(param.length){
 				case 0:{
 					v = _ext[method]();
@@ -214,7 +217,9 @@ package extensions
 			}
 			if(buffer.length>=4){
 				buffer.position = 0;
-				return buffer.readFloat();
+				var f:Number = buffer.readFloat();
+				buffer.clear();
+				return f;
 			}
 			return 0;
 		}
@@ -223,11 +228,13 @@ package extensions
 		}
 		public function readShort(bytes:Array):Number{
 			var buffer:ByteArray = new ByteArray();
+			buffer.endian = Endian.LITTLE_ENDIAN;
 			for(var i:uint=0;i<bytes.length;i++){
 				buffer.writeByte(bytes[i]);
 			}
 			if(buffer.length>=2){
-				var v:Number = buffer.readShort();
+				buffer.position = 0;
+				var v:Number = buffer.readUnsignedShort();
 				buffer.clear();
 				return v;
 			}

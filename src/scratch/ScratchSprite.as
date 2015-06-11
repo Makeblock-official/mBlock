@@ -24,18 +24,32 @@
 // rotation style, size, draggability, and pen state.
 
 package scratch {
-	import flash.display.*;
-	import flash.events.*;
-import flash.filters.GlowFilter;
-import flash.geom.*;
-import flash.geom.ColorTransform;
-import flash.utils.*;
+	import flash.display.BitmapData;
+	import flash.display.DisplayObject;
+	import flash.display.Shape;
+	import flash.display.Sprite;
+	import flash.events.Event;
+	import flash.events.MouseEvent;
+	import flash.filters.GlowFilter;
+	import flash.geom.ColorTransform;
+	import flash.geom.Matrix;
+	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	import flash.net.FileReference;
+	import flash.utils.ByteArray;
+	
 	import filters.FilterPack;
+	
 	import interpreter.Variable;
+	
 	import translation.Translator;
+	
 	import uiwidgets.Menu;
-	import util.*;
+	
+	import util.Color;
+	import util.JSON;
+	import util.ProjectIO;
+	
 	import watchers.ListWatcher;
 
 public class ScratchSprite extends ScratchObj {
@@ -568,6 +582,7 @@ public class ScratchSprite extends ScratchObj {
 			}
 		}
 		if (!(s is String)) s = s.toString();
+		else s = Translator.map(s);
 		if (s.length == 0) return;
 		bubble = new TalkBubble(s, type, isAsk ? 'ask' : 'say');
 		parent.addChild(bubble);

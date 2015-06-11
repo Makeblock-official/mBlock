@@ -153,7 +153,7 @@ package {
 		public var ga:GATracker;
 		private var tabsPart:TabsPart;
 		private var _welcomeView:Loader;
-		private var _currentVer:String = "05.28.001";
+		private var _currentVer:String = "06.10.001";
 		public function MBlock() {
 			this.addEventListener(Event.ADDED_TO_STAGE,initStage);
 		}
@@ -919,11 +919,13 @@ package {
 		public function  showConnectMenu(b:*):void {
 			SocketManager.sharedManager().probe();
 			HIDManager.sharedManager();
+			
+			var enabled:Boolean = extensionManager.checkExtensionEnabled();
 			var m:Menu = new Menu(ConnectionManager.sharedManager().onConnect, 'Connect', CSS.topBarColor, 28);
 			m.addItem('Serial Port', '', false, false);
 			var arr:Array = SerialManager.sharedManager().list;
 			for(var i:uint=0;i<arr.length;i++){
-				m.addItem(arr[i], "serial_"+arr[i], true, SerialDevice.sharedDevice().ports.indexOf(arr[i])>-1&&SerialManager.sharedManager().isConnected);
+				m.addItem(arr[i], "serial_"+arr[i], enabled, SerialDevice.sharedDevice().ports.indexOf(arr[i])>-1&&SerialManager.sharedManager().isConnected);
 			}
 			m.addLine();
 			if(ApplicationManager.sharedManager().system == ApplicationManager.WINDOWS){
@@ -931,12 +933,12 @@ package {
 					m.addItem('Bluetooth', '', false, false);
 					arr = BluetoothManager.sharedManager().history;
 					for(i=0;i<arr.length;i++){
-						m.addItem(arr[i], "bt_"+arr[i], true, arr[i]==BluetoothManager.sharedManager().currentBluetooth&&BluetoothManager.sharedManager().isConnected);
+						m.addItem(arr[i], "bt_"+arr[i], enabled, arr[i]==BluetoothManager.sharedManager().currentBluetooth&&BluetoothManager.sharedManager().isConnected);
 					}
 					if(arr.length>0){
-						m.addItem('Clear Bluetooth', 'clear_bt', true, false);
+						m.addItem('Clear Bluetooth', 'clear_bt', enabled, false);
 					}
-					m.addItem('Discover', 'discover_bt', true, false);
+					m.addItem('Discover', 'discover_bt', enabled, false);
 				}else{
 					if(BluetoothManager.sharedManager().hasNetFramework){
 						m.addItem('No Bluetooth', '', false, false);
@@ -947,16 +949,16 @@ package {
 				m.addLine();
 			}
 			m.addItem('2.4G Serial', '', false, false);
-			m.addItem('Connect', 'connect_hid', true, HIDManager.sharedManager().isConnected);
+			m.addItem('Connect', 'connect_hid', enabled, HIDManager.sharedManager().isConnected);
 			m.addLine();
 			m.addItem('Network', '', false, false);
 			arr = SocketManager.sharedManager().list;
 			for(i=0;i<arr.length;i++){
 				var ips:Array = arr[i].split(":");
 				if(ips.length<3)continue;
-				m.addItem(ips[0]+" - "+ips[2], "net_"+arr[i], true, SocketManager.sharedManager().connected(ips[0]));
+				m.addItem(ips[0]+" - "+ips[2], "net_"+arr[i], enabled, SocketManager.sharedManager().connected(ips[0]));
 			}
-			m.addItem('Custom Connect', 'connect_network', true, false);
+			m.addItem('Custom Connect', 'connect_network', enabled, false);
 			m.addLine();
 			if(DeviceManager.sharedManager().currentName!="PicoBoard"){
 				m.addItem('Firmware', '', false, false);
@@ -1000,34 +1002,35 @@ package {
 			//m.addItem('import extension file', '_import_', true, false);
 			m.showOnStage(stage, b.x, topBarPart.bottom() - 1);
 		}
-		public function showSerialMenu(b:*):void {
-			var m:Menu = new Menu(SerialManager.sharedManager().connect, 'Serial', CSS.topBarColor, 28);
-			
-			var arr:Array = SerialManager.sharedManager().list;
-			for(var i:uint=0;i<arr.length;i++){
-				m.addItem(arr[i], arr[i], true, arr[i]==SerialManager.sharedManager().currentPort&&SerialManager.sharedManager().isConnected);
-			}
-			m.addLine();
-			var device:String = SharedObjectManager.sharedManager().getObject("device","uno");
-			var ext:ScratchExtension = MBlock.app.extensionManager.extensionByName(device=="mbot"?"mBot":"Makeblock");
-			
-			var hasNew:Boolean = ParseManager.sharedManager().firmVersion!=""&&ext.firmware!=ParseManager.sharedManager().firmVersion;
-			m.addItem(Translator.map('Upgrade Firmware')+(hasNew?' ( new )':''), 'upgrade', !SerialManager.sharedManager().isConnected, false);
-			m.addItem('View Source', 'source', true, false);
-			m.addLine();
-			m.addItem('Arduino Uno', 'uno', true, device=="uno");
-			m.addItem('Arduino Leonardo', 'leonardo', true, device=="leonardo");
-			m.addItem('Makeblock Orion', 'orion', true, device=="orion");
-			m.addItem('Makeblock Baseboard', 'baseboard', true, device=="baseboard");
-			m.addItem('mBot', 'mbot', true, device=="mbot");
-			
-//			SerialManager.sharedManager().board = SharedObjectManager.sharedManager().getObject("board","uno");
-//			SerialManager.sharedManager().device = SharedObjectManager.sharedManager().getObject("device","mbot");
-			
-			addEditMenuItems(b, m);
-			var p:Point = b.localToGlobal(new Point(0, 0));
-			m.showOnStage(stage, b.x, topBarPart.bottom() - 1);
-		}
+//		public function showSerialMenu(b:*):void {
+//			var m:Menu = new Menu(SerialManager.sharedManager().connect, 'Serial', CSS.topBarColor, 28);
+//			
+//			var arr:Array = SerialManager.sharedManager().list;
+//			var enabled:Boolean = extensionManager.checkExtensionEnabled();
+//			for(var i:uint=0;i<arr.length;i++){
+//				m.addItem(arr[i], arr[i], enabled, arr[i]==SerialManager.sharedManager().currentPort&&SerialManager.sharedManager().isConnected);
+//			}
+//			m.addLine();
+//			var device:String = SharedObjectManager.sharedManager().getObject("device","uno");
+//			var ext:ScratchExtension = MBlock.app.extensionManager.extensionByName(device=="mbot"?"mBot":"Makeblock");
+//			
+//			var hasNew:Boolean = ParseManager.sharedManager().firmVersion!=""&&ext.firmware!=ParseManager.sharedManager().firmVersion;
+//			m.addItem(Translator.map('Upgrade Firmware')+(hasNew?' ( new )':''), 'upgrade', !SerialManager.sharedManager().isConnected, false);
+//			m.addItem('View Source', 'source', true, false);
+//			m.addLine();
+//			m.addItem('Arduino Uno', 'uno', true, device=="uno");
+//			m.addItem('Arduino Leonardo', 'leonardo', true, device=="leonardo");
+//			m.addItem('Makeblock Orion', 'orion', true, device=="orion");
+//			m.addItem('Makeblock Baseboard', 'baseboard', true, device=="baseboard");
+//			m.addItem('mBot', 'mbot', true, device=="mbot");
+//			
+////			SerialManager.sharedManager().board = SharedObjectManager.sharedManager().getObject("board","uno");
+////			SerialManager.sharedManager().device = SharedObjectManager.sharedManager().getObject("device","mbot");
+//			
+//			addEditMenuItems(b, m);
+//			var p:Point = b.localToGlobal(new Point(0, 0));
+//			m.showOnStage(stage, b.x, topBarPart.bottom() - 1);
+//		}
 		public function showNetworkMenu(b:*):void{
 			var m:Menu = new Menu(SocketManager.sharedManager().probe, '', CSS.topBarColor, 28);
 			var arr:Array = SocketManager.sharedManager().list;

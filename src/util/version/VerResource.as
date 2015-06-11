@@ -38,12 +38,18 @@ package util.version
 				this.dispatchEvent(new Event(Event.COMPLETE));
 			}else{
 				_request = new URLRequest(url);
-				
+				clearFolder(ApplicationManager.sharedManager().documents.nativePath+"/mBlock/"+path+"/"+name);
 				var zipProcess:FZip = new FZip();
 				zipProcess.load(_request);
 				zipProcess.addEventListener(FZipEvent.FILE_LOADED,onFileLoaded);
 				zipProcess.addEventListener(Event.COMPLETE,onFileComplete);
 				zipProcess.addEventListener(FZipErrorEvent.PARSE_ERROR,onFileError);
+			}
+		}
+		private function clearFolder(path:String):void{
+			var file:File = new File(path);
+			if(file.exists){
+				file.deleteDirectory(true);
 			}
 		}
 		private function onFileLoaded(evt:FZipEvent):void{
@@ -52,7 +58,6 @@ package util.version
 			_list = [];
 			var zipProcess:FZip = evt.target as FZip;
 			var documentPath:String = ApplicationManager.sharedManager().documents.nativePath+"/mBlock/"+path+"/";
-			
 			for(var i:uint = 0;i<zipProcess.getFileCount();i++){
 				var file:FZipFile = zipProcess.getFileAt(i);
 				if(file.sizeUncompressed>0){

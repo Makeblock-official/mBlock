@@ -186,6 +186,16 @@ public class ExtensionManager {
 	public function checkExtensionSelected(name:String):Boolean{
 		return SharedObjectManager.sharedManager().getObject(name+"_selected",false);
 	}
+	public function checkExtensionEnabled():Boolean{
+		var list:Array = extensionList;
+		for(var i:uint=0;i<list.length;i++){
+			var n:String = list[i].extensionName;
+			if(checkExtensionSelected(n)){
+				return true;
+			}
+		}
+		return false;
+	}
 	private function refreshList():void{
 		_extensionList = [];
 		if(ApplicationManager.sharedManager().documents.resolvePath("mBlock/libraries/").exists){

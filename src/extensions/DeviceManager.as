@@ -21,7 +21,7 @@ package extensions
 			return _instance;
 		}
 		public function onSelectBoard(board:String):void{
-			_board = board;
+			_board = board.toString();
 			_device = _board.split("_")[1];
 			SharedObjectManager.sharedManager().setObject("board",board);
 			if(_board=="picoboard_unknown"){
@@ -36,6 +36,9 @@ package extensions
 						MBlock.app.extensionManager.onSelectExtension("Arduino");
 					}
 				}else if(_board.indexOf("me/")>-1){
+					if(_board == "me/orion_uno"){
+						MBlock.app.openOrion();
+					}
 					if(!MBlock.app.extensionManager.checkExtensionSelected("Makeblock")){
 						MBlock.app.extensionManager.onSelectExtension("Makeblock");
 					}

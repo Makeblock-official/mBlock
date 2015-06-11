@@ -28,6 +28,7 @@
 		["R", "light intensity","getLightOnBoard",
 		{"encode":"{n6}","setup":"pinMode(A6,INPUT);\n","inc":"","def":"","work":"analogRead(A6)","loop":""}],
 		["h", "when button %m.button_state","whenButtonPressed","pressed"],
+
 		["B", "button %m.button_state","getButtonOnBoard","pressed",
 		{"encode":"{n7}{d0}","setup":"pinMode(A7,INPUT);\n","inc":"","def":"","work":"({0}^(analogRead(A7)>10?0:1))","loop":""}],
 		

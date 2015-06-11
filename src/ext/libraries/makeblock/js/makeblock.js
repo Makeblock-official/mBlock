@@ -53,88 +53,154 @@
 	ext.runArduino = function(){
 	}
 	ext.runMotor = function(port,speed) {
-        runPackage(10,ports[port],short2array(speed));
+		if(typeof port=="string"){
+			port = ports[port];
+		}
+        runPackage(10,port,short2array(speed));
     };
     ext.runServo = function(port,slot,angle) {
-        runPackage(11,ports[port],slots[slot],angle);
+		if(typeof port=="string"){
+			port = ports[port];
+		}
+		if(typeof slot=="string"){
+			slot = slots[slot];
+		}
+        runPackage(11,port,slot,angle);
     };
 	ext.runStepperMotor = function(port, speed, distance){
-		runPackage(40,ports[port],short2array(speed),short2array(distance));
+		if(typeof port=="string"){
+			port = ports[port];
+		}
+		runPackage(40,port,short2array(speed),short2array(distance));
 	};
 	ext.runEncoderMotor = function(slot, speed, distance){
+		if(typeof slot=="string"){
+			slot = slots[slot];
+		}
 		runPackage(41,slots[slot],short2array(speed),short2array(distance));
 	};
 	ext.runSevseg = function(port,display){
-		runPackage(9,ports[port],float2array(display));
+		if(typeof port=="string"){
+			port = ports[port];
+		}
+		runPackage(9,port,float2array(display));
 	};
 	ext.runLed = function(port,ledIndex,red,green,blue){
-		runPackage(8,ports[port],ledIndex=="all"?0:ledIndex,red,green,blue);
+		if(typeof port=="string"){
+			port = ports[port];
+		}
+		runPackage(8,port,ledIndex=="all"?0:ledIndex,red,green,blue);
 	};
 	ext.runLightsensor = function(port,status){
-		runPackage(3,ports[port],switchStatus[status]);
+		if(typeof port=="string"){
+			port = ports[port];
+		}
+		runPackage(3,port,switchStatus[status]);
 	};
 	ext.runShutter = function(port,status){
-		runPackage(20,shutterStatus[status]);
+		if(typeof port=="string"){
+			port = ports[port];
+		}
+		runPackage(20,port,shutterStatus[status]);
 	};
-	var distPrev=0;
-	var dist=0;
-	var dist_output = 0;
+	var distPrev=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+	var dist=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+	var dist_output =[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 	ext.getUltrasonic = function(nextID,port){
 		var deviceId = 1;
-		values[nextID] = function(v){
+		values[nextID] = function(v,extId){
 			if(v<1){
 				v = 0;
 			}
-			distPrev = dist;
-			dist = v;
-			if(Math.abs(dist-distPrev)<200&&dist<400){
-				dist_output-=(dist_output-dist)*0.3;
+			distPrev[extId] = dist[extId];
+			dist[extId] = v;
+			if(Math.abs(dist[extId]-distPrev[extId])<400&&dist[extId]<400){
+				dist_output[extId]-=(dist_output[extId]-dist[extId])*0.4;
 			}else{
-				dist = distPrev;
+				dist[extId] = distPrev[extId];
 			}
-			return dist_output;
+			return v;//dist_output[extId];
 		}
-		getPackage(nextID,deviceId,ports[port]);
+		if(typeof port=="string"){
+			port = ports[port];
+		}
+		getPackage(nextID,deviceId,port);
 	};
 	ext.getPotentiometer = function(nextID,port) {
 		var deviceId = 4;
-		getPackage(nextID,deviceId,ports[port]);
+		if(typeof port=="string"){
+			port = ports[port];
+		}
+		getPackage(nextID,deviceId,port);
     };
 	ext.getLinefollower = function(nextID,port) {
 		var deviceId = 17;
-		getPackage(nextID,deviceId,ports[port]);
+		if(typeof port=="string"){
+			port = ports[port];
+		}
+		getPackage(nextID,deviceId,port);
     };
 	ext.getLightsensor = function(nextID,port) {
 		var deviceId = 3;
-		getPackage(nextID,deviceId,ports[port]);
+		if(typeof port=="string"){
+			port = ports[port];
+		}
+		getPackage(nextID,deviceId,port);
     };
 	ext.getJoystick = function(nextID,port,ax) {
 		var deviceId = 5;
-		getPackage(nextID,deviceId,ports[port],axis[ax]);
+		if(typeof port=="string"){
+			port = ports[port];
+		}
+		if(typeof ax=="string"){
+			ax = axis[ax];
+		}
+		getPackage(nextID,deviceId,port,ax);
     };
 	ext.getSoundsensor = function(nextID,port) {
 		var deviceId = 7;
-		getPackage(nextID,deviceId,ports[port]);
+		if(typeof port=="string"){
+			port = ports[port];
+		}
+		getPackage(nextID,deviceId,port);
     };
 	ext.getInfrared = function(nextID,port) {
 		var deviceId = 16;
-		getPackage(nextID,deviceId,ports[port]);
+		if(typeof port=="string"){
+			port = ports[port];
+		}
+		getPackage(nextID,deviceId,port);
     };
 	ext.getLimitswitch = function(nextID,port) {
 		var deviceId = 21;
-		getPackage(nextID,deviceId,ports[port]);
+		if(typeof port=="string"){
+			port = ports[port];
+		}
+		getPackage(nextID,deviceId,port);
     };
 	ext.getPirmotion = function(nextID,port) {
 		var deviceId = 15;
-		getPackage(nextID,deviceId,ports[port]);
+		if(typeof port=="string"){
+			port = ports[port];
+		}
+		getPackage(nextID,deviceId,port);
     };
 	ext.getTemperature = function(nextID,port,slot) {
 		var deviceId = 2;
-		getPackage(nextID,deviceId,ports[port],slots[slot]);
+		if(typeof port=="string"){
+			port = ports[port];
+		}
+		if(typeof slot=="string"){
+			slot = slots[slot];
+		}
+		getPackage(nextID,deviceId,port,slot);
     };
 	ext.getGyro = function(nextID,ax) {
 		var deviceId = 6;
-		getPackage(nextID,deviceId,0,axis[ax]);
+		if(typeof ax=="string"){
+			ax = axis[ax];
+		}
+		getPackage(nextID,deviceId,0,ax);
     };
 	function runPackage(){
 		var bytes = [];
@@ -225,7 +291,7 @@
 					}
 					if(type<=5){
 						if(values[extId]!=undefined){
-							responseValue(extId,values[extId](value));
+							responseValue(extId,values[extId](value,extId));
 						}else{
 							responseValue(extId,value);
 						}

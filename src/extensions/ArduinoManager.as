@@ -754,7 +754,7 @@ void updateVar(char * varName,double * var)
 				}
 				var b:Block = BlockIO.arrayToStack([blk]);
 				if(b.op=="getParam"){
-					codeBlock.type = "string";
+					codeBlock.type = "number";
 					codeBlock.code = b.spec.split(" ").join("_");
 					return codeBlock;
 				}

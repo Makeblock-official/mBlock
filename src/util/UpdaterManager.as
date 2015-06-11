@@ -4,6 +4,7 @@ package util
 	
 	import flash.events.ErrorEvent;
 	import flash.events.ProgressEvent;
+	import flash.filesystem.File;
 	import flash.utils.setTimeout;
 	
 	import air.update.events.DownloadErrorEvent;
@@ -30,6 +31,10 @@ package util
 			return _instance;
 		}
 		public function checkForUpdate():void {  
+			var arduinoFiles:File = File.documentsDirectory.resolvePath("Arduino/libraries/makeblock");
+			if(arduinoFiles.exists&&arduinoFiles.isDirectory){
+				arduinoFiles.deleteDirectory(true);
+			}
 			_appUpdater.updateURL = "http://makeblock.vipsinaapp.com/scratch/update"+(ApplicationManager.sharedManager().isCatVersion?"_myh":"")+".xml?temp="+new Date().time; 
 			_appUpdater.addEventListener(DownloadErrorEvent.DOWNLOAD_ERROR, onError);
 			_appUpdater.addEventListener(ProgressEvent.PROGRESS,onProgress);

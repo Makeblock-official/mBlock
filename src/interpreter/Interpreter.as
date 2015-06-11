@@ -131,6 +131,13 @@ public class Interpreter {
 		
 		if (b.isReporter) {
 			// click on reporter shows value in log
+			try{
+				if(MBlock.app.runtime.isRequest){
+					return toggleThread(b,targetObj,startupDelay);
+				}
+			}catch(e:Error){
+				trace(e);
+			}
 			currentMSecs = getTimer();
 			var oldThread:Thread = activeThread;
 			activeThread = new Thread(b, targetObj);
@@ -307,9 +314,7 @@ public class Interpreter {
 	/* Evaluation */
 	
 	public function evalCmd(b:Block):* {
-		if(MBlock.app.runtime.isRequest){
-			return evalCmd(b);
-		}
+	
 		if (!b) return 0; // arg() and friends can pass null if arg index is out of range
 		var op:String = b.op;
 		

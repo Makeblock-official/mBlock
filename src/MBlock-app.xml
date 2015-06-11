@@ -237,8 +237,10 @@
     <!-- </android> -->
 	<!-- End of the schema for adding the android specific tags in AndroidManifest.xml file -->
 	<extensions>
-	    <extensionID>cc.makeblock.AIRSerial</extensionID>
+	    
     	<extensionID>cc.makeblock.BluetoothExt</extensionID>
-    <extensionID>cc.makeblock.AirHID</extensionID>
+    	<extensionID>com.makeblock.AirHID</extensionID>
+    
+    <extensionID>cc.makeblock.AIRSerial</extensionID>
     </extensions>
 </application>

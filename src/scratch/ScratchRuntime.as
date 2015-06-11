@@ -1127,7 +1127,7 @@ package scratch {
 			setTimeout(function():void{
 				_requestCount = 0;
 				_isRequest = false;
-			},100);
+			},1);
 			var t:uint = getTimer();
 		}
 		public function exitRequest():void{
