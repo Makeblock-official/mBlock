@@ -85,11 +85,11 @@
 		var leftSpeed = 0;
 		var rightSpeed = 0;
 		if(direction=="run forward"){
-			leftSpeed = speed;
-			rightSpeed = -speed;
-		}else if(direction=="run backward"){
 			leftSpeed = -speed;
 			rightSpeed = speed;
+		}else if(direction=="run backward"){
+			leftSpeed = speed;
+			rightSpeed = -speed;
 		}else if(direction=="turn left"){
 			leftSpeed = speed;
 			rightSpeed = speed;
@@ -194,36 +194,33 @@
 			if(v<1){
 				v = 0;
 			}
-			distPrev[extId] = dist[extId];
+		/*	distPrev[extId] = dist[extId];
 			dist[extId] = v;
 			if(Math.abs(dist[extId]-distPrev[extId])<400&&dist[extId]<400){
 				dist_output[extId]-=(dist_output[extId]-dist[extId])*0.4;
 			}else{
 				dist[extId] = distPrev[extId];
-			}
-			return dist_output[extId];
+			}*/
+			return v;//dist_output[extId];
 		}
-		if(typeof port == "string"){
-			getPackage(nextID,deviceId,ports[port]);
-		}else{
-			getPackage(nextID,deviceId,port);
+		if(typeof port=="string"){
+			port = ports[port];
 		}
+		getPackage(nextID,deviceId,port);
 	};
 	ext.getPotentiometer = function(nextID,port) {
 		var deviceId = 4;
-		if(typeof port == "string"){
-			getPackage(nextID,deviceId,ports[port]);
-		}else{
-			getPackage(nextID,deviceId,port);
+		if(typeof port=="string"){
+			port = ports[port];
 		}
+		getPackage(nextID,deviceId,port);
     };
 	ext.getLinefollower = function(nextID,port) {
 		var deviceId = 17;
-		if(typeof port == "string"){
-			getPackage(nextID,deviceId,ports[port]);
-		}else{
-			getPackage(nextID,deviceId,port);
+		if(typeof port=="string"){
+			port = ports[port];
 		}
+		getPackage(nextID,deviceId,port);
     };
 	ext.getLightsensor = function(nextID,port) {
 		var deviceId = 3;

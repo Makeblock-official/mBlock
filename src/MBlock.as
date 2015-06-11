@@ -153,7 +153,7 @@ package {
 		public var ga:GATracker;
 		private var tabsPart:TabsPart;
 		private var _welcomeView:Loader;
-		private var _currentVer:String = "06.10.001";
+		private var _currentVer:String = "06.11.001";
 		public function MBlock() {
 			this.addEventListener(Event.ADDED_TO_STAGE,initStage);
 		}
@@ -963,6 +963,10 @@ package {
 			if(DeviceManager.sharedManager().currentName!="PicoBoard"){
 				m.addItem('Firmware', '', false, false);
 				m.addItem(Translator.map('Upgrade Firmware')+" ( "+DeviceManager.sharedManager().currentName+" )", 'upgrade_firmware', SerialManager.sharedManager().isConnected, false);
+				if(DeviceManager.sharedManager().currentName=="mBot"){
+					m.addItem(Translator.map('Reset Default Program'), 'reset_program', SerialManager.sharedManager().isConnected, false);
+					
+				}
 				m.addItem('View Source', 'view_source', DeviceManager.sharedManager().currentBoard.indexOf("unknown")>-1?false:true, false);
 			}
 			m.addItem('Install Arduino Driver', 'driver', true, false);

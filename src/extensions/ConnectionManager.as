@@ -48,6 +48,10 @@ package extensions
 					SerialManager.sharedManager().upgrade();
 					break;
 				}
+				case "reset_program":{
+					SerialManager.sharedManager().upgrade(ApplicationManager.sharedManager().documents.resolvePath("mBlock/tools/hex/mbot_reset.hex").nativePath);
+					break;
+				}
 				case "connect_network":{
 					SocketManager.sharedManager().probe("custom");
 					break;

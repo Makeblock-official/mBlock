@@ -11,7 +11,6 @@ struct cRGB {
 class MeRGBLed:public MePort {
 public: 
 	MeRGBLed();
-	MeRGBLed(int pin);
 	MeRGBLed(uint8_t port);
 	MeRGBLed(uint8_t port,uint8_t slot);
 	~MeRGBLed();
