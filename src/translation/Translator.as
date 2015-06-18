@@ -112,15 +112,16 @@ public class Translator {
 			files.browse();
 		} catch(e:*) {}
 	}
+	
+	static public function setFontSize(labelSize:int):void {
+		SharedObjectManager.sharedManager().setObject("labelSize",labelSize);
+		var argSize:int = Math.round(0.9 * labelSize);
+		var vOffset:int = labelSize > 13 ? 1 : 0;
+		Block.setFonts(labelSize, argSize, false, vOffset);
+		MBlock.app.translationChanged();
+	}
 
 	private static function fontSizeMenu():void {
-		function setFontSize(labelSize:int):void {
-			SharedObjectManager.sharedManager().setObject("labelSize",labelSize);
-			var argSize:int = Math.round(0.9 * labelSize);
-			var vOffset:int = labelSize > 13 ? 1 : 0;
-			Block.setFonts(labelSize, argSize, false, vOffset);
-			MBlock.app.translationChanged();
-		}
 		var m:Menu = new Menu(setFontSize);
 		for (var i:int = 8; i < 25; i++) m.addItem(i.toString(), i);
 		m.showOnStage(MBlock.app.stage);

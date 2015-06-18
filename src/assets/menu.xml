@@ -1,0 +1,92 @@
+<menu>
+	<subMenu name="File" label="文件">
+		<item name="New" label="新建项目" keyEquivalent="N" />
+		<item isSeparator="true" />
+		<item name="Load Project" label="打开项目" keyEquivalent="" />
+		<item name="Save Project" label="保存项目" keyEquivalent="" />
+		<item isSeparator="true" />
+		<item name="Undo Revert" label="取消转换" keyEquivalent="" />
+		<item name="Revert" label="转换" keyEquivalent="" />
+	</subMenu>
+	<subMenu name="Edit" label="编辑">
+		<item name="Undelete" label="撤销删除" />
+		<item isSeparator="true" />
+		<item name="Small stage layout" label="小舞台布局模式" keyEquivalent="" />
+		<item name="Turbo mode" label="加速模式" keyEquivalent="" />
+		<item name="Arduino mode" label="Arduino模式" keyEquivalent="" />
+	</subMenu>
+	<subMenu name="Connect" label="连接">
+		<subMenu name="Serial Port" label="串口" >
+		</subMenu>
+		<subMenu name="Bluetooth" label="蓝牙" >
+			<item name="Discover" label="发现" action="discover_bt" />
+			<item isSeparator="true" />
+			<item name="Clear Bluetooth" label="清除记录" action="clear_bt" />
+		</subMenu>
+		<subMenu name="2.4G Serial" label="2.4G无线串口" keyEquivalent="" >
+			<item name="Connect" label="连接" action="connect_hid" />
+		</subMenu>
+		<subMenu name="Network" label="网络" keyEquivalent="" >
+			<item name="Custom Connect" label="自定义连接" action="connect_network" />
+		</subMenu>
+		<item isSeparator="true" />
+		<item label="固件" enabled="false" />
+		<item name="Upgrade Firmware" label="安装固件" action="upgrade_firmware" />
+		<item name="Reset Default Program" label="恢复出厂程序" action="reset_program" />
+		<item name="View Source" label="查看源码" action="view_source" />
+		<item name="Install Arduino Driver" label="安装Arduino驱动" action="driver" />
+	</subMenu>
+	<subMenu name="Boards" label="控制板">
+		<item name="Arduino" label="Arduino" enabled="false" />
+		<item name="arduino_uno" label="Arduino Uno" />
+		<item name="arduino_leonardo" label="Arduino Leonardo" />
+		<item name="arduino_nano328" label="Arduino Nano ( mega328 )" />
+		<item name="arduino_mega1280" label="Arduino Mega 1280" />
+		<item name="arduino_mega2560" label="Arduino Mega 2560" />
+		<item isSeparator="true" />
+		<item name="Makeblock" label="Makeblock" enabled="false" />
+		<item name="me/orion_uno" label="Me Orion" />
+		<item name="me/baseboard_leonardo" label="Me Baseboard" />
+		<item name="mbot_uno" label="mBot" />
+		<item isSeparator="true" />
+		<item name="Others" label="Others" enabled="false" />
+		<item name="picoboard_unknown" label="PicoBoard" />
+	</subMenu>
+	<subMenu name="Extensions" label="扩展">
+		<item name="manage_extensions" label="管理扩展"/>
+		<item isSeparator="true" />
+	</subMenu>
+	<subMenu name="Language" label="语言">
+		<item isSeparator="true" />
+		<subMenu name="set font size" label="设置字体大小" >
+			<item name="setFontSize" label="8" />
+			<item name="setFontSize" label="9" />
+			<item name="setFontSize" label="10" />
+			<item name="setFontSize" label="11" />
+			<item name="setFontSize" label="12" />
+			<item name="setFontSize" label="13" />
+			<item name="setFontSize" label="14" />
+			<item name="setFontSize" label="15" />
+			<item name="setFontSize" label="16" />
+			<item name="setFontSize" label="17" />
+			<item name="setFontSize" label="18" />
+			<item name="setFontSize" label="19" />
+			<item name="setFontSize" label="20" />
+			<item name="setFontSize" label="21" />
+			<item name="setFontSize" label="22" />
+			<item name="setFontSize" label="23" />
+			<item name="setFontSize" label="24" />
+		</subMenu>
+	</subMenu>
+	<subMenu name="Help" label="帮助">
+		<item name="Share Your Project" label="分享" key="forum" url="http://www.maoyouhui.org/forum.php?gid=57&mblock" />
+		<item name="FAQ" label="问答" key="forum" url="http://www.maoyouhui.org/forum.php?mod=forumdisplay&fid=62&mblock" />
+		<item isSeparator="true" />
+		<item name="Forum" label="论坛" key="forum" url="http://forum.makeblock.cc/c/makeblock-products/mblock#scratch" />
+		<item name="Report a Bug" label="建议反馈" key="report" url="http://mblock.cc/report-a-bug" />
+		<item isSeparator="true" />
+		<item name="License" label="许可" key="license" url="http://mblock.cc/license" />
+		<item name="Acknowledgements" label="鸣谢" key="acknowledgements" url="http://mblock.cc/acknowledgements" />
+		<item name="About" label="关于" key="about" url="http://mblock.cc/about" />
+	</subMenu>
+</menu>
