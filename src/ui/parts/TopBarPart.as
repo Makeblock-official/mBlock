@@ -243,7 +243,7 @@ package ui.parts {
 			growTool.x = cutTool.right() + space;
 			shrinkTool.x = growTool.right() + space;
 			//helpTool.x = shrinkTool.right() + space;
-			copyTool.y = cutTool.y = shrinkTool.y = growTool.y = 32;//buttonY - 3;
+			copyTool.y = cutTool.y = shrinkTool.y = growTool.y = 4;//buttonY - 3;
 	
 			if(mcNotice) {
 				mcNotice.x = w - offlineNotice.width - 5;

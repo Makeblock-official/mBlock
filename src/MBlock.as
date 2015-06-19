@@ -38,6 +38,8 @@ package {
 	import blocks.Block;
 	
 	import cc.makeblock.mbot.ui.parts.TopSystemMenu;
+	import cc.makeblock.menu.MenuBuilder;
+	import cc.makeblock.util.FileUtil;
 	
 	import extensions.BluetoothManager;
 	import extensions.ConnectionManager;
@@ -200,7 +202,7 @@ package {
 				stage.addEventListener(MouseEvent.MOUSE_MOVE, gh.mouseMove);
 				stage.addEventListener(MouseEvent.MOUSE_UP, gh.mouseUp);
 				stage.addEventListener(MouseEvent.MOUSE_WHEEL, gh.mouseWheel);
-				stage.addEventListener('rightClick', gh.rightMouseClick);
+				stage.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN, gh.onRightMouseDown);
 				stage.addEventListener(KeyboardEvent.KEY_DOWN, runtime.keyDown);
 				stage.addEventListener(KeyboardEvent.KEY_UP, runtime.keyUp);
 				stage.addEventListener(KeyboardEvent.KEY_DOWN, keyDown); // to handle escape key
@@ -247,6 +249,7 @@ package {
 			initExtension();
 			
 			systemMenu = new TopSystemMenu(stage, "assets/menu.xml");
+			MenuBuilder.BuildMenuList(XMLList(FileUtil.LoadFile("assets/context_menus.xml")));
 		}
 		private function initExtension():void{
 			ClickerManager.sharedManager().update();
