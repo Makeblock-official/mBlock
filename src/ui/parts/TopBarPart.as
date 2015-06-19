@@ -55,6 +55,7 @@ package ui.parts {
 	public class TopBarPart extends UIPart {
 	
 		private var shape:Shape;
+		/*
 		protected var languageButton:IconButton;
 	
 		protected var fileMenu:IconButton;
@@ -71,7 +72,7 @@ package ui.parts {
 		protected var shareMenu:IconButton;
 		protected var faqMenu:IconButton;
 		protected var aboutMenu:IconButton;
-		
+		*/
 		private var copyTool:IconButton;
 		private var cutTool:IconButton;
 		private var growTool:IconButton;
@@ -91,9 +92,11 @@ package ui.parts {
 	
 		protected function addButtons():void {
 			addChild(shape = new Shape());
+			/*
 			addChild(languageButton = new IconButton(app.setLanguagePressed, 'languageButton'));
 			languageButton.x = 9;
 			languageButton.isMomentary = true;
+			*/
 			addTextButtons();
 			addToolButtons();
 		}
@@ -109,6 +112,7 @@ package ui.parts {
 		}
 	
 		protected function removeTextButtons():void {
+				/*
 			if (fileMenu.parent&&connectMenu.parent) {
 				removeChild(fileMenu);
 				removeChild(editMenu);
@@ -125,6 +129,8 @@ package ui.parts {
 					removeChild(faqMenu);
 				}
 				removeChild(aboutMenu);
+				*/
+			if (mcNotice.parent) {
 				removeChild(mcNotice);
 				mcNotice.removeEventListener(MouseEvent.CLICK,onClickLink); 
 			}
@@ -182,6 +188,7 @@ package ui.parts {
 	
 		protected function fixLayout():void {
 			var buttonY:int = 5;
+			/*
 			languageButton.y = buttonY - 1;
 	
 			// new/more/tips buttons
@@ -228,6 +235,7 @@ package ui.parts {
 			aboutMenu.x = nextX;
 			aboutMenu.y = buttonY;
 			nextX += aboutMenu.width + buttonSpace;
+			*/
 			// cursor tool buttons
 			var space:int = 3;
 			copyTool.x = 760+(app.stageIsContracted?ApplicationManager.sharedManager().contractedOffsetX:0);
@@ -251,6 +259,7 @@ package ui.parts {
 		}
 	
 		protected function addTextButtons():void {
+			/*
 			addChild(fileMenu = makeMenuButton('File', app.showFileMenu, true));
 			addChild(editMenu = makeMenuButton('Edit', app.showEditMenu, true));
 	//		addChild(examplesMenu = makeMenuButton('Examples', app.showExamplesMenu, false));
@@ -276,6 +285,7 @@ package ui.parts {
 				addChild(faqMenu = makeMenuButton('FAQ', app.openFaq, false));
 			}
 			addChild(aboutMenu = makeMenuButton('Help', app.openAbout, true));
+			*/
 			addChild(mcNotice);
 			mcNotice.addChild(offlineNotice);
 			mcNotice.addEventListener(MouseEvent.CLICK,onClickLink); 
@@ -370,13 +380,17 @@ package ui.parts {
 			return result;
 		}
 		public function setConnectedTitle(title:String):void{
+			/*
 			removeChild(connectMenu);
 			addChild(connectMenu = makeMenuButton(title, app.showConnectMenu, true));
+			*/
 			this.fixLayout();
 		}
 		public function setBoardTitle():void{
+			/*
 			removeChild(deviceMenu);
 			addChild(deviceMenu = makeMenuButton(Translator.map('Boards')+" ( "+DeviceManager.sharedManager().currentName+" )",app.showBoardMenu,true));
+			*/
 			this.fixLayout();
 		}
 	//	public function setSocketConnectedTitle(title:String):void{
@@ -392,8 +406,10 @@ package ui.parts {
 	//		this.fixLayout();
 	//	}
 		public function setDisconnectedTitle():void{
+			/*
 			removeChild(connectMenu);
 			addChild(connectMenu = makeMenuButton('Connect', app.showConnectMenu, true));
+			*/
 			this.fixLayout();
 		}
 	//	public function setSocketDisconnectedTitle():void{

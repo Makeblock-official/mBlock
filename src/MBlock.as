@@ -37,13 +37,13 @@ package {
 	
 	import blocks.Block;
 	
+	import cc.makeblock.mbot.ui.parts.TopSystemMenu;
+	
 	import extensions.BluetoothManager;
 	import extensions.ConnectionManager;
 	import extensions.DeviceManager;
 	import extensions.ExtensionManager;
 	import extensions.HIDManager;
-	import extensions.ParseManager;
-	import extensions.ScratchExtension;
 	import extensions.SerialDevice;
 	import extensions.SerialManager;
 	import extensions.SocketManager;
@@ -113,6 +113,8 @@ package {
 		public var render3D:IRenderIn3D;
 		public var jsEnabled:Boolean = false; // true when the SWF can talk to the webpage
 	
+		private var systemMenu:TopSystemMenu;
+		
 		// Runtime
 		public var runtime:ScratchRuntime;
 		public var interp:Interpreter;
@@ -158,6 +160,7 @@ package {
 			this.addEventListener(Event.ADDED_TO_STAGE,initStage);
 		}
 		private function initStage(evt:Event):void{
+			stage.nativeWindow.title += "(" + versionString + ")";
 			ApplicationManager.sharedManager().isCatVersion = NativeApplication.nativeApplication.applicationDescriptor.toString().indexOf("猫友")>-1;
 			ga = new GATracker(this,"UA-54268669-1","AS3",false);
 			track("/app/launch");
@@ -246,6 +249,8 @@ package {
 			//Analyze.checkProjects(56086, 64220);
 			//Analyze.countMissingAssets();
 			initExtension();
+			
+			systemMenu = new TopSystemMenu(stage, "assets/menu.xml");
 		}
 		private function initExtension():void{
 			ClickerManager.sharedManager().update();
@@ -768,7 +773,8 @@ package {
 		protected function updateLayout(w:int, h:int):void {
 			topBarPart.x = 0;
 			topBarPart.y = 0;
-			topBarPart.setWidthHeight(w, 28);
+//			topBarPart.setWidthHeight(w, 28);
+			topBarPart.setWidthHeight(w, 0);
 	
 			var extraW:int = 0;
 			var extraH:int = stagePart.computeTopBarHeight() + 1;
@@ -857,7 +863,9 @@ package {
 			updatePalette(false);
 			imagesPart.updateTranslation();
 			soundsPart.updateTranslation();
-			scriptsPart.updateTranslation()
+			scriptsPart.updateTranslation();
+			
+			systemMenu.changeLang();
 		}
 	
 		// -----------------------------
@@ -1179,7 +1187,7 @@ package {
 		private function showAboutDialog():void {
 		}
 	
-		protected function createNewProject(ignore:* = null):void {
+		public function createNewProject(ignore:* = null):void {
 			function clearProject():void {
 				startNewProject('', '');
 				setProjectName('Untitled');
@@ -1345,7 +1353,7 @@ package {
 			runtime.installProjectFromData(originalProj, false);
 		}
 	
-		protected function revertToOriginalProject():void {
+		public function revertToOriginalProject():void {
 			function preDoRevert():void {
 				revertUndo = new ProjectIO(MBlock.app).encodeProjectAsZipFile(stagePane);
 				doRevert();
@@ -1354,14 +1362,14 @@ package {
 			DialogBox.confirm('Throw away all changes since opening this project?', stage, preDoRevert);
 		}
 	
-		protected function undoRevert():void {
+		public function undoRevert():void {
 			if (!revertUndo) return;
 			runtime.installProjectFromData(revertUndo, false);
 			revertUndo = null;
 		}
 	
-		protected function canRevert():Boolean { return originalProj != null }
-		protected function canUndoRevert():Boolean { return revertUndo != null }
+		public function canRevert():Boolean { return originalProj != null }
+		public function canUndoRevert():Boolean { return revertUndo != null }
 		private function clearRevertUndo():void { revertUndo = null }
 	
 		public function addNewSprite(spr:ScratchSprite, showImages:Boolean = false, atMouse:Boolean = false):void {

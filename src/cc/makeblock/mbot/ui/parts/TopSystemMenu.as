@@ -7,6 +7,7 @@ package cc.makeblock.mbot.ui.parts
 	import flash.net.URLRequest;
 	import flash.net.navigateToURL;
 	
+	import cc.makeblock.mbot.util.ExtensionUtil;
 	import cc.makeblock.menu.MenuUtil;
 	import cc.makeblock.menu.SystemMenu;
 	
@@ -48,6 +49,7 @@ package cc.makeblock.mbot.ui.parts
 			register("Connect", __onConnect);
 			register("Boards", __onSelectBoard);
 			register("Help", __onHelp);
+			register("manage_extensions", ExtensionUtil.OnAddExtension);
 		}
 		
 		public function changeLang():void
