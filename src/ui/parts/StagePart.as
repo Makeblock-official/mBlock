@@ -47,7 +47,7 @@ public class StagePart extends UIPart {
 	private var outline:Shape;
 	protected var projectTitle:EditableLabel;
 	protected var projectInfo:TextField;
-	private var versionInfo:TextField;
+//	private var versionInfo:TextField;
 	private var turboIndicator:TextField;
 	private var runButton:IconButton;
 	private var stopButton:IconButton;
@@ -158,7 +158,7 @@ public class StagePart extends UIPart {
 		g.lineStyle(1, CSS.borderColor, 1, true);
 		g.drawRect(0, topBarHeight - 1, w - 1, h - topBarHeight);
 
-		versionInfo.visible = !fullscreenButton.isOn();
+//		versionInfo.visible = !fullscreenButton.isOn();
 	}
 
 	protected function fixLayout():void {
@@ -181,8 +181,8 @@ public class StagePart extends UIPart {
 		fullscreenButton.y = stopButton.y - 1;
 
 		// version info (only used on old website player)
-		versionInfo.x = fullscreenButton.x - 3;
-		versionInfo.y = 26;
+//		versionInfo.x = fullscreenButton.x - 3;
+//		versionInfo.y = 26;
 
 		projectTitle.setWidth(runButton.x - projectTitle.x - 15);
 
@@ -213,19 +213,19 @@ public class StagePart extends UIPart {
 
 		addChild(projectInfo = makeLabel('', CSS.projectInfoFormat));
 
-		const versionFormat:TextFormat = new TextFormat(CSS.font, 9, 0x909090);
-		versionInfo = makeLabel(MBlock.versionString, versionFormat);
-		addChild(versionInfo);
+//		const versionFormat:TextFormat = new TextFormat(CSS.font, 9, 0x909090);
+//		versionInfo = makeLabel(MBlock.versionString, versionFormat);
+//		addChild(versionInfo);
 	}
 
 	protected function getProjectTitle(fmt:TextFormat):EditableLabel {
 		return new EditableLabel(null, fmt);
 	}
-
+/*
 	public function updateVersionInfo(newVersion:String):void {
 		versionInfo.text = newVersion;
 	}
-
+*/
 	private function addTurboIndicator():void {
 		turboIndicator = new TextField();
 		turboIndicator.defaultTextFormat = new TextFormat(CSS.font, 11, CSS.buttonLabelOverColor, true);
@@ -329,9 +329,11 @@ public class StagePart extends UIPart {
 		if(fullscreenButton.parent!=null){
 			removeChild(fullscreenButton);
 		}
+		/*
 		if(versionInfo.parent!=null){
 			removeChild(versionInfo);
 		}
+		*/
 		if(projectTitle.parent!=null){
 			removeChild(projectTitle);
 		}
@@ -341,9 +343,11 @@ public class StagePart extends UIPart {
 			fullscreenButton.visible = true;
 			addChild(fullscreenButton);
 		}
+		/*
 		if(versionInfo.parent==null){
 			addChild(versionInfo);
 		}
+		*/
 		if(projectTitle.parent==null){
 			addChild(projectTitle);
 		}
