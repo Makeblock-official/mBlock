@@ -165,11 +165,8 @@ package {
 			ga = new GATracker(this,"UA-54268669-1","AS3",false);
 			track("/app/launch");
 			loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, uncaughtErrorHandler);
-			NativeApplication.nativeApplication.addEventListener(Event.EXITING,onExiting);
-			NativeApplication.nativeApplication.addEventListener(Event.CLOSE,onExiting);
-			NativeApplication.nativeApplication.addEventListener(Event.CLOSING,onExiting);
 			NativeApplication.nativeApplication.addEventListener(InvokeEvent.INVOKE,onInvoked);
-			this.addEventListener(Event.CLOSING,onExiting);
+			stage.nativeWindow.addEventListener(Event.CLOSING,onExiting);
 			isOffline = loaderInfo.url.indexOf('http:') == -1;
 			checkFlashVersion();
 			initServer();
@@ -223,7 +220,6 @@ package {
 			fixLayout();
 			UpdaterManager.sharedManager().checkForUpdate();
 			setTimeout(function():void{
-				NativeApplication.nativeApplication.activeWindow.addEventListener(Event.CLOSING,onExiting);
 				SocketManager.sharedManager();
 			},100);
 			var ver:String = _currentVer;
