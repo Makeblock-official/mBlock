@@ -82,6 +82,14 @@
 		var deviceId = 31;
 		getPackage(nextID,deviceId,pin);
     };
+	ext.getPulse = function(nextID,pin,timeout) {
+		var deviceId = 35;
+		getPackage(nextID,deviceId,pin,short2array(timeout));
+    };
+	ext.getUltrasonic = function(nextID,trig,echo){
+		var deviceId = 36;
+		getPackage(nextID,deviceId,trig,echo);
+	}
 	ext.getTimer = function(nextID){
 		if(startTimer==0){
 			startTimer = new Date().getTime();

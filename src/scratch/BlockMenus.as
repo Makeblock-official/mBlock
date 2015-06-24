@@ -187,7 +187,7 @@ public class BlockMenus implements DragClient {
 			return false;
 		case 'list':
 			if (isGeneric(item)) return true;
-			return ['delete list'].indexOf(item) > -1;
+			return ['delete list','rename list'].indexOf(item) > -1;
 		case 'sound':
 			return ['record...'].indexOf(item) > -1;
 		case 'spriteOnly':
@@ -612,7 +612,10 @@ public class BlockMenus implements DragClient {
 	private function listMenu(evt:MouseEvent):void {
 		var m:Menu = new Menu(varOrListSelection, 'list');
 		if (block.op == Specs.GET_LIST) {
-			if (isInPalette(block)) m.addItem('delete list', deleteVarOrList); // list reporter in palette
+			if (isInPalette(block)) {
+				m.addItem('delete list', deleteVarOrList); // list reporter in palette
+				m.addItem('rename list', renameVar);
+			}
 			addGenericBlockItems(m);
 		} else {
 			var listName:String;
@@ -667,14 +670,17 @@ public class BlockMenus implements DragClient {
 		function doVarRename(dialog:DialogBox):void {
 			var newName:String = dialog.fields['New name'].text.replace(/^\s+|\s+$/g, '');
 			if (newName.length == 0 || app.viewedObj().lookupVar(newName)) return;
-			if (block.op != Specs.GET_VAR) return;
+			if (block.op != Specs.GET_VAR&&block.op != Specs.GET_LIST) return;
 			var oldName:String = blockVarOrListName();
 
 			if (oldName.charAt(0) == '\u2601') { // Retain the cloud symbol
 				newName = '\u2601 ' + newName;
 			}
-
-			app.runtime.renameVariable(oldName, newName, block);
+			if(block.op != Specs.GET_LIST){
+				app.runtime.renameVariable(oldName, newName, block);
+			}else{
+				app.runtime.renameList(oldName, newName, block);
+			}
 			setBlockVarOrListName(newName);
 			app.updatePalette();
 		}

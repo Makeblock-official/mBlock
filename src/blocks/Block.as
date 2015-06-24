@@ -860,8 +860,12 @@ public class Block extends Sprite {
 		if (evt.target.parent.parent != this) return; // make sure the target TextField is in this block, not a child block
 		if (args.length == 0) return;
 		var i:int, focusIndex:int = -1;
-		for (i = 0; i < args.length; i++) {
-			if (stage.focus == args[i].field) focusIndex = i;
+		try{
+			for (i = 0; i < args.length; i++) {
+				if (stage.focus == args[i].field) focusIndex = i;
+			}
+		}catch(err:Error){
+			
 		}
 		i = focusIndex + 1;
 		while (true) {

@@ -1005,6 +1005,12 @@ msgstr "人声"
 msgid "Import"
 msgstr "导入"
 
+msgid "import"
+msgstr "导入"
+
+msgid "export"
+msgstr "导出"
+
 msgid "Importing sound..."
 msgstr "导入声音..."
 
@@ -1293,6 +1299,9 @@ msgstr "重命名"
 
 msgid "rename variable"
 msgstr "重命名变量"
+
+msgid "rename list"
+msgstr "重命名链表"
 
 msgid "requires sign in"
 msgstr "需要登录"

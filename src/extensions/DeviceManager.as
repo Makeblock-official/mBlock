@@ -29,21 +29,21 @@ package extensions
 			}else{
 				if(_board=="mbot_uno"){
 					if(!MBlock.app.extensionManager.checkExtensionSelected("mBot")){
-						MBlock.app.extensionManager.onSelectExtension("mBot");
+						MBlock.app.extensionManager.singleSelectExtension("mBot");
 					}
 				}else if(_board.indexOf("arduino")>-1){
 					if(!MBlock.app.extensionManager.checkExtensionSelected("Arduino")){
-						MBlock.app.extensionManager.onSelectExtension("Arduino");
+						MBlock.app.extensionManager.singleSelectExtension("Arduino");
 					}
 				}else if(_board.indexOf("me/")>-1){
 					if(_board == "me/orion_uno"){
 						MBlock.app.openOrion();
 					}
 					if(!MBlock.app.extensionManager.checkExtensionSelected("Makeblock")){
-						MBlock.app.extensionManager.onSelectExtension("Makeblock");
+						MBlock.app.extensionManager.singleSelectExtension("Makeblock");
 					}
 				}else if(MBlock.app.extensionManager.checkExtensionSelected("PicoBoard")){
-					MBlock.app.extensionManager.onSelectExtension("PicoBoard");
+					MBlock.app.extensionManager.singleSelectExtension("PicoBoard");
 				}
 			}
 			MBlock.app.topBarPart.setBoardTitle();

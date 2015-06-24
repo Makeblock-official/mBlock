@@ -1,26 +1,61 @@
 #include "MeInfraredReceiver.h"
 
-MeInfraredReceiver::MeInfraredReceiver():SoftwareSerial(0,1){
-        _port = 0;
+MeInfraredReceiver::MeInfraredReceiver():MePort(){
+
 }
 
-MeInfraredReceiver::MeInfraredReceiver(uint8_t port):SoftwareSerial(mePort[port].s2,0){
-        _port = port;
-	pinMode(mePort[port].s1,INPUT);
+MeInfraredReceiver::MeInfraredReceiver(uint8_t port):MePort(port){
+	pinMode(s1,INPUT);
+	pinMode(s2,INPUT);
+}
+int MeInfraredReceiver::available(){
+	char c = poll();
+	if(c>0){
+		_buffer = c;
+		return 1;
+	}	
+	return 0;	
+}
+unsigned char MeInfraredReceiver::read(){
+  unsigned char c = _buffer;
+  _buffer = 0;
+  return c;
 }
 		
 bool MeInfraredReceiver::buttonState(){
-  if(_port>0){
-	return digitalRead(mePort[_port].s1)==0;
+  
+  if(getPort()>0){
+	return dRead1()==0;
   }
   return 0;
 }
-uint8_t MeInfraredReceiver::getPort(){
-   return _port; 
+unsigned char MeInfraredReceiver::poll()
+{
+    //noInterrupts();
+    unsigned char val = 0;
+    int bitDelay = 1000000.0/9600.0 - clockCyclesToMicroseconds(50);
+    if (digitalRead(s2) == LOW) {
+        for(int offset=0;offset<8;offset++){    
+            delayMicroseconds(bitDelay);
+            val |= digitalRead(s2) << offset;
+        }
+        delayMicroseconds(bitDelay);
+        //interrupts();
+        return val&0xff;
+    }
+    //interrupts();
+    return 0;
 }
-uint8_t MeInfraredReceiver::getCode(){
-	if(available()){
-		return read();
+unsigned char MeInfraredReceiver::getCode(){
+	return _irCode;
+}
+void MeInfraredReceiver::loop()
+{
+	if(buttonState()==1){ 
+		if(available()>0){
+			_irCode = read();
+		}
+	}else{
+		_irCode = 0;
 	}
-	return 0;
 }

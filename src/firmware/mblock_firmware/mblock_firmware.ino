@@ -10,7 +10,7 @@
 * http://www.makeblock.cc/
 **************************************************************************/
 #include <Servo.h>
-#include <SoftwareSerial.h>
+#include <Wire.h>
 #include "MePort.h"
 #include "MeServo.h" 
 #include "MeDCMotor.h" 
@@ -20,13 +20,11 @@
 #include "MeTemperature.h"
 #include "MeRGBLed.h"
 #include "MeInfraredReceiver.h"
-#if defined(__AVR_ATmega328P__)
-  #include "MeStepper.h"
+#include "MeStepper.h"
+#if defined(__AVR_ATmega328P__) or defined(__AVR_ATmega168__)
   #include "MeEncoderMotor.h"
 #endif
-Servo servo;
-Servo servos[8];
-int servoPins[8]={0,0,0,0,0,0,0,0};
+Servo servo;  
 MeDCMotor dc;
 MeTemperature ts;
 MeRGBLed led;
@@ -35,6 +33,7 @@ Me7SegmentDisplay seg;
 MePort generalDevice;
 MeInfraredReceiver ir;
 MeGyro gyro;
+MeStepper steppers[2];
 typedef struct MeModule
 {
     int device;
@@ -61,15 +60,12 @@ union{
   short shortVal;
 }valShort;
 MeModule modules[12];
-#if defined(__AVR_ATmega328P__) 
-  MeEncoderMotor encoders[2];
-  MeStepper steppers[2];
-#endif
 #if defined(__AVR_ATmega32U4__) 
   int analogs[12]={A0,A1,A2,A3,A4,A5,A6,A7,A8,A9,A10,A11};
 #endif
 #if defined(__AVR_ATmega328P__) or defined(__AVR_ATmega168__)
   int analogs[8]={A0,A1,A2,A3,A4,A5,A6,A7};
+  MeEncoderMotor encoders[2];
 #endif
 #if defined(__AVR_ATmega1280__)|| defined(__AVR_ATmega2560__)
   int analogs[16]={A0,A1,A2,A3,A4,A5,A6,A7,A8,A9,A10,A11,A12,A13,A14,A15};
@@ -99,7 +95,7 @@ char serialRead;
 #define SEVSEG 9
 #define MOTOR 10
 #define SERVO 11
-
+//#define ENCODER 12
 #define IR 13
 #define PIRMOTION 15
 #define INFRARED 16
@@ -112,6 +108,8 @@ char serialRead;
 #define PWM 32
 #define SERVO_PIN 33
 #define TONE 34
+#define PULSEIN 35
+#define ULTRASONIC_ARDUINO 36
 #define STEPPER 40
 #define ENCODER 41
 #define TIMER 50
@@ -135,27 +133,23 @@ void setup(){
 //  buzzerOn();
 //  delay(100);
 //  buzzerOff();
-  delay(500);
-  #if defined(__AVR_ATmega328P__)
-    steppers[0] = MeStepper();
-    steppers[1] = MeStepper();
+  steppers[0] = MeStepper();
+  steppers[1] = MeStepper();
+  #if defined(__AVR_ATmega328P__) or defined(__AVR_ATmega168__)
     encoders[0] = MeEncoderMotor(SLOT_1);
     encoders[1] = MeEncoderMotor(SLOT_2);
     encoders[0].begin();
     encoders[1].begin();
+    delay(500);
     encoders[0].runSpeed(0);
     encoders[1].runSpeed(0);
-  #endif
-  #if defined(__AVR_ATmega328P__) or defined(__AVR_ATmega168__)
-    
   #else
     Serial1.begin(115200);
   #endif
-  gyro.begin();
 }
 void loop(){
   currentTime = millis()/1000.0-lastTime;
-  if(ir.buttonState()){ 
+  if(ir.buttonState()==1){ 
     if(ir.available()>0){
       irRead = ir.read();
     }
@@ -163,11 +157,8 @@ void loop(){
     irRead = 0;
   }
   readSerial();
-  
-  #if defined(__AVR_ATmega328P__)
-    steppers[0].run();
-    steppers[1].run();
-  #endif
+  steppers[0].run();
+  steppers[1].run();
   if(isAvailable){
     unsigned char c = serialRead&0xff;
     if(c==0x55&&isStart==false){
@@ -316,8 +307,6 @@ void sendShort(double value){
      valShort.shortVal = value;
      writeSerial(valShort.byteVal[0]);
      writeSerial(valShort.byteVal[1]);
-     writeSerial(valShort.byteVal[2]);
-     writeSerial(valShort.byteVal[3]);
 }
 void sendDouble(double value){
      writeSerial(2);
@@ -339,26 +328,6 @@ float readFloat(int idx){
   val.byteVal[3] = readBuffer(idx+3);
   return val.floatVal;
 }
-int getServoPin(uint8_t pin){
-  int i;
-  for(i=0;i<8;i++){
-    if(servoPins[i]==pin){
-     return i; 
-    }
-  }
-  for(i=0;i<8;i++){
-    if(servoPins[i]==0){
-      servoPins[i] = pin;
-      return i;
-    }
-  }
-  for(i=1;i<7;i++){
-    servoPins[i] = 0;
-  }
-  servoPins[0] = pin;
-  return 0;
-}
-
 void runModule(int device){
   //0xff 0x55 0x6 0x0 0x1 0xa 0x9 0x0 0x0 0xa 
   int port = readBuffer(6);
@@ -382,26 +351,22 @@ void runModule(int device){
     case STEPPER:{
      int maxSpeed = readShort(7);
      int distance = readShort(9);
-     #if defined(__AVR_ATmega328P__)
-       if(port==PORT_1){
-         
-        steppers[0] = MeStepper(PORT_1);
-        steppers[0].setMaxSpeed(maxSpeed);
-        steppers[0].moveTo(distance);
-       }else if(port==PORT_2){
-        steppers[1] = MeStepper(PORT_2);
-        steppers[1].setMaxSpeed(maxSpeed);
-        steppers[1].moveTo(distance);
-       }
-     #endif
+     if(port==PORT_1){
+      steppers[0] = MeStepper(PORT_1);
+      steppers[0].setMaxSpeed(maxSpeed);
+      steppers[0].moveTo(distance);
+     }else if(port==PORT_2){
+      steppers[1] = MeStepper(PORT_2);
+      steppers[1].setMaxSpeed(maxSpeed);
+      steppers[1].moveTo(distance);
+     }
    } 
     break;
     case ENCODER:{
-      
+      int maxSpeed = readShort(7);
+      int distance = readShort(9);
+      int slot = port;
       #if defined(__AVR_ATmega328P__)
-        int maxSpeed = readShort(7);
-        int distance = readShort(9);
-        int slot = port;
         if(slot==SLOT_1){
            encoders[0].move(distance,maxSpeed);
         }else if(slot==SLOT_2){
@@ -429,7 +394,6 @@ void runModule(int device){
      pin = slot==1?mePort[port].s1:mePort[port].s2;
      int v = readBuffer(8);
      if(v>=0&&v<=180){
-       servo = servos[getServoPin(pin)];
        servo.attach(pin);
        servo.write(v);
      }
@@ -489,7 +453,6 @@ void runModule(int device){
    case SERVO_PIN:{
      int v = readBuffer(7);
      if(v>=0&&v<=180){
-       servo = servos[getServoPin(pin)];
        servo.attach(pin);
        servo.write(v);
      }
@@ -557,8 +520,7 @@ void readSensor(int device){
    break;
    case  INFRARED:{
      if(ir.getPort()!=port){
-       ir = MeInfraredReceiver(port);
-       ir.begin(9600);
+       ir.reset(port);
      }
      sendFloat(irRead);
    }
@@ -625,6 +587,25 @@ void readSensor(int device){
      pin = analogs[pin];
      pinMode(pin,INPUT);
      sendFloat(analogRead(pin));
+   }
+   break;
+   case  PULSEIN:{
+     int pw = readShort(7);
+     pinMode(pin, INPUT);
+     sendShort(pulseIn(pin,HIGH,pw));
+   }
+   break;
+   case ULTRASONIC_ARDUINO:{
+     int trig = readBuffer(6);
+     int echo = readBuffer(7);
+     pinMode(trig,OUTPUT);
+     digitalWrite(trig,LOW);
+     delayMicroseconds(2);
+     digitalWrite(trig,HIGH);
+     delayMicroseconds(10);
+     digitalWrite(trig,LOW);
+     pinMode(echo, INPUT);
+     sendFloat(pulseIn(echo,HIGH,30000)/58.0);
    }
    break;
    case TIMER:{

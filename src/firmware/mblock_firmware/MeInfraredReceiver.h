@@ -1,15 +1,18 @@
 #ifndef MeInfraredReceiver_H_
 #define MeInfraredReceiver_H_
 #include "MePort.h"
-#include <SoftwareSerial.h>
-class MeInfraredReceiver:public SoftwareSerial{
+class MeInfraredReceiver:public MePort{
 	public :
 		MeInfraredReceiver();
 		MeInfraredReceiver(uint8_t port);
+		int available();
+		unsigned char read();
+		unsigned char getCode();
+		unsigned char poll();
 		bool buttonState();
-        uint8_t getPort();
-		uint8_t getCode();
+		void loop();
 	private:
-                uint8_t _port;
+		unsigned char _irCode;
+		unsigned char _buffer; 
 };
 #endif

@@ -899,7 +899,7 @@ msgid "Error!"
 msgstr ""
 
 msgid "export"
-msgstr ""
+msgstr "匯出"
 
 msgid "fade in"
 msgstr "淡入"
@@ -1306,6 +1306,9 @@ msgstr "重新命名"
 
 msgid "rename variable"
 msgstr "重新命名變數"
+
+msgid "rename list"
+msgstr "重新命名清單"
 
 msgid "requires sign in"
 msgstr "需要登入"

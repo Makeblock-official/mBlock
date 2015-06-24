@@ -18,6 +18,7 @@
 #include "MeTemperature.h"
 #include "MeRGBLed.h"
 #include "MeInfraredReceiver.h"
+#include "MeLEDMatrix.h"
 #include "MeIR.h"
 #include "mBot.h"
 
@@ -31,6 +32,7 @@ MeRGBLed led;
 MeUltrasonic us;
 Me7SegmentDisplay seg;
 MePort generalDevice;
+MeLEDMatrix ledMx;
 MeIR ir;
 typedef struct MeModule
 {
@@ -103,6 +105,7 @@ char serialRead;
 #define SERVO_PIN 33
 #define TONE 34
 #define BUTTON_INNER 35
+#define LEDMATRIX 41
 #define TIMER 50
 
 #define GET 1
@@ -329,6 +332,24 @@ float readFloat(int idx){
   val.byteVal[3] = readBuffer(idx+3);
   return val.floatVal;
 }
+char _receiveStr[20] = {};
+uint8_t _receiveUint8[16] = {};
+char* readString(int idx,int len){
+  for(int i=0;i<len;i++){
+    _receiveStr[i]=readBuffer(idx+i);
+  }
+  _receiveStr[len] = '\0';
+  return _receiveStr;
+}
+uint8_t* readUint8(int idx,int len){
+  for(int i=0;i<len;i++){
+    if(i>15){
+      break;
+    }
+    _receiveUint8[i] = readBuffer(idx+i);
+  }
+  return _receiveUint8;
+}
 void runModule(int device){
   //0xff 0x55 0x6 0x0 0x2 0x22 0x9 0x0 0x0 0xa 
   int port = readBuffer(6);
@@ -381,6 +402,45 @@ void runModule(int device){
      }
      float v = readFloat(7);
      seg.display(v);
+   }
+   break;
+   case LEDMATRIX:{
+     if(ledMx.getPort()!=port){
+       ledMx.reset(port);
+     }
+     int action = readBuffer(7);
+     if(action==1){
+            int brightness = readBuffer(8);
+            int color = readBuffer(9);
+            int px = readShort(10);
+            int py = readShort(12);
+            int len = readBuffer(14);
+            char *s = readString(15,len);
+            ledMx.clearScreen();
+            ledMx.setColorIndex(color);
+            ledMx.setBrightness(brightness);
+            ledMx.drawStr(px,py,s);
+         }else if(action==2){
+           int brightness = readBuffer(8);
+            int dw = readBuffer(9);
+            int px = readShort(10);
+            int py = readShort(12);
+            int len = readBuffer(14);
+            uint8_t *ss = readUint8(15,len);
+            ledMx.clearScreen();
+            ledMx.setColorIndex(1);
+            ledMx.setBrightness(brightness);
+            ledMx.drawBitmap(px,py,dw,ss);
+         }else if(action==3){
+            int brightness = readBuffer(8);
+            int point = readBuffer(9);
+            int hours = readShort(10);
+            int minutes = readShort(12);
+            ledMx.clearScreen();
+            ledMx.setColorIndex(1);
+            ledMx.setBrightness(brightness);
+            ledMx.showClock(hours,minutes,point);
+     }
    }
    break;
    case LIGHT_SENSOR:{
