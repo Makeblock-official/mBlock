@@ -150,7 +150,7 @@ package {
 		public var imagesPart:ImagesPart;
 		protected var soundsPart:SoundsPart;
 		protected var stagePart:StagePart;
-		public var ga:GATracker;
+		public var ga:Object={};
 		private var tabsPart:TabsPart;
 		private var _welcomeView:Loader;
 		private var _currentVer:String = "06.25.001";
@@ -159,7 +159,7 @@ package {
 		}
 		private function initStage(evt:Event):void{
 			ApplicationManager.sharedManager().isCatVersion = NativeApplication.nativeApplication.applicationDescriptor.toString().indexOf("猫友")>-1;
-			ga = new GATracker(this,"UA-54268669-1","AS3",false);
+			
 			track("/app/launch");
 			loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, uncaughtErrorHandler);
 			NativeApplication.nativeApplication.addEventListener(Event.EXITING,onExiting);
@@ -292,7 +292,7 @@ package {
 		} 
 		public function track(msg:String):void{
 			if(ga!=null){
-				ga.trackPageview((ApplicationManager.sharedManager().isCatVersion?"/myh/":"/")+MBlock.versionString+""+msg);
+				ga.trackPageview(MBlock.versionString+""+msg);
 			}
 		}
 		private function onInvoked(evt:InvokeEvent):void{
