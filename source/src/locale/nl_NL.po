@@ -1491,8 +1491,8 @@ msgstr ""
 "Dit project houdt bij wie het gebruikt, door het 'gebruikersnaam'-blok. Wil je je identiteit verbergen, log dan eerst uit voor dat je dit "
 "project gebruikt."
 
-msgid "This project uses Cloud data ? a feature that is available only to signed in users."
-msgstr "Dit project gebruikt cloud-data ? een mogelijkheid die beschikbaar is voor ingelogde gebruikers."
+msgid "This project uses Cloud data - a feature that is available only to signed in users."
+msgstr "Dit project gebruikt cloud-data - een mogelijkheid die beschikbaar is voor ingelogde gebruikers."
 
 msgid "this script"
 msgstr "dit script"
