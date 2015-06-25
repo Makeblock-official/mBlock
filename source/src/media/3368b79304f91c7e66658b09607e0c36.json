@@ -1,0 +1,54 @@
+{
+	"objName": "Arrow2",
+	"sounds": [{
+			"soundName": "pop",
+			"soundID": -1,
+			"md5": "83a9787d4cb6f3b7632b4ddfebf74367.wav",
+			"sampleCount": 258,
+			"rate": 11025,
+			"format": ""
+		}],
+	"costumes": [{
+			"costumeName": "arrow2-a",
+			"baseLayerID": -1,
+			"baseLayerMD5": "98700c972e1fea164a92fc2589457382.svg",
+			"bitmapResolution": 1,
+			"rotationCenterX": 30,
+			"rotationCenterY": 24
+		},
+		{
+			"costumeName": "arrow2-b",
+			"baseLayerID": -1,
+			"baseLayerMD5": "4b6412e840fbc94e3626e493ff44f99a.svg",
+			"bitmapResolution": 1,
+			"rotationCenterX": 30,
+			"rotationCenterY": 24
+		},
+		{
+			"costumeName": "arrow2-c",
+			"baseLayerID": -1,
+			"baseLayerMD5": "7ea88c6510d7824c7f58f4d386c9d2fd.svg",
+			"bitmapResolution": 1,
+			"rotationCenterX": 26,
+			"rotationCenterY": 29
+		},
+		{
+			"costumeName": "arrow2-d",
+			"baseLayerID": -1,
+			"baseLayerMD5": "9ad7b0b0fcd209558ef72cdf6d5553e4.svg",
+			"bitmapResolution": 1,
+			"rotationCenterX": 26,
+			"rotationCenterY": 29
+		}],
+	"currentCostumeIndex": 0,
+	"scratchX": 0,
+	"scratchY": 0,
+	"scale": 1,
+	"direction": 90,
+	"rotationStyle": "normal",
+	"isDraggable": false,
+	"indexInLibrary": 100000,
+	"visible": true,
+	"spriteInfo": {
+	}
+}

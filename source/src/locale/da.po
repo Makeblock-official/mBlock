@@ -1,0 +1,2154 @@
+﻿# The language name as it will appear in the language menu
+msgid "Language-Name"
+msgstr "Dansk"
+
+msgid "%b and %b"
+msgstr "%b og %b"
+
+msgid "%b or %b"
+msgstr "%b eller %b"
+
+msgid "%m.attribute of %m.spriteOrStage"
+msgstr "%m.attribute af %m.spriteOrStage"
+
+msgid "%m.list contains %s"
+msgstr "%m.list indeholder %s"
+
+msgid "%m.mathOp of %n"
+msgstr "%m.mathOp af %n"
+
+msgid "%m.sensor sensor value"
+msgstr "værdien af sensor %m.sensor"
+
+msgid "%n mod %n"
+msgstr "%n modulus %n"
+
+msgid "add %s to %m.list"
+msgstr "tilføj %s til %m.list"
+
+msgid "answer"
+msgstr "svar"
+
+msgid "ask %s and wait"
+msgstr "bed om %s og vent"
+
+# "backdrop" in Scratch 2.0 is similar to "background" in Scratch 1.4
+msgid "backdrop #"
+msgstr "bagtæppe nr."
+
+# "backdrop" in Scratch 2.0 is similar to "background" in Scratch 1.4
+msgid "backdrop name"
+msgstr "bagtæppets navn"
+
+msgid "broadcast %m.broadcast"
+msgstr "send %m.broadcast til alle"
+
+msgid "broadcast %m.broadcast and wait"
+msgstr "send %m.broadcast til alle og vent"
+
+msgid "change %m.effect effect by %n"
+msgstr "ændr effekten %m.effect med %n"
+
+msgid "change %m.var by %n"
+msgstr "ændr %m.var med %n"
+
+msgid "change pen color by %n"
+msgstr "ændr penfarve med %n"
+
+msgid "change pen shade by %n"
+msgstr "ændr penintensitet med %n"
+
+msgid "change pen size by %n"
+msgstr "ændr penstørrelse med %n"
+
+msgid "change size by %n"
+msgstr "ændr størrelsen med %n"
+
+msgid "change tempo by %n"
+msgstr "ændr tempo med %n"
+
+msgid "change volume by %n"
+msgstr "ændr lydstyrke med %n"
+
+msgid "change x by %n"
+msgstr "ændr x med %n"
+
+msgid "change y by %n"
+msgstr "ændr y med %n"
+
+msgid "clear"
+msgstr "ryd"
+
+msgid "clear graphic effects"
+msgstr "fjern grafiske effekter"
+
+msgid "color %c is touching %c?"
+msgstr "berører %c farven %c?"
+
+msgid "Control"
+msgstr "Styring"
+
+msgid "costume #"
+msgstr "kostume nr."
+
+msgid "create clone of %m.spriteOnly"
+msgstr "opret klon af %m.spriteOnly"
+
+msgid "current %m.timeAndDate"
+msgstr "aktuel %m.timeAndDate"
+
+msgid "Data"
+msgstr "Data"
+
+msgid "Data&Blocks"
+msgstr "Data og Klods"
+
+msgid "days since 2000"
+msgstr "dage siden 2000"
+
+msgid "define"
+msgstr "definer"
+
+msgid "delete %d.listDeleteItem of %m.list"
+msgstr "slet %d.listDeleteItem fra %m.list"
+
+msgid "delete this clone"
+msgstr "slet denne klon"
+
+msgid "direction"
+msgstr "retning"
+
+msgid "distance"
+msgstr "afstand"
+
+msgid "distance to %m.spriteOrMouse"
+msgstr "afstand til %m.spriteOrMouse"
+
+msgid "else"
+msgstr "ellers"
+
+msgid "Events"
+msgstr "Hændelser"
+
+msgid "forever"
+msgstr "for evigt"
+
+msgid "glide %n secs to x:%n y:%n"
+msgstr "glid i %n sek. til x:%n y:%n"
+
+msgid "go back %n layers"
+msgstr "gå %n lag tilbage"
+
+msgid "go to %m.spriteOrMouse"
+msgstr "gå til %m.spriteOrMouse"
+
+msgid "go to front"
+msgstr "kom ind foran"
+
+msgid "go to x:%n y:%n"
+msgstr "gå til x:%n y:%n"
+
+msgid "hide"
+msgstr "skjul"
+
+msgid "hide list %m.list"
+msgstr "skjul liste %m.list"
+
+msgid "hide variable %m.var"
+msgstr "skjul variabel %m.var"
+
+msgid "if %b then"
+msgstr "hvis %b så"
+
+msgid "if on edge, bounce"
+msgstr "hop tilbage ved kanten"
+
+msgid "insert %s at %d.listItem of %m.list"
+msgstr "indsæt %s ved %d.listItem plads i %m.list"
+
+msgid "item %d.listItem of %m.list"
+msgstr "punkt %d.listItem på %m.list"
+
+msgid "join %s %s"
+msgstr "%s tilkobles %s"
+
+msgid "key %m.key pressed?"
+msgstr "trykket på tasten %m.key?"
+
+msgid "length of %m.list"
+msgstr "længden af %m.list"
+
+msgid "length of %s"
+msgstr "%s længde"
+
+msgid "letter %n of %s"
+msgstr "bogstav %n af %s"
+
+msgid "Looks"
+msgstr "Udseende"
+
+msgid "loudness"
+msgstr "lydniveau"
+
+msgid "More Blocks"
+msgstr "Flere klodser"
+
+msgid "Motion"
+msgstr "Bevægelse"
+
+msgid "mouse down?"
+msgstr "trykket på musen?"
+
+msgid "mouse x"
+msgstr "musens x-position"
+
+msgid "mouse y"
+msgstr "musens y-position"
+
+msgid "move %n steps"
+msgstr "gå %n trin"
+
+# "backdrop" in Scratch 2.0 is similar to "background" in Scratch 1.4
+msgid "next backdrop"
+msgstr "næste bagtæppe"
+
+msgid "next costume"
+msgstr "næste kostume"
+
+msgid "not %b"
+msgstr "ikke %b"
+
+msgid "Operators"
+msgstr "Operatorer"
+
+msgid "Pen"
+msgstr "Pen"
+
+msgid "pen down"
+msgstr "sæt pennen ned"
+
+msgid "pen up"
+msgstr "tag pennen op"
+
+msgid "pick random %n to %n"
+msgstr "vælg tilfældigt mellem %n og %n"
+
+msgid "play drum %d.drum for %n beats"
+msgstr "spil tromme %d.drum i %n slag"
+
+# 83%
+# 100%
+msgid "play note %d.note for %n beats"
+msgstr "spil tone %d.note i %n slag"
+
+msgid "play sound %m.sound"
+msgstr "spil lyden %m.sound"
+
+msgid "play sound %m.sound until done"
+msgstr "spil lyden %m.sound indtil færdig"
+
+msgid "point in direction %d.direction"
+msgstr "peg i retning %d.direction"
+
+msgid "point towards %m.spriteOrMouse"
+msgstr "peg mod %m.spriteOrMouse"
+
+msgid "repeat %n"
+msgstr "gentag %n gange"
+
+msgid "repeat until %b"
+msgstr "gentag indtil %b"
+
+msgid "replace item %d.listItem of %m.list with %s"
+msgstr "erstat %d.listItem fra %m.list med %s"
+
+msgid "reset timer"
+msgstr "nulstil stopuret"
+
+msgid "rest for %n beats"
+msgstr "pause i %n slag"
+
+msgid "round %n"
+msgstr "afrund %n"
+
+msgid "say %s"
+msgstr "sig %s"
+
+msgid "say %s for %n secs"
+msgstr "sig %s i %n sekunder"
+
+msgid "Sensing"
+msgstr "Registrering"
+
+msgid "sensor %m.booleanSensor?"
+msgstr "sensor %m.booleanSensor?"
+
+msgid "set %m.effect effect to %n"
+msgstr "sæt effekten %m.effect til %n"
+
+msgid "set %m.var to %s"
+msgstr "sæt %m.var til %s"
+
+msgid "set instrument to %d.instrument"
+msgstr "skift instrument til %d.instrument"
+
+# 89%
+# 100%
+msgid "set motor direction %m.motorDirection"
+msgstr "sæt motorretning til %m.motorDirection"
+
+# 77%
+# 100%
+msgid "set motor power %n"
+msgstr "sæt motorkraft til %n"
+
+msgid "set pen color to %c"
+msgstr "skift penfarve til %c"
+
+msgid "set pen color to %n"
+msgstr "skift penfarve til %n"
+
+msgid "set pen shade to %n"
+msgstr "skift penintensitet til %n"
+
+msgid "set pen size to %n"
+msgstr "skift penstørrelse til %n"
+
+msgid "set rotation style %m.rotationStyle"
+msgstr "sæt rotationstil til %m.rotationStyle"
+
+msgid "set size to %n%"
+msgstr "sæt størrelsen til %n%"
+
+msgid "set tempo to %n bpm"
+msgstr "sæt tempo til %n slag/min."
+
+msgid "set video transparency to %n%"
+msgstr "sæt video gennemsigtighed til %n%"
+
+msgid "set volume to %n%"
+msgstr "sæt lydstyrke til %n%"
+
+msgid "set x to %n"
+msgstr "sæt x til %n"
+
+msgid "set y to %n"
+msgstr "sæt y til %n"
+
+msgid "show"
+msgstr "vis"
+
+msgid "show list %m.list"
+msgstr "vis liste %m.list"
+
+msgid "show variable %m.var"
+msgstr "vis variabel %m.var"
+
+msgid "size"
+msgstr "størrelse"
+
+msgid "Sound"
+msgstr "Lyd"
+
+msgid "stamp"
+msgstr "sæt som stempel"
+
+msgid "stop %m.stop"
+msgstr "stop %m.stop"
+
+msgid "stop all sounds"
+msgstr "stop al lyd"
+
+# "backdrop" in Scratch 2.0 is similar to "background" in Scratch 1.4
+msgid "switch backdrop to %m.backdrop"
+msgstr "skift bagtæppe til %m.backdrop"
+
+# "backdrop" in Scratch 2.0 is similar to "background" in Scratch 1.4
+msgid "switch backdrop to %m.backdrop and wait"
+msgstr "skift bagtæppe til %m.backdrop og vent"
+
+msgid "switch costume to %m.costume"
+msgstr "skift kostume til %m.costume"
+
+msgid "tempo"
+msgstr "tempo"
+
+msgid "think %s"
+msgstr "tænk %s"
+
+msgid "think %s for %n secs"
+msgstr "tænk %s i %n sekunder"
+
+msgid "tilt"
+msgstr "hældning"
+
+msgid "timer"
+msgstr "stopur"
+
+msgid "touching %m.touching?"
+msgstr "berører %m.touching?"
+
+msgid "touching color %c?"
+msgstr "berører farven %c?"
+
+msgid "turn @turnLeft %n degrees"
+msgstr "drej @turnLeft %n grader"
+
+msgid "turn @turnRight %n degrees"
+msgstr "drej @turnRight %n grader"
+
+msgid "turn motor off"
+msgstr "sluk motoren"
+
+msgid "turn motor on"
+msgstr "start motoren"
+
+# 80%
+# 100%
+msgid "turn motor on for %n secs"
+msgstr "kør motoren i %n sekunder"
+
+msgid "turn video %m.videoState"
+msgstr "sæt video %m.videoState"
+
+# 88%
+msgid "username"
+msgstr "brugernavn"
+
+msgid "video %m.videoMotionType on %m.stageOrThis"
+msgstr "video %m.videoMotionType på %m.stageOrThis"
+
+msgid "volume"
+msgstr "lydstyrke"
+
+msgid "wait %n secs"
+msgstr "vent %n sekunder"
+
+msgid "wait until %b"
+msgstr "vent indtil %b"
+
+# 75%
+# 100%
+msgid "when %m.booleanSensor"
+msgstr "når %m.booleanSensor"
+
+msgid "when %m.key key pressed"
+msgstr "når du trykker på %m.key"
+
+msgid "when %m.key key released"
+msgstr "når %m.key slippes"
+
+msgid "when %m.triggerSensor > %n"
+msgstr "når %m.triggerSensor > %n"
+
+msgid "when @greenFlag clicked"
+msgstr "når du klikker på @greenFlag"
+
+# "backdrop" in Scratch 2.0 is similar to "background" in Scratch 1.4
+msgid "when backdrop switches to %m.backdrop"
+msgstr "når bagtæppe skiftes til %m.backdrop"
+
+msgid "when distance < %n"
+msgstr "når afstanden < %n"
+
+msgid "when I receive %m.broadcast"
+msgstr "når jeg modtager %m.broadcast"
+
+msgid "when I receive %d.broadcast"
+msgstr "når jeg modtager %d.broadcast"
+
+msgid "when I start as a clone"
+msgstr "når jeg starter som klon"
+
+msgid "when this sprite clicked"
+msgstr "når denne sprite klikkes"
+
+msgid "when tilt = %n"
+msgstr "når hældningen = %n"
+
+msgid "x position"
+msgstr "x-position"
+
+msgid "y position"
+msgstr "y-position"
+
+#~ msgid "user name"
+#~ msgstr "brugernavn"
+
+#~ msgid "forever if %b"
+#~ msgstr "for evigt hvis %b"
+
+#~ msgid "if %b"
+#~ msgstr "hvis %b"
+
+#~ msgid "motor direction %m.motorDirection"
+#~ msgstr "motorretning %m.motorDirection"
+
+#~ msgid "motor off"
+#~ msgstr "sluk motoren"
+
+#~ msgid "motor on"
+#~ msgstr "start motoren"
+
+#~ msgid "motor on for %n secs"
+#~ msgstr "kør motoren i %n sek."
+
+#~ msgid "motor power %n"
+#~ msgstr "motorkraft %n"
+
+#~ msgid "play note %n for %n beats"
+#~ msgstr "spil tone %d.note i %n slag"
+
+##################
+# User Interface #
+##################
+
+msgid "10 ^"
+msgstr "10 ^"
+
+msgid "<b>Information about Cloud variables</b><br>&nbsp;<br>Currently, only numbers are supported<br>Chat rooms are not allowed, and will be removed<br>For more info, <a href="/help/faq/#clouddata" target="_blank">see the cloud data FAQ!</a>"
+msgstr ""
+"<b>Information om skyvariable</b><br>&nbsp;<br>Aktuelt, understøttes kun "
+"tal<br>Chatsteder er ikke tilladt og de bliver fjernet<br>For mere "
+"information, <a href= target=>se skydata FAQ!</a>"
+
+msgid "A connected"
+msgstr "A opkoblet"
+
+msgid "a copy of the project file on your computer."
+msgstr "en kopi af projektfilen på din computer."
+
+msgid "abs"
+msgstr "abs"
+
+msgid "Account settings"
+msgstr "Konto instillinger"
+
+msgid "acos"
+msgstr "arccos"
+
+msgid "Add boolean input:"
+msgstr "Tilføj boolesk inddata:"
+
+msgid "add comment"
+msgstr "tilføj kommentar"
+
+msgid "Add label text:"
+msgstr "Tilføj mærkningstekst:"
+
+msgid "Add number input:"
+msgstr "Tilføj inddata-tal:"
+
+msgid "Add string input:"
+msgstr "Tilføj inddata-streng:"
+
+msgid "All"
+msgstr "Alle"
+
+msgid "all"
+msgstr "alle"
+
+msgid "all around"
+msgstr "op og ned"
+
+msgid "Animal"
+msgstr "Dyr"
+
+msgid "Animals"
+msgstr "Dyr"
+
+msgid "asin"
+msgstr "arcsin"
+
+msgid "assets loaded"
+msgstr "komponenter indlæst"
+
+msgid "atan"
+msgstr "arctan"
+
+msgid "B connected"
+msgstr "B opkoblet"
+
+msgid "Back a layer"
+msgstr "Flyt ned et lag"
+
+msgid "Backdrop"
+msgstr "Bagtæppe"
+
+msgid "backdrop"
+msgstr "bagtæppe"
+
+msgid "backdrop #"
+msgstr "bagtæppe nr."
+
+msgid "Backdrop Library"
+msgstr "Bagtæppe Bibliotek"
+
+msgid "backdrop name"
+msgstr "bagtæppenavn"
+
+msgid "backdrop1"
+msgstr "bagtæppe1"
+
+msgid "backdrops"
+msgstr "bagtæpper"
+
+msgid "Backdrops"
+msgstr "Bagtæpper"
+
+msgid "Backpack"
+msgstr "Rygsæk"
+
+msgid "Bass"
+msgstr "Bas"
+
+msgid "Bass Drum"
+msgstr "Stortromme"
+
+msgid "Bassoon"
+msgstr "Fagot"
+
+msgid "Because you have a new Scratch account, any changes to cloud data won't be saved yet. Keep participating on the site you'll be able to use cloud data soon!"
+msgstr ""
+"Fordi du har en ny Scratchkonto, vil ændringer i skydata ikke bliver gemt "
+"endnu. Fortsæt med at bruge websiden og du vil snart kunne bruge skydata! "
+
+msgid "Bitmap"
+msgstr "Bitmap"
+
+msgid "Bitmap Mode"
+msgstr "Bitmapformat"
+
+msgid "Block help"
+msgstr "Hjælp til kloderne"
+
+msgid "Bongo"
+msgstr "Bongotromme"
+
+msgid "brightness"
+msgstr "klarhed"
+
+msgid "Bring to front"
+msgstr "Flyt foran"
+
+msgid "Broadcast"
+msgstr "Udsendelse"
+
+msgid "Brush"
+msgstr "Pensel"
+
+msgid "button pressed"
+msgstr "trykket på knappen"
+
+msgid "by"
+msgstr "af"
+
+msgid "bytes loaded"
+msgstr "bytes læst"
+
+msgid "C connected"
+msgstr "C opkoblet"
+
+msgid "Cabasa"
+msgstr "Cabasa"
+
+msgid "Camera"
+msgstr "Kamera"
+
+msgid "can drag in player:"
+msgstr "kan hentes på banen:"
+
+msgid "Cancel"
+msgstr "Annuller"
+
+msgid "Cannot Delete"
+msgstr "Kan ikke slette"
+
+msgid "Can’t find network connection or reach server."
+msgstr "Kan ikke finde netværksforbindelse eller nå serveren."
+
+msgid "Castle"
+msgstr "Eventyrslot"
+
+msgid "Category"
+msgstr "Kategori"
+
+msgid "ceiling"
+msgstr "loft"
+
+msgid "Cello"
+msgstr "Cello"
+
+msgid "Choir"
+msgstr "Kor"
+
+msgid "Choose backdrop from library"
+msgstr "Vælg bagtæppe fra biblioteket"
+
+msgid "Choose costume from library"
+msgstr "Vælg kostume fra biblioteket"
+
+msgid "Choose sound from library"
+msgstr "Vælg lyd fra biblioteket"
+
+msgid "Choose sprite from library"
+msgstr "Vælg sprite fra biblioteket"
+
+msgid "Circle"
+msgstr "Cirkel"
+
+msgid "City"
+msgstr "By"
+
+msgid "Clarinet"
+msgstr "Klarinet"
+
+msgid "Claves"
+msgstr "Claves"
+
+msgid "cleanup"
+msgstr ""
+
+msgid "Clear"
+msgstr "Ryd"
+
+msgid "clear senders/receivers"
+msgstr "ryd afsendere/modtagere"
+
+msgid "Click "Save now" to try again or "Download" to save"
+msgstr "Klik  for at prøve igen eller  for at gemme"
+
+msgid "Close"
+msgstr "Luk"
+
+msgid "Closed Hi-Hat"
+msgstr "Lukket high-hat"
+
+msgid "Cloud"
+msgstr "Sky"
+
+msgid "Cloud data"
+msgstr "Skydata"
+
+msgid "color"
+msgstr "farve"
+
+msgid "Color a shape"
+msgstr "Farvelæg en figur"
+
+msgid "Conga"
+msgstr "Conga"
+
+msgid "Connecting to Cloud data server..."
+msgstr "Opkobling til Skydataserver..."
+
+msgid "Convert to bitmap"
+msgstr "Konverter til bitmap"
+
+msgid "Convert to vector"
+msgstr "Konverter til vektor"
+
+msgid "Converting mp3..."
+msgstr "Konvertering mp3..."
+
+msgid "copy"
+msgstr "kopier"
+
+msgid "Copying..."
+msgstr "Kopierer..."
+
+# 75%
+msgid "cos"
+msgstr "cos"
+
+msgid "Costume"
+msgstr "Kostume"
+
+msgid "costume #"
+msgstr "kostume nr."
+
+msgid "Costume Library"
+msgstr "Kostume Bibliotek"
+
+msgid "costume name"
+msgstr "kostumenavn"
+
+msgid "costume1"
+msgstr "kostume1"
+
+msgid "costume2"
+msgstr "kostume2"
+
+msgid "Costumes"
+msgstr "Kostumer"
+
+msgid "Costumes > 1"
+msgstr "Kostumer > 1"
+
+msgid "Costumes:"
+msgstr "Kostumer:"
+
+msgid "Cowbell"
+msgstr "Koklokke"
+
+msgid "Crash Cymbal"
+msgstr "Bækken"
+
+msgid "Creating..."
+msgstr "Opretter..."
+
+msgid "Currently, only numbers can be stored in Cloud variables."
+msgstr "Aktuelt kan kun tal gemmes i skyvariabler."
+
+msgid "cut"
+msgstr "klip"
+
+msgid "D connected"
+msgstr "D opkoblet"
+
+msgid "date"
+msgstr "dato"
+
+msgid "day of week"
+msgstr "ugedag"
+
+# 83%
+msgid "Delete"
+msgstr "Slet"
+
+msgid "delete"
+msgstr "slet"
+
+msgid "delete variable"
+msgstr "slet variablen"
+
+msgid "direction"
+msgstr "retning"
+
+msgid "direction:"
+msgstr "retning:"
+
+msgid "don't rotate"
+msgstr "drej ikke"
+
+msgid "down"
+msgstr "ned"
+
+msgid "down arrow"
+msgstr "pil nedad"
+
+msgid "Download"
+msgstr "Download"
+
+msgid "Download to your computer"
+msgstr "Download til din computer"
+
+msgid "duplicate"
+msgstr "kopier"
+
+msgid "Duplicate"
+msgstr "Kopier"
+
+msgid "e ^"
+msgstr "e ^"
+
+msgid "edge"
+msgstr "kant"
+
+msgid "edit"
+msgstr "editer"
+
+msgid "Edit"
+msgstr "Editer"
+
+msgid "Edit Block"
+msgstr "Rediger klodsen"
+
+msgid "Effects"
+msgstr "Effekter"
+
+msgid "Electric Guitar"
+msgstr "Elektrisk Guitar"
+
+msgid "Electric Piano"
+msgstr "Elektrisk Klaver"
+
+msgid "Electronic"
+msgstr "Elektronisk"
+
+msgid "Ellipse"
+msgstr "Ellipse"
+
+msgid "Erase"
+msgstr "Slet"
+
+# 92%
+msgid "Eraser width"
+msgstr "Viskelæderets bredde"
+
+msgid "Error!"
+msgstr "Fejl!"
+
+msgid "Examples"
+msgstr "Eksempler"
+
+msgid "export"
+msgstr ""
+
+msgid "fade in"
+msgstr "opton"
+
+msgid "fade out"
+msgstr "udton"
+
+msgid "Fantasy"
+msgstr "Fantasi"
+
+msgid "Features"
+msgstr "Egenskaber"
+
+msgid "File"
+msgstr "Fil"
+
+msgid "Fill with color"
+msgstr "Fyld med farve"
+
+msgid "fisheye"
+msgstr "fiskeøje"
+
+msgid "Flip left-right"
+msgstr "Vend venstre-højre"
+
+msgid "Flip up-down"
+msgstr "Vend op og ned"
+
+msgid "floor"
+msgstr "gulv"
+
+msgid "Flute"
+msgstr "Fløjte"
+
+msgid "Flying"
+msgstr "Flyvning"
+
+msgid "Font:"
+msgstr ""
+
+msgid "For all sprites"
+msgstr "For alle sprites"
+
+msgid "For this sprite only"
+msgstr "Kun for denne sprite"
+
+msgid "Forward a layer"
+msgstr "Frem et lag"
+
+msgid "ghost"
+msgstr "spøgelse"
+
+msgid "Go to My Stuff"
+msgstr "Mine sager"
+
+msgid "Group"
+msgstr "Grupper"
+
+msgid "Grow"
+msgstr "Forstør"
+
+msgid "Guiro"
+msgstr "Guiro"
+
+msgid "Guitar"
+msgstr "Guitar"
+
+msgid "Hand Clap"
+msgstr "Håndklap"
+
+msgid "hide"
+msgstr "skjul"
+
+msgid "High C"
+msgstr "Det høje C"
+
+msgid "hour"
+msgstr "time"
+
+msgid "Human"
+msgstr "Menneskelig"
+
+# 83%
+#, fuzzy
+msgid "import"
+msgstr "Importer"
+
+msgid "Import"
+msgstr "Importer"
+
+msgid "Importing sound..."
+msgstr "Importerer lyd..."
+
+msgid "Indoors"
+msgstr "Indendørs"
+
+msgid "Installing..."
+msgstr "Installerer..."
+
+msgid "Instruments"
+msgstr "Instrumenter"
+
+msgid "large readout"
+msgstr ""
+
+msgid "last"
+msgstr "sidste"
+
+msgid "left"
+msgstr "venstre"
+
+msgid "left arrow"
+msgstr "venstrepil"
+
+msgid "left-right"
+msgstr "venstre-højre"
+
+msgid "length"
+msgstr ""
+
+msgid "Library"
+msgstr "Bibliotek"
+
+msgid "light"
+msgstr "lys"
+
+msgid "limit reached"
+msgstr "grænsen er nået"
+
+msgid "Line"
+msgstr "Linje"
+
+# 90%
+msgid "Line width"
+msgstr "Linjebredde"
+
+# 75%
+msgid "list"
+msgstr "liste"
+
+msgid "List name"
+msgstr "Listenavn"
+
+msgid "ln"
+msgstr "ln"
+
+msgid "Loading project..."
+msgstr "Indlæser projektet..."
+
+msgid "log"
+msgstr "log"
+
+msgid "louder"
+msgstr "højere"
+
+msgid "loudness"
+msgstr "lydstyrke"
+
+msgid "Low C"
+msgstr "Det lave C"
+
+msgid "Make a Block"
+msgstr "Skab en Klods"
+
+msgid "Make a List"
+msgstr "Lav en Liste"
+
+msgid "Make a Variable"
+msgstr "Lav en Variabel"
+
+msgid "Marimba"
+msgstr "Marimba"
+
+msgid "Max"
+msgstr "Max"
+
+msgid "meow"
+msgstr "mjav"
+
+msgid "Message Name"
+msgstr "Meddelelse Navn"
+
+msgid "message1"
+msgstr "meddelelse1"
+
+msgid "Microphone Volume:"
+msgstr "Mikrofonstyrke:"
+
+msgid "Middle C"
+msgstr "Midter C"
+
+msgid "Min"
+msgstr "Min"
+
+msgid "minute"
+msgstr "minut"
+
+msgid "month"
+msgstr "måned"
+
+msgid "mosaic"
+msgstr "mosaik"
+
+msgid "motion"
+msgstr "bevægelse"
+
+msgid "mouse-pointer"
+msgstr "musepil"
+
+msgid "Multiple"
+msgstr "Flere"
+
+msgid "Music and Dance"
+msgstr "Musik og dans"
+
+msgid "Music Box"
+msgstr "Spilledåse"
+
+msgid "Music Loops"
+msgstr "Musik Sløjfer"
+
+msgid "My Stuff"
+msgstr "Mine sager"
+
+msgid "myself"
+msgstr "mig selv"
+
+msgid "Nature"
+msgstr "Natur"
+
+msgid "New"
+msgstr "Ny"
+
+msgid "New backdrop from camera"
+msgstr "Nyt bagtæppe fra kamera"
+
+msgid "New backdrop:"
+msgstr "Nyt bagtæppe:"
+
+msgid "New costume from camera"
+msgstr "Nyt kostume fra kamera"
+
+msgid "New costume:"
+msgstr "Nyt kostume:"
+
+msgid "New List"
+msgstr "Ny liste"
+
+msgid "new message..."
+msgstr "ny meddelese..."
+
+msgid "New name"
+msgstr "Nyt navn"
+
+msgid "New sound:"
+msgstr "Ny lyd:"
+
+msgid "New sprite from camera"
+msgstr "Ny sprite fra kamera"
+
+msgid "New sprite:"
+msgstr "Ny sprite:"
+
+msgid "New Variable"
+msgstr "Ny variabel"
+
+msgid "No motion blocks"
+msgstr "Ingen bevægelses klodser"
+
+msgid "normal readout"
+msgstr ""
+
+msgid "Not saved; network or server problem."
+msgstr "Ikke gemt; netværk eller server problem."
+
+msgid "Not saved; project did not load."
+msgstr "Ikke gemt; projektet ikke indlæst."
+
+msgid "of"
+msgstr "af"
+
+msgid "off"
+msgstr "slukket"
+
+msgid "Offline Editor"
+msgstr ""
+
+msgid "OK"
+msgstr "OK"
+
+msgid "on"
+msgstr "tændt"
+
+msgid "on-flipped"
+msgstr "når omvendt"
+
+msgid "Open Cuica"
+msgstr "Åben cuica"
+
+msgid "Open Hi-Hat"
+msgstr "Åben hi-hat"
+
+msgid "Options"
+msgstr "Valgmuligheder"
+
+msgid "Organ"
+msgstr "Orgel"
+
+msgid "Other"
+msgstr "Andre"
+
+msgid "other scripts in sprite"
+msgstr "andre script i sprite"
+
+msgid "Outdoors"
+msgstr "Udendørs"
+
+msgid "Paint new backdrop"
+msgstr "Tegn nyt bagtæppe"
+
+msgid "Paint new costume"
+msgstr "Tegn nyt kostume"
+
+msgid "Paint new sprite"
+msgstr "Tegn ny sprite"
+
+msgid "paste"
+msgstr "klistr"
+
+msgid "Pencil"
+msgstr "Blyant"
+
+msgid "People"
+msgstr "Mennesker"
+
+msgid "Percussion"
+msgstr "Slagtøj"
+
+msgid "photo1"
+msgstr "foto1"
+
+msgid "Piano"
+msgstr "Klaver"
+
+msgid "Pick up color"
+msgstr "Hent farve"
+
+msgid "pixelate"
+msgstr "pixeler"
+
+msgid "Pizzicato"
+msgstr "Pizzicato"
+
+msgid "pop"
+msgstr "knald"
+
+msgid "Profile"
+msgstr "Profil"
+
+msgid "Project did not load."
+msgstr "Projektet er ikke indlæst."
+
+msgid "Project not saved!"
+msgstr "Projektet er ikke gemt!"
+
+msgid "random"
+msgstr "tilfældig"
+
+msgid "Record"
+msgstr "Optag"
+
+msgid "Record new sound"
+msgstr "Optag ny lyd"
+
+msgid "recording1"
+msgstr "optagelse1"
+
+msgid "Rectangle"
+msgstr "Rektangel"
+
+# 75%
+msgid "Redo"
+msgstr "Gør om"
+
+msgid "redo"
+msgstr "gør om"
+
+msgid "Remix"
+msgstr "Remix"
+
+msgid "Remixing..."
+msgstr "Remixer..."
+
+msgid "Rename"
+msgstr "Omdøb"
+
+msgid "rename variable"
+msgstr "omdøb variabelnavn"
+
+msgid "requires sign in"
+msgstr "kræver log-in"
+
+msgid "Reshape"
+msgstr "Omform"
+
+msgid "resistance-A"
+msgstr "modstand-A"
+
+msgid "resistance-B"
+msgstr "modstand-B"
+
+msgid "resistance-C"
+msgstr "modstand-C"
+
+msgid "resistance-D"
+msgstr "modstand-D"
+
+msgid "reverse"
+msgstr "skift retning"
+
+msgid "Revert"
+msgstr "Vend tilbage"
+
+msgid "Reverting..."
+msgstr "Tilbagevending..."
+
+msgid "right"
+msgstr "højre"
+
+msgid "right arrow"
+msgstr "højrepil"
+
+msgid "rotation style:"
+msgstr "rotationsstil:"
+
+msgid "Run without screen refresh"
+msgstr "Kør uden skærmopdatering"
+
+msgid "Save"
+msgstr "Gem"
+
+msgid "Save as a copy"
+msgstr "Gem som kopi"
+
+msgid "Save now"
+msgstr "Gem nu"
+
+msgid "save to local file"
+msgstr "gem som lokal fil"
+
+msgid "Saved"
+msgstr "Gemt"
+
+msgid "Saving changes..."
+msgstr "Gemmer ændringer..."
+
+msgid "Saving..."
+msgstr "Gemmer..."
+
+msgid "Saxophone"
+msgstr "Saxofon"
+
+msgid "Script"
+msgstr "Script"
+
+msgid "Scripts"
+msgstr "Script"
+
+msgid "Scripts:"
+msgstr "Script:"
+
+msgid "second"
+msgstr "sekund"
+
+msgid "See project page"
+msgstr "Se projektside"
+
+msgid "Select"
+msgstr "Marker"
+
+msgid "select all"
+msgstr "marker alt"
+
+msgid "Select and duplicate"
+msgstr "Marker og kopier"
+
+msgid "Send to back"
+msgstr "Flyt længst tilbage"
+
+msgid "Set costume center"
+msgstr "Sæt kostumets center"
+
+msgid "Set Costume Center"
+msgstr "Sæt Kostumets Center"
+
+msgid "set slider min and max"
+msgstr ""
+
+msgid "Share"
+msgstr "Del"
+
+msgid "shared"
+msgstr "delt"
+
+msgid "Shift:"
+msgstr "Skift:"
+
+msgid "show"
+msgstr "vis"
+
+msgid "show receivers"
+msgstr "vis modtagere"
+
+msgid "show senders"
+msgstr "vis afsendere"
+
+msgid "show:"
+msgstr "vis:"
+
+msgid "Shrink"
+msgstr "Formindsk"
+
+msgid "Side Stick"
+msgstr "Kantslag"
+
+msgid "Sign in"
+msgstr "Log på"
+
+msgid "Sign in to save"
+msgstr "Log på for at gemme"
+
+msgid "Sign out"
+msgstr "Log ud"
+
+msgid "silence"
+msgstr "tavshed"
+
+# 75%
+msgid "sin"
+msgstr "sin"
+
+msgid "size"
+msgstr "størrelse"
+
+msgid "slider"
+msgstr "skydemodstand"
+
+msgid "Slider Range"
+msgstr "Skydemodstands Rækkevidde"
+
+msgid "Small stage layout"
+msgstr "Lille scene opsætning"
+
+msgid "Smooth"
+msgstr "Glat ud"
+
+msgid "Snare Drum"
+msgstr "Lilletromme"
+
+msgid "softer"
+msgstr "lavere"
+
+msgid "sound"
+msgstr "lyd"
+
+msgid "Sound"
+msgstr "Lyd"
+
+msgid "Sound Library"
+msgstr "Lydbibliotek"
+
+msgid "Sounds"
+msgstr "Lyde"
+
+msgid "space"
+msgstr "mellemrum"
+
+# 80%
+msgid "Space"
+msgstr "Rum"
+
+msgid "Sports"
+msgstr "Sport"
+
+# 85%
+msgid "Sprite"
+msgstr "Sprite"
+
+msgid "Sprite Library"
+msgstr "Sprite Bibliotek"
+
+# 85%
+msgid "Sprite1"
+msgstr "Sprite1"
+
+msgid "Sprites"
+msgstr "Sprites"
+
+msgid "sqrt"
+msgstr "kvrod"
+
+msgid "Square"
+msgstr "Firkant"
+
+msgid "Stage"
+msgstr "Scene"
+
+msgid "Stage selected:"
+msgstr "Udvalgt scene:"
+
+msgid "Steel Drum"
+msgstr "Ståltromme"
+
+msgid "stored on server"
+msgstr "gemt på serveren"
+
+msgid "Synth Lead"
+msgstr "Synth Lead"
+
+msgid "Synth Pad"
+msgstr "Synth Pad"
+
+msgid "Tambourine"
+msgstr "Tamburin"
+
+# 75%
+msgid "tan"
+msgstr "tan"
+
+msgid "Text"
+msgstr "Tekst"
+
+msgid "that way"
+msgstr "mod uret"
+
+msgid "Theme"
+msgstr "Tema"
+
+msgid "Things"
+msgstr "Tingester"
+
+msgid "This project can detect who is using it, through the “username” block. To hide your identity, sign out before using the project."
+msgstr ""
+"Dette project kan afsløre hvem der bruger det, gennem \"brugernavn\"-klodsen. "
+" For at skjule din identitet, log af inden du andvender projektet."
+
+msgid "This project uses Cloud data ‒ a feature that is available only to signed in users."
+msgstr ""
+"Projektet anvender Skydata ‒ en funktion der kun er tilgængelig hvis man er logget "
+"på."
+
+msgid "this script"
+msgstr "dette script"
+
+msgid "this sprite"
+msgstr "denne sprite"
+
+msgid "this way"
+msgstr "med uret"
+
+msgid "Throw away all changes since opening this project?"
+msgstr "Kasser alle ændringer siden projektet åbnedes?"
+
+msgid "timer"
+msgstr "timer"
+
+msgid "Tips"
+msgstr "Idéer"
+
+msgid "To delete a block definition, first remove all uses of the block."
+msgstr "For at slette en klodsdefination, fjern først al brug af klodsen."
+
+msgid "Transportation"
+msgstr "Transportmidler"
+
+msgid "Triangle"
+msgstr "Triangel"
+
+msgid "Trombone"
+msgstr "Trækbasun"
+
+msgid "Turbo mode"
+msgstr "Sæt turbo på"
+
+msgid "Turbo Mode"
+msgstr "Sæt turbo på"
+
+msgid "Type"
+msgstr "Type"
+
+# 75%
+msgid "Undelete"
+msgstr "Gendan"
+
+msgid "Underwater"
+msgstr "Under vandet"
+
+# 75%
+msgid "Undo"
+msgstr "Fortryd"
+
+msgid "undo"
+msgstr "fortryd"
+
+msgid "Undo Revert"
+msgstr "Fortryd tilbagevending"
+
+msgid "Ungroup"
+msgstr "Opsplit"
+
+msgid "unshared"
+msgstr "ikke delt"
+
+msgid "up"
+msgstr "op"
+
+msgid "up arrow"
+msgstr "pil opad"
+
+msgid "Upload backdrop from file"
+msgstr "Upload bagtæppe fra fil"
+
+msgid "Upload costume from file"
+msgstr "Upload kostume fra fil"
+
+msgid "Upload from your computer"
+msgstr "Upload fra din computer"
+
+msgid "Upload sound from file"
+msgstr "Upload lyd fra fil"
+
+msgid "Upload sprite from file"
+msgstr "Upload sprite fra fil"
+
+msgid "Uploading image..."
+msgstr "Uploader billede..."
+
+msgid "Uploading sound..."
+msgstr "Uploader lyd..."
+
+msgid "Uploading sprite..."
+msgstr "Uploader sprite..."
+
+msgid "variable"
+msgstr "variabel"
+
+msgid "Variable name"
+msgstr "Variabelnavn"
+
+msgid "Vector"
+msgstr "Vektor"
+
+msgid "Vector Mode"
+msgstr "Vektorformat"
+
+msgid "Vibraphone"
+msgstr "Vibrafon"
+
+msgid "Vibraslap"
+msgstr "Vibraslap"
+
+msgid "video motion"
+msgstr "videobevægelse"
+
+msgid "Video on:"
+msgstr "Video på:"
+
+msgid "Vocals"
+msgstr "Stemmer"
+
+msgid "volume"
+msgstr "lydstyrke"
+
+msgid "Walking"
+msgstr "Gående"
+
+msgid "Want to save? Click remix"
+msgstr "Vil du gemme? Klick remix"
+
+msgid "Which column do you want to import"
+msgstr "Hvilken kolonne vil du importere"
+
+msgid "whirl"
+msgstr "vrid"
+
+msgid "Wood Block"
+msgstr "Træklods"
+
+msgid "Wooden Flute"
+msgstr "Træfløjte"
+
+msgid "x position"
+msgstr "x-position"
+
+msgid "y position"
+msgstr "y-position"
+
+msgid "year"
+msgstr "år"
+
+msgid "You cannot edit cloud data in someone else's project.<br>Any change that you make in the editor will be temporary and not persistent."
+msgstr ""
+"Du kan ikke editere skydata i en andens projekt.<br>Eventuelle ændringer "
+"bliver kun midlertidige, ikke vedvarende."
+
+msgid "Eraser width:"
+msgstr "Viskelæderets bredde:"
+
+msgid "Line width:"
+msgstr "Linjebredde:"
+
+# 90%
+#, fuzzy
+#~ msgid "New sprite"
+#~ msgstr "Ny sprite"
+
+#~ msgid "Paint"
+#~ msgstr "Mal"
+
+#~ msgid "any"
+#~ msgstr "vilkårlig"
+
+#~ msgid "High Tom"
+#~ msgstr "Høj tam"
+
+#~ msgid "Long Guiro"
+#~ msgstr "Lang guiro"
+
+#~ msgid "Low Bongo"
+#~ msgstr "Lav Bongo"
+
+#~ msgid "Low Conga"
+#~ msgstr "Lav Conga"
+
+#~ msgid "Low Tom"
+#~ msgstr "Lav tam"
+
+#~ msgid "Low Wood Block"
+#~ msgstr "Lav træklods"
+
+#~ msgid "Maracas"
+#~ msgstr "Maracas"
+
+#~ msgid "More"
+#~ msgstr "flere"
+
+#~ msgid "Mute Triangle"
+#~ msgstr "Dæmpet triangel"
+
+#~ msgid "Open Triangle"
+#~ msgstr "Åben triangel"
+
+#~ msgid "Pedal Hi-Hat"
+#~ msgstr "Pedal Hi-Hat"
+
+#~ msgid "Short Guiro"
+#~ msgstr "Kort Guiro"
+
+
+
+#################################
+# Makeblock Section             #
+# Translation by Heine Ravnholt #
+# hein0170@gmail.com            #
+#################################
+
+msgid "set motor%m.motorPort speed %d.motorvalue"
+msgstr "sæt %m.motorPort til %d.motorvalue"
+
+msgid "set servo %m.servoPort %m.slot angle %d.servovalue"
+msgstr "sæt servo %m.servoPort %m.slot til %d.servovalue grader"
+
+msgid "set 7-segments display%m.normalPort number %n"
+msgstr "sæt 7-segment display %m.normalPort nummer %n"
+
+msgid "set led%m.normalPort index%n red%n green%n blue%n"
+msgstr "sæt LED%m.normalPort index%n rød%n grøn%n blå%n"
+
+msgid "ultrasonic sensor %m.normalPort distance"
+msgstr "ultralydssensor %m.normalPort afstand"
+
+msgid "sound sensor %m.normalPort"
+msgstr "lydsensor %m.normalPort"
+
+msgid "light sensor %m.normalPort"
+msgstr "lyssensor %m.normalPort"
+
+msgid "set light sensor %m.normalPort led as %m.digital"
+msgstr "sæt lyssensor %m.normalPort LED til %m.digital"
+
+msgid "line follower %m.normalPort"
+msgstr "linjefølger %m.normalPort"
+
+msgid "limit switch %m.normalPort%m.slot"
+msgstr "stopkontakt %m.normalPort%m.slot"
+
+msgid "potentiometer %m.normalPort"
+msgstr "potentiometer %m.normalPort"
+
+msgid "3-axis gyro %m.GyroAxis angle"
+msgstr "3-akset gyro %m.GyroAxis vinkel"
+
+msgid "infrared receiver %m.normalPort"
+msgstr "infrarød modtager %m.normalPort"
+
+msgid "pir motion sensor %m.normalPort"
+msgstr "PIR bevægelsessensor %m.normalPort"
+
+msgid "temperature %m.normalPort%m.slot °C"
+msgstr "temperatur %m.normalPort%m.slot °C"
+
+msgid "joystick %m.normalPort %m.Axis"
+msgstr "joystick %m.normalPort %m.Axis"
+
+msgid "set camera shutter %m.normalPort as %m.digital"
+msgstr "sæt kameralukker %m.normalPort til %m.digital"
+
+msgid "read digital pin %n"
+msgstr "læs digital ben %n"
+
+msgid "read analog pin (A)%n"
+msgstr "læs analog ben (A)%n"
+
+msgid "set digital pin %n output as %m.digital"
+msgstr "sæt digital ben %n udgang til %m.digital"
+
+msgid "set pwm pin %n output as %d.pwmvalue"
+msgstr "sæt PWM ben %n udgang til %d.pwmvalue"
+
+msgid "set servo pin %n angle as %d.servovalue"
+msgstr "sæt servoben %n til %d.servovalue grader"
+
+msgid "play tone pin %n on note %m.notes beat %m.beats"
+msgstr "sæt ben %n til tonen %m.notes i %m.beats slag"
+
+msgid "Eighth"
+msgstr "1/8"
+
+msgid "Quater"
+msgstr "1/4"
+
+msgid "Half"
+msgstr "1/2"
+
+msgid "Whole"
+msgstr "1/1"
+
+msgid "Double"
+msgstr "Dobbelt"
+
+msgid "Zero"
+msgstr "Nul"
+
+msgid "Ultrasonic"
+msgstr "Ultralyds"
+
+msgid "Light Sensor"
+msgstr "Lyssensor"
+
+msgid "Sound Sensor"
+msgstr "Lydsensor"
+
+msgid "LED"
+msgstr "LED"
+
+msgid "Joystick"
+msgstr "Joystick"
+
+msgid "Line Finder"
+msgstr "Linjefølger"
+
+msgid "LimitSwitch"
+msgstr "Stopkontakt"
+
+msgid "Temperature"
+msgstr "Temperatur"
+
+msgid "Joystick"
+msgstr "Joystick"
+
+msgid "Potentiometer"
+msgstr "Potentiometer"
+
+msgid "Button"
+msgstr "Knap"
+
+msgid "High"
+msgstr "Høj"
+
+msgid "Low"
+msgstr "Lav"
+
+msgid "X-Axis"
+msgstr "X-Akse"
+
+msgid "Y-Axis"
+msgstr "Y-Akse"
+
+msgid "Z-Axis"
+msgstr "Z-Akse"
+
+msgid "Input"
+msgstr "Indgang"
+
+msgid "Output"
+msgstr "Udgang"
+
+msgid "Port1"
+msgstr "Port 1"
+
+msgid "Port2"
+msgstr "Port 2"
+
+msgid "Port3"
+msgstr "Port 3"
+
+msgid "Port4"
+msgstr "Port 4"
+
+msgid "Port5"
+msgstr "Port 5"
+
+msgid "Port6"
+msgstr "Port 6"
+
+msgid "Port7"
+msgstr "Port 7"
+
+msgid "Port8"
+msgstr "Port 8"
+
+msgid "Slot1"
+msgstr "Tilslutning 1"
+
+msgid "Slot2"
+msgstr "Tilslutning 2"
+
+msgid "M1"
+msgstr "M1"
+
+msgid "M2"
+msgstr "M2"
+
+msgid "Don't save"
+msgstr "Undlad at gemme"
+
+msgid "Save project?"
+msgstr "Gem projekt?"
+
+msgid "About"
+msgstr "Om"
+
+msgid "Open"
+msgstr "Åbn"
+
+msgid "Save as"
+msgstr "Gem som"
+
+msgid "Share to website"
+msgstr "Del på website"
+
+msgid "Check for updates"
+msgstr "Søg efter opdateringer"
+
+msgid "Quit"
+msgstr "Forlad"
+
+msgid "Share to Scratch Website"
+msgstr "Del på Scratch website"
+
+msgid "Project name"
+msgstr "Projektnavn:"
+
+msgid "Your Scratch name"
+msgstr "Dit Scratchnavn:"
+
+msgid "Password"
+msgstr "Kodeord:"
+
+msgid "Setting"
+msgstr "Indstilling"
+
+msgid "Connect"
+msgstr "Forbind"
+
+msgid "Disconnect"
+msgstr "Afbryd"
+
+msgid "save picture of stage"
+msgstr "gem billede af scene"
+
+msgid "Load Project"
+msgstr "Åbn Projekt"
+
+msgid "Save Project"
+msgstr "Gem Projekt"
+
+msgid "New Block"
+msgstr "Ny Blok"
+
+msgid "Robots"
+msgstr "Robotter"
+
+msgid "Forum"
+msgstr "Forum"
+
+msgid "Upgrade Firmware"
+msgstr "Opdater Firmware"
+
+msgid "View Source"
+msgstr "Se Kilde"
+
+msgid "cleanup"
+msgstr "ryd op"
+
+msgid "Microphone volume:"
+msgstr "Mikrofonvolume:"
+
+msgid "http://forum.makeblock.cc/#scratch"
+msgstr "http://forum.makeblock.cc/#scratch"
+
+msgid "Close"
+msgstr "Luk"
+
+msgid "Executing"
+msgstr "Udfører"
+
+msgid "Replace contents of the current project?"
+msgstr "Udskift indholdet af det nuværende projekt?"
+
+msgid "info"
+msgstr "info"
+
+msgid "New Version Available!"
+msgstr "Ny version tilgængelig!"
+
+msgid "Update Now"
+msgstr "Updater Nu"
+
+msgid "Updating"
+msgstr "Opdaterer"
+
+msgid "Downloading"
+msgstr "Henter"
+
+msgid "Connected"
+msgstr "Tilsluttet"
+
+msgid "Bluetooth"
+msgstr "Bluetooth"
+
+msgid "No Bluetooth"
+msgstr "Ingen Bluetooth"
+
+msgid "Disconnect Bluetooth"
+msgstr "Afbryd Bluetooth"
+
+msgid "Discovering Bluetooth"
+msgstr "Leder efter Bluetooth"
+
+msgid "Click The Device From List To Connect"
+msgstr "Klik enhed på liste for at forbinde"
+
+msgid "Device Not Found"
+msgstr "Enhed ikke fundet"
+
+msgid "Distance Display"
+msgstr "Afstandsmåling"
+
+msgid "Detect Sound"
+msgstr "Opdag Lyd"
+
+msgid "Temperature"
+msgstr "Temperatur"
+
+msgid "Joystick"
+msgstr "Joystick"
+
+msgid "Ultrasonic Car"
+msgstr "Ultralydsvogn"
+
+msgid "Play Music"
+msgstr "Spil Musik"
+
+msgid "Okey"
+msgstr "Okay"
+
+msgid "Voice Command"
+msgstr "Stemmekommando"
+
+msgid "Accelerometer X"
+msgstr "Accelerometer X"
+
+msgid "Accelerometer Y"
+msgstr "Accelerometer Y"
+
+msgid "Accelerometer Z"
+msgstr "Accelerometer Z"
+
+msgid "Brightness"
+msgstr "Lysstyrke"
+
+msgid "Start Button Pressed?"
+msgstr "Start-tast trykket?"
+
+msgid "Select Button Pressed?"
+msgstr "Select-tast trykket?"
+
+msgid "Up Button Pressed?"
+msgstr "Op-pil trykket?"
+
+msgid "Down Button Pressed?"
+msgstr "Ned-pil trykket?"
+
+msgid "Left Button Pressed?"
+msgstr "Venstre-pil trykket?"
+
+msgid "Right Button Pressed?"
+msgstr "Højre-pil trykket?"
+
+msgid "A Button Pressed?"
+msgstr "A-tast trykket?"
+
+msgid "B Button Pressed?"
+msgstr "B-tast trykket?"
+
+msgid "X Button Pressed?"
+msgstr "X-tast trykket?"
+
+msgid "Y Button Pressed?"
+msgstr "Y-tast trykket?"
+
+msgid "Hide Extension"
+msgstr "Skjul udvidelse"
+
+msgid "Show Extension"
+msgstr "Vis udvidelse"
+
+msgid "when data received"
+msgstr "Når data modtages"
+
+msgid "read serial line"
+msgstr "læs seriel-linje"
+
+msgid "write serial line %s"
+msgstr "skriv seriel-linje %s"
+
+msgid "read serial command %s"
+msgstr "læs seriel kommando %s"
+
+msgid "send serial command %s = %s"
+msgstr "send seriel kommando %s = %s"
+
+msgid "clear serial buffer"
+msgstr "ryd seriel buffer"
+
+msgid "Serial"
+msgstr "Seriel"
