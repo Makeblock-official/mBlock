@@ -1694,22 +1694,22 @@ msgid "read digital pin %n"
 msgstr "lees digitale pin %n uit"
 
 msgid "read analog pin (A)%n"
-msgstr "lees analoge pin (A)%n uit"
+msgstr "lees analoge pin (A%n ) uit"
 
 msgid "set digital pin %n output as %d.digital"
-msgstr "maak uitgang digitale pin %n %d.digital"
+msgstr "maak uitgang digitale pin %n : %d.digital"
 
 msgid "set analog pin (A)%n output as %n"
-msgstr "maak uitgang analoge pin (A)%n %n"
+msgstr "maak uitgang analoge pin (A%n ) : %n"
 
 msgid "set pwm pin %n output as %d.pwmvalue"
-msgstr "maak uitgang analoge/PWM-pin %n %d.pwmvalue"
+msgstr "maak uitgang analoge/PWM-pin %n : %d.pwmvalue"
 
 msgid "set servo pin %n angle as %d.servovalue"
 msgstr "zet servo-pin %n op %d.servovalue graden"
 
 msgid "play tone pin %n on note %d.notes beat %d.beats"
-msgstr "op toon-pin %n speel noot %d.notes %d.beats tel(len)"
+msgstr "op toon-pin %n : speel noot %d.notes %d.beats tel(len)"
 
 msgid "Eighth"
 msgstr "achtste"
