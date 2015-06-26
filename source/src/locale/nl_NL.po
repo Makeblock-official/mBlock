@@ -2354,3 +2354,6 @@ msgstr "buffer leegmaken"
 
 msgid "value"
 msgstr "waarde"
+
+msgid "Holiday"
+msgstr "Kerstmis"
