@@ -1,0 +1,2150 @@
+﻿
+# The lanuage name as it will appear in the language menu
+msgid "Language-Name"
+msgstr "Русский"
+
+msgid "%b and %b"
+msgstr "%b и %b"
+
+msgid "%b or %b"
+msgstr "%b или %b"
+
+msgid "%m.attribute of %m.spriteOrStage"
+msgstr "%m.attribute из %m.spriteOrStage"
+
+msgid "%m.list contains %s"
+msgstr "%m.list содержит %s"
+
+msgid "%m.mathOp of %n"
+msgstr "%m.mathOp от %n"
+
+msgid "%m.sensor sensor value"
+msgstr "значение сенсора %m.sensor"
+
+msgid "%n mod %n"
+msgstr "%n mod %n"
+
+msgid "add %s to %m.list"
+msgstr "добавить %s к %m.list"
+
+msgid "answer"
+msgstr "ответ"
+
+msgid "ask %s and wait"
+msgstr "спросить %s и ждать"
+
+# "backdrop" in Scratch 2.0 is similar to "background" in Scratch 1.4
+msgid "backdrop #"
+msgstr "фон"
+
+# "backdrop" in Scratch 2.0 is similar to "background" in Scratch 1.4
+msgid "backdrop name"
+msgstr "имя фона"
+
+msgid "broadcast %m.broadcast"
+msgstr "передать %m.broadcast"
+
+msgid "broadcast %m.broadcast and wait"
+msgstr "передать %m.broadcast и ждать"
+
+msgid "change %m.effect effect by %n"
+msgstr "изменить %m.effect эффект на %n"
+
+msgid "change %m.var by %n"
+msgstr "изменить %m.var на %n"
+
+msgid "change pen color by %n"
+msgstr "изменить цвет пера на %n"
+
+msgid "change pen shade by %n"
+msgstr "изменить тень пера на %n"
+
+msgid "change pen size by %n"
+msgstr "изменить размер пера на %n"
+
+msgid "change size by %n"
+msgstr "изменить размер на %n"
+
+msgid "change tempo by %n"
+msgstr "изменить темп на %n"
+
+msgid "change volume by %n"
+msgstr "изменить громкость %n"
+
+msgid "change x by %n"
+msgstr "изменить x на %n"
+
+msgid "change y by %n"
+msgstr "изменить y на %n"
+
+msgid "clear"
+msgstr "очистить"
+
+msgid "clear graphic effects"
+msgstr "очистить графические эффекты"
+
+msgid "color %c is touching %c?"
+msgstr "цвет %c касается %c?"
+
+msgid "Control"
+msgstr "Контроль"
+
+msgid "costume #"
+msgstr "костюм #"
+
+msgid "create clone of %m.spriteOnly"
+msgstr "создать копию %m.spriteOnly"
+
+msgid "current %m.timeAndDate"
+msgstr "ток %m.timeAndDate"
+
+msgid "Data"
+msgstr "Данные"
+
+msgid "Data&Blocks"
+msgstr "Данные и Блоки"
+
+msgid "days since 2000"
+msgstr "дней с  2000"
+
+msgid "define"
+msgstr "установить"
+
+msgid "delete %d.listDeleteItem of %m.list"
+msgstr "удалить %d.listDeleteItem из %m.list"
+
+msgid "delete this clone"
+msgstr "удалить эту копию"
+
+msgid "direction"
+msgstr "направление"
+
+msgid "distance"
+msgstr "расстояние"
+
+msgid "distance to %m.spriteOrMouse"
+msgstr "расстояние до %m.spriteOrMouse"
+
+msgid "else"
+msgstr "иначе"
+
+msgid "Events"
+msgstr "События"
+
+msgid "forever"
+msgstr "всегда"
+
+msgid "glide %n secs to x:%n y:%n"
+msgstr "плыть %n секунд в точку x:%n y:%n"
+
+msgid "go back %n layers"
+msgstr "перейти назад на %n слоев"
+
+msgid "go to %m.spriteOrMouse"
+msgstr "идти на %m.spriteOrMouse"
+
+msgid "go to front"
+msgstr "перейти в верхний слой"
+
+msgid "go to x:%n y:%n"
+msgstr "идти в x:%n y:%n"
+
+msgid "hide"
+msgstr "спрятаться"
+
+msgid "hide list %m.list"
+msgstr "спрятать список %m.list"
+
+msgid "hide variable %m.var"
+msgstr "спрятать переменную %m.var"
+
+msgid "if %b then"
+msgstr "если %b то"
+
+msgid "if on edge, bounce"
+msgstr "если край, оттолкнуться"
+
+msgid "insert %s at %d.listItem of %m.list"
+msgstr "поставить %s в %d.listItem из %m.list"
+
+msgid "item %d.listItem of %m.list"
+msgstr "элемент %d.listItem из %m.list"
+
+msgid "join %s %s"
+msgstr "слить %s %s"
+
+msgid "key %m.key pressed?"
+msgstr "клавиша %m.key нажата?"
+
+msgid "length of %m.list"
+msgstr "длина списка %m.list"
+
+msgid "length of %s"
+msgstr "длина строки %s"
+
+msgid "letter %n of %s"
+msgstr "буква %n в %s"
+
+msgid "Looks"
+msgstr "Внешность"
+
+msgid "loudness"
+msgstr "громкость"
+
+msgid "More Blocks"
+msgstr "Другие Блоки"
+
+msgid "Motion"
+msgstr "Движение"
+
+msgid "mouse down?"
+msgstr "мышка нажата?"
+
+msgid "mouse x"
+msgstr "мышка по x"
+
+msgid "mouse y"
+msgstr "мышка по y"
+
+msgid "move %n steps"
+msgstr "идти %n шагов"
+
+# "backdrop" in Scratch 2.0 is similar to "background" in Scratch 1.4
+msgid "next backdrop"
+msgstr "следующий фон"
+
+msgid "next costume"
+msgstr "следующий костюм"
+
+msgid "not %b"
+msgstr "не %b"
+
+msgid "Operators"
+msgstr "Операторы"
+
+msgid "Pen"
+msgstr "Перо"
+
+msgid "pen down"
+msgstr "опустить перо"
+
+msgid "pen up"
+msgstr "поднять перо"
+
+msgid "pick random %n to %n"
+msgstr "выдать случайное от %n до %n"
+
+msgid "play drum %d.drum for %n beats"
+msgstr "барабану %d.drum играть %n тактов"
+
+# 83%
+# 100%
+msgid "play note %d.note for %n beats"
+msgstr "ноту %d.note играть %n тактов"
+
+msgid "play sound %m.sound"
+msgstr "играть звук %m.sound"
+
+msgid "play sound %m.sound until done"
+msgstr "играть звук %m.sound до завершения"
+
+msgid "point in direction %d.direction"
+msgstr "повернуть в направление %d.direction"
+
+msgid "point towards %m.spriteOrMouse"
+msgstr "повернуться к %m.spriteOrMouse"
+
+msgid "repeat %n"
+msgstr "повторить %n gange"
+
+msgid "repeat until %b"
+msgstr "повторять до %b"
+
+msgid "replace item %d.listItem of %m.list with %s"
+msgstr "заменить элемент %d.listItem в %m.list на %s"
+
+msgid "reset timer"
+msgstr "перезапустить таймер"
+
+msgid "rest for %n beats"
+msgstr "оставшиеся %n тактов"
+
+msgid "round %n"
+msgstr "округлить %n"
+
+msgid "say %s"
+msgstr "сказать %s"
+
+msgid "say %s for %n secs"
+msgstr "говорить %s в течение %n секунд"
+
+msgid "Sensing"
+msgstr "Сенсоры"
+
+msgid "sensor %m.booleanSensor?"
+msgstr "сенсор %m.booleanSensor?"
+
+msgid "set %m.effect effect to %n"
+msgstr "установить эффект %m.effect в значение %n"
+
+msgid "set %m.var to %s"
+msgstr "поставить %m.var в %s"
+
+msgid "set instrument to %d.instrument"
+msgstr "выбрать инструмент %d.instrument"
+
+# 89%
+# 100%
+msgid "set motor direction %m.motorDirection"
+msgstr "установить направление мотора %m.motorDirection"
+
+# 77%
+# 100%
+msgid "set motor power %n"
+msgstr "установить мощность мотора %n"
+
+msgid "set pen color to %c"
+msgstr "установить цвет пера %c"
+
+msgid "set pen color to %n"
+msgstr "установить цвет пера %n"
+
+msgid "set pen shade to %n"
+msgstr "установить тень пера %n"
+
+msgid "set pen size to %n"
+msgstr "установить размер пера %n"
+
+msgid "set rotation style %m.rotationStyle"
+msgstr "установить направление вращения %m.rotationStyle"
+
+msgid "set size to %n%"
+msgstr "установить размер %n%"
+
+msgid "set tempo to %n bpm"
+msgstr "установить темп %n slag/min."
+
+msgid "set video transparency to %n%"
+msgstr "установить прозрачность видео %n%"
+
+msgid "set volume to %n%"
+msgstr "установить громкость %n%"
+
+msgid "set x to %n"
+msgstr "установить x в %n"
+
+msgid "set y to %n"
+msgstr "установить y в %n"
+
+msgid "show"
+msgstr "показаться"
+
+msgid "show list %m.list"
+msgstr "показать список %m.list"
+
+msgid "show variable %m.var"
+msgstr "показать переменную %m.var"
+
+msgid "size"
+msgstr "размер"
+
+msgid "Sound"
+msgstr "Звук"
+
+msgid "stamp"
+msgstr "печать"
+
+msgid "stop %m.stop"
+msgstr "остановить %m.stop"
+
+msgid "stop all sounds"
+msgstr "остановить все звуки"
+
+# "backdrop" in Scratch 2.0 is similar to "background" in Scratch 1.4
+msgid "switch backdrop to %m.backdrop"
+msgstr "перейти к фону %m.backdrop"
+
+# "backdrop" in Scratch 2.0 is similar to "background" in Scratch 1.4
+msgid "switch backdrop to %m.backdrop and wait"
+msgstr "перейти к фону %m.backdrop и ждать"
+
+msgid "switch costume to %m.costume"
+msgstr "перейти к костюму %m.costume"
+
+msgid "tempo"
+msgstr "темп"
+
+msgid "think %s"
+msgstr "думать %s"
+
+msgid "think %s for %n secs"
+msgstr "думать %s  %n секунд"
+
+msgid "tilt"
+msgstr "наклон"
+
+msgid "timer"
+msgstr "таймер"
+
+msgid "touching %m.touching?"
+msgstr "касается %m.touching?"
+
+msgid "touching color %c?"
+msgstr "касается цвета %c?"
+
+msgid "turn @turnLeft %n degrees"
+msgstr "повернуться налево @turnLeft %n градусов"
+
+msgid "turn @turnRight %n degrees"
+msgstr "повернуться направо @turnRight %n градусов"
+
+msgid "turn motor off"
+msgstr "выключить мотор"
+
+msgid "turn motor on"
+msgstr "включить мотор"
+
+# 80%
+# 100%
+msgid "turn motor on for %n secs"
+msgstr "влючить мотор на %n секунд"
+
+msgid "turn video %m.videoState"
+msgstr "включить видео %m.videoState"
+
+# 88%
+msgid "username"
+msgstr "имя пользователя"
+
+msgid "video %m.videoMotionType on %m.stageOrThis"
+msgstr "видео %m.videoMotionType на %m.stageOrThis"
+
+msgid "volume"
+msgstr "громкость"
+
+msgid "wait %n secs"
+msgstr "ждать %n секунд"
+
+msgid "wait until %b"
+msgstr "ждать до %b"
+
+# 75%
+# 100%
+msgid "when %m.booleanSensor"
+msgstr "когда %m.booleanSensor"
+
+msgid "when %m.key key pressed"
+msgstr "когда клавиша %m.key нажата"
+
+msgid "when %m.key key released"
+msgstr "когда клавиша %m.key отпущена"
+
+msgid "when %m.triggerSensor > %n"
+msgstr "когда %m.triggerSensor > %n"
+
+msgid "when @greenFlag clicked"
+msgstr "когда щелкнут по @greenFlag"
+
+# "backdrop" in Scratch 2.0 is similar to "background" in Scratch 1.4
+msgid "when backdrop switches to %m.backdrop"
+msgstr "когда фон переходит в %m.backdrop"
+
+msgid "when distance < %n"
+msgstr "когда дистанция < %n"
+
+msgid "when I receive %m.broadcast"
+msgstr "когда я получил %m.broadcast"
+
+msgid "when I receive %d.broadcast"
+msgstr "когда я получил %d.broadcast"
+
+msgid "when I start as a clone"
+msgstr "когда я начинаю как клон"
+
+msgid "when this sprite clicked"
+msgstr "когда вы нажмете на этот спрайт"
+
+msgid "when tilt = %n"
+msgstr "когда встряхнуть = %n"
+
+msgid "x position"
+msgstr "x-позиция"
+
+msgid "y position"
+msgstr "y-позиция"
+
+#~ msgid "user name"
+#~ msgstr "имя пользователя"
+
+#~ msgid "forever if %b"
+#~ msgstr "всегда если %b"
+
+#~ msgid "if %b"
+#~ msgstr "если %b"
+
+#~ msgid "motor direction %m.motorDirection"
+#~ msgstr "направление мотора %m.motorDirection"
+
+#~ msgid "motor off"
+#~ msgstr "мотор выключить"
+
+#~ msgid "motor on"
+#~ msgstr "мотор включить"
+
+#~ msgid "motor on for %n secs"
+#~ msgstr "мотор включить на %n сек."
+
+#~ msgid "motor power %n"
+#~ msgstr "мощность мотора %n"
+
+#~ msgid "play note %n for %n beats"
+#~ msgstr "играть примечание %d.note для %n"
+
+##################
+# User Interface/Пользовательский интерфейс #
+##################
+
+msgid "10 ^"
+msgstr "10 ^"
+
+msgid "<b>Information about Cloud variables</b><br>&nbsp;<br>Currently, only numbers are supported<br>Chat rooms are not allowed, and will be removed<br>For more info, <a href="/help/faq/#clouddata" target="_blank">see the cloud data FAQ!</a>"
+msgstr ""
+"<b>Информация об облачных переменных</b><br>&nbsp;<br>В настоящее время, только цифры поддерживаются "
+"tal<br>Чаты не допускается, и будут удалены<br>Для получения дополнительной информации <a href= target=>см облачные данные FAQ!</a>"
+
+msgid "A connected"
+msgstr "A соединен"
+
+msgid "a copy of the project file on your computer."
+msgstr "копия файла проекта на компьютере."
+
+msgid "abs"
+msgstr "abs"
+
+msgid "Account settings"
+msgstr "Настройки учетной записи"
+
+msgid "acos"
+msgstr "арккосинус"
+
+msgid "Add boolean input:"
+msgstr "Добавить булевый вход:"
+
+msgid "add comment"
+msgstr "добавить комментарий"
+
+msgid "Add label text:"
+msgstr "Добавить текстовую метку:"
+
+msgid "Add number input:"
+msgstr "Добавить ввод числа:"
+
+msgid "Add string input:"
+msgstr "Добавить строковый ввод:"
+
+msgid "All"
+msgstr "Все"
+
+msgid "all"
+msgstr "все"
+
+msgid "all around"
+msgstr "все вокруг"
+
+msgid "Animal"
+msgstr "Животное"
+
+msgid "Animals"
+msgstr "Животные"
+
+msgid "asin"
+msgstr "арксинус"
+
+msgid "assets loaded"
+msgstr "средства загружены"
+
+msgid "atan"
+msgstr "арктангенс"
+
+msgid "B connected"
+msgstr "B соединено"
+
+msgid "Back a layer"
+msgstr "Слой назад"
+
+msgid "Backdrop"
+msgstr "Фон"
+
+msgid "backdrop"
+msgstr "фон"
+
+msgid "backdrop #"
+msgstr "фон №."
+
+msgid "Backdrop Library"
+msgstr "Библиотека фонов"
+
+msgid "backdrop name"
+msgstr "имя фона"
+
+msgid "backdrop1"
+msgstr "фон1"
+
+msgid "backdrops"
+msgstr "фоны"
+
+msgid "Backdrops"
+msgstr "Фоны"
+
+msgid "Backpack"
+msgstr "Рюкзак"
+
+msgid "Bass"
+msgstr "Бас"
+
+msgid "Bass Drum"
+msgstr "Басс барабан"
+
+msgid "Bassoon"
+msgstr "Фагот"
+
+msgid "Because you have a new Scratch account, any changes to cloud data won't be saved yet. Keep participating on the site you'll be able to use cloud data soon!"
+msgstr ""
+"Поскольку вы имеете новую учетную запись Скретч, любые изменения в облачных данных еще не будут сохранены. Участвуйте в просмотре сайта и скоро вы сможете использовать облачные данные!"
+
+msgid "Bitmap"
+msgstr "Растровый"
+
+msgid "Bitmap Mode"
+msgstr "Растровый режим"
+
+msgid "Block help"
+msgstr "Помощь по блокам"
+
+msgid "Bongo"
+msgstr "Бонго"
+
+msgid "brightness"
+msgstr "яркость"
+
+msgid "Bring to front"
+msgstr "На передний план"
+
+msgid "Broadcast"
+msgstr "Вещание"
+
+msgid "Brush"
+msgstr "Кисть"
+
+msgid "button pressed"
+msgstr "кнопка нажата"
+
+msgid "by"
+msgstr "по"
+
+msgid "bytes loaded"
+msgstr "загрузка байтов"
+
+msgid "C connected"
+msgstr "C соединен"
+
+msgid "Cabasa"
+msgstr "Кабаса"
+
+msgid "Camera"
+msgstr "Камера"
+
+msgid "can drag in player:"
+msgstr "можете перетащить в проигрыватель:"
+
+msgid "Cancel"
+msgstr "Отмена нафик"
+
+msgid "Cannot Delete"
+msgstr "Сори немогу удалить
+
+msgid "Can’t find network connection or reach server."
+msgstr "Немогу найти сетевое подключение или связаться с сервером."
+
+msgid "Castle"
+msgstr "Замок"
+
+msgid "Category"
+msgstr "Категория"
+
+msgid "ceiling"
+msgstr "потолок"
+
+msgid "Cello"
+msgstr "Виолончель"
+
+msgid "Choir"
+msgstr "Хор"
+
+msgid "Choose backdrop from library"
+msgstr "Выберите фон из библиотеки"
+
+msgid "Choose costume from library"
+msgstr "Выберите костюм из библиотеки"
+
+msgid "Choose sound from library"
+msgstr "Выберите звук из библиотеки"
+
+msgid "Choose sprite from library"
+msgstr "Выберите спрайт из библиотеки"
+
+msgid "Circle"
+msgstr ”Круг"
+
+msgid "City"
+msgstr "Город"
+
+msgid "Clarinet"
+msgstr "Кларнет"
+
+msgid "Claves"
+msgstr "Клавес"
+
+msgid "cleanup"
+msgstr ""
+
+msgid "Clear"
+msgstr "Очистить"
+
+msgid "clear senders/receivers"
+msgstr "очистить отправителей/получателей"
+
+msgid "Click "Save now" to try again or "Download" to save"
+msgstr "Нажмите “Сохранить” или попробуйте снова “Скачать” для сохранения"
+
+msgid "Close"
+msgstr "Закрыть"
+
+msgid "Closed Hi-Hat"
+msgstr "Закрытое Привет-Hat"
+
+msgid "Cloud"
+msgstr "Облако"
+
+msgid "Cloud data"
+msgstr "Облачные данные"
+
+msgid "color"
+msgstr "цвет"
+
+msgid "Color a shape"
+msgstr "Цвет формы"
+
+msgid "Conga"
+msgstr "Конга"
+
+msgid "Connecting to Cloud data server..."
+msgstr "Подключение к облачному серверу данных..."
+
+msgid "Convert to bitmap"
+msgstr "Преобразовать в растровое изображение"
+
+msgid "Convert to vector"
+msgstr "Преобразовать в векторное изображение"
+
+msgid "Converting mp3..."
+msgstr "Преобразовать в mp3..."
+
+msgid "copy"
+msgstr "Копия"
+
+msgid "Copying..."
+msgstr "Копирование..."
+
+# 75%
+msgid "cos"
+msgstr "кос"
+
+msgid "Costume"
+msgstr "Костюм"
+
+msgid "costume #"
+msgstr "костюм №"
+
+msgid "Costume Library"
+msgstr "Библиотека костюмов"
+
+msgid "costume name"
+msgstr "имя костюма"
+
+msgid "costume1"
+msgstr "костюм1"
+
+msgid "costume2"
+msgstr "костюм2"
+
+msgid "Costumes"
+msgstr "Костюмы"
+
+msgid "Costumes > 1"
+msgstr "Костюмы > 1"
+
+msgid "Costumes:"
+msgstr "Костюмы:"
+
+msgid "Cowbell"
+msgstr "Колокольчик"
+
+msgid "Crash Cymbal"
+msgstr "Разбить Цымбал"
+
+msgid "Creating..."
+msgstr "Создание..."
+
+msgid "Currently, only numbers can be stored in Cloud variables."
+msgstr "В настоящее время, только цифры могут быть сохранены в облачных переменных."
+
+msgid "cut"
+msgstr "вырезать"
+
+msgid "D connected"
+msgstr "D соединен"
+
+msgid "date"
+msgstr "дата"
+
+msgid "day of week"
+msgstr "день недели"
+
+# 83%
+msgid "Delete"
+msgstr "Удалить"
+
+msgid "delete"
+msgstr "удалить"
+
+msgid "delete variable"
+msgstr "удалить переменную"
+
+msgid "direction"
+msgstr "направление"
+
+msgid "direction:"
+msgstr "направление:"
+
+msgid "don't rotate"
+msgstr "не вращать"
+
+msgid "down"
+msgstr "низ"
+
+msgid "down arrow"
+msgstr "стрелка вниз"
+
+msgid "Download"
+msgstr "Загрузка"
+
+msgid "Download to your computer"
+msgstr "Скачать на компьютер"
+
+msgid "duplicate"
+msgstr "дубликат"
+
+msgid "Duplicate"
+msgstr "Дубликат"
+
+msgid "e ^"
+msgstr "e ^"
+
+msgid "edge"
+msgstr "ребро"
+
+msgid "edit"
+msgstr "редактировать"
+
+msgid "Edit"
+msgstr "Редактировать"
+
+msgid "Edit Block"
+msgstr "Редактировать блок"
+
+msgid "Effects"
+msgstr "Эффекты"
+
+msgid "Electric Guitar"
+msgstr "Электрическая гитара"
+
+msgid "Electric Piano"
+msgstr "Электрическое пианино"
+
+msgid "Electronic"
+msgstr "Электронное"
+
+msgid "Ellipse"
+msgstr "Элипс"
+
+msgid "Erase"
+msgstr "Стереть"
+
+# 92%
+msgid "Eraser width"
+msgstr "Удалить ширину"
+
+msgid "Error!"
+msgstr "Ошибка!"
+
+msgid "Examples"
+msgstr "Примеры"
+
+msgid "export"
+msgstr ""
+
+msgid "fade in"
+msgstr "исчезать в"
+
+msgid "fade out"
+msgstr "исчезать"
+
+msgid "Fantasy"
+msgstr "Фантазия"
+
+msgid "Features"
+msgstr "Характеристики"
+
+msgid "File"
+msgstr "Файл"
+
+msgid "Fill with color"
+msgstr "Залить цветом"
+
+msgid "fisheye"
+msgstr "рыбий-глаз"
+
+msgid "Flip left-right"
+msgstr "Флип влево-вправо"
+
+msgid "Flip up-down"
+msgstr "Флип вверх-вниз"
+
+msgid "floor"
+msgstr "этаж"
+
+msgid "Flute"
+msgstr "Флейта"
+
+msgid "Flying"
+msgstr "Полет"
+
+msgid "Font:"
+msgstr ""
+
+msgid "For all sprites"
+msgstr "Для всех спрайтов"
+
+msgid "For this sprite only"
+msgstr "Только для этого спрайта"
+
+msgid "Forward a layer"
+msgstr "Слой вперед"
+
+msgid "ghost"
+msgstr "призрак"
+
+msgid "Go to My Stuff"
+msgstr "Перейти к My Stuff"
+
+msgid "Group"
+msgstr "Группа"
+
+msgid "Grow"
+msgstr "Расти"
+
+msgid "Guiro"
+msgstr "Гуиро"
+
+msgid "Guitar"
+msgstr "Гитара"
+
+msgid "Hand Clap"
+msgstr "Ручной клап"
+
+msgid "hide"
+msgstr "спрятать"
+
+msgid "High C"
+msgstr "Высокий C"
+
+msgid "hour"
+msgstr "время"
+
+msgid "Human"
+msgstr "Человек"
+
+# 83%
+#, fuzzy
+msgid "import"
+msgstr "импорт"
+
+msgid "Import"
+msgstr "Импорт"
+
+msgid "Importing sound..."
+msgstr "Импортировать звук..."
+
+msgid "Indoors"
+msgstr "В помещении"
+
+msgid "Installing..."
+msgstr "Установка..."
+
+msgid "Instruments"
+msgstr "Инструменты"
+
+msgid "large readout"
+msgstr ""
+
+msgid "last"
+msgstr "последний"
+
+msgid "left"
+msgstr "левый"
+
+msgid "left arrow"
+msgstr "стрелка влево"
+
+msgid "left-right"
+msgstr "влево-вправо"
+
+msgid "length"
+msgstr ""
+# Daemon pride делал
+msgid "Library"
+msgstr "Библиотека"
+
+msgid "light"
+msgstr "свет"
+
+msgid "limit reached"
+msgstr "предел достигнут"
+
+msgid "Line"
+msgstr "Линия"
+
+# 90%
+msgid "Line width"
+msgstr "Ширина линии"
+
+# 75%
+msgid "list"
+msgstr "список"
+
+msgid "List name"
+msgstr "Список имен"
+
+msgid "ln"
+msgstr "ln"
+
+msgid "Loading project..."
+msgstr "Загрузка проекта..."
+
+msgid "log"
+msgstr "Лог"
+
+msgid "louder"
+msgstr "громче"
+
+msgid "loudness"
+msgstr "громкость"
+
+msgid "Low C"
+msgstr "Медленно C"
+
+msgid "Make a Block"
+msgstr "Сделайте блок"
+
+msgid "Make a List"
+msgstr "Создать список"
+
+msgid "Make a Variable"
+msgstr "Создать переменную"
+
+msgid "Marimba"
+msgstr "Маримба"
+
+msgid "Max"
+msgstr "Максимум"
+
+msgid "meow"
+msgstr "мяу"
+
+msgid "Message Name"
+msgstr "Название сообщения"
+
+msgid "message1"
+msgstr "сообщение1"
+
+msgid "Microphone Volume:"
+msgstr "Громкость микрофона:"
+
+msgid "Middle C"
+msgstr "Средний C"
+
+msgid "Min"
+msgstr "Минимум"
+
+msgid "minute"
+msgstr "минута"
+
+msgid "month"
+msgstr "месяц"
+
+msgid "mosaic"
+msgstr "мозаика"
+
+msgid "motion"
+msgstr "движение"
+
+msgid "mouse-pointer"
+msgstr "указатель мыши"
+
+msgid "Multiple"
+msgstr "Многократный"
+
+msgid "Music and Dance"
+msgstr "Музыка и танец"
+
+msgid "Music Box"
+msgstr "Музыкальная шкатулка"
+
+msgid "Music Loops"
+msgstr "Музыка по кругу"
+
+msgid "My Stuff"
+msgstr "Моя прислуга"
+
+msgid "myself"
+msgstr "Сам"
+
+msgid "Nature"
+msgstr "Природа"
+
+msgid "New"
+msgstr "Новый"
+
+msgid "New backdrop from camera"
+msgstr "Новый фон из камеры"
+
+msgid "New backdrop:"
+msgstr "Новый фон:"
+
+msgid "New costume from camera"
+msgstr "Новые костюмы от камеры"
+
+msgid "New costume:"
+msgstr "Новые костюмы:"
+
+msgid "New List"
+msgstr "Новый список"
+
+msgid "new message..."
+msgstr "новое сообщение..."
+
+msgid "New name"
+msgstr "Новое наименование"
+
+msgid "New sound:"
+msgstr "Новый звук:"
+
+msgid "New sprite from camera"
+msgstr "Новый спрайт с камеры"
+
+msgid "New sprite:"
+msgstr "Новый спрайт:"
+
+msgid "New Variable"
+msgstr "Новая переменная"
+
+msgid "No motion blocks"
+msgstr "Нет движения блоков"
+
+msgid "normal readout"
+msgstr "нормальное чтение"
+
+msgid "Not saved; network or server problem."
+msgstr "Не сохранено; проблема в сети или сервере."
+
+msgid "Not saved; project did not load."
+msgstr "Не сохранено; проект не загружен."
+
+msgid "из"
+msgstr "af"
+
+msgid "off"
+msgstr "Выключить"
+
+msgid "Offline Editor"
+msgstr ""
+
+msgid "OK"
+msgstr "ОК"
+
+msgid "on"
+msgstr "Включить"
+
+msgid "on-flipped"
+msgstr "на переворот"
+
+msgid "Open Cuica"
+msgstr "Открыть Cuica"
+
+msgid "Open Hi-Hat"
+msgstr "Открыть Привет-Hat"
+
+msgid "Options"
+msgstr "Опции"
+
+msgid "Organ"
+msgstr "Орган"
+
+msgid "Other"
+msgstr "Другие"
+
+msgid "other scripts in sprite"
+msgstr "Другими скриптами в спрайт"
+
+msgid "Outdoors"
+msgstr "На улице"
+
+msgid "Paint new backdrop"
+msgstr "Закрасить новый фон"
+
+msgid "Paint new costume"
+msgstr "Закрасить новый костюм"
+
+msgid "Paint new sprite"
+msgstr "Закрасить новый спрайт"
+
+msgid "paste"
+msgstr "Вставить"
+
+msgid "Pencil"
+msgstr "Карандаш"
+
+msgid "People"
+msgstr "Люди"
+
+msgid "Percussion"
+msgstr "Перкуссия"
+
+msgid "photo1"
+msgstr "фото1"
+
+msgid "Piano"
+msgstr "Пианино"
+
+msgid "Pick up color"
+msgstr "Возьмите цвет"
+
+msgid "pixelate"
+msgstr "укрупнение пикселей"
+
+msgid "Pizzicato"
+msgstr "Пиццикато"
+
+msgid "pop"
+msgstr "Поп"
+
+msgid "Profile"
+msgstr "Профиль"
+
+msgid "Project did not load."
+msgstr "Проект не загружен."
+
+msgid "Project not saved!"
+msgstr "Проект не сохранен!"
+
+msgid "random"
+msgstr "случайный"
+
+msgid "Record"
+msgstr "Запись"
+
+msgid "Record new sound"
+msgstr "Записать новый звук"
+
+msgid "recording1"
+msgstr "запись1"
+
+msgid "Rectangle"
+msgstr "прямоугольник"
+
+# 75%
+msgid "Redo"
+msgstr "Отмена"
+
+msgid "redo"
+msgstr "отмена"
+
+msgid "Remix"
+msgstr "Ремикс"
+
+msgid "Remixing..."
+msgstr "Ремикс..."
+
+msgid "Rename"
+msgstr "Переименовать"
+
+msgid "rename variable"
+msgstr "переименовать переменную"
+
+msgid "requires sign in"
+msgstr "требуется вход"
+
+msgid "Reshape"
+msgstr "Реформирование"
+
+msgid "resistance-A"
+msgstr "сопротивление-A"
+
+msgid "resistance-B"
+msgstr "сопротивление-B"
+
+msgid "resistance-C"
+msgstr "сопротивление-C"
+
+msgid "resistance-D"
+msgstr "сопротивление-D"
+
+msgid "reverse"
+msgstr "перевернуть"
+
+msgid "Revert"
+msgstr "Вернуться"
+
+msgid "Reverting..."
+msgstr "Возвращение..."
+
+msgid "right"
+msgstr "право"
+
+msgid "right arrow"
+msgstr "стрелка вправо"
+
+msgid "rotation style:"
+msgstr "стиль вращения:"
+
+msgid "Run without screen refresh"
+msgstr "Выполнение без обновления экрана"
+
+msgid "Save"
+msgstr "Сохранить"
+
+msgid "Save as a copy"
+msgstr "Сохранить как копию"
+
+msgid "Save now"
+msgstr "Сохранить сейчас"
+
+msgid "save to local file"
+msgstr "сохранить в локальный файл"
+
+msgid "Saved"
+msgstr "Сохранено"
+
+msgid "Saving changes..."
+msgstr "Сохранение изменений..."
+
+msgid "Saving..."
+msgstr "Сохранение..."
+
+msgid "Saxophone"
+msgstr "Саксофон"
+
+msgid "Script"
+msgstr "Скрипт"
+
+msgid "Scripts"
+msgstr "Скрипты"
+
+msgid "Scripts:"
+msgstr "Скрипты:"
+
+msgid "second"
+msgstr "второй"
+
+msgid "See project page"
+msgstr "См страницу проекта"
+
+msgid "Select"
+msgstr "Выбор"
+
+msgid "select all"
+msgstr "Выбрать все"
+
+msgid "Select and duplicate"
+msgstr "Выбрать и создать дубликат"
+
+msgid "Send to back"
+msgstr "Отправить обратно"
+
+msgid "Set costume center"
+msgstr "Установите костюм в центр"
+
+msgid "Set Costume Center"
+msgstr "Установите Костюм в Центр"
+
+msgid "set slider min and max"
+msgstr ""
+
+msgid "Share"
+msgstr "Публиковать"
+
+msgid "shared"
+msgstr "Опубликовать"
+
+msgid "Shift:"
+msgstr "Сдвиг:"
+
+msgid "show"
+msgstr "Показать"
+
+msgid "show receivers"
+msgstr "Показать приемники"
+
+msgid "show senders"
+msgstr "Показать отправителей"
+
+msgid "show:"
+msgstr "показать:"
+
+msgid "Shrink"
+msgstr "Сжать"
+
+msgid "Side Stick"
+msgstr "Боковая ручка"
+
+msgid "Sign in"
+msgstr "Вход в систему"
+
+msgid "Sign in to save"
+msgstr "Войдите в систему для сохранения"
+
+msgid "Sign out"
+msgstr "Выход из системы"
+
+msgid "silence"
+msgstr "тишина"
+
+# 75%
+msgid "sin"
+msgstr "sin"
+
+msgid "size"
+msgstr "размер"
+
+msgid "slider"
+msgstr "Рычажок"
+
+msgid "Slider Range"
+msgstr "Размер рычажка"
+
+msgid "Small stage layout"
+msgstr "Малая планировка этапа"
+
+msgid "Smooth"
+msgstr "Гладкий"
+
+msgid "Snare Drum"
+msgstr "Малый барабан"
+
+msgid "softer"
+msgstr "мягче"
+
+msgid "sound"
+msgstr "звук"
+
+msgid "Sound"
+msgstr "Звук"
+
+msgid "Sound Library"
+msgstr "Библиотека звуков"
+
+msgid "Sounds"
+msgstr "Звуки"
+
+msgid "space"
+msgstr "пространство"
+
+# 80%
+msgid "Space"
+msgstr "Пространство"
+
+msgid "Sports"
+msgstr "Спортивный"
+
+# 85%
+msgid "Sprite"
+msgstr "Спрайт"
+
+msgid "Sprite Library"
+msgstr "Библиотека Спрайт"
+
+# 85%
+msgid "Sprite1"
+msgstr "Спрайт1"
+
+msgid "Sprites"
+msgstr "Спрайты"
+
+msgid "sqrt"
+msgstr "квадратный корень"
+
+msgid "Square"
+msgstr "Квадрат"
+
+msgid "Stage"
+msgstr "Сцена"
+
+msgid "Stage selected:"
+msgstr "Выбрана сцена:"
+
+msgid "Steel Drum"
+msgstr "Стальной барабан"
+
+msgid "stored on server"
+msgstr "хранится на сервере"
+
+msgid "Synth Lead"
+msgstr "Synth Lead"
+
+msgid "Synth Pad"
+msgstr "Synth Pad"
+
+msgid "Tambourine"
+msgstr "Тамбурин"
+
+# 75%
+msgid "tan"
+msgstr "tan"
+
+msgid "Text"
+msgstr "Текст"
+
+msgid "that way"
+msgstr "туда"
+
+msgid "Theme"
+msgstr "Тема"
+
+msgid "Things"
+msgstr "Вещи"
+
+msgid "This project can detect who is using it, through the “username” block. To hide your identity, sign out before using the project."
+msgstr ""
+"Этот проект может обнаружить, кто использует его, через блок “имени пользователя” Чтобы скрыть свою личность, выйдите перед использованием проекта."
+
+msgid "This project uses Cloud data ‒ a feature that is available only to signed in users."
+msgstr ""
+"Этот проект использует данные облачного сервиса ‒ функция, которая доступна только подписанным пользователям."
+
+msgid "this script"
+msgstr "этот скрипт"
+
+msgid "this sprite"
+msgstr "этот спрайт"
+
+msgid "this way"
+msgstr "сюда"
+
+msgid "Throw away all changes since opening this project?"
+msgstr "Отменить все изменения с момента открытия этого проекта?"
+
+msgid "timer"
+msgstr "таймер"
+
+msgid "Tips"
+msgstr "Чаевые"
+
+msgid "To delete a block definition, first remove all uses of the block."
+msgstr "Чтобы удалить определение блока, сначала удалите все виды использования блока."
+
+msgid "Transportation"
+msgstr "Транспорт"
+
+msgid "Triangle"
+msgstr "Треугольник"
+
+msgid "Trombone"
+msgstr "Тромбон"
+
+msgid "Turbo mode"
+msgstr "Режим Turbo"
+
+msgid "Turbo Mode"
+msgstr "Режим Turbo"
+
+msgid "Type"
+msgstr "Тип"
+
+# 75%
+msgid "Undelete"
+msgstr "Отменить удаление"
+
+msgid "Underwater"
+msgstr "Подводный"
+
+# 75%
+msgid "Undo"
+msgstr "Отмена"
+
+msgid "undo"
+msgstr "отмена"
+
+msgid "Undo Revert"
+msgstr "Отменить и Вернуть"
+
+msgid "Ungroup"
+msgstr "Разгрупировать"
+
+msgid "unshared"
+msgstr "неразделенный"
+
+msgid "up"
+msgstr "вверх"
+
+msgid "up arrow"
+msgstr "стрелка вверх"
+
+msgid "Upload backdrop from file"
+msgstr "Загрузить фон из файла"
+
+msgid "Upload costume from file"
+msgstr "Загрузить костюм из файла"
+
+msgid "Upload from your computer"
+msgstr "Загрузить со своего компьютера"
+
+msgid "Upload sound from file"
+msgstr "Загрузить звук из файла"
+
+msgid "Upload sprite from file"
+msgstr "Загрузить спрайт из файла"
+
+msgid "Uploading image..."
+msgstr "Загрузка изображений..."
+
+msgid "Uploading sound..."
+msgstr "Загрузка звуков..."
+
+msgid "Uploading sprite..."
+msgstr "Загрузка спрайтов..."
+
+msgid "variable"
+msgstr "переменная"
+
+msgid "Variable name"
+msgstr "Имя переменной"
+
+msgid "Vector"
+msgstr "Вектор"
+
+msgid "Vector Mode"
+msgstr "Режим вектора"
+
+msgid "Vibraphone"
+msgstr "Вибрафон"
+
+msgid "Vibraslap"
+msgstr "Вибраслап"
+
+msgid "video motion"
+msgstr "видео движения"
+
+msgid "Video on:"
+msgstr "Включить видео:"
+
+msgid "Vocals"
+msgstr "Вокал"
+
+msgid "volume"
+msgstr "громкость"
+
+msgid "Walking"
+msgstr "Ходьба"
+
+msgid "Want to save? Click remix"
+msgstr "Хотите сохранить? Нажмите ремикс"
+
+msgid "Which column do you want to import"
+msgstr "Какие колонки вы хотите импортировать"
+
+msgid "whirl"
+msgstr "вихрь"
+
+msgid "Wood Block"
+msgstr "Деревянный Блок"
+
+msgid "Wooden Flute"
+msgstr "Деревянная Флейта"
+
+msgid "x position"
+msgstr "х-позиция"
+
+msgid "y position"
+msgstr "у-позиция"
+
+msgid "year"
+msgstr "год"
+
+msgid "You cannot edit cloud data in someone else's project.<br>Any change that you make in the editor will be temporary and not persistent."
+msgstr ""
+"Вы не можете редактировать облачные данные в чужом проекте.<br>Любое изменение, которое вы делаете в редакторе будет носить временный характер и не является постоянным."
+
+msgid "Eraser width:"
+msgstr "Ширина удаления:"
+
+msgid "Line width:"
+msgstr "Ширина линии:"
+
+# 90%
+#, fuzzy
+#~ msgid "New sprite"
+#~ msgstr "Новый спрайт"
+
+#~ msgid "Paint"
+#~ msgstr "Краски"
+
+#~ msgid "any"
+#~ msgstr "любой"
+
+#~ msgid "High Tom"
+#~ msgstr "Высокий Том"
+
+#~ msgid "Long Guiro"
+#~ msgstr "Длинный Гуиро"
+
+#~ msgid "Low Bongo"
+#~ msgstr "Низкий Bongo"
+
+#~ msgid "Low Conga"
+#~ msgstr "Низкий Conga"
+
+#~ msgid "Low Tom"
+#~ msgstr "Низкий Том"
+
+#~ msgid "Low Wood Block"
+#~ msgstr "Низкий деревянный блок"
+
+#~ msgid "Maracas"
+#~ msgstr "Маракас"
+
+#~ msgid "More"
+#~ msgstr "Больше"
+
+#~ msgid "Mute Triangle"
+#~ msgstr "Тихий треугольник"
+
+#~ msgid "Open Triangle"
+#~ msgstr "Открытый треугольник"
+
+#~ msgid "Pedal Hi-Hat"
+#~ msgstr "Педаль хай-хэт"
+
+#~ msgid "Short Guiro"
+#~ msgstr "Короткое Гуиро"
+
+
+
+#################################
+# Makeblock Section Секция Мейкблок            #
+# Translation by Daemon pride #
+# zerocan@mail.ru            #
+#################################
+
+msgid "set motor%m.motorPort speed %d.motorvalue"
+msgstr "установить мотор %m.motorPort скорость %d.motorvalue"
+
+msgid "set servo %m.servoPort %m.slot angle %d.servovalue"
+msgstr "установить серво %m.servoPort %m.slot угол %d.servovalue grader"
+
+msgid "set 7-segments display%m.normalPort number %n"
+msgstr "установить 7-сегмаентный дисплей %m.normalPort номер %n"
+
+msgid "set led%m.normalPort index%n red%n green%n blue%n"
+msgstr "установить LED%m.normalPort index%n красный%n зеленый%n синий%n"
+
+msgid "ultrasonic sensor %m.normalPort distance"
+msgstr "ультразвуковой сенсор %m.normalPort дистанция"
+
+msgid "sound sensor %m.normalPort"
+msgstr "звуковой сенсор %m.normalPort"
+
+msgid "light sensor %m.normalPort"
+msgstr "датчик света %m.normalPort"
+
+msgid "set light sensor %m.normalPort led as %m.digital"
+msgstr "установить датчик света %m.normalPort LED как %m.digital"
+
+msgid "line follower %m.normalPort"
+msgstr "датчик линии %m.normalPort"
+
+msgid "limit switch %m.normalPort%m.slot"
+msgstr "концевик %m.normalPort%m.slot"
+
+msgid "potentiometer %m.normalPort"
+msgstr "потенциометр %m.normalPort"
+
+msgid "3-axis gyro %m.GyroAxis angle"
+msgstr "3-осевой гироскоп %m.GyroAxis угол"
+
+msgid "infrared receiver %m.normalPort"
+msgstr "инфракрасный приемник %m.normalPort"
+
+msgid "pir motion sensor %m.normalPort"
+msgstr "Датчик движения PIR %m.normalPort"
+
+msgid "temperature %m.normalPort%m.slot °C"
+msgstr "температура %m.normalPort%m.slot °C"
+
+msgid "joystick %m.normalPort %m.Axis"
+msgstr "джойстик %m.normalPort %m.Axis"
+
+msgid "set camera shutter %m.normalPort as %m.digital"
+msgstr "Установка затвора камеры %m.normalPort как %m.digital"
+
+msgid "read digital pin %n"
+msgstr "читать цифровой pin %n"
+
+msgid "read analog pin (A)%n"
+msgstr "читать аналоговый pin (A)%n"
+
+msgid "set digital pin %n output as %m.digital"
+msgstr "установить цифровой pin %n udgang как %m.digital"
+
+msgid "set pwm pin %n output as %d.pwmvalue"
+msgstr "установить PWM/ШИМ pin %n udgang как %d.pwmvalue"
+
+msgid "set servo pin %n angle as %d.servovalue"
+msgstr "установить серво pin %n как %d.servovalue grader"
+
+msgid "play tone pin %n on note %m.notes beat %m.beats"
+msgstr "воспроизвести звук pin %n на ноте %m.notes такт %m.beats"
+
+msgid "Eighth"
+msgstr "1/8 "
+
+msgid "Quater"
+msgstr "1/4"
+
+msgid "Half"
+msgstr "1/2"
+
+msgid "Whole"
+msgstr "1/1"
+
+msgid "Double"
+msgstr "Двойной"
+
+msgid "Zero"
+msgstr "Ноль"
+
+msgid "Ultrasonic"
+msgstr "Ультразвуковой"
+
+msgid "Light Sensor"
+msgstr "Датчик света"
+
+msgid "Sound Sensor"
+msgstr "Датчик звука"
+
+msgid "LED"
+msgstr "LED"
+
+msgid "Joystick"
+msgstr "Джойстик"
+
+msgid "Line Finder"
+msgstr "Датчик линии"
+
+msgid "LimitSwitch"
+msgstr "Концевик"
+
+msgid "Temperature"
+msgstr "Температура"
+
+msgid "Joystick"
+msgstr "Джойстик"
+
+msgid "Potentiometer"
+msgstr "Потенциометр"
+
+msgid "Button"
+msgstr "Кнопка"
+
+msgid "High"
+msgstr "High/Высокий"
+
+msgid "Low"
+msgstr "Low/Низкий"
+
+msgid "X-Axis"
+msgstr "X-ось"
+
+msgid "Y-Axis"
+msgstr "Y-ось"
+
+msgid "Z-Axis"
+msgstr "Z-ось"
+
+msgid "Input"
+msgstr "Вход"
+
+msgid "Output"
+msgstr "Выход"
+
+msgid "Port1"
+msgstr "Порт 1"
+
+msgid "Port2"
+msgstr "Порт 2"
+
+msgid "Port3"
+msgstr "Порт 3"
+
+msgid "Port4"
+msgstr "Порт 4"
+
+msgid "Port5"
+msgstr "Порт 5"
+
+msgid "Port6"
+msgstr "Порт 6"
+
+msgid "Port7"
+msgstr "Порт 7"
+
+msgid "Port8"
+msgstr "Порт 8"
+
+msgid "Slot1"
+msgstr "Слот 1"
+
+msgid "Slot2"
+msgstr "Слот 2"
+
+msgid "M1"
+msgstr "M1"
+
+msgid "M2"
+msgstr "M2"
+
+msgid "Don't save"
+msgstr "Не сохранять"
+
+msgid "Save project?"
+msgstr "Сохранить проект?"
+
+msgid "About"
+msgstr "Про"
+
+msgid "Open"
+msgstr "Открыть"
+
+msgid "Save as"
+msgstr "Сохранить как"
+
+msgid "Share to website"
+msgstr "Распространить на веб-сайт"
+
+msgid "Check for updates"
+msgstr "Проверить обновления"
+
+msgid "Quit"
+msgstr "Выход"
+
+msgid "Share to Scratch Website"
+msgstr "Распространить на Скретч веб-сайт"
+
+msgid "Project name"
+msgstr "Имя проекта:"
+
+msgid "Your Scratch name"
+msgstr "Ваше Скретч имя:"
+
+msgid "Password"
+msgstr "Пароль:"
+
+msgid "Setting"
+msgstr "Установки"
+
+msgid "Connect"
+msgstr "Соединить"
+
+msgid "Disconnect"
+msgstr "Разъединить"
+
+msgid "save picture of stage"
+msgstr "Сохранить проект на данном этапе"
+
+msgid "Load Project"
+msgstr "Загрузить проект"
+
+msgid "Save Project"
+msgstr "Сохранить проект"
+
+msgid "New Block"
+msgstr "Новый блок"
+
+msgid "Robots"
+msgstr "Робот"
+
+msgid "Forum"
+msgstr "Форум"
+
+msgid "Upgrade Firmware"
+msgstr "Обновить прошивку"
+
+msgid "View Source"
+msgstr "Просмотреть код"
+
+msgid "cleanup"
+msgstr "убрать"
+
+msgid "Microphone volume:"
+msgstr "Звук микрофона:"
+
+msgid "http://forum.makeblock.cc/#scratch"
+msgstr "http://forum.makeblock.cc/#scratch"
+
+msgid "Close"
+msgstr "Закрыть"
+
+msgid "Executing"
+msgstr "Выполнение"
+
+msgid "Replace contents of the current project?"
+msgstr "Замените содержимое текущего проекта?"
+
+msgid "info"
+msgstr "инфо"
+
+msgid "New Version Available!"
+msgstr "Новая версия доступна!"
+
+msgid "Update Now"
+msgstr "Обновить Сейчас"
+
+msgid "Updating"
+msgstr "Обновление"
+
+msgid "Downloading"
+msgstr "Загрузка"
+
+msgid "Connected"
+msgstr "Соединено"
+
+msgid "Bluetooth"
+msgstr "Блютус"
+
+msgid "No Bluetooth"
+msgstr "Нет Блютуса"
+
+msgid "Disconnect Bluetooth"
+msgstr "Отсоединен Блютус"
+
+msgid "Discovering Bluetooth"
+msgstr "Обнаружение Блютус"
+
+msgid "Click The Device From List To Connect"
+msgstr "Нажмите на устройство из списка для соединения"
+
+msgid "Device Not Found"
+msgstr "Сори, устройство не найдено"
+
+msgid "Distance Display"
+msgstr "Показать расстояние"
+
+msgid "Detect Sound"
+msgstr "Определить звук"
+
+msgid "Temperature"
+msgstr "Температура"
+
+msgid "Joystick"
+msgstr "Джойстик"
+
+msgid "Ultrasonic Car"
+msgstr "Ультразвуковая машина"
+
+msgid "Play Music"
+msgstr "Проиграть музыку"
+
+msgid "Okey"
+msgstr "Океюшки"
+
+msgid "Voice Command"
+msgstr "Голосовая команда"
+
+msgid "Accelerometer X"
+msgstr "Акселерометр X"
+
+msgid "Accelerometer Y"
+msgstr "Акселерометр Y"
+
+msgid "Accelerometer Z"
+msgstr "Акселерометр Z"
+
+msgid "Brightness"
+msgstr "Яркость"
+
+msgid "Start Button Pressed?"
+msgstr "Нажата кнопка?"
+
+msgid "Select Button Pressed?"
+msgstr "Выбор нажатой кнопки?"
+
+msgid "Up Button Pressed?"
+msgstr "Кнопка вверх нажата?"
+
+msgid "Down Button Pressed?"
+msgstr "Кнопка вниз нажата?"
+
+msgid "Left Button Pressed?"
+msgstr "Кнопка влево нажата?"
+
+msgid "Right Button Pressed?"
+msgstr "Кнопка вправо нажата?"
+
+msgid "A Button Pressed?"
+msgstr "A-кнопка нажата?"
+
+msgid "B Button Pressed?"
+msgstr "B-кнопка нажата?"
+
+msgid "X Button Pressed?"
+msgstr "X-кнопка нажата?"
+
+msgid "Y Button Pressed?"
+msgstr "Y-кнопка нажата?"
+
+msgid "Hide Extension"
+msgstr "Спрятать расширение"
+
+msgid "Show Extension"
+msgstr "Показать расширение"
+
+msgid "when data received"
+msgstr "когда данные получены"
+
+msgid "read serial line"
+msgstr "читать последовательную линию"
+
+msgid "write serial line %s"
+msgstr "записать последовательную линию %s"
+
+msgid "read serial command %s"
+msgstr "читать последовательную команду %s"
+
+msgid "send serial command %s = %s"
+msgstr "отправить последовательную команду %s = %s"
+
+msgid "clear serial buffer"
+msgstr "очистить последовательный буфер"
+
+msgid "Serial"
+msgstr "Последовательный"

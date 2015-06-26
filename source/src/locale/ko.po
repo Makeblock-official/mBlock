@@ -1,0 +1,2044 @@
+# The language name as it will appear in the language menu
+msgid "Language-Name"
+msgstr "한국어"
+
+msgid "%b and %b"
+msgstr "%b 그리고 %b"
+
+msgid "%b or %b"
+msgstr "%b 또는 %b"
+
+msgid "%m.attribute of %m.spriteOrStage"
+msgstr "%m.attribute 의 %m.spriteOrStage"
+
+msgid "%m.list contains %s"
+msgstr "%m.list 리스트에 %s 포함되었는가"
+
+# %m.mathOp 와 %n 의 순서를 바꾸면 번역이 반영되지 않는다.
+msgid "%m.mathOp of %n"
+msgstr "%m.mathOp ( %n )"
+
+msgid "%m.sensor sensor value"
+msgstr "%m.sensor 의 센서값"
+
+msgid "%n mod %n"
+msgstr "%n 나누기 %n 의 나머지"
+
+# %m.list 에 %s 항목 추가하기
+msgid "add %s to %m.list"
+msgstr "%s 항목을 %m.list 에 추가하기"
+
+msgid "answer"
+msgstr "대답"
+
+msgid "ask %s and wait"
+msgstr "%s 묻고 기다리기"
+
+# "backdrop" in Scratch 2.0 is similar to "background" in Scratch 1.4
+msgid "backdrop #"
+msgstr "배경 번호 #"
+
+# "backdrop" in Scratch 2.0 is similar to "background" in Scratch 1.4
+msgid "backdrop name"
+msgstr "배경 이름"
+
+msgid "broadcast %m.broadcast"
+msgstr "%m.broadcast 방송하기"
+
+msgid "broadcast %m.broadcast and wait"
+msgstr "%m.broadcast 방송하고 기다리기"
+
+msgid "change %m.effect effect by %n"
+msgstr "%m.effect 효과를 %n 만큼 바꾸기"
+
+msgid "change %m.var by %n"
+msgstr "%m.var 을(를) %n 만큼 바꾸기"
+
+msgid "change pen color by %n"
+msgstr "펜 색깔을 %n 만큼 바꾸기"
+
+msgid "change pen shade by %n"
+msgstr "펜 명암을 %n 만큼 바꾸기"
+
+msgid "change pen size by %n"
+msgstr "펜 굵기를 %n 만큼 바꾸기"
+
+msgid "change size by %n"
+msgstr "크기를 %n 만큼 바꾸기"
+
+msgid "change tempo by %n"
+msgstr "빠르기를 %n 만큼 바꾸기"
+
+msgid "change volume by %n"
+msgstr "음량을 %n 만큼 바꾸기"
+
+msgid "change x by %n"
+msgstr "x좌표를 %n 만큼 바꾸기"
+
+msgid "change y by %n"
+msgstr "y좌표를 %n 만큼 바꾸기"
+
+msgid "clear"
+msgstr "지우기"
+
+msgid "clear graphic effects"
+msgstr "그래픽 효과 지우기"
+
+msgid "color %c is touching %c?"
+msgstr "%c 색이 %c 색에 닿았는가?"
+
+msgid "Control"
+msgstr "제어"
+
+msgid "costume #"
+msgstr "모양 #"
+
+msgid "create clone of %m.spriteOnly"
+msgstr "%m.spriteOnly 복제하기"
+
+msgid "current %m.timeAndDate"
+msgstr "현재 %m.timeAndDate"
+
+msgid "Data"
+msgstr "데이터"
+
+msgid "days since 2000"
+msgstr "2000년 이후 현재까지 날짜수"
+
+msgid "define"
+msgstr "정의하기"
+
+msgid "delete %d.listDeleteItem of %m.list"
+msgstr "%d.listDeleteItem 번째 항목을 %m.list 에서 삭제하기"
+
+msgid "delete this clone"
+msgstr "이 복제본 삭제하기"
+
+msgid "direction"
+msgstr "방향"
+
+msgid "distance"
+msgstr "거리"
+
+msgid "distance to %m.spriteOrMouse"
+msgstr "%m.spriteOrMouse 까지 거리"
+
+msgid "else"
+msgstr "아니면"
+
+msgid "Events"
+msgstr "이벤트"
+
+msgid "forever"
+msgstr "무한 반복하기"
+
+msgid "glide %n secs to x:%n y:%n"
+msgstr "%n 초 동안 x:%n y:%n 으로 움직이기"
+
+msgid "go back %n layers"
+msgstr "%n 번째로 물러나기"
+
+msgid "go to %m.spriteOrMouse"
+msgstr "%m.spriteOrMouse 위치로 이동하기"
+
+msgid "go to front"
+msgstr "맨 앞으로 나오기"
+
+msgid "go to x:%n y:%n"
+msgstr "x:%n y:%n 로 이동하기"
+
+msgid "hide"
+msgstr "숨기기"
+
+msgid "hide list %m.list"
+msgstr "%m.list 리스트 숨기기"
+
+msgid "hide variable %m.var"
+msgstr "%m.var 변수 숨기기"
+
+msgid "if %b then"
+msgstr "만약 %b 라면"
+
+msgid "if on edge, bounce"
+msgstr "벽에 닿으면 튕기기"
+
+# %m.list 의 %d.listItem 에 %s 넣기
+msgid "insert %s at %d.listItem of %m.list"
+msgstr "%s 을(를) %d.listItem 번째 %m.list 에 넣기"
+
+# %m.list 의 %d.listItem 번째 항목
+msgid "item %d.listItem of %m.list"
+msgstr "%d.listItem 번째 %m.list 항목"
+
+msgid "join %s %s"
+msgstr "%s %s 결합하기"
+
+msgid "key %m.key pressed?"
+msgstr "%m.key 키를 눌렀는가?"
+
+msgid "length of %m.list"
+msgstr "%m.list 리스트의 항목 수"
+
+msgid "length of %s"
+msgstr "%s 의 길이"
+
+# %n 과 %s 의 순서를 바꾸면 번역이 반영되지 않는다.
+msgid "letter %n of %s"
+msgstr "%n 번째 글자 ( %s )"
+
+msgid "Looks"
+msgstr "형태"
+
+msgid "loudness"
+msgstr "음량"
+
+msgid "More Blocks"
+msgstr "추가 블록"
+
+msgid "Motion"
+msgstr "동작"
+
+msgid "mouse down?"
+msgstr "마우스를 클릭했는가?"
+
+msgid "mouse x"
+msgstr "마우스의 x좌표"
+
+msgid "mouse y"
+msgstr "마우스의 y좌표"
+
+msgid "move %n steps"
+msgstr "%n 만큼 움직이기"
+
+# "backdrop" in Scratch 2.0 is similar to "background" in Scratch 1.4
+msgid "next backdrop"
+msgstr "다음 배경으로 바꾸기"
+
+msgid "next costume"
+msgstr "다음 모양으로 바꾸기"
+
+msgid "not %b"
+msgstr "%b 아니다"
+
+msgid "Operators"
+msgstr "연산"
+
+msgid "Pen"
+msgstr "펜"
+
+msgid "pen down"
+msgstr "펜 내리기"
+
+msgid "pen up"
+msgstr "펜 올리기"
+
+msgid "pick random %n to %n"
+msgstr "%n 부터 %n 사이의 난수"
+
+msgid "play drum %d.drum for %n beats"
+msgstr "%d.drum 번 타악기를 %n 박자로 연주하기"
+
+# 83%
+msgid "play note %d.note for %n beats"
+msgstr "%d.note 번 음을 %n 박자로 연주하기"
+
+msgid "play sound %m.sound"
+msgstr "%m.sound 소리내기"
+
+msgid "play sound %m.sound until done"
+msgstr "%m.sound 끝까지 소리내기"
+
+msgid "point in direction %d.direction"
+msgstr "%d.direction 도 방향 보기"
+
+msgid "point towards %m.spriteOrMouse"
+msgstr "%m.spriteOrMouse 쪽 보기"
+
+msgid "repeat %n"
+msgstr "%n 번 반복하기"
+
+msgid "repeat until %b"
+msgstr "%b 까지 반복하기"
+
+# %m.list 의 %d.listItem 번째 항목을 %s (으)로 바꾸기
+msgid "replace item %d.listItem of %m.list with %s"
+msgstr "%d.listItem 번째 %m.list 의 항목을 %s (으)로 바꾸기"
+
+msgid "reset timer"
+msgstr "타이머 초기화"
+
+msgid "rest for %n beats"
+msgstr "%n 박자 쉬기"
+
+msgid "round %n"
+msgstr "%n 반올림"
+
+msgid "say %s"
+msgstr "%s 말하기"
+
+msgid "say %s for %n secs"
+msgstr "%s 을(를) %n 초동안 말하기"
+
+msgid "Sensing"
+msgstr "관찰"
+
+msgid "sensor %m.booleanSensor?"
+msgstr "센서의 %m.booleanSensor?"
+
+msgid "set %m.effect effect to %n"
+msgstr "%m.effect 효과를 %n (으)로 정하기"
+
+msgid "set %m.var to %s"
+msgstr "%m.var 을(를) %s 로 정하기"
+
+msgid "set instrument to %d.instrument"
+msgstr "%d.instrument 번 악기로 정하기"
+
+# 89%
+# 86%
+# 97%
+msgid "set %m.motor2 direction to %m.motorDirection"
+msgstr "%m.motor2 방향을 %m.motorDirection 쪽으로 정하기"
+
+# 77%
+# 75%
+msgid "set %m.motor power to %n"
+msgstr "%m.motor 파워를 %n (으)로 정하기"
+
+msgid "set pen color to %c"
+msgstr "펜 색깔을 %c (으)로 정하기"
+
+msgid "set pen color to %n"
+msgstr "펜 색깔을 %n (으)로 정하기"
+
+msgid "set pen shade to %n"
+msgstr "펜 명암을 %n (으)로 정하기"
+
+msgid "set pen size to %n"
+msgstr "펜 굵기를 %n (으)로 정하기"
+
+msgid "set rotation style %m.rotationStyle"
+msgstr "회전방식을 %m.rotationStyle 로 정하기"
+
+msgid "set size to %n%"
+msgstr "크기를 %n% 로 정하기"
+
+msgid "set tempo to %n bpm"
+msgstr "빠르기를 %n BPM 으로 정하기"
+
+msgid "set video transparency to %n%"
+msgstr "비디오 투명도를 %n% 로 정하기"
+
+msgid "set volume to %n%"
+msgstr "음량을 %n% (으)로 정하기"
+
+msgid "set x to %n"
+msgstr "x좌표를 %n (으)로 정하기"
+
+msgid "set y to %n"
+msgstr "y좌표를 %n (으)로 정하기"
+
+msgid "show"
+msgstr "보이기"
+
+msgid "show list %m.list"
+msgstr "%m.list 리스트 보이기"
+
+msgid "show variable %m.var"
+msgstr "%m.var 변수 보이기"
+
+msgid "size"
+msgstr "크기"
+
+msgid "Sound"
+msgstr "소리"
+
+msgid "stamp"
+msgstr "도장찍기"
+
+msgid "stop %m.stop"
+msgstr "%m.stop 멈추기"
+
+msgid "stop all sounds"
+msgstr "모든 소리 끄기"
+
+# "backdrop" in Scratch 2.0 is similar to "background" in Scratch 1.4
+msgid "switch backdrop to %m.backdrop"
+msgstr "배경을 %m.backdrop (으)로 바꾸기"
+
+# "backdrop" in Scratch 2.0 is similar to "background" in Scratch 1.4
+msgid "switch backdrop to %m.backdrop and wait"
+msgstr "배경을 %m.backdrop (으)로 바꾸고 기다리기"
+
+msgid "switch costume to %m.costume"
+msgstr "모양을 %m.costume (으)로 바꾸기"
+
+msgid "tempo"
+msgstr "빠르기"
+
+msgid "think %s"
+msgstr "%s 생각하기"
+
+msgid "think %s for %n secs"
+msgstr "%s 을(를) %n 초동안 생각하기"
+
+msgid "tilt"
+msgstr "기울기"
+
+msgid "timer"
+msgstr "타이머"
+
+msgid "touching %m.touching?"
+msgstr "%m.touching 에 닿았는가?"
+
+msgid "touching color %c?"
+msgstr "%c 색에 닿았는가?"
+
+msgid "turn @turnLeft %n degrees"
+msgstr "@turnLeft %n 도 돌기"
+
+msgid "turn @turnRight %n degrees"
+msgstr "@turnRight %n 도 돌기"
+
+# 82%
+msgid "turn %m.motor off"
+msgstr "%m.motor 끄기"
+
+# 81%
+msgid "turn %m.motor on"
+msgstr "%m.motor 켜기"
+
+# 80%
+# 89%
+msgid "turn %m.motor on for %n secs"
+msgstr "%n 초 동안 %m.motor 켜기"
+
+msgid "turn video %m.videoState"
+msgstr "비디오 %m.videoState"
+
+msgid "username"
+msgstr "사용자이름"
+
+msgid "video %m.videoMotionType on %m.stageOrThis"
+msgstr "비디오 %m.videoMotionType 에 대한 %m.stageOrThis 에서의 관찰값"
+
+msgid "volume"
+msgstr "음량"
+
+msgid "wait %n secs"
+msgstr "%n 초 기다리기"
+
+msgid "wait until %b"
+msgstr "%b 까지 기다리기"
+
+# 75%
+msgid "when %m.booleanSensor"
+msgstr "%m.booleanSensor 일 때"
+
+msgid "when %m.key key pressed"
+msgstr "%m.key 키를 눌렀을 때"
+
+msgid "when %m.sensor %m.lessMore %n"
+msgstr "%m.sensor %m.lessMore %n 일 때"
+
+msgid "when %m.triggerSensor > %n"
+msgstr "%m.triggerSensor > %n 일 때"
+
+msgid "when @greenFlag clicked"
+msgstr "@greenFlag 클릭했을 때"
+
+# "backdrop" in Scratch 2.0 is similar to "background" in Scratch 1.4
+msgid "when backdrop switches to %m.backdrop"
+msgstr "배경이 %m.backdrop (으)로 바뀌었을 때"
+
+msgid "when distance %m.lessMore %n"
+msgstr "거리 %m.lessMore %n 일 때"
+
+msgid "when I receive %m.broadcast"
+msgstr "%m.broadcast 을(를) 받았을 때"
+
+msgid "when I receive %d.broadcast"
+msgstr "%d.broadcast 을(를) 받았을 때"
+
+msgid "when I start as a clone"
+msgstr "복제되었을 때"
+
+msgid "when Stage clicked"
+msgstr "배경을 클릭했을 때"
+
+msgid "when this sprite clicked"
+msgstr "이 스프라이트를 클릭했을 때"
+
+msgid "when tilt %m.eNe %n"
+msgstr "기울기 %m.eNe %n 일 때"
+
+msgid "x position"
+msgstr "x좌표"
+
+msgid "y position"
+msgstr "y좌표"
+
+# 89%
+msgid "set motor direction %m.motorDirection"
+msgstr "모터 방향을 %m.motorDirection 쪽으로 정하기"
+
+# 77%
+msgid "set motor power %n"
+msgstr "모터 파워를 %n (으)로 정하기"
+
+msgid "turn motor off"
+msgstr "모터 끄기"
+
+msgid "turn motor on"
+msgstr "모터 켜기"
+
+# 80%
+msgid "turn motor on for %n secs"
+msgstr "%n 초 동안 모터 켜기"
+
+msgid "when distance < %n"
+msgstr "거리 < %n 일 때"
+
+msgid "when tilt = %n"
+msgstr "기울기 = %n 일 때"
+
+# 89%
+# 86%
+#, fuzzy
+#~ msgid "set %m.motor direction to %m.motorDirection"
+#~ msgstr "모터 방향을 %m.motorDirection 쪽으로 정하기"
+
+#~ msgid "forever if %b"
+#~ msgstr "반복 %b 계속 확인"
+
+#~ msgid "if %b"
+#~ msgstr "만약 %b 라면"
+
+#~ msgid "motor direction %m.motorDirection"
+#~ msgstr "모터 %m.motorDirection 회전"
+
+#~ msgid "motor off"
+#~ msgstr "모터 끄기"
+
+#~ msgid "motor on"
+#~ msgstr "모터 켜기"
+
+#~ msgid "motor on for %n secs"
+#~ msgstr "%n초 동안 모터 켜기"
+
+#~ msgid "motor power %n"
+#~ msgstr "모터 파워 %n"
+
+#~ msgid "play note %n for %n beats"
+#~ msgstr "%d.note 음계 %n 박자로 연주하기"
+
+##################
+# User Interface #
+##################
+
+msgid "10 ^"
+msgstr "10 ^"
+
+msgid "<b>Information about Cloud variables</b><br>&nbsp;<br>Currently, only numbers are supported<br>Chat rooms are not allowed, and will be removed<br>For more info, <a href="/help/faq/#clouddata" target="_blank">see the cloud data FAQ!</a>"
+msgstr ""
+"<b>클라우드 변수 정보</b><br>&nbsp;<br>현재, 스크래치 웹사이트 회원만 사용할 수 있습니다.<br>채팅방은 현재 허용되지 "
+"않으며, 조만간 없어질 예정입니다.<br>관련 정보는, <a href=\"/help/faq/#clouddata\" target=\""
+"_blank\">cloud data FAQ!</a> 를 참고하세요!"
+
+msgid "A connected"
+msgstr "A 연결됨"
+
+msgid "a copy of the project file on your computer."
+msgstr "프로젝트 파일을 내 컴퓨터에 저장합니다."
+
+msgid "A newer version of Scratch is available"
+msgstr ""
+
+msgid "About"
+msgstr "스크래치란"
+
+msgid "About LEGO WeDo extension..."
+msgstr "LEGO WeDo 확장 프로그램이란..."
+
+msgid "About PicoBoard extension..."
+msgstr "PicoBoard 확장 프로그램이란..."
+
+msgid "abs"
+msgstr "절대값"
+
+msgid "Account settings"
+msgstr "계정 설정"
+
+# 75%
+msgid "acos"
+msgstr "acos"
+
+msgid "Add"
+msgstr ""
+
+msgid "Add an Extension"
+msgstr "확장 프로그램 추가"
+
+msgid "Add boolean input:"
+msgstr "논리값 매개변수 추가하기:"
+
+msgid "add comment"
+msgstr "댓글 추가하기"
+
+msgid "add comment here..."
+msgstr ""
+
+msgid "Add label text:"
+msgstr "라벨 추가하기:"
+
+msgid "Add number input:"
+msgstr "숫자 매개변수 추가하기:"
+
+msgid "Add string input:"
+msgstr "문자열 매개변수 추가하기:"
+
+msgid "all"
+msgstr "모두"
+
+msgid "All"
+msgstr "모두"
+
+msgid "all around"
+msgstr "회전하기"
+
+msgid "all motors"
+msgstr "모든 모터"
+
+msgid "Animal"
+msgstr "동물"
+
+# 85%
+msgid "Animals"
+msgstr "동물"
+
+msgid "asin"
+msgstr "asin"
+
+msgid "assets loaded"
+msgstr "로딩됨"
+
+msgid "atan"
+msgstr "atan"
+
+# 90%
+msgid "B connected"
+msgstr "B 연결됨"
+
+msgid "Back a layer"
+msgstr "한 레이어 뒤로 보내기"
+
+msgid "backdrop"
+msgstr "배경"
+
+msgid "Backdrop"
+msgstr "배경"
+
+msgid "backdrop #"
+msgstr "배경 번호"
+
+msgid "Backdrop Library"
+msgstr "배경 저장소"
+
+msgid "backdrop name"
+msgstr "배경 이름"
+
+msgid "backdrop1"
+msgstr "배경1"
+
+msgid "backdrops"
+msgstr "배경"
+
+msgid "Backdrops"
+msgstr "배경"
+
+msgid "Backpack"
+msgstr "개인 저장소"
+
+msgid "Bass"
+msgstr "베이스"
+
+msgid "Bass Drum"
+msgstr "베이스 드럼"
+
+msgid "Bassoon"
+msgstr "바순"
+
+msgid "Because you have a new Scratch account, any changes to cloud data won't be saved yet. Keep participating on the site you'll be able to use cloud data soon!"
+msgstr "최근에 스크래치를 가입한 계정은, 클라우드 데이터가 아직 제대로 작동하지 않습니다. 조금만 더 기다려 주세요!"
+
+msgid "Bitmap"
+msgstr "비트맵"
+
+msgid "Bitmap Mode"
+msgstr "비트맵 모드"
+
+msgid "Block help"
+msgstr "블럭 도움말"
+
+msgid "Bongo"
+msgstr "봉고"
+
+msgid "brightness"
+msgstr "밝기"
+
+msgid "Bring to front"
+msgstr "앞으로 가져오기"
+
+msgid "Broadcast"
+msgstr "방송하기"
+
+msgid "Brush"
+msgstr "붓"
+
+msgid "button pressed"
+msgstr "버튼 눌림"
+
+msgid "by"
+msgstr "by"
+
+msgid "bytes loaded"
+msgstr "바이트 불러오기"
+
+msgid "C connected"
+msgstr "C 연결됨"
+
+msgid "Cabasa"
+msgstr "카바사"
+
+msgid "Camera"
+msgstr "카메라"
+
+msgid "can drag in player:"
+msgstr "프로젝트 페이지에서 드래그 가능:"
+
+msgid "Cancel"
+msgstr "취소"
+
+msgid "Cannot Add"
+msgstr ""
+
+msgid "Cannot Delete"
+msgstr "지울 수 없음."
+
+msgid "Can’t find network connection or reach server."
+msgstr "네트워크를 연결할 수 없거나 서버에 연결할 수 없습니다."
+
+msgid "Castle"
+msgstr "성"
+
+msgid "Category"
+msgstr "전체목록"
+
+msgid "ceiling"
+msgstr "천장 함수"
+
+msgid "Cello"
+msgstr "첼로"
+
+msgid "Check for updates"
+msgstr ""
+
+msgid "Choir"
+msgstr "합창단"
+
+# 80%
+# 75%
+msgid "Choose backdrop from library"
+msgstr "저장소에서 배경 선택"
+
+# 77%
+msgid "Choose costume from library"
+msgstr "저장소에서 모양 선택"
+
+# 80%
+msgid "Choose sound from library"
+msgstr "저장소에서 소리 선택"
+
+msgid "Choose sprite from library"
+msgstr "저장소에서 스프라이트 선택"
+
+msgid "Circle"
+msgstr "원"
+
+msgid "City"
+msgstr "도시"
+
+msgid "Clarinet"
+msgstr "클라리넷"
+
+msgid "Claves"
+msgstr "클라베스"
+
+#, fuzzy
+msgid "clean up"
+msgstr "블록 정리하기"
+
+msgid "Clear"
+msgstr "모두 지우기"
+
+msgid "clear senders/receivers"
+msgstr "표시 삭제하기"
+
+msgid "Click "Save now" to try again or "Download" to save"
+msgstr "저장하기 위해서는 \"저장하기\" 를 다시 누르거나 \"다운로드\"를 누르세요."
+
+msgid "Close"
+msgstr "닫기"
+
+msgid "Closed Hi-Hat"
+msgstr "닫힌 하이-햇"
+
+msgid "Cloud"
+msgstr "클라우드"
+
+msgid "Cloud data"
+msgstr "클라우드 데이터"
+
+msgid "Cloud variable (stored on server)"
+msgstr ""
+
+msgid "color"
+msgstr "색깔"
+
+msgid "Color a shape"
+msgstr "색칠하기"
+
+msgid "Conga"
+msgstr "콩가드럼"
+
+msgid "Connecting to Cloud data server..."
+msgstr "클라우드 데이터 서버에 연결중입니다..."
+
+msgid "Convert to bitmap"
+msgstr "비트맵 이미지로 변환"
+
+msgid "Convert to vector"
+msgstr "벡터로 변환하기"
+
+msgid "Converting mp3..."
+msgstr "mp3로 변환중..."
+
+msgid "copy"
+msgstr "복사"
+
+msgid "Copying..."
+msgstr "복사중..."
+
+msgid "cos"
+msgstr "cos"
+
+msgid "Costume"
+msgstr "모양"
+
+msgid "costume #"
+msgstr "모양 번호"
+
+msgid "Costume Library"
+msgstr "모양 저장소"
+
+msgid "costume name"
+msgstr "모양 이름"
+
+msgid "costume1"
+msgstr "모양1"
+
+msgid "costume2"
+msgstr "모양2"
+
+msgid "Costumes"
+msgstr "모양"
+
+msgid "Costumes > 1"
+msgstr "모양 > 1"
+
+# 88%
+msgid "Costumes:"
+msgstr "모양:"
+
+msgid "Could not retrieve new application from server."
+msgstr ""
+
+msgid "Cowbell"
+msgstr "카우벨"
+
+msgid "Crash Cymbal"
+msgstr "크래시 심벌"
+
+msgid "Creating..."
+msgstr "생성중..."
+
+msgid "Currently, only numbers can be stored in Cloud variables."
+msgstr "현재, 스크래치 회원만 클라우드 변수를 사용할 수 있습니다."
+
+msgid "cut"
+msgstr "자르기"
+
+# 90%
+msgid "D connected"
+msgstr "D 연결됨"
+
+msgid "date"
+msgstr "일"
+
+msgid "day of week"
+msgstr "요일"
+
+msgid "delete"
+msgstr "삭제"
+
+# 83%
+msgid "Delete"
+msgstr "삭제"
+
+msgid "delete variable"
+msgstr "변수 삭제"
+
+msgid "direction"
+msgstr "방향"
+
+msgid "direction:"
+msgstr "방향:"
+
+msgid "don't rotate"
+msgstr "회전하지 않기"
+
+msgid "Don't save"
+msgstr ""
+
+msgid "down"
+msgstr "아래"
+
+msgid "down arrow"
+msgstr "아래쪽 화살표"
+
+msgid "Download"
+msgstr "다운로드"
+
+msgid "Download to your computer"
+msgstr "내 컴퓨터에 프로젝트 다운로드하기"
+
+msgid "Downloading new version"
+msgstr ""
+
+msgid "duplicate"
+msgstr "복사"
+
+msgid "Duplicate"
+msgstr "복사"
+
+msgid "e ^"
+msgstr "e ^"
+
+msgid "edge"
+msgstr "벽"
+
+msgid "Edit"
+msgstr "편집"
+
+msgid "edit"
+msgstr "편집"
+
+msgid "Edit Block"
+msgstr "블록 편집"
+
+msgid "Effects"
+msgstr "효과"
+
+msgid "Electric Guitar"
+msgstr "전자 기타"
+
+msgid "Electric Piano"
+msgstr "전자 피아노"
+
+msgid "Electronic"
+msgstr "전자음"
+
+msgid "Ellipse"
+msgstr "타원"
+
+msgid "empty"
+msgstr ""
+
+msgid "Erase"
+msgstr "지우개"
+
+msgid "Erase all"
+msgstr ""
+
+msgid "Eraser width"
+msgstr "지우개 크기"
+
+msgid "Error!"
+msgstr "에러!"
+
+msgid "everything"
+msgstr "모든부품"
+
+msgid "export"
+msgstr "내보내기"
+
+msgid "Extension Library"
+msgstr "확장 프로그램 저장소"
+
+msgid "Extension Problem"
+msgstr "확장 프로그램 문제"
+
+msgid "fade in"
+msgstr "페이드인"
+
+msgid "fade out"
+msgstr "페이드아웃"
+
+msgid "false"
+msgstr ""
+
+msgid "Fantasy"
+msgstr "판타지"
+
+msgid "Features"
+msgstr "특징"
+
+msgid "File"
+msgstr "파일"
+
+msgid "Fill with color"
+msgstr "색칠하기"
+
+msgid "fisheye"
+msgstr "어안 렌즈"
+
+msgid "Flip left-right"
+msgstr "좌우 반전"
+
+msgid "Flip up-down"
+msgstr "상하반전"
+
+msgid "floor"
+msgstr "바닥 함수"
+
+msgid "Flute"
+msgstr "플룻"
+
+msgid "Flying"
+msgstr "하늘"
+
+msgid "Font:"
+msgstr "폰트:"
+
+msgid "For all sprites"
+msgstr "모든 스프라이트에서 사용"
+
+msgid "For this sprite only"
+msgstr "이 스프라이트에서만 사용"
+
+msgid "Forward a layer"
+msgstr "한 레이어 앞으로 보내기"
+
+msgid "ghost"
+msgstr "반투명"
+
+msgid "Go to My Stuff"
+msgstr "내 작업실로 이동하기"
+
+msgid "Group"
+msgstr "그룹화 적용"
+
+msgid "Grow"
+msgstr "확대"
+
+msgid "Guiro"
+msgstr "귀로우"
+
+msgid "Guitar"
+msgstr "기타"
+
+msgid "Hand Clap"
+msgstr "박수"
+
+msgid "Hardware"
+msgstr "하드웨어"
+
+msgid "help"
+msgstr ""
+
+msgid "Hello!"
+msgstr ""
+
+msgid "Hmm..."
+msgstr ""
+
+#, fuzzy
+msgid "hello"
+msgstr "첼로"
+
+msgid "hide"
+msgstr "숨기기"
+
+msgid "High C"
+msgstr "높은 C"
+
+msgid "Holiday"
+msgstr ""
+
+msgid "hour"
+msgstr "시"
+
+msgid "Human"
+msgstr "인간"
+
+# 83%
+msgid "import"
+msgstr "가져오기"
+
+msgid "Import"
+msgstr "가져오기"
+
+msgid "Importing sound..."
+msgstr "소리 가져오기..."
+
+msgid "Indoors"
+msgstr "실내"
+
+msgid "Installing..."
+msgstr "설치중..."
+
+msgid "Instruments"
+msgstr "악기들"
+
+msgid "large readout"
+msgstr "변수값 크게 보기"
+
+msgid "last"
+msgstr "마지막"
+
+msgid "left"
+msgstr "왼쪽"
+
+msgid "left arrow"
+msgstr "왼쪽 화살표"
+
+msgid "left-right"
+msgstr "왼쪽-오른쪽"
+
+msgid "length"
+msgstr "길이"
+
+msgid "Letters"
+msgstr ""
+
+msgid "Library"
+msgstr "저장소"
+
+msgid "light"
+msgstr "빛"
+
+# 83%
+msgid "lights"
+msgstr "빛"
+
+msgid "limit reached"
+msgstr "한계에 도달함"
+
+msgid "Line"
+msgstr "선"
+
+msgid "Line width"
+msgstr "선 굵기"
+
+# 75%
+msgid "list"
+msgstr "리스트"
+
+msgid "List name"
+msgstr "리스트 이름"
+
+msgid "ln"
+msgstr "ln"
+
+msgid "Loading project..."
+msgstr "프로젝트 로딩중..."
+
+msgid "log"
+msgstr "log"
+
+msgid "louder"
+msgstr "음량 키우기"
+
+msgid "loudness"
+msgstr "음량"
+
+msgid "Low C"
+msgstr "낮은 C"
+
+msgid "Make a Block"
+msgstr "블록 만들기"
+
+msgid "Make a List"
+msgstr "리스트 만들기"
+
+msgid "Make a Variable"
+msgstr "변수 만들기"
+
+msgid "Marimba"
+msgstr "마림바"
+
+msgid "Max"
+msgstr "최대"
+
+msgid "meow"
+msgstr "야옹"
+
+msgid "Message Name"
+msgstr "메시지 이름"
+
+msgid "message1"
+msgstr "메시지1"
+
+#, fuzzy
+msgid "Microphone volume:"
+msgstr "마이크로폰 음량:"
+
+msgid "Middle C"
+msgstr "중간 C"
+
+msgid "Min"
+msgstr "최소"
+
+msgid "minute"
+msgstr "분"
+
+msgid "month"
+msgstr "달"
+
+msgid "mosaic"
+msgstr "모자이크"
+
+msgid "motion"
+msgstr "동작"
+
+msgid "motor"
+msgstr "모터"
+
+msgid "motor A"
+msgstr "모터A"
+
+msgid "motor B"
+msgstr "모터B"
+
+msgid "mouse-pointer"
+msgstr "마우스 포인터"
+
+msgid "Multiple"
+msgstr "복사하기"
+
+msgid "Music and Dance"
+msgstr "음악과 춤"
+
+msgid "Music Box"
+msgstr "뮤직 박스"
+
+msgid "Music Loops"
+msgstr "음악"
+
+msgid "My Stuff"
+msgstr "내 작업실"
+
+msgid "myself"
+msgstr "나 자신"
+
+msgid "Nature"
+msgstr "자연"
+
+msgid "New"
+msgstr "새로 만들기"
+
+msgid "New backdrop from camera"
+msgstr "웹캠으로 배경찍기"
+
+msgid "New backdrop:"
+msgstr "새로운 배경:"
+
+msgid "New Block"
+msgstr ""
+
+msgid "New costume from camera"
+msgstr "카메라로 새로운 모양 만들기"
+
+msgid "New costume:"
+msgstr "새로운 모양:"
+
+msgid "New List"
+msgstr "새로운 리스트"
+
+msgid "New Message"
+msgstr ""
+
+msgid "new message..."
+msgstr "새 메시지..."
+
+msgid "New name"
+msgstr "새로운 이름"
+
+msgid "New sound:"
+msgstr "새로운 소리:"
+
+msgid "New sprite from camera"
+msgstr "카메라로부터 새 스프라이트 만들기"
+
+msgid "New sprite:"
+msgstr "새로운 스프라이트:"
+
+msgid "New Variable"
+msgstr "새로운 변수"
+
+msgid "next backdrop"
+msgstr ""
+
+msgid "No motion blocks"
+msgstr "사용 가능한 동작 블럭이 없습니다."
+
+msgid "normal readout"
+msgstr "변수이름-변수값 보기"
+
+msgid "not ="
+msgstr "= 아니다"
+
+msgid "Not saved; network or server problem."
+msgstr "네트워크 또는 서버 문제로 저장되지 않음."
+
+msgid "Not saved; project did not load."
+msgstr "저장되지 않음; 프로젝트를 열 수 없습니다."
+
+msgid "of"
+msgstr "중"
+
+msgid "off"
+msgstr "끄기"
+
+msgid "Offline Editor"
+msgstr "오프라인 편집기"
+
+msgid "OK"
+msgstr "확인"
+
+msgid "on"
+msgstr "켜기"
+
+msgid "on-flipped"
+msgstr "켜기-좌우반전"
+
+msgid "Open"
+msgstr ""
+
+msgid "Open Cuica"
+msgstr "오픈 퀴카"
+
+msgid "Open Hi-Hat"
+msgstr "오픈 하이-햇"
+
+msgid "Options"
+msgstr "선택사항"
+
+msgid "Organ"
+msgstr "오르간"
+
+msgid "Other"
+msgstr "기타"
+
+msgid "other scripts in sprite"
+msgstr "스프라이트에 있는 다른 스크립트"
+
+#, fuzzy
+msgid "other scripts in stage"
+msgstr "스프라이트에 있는 다른 스크립트"
+
+msgid "Outdoors"
+msgstr "실외"
+
+msgid "Paint new backdrop"
+msgstr "배경 새로 그리기"
+
+msgid "Paint new costume"
+msgstr "모양 새로 그리기"
+
+msgid "Paint new sprite"
+msgstr "새 스프라이트 색칠"
+
+msgid "Password"
+msgstr ""
+
+msgid "Password is required"
+msgstr ""
+
+msgid "paste"
+msgstr "붙이기"
+
+msgid "Pencil"
+msgstr "펜"
+
+msgid "People"
+msgstr "사람들"
+
+msgid "Percussion"
+msgstr "타악기"
+
+msgid "photo1"
+msgstr "사진1"
+
+msgid "Piano"
+msgstr "피아노"
+
+msgid "Pick up color"
+msgstr "색 고르기"
+
+msgid "pixelate"
+msgstr "픽셀화"
+
+msgid "Pizzicato"
+msgstr "피치카토"
+
+msgid "pop"
+msgstr "팝"
+
+msgid "previous backdrop"
+msgstr ""
+
+msgid "Profile"
+msgstr "프로필"
+
+msgid "Project did not load."
+msgstr "프로젝트를 가져오지 못했습니다."
+
+msgid "Project not saved!"
+msgstr "프로젝트가 저장되지 않음!"
+
+msgid "Project name"
+msgstr ""
+
+msgid "Project name is required"
+msgstr ""
+
+msgid "random"
+msgstr "랜덤"
+
+msgid "Record"
+msgstr "녹음"
+
+msgid "Record new sound"
+msgstr "새로운 소리 기록하기"
+
+msgid "record..."
+msgstr ""
+
+msgid "recording1"
+msgstr "녹음1"
+
+msgid "Rectangle"
+msgstr "사각형"
+
+# 75%
+msgid "Redo"
+msgstr "재시도"
+
+msgid "redo"
+msgstr "재시도"
+
+msgid "Remix"
+msgstr "리믹스"
+
+msgid "Remixing..."
+msgstr "리믹스중..."
+
+msgid "Remove extension blocks"
+msgstr "확장 프로그램 블록 삭제하기"
+
+msgid "Rename"
+msgstr "이름 수정하기"
+
+msgid "rename variable"
+msgstr "변수 이름 수정하기"
+
+msgid "Replace existing project"
+msgstr ""
+
+msgid "requires sign in"
+msgstr "로그인 필요"
+
+msgid "Reshape"
+msgstr "형태고치기"
+
+msgid "resistance-A"
+msgstr "저항-A"
+
+msgid "resistance-B"
+msgstr "저항-B"
+
+msgid "resistance-C"
+msgstr "저항-C"
+
+msgid "resistance-D"
+msgstr "저항-D"
+
+msgid "reverse"
+msgstr "역방향"
+
+msgid "Revert"
+msgstr "처음으로 돌아가기"
+
+msgid "Reverting..."
+msgstr "처음으로 돌아가는중..."
+
+msgid "right"
+msgstr "오른쪽"
+
+msgid "right arrow"
+msgstr "오른쪽 화살표"
+
+msgid "rotation style:"
+msgstr "회전 방식:"
+
+msgid "Run without screen refresh"
+msgstr "화면 새로고침 없이 실행하기"
+
+msgid "Save"
+msgstr "저장하기"
+
+msgid "Save a copy of this project and add your own ideas."
+msgstr ""
+
+msgid "Save as"
+msgstr ""
+
+msgid "Save as a copy"
+msgstr "복사본 저장하기"
+
+msgid "Save now"
+msgstr "저장하기"
+
+msgid "Save project?"
+msgstr ""
+
+msgid "save to local file"
+msgstr "내 컴퓨터에 저장하기"
+
+msgid "Saved"
+msgstr "저장됨"
+
+msgid "Saving changes..."
+msgstr "바뀐 점을 저장중..."
+
+msgid "Saving..."
+msgstr "저장중..."
+
+msgid "Saxophone"
+msgstr "색소폰"
+
+msgid "Scratch Updater"
+msgstr ""
+
+msgid "Scratch 2.0 Offline Editor"
+msgstr ""
+
+msgid "Script"
+msgstr "스크립트"
+
+msgid "Scripts"
+msgstr "스크립트"
+
+msgid "Scripts:"
+msgstr "스크립트:"
+
+msgid "second"
+msgstr "초"
+
+msgid "See project page"
+msgstr "프로젝트 페이지 보기"
+
+msgid "See the Tips window (on the right) to install the plug-in and get the extension working."
+msgstr "확장 프로그램을 설치하고 실행하기 위해서는 화면 오른쪽 도움말을 참고하세요"
+
+msgid "Select"
+msgstr "선택하기"
+
+msgid "select all"
+msgstr "모두 선택하기"
+
+msgid "Select and duplicate"
+msgstr "영역을 선택해서 복사하기"
+
+msgid "Send to back"
+msgstr "뒤로 보내기"
+
+msgid "Set Costume Center"
+msgstr "모양 중심 설정하기"
+
+msgid "Set costume center"
+msgstr "모양 중심 설정하기"
+
+msgid "set slider min and max"
+msgstr "슬라이더의 최대값과 최소값 정하기"
+
+msgid "Share"
+msgstr "공유하기"
+
+msgid "Share to website"
+msgstr ""
+
+msgid "Share to Scratch website"
+msgstr ""
+
+msgid "shared"
+msgstr "공유됨"
+
+msgid "Shift:"
+msgstr "Shift 키:"
+
+msgid "show"
+msgstr "보이기"
+
+msgid "show receivers"
+msgstr "메시지 받는 스프라이트 표시하기"
+
+msgid "show senders"
+msgstr "메시지 보낸 스프라이트 표시하기"
+
+# 80%
+msgid "show:"
+msgstr "보이기:"
+
+msgid "Shrink"
+msgstr "축소"
+
+msgid "Side Stick"
+msgstr "사이드 스틱"
+
+msgid "Sign in"
+msgstr "로그인"
+
+msgid "Sign in to save"
+msgstr "로그인 저장"
+
+msgid "Sign out"
+msgstr "로그아웃"
+
+msgid "silence"
+msgstr "음량 끄기"
+
+msgid "sin"
+msgstr "sin"
+
+msgid "size"
+msgstr "크기"
+
+msgid "slider"
+msgstr "슬라이더 사용하기"
+
+msgid "Slider Range"
+msgstr "슬라이더 범위"
+
+msgid "Small stage layout"
+msgstr "무대 크기 줄이기"
+
+msgid "Smooth"
+msgstr "부드럽게고치기"
+
+msgid "Snare Drum"
+msgstr "스네어 드럼"
+
+msgid "softer"
+msgstr "음량 줄이기"
+
+msgid "sound"
+msgstr "소리"
+
+msgid "Sound"
+msgstr "소리"
+
+msgid "Sound Library"
+msgstr "소리 저장소"
+
+# 83%
+msgid "Sounds"
+msgstr "소리"
+
+# 80%
+msgid "Space"
+msgstr "우주"
+
+msgid "space"
+msgstr "스페이스"
+
+msgid "Sports"
+msgstr "스포츠"
+
+# 85%
+msgid "Sprite"
+msgstr "스프라이트"
+
+msgid "Sprite Library"
+msgstr "스프라이트 저장소"
+
+# 85%
+msgid "Sprite1"
+msgstr "스프라이트 1"
+
+msgid "Sprites"
+msgstr "스프라이트"
+
+msgid "sqrt"
+msgstr "제곱근"
+
+msgid "Square"
+msgstr "정사각형"
+
+msgid "Stage"
+msgstr "무대"
+
+msgid "Stage selected:"
+msgstr "무대가 선택되었습니다:"
+
+msgid "Steel Drum"
+msgstr "스틸 드럼"
+
+msgid "stored on server"
+msgstr "서버에 저장됨"
+
+msgid "Synth Lead"
+msgstr "신스 리드"
+
+msgid "Synth Pad"
+msgstr "신스 패드"
+
+msgid "Tambourine"
+msgstr "탬버린"
+
+msgid "tan"
+msgstr "tan"
+
+#, fuzzy
+msgid "text"
+msgstr "텍스트"
+
+msgid "Text"
+msgstr "텍스트"
+
+msgid "that way"
+msgstr "반시계방향"
+
+msgid "The name is already in use."
+msgstr ""
+
+msgid "The project failed to load and Scratch Team has been notified. Press OK to leave this page."
+msgstr ""
+
+msgid "Theme"
+msgstr "주제별"
+
+msgid "Things"
+msgstr "물건"
+
+msgid "thing"
+msgstr ""
+
+msgid "This is the current version."
+msgstr ""
+
+msgid "This project can detect who is using it, through the “username” block. To hide your identity, sign out before using the project."
+msgstr ""
+"이 프로젝트에는 당신이 누구인지 알 수 있는 \"사용자이름\" 블록이 사용되었습니다. 당신의 계정이름을 숨기고 싶다면, 이 프로젝트를 "
+"시작하기 전에 로그아웃 하세요."
+
+msgid "This project uses Cloud data ‒ a feature that is available only to signed in users."
+msgstr "이 프로젝트는 클라우드 데이터를 사용합니다. - 로그인한 사용자만 실행할 수 있습니다."
+
+msgid "this script"
+msgstr "이 스크립트"
+
+msgid "this sprite"
+msgstr "이 스프라이트"
+
+msgid "this way"
+msgstr "시계방향"
+
+msgid "Throw away all changes since opening this project?"
+msgstr "이 프로젝트를 열고 난 이후의 모든 변화를 삭제할까요?"
+
+msgid "timer"
+msgstr "타이머"
+
+msgid "Tips"
+msgstr "도움말"
+
+msgid "To delete a block definition, first remove all uses of the block."
+msgstr "이 블록 정의를 삭제하기 위해서는, 먼저 사용된 이 블록을 모두 삭제해야 합니다."
+
+msgid "Transportation"
+msgstr "교통수단"
+
+msgid "Triangle"
+msgstr "트라이앵글"
+
+msgid "Trombone"
+msgstr "트럼본"
+
+msgid "true"
+msgstr ""
+
+msgid "Turbo mode"
+msgstr "터보 모드"
+
+msgid "Turbo Mode"
+msgstr "터보 모드"
+
+msgid "Type"
+msgstr "유형별"
+
+# 75%
+msgid "Undelete"
+msgstr "삭제취소"
+
+msgid "Underwater"
+msgstr "바다속"
+
+msgid "undo"
+msgstr "되돌리기"
+
+# 75%
+msgid "Undo"
+msgstr "되돌리기"
+
+msgid "Undo Revert"
+msgstr "되돌리기 취소하기"
+
+msgid "Ungroup"
+msgstr "그룹화 해제"
+
+# 75%
+msgid "unshared"
+msgstr "공유되지 않음"
+
+msgid "up"
+msgstr "위"
+
+msgid "up arrow"
+msgstr "위쪽 화살표"
+
+msgid "Update failed"
+msgstr ""
+
+msgid "Update not needed"
+msgstr ""
+
+msgid "Update now"
+msgstr ""
+
+msgid "Upload backdrop from file"
+msgstr "배경 파일 업로드하기"
+
+msgid "Upload costume from file"
+msgstr "모양 파일 업로드하기"
+
+msgid "Upload from your computer"
+msgstr "내 컴퓨터에서 프로젝트 업로드하기"
+
+msgid "Upload sound from file"
+msgstr "소리 파일 업로드하기"
+
+msgid "Upload sprite from file"
+msgstr "스프라이트 파일 업로드하기"
+
+msgid "Uploading image..."
+msgstr "이미지 업로드 중..."
+
+msgid "Uploading sound..."
+msgstr "소리 업로드 중..."
+
+msgid "Uploading sprite..."
+msgstr "스프라이트 업로드 중..."
+
+msgid "variable"
+msgstr "변수"
+
+msgid "Variable name"
+msgstr "변수 이름"
+
+msgid "Vector"
+msgstr "벡터"
+
+msgid "Vector Mode"
+msgstr "벡터 모드"
+
+msgid "Vibraphone"
+msgstr "비브라폰"
+
+msgid "Vibraslap"
+msgstr "비브라슬랩"
+
+msgid "video direction"
+msgstr ""
+
+msgid "video motion"
+msgstr "비디오 동작"
+
+msgid "Video on:"
+msgstr "비디오 켜기:"
+
+msgid "Vocals"
+msgstr "보컬"
+
+msgid "volume"
+msgstr "음량"
+
+msgid "Walking"
+msgstr "워킹"
+
+msgid "Want to save? Click remix"
+msgstr "저장하고 싶으면, 리믹스를 클릭하세요"
+
+msgid "Which column do you want to import"
+msgstr "어떤 열(column)을 가져올까요?"
+
+msgid "What's your name?"
+msgstr ""
+
+msgid "whirl"
+msgstr "소용돌이"
+
+msgid "Wood Block"
+msgstr "목판"
+
+msgid "Wooden Flute"
+msgstr "나무 플루트"
+
+msgid "world"
+msgstr ""
+
+msgid "x position"
+msgstr "x 좌표"
+
+msgid "y position"
+msgstr "y 좌표"
+
+msgid "year"
+msgstr "년"
+
+msgid "You cannot edit cloud data in someone else's project.<br>Any change that you make in the editor will be temporary and not persistent."
+msgstr ""
+"다른사람의 프로젝트에 있는 클라우드 데이터는 편집할 수 없습니다.<br>이에 편집기안에서의 모든 변경사항은 임시적이고  영구적이지 "
+"않습니다."
+
+msgid "Your Scratch name"
+msgstr ""
+
+msgid "Your Scratch name is required"
+msgstr ""
+
+
+msgid "Click  to try again or  to save"
+msgstr "저장하기 위해서는 \"저장하기\" 를 다시 누르거나 \"다운로드\"를 누르세요."
+
+msgid "Eraser width:"
+msgstr "지우개 크기:"
+
+msgid "Line width:"
+msgstr "선 굵기:"
+
+#~ msgid "cleanup"
+#~ msgstr "블록 정리하기"
+
+#~ msgid "LEGO WeDo"
+#~ msgstr "LEGO WeDo"
+
+#~ msgid "Microphone Volume:"
+#~ msgstr "마이크로폰 음량:"
+
+# 90%
+#, fuzzy
+#~ msgid "New sprite"
+#~ msgstr "새로운 스프라이트:"
+
+#~ msgid "Paint"
+#~ msgstr "그리기"
+
+#~ msgid "any"
+#~ msgstr "아무"
+
+#~ msgid "High Tom"
+#~ msgstr "하이 탐"
+
+#~ msgid "Long Guiro"
+#~ msgstr "긴 귀로"
+
+#~ msgid "Low Bongo"
+#~ msgstr "로우 봉고"
+
+#~ msgid "Low Conga"
+#~ msgstr "로우 콩가"
+
+#~ msgid "Low Tom"
+#~ msgstr "로우 탐"
+
+#~ msgid "Low Wood Block"
+#~ msgstr "로우 나무블록"
+
+#~ msgid "Maracas"
+#~ msgstr "마라카스"
+
+#~ msgid "More"
+#~ msgstr "더"
+
+#~ msgid "Mute Triangle"
+#~ msgstr "뮤트 트라이앵글"
+
+#~ msgid "Open Triangle"
+#~ msgstr "오픈 트라이앵글"
+
+#~ msgid "Pedal Hi-Hat"
+#~ msgstr "페달 하이 햇"
+
+#~ msgid "Short Guiro"
+#~ msgstr "짧은 귀로"
+
+msgid "X-Axis"
+msgstr "X축"
+msgid "Y-Axis"
+msgstr "Y축"
+msgid "Z-Axis"
+msgstr "Z축"
+msgid "Extensions"
+msgstr "확장"
+msgid"Boards"
+msgstr "보드",
+msgid"Connect" 
+msgstr "연결",
+msgid"Help" 
+msgstr "도와주세요",
+msgid"Forum" 
+msgstr "포럼",
+msgid"Report a Bug" 
+msgstr "버그 신고",
+msgid"License" 
+msgstr "라이센스",
+msgid"Acknowledgements"
+msgstr "감사의 글",
+msgid"Discover" 
+msgstr "발견",
+msgid"View Source" 
+msgstr "소스보기",
+msgid"Install Arduino Driver"
+msgstr "아두 이노 드라이버 설치"
+msgid"Hide Extension" 
+msgstr "확장 숨기기",
+msgid"Show Extension" 
+msgstr "보기 확장"
+msgid"Data&Blocks" 
+msgstr "데이터&블록"
+msgid"Upgrade Firmware" 
+msgstr "펌웨어 업그레이드"
+msgid"Custom Connect"
+msgstr "사용자 정의 연결"

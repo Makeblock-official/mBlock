@@ -1,0 +1,35 @@
+{
+	"objName": "M-Panda",
+	"sounds": [{
+			"soundName": "eat",
+			"soundID": -1,
+			"md5": "714e598d28e493cc50babc17f2c4895d.wav",
+			"sampleCount": 18688,
+			"rate": 22050,
+			"format": ""
+		}],
+	"costumes": [{
+			"costumeName": "Panda-a",
+			"baseLayerID": -1,
+			"baseLayerMD5": "panda_a.svg",
+			"rotationCenterX": 0,
+			"rotationCenterY": 0
+		},{
+			"costumeName": "Panda-b",
+			"baseLayerID": -1,
+			"baseLayerMD5": "panda_b.svg",
+			"rotationCenterX": 0,
+			"rotationCenterY": 0
+		}],
+	"currentCostumeIndex": 0,
+	"scratchX": 0,
+	"scratchY": 0,
+	"scale": 1,
+	"direction": 90,
+	"rotationStyle": "normal",
+	"isDraggable": false,
+	"indexInLibrary": 100000,
+	"visible": true,
+	"spriteInfo": {
+	}
+}

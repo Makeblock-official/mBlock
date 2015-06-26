@@ -1,0 +1,57 @@
+{
+	"objName": "Boy3 Walking",
+	"sounds": [{
+			"soundName": "pop",
+			"soundID": -1,
+			"md5": "83a9787d4cb6f3b7632b4ddfebf74367.wav",
+			"sampleCount": 258,
+			"rate": 11025,
+			"format": ""
+		}],
+	"costumes": [{
+			"costumeName": "boy3 walking-a",
+			"baseLayerID": -1,
+			"baseLayerMD5": "f8672ec6aca2f5740b317216c26bb36e.png",
+			"rotationCenterX": 55,
+			"rotationCenterY": 90
+		},
+		{
+			"costumeName": "boy3 walking-b",
+			"baseLayerID": -1,
+			"baseLayerMD5": "8aa9732ad8a40f05500a1bf4202fe07d.png",
+			"rotationCenterX": 55,
+			"rotationCenterY": 90
+		},
+		{
+			"costumeName": "boy3 walking-c",
+			"baseLayerID": -1,
+			"baseLayerMD5": "07332d8c83dada7f5a9bc335f95a4f8d.png",
+			"rotationCenterX": 55,
+			"rotationCenterY": 90
+		},
+		{
+			"costumeName": "boy3 walking-d",
+			"baseLayerID": -1,
+			"baseLayerMD5": "9372038e9b2edfe3031bdb20cd0faaae.png",
+			"rotationCenterX": 55,
+			"rotationCenterY": 90
+		},
+		{
+			"costumeName": "boy3 walking-e",
+			"baseLayerID": -1,
+			"baseLayerMD5": "1f0034c53fe5c9415589883c34dd5223.png",
+			"rotationCenterX": 55,
+			"rotationCenterY": 90
+		}],
+	"currentCostumeIndex": 0,
+	"scratchX": 0,
+	"scratchY": 0,
+	"scale": 1,
+	"direction": 90,
+	"rotationStyle": "normal",
+	"isDraggable": false,
+	"indexInLibrary": 100000,
+	"visible": true,
+	"spriteInfo": {
+	}
+}
