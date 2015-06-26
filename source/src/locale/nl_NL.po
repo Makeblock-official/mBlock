@@ -2127,6 +2127,9 @@ msgstr "Apparaat (Arduino Leonardo)"
 msgid "Boards ( Arduino Nano328 )"
 msgstr "Apparaat (Arduino Nano328)"
 
+msgid "Arduino Nano ( mega328 )"
+msgstr "Arduino Nano (mega328)"
+
 msgid "Boards ( Arduino Mega1280 )"
 msgstr "Apparaat (Arduino Mega1280)"
 
