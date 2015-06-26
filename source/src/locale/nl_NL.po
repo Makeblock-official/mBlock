@@ -1703,7 +1703,7 @@ msgid "set analog pin (A)%n output as %n"
 msgstr "maak uitgang analoge pin (A)%n %n"
 
 msgid "set pwm pin %n output as %d.pwmvalue"
-msgstr "maak uitgang PWM-pin %n %d.pwmvalue"
+msgstr "maak uitgang analoge/PWM-pin %n %d.pwmvalue"
 
 msgid "set servo pin %n angle as %d.servovalue"
 msgstr "zet servo-pin %n op %d.servovalue graden"
