@@ -2360,3 +2360,6 @@ msgstr "waarde"
 
 msgid "Holiday"
 msgstr "Kerstmis"
+
+msgid "set font size"
+msgstr "lettergrootte"
