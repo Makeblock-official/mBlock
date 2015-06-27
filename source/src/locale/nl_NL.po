@@ -2363,3 +2363,6 @@ msgstr "Kerstmis"
 
 msgid "set font size"
 msgstr "lettergrootte"
+
+msgid "unsupported block found, remove them to continue."
+msgstr "deze blokken worden niet ondersteund, verwijder ze om verder te gaan."
