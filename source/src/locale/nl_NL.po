@@ -2366,3 +2366,6 @@ msgstr "lettergrootte"
 
 msgid "unsupported block found, remove them to continue."
 msgstr "Deze blokken worden niet ondersteund, verwijder ze om verder te gaan."
+
+msgid "thing"
+msgstr "ding"
