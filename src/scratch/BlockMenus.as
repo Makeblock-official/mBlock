@@ -604,6 +604,7 @@ public class BlockMenus implements DragClient {
 				deleteVarOrList();
 				break;
 			case "rename variable":
+			case "rename list":
 				renameVar();
 				break;
 			case 'show senders':
@@ -704,6 +705,7 @@ public class BlockMenus implements DragClient {
 		if (block.op == Specs.GET_LIST) {
 			if (isInPalette(block)){
 				MenuUtil.AddItem(m, 'delete list');
+				MenuUtil.AddItem(m, 'rename list');
 //				m.addItem('delete list', deleteVarOrList); // list reporter in palette
 			}
 			addGenericBlockItems(m);
@@ -785,7 +787,8 @@ public class BlockMenus implements DragClient {
 		function doVarRename(dialog:DialogBox):void {
 			var newName:String = dialog.fields['New name'].text.replace(/^\s+|\s+$/g, '');
 			if (newName.length == 0 || app.viewedObj().lookupVar(newName)) return;
-			if (block.op != Specs.GET_VAR) return;
+//			if (block.op != Specs.GET_VAR) return;
+			if (block.op != Specs.GET_VAR&&block.op != Specs.GET_LIST) return;
 			var oldName:String = blockVarOrListName();
 
 			if (oldName.charAt(0) == '\u2601') { // Retain the cloud symbol
