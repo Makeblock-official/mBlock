@@ -745,6 +745,22 @@ package scratch {
 			updateVarRefs(oldName, newName, owner);
 			clearAllCaches();
 		}
+		
+		public function renameList(oldName:String, newName:String, block:Block):void {
+			var owner:ScratchObj = app.viewedObj();
+			var v:ListWatcher = owner.lookupList(oldName);
+			
+			if (v != null) {
+				if (!owner.ownsList(v.name)) owner = app.stagePane;
+				v.listName = newName;
+				v.updateTitle();
+//				if (v.) v.(newName);
+			} else {
+				owner.lookupOrCreateList(newName);
+			}
+			updateListRefs(oldName, newName, owner);
+			clearAllCaches();
+		}
 	
 		public function updateVariable(v:Variable):void {}
 		public function makeVariable(varObj:Object):Variable { return new Variable(varObj.name, varObj.value); }
@@ -757,7 +773,15 @@ package scratch {
 				else b.args[0].setArgValue(newName);
 			}
 		}
-	
+		private function updateListRefs(oldName:String, newName:String, owner:ScratchObj):void {
+			// Change the variable name in all blocks that use it.
+			for each (var b:Block in allUsesOfList(oldName, owner)) {
+				if (b.op == Specs.GET_LIST) b.setSpec(newName);
+				else if(b.op == "list:contains:")b.args[0].setArgValue(newName);
+				else if(b.op == "setLine:ofList:to:")b.args[1].setArgValue(newName);
+				else b.args[b.args.length-1].setArgValue(newName);
+			}
+		}
 		// -----------------------------
 		// Lists
 		//------------------------------
@@ -871,7 +895,34 @@ package scratch {
 			}
 			return result;
 		}
-	
+		public function allUsesOfList(listName:String, owner:ScratchObj):Array {
+			var listBlocks:Array = ["append:toList:","deleteLine:ofList:", "insert:at:ofList:",
+				"setLine:ofList:to:", "getLine:ofList:",
+				"lineCountOfList:", "list:contains:", "showList:", "hideList:"];
+			var result:Array = [];
+			var stacks:Array = owner.isStage ? allStacks() : owner.scripts;
+			for each (var stack:Block in stacks) {
+				// for each block in stack
+				stack.allBlocksDo(function (b:Block):void {
+					if (b.op == Specs.GET_LIST && b.spec == listName) result.push(b);
+					if (listBlocks.indexOf(b.op) != -1 )
+					{
+						if(b.args[0].argValue==listName){
+							result.push(b);
+						}
+						if(b.args[b.args.length-1].argValue == listName){
+							result.push(b);
+						}
+ 						if (b.args.length>1){
+							if(b.args[1].argValue==listName){
+								result.push(b);
+							}
+						}
+					}
+				});
+			}
+			return result;
+		}
 		public function allCallsOf(callee:String, owner:ScratchObj):Array {
 			var result:Array = [];
 			for each (var stack:Block in owner.scripts) {

@@ -116,13 +116,19 @@
 		runPackage(34,short2array(0));
 	};
 	ext.runSevseg = function(port,display){
-		runPackage(9,ports[port],float2array(display));
+		if(typeof port=="string"){
+			port = ports[port];
+		}
+		runPackage(9,port,float2array(display));
 	};
 	ext.runLed = function(ledIndex,red,green,blue){
 		runPackage(8,7,ledIndex=="all"?0:ledIndex,red,green,blue);
 	};
 	ext.runLightSensor = function(port,status){
-		runPackage(3,ports[port],switchStatus[status]);
+		if(typeof port=="string"){
+			port = ports[port];
+		}
+		runPackage(3,port,switchStatus[status]);
 	};
 	ext.runShutter = function(port,status){
 		runPackage(20,shutterStatus[status]);
@@ -130,6 +136,24 @@
 	ext.runIR = function(message){
 		runPackage(13,string2array(message));
 	};
+	ext.showCharacters = function(port,x,y,message){
+		if(typeof port=="string"){
+			port = ports[port];
+		}
+		runPackage(41,port,1,6,3,short2array(x),short2array(7-y),message.length,string2array(message));
+	}
+	ext.showTime = function(port,hour,point,min){
+		if(typeof port=="string"){
+			port = ports[port];
+		}
+		runPackage(41,port,3,6,point==":"?1:0,short2array(hour),short2array(min));
+	}
+	ext.showDraw = function(port,x,y,bytes){
+		if(typeof port=="string"){
+			port = ports[port];
+		}
+		runPackage(41,port,2,6,bytes.length,short2array(x),short2array(y),bytes.length,bytes);
+	}
 	ext.resetTimer = function(){
 		startTimer = (new Date().getTime())/1000.0;
 	};

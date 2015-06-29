@@ -23,6 +23,15 @@
 		["w", "stop tone","stopBuzzer",0,
 		{"encode":"{s0}","setup":"","inc":"#include \"MeBuzzer.h\"\n","def":"MeBuzzer buzzer;\n","work":"buzzer.noTone();\n","loop":""}],
 	
+		["w", "show face %d.port x:%n y:%n characters:%s","showCharacters", "Port1", 0,0,"Hello",
+		{"encode":"{s0}","setup":"","inc":"#include \"MeBuzzer.h\"\n","def":"MeBuzzer buzzer;\n","work":"buzzer.tone({0});\n","loop":""}],
+		
+		["w", "show time %d.port hour:%n %s min:%n","showTime", "Port1", 10,":",20,
+		{"encode":"{s0}","setup":"","inc":"#include \"MeBuzzer.h\"\n","def":"MeBuzzer buzzer;\n","work":"buzzer.tone({0});\n","loop":""}],
+		
+		["w", "show drawing %d.port x:%n y:%n draw:%m.drawFace","showDraw", "Port1", 0,0,"       ",
+		{"encode":"{s0}","setup":"","inc":"#include \"MeBuzzer.h\"\n","def":"MeBuzzer buzzer;\n","work":"buzzer.tone({0});\n","loop":""}],
+		
 		["-"],
 		
 		["R", "light intensity","getLightOnBoard",
@@ -170,6 +179,8 @@
 			"%m.direction at speed %d.motorvalue":"%m.direction 转速为 %d.motorvalue",
 			"set motor%d.motorPort speed %d.motorvalue":"设置电机%d.motorPort 转速为 %d.motorvalue",
 			"set led %d.index red%d.value green%d.value blue%d.value":"设置LED %d.index 红色%d.value 绿色%d.value 蓝色%d.value",
+			"show time %d.port hour:%n %s min:%n":"表情面板 %d.port 显示时间:%n 时 %s %n分",
+			"show face %d.port x:%n y:%n characters:%s":"表情面板 %d.port x:%n y:%n 显示文字:%s",
 			"light intensity":"光线强度",
 			"ultrasonic sensor %d.port distance":"超声波传感器%d.port 距离",
 			"sound sensor %d.port":"音量传感器%d.port",
@@ -202,6 +213,8 @@
 			"%m.direction at speed %d.motorvalue":"%m.direction 轉速為 %d.motorvalue",
 			"set motor%d.motorPort speed %d.motorvalue":"設置馬達%d.motorPort 轉速為 %d.motorvalue",
 			"set led %d.index red%d.value green%d.value blue%d.value":"設置LED %d.index 紅色%d.value 綠色%d.value 藍色%d.value",
+			"show time %d.port hour %n %s min %n":"表情面板 %d.port 顯示時間 %n 時 %s %n分",
+			"show face %d.port x:%n y:%n characters:%s":"表情面板 %d.port x:%n y:%n 顯示文字:%s",
 			"light intensity":"光線強度",
 			"ultrasonic sensor %d.port distance":"超音波感應器%d.port 距離",
 			"sound sensor %d.port":"音量感應器%d.port",
