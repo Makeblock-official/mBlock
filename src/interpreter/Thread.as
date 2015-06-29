@@ -60,11 +60,7 @@ package interpreter {
 		public function pushStateForBlock(b:Block):void {
 			if (sp >= (stack.length - 1)) growStack();
 			var old:StackFrame = stack[sp++];
-			old.block = block;
-			old.isLoop = isLoop;
-			old.firstTime = firstTime;
-			old.tmp = tmp;
-			old.args = args;
+			old.save();
 			// initForBlock
 			block = b;
 			isLoop = false;
@@ -75,11 +71,7 @@ package interpreter {
 		public function popState():Boolean {
 			if (sp == 0) return false;
 			var old:StackFrame = stack[--sp];
-			block		= old.block;
-			isLoop		= old.isLoop;
-			firstTime	= old.firstTime;
-			tmp			= old.tmp;
-			args		= old.args;
+			old.restore();
 			return true;
 		}
 	
@@ -88,10 +80,10 @@ package interpreter {
 		public function stop():void {
 			block = null;
 			stack = new Vector.<StackFrame>(4);
-			stack[0] = new StackFrame();
-			stack[1] = new StackFrame();
-			stack[2] = new StackFrame();
-			stack[3] = new StackFrame();
+			stack[0] = new StackFrame(this);
+			stack[1] = new StackFrame(this);
+			stack[2] = new StackFrame(this);
+			stack[3] = new StackFrame(this);
 			sp = 0;
 		}
 	
@@ -133,19 +125,8 @@ package interpreter {
 			var n:int = s + s;
 			stack.length = n;
 			for (var i:int = s; i < n; ++i)
-				stack[i] = new StackFrame();
+				stack[i] = new StackFrame(this);
 		}
 	
 	}
-}
-
-import blocks.*;
-import interpreter.*;
-
-class StackFrame {
-	internal var block:Block;
-	internal var isLoop:Boolean;
-	internal var firstTime:Boolean;
-	internal var tmp:int;
-	internal var args:Array;
 }
