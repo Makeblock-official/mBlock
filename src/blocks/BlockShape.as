@@ -23,8 +23,14 @@
 // BlockShape handles drawing and resizing of a block shape.
 
 package blocks {
-	import flash.display.*;
-	import flash.filters.*;
+	import flash.display.BitmapData;
+	import flash.display.Graphics;
+	import flash.display.Shape;
+	import flash.filters.BevelFilter;
+	import flash.filters.GlowFilter;
+	import flash.geom.Matrix;
+	
+	import cc.makeblock.mbot.uiwidgets.lightSetter.LightSensor;
 
 public class BlockShape extends Shape {
 
@@ -59,6 +65,7 @@ public class BlockShape extends Shape {
 
 	// Variables
 	public var color:uint;
+	public var bmd:BitmapData;
 	public var hasLoopArrow:Boolean;
 
 	private var shape:int;
@@ -66,8 +73,8 @@ public class BlockShape extends Shape {
 	private var topH:int;
 	private var substack1H:int = EmptySubstackH;
 	private var substack2H:int = EmptySubstackH;
-	private var drawFunction:Function = drawRectShape;
 	private var redrawNeeded:Boolean = true;
+	private var drawFunction:Function = drawRectShape;
 
 	public function BlockShape(shape:int = 1, color:int = 0xFFFFFF) {
 		this.color = color;
@@ -145,19 +152,32 @@ public class BlockShape extends Shape {
 		if (!redrawNeeded) return;
 		var g:Graphics = this.graphics;
 		g.clear();
-		g.beginFill(color);
-		drawFunction(g);
+		if(bmd != null){
+			var matrix:Matrix = new Matrix();
+			matrix.scale(LightSensor.BMP_SCALE, LightSensor.BMP_SCALE);
+			g.beginBitmapFill(bmd, matrix, false);
+			g.drawRect(0, 0, LightSensor.COUNT_W*LightSensor.BMP_SCALE, LightSensor.COUNT_H*LightSensor.BMP_SCALE);
+		}else{
+			g.beginFill(color);
+			drawFunction(g);
+		}
 		g.endFill();
 		redrawNeeded = false;
 	}
+	
+	static private var _blockShapeFilters:Array;
 
 	private function blockShapeFilters():Array {
-		// filters for command and reporter Block outlines
-		var f:BevelFilter = new BevelFilter(1);
-		f.blurX = f.blurY = 3;
-		f.highlightAlpha = 0.3;
-		f.shadowAlpha = 0.6;
-		return [f];
+		if(null == _blockShapeFilters){
+			// filters for command and reporter Block outlines
+			var f:BevelFilter = new BevelFilter(1);
+			f.blurX = f.blurY = 3;
+			f.highlightAlpha = 0.3;
+			f.shadowAlpha = 0.6;
+			_blockShapeFilters = [f];
+		}
+		
+		return _blockShapeFilters;
 	}
 
 	private function dropFeedbackFilters(forReporter:Boolean):Array {

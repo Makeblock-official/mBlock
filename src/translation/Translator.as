@@ -19,6 +19,8 @@
 
 package translation {
 	import flash.events.Event;
+	import flash.events.EventDispatcher;
+	import flash.events.IEventDispatcher;
 	import flash.net.FileReference;
 	import flash.net.FileReferenceList;
 	import flash.system.Capabilities;
@@ -33,6 +35,21 @@ package translation {
 
 public class Translator {
 
+	static private const langChangedSignal:IEventDispatcher = new EventDispatcher();
+	
+	static public function regChangeEvt(callback:Function, callOnReg:Boolean=true):void
+	{
+		langChangedSignal.addEventListener(Event.CHANGE, callback);
+		if(callOnReg){
+			callback(null);
+		}
+	}
+	
+	static public function unregChangeEvt(callback:Function):void
+	{
+		langChangedSignal.removeEventListener(Event.CHANGE, callback);
+	}
+	
 	public static var languages:Array = []; // contains pairs: [<language code>, <utf8 language name>]
 	public static var currentLang:String = 'en';
 
@@ -71,6 +88,7 @@ public class Translator {
 				MBlock.app.extensionManager.parseAllTranslators();
 			}
 			MBlock.app.translationChanged();
+			langChangedSignal.dispatchEvent(new Event(Event.CHANGE));
 		}
 		if ('import translation file' == lang) { importTranslationFromFile(); return; }
 		else if ('set font size' == lang) { fontSizeMenu(); return; }
@@ -80,8 +98,12 @@ public class Translator {
 		dictionary = new Object(); // default to English (empty dictionary) if there's no .po file
 		isEnglish = true;
 		setFontsFor(lang);
-		if ('en' == lang) MBlock.app.translationChanged(); // there is no .po file English
-		else MBlock.app.server.getPOFile(lang, gotPOFile);
+		if ('en' == lang){
+			MBlock.app.translationChanged(); // there is no .po file English
+			langChangedSignal.dispatchEvent(new Event(Event.CHANGE));
+		}else {
+			MBlock.app.server.getPOFile(lang, gotPOFile);
+		}
 
 		MBlock.app.server.setSelectedLang(lang);
 	}

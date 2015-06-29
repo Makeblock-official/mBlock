@@ -38,6 +38,7 @@ package {
 	import blocks.Block;
 	
 	import cc.makeblock.mbot.ui.parts.TopSystemMenu;
+	import cc.makeblock.mbot.util.PopupUtil;
 	import cc.makeblock.menu.MenuBuilder;
 	import cc.makeblock.util.FileUtil;
 	
@@ -51,6 +52,9 @@ package {
 	import extensions.SocketManager;
 	
 	import interpreter.Interpreter;
+	
+	import org.aswing.AsWingManager;
+	import org.aswing.JOptionPane;
 	
 	import scratch.BlockMenus;
 	import scratch.PaletteBuilder;
@@ -162,7 +166,8 @@ package {
 			this.addEventListener(Event.ADDED_TO_STAGE,initStage);
 		}
 		private function initStage(evt:Event):void{
-			stage.nativeWindow.title += "(" + versionString + ")";
+			stage.nativeWindow.title += "(" + versionString + "," + _currentVer + ")";
+			AsWingManager.initAsStandard(this);
 			ApplicationManager.sharedManager().isCatVersion = NativeApplication.nativeApplication.applicationDescriptor.toString().indexOf("猫友")>-1;
 			ga = new GATracker(this,"UA-54268669-1","AS3",false);
 			track("/app/launch");
@@ -273,41 +278,27 @@ package {
 			_welcomeView.y = (h-400)/2+30;
 			setTimeout(function():void{addChild(_welcomeView)},500);
 		}
-		public function createNativeWindow():void { 
-			//create the init options 
-//			var options:NativeWindowInitOptions = new NativeWindowInitOptions(); 
-//			options.transparent = false; 
-//			options.systemChrome = NativeWindowSystemChrome.STANDARD; 
-//			options.type = NativeWindowType.NORMAL; 
-//			
-//			//create the window 
-//			var newWindow:NativeWindow = new NativeWindow(options); 
-//			newWindow.title = "Scratchbot"; 
-//			newWindow.width = 800; 
-//			newWindow.height = 600; 
-//			
-//			newWindow.stage.align = StageAlign.TOP_LEFT; 
-//			newWindow.stage.scaleMode = StageScaleMode.NO_SCALE; 
-//			
-//			//activate and show the new window 
-//			newWindow.activate(); 
-//			var scratchApp:Scratch = new Scratch;
-//			newWindow.stage.addChild(scratchApp);
-		} 
+		
 		public function track(msg:String):void{
 			if(ga!=null){
 				ga.trackPageview((ApplicationManager.sharedManager().isCatVersion?"/myh/":"/")+MBlock.versionString+""+msg);
 			}
 		}
 		private function onInvoked(evt:InvokeEvent):void{
-			if(evt.arguments.length>0){
-				function openExtProject(v:String=null):void{
-					if(v!=null&&v!=null){
-						runtime.selectedProjectFile(v);
-					}
-				}
-				setTimeout(openExtProject,0.5,evt.arguments[0]);
+			if(evt.arguments.length <= 0){
+				return;
 			}
+			var arg:String = evt.arguments[0];
+			if(Boolean(arg)){
+				runtime.selectedProjectFile(arg);
+//				setTimeout(runtime.selectedProjectFile, 0.5);
+			}
+//			function openExtProject(v:String=null):void{
+//				if(v!=null&&v!=null){
+//					runtime.selectedProjectFile(v);
+//				}
+//			}
+//			setTimeout(openExtProject,0.5,evt.arguments[0]);
 		}
 		protected function initTopBarPart():void {
 			topBarPart = new TopBarPart(this);
@@ -363,19 +354,21 @@ package {
 			}
 		}
 		private function onExiting(evt:Event):void{
-			
-			function onExiting():void { 
-				NativeApplication.nativeApplication.exit();
-				track("/app/exit");
-				LogManager.sharedManager().save();
-			}
 			if(saveNeeded){
-				evt.preventDefault(); 
-				saveProjectAndThen(onExiting);
+				evt.preventDefault();
+				saveProjectAndThen(quitApp);
 			}
 			SerialManager.sharedManager().disconnect();
 			HIDManager.sharedManager().disconnect();
 		}
+		
+		public function quitApp():void
+		{
+			NativeApplication.nativeApplication.exit();
+			track("/app/exit");
+			LogManager.sharedManager().save();
+		}
+		
 		public function log(s:String):void {
 			LogManager.sharedManager().log(s+"\r\n");
 		}
@@ -1185,20 +1178,22 @@ package {
 		}
 		private function showAboutDialog():void {
 		}
+		
+		private function clearProject():void
+		{
+			startNewProject('', '');
+			setProjectName('Untitled');
+			topBarPart.refresh();
+			stagePart.refresh();
+		}
 	
 		public function createNewProject(ignore:* = null):void {
-			function clearProject():void {
-				startNewProject('', '');
-				setProjectName('Untitled');
-				topBarPart.refresh();
-				stagePart.refresh();
-				
-			}
 			saveProjectAndThen(clearProject);
 		}
 	
 		public function saveProjectAndThen(postSaveAction:Function = null):void {
 			// Give the user a chance to save their project, if needed, then call postSaveAction.
+			/*
 			function doNothing():void {}
 			function cancel():void { d.cancel(); }
 			function proceedWithoutSaving():void { d.cancel(); postSaveAction() }
@@ -1208,17 +1203,41 @@ package {
 				if (!saveNeeded) postSaveAction();
 			}
 			if (postSaveAction == null) postSaveAction = doNothing;
-			if (!saveNeeded) {
-				postSaveAction();
+			*/
+			if(isPanelShowing){
 				return;
 			}
+			if (!saveNeeded) {
+				if(postSaveAction != null){
+					postSaveAction();
+				}
+				return;
+			}
+			/*
 			var d:DialogBox = new DialogBox();
 			d.addTitle(Translator.map('Save project') + '?');
 			d.addButton('Save', save);
 			d.addButton('Don\'t save', proceedWithoutSaving);
 			d.addButton('Cancel', cancel);
 			d.showOnStage(stage);
+			*/
+			isPanelShowing = true;
+			PopupUtil.showQuitAlert(function(value:int):void{
+				switch(value){
+					case JOptionPane.YES:
+						exportProjectToFile(false,postSaveAction);
+						break;
+					case JOptionPane.NO:
+						if(postSaveAction != null){
+							postSaveAction();
+						}
+						break;
+				}
+				isPanelShowing = false;
+			});
 		}
+		
+		private var isPanelShowing:Boolean;
 	
 		public function exportProjectToFile(fromJS:Boolean = false,postSaveAction:Function=null):void {
 			function squeakSoundsConverted():void {

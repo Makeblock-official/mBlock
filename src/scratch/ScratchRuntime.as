@@ -26,7 +26,6 @@ package scratch {
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
-	import flash.external.ExternalInterface;
 	import flash.filesystem.File;
 	import flash.geom.Rectangle;
 	import flash.media.Microphone;

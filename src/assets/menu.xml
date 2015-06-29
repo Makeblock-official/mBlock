@@ -30,7 +30,7 @@
 			<item name="Custom Connect" label="自定义连接" action="connect_network" />
 		</subMenu>
 		<item isSeparator="true" />
-		<item label="固件" enabled="false" />
+		<item name="Firmware" label="固件" enabled="false" />
 		<item name="Upgrade Firmware" label="安装固件" action="upgrade_firmware" />
 		<item name="Reset Default Program" label="恢复出厂程序" action="reset_program" />
 		<item name="View Source" label="查看源码" action="view_source" />
@@ -53,7 +53,7 @@
 		<item name="picoboard_unknown" label="PicoBoard" />
 	</subMenu>
 	<subMenu name="Extensions" label="扩展">
-		<item name="manage_extensions" label="管理扩展"/>
+		<item name="manage_extensions" label="管理扩展" keyEquivalent="T" />
 		<item isSeparator="true" />
 	</subMenu>
 	<subMenu name="Language" label="语言">
