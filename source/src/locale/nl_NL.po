@@ -2278,7 +2278,7 @@ msgid "Focus On"
 msgstr "focus aan"
 
 msgid "Focus Off"
-msgstr "focus uit",
+msgstr "focus uit"
 
 #msgid "set motor%d.motorPort speed %d.motorvalue"
 #msgstr "faire tourner le moteur %d.motorPort à puissance %d.motorvalue"
