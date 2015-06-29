@@ -2236,7 +2236,7 @@ msgid "Message"
 msgstr "Bericht"
 
 msgid "Please connect the serial port."
-msgstr "Verbind de Arduino."
+msgstr "Verbind de seriële poort."
 
 msgid "Arduino IDE not found,"
 msgstr "Arduino IDE niet gevonden."
