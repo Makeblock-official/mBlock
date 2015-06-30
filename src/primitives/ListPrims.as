@@ -33,7 +33,7 @@ package primitives {
 	
 	import watchers.ListWatcher;
 
-public class ListPrims {
+internal class ListPrims {
 
 	private var app:MBlock;
 	protected var interp:Interpreter;

@@ -42,7 +42,7 @@ package interpreter {
 		public var args:Array;			// arguments to a user-defined procedure
 	
 		// the stack
-		private var stack:Vector.<StackFrame>;
+		private const stack:Vector.<StackFrame> = new Vector.<StackFrame>();
 		private var sp:int;
 	
 		public function Thread(b:Block, targetObj:*, startupDelay:int = 0) {
@@ -51,6 +51,11 @@ package interpreter {
 			topBlock = b;
 			startDelayCount = startupDelay;
 			// initForBlock
+			reset(b);
+		}
+		
+		private function reset(b:Block):void
+		{
 			block = b;
 			isLoop = false;
 			firstTime = true;
@@ -62,10 +67,7 @@ package interpreter {
 			var old:StackFrame = stack[sp++];
 			old.save();
 			// initForBlock
-			block = b;
-			isLoop = false;
-			firstTime = true;
-			tmp = 0;
+			reset(b);
 		}
 	
 		public function popState():Boolean {
@@ -79,7 +81,7 @@ package interpreter {
 	
 		public function stop():void {
 			block = null;
-			stack = new Vector.<StackFrame>(4);
+			stack.length = 4;
 			stack[0] = new StackFrame(this);
 			stack[1] = new StackFrame(this);
 			stack[2] = new StackFrame(this);
