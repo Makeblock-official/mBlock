@@ -25,21 +25,13 @@
 package ui.parts {
 	import flash.display.Bitmap;
 	import flash.display.Graphics;
-	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
-	import flash.net.URLRequest;
-	import flash.net.navigateToURL;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	import flash.utils.setTimeout;
 	
 	import assets.Resources;
-	
-	import extensions.ConnectionManager;
-	import extensions.DeviceManager;
-	import extensions.ParseManager;
-	import extensions.SerialDevice;
 	
 	import translation.Translator;
 	
@@ -53,9 +45,9 @@ package ui.parts {
 	import util.ClickerManager;
 
 	public class TopBarPart extends UIPart {
-	
-		private var shape:Shape;
 		/*
+		private var shape:Shape;
+		
 		protected var languageButton:IconButton;
 	
 		protected var fileMenu:IconButton;
@@ -91,8 +83,8 @@ package ui.parts {
 		}
 	
 		protected function addButtons():void {
-			addChild(shape = new Shape());
 			/*
+			addChild(shape = new Shape());
 			addChild(languageButton = new IconButton(app.setLanguagePressed, 'languageButton'));
 			languageButton.x = 9;
 			languageButton.isMomentary = true;
@@ -178,17 +170,19 @@ package ui.parts {
 		public function setWidthHeight(w:int, h:int):void {
 			this.w = w;
 			this.h = h;
+			/*
 			var g:Graphics = shape.graphics;
 			g.clear();
 			g.beginFill(CSS.topBarColor);
 			g.drawRect(0, 0, w, h);
 			g.endFill();
+			*/
 			fixLayout();
 		}
 	
 		protected function fixLayout():void {
-			var buttonY:int = 5;
 			/*
+			var buttonY:int = 5;
 			languageButton.y = buttonY - 1;
 	
 			// new/more/tips buttons
@@ -238,7 +232,14 @@ package ui.parts {
 			*/
 			// cursor tool buttons
 			var space:int = 3;
-			copyTool.x = 760+(app.stageIsContracted?ApplicationManager.sharedManager().contractedOffsetX:0);
+//			copyTool.x = 760+(app.stageIsContracted?ApplicationManager.sharedManager().contractedOffsetX:0);
+			if(app.stageIsHided){
+				copyTool.x = 280;
+			}else if(app.stageIsContracted){
+				copyTool.x = 520;
+			}else{
+				copyTool.x = 760;
+			}
 			cutTool.x = copyTool.right() + space;
 			growTool.x = cutTool.right() + space;
 			shrinkTool.x = growTool.right() + space;
@@ -383,15 +384,15 @@ package ui.parts {
 			/*
 			removeChild(connectMenu);
 			addChild(connectMenu = makeMenuButton(title, app.showConnectMenu, true));
-			*/
 			this.fixLayout();
+			*/
 		}
 		public function setBoardTitle():void{
 			/*
 			removeChild(deviceMenu);
 			addChild(deviceMenu = makeMenuButton(Translator.map('Boards')+" ( "+DeviceManager.sharedManager().currentName+" )",app.showBoardMenu,true));
-			*/
 			this.fixLayout();
+			*/
 		}
 	//	public function setSocketConnectedTitle(title:String):void{
 	//		removeChild(socketMenu);
@@ -409,8 +410,8 @@ package ui.parts {
 			/*
 			removeChild(connectMenu);
 			addChild(connectMenu = makeMenuButton('Connect', app.showConnectMenu, true));
-			*/
 			this.fixLayout();
+			*/
 		}
 	//	public function setSocketDisconnectedTitle():void{
 	//		removeChild(socketMenu);

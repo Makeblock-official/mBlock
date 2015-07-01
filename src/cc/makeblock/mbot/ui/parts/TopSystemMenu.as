@@ -95,6 +95,9 @@ package cc.makeblock.mbot.ui.parts
 				case "Undelete":
 					MBlock.app.runtime.undelete();
 					break;
+				case "Hide stage layout":
+					MBlock.app.toggleHideStage();
+					break;
 				case "Small stage layout":
 					MBlock.app.toggleSmallStage();
 					break;
@@ -163,7 +166,8 @@ package cc.makeblock.mbot.ui.parts
 		{
 			var menu:NativeMenu = evt.target as NativeMenu;
 			menu.getItemByName("Undelete").enabled = MBlock.app.runtime.canUndelete();
-			menu.getItemByName("Small stage layout").checked = MBlock.app.stageIsContracted;
+			menu.getItemByName("Hide stage layout").checked = MBlock.app.stageIsHided;
+			menu.getItemByName("Small stage layout").checked = !MBlock.app.stageIsHided && MBlock.app.stageIsContracted;
 			menu.getItemByName("Turbo mode").checked = MBlock.app.interp.turboMode;
 			menu.getItemByName("Arduino mode").checked = MBlock.app.stageIsArduino;
 			MBlock.app.track("/OpenEdit");

@@ -676,11 +676,6 @@ public class ScratchStage extends ScratchObj {
 			if (extensionsToSave.length == 0) delete info.savedExtensions;
 			else info.savedExtensions = extensionsToSave;
 		}
-
-		delete info.userAgent;
-		var userAgent:String;
-		if (MBlock.app.jsEnabled) userAgent = ExternalInterface.call('window.navigator.userAgent.toString');
-		if (userAgent) info.userAgent = userAgent;
 	}
 
 	public function scriptCount():int {

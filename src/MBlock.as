@@ -11,13 +11,10 @@ package {
 	import flash.display.StageAlign;
 	import flash.display.StageDisplayState;
 	import flash.display.StageScaleMode;
-	import flash.events.ErrorEvent;
 	import flash.events.Event;
 	import flash.events.InvokeEvent;
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
-	import flash.events.UncaughtErrorEvent;
-	import flash.external.ExternalInterface;
 	import flash.filesystem.File;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -31,6 +28,7 @@ package {
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFormat;
+	import flash.ui.Keyboard;
 	import flash.utils.ByteArray;
 	import flash.utils.getTimer;
 	import flash.utils.setTimeout;
@@ -101,6 +99,7 @@ package {
 	
 	import watchers.ListWatcher;
 
+	[SWF(frameRate="30")]
 	public class MBlock extends Sprite {
 		// Version
 		private static var vxml:XML = NativeApplication.nativeApplication.applicationDescriptor; 
@@ -114,10 +113,10 @@ package {
 		public var isOffline:Boolean; // true when running as an offline (i.e. stand-alone) app
 		public var isSmallPlayer:Boolean; // true when displaying as a scaled-down player (e.g. in search results)
 		public var stageIsContracted:Boolean; // true when the stage is half size to give more space on small screens
+		public var stageIsHided:Boolean;
 		public var stageIsArduino:Boolean;
 		public var isIn3D:Boolean;
 		public var render3D:IRenderIn3D;
-		public var jsEnabled:Boolean = false; // true when the SWF can talk to the webpage
 	
 		private var systemMenu:TopSystemMenu;
 		
@@ -132,8 +131,6 @@ package {
 		public var projectIsPrivate:Boolean;
 		public var oldWebsiteURL:String = '';
 		public var loadInProgress:Boolean;
-		public var debugOps:Boolean = false;
-		public var debugOpCmd:String = '';
 	
 		protected var autostart:Boolean;
 		private var viewedObject:ScratchObj;
@@ -143,7 +140,7 @@ package {
 		protected var languageChanged:Boolean; // set when language changed
 	
 		// UI Elements
-		public var playerBG:Shape;
+//		public var playerBG:Shape;
 		public var palette:BlockPalette;
 		public var scriptsPane:ScriptsPane;
 		public var stagePane:ScratchStage;
@@ -162,24 +159,21 @@ package {
 		private var tabsPart:TabsPart;
 		private var _welcomeView:Loader;
 		private var _currentVer:String = "06.16.001";
-		public function MBlock() {
-			this.addEventListener(Event.ADDED_TO_STAGE,initStage);
+		public function MBlock(){
+			addEventListener(Event.ADDED_TO_STAGE,initStage);
 		}
 		private function initStage(evt:Event):void{
+			removeEventListener(Event.ADDED_TO_STAGE,initStage);
 			stage.nativeWindow.title += "(" + versionString + "," + _currentVer + ")";
 			AsWingManager.initAsStandard(this);
 			ApplicationManager.sharedManager().isCatVersion = NativeApplication.nativeApplication.applicationDescriptor.toString().indexOf("猫友")>-1;
 			ga = new GATracker(this,"UA-54268669-1","AS3",false);
 			track("/app/launch");
-			loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, uncaughtErrorHandler);
 			NativeApplication.nativeApplication.addEventListener(InvokeEvent.INVOKE,onInvoked);
 			stage.nativeWindow.addEventListener(Event.CLOSING,onExiting);
 			isOffline = loaderInfo.url.indexOf('http:') == -1;
 			checkFlashVersion();
 			initServer();
-			stage.align = StageAlign.TOP_LEFT;
-			stage.scaleMode = StageScaleMode.NO_SCALE;
-			stage.frameRate = 30;
 			if(SharedObjectManager.sharedManager().available("labelSize")){
 				var labelSize:int = SharedObjectManager.sharedManager().getObject("labelSize") as int;
 				var argSize:int = Math.round(0.9 * labelSize);
@@ -201,7 +195,7 @@ package {
 				extensionManager = new ExtensionManager(this);
 		//		extensionManager.importExtension();
 				Translator.initializeLanguageList();
-				playerBG = new Shape(); // create, but don't add
+//				playerBG = new Shape(); // create, but don't add
 				addParts();
 				stage.addEventListener(MouseEvent.MOUSE_DOWN, gh.mouseDown);
 				stage.addEventListener(MouseEvent.MOUSE_MOVE, gh.mouseMove);
@@ -291,14 +285,7 @@ package {
 			var arg:String = evt.arguments[0];
 			if(Boolean(arg)){
 				runtime.selectedProjectFile(arg);
-//				setTimeout(runtime.selectedProjectFile, 0.5);
 			}
-//			function openExtProject(v:String=null):void{
-//				if(v!=null&&v!=null){
-//					runtime.selectedProjectFile(v);
-//				}
-//			}
-//			setTimeout(openExtProject,0.5,evt.arguments[0]);
 		}
 		protected function initTopBarPart():void {
 			topBarPart = new TopBarPart(this);
@@ -339,20 +326,7 @@ package {
 		public function getPaletteBuilder():PaletteBuilder {
 			return new PaletteBuilder(this);
 		}
-	
-		private function uncaughtErrorHandler(event:UncaughtErrorEvent):void
-		{
-			if (event.error is Error)
-			{
-				var error:Error = event.error as Error;
-				logException(error);
-			}
-			else if (event.error is ErrorEvent)
-			{
-				var errorEvent:ErrorEvent = event.error as ErrorEvent;
-				logMessage(errorEvent.toString());
-			}
-		}
+		
 		private function onExiting(evt:Event):void{
 			if(saveNeeded){
 				evt.preventDefault();
@@ -373,19 +347,19 @@ package {
 			LogManager.sharedManager().log(s+"\r\n");
 		}
 	
-		public function logException(e:Error):void {}
-		public function logMessage(msg:String, extra_data:Object=null):void {}
+		public function logMessage(msg:String, extra_data:Object=null):void {
+			trace(msg);
+		}
 		public function loadProjectFailed():void {}
 		[Embed(source='libs/RenderIn3D.swf', mimeType='application/octet-stream')]
 		public static const MySwfData:Class;
 		protected function checkFlashVersion():void {
 			if(Capabilities.playerType != "Desktop" || Capabilities.version.indexOf('IOS') === 0) {
-				var isArmCPU:Boolean = (jsEnabled && ExternalInterface.call("window.navigator.userAgent.toString").indexOf('CrOS arm') > -1);
 				var versionString:String = Capabilities.version.substr(Capabilities.version.indexOf(' ')+1);
 				var versionParts:Array = versionString.split(',');
 				var majorVersion:int = parseInt(versionParts[0]);
 				var minorVersion:int = parseInt(versionParts[1]);
-				if((majorVersion > 11 || (majorVersion == 11 && minorVersion >=1)) && !isArmCPU && Capabilities.cpuArchitecture == 'x86') {
+				if((majorVersion > 11 || (majorVersion == 11 && minorVersion >=1)) && Capabilities.cpuArchitecture == 'x86') {
 					loadRenderLibrary();
 					return;
 				}
@@ -402,7 +376,6 @@ package {
 			// we need the loaded code to be in the same (main) application domain
 			var ctx:LoaderContext = new LoaderContext(false, loaderInfo.applicationDomain);
 			ctx.allowCodeImport = true;
-			loader.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, uncaughtErrorHandler);
 			loader.loadBytes(new MySwfData() as ByteArray, ctx);
 			loading3DLib = true;
 		}
@@ -443,11 +416,7 @@ package {
 			}
 			stagePane.clearCachedBitmap();
 	
-			// unsupported technique that seems to force garbage collection
-			try {
-				new LocalConnection().connect('foo');
-				new LocalConnection().connect('foo');
-			} catch (e:Error) {}
+			System.gc();
 		}
 	
 		public function go3D():void {
@@ -574,7 +543,7 @@ package {
 	
 		private function keyDown(evt:KeyboardEvent):void {
 			// Escape exists presentation mode.
-			if ((evt.charCode == 27) && stagePart.isInPresentationMode()) {
+			if ((evt.charCode == Keyboard.ESCAPE) && stagePart.isInPresentationMode()) {
 				setPresentationMode(false);
 				stagePart.exitPresentationMode();
 			}
@@ -585,11 +554,11 @@ package {
 	//			evt.stopImmediatePropagation();
 	//		}
 			// Handle ctrl-m and toggle 2d/3d mode
-			else if(evt.ctrlKey && evt.charCode == 109) {
-				isIn3D ? go2D() : go3D();
-				evt.preventDefault();
-				evt.stopImmediatePropagation();
-			}
+//			else if(evt.ctrlKey && evt.charCode == 109) {
+//				isIn3D ? go2D() : go3D();
+//				evt.preventDefault();
+//				evt.stopImmediatePropagation();
+//			}
 		}
 	
 		private function setSmallStageMode(flag:Boolean):void {
@@ -719,7 +688,7 @@ package {
 			Menu.removeMenusFrom(stage);
 			editMode = newMode;
 			if (editMode) {
-				hide(playerBG);
+//				hide(playerBG);
 				show(topBarPart);
 				show(libraryPart);
 				show(tabsPart);
@@ -727,8 +696,8 @@ package {
 				stagePart.hidePlayButton();
 				runtime.edgeTriggersEnabled = true;
 			} else {
-				addChildAt(playerBG, 0); // behind everything
-				playerBG.visible = false;
+//				addChildAt(playerBG, 0); // behind everything
+//				playerBG.visible = false;
 				hide(topBarPart);
 				hide(libraryPart);
 				hide(tabsPart);
@@ -763,19 +732,24 @@ package {
 		}
 	
 		protected function updateLayout(w:int, h:int):void {
-			topBarPart.x = 0;
-			topBarPart.y = 0;
+//			topBarPart.x = 0;
+//			topBarPart.y = 0;
 //			topBarPart.setWidthHeight(w, 28);
 			topBarPart.setWidthHeight(w, 0);
 	
 			var extraW:int = 0;
 			var extraH:int = stagePart.computeTopBarHeight() + 1;
 			if (editMode) {
-				// adjust for global scale (from browser zoom)
-				if (stageIsContracted) {
+				
+				if(stageIsHided){
 					stagePart.hideFullScreenButton();
 					stagePart.setWidthHeight((240+ApplicationManager.sharedManager().contractedOffsetX/2) + extraW, ApplicationManager.sharedManager().contractedOffsetY+stage.stageHeight/2, 0.0);
-					//stagePart.setWidthHeight(240 + extraW, 180 + extraH, 0.5);
+				}
+				// adjust for global scale (from browser zoom)
+				else if (stageIsContracted) {
+					stagePart.showFullScreenButton();
+//					stagePart.setWidthHeight((240+ApplicationManager.sharedManager().contractedOffsetX/2) + extraW, ApplicationManager.sharedManager().contractedOffsetY+stage.stageHeight/2, 0.0);
+					stagePart.setWidthHeight(240 + extraW, 180 + extraH, 0.5);
 				} else {
 					stagePart.showFullScreenButton();
 					stagePart.setWidthHeight(480 + extraW, 360 + extraH, 1);
@@ -783,7 +757,6 @@ package {
 				stagePart.x = 5;
 				stagePart.y = topBarPart.bottom() + 5;
 			} else {
-				drawBG();
 				var pad:int = (w > 550) ? 16 : 0; // add padding for full-screen mode
 				var scale:Number = Math.min((w - extraW - pad) / 480, (h - extraH - pad) / 360);
 				scale = Math.max(0.01, scale);
@@ -824,13 +797,6 @@ package {
 			}
 	
 			if(isIn3D) render3D.onStageResize();
-		}
-	
-		private function drawBG():void {
-			var g:Graphics = playerBG.graphics;
-			g.clear();
-			g.beginFill(0);
-			g.drawRect(0, 0, stage.stageWidth, stage.stageHeight);
 		}
 	
 		// -----------------------------
@@ -885,22 +851,6 @@ package {
 			} else if (canRevert()) {
 				m.addLine();
 				m.addItem('Revert', revertToOriginalProject);
-			}
-	
-			if (b.lastEvent.shiftKey && jsEnabled) {
-				m.addLine();
-				m.addItem('Import experimental extension', function():void {
-					function loadJSExtension(dialog:DialogBox):void {
-						var url:String = dialog.fields['URL'].text.replace(/^\s+|\s+$/g, '');
-						if (url.length == 0) return;
-						ExternalInterface.call('ScratchExtensions.loadExternalJS', url);
-					}
-					var d:DialogBox = new DialogBox(loadJSExtension);
-					d.addTitle('Load Javascript Scratch Extension');
-					d.addField('URL', 120);
-					d.addAcceptCancelButtons('Load');
-					d.showOnStage(app.stage);
-				});
 			}
 		}
 	
@@ -1272,9 +1222,20 @@ package {
 			}
 			return result;
 		}
+		
+		public function toggleHideStage():void
+		{
+			stageIsHided = !stageIsHided;
+			setSmallStageMode(stageIsContracted);
+		}
 	
 		public function toggleSmallStage():void {
-			setSmallStageMode(!stageIsContracted);
+			if(stageIsHided){
+				stageIsHided = false;
+				setSmallStageMode(stageIsContracted);
+			}else{
+				setSmallStageMode(!stageIsContracted);
+			}
 		}
 	
 		public function toggleTurboMode():void {
@@ -1288,6 +1249,7 @@ package {
 		}
 		public function toggleArduinoMode():void {
 			stageIsArduino = !stageIsArduino;
+			stageIsHided = stageIsArduino;
 			setSmallStageMode(stageIsArduino);
 			this.scriptsPart.selector.select(stageIsArduino?6:1);
 			this.tabsPart.soundsTab.visible = !stageIsArduino;

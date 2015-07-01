@@ -25,14 +25,26 @@
 // since it is referred from many places.
 
 package ui.parts {
-	import flash.display.*;
-	import flash.events.*;
-	import flash.text.*;
-	import flash.media.*;
+	import flash.display.Bitmap;
+	import flash.display.Graphics;
+	import flash.display.Shape;
+	import flash.display.Sprite;
+	import flash.events.Event;
+	import flash.events.MouseEvent;
+	import flash.media.SoundMixer;
+	import flash.media.SoundTransform;
+	import flash.text.TextField;
+	import flash.text.TextFieldAutoSize;
+	import flash.text.TextFormat;
+	
 	import assets.Resources;
-	import scratch.*;
+	
+	import scratch.ScratchStage;
+	
 	import translation.Translator;
-	import uiwidgets.*;
+	
+	import uiwidgets.EditableLabel;
+	import uiwidgets.IconButton;
 
 public class StagePart extends UIPart {
 
@@ -353,13 +365,15 @@ public class StagePart extends UIPart {
 		}
 	}
 	private function addStageSizeButton():void {
-		function toggleStageSize(evt:*):void {
-			app.toggleSmallStage();
-		}
 		stageSizeButton = new Sprite();
-		stageSizeButton.addEventListener(MouseEvent.MOUSE_DOWN, toggleStageSize);
+		stageSizeButton.addEventListener(MouseEvent.MOUSE_DOWN, __toggleStageSize);
 		drawStageSizeButton();
 		addChild(stageSizeButton);
+	}
+	
+	private function __toggleStageSize(evt:MouseEvent):void
+	{
+		app.toggleSmallStage();
 	}
 
 	private function drawStageSizeButton():void {

@@ -11,6 +11,7 @@
 	<subMenu name="Edit" label="编辑">
 		<item name="Undelete" label="撤销删除" />
 		<item isSeparator="true" />
+		<item name="Hide stage layout" label="隐藏舞台" keyEquivalent="" />
 		<item name="Small stage layout" label="小舞台布局模式" keyEquivalent="" />
 		<item name="Turbo mode" label="加速模式" keyEquivalent="" />
 		<item name="Arduino mode" label="Arduino模式" keyEquivalent="" />
