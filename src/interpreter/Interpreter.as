@@ -57,18 +57,11 @@
 
 package interpreter {
 	import flash.geom.Point;
-	import flash.net.getClassByAlias;
 	import flash.utils.Dictionary;
-	import flash.utils.getQualifiedClassName;
 	import flash.utils.getTimer;
-	import flash.utils.setTimeout;
 	
 	import blocks.Block;
 	import blocks.BlockArg;
-	
-	import extensions.ConnectionManager;
-	import extensions.ParseManager;
-	import extensions.SerialManager;
 	
 	import primitives.Primitives;
 	
@@ -85,16 +78,16 @@ public class Interpreter {
 	public var turboMode:Boolean = false;
 
 	private var app:MBlock;
-	private var primTable:Dictionary;		// maps opcodes to functions
+	private const primTable:Dictionary = new Dictionary();		// maps opcodes to functions
 	private var threads:Array = [];			// all threads
-	private var yield:Boolean;				// set true to indicate that active thread should yield control
-	private var startTime:int;				// start time for stepThreads()
+	internal var yield:Boolean;				// set true to indicate that active thread should yield control
+	internal var startTime:int;				// start time for stepThreads()
 	private var doRedraw:Boolean;
 	private var isWaiting:Boolean;
 
-	private const warpMSecs:int = 500;		// max time to run during warp
-	private var warpThread:Thread;			// thread that is in warp mode
-	private var warpBlock:Block;			// proc call block that entered warp mode
+	static internal const warpMSecs:int = 500;		// max time to run during warp
+	internal var warpThread:Thread;			// thread that is in warp mode
+	internal var warpBlock:Block;			// proc call block that entered warp mode
 
 	public var askThread:Thread;				// thread that opened the ask prompt
 
@@ -310,7 +303,6 @@ public class Interpreter {
 		warpThread = null;
 		warpBlock = null;
 	}
-	import flash.utils.getDefinitionByName;
 	/* Evaluation */
 	
 	public function evalCmd(b:Block):* {
@@ -341,7 +333,14 @@ public class Interpreter {
 		// Debug code
 		if(debugFunc != null)
 			debugFunc(b);
-		return b.opFunction(b);
+		
+		var result:Object;
+		if(b.opFunction.length > 1){
+			result = b.opFunction(b, this);
+		}else{
+			result = b.opFunction(b);
+		}
+		return result;
 	}
 
 	// Returns true if the thread needs to yield while data is requested
@@ -365,22 +364,24 @@ public class Interpreter {
 	}
 
 	public function arg(b:Block, i:int):* {
-		var args:Array = b.args;
-		if (b.rightToLeft) { i = args.length - i - 1; }
-		var result:* = (b.args[i] is BlockArg) ?
-			BlockArg(args[i]).argValue : evalCmd(Block(args[i]));
-		return result;
+//		var args:Array = b.args;
+//		if (b.rightToLeft) { i = args.length - i - 1; }
+		i = b.adjustArgIndex(i);
+		if(b.args[i] is BlockArg){
+			return (b.args[i] as BlockArg).argValue;
+		}
+		return evalCmd(b.args[i] as Block);
 	}
 
 	public function numarg(b:Block, i:int):* {
 		var args:Array = b.args;
-		if (b.rightToLeft) { i = args.length - i - 1; }
+//		if (b.rightToLeft) { i = args.length - i - 1; }
+		i = b.adjustArgIndex(i);
 		var r:* = "";
 		if(!(args[i] is BlockArg)){
 			r = evalCmd(Block(args[i]));
 		}
-		var n:Number = (args[i] is BlockArg) ?
-			Number(BlockArg(args[i]).argValue) : Number(r);
+		var n:Number = Number(arg(b, i));
 		if(isNaN(n)){
 			return arg(b,i);
 		}
@@ -389,14 +390,15 @@ public class Interpreter {
 		return n;
 	}
 
-	public function boolarg(b:Block, i:int):Boolean {
-		if (b.rightToLeft) { i = b.args.length - i - 1; }
-		var o:* = (b.args[i] is BlockArg) ? BlockArg(b.args[i]).argValue : evalCmd(Block(b.args[i]));
-		if (o is Boolean) return o;
+	public function boolarg(b:Block, i:int):Boolean
+	{
+		var o:* = arg(b, i);
+		if (o is Boolean) {
+			return o;
+		}
 		if (o is String) {
 			var s:String = o;
-			if ((s == '') || (s == '0') || (s.toLowerCase() == 'false')) return false
-			return true; // treat all other strings as true
+			return !((s == '') || (s == '0') || (s.toLowerCase() == 'false'));
 		}
 		return Boolean(o); // coerce Number and anything else
 	}
@@ -417,7 +419,7 @@ public class Interpreter {
 		return Number(n);
 	}
 
-	private function startCmdList(b:Block, isLoop:Boolean = false, argList:Array = null):void {
+	internal function startCmdList(b:Block, isLoop:Boolean = false, argList:Array = null):void {
 		if (b == null||app.runtime.isRequest) {
 			if (isLoop) yield = true;
 			return;
@@ -462,7 +464,8 @@ public class Interpreter {
 	public function getPrim(op:String):Function { return primTable[op] }
 
 	private function initPrims():void {
-		primTable = new Dictionary();
+		PrimInit.Init(primTable);
+		/*
 		// control
 		primTable["whenGreenFlag"]		= primNoop;
 		primTable["whenKeyPressed"]		= primNoop;
@@ -514,9 +517,10 @@ public class Interpreter {
 
 	protected function addOtherPrims(primTable:Dictionary):void {
 		// other primitives
+*/
 		new Primitives(app, this).addPrimsTo(primTable);
 	}
-
+/*
 	private function checkPrims():void {
 		var op:String;
 		var allOps:Array = ["CALL", "GET_VAR", "NOOP"];
@@ -531,9 +535,9 @@ public class Interpreter {
 			if (allOps.indexOf(op) < 0) trace("Not in specs: " + op);
 		}
 	}
-
+*/
 	public function primNoop(b:Block):void { }
-
+/*
 	private function primForLoop(b:Block):void {
 		var list:Array = [];
 		var loopVar:Variable;
@@ -611,18 +615,17 @@ public class Interpreter {
 	// Broadcast and scene starting
 
 	public function broadcast(msg:String, waitFlag:Boolean):void {
-		var pair:Array;
 		ParseManager.sharedManager().parse("serial/line/"+msg);
 		if (activeThread.firstTime) {
 			var receivers:Array = [];
-			var newThreads:Array = [];
 			msg = msg.toLowerCase();
-			var findReceivers:Function = function (stack:Block, target:ScratchObj):void {
+			function findReceivers(stack:Block, target:ScratchObj):void {
 				try{
 					if ((stack.op == "whenIReceive") && (stack.args[0].argValue.toLowerCase() == msg)) {
 						receivers.push([stack, target]);
 					}
 				}catch(e:Error){
+					trace(e);
 					var b:Block = (stack.args[0] as Block);
 					if ((stack.op == "whenIReceive") && (evalCmd(b).toLowerCase() == msg)) {
 						receivers.push([stack, target]);
@@ -630,24 +633,35 @@ public class Interpreter {
 				}
 			}
 			app.runtime.allStacksAndOwnersDo(findReceivers);
-			// (re)start all receivers
-			for each (pair in receivers) newThreads.push(restartThread(pair[0], pair[1]));
-			if (!waitFlag) return;
-			activeThread.tmpObj = newThreads;
-			activeThread.firstTime = false;
+			startAllReceivers(receivers, waitFlag);
+			if(!waitFlag){
+				return;
+			}
 		}
-		var done:Boolean = true;
-		for each (var t:Thread in activeThread.tmpObj) { if (threads.indexOf(t) >= 0) done = false }
-		if (done) {
+		checkDone();
+	}
+*/	
+	internal function checkDone():void
+	{
+		if (isDone()) {
 			activeThread.tmpObj = null;
 			activeThread.firstTime = true;
 		} else {
 			yield = true;
 		}
 	}
+	
+	private function isDone():Boolean
+	{
+		for each (var t:Thread in activeThread.tmpObj) { 
+			if (threads.indexOf(t) >= 0){ 
+				return false;
+			} 
+		}
+		return true;
+	}
 
 	public function startScene(sceneName:String, waitFlag:Boolean):void {
-		var pair:Array;
 		if (activeThread.firstTime) {
 			function findSceneHats(stack:Block, target:ScratchObj):void {
 				if ((stack.op == "whenSceneStarts") && (stack.args[0].argValue == sceneName)) {
@@ -658,25 +672,28 @@ public class Interpreter {
 			app.stagePane.showCostumeNamed(sceneName);
 			redraw();
 			app.runtime.allStacksAndOwnersDo(findSceneHats);
-			// (re)start all receivers
-			var newThreads:Array = [];
-			for each (pair in receivers) newThreads.push(restartThread(pair[0], pair[1]));
-			if (!waitFlag) return;
+			startAllReceivers(receivers, waitFlag);
+			if(!waitFlag){
+				return;
+			}
+		}
+		checkDone();
+	}
+	
+	internal function startAllReceivers(receivers:Array, waitFlag:Boolean):void
+	{
+		var newThreads:Array = [];
+		for each (var pair:Array in receivers){
+			newThreads.push(restartThread(pair[0], pair[1]));
+		}
+		if(waitFlag){
 			activeThread.tmpObj = newThreads;
 			activeThread.firstTime = false;
-		}
-		var done:Boolean = true;
-		for each (var t:Thread in activeThread.tmpObj) { if (threads.indexOf(t) >= 0) done = false }
-		if (done) {
-			activeThread.tmpObj = null;
-			activeThread.firstTime = true;
-		} else {
-			yield = true;
 		}
 	}
 
 	// Procedure call/return
-
+/*
 	private function primCall(b:Block):void {
 		// Call a procedure. Handle recursive calls and "warp" procedures.
 		// The activeThread.firstTime flag is used to mark the first call
@@ -773,5 +790,5 @@ public class Interpreter {
 		if ((activeThread.args == null) || (b.parameterIndex >= activeThread.args.length)) return 0;
 		return activeThread.args[b.parameterIndex];
 	}
-
+*/
 }}
