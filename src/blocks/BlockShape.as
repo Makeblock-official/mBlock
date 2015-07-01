@@ -154,9 +154,9 @@ public class BlockShape extends Shape {
 		g.clear();
 		if(bmd != null){
 			var matrix:Matrix = new Matrix();
-			matrix.scale(LightSensor.BMP_SCALE, LightSensor.BMP_SCALE);
+			matrix.scale(LightSensor.BMP_ICON_SCALE, LightSensor.BMP_ICON_SCALE);
 			g.beginBitmapFill(bmd, matrix, false);
-			g.drawRect(0, 0, LightSensor.COUNT_W*LightSensor.BMP_SCALE, LightSensor.COUNT_H*LightSensor.BMP_SCALE);
+			g.drawRect(0, 0, LightSensor.COUNT_W*LightSensor.BMP_ICON_SCALE, LightSensor.COUNT_H*LightSensor.BMP_ICON_SCALE);
 		}else{
 			g.beginFill(color);
 			drawFunction(g);

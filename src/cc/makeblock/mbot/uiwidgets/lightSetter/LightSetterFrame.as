@@ -18,6 +18,8 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 	import org.aswing.AssetPane;
 	import org.aswing.Border;
 	import org.aswing.BorderLayout;
+	import org.aswing.CenterLayout;
+	import org.aswing.Component;
 	import org.aswing.Insets;
 	import org.aswing.JButton;
 	import org.aswing.JFrame;
@@ -28,7 +30,6 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 	import org.aswing.border.EmptyBorder;
 	import org.aswing.border.LineBorder;
 	import org.aswing.event.AWEvent;
-	import org.aswing.geom.IntDimension;
 	
 	import translation.Translator;
 	
@@ -36,11 +37,11 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 	{
 		static public const MAX_CUSTOM_ITEMS:int = 9;
 		
-		private const focusBorder:Border = new LineBorder(new EmptyBorder(null, new Insets(2, 2, 2, 2)), new ASColor(0x333333));
-		private const defaultBorder:Border = new EmptyBorder(null, new Insets(3, 3, 3, 3));
+//		private const focusBorder:Border = new LineBorder(null, new ASColor(0xcbcbcb), 4);
+//		private const defaultBorder:Border = new EmptyBorder(null, new Insets(4, 4, 4, 4));
 		
 		private var sensor:LightSensor;
-		private var centerPanel:JPanel;
+//		private var centerPanel:JPanel;
 		
 		private var btnLightAll:JButton;
 		private var btnCleartAll:JButton;
@@ -55,10 +56,11 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 		private var btnCancel:JButton;
 		private var btnAddToFavorite:JButton;
 		
-		private var thumbPanel:JPanel;
-		private var presetPanel:JPanel;
+//		private var thumbPanel:JPanel;
+//		private var presetPanel:JPanel;
 		
 		private var focusThumb:AssetPane;
+		private var thumbPane:ThumbPane;
 		
 		public function LightSetterFrame()
 		{
@@ -80,40 +82,56 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 			btnDelete = ButtonFactory.createBtn("remove emotion");
 			btnDelete.setEnabled(false);
 			
-			centerPanel = new JPanel();
-			centerPanel.addChild(sensor);
-			centerPanel.setPreferredSize(new IntDimension(sensor.width, sensor.height));
+//			centerPanel = new JPanel();
+			var centerPanel:Component = new AssetPane(sensor);
+			centerPanel.setBorder(
+				new LineBorder(
+					new EmptyBorder(null, new Insets(10,10,10,10)),
+					new ASColor(0xd0d1d2)
+				)
+			);
+			var wrapper:JPanel = new JPanel(new CenterLayout());
+			wrapper.append(centerPanel);
 			
-			var btnPanel:JPanel = new JPanel(new SoftBoxLayout(SoftBoxLayout.Y_AXIS));
-			btnPanel.append(btnLightAll);
-			btnPanel.append(btnCleartAll);
-//			btnPanel.append(btnRotateView);
-			btnPanel.append(btnRotatePixel);
-			btnPanel.append(btnFlipX);
-			btnPanel.append(btnFlipY);
-			btnPanel.append(btnEraser);
-			btnPanel.append(btnDelete);
+//			centerPanel.append(assetPane);
+			
+			var btnPanel:JPanel = new JPanel(new SoftBoxLayout(SoftBoxLayout.X_AXIS, 10));
 			
 			var bottomBtn:JPanel = new JPanel(new SoftBoxLayout(SoftBoxLayout.X_AXIS, 5, SoftBoxLayout.CENTER));
 			
-			btnOk = new JButton("ok");
-			btnCancel = new JButton("cancel");
+			btnOk = new JButton("Complete");
+			btnOk.setPreferredWidth(162);
+			btnCancel = new JButton("Cancel");
+			btnCancel.setPreferredWidth(162);
 			btnAddToFavorite = new JButton("add to favorite");
 			
 			bottomBtn.append(btnAddToFavorite);
-			bottomBtn.append(btnOk);
-			bottomBtn.append(btnCancel);
+			btnPanel.append(btnCancel);
+			btnPanel.append(btnOk);
 			
-			thumbPanel = new JPanel(new SoftBoxLayout(SoftBoxLayout.X_AXIS, 4));
-			presetPanel = new JPanel(new SoftBoxLayout(SoftBoxLayout.Y_AXIS, 4));
+			bottomBtn.append(btnLightAll);
+			bottomBtn.append(btnCleartAll);
+//			btnPanel.append(btnRotateView);
+			bottomBtn.append(btnRotatePixel);
+			bottomBtn.append(btnFlipX);
+			bottomBtn.append(btnFlipY);
+			bottomBtn.append(btnEraser);
+			bottomBtn.append(btnDelete);
+			
+			thumbPane = new ThumbPane(this);
+			thumbPane.addBtn(btnPanel);
+			
+//			thumbPanel = new JPanel(new SoftBoxLayout(SoftBoxLayout.X_AXIS, 4));
+//			presetPanel = new JPanel(new SoftBoxLayout(SoftBoxLayout.Y_AXIS, 4));
 			
 			getContentPane().setLayout(new BorderLayout(4, 4));
-			getContentPane().setBorder(new EmptyBorder(null, new Insets(4, 0, 0, 0)));
-			getContentPane().append(centerPanel, BorderLayout.CENTER);
-			getContentPane().append(btnPanel, BorderLayout.EAST);
-			getContentPane().append(bottomBtn, BorderLayout.SOUTH);
-			getContentPane().append(thumbPanel, BorderLayout.NORTH);
-			getContentPane().append(presetPanel, BorderLayout.WEST);
+			getContentPane().setBorder(new EmptyBorder(null, new Insets(16, 20, 16, 20)));
+			getContentPane().append(wrapper, BorderLayout.CENTER);
+//			getContentPane().append(btnPanel, BorderLayout.EAST);
+			getContentPane().append(bottomBtn, BorderLayout.NORTH);
+//			getContentPane().append(thumbPanel, BorderLayout.NORTH);
+			getContentPane().append(thumbPane, BorderLayout.SOUTH);
+//			getContentPane().append(presetPanel, BorderLayout.WEST);
 			
 			loadPresets();
 			addEvents();
@@ -124,7 +142,8 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 			var file:File = File.applicationDirectory.resolvePath("assets/emotions");
 			for each(var item:File in file.getDirectoryListing()){
 				var str:String = FileUtil.ReadString(item);
-				appendBitmapData(presetPanel, genBitmapData(str));
+				thumbPane.addThumb(item.name, genBitmapData(str), true);
+//				appendBitmapData(presetPanel, genBitmapData(str));
 			}
 			file = getCustomEmotionDir();
 			if(!file.exists){
@@ -132,8 +151,9 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 			}
 			for each(item in file.getDirectoryListing()){
 				str = FileUtil.ReadString(item);
-				var wrapper:AssetPane = appendBitmapData(thumbPanel, genBitmapData(str));
-				wrapper.name = item.name;
+				thumbPane.addThumb(item.name, genBitmapData(str), false);
+//				var wrapper:AssetPane = appendBitmapData(thumbPanel, genBitmapData(str));
+//				wrapper.name = item.name;
 			}
 		}
 		
@@ -173,30 +193,30 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 		{
 			btnDelete.setEnabled(false);
 			if(focusThumb != null){
-				focusThumb.setBorder(defaultBorder);
+				focusThumb.setBorder(ThumbPane.normalBorder);
 				focusThumb = null;
 			}
 		}
 		
-		private function __onClick(evt:MouseEvent):void
+		internal function __onClick(evt:MouseEvent):void
 		{
 			var target:AssetPane = evt.currentTarget as AssetPane;
 			var bmd:BitmapData = (target.getAsset() as Bitmap).bitmapData;
 			sensor.copyFrom(bmd);
 			
-			btnDelete.setEnabled(target.getParent() == thumbPanel);
+//			btnDelete.setEnabled(target.getParent() == thumbPanel);
 			
 			if(focusThumb != null){
-				focusThumb.setBorder(defaultBorder);
+				focusThumb.setBorder(ThumbPane.normalBorder);
 			}
 			
 			focusThumb = target;
-			target.setBorder(focusBorder);
+			target.setBorder(ThumbPane.selectBorder);
 		}
 		
 		private function __onDeleteFavorite(evt:AWEvent):void
 		{
-			thumbPanel.remove(focusThumb);
+//			thumbPanel.remove(focusThumb);
 			//todo 删除文件
 			var file:File = getCustomEmotionDir().resolvePath(focusThumb.name);
 			if(file.exists){
@@ -246,25 +266,28 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 				JOptionPane.showMessageDialog("notice", "image is empty.");
 				return;
 			}
-			if(thumbPanel.getComponentCount() >= MAX_CUSTOM_ITEMS){
-				JOptionPane.showMessageDialog("notice", "favorite is too much,please delete some first.");
-				return;
-			}
+//			if(thumbPanel.getComponentCount() >= MAX_CUSTOM_ITEMS){
+//				JOptionPane.showMessageDialog("notice", "favorite is too much,please delete some first.");
+//				return;
+//			}
 			var bmd:BitmapData = sensor.getBitmapData();
 			var fileName:String = saveToFile(bmd);
-			var wrapper:AssetPane = appendBitmapData(thumbPanel, bmd);
-			wrapper.name = fileName;
+			
+			thumbPane.addThumb(fileName, bmd, false);
+//			var wrapper:AssetPane = appendBitmapData(thumbPanel, bmd);
+//			wrapper.name = fileName;
 		}
-		
+		/*
 		private function appendBitmapData(parent:JPanel, bmd:BitmapData):AssetPane
 		{
 			var pane:AssetPane = new AssetPane(LightSensor.createBmp(bmd));
 			pane.setBorder(defaultBorder);
 			parent.append(pane);
 			pane.addEventListener(MouseEvent.CLICK, __onClick);
+//			thumbPane.addThumb(bmd);
 			return pane;
 		}
-		
+		*/
 		private function __onOk(evt:AWEvent):void
 		{
 			hide();

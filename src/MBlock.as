@@ -791,11 +791,12 @@ package {
 			scriptsPart.setWidthHeight(contentW, contentH);
 	
 			if (mediaLibrary) mediaLibrary.setWidthHeight(topBarPart.w, fullH);
+			/*
 			if (frameRateGraph) {
 				frameRateGraph.y = stage.stageHeight - frameRateGraphH;
 				addChild(frameRateGraph); // put in front
 			}
-	
+	*/
 			if(isIn3D) render3D.onStageResize();
 		}
 	
@@ -1001,6 +1002,7 @@ package {
 			var p:Point = b.localToGlobal(new Point(0, 0));
 			m.showOnStage(stage, b.x, topBarPart.bottom() - 1);
 		}
+		/*
 		private var reg:RegExp = /\b(\w)|\s(\w)/g;
 		private function replaceReg(str:String):String{
 			str = str.toLowerCase();
@@ -1041,6 +1043,7 @@ package {
 			var p:Point = b.localToGlobal(new Point(0, 0));
 			m.showOnStage(stage, b.x, topBarPart.bottom() - 1);
 		}
+		
 		public function openShare(b:*):void {
 			var url:URLRequest = new URLRequest("http://www.maoyouhui.org/forum.php?gid=57&mblock");
 			navigateToURL(url,"_blank");
@@ -1076,6 +1079,7 @@ package {
 			}
 			track("/OpenHelp/"+v);
 		}
+		
 		public function openAbout(b:*):void {
 			var m:Menu = new Menu(openHelpMenu, 'Help', CSS.topBarColor, 28);
 			
@@ -1112,6 +1116,7 @@ package {
 //			track("/OpenForum/"+url.url);
 //			navigateToURL(url,"_blank");
 		}
+		*/
 		public function openBluetooth(b:*):void{
 			BluetoothManager.sharedManager().discover();
 		}
@@ -1459,76 +1464,6 @@ package {
 			lp.scaleY = stagePane.scaleY;
 			lp.x = int(p.x + ((stagePane.width - lp.width) / 2));
 			lp.y = int(p.y + ((stagePane.height - lp.height) / 2));
-		}
-	
-		// -----------------------------
-		// Frame rate readout (for use during development)
-		//------------------------------
-	
-		private var frameRateReadout:TextField;
-		private var firstFrameTime:int;
-		private var frameCount:int;
-	
-		protected function addFrameRateReadout(x:int, y:int, color:uint = 0):void {
-			frameRateReadout = new TextField();
-			frameRateReadout.autoSize = TextFieldAutoSize.LEFT;
-			frameRateReadout.selectable = false;
-			frameRateReadout.background = false;
-			frameRateReadout.defaultTextFormat = new TextFormat(CSS.font, 12, color);
-			frameRateReadout.x = x;
-			frameRateReadout.y = y;
-			addChild(frameRateReadout);
-			frameRateReadout.addEventListener(Event.ENTER_FRAME, updateFrameRate);
-		}
-	
-		private function updateFrameRate(e:Event):void {
-			frameCount++;
-			if (!frameRateReadout) return;
-			var now:int = getTimer();
-			var msecs:int = now - firstFrameTime;
-			if (msecs > 500) {
-				var fps:Number = Math.round((1000 * frameCount) / msecs);
-				frameRateReadout.text = fps + ' fps (' + Math.round(msecs / frameCount) + ' msecs)';
-				firstFrameTime = now;
-				frameCount = 0;
-			}
-		}
-	
-		// TODO: Remove / no longer used
-		private const frameRateGraphH:int = 150;
-		private var frameRateGraph:Shape;
-		private var nextFrameRateX:int;
-		private var lastFrameTime:int;
-	
-		private function addFrameRateGraph():void {
-			addChild(frameRateGraph = new Shape());
-			frameRateGraph.y = stage.stageHeight - frameRateGraphH;
-			clearFrameRateGraph();
-			stage.addEventListener(Event.ENTER_FRAME, updateFrameRateGraph);
-		}
-	
-		public function clearFrameRateGraph():void {
-			var g:Graphics = frameRateGraph.graphics;
-			g.clear();
-			g.beginFill(0xFFFFFF);
-			g.drawRect(0, 0, stage.stageWidth, frameRateGraphH);
-			nextFrameRateX = 0;
-		}
-	
-		private function updateFrameRateGraph(evt:*):void {
-			var now:int = getTimer();
-			var msecs:int = now - lastFrameTime;
-			lastFrameTime = now;
-			var c:int = 0x505050;
-			if (msecs > 40) c = 0xE0E020;
-			if (msecs > 50) c = 0xA02020;
-	
-			if (nextFrameRateX > stage.stageWidth) clearFrameRateGraph();
-			var g:Graphics = frameRateGraph.graphics;
-			g.beginFill(c);
-			var barH:int = Math.min(frameRateGraphH, msecs / 2);
-			g.drawRect(nextFrameRateX, frameRateGraphH - barH, 1, barH);
-			nextFrameRateX++;
 		}
 	
 		// -----------------------------

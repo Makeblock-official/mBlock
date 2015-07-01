@@ -16,10 +16,11 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 		static public const COUNT_W:int = 16;
 		static public const COUNT_H:int = 8;
 		
-		static public const PANEL_W:int = 630;
-		static public const PANEL_H:int = 310;
+//		static public const PANEL_W:int = 630;
+//		static public const PANEL_H:int = 310;
 		
-		static public const GAP:int = 10;
+		static public const GAP_X:int = 10;
+		static public const GAP_Y:int = 15;
 		
 		private var lightDict:Array;
 		private var direction:int;
@@ -84,8 +85,8 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 					var light:LightPoint = new LightPoint();
 					light.px = i;
 					light.py = j;
-					light.x = i * (light.width + GAP);
-					light.y = j * (light.height + GAP);
+					light.x = i * (light.width + GAP_X);
+					light.y = j * (light.height + GAP_Y);
 					addChild(light);
 					lightDict[i][j] = light;
 				}
@@ -177,7 +178,7 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 		{
 			return direction % 2 == 0;
 		}
-		
+		/*
 		public function rotateView():void
 		{
 			direction = (direction + 1) % 4;
@@ -205,7 +206,7 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 					break;
 			}
 		}
-		
+		*/
 		public function rotatePixel():void
 		{
 			var bytes:ByteArray = getValue();
@@ -272,7 +273,8 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 			}
 		}
 		
-		static public const BMP_SCALE:Number = 2;
+		static public const BMP_SCALE:Number = 4;
+		static public const BMP_ICON_SCALE:Number = 2;
 		
 		static public function createBmp(bmd:BitmapData):Bitmap
 		{
@@ -280,7 +282,7 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 			bmp.scaleX = bmp.scaleY = BMP_SCALE;
 			return bmp;
 		}
-		
+		/*
 		override public function get width():Number
 		{
 			if(direction % 2 == 0){
@@ -296,5 +298,6 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 			}
 			return PANEL_W;
 		}
+		*/
 	}
 }

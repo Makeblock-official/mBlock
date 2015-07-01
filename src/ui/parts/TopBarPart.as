@@ -98,7 +98,7 @@ package ui.parts {
 				MBlock.app.showFileMenu(Menu.dummyButton());
 				MBlock.app.showEditMenu(Menu.dummyButton());
 				//MBlock.app.showSerialMenu(Menu.dummyButton());
-				MBlock.app.showExamplesMenu(Menu.dummyButton());
+//				MBlock.app.showExamplesMenu(Menu.dummyButton());
 			}
 			return ['File', 'Edit', 'Tips', 'Duplicate', 'Delete', 'Grow', 'Shrink', 'Block help', 'Offline Editor'];
 		}

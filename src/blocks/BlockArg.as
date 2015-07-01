@@ -119,7 +119,7 @@ public class BlockArg extends Sprite {
 			base.setWidthAndTopHeight(13, 13);
 			setArgValue(Color.random());
 		} else if(menuName == "drawFace"){
-			base.setWidthAndTopHeight(LightSensor.COUNT_W * LightSensor.BMP_SCALE, LightSensor.COUNT_H * LightSensor.BMP_SCALE, true);
+			base.setWidthAndTopHeight(LightSensor.COUNT_W * LightSensor.BMP_ICON_SCALE, LightSensor.COUNT_H * LightSensor.BMP_ICON_SCALE, true);
 		}else {
 			base.setWidthAndTopHeight(30, Block.argTextFormat.size + 6); // 15 for normal arg font
 		}
