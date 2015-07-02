@@ -8,7 +8,6 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 		static public const SIZE_W:int = 32;
 		static public const SIZE_H:int = 24;
 		
-//		static public const COLOR_ON:int = 0x00ABFD;
 		static public const COLOR_ON:int = 0x1ebaee;
 		static public const COLOR_OFF:int = 0xcbcbcb;
 		

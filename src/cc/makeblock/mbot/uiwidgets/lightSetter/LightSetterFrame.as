@@ -8,15 +8,15 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 	import flash.ui.Mouse;
 	import flash.ui.MouseCursor;
 	
-	import cc.makeblock.mbot.util.ButtonFactory;
 	import cc.makeblock.mbot.util.PopupUtil;
 	import cc.makeblock.util.FileUtil;
 	
 	import org.aswing.ASColor;
-	import org.aswing.AsWingConstants;
+	import org.aswing.ASFont;
+	import org.aswing.AbstractButton;
 	import org.aswing.AsWingUtils;
+	import org.aswing.AssetIcon;
 	import org.aswing.AssetPane;
-	import org.aswing.Border;
 	import org.aswing.BorderLayout;
 	import org.aswing.CenterLayout;
 	import org.aswing.Component;
@@ -30,12 +30,28 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 	import org.aswing.border.EmptyBorder;
 	import org.aswing.border.LineBorder;
 	import org.aswing.event.AWEvent;
+	import org.aswing.geom.IntDimension;
 	
 	import translation.Translator;
 	
 	public class LightSetterFrame extends JFrame
 	{
-		static public const MAX_CUSTOM_ITEMS:int = 9;
+		[Embed("/assets/UI/ledFace/Eraser-normal.png")]
+		static private const ERASER_CLS:Class;
+		
+		[Embed("/assets/UI/ledFace/Flip_X-normal.png")]
+		static private const FLIP_X_CLS:Class;
+		
+		[Embed("/assets/UI/ledFace/Flip_Y-normal.png")]
+		static private const FLIP_Y_CLS:Class;
+		
+		[Embed("/assets/UI/ledFace/Rotate_normal.png")]
+		static private const ROTATE_CLS:Class;
+		
+		[Embed("/assets/UI/ledFace/Eraser-disable.png")]
+		static private const ERASER_DISABLE_CLS:Class;
+		
+		static public const MAX_CUSTOM_ITEMS:int = 48;
 		
 //		private const focusBorder:Border = new LineBorder(null, new ASColor(0xcbcbcb), 4);
 //		private const defaultBorder:Border = new EmptyBorder(null, new Insets(4, 4, 4, 4));
@@ -64,74 +80,81 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 		
 		public function LightSetterFrame()
 		{
-			super(null, "Face Palate", true);
+			super(null, "Face Panel", true);
 			setResizable(false);
 			defaultCloseOperation = HIDE_ON_CLOSE;
 			
 			sensor = new LightSensor();
 			sensor.addEventListener(Event.SELECT, __onSelect);
 			
-			btnLightAll = ButtonFactory.createBtn("light all");
-			btnCleartAll = ButtonFactory.createBtn("clear all");
-//			btnRotateView = ButtonFactory.createBtn("rotate view");
-			btnRotatePixel = ButtonFactory.createBtn("rotate pixel");
-			btnFlipX = ButtonFactory.createBtn("flip x");
-			btnFlipY = ButtonFactory.createBtn("flip y");
-			btnEraser = new JToggleButton("eraser");
-			btnEraser.setHorizontalAlignment(AsWingConstants.LEFT);
-			btnDelete = ButtonFactory.createBtn("remove emotion");
-			btnDelete.setEnabled(false);
+			btnLightAll = new JButton("Light All");
+			btnCleartAll = new JButton("Clear All");
+			btnLightAll.setPreferredSize(new IntDimension(76, 36));
+			btnCleartAll.setPreferredSize(new IntDimension(76, 36));
 			
-//			centerPanel = new JPanel();
+			btnRotatePixel = new JButton(null, new AssetIcon(new ROTATE_CLS()));
+			btnFlipX = new JButton(null, new AssetIcon(new FLIP_X_CLS()));
+			btnFlipY = new JButton(null, new AssetIcon(new FLIP_Y_CLS()));
+			btnEraser = new JToggleButton(null, new AssetIcon(new ERASER_DISABLE_CLS()));
+//			btnEraser.setHorizontalAlignment(AsWingConstants.LEFT);
+			btnDelete = new JButton();
+			btnDelete.setPreferredSize(new IntDimension(142, 36));
+			
+			setIconBtnStyle(btnRotatePixel);
+			setIconBtnStyle(btnFlipX);
+			setIconBtnStyle(btnFlipY);
+			setIconBtnStyle(btnEraser);
+			
+			btnEraser.setSelectedIcon(new AssetIcon(new ERASER_CLS()));
+			
+			
 			var centerPanel:Component = new AssetPane(sensor);
-			centerPanel.setBorder(
-				new LineBorder(
-					new EmptyBorder(null, new Insets(10,10,10,10)),
-					new ASColor(0xd0d1d2)
-				)
-			);
+			centerPanel.setBorder(new LineBorder(null, new ASColor(0xd0d1d2)));
 			var wrapper:JPanel = new JPanel(new CenterLayout());
 			wrapper.append(centerPanel);
 			
-//			centerPanel.append(assetPane);
-			
 			var btnPanel:JPanel = new JPanel(new SoftBoxLayout(SoftBoxLayout.X_AXIS, 10));
-			
-			var bottomBtn:JPanel = new JPanel(new SoftBoxLayout(SoftBoxLayout.X_AXIS, 5, SoftBoxLayout.CENTER));
+			var bottomBtn:JPanel = new JPanel(new SoftBoxLayout(SoftBoxLayout.X_AXIS, 4, SoftBoxLayout.CENTER));
 			
 			btnOk = new JButton("Complete");
 			btnOk.setPreferredWidth(162);
 			btnCancel = new JButton("Cancel");
 			btnCancel.setPreferredWidth(162);
 			btnAddToFavorite = new JButton("add to favorite");
+			btnAddToFavorite.setPreferredSize(new IntDimension(142, 36));
 			
-			bottomBtn.append(btnAddToFavorite);
 			btnPanel.append(btnCancel);
 			btnPanel.append(btnOk);
 			
-			bottomBtn.append(btnLightAll);
+			bottomBtn.append(btnEraser);
+			bottomBtn.append(createEmpty(46, 36));
 			bottomBtn.append(btnCleartAll);
-//			btnPanel.append(btnRotateView);
+			bottomBtn.append(btnLightAll);
+			bottomBtn.append(createEmpty(48, 36));
 			bottomBtn.append(btnRotatePixel);
 			bottomBtn.append(btnFlipX);
 			bottomBtn.append(btnFlipY);
-			bottomBtn.append(btnEraser);
+			bottomBtn.append(createEmpty(52, 36));
 			bottomBtn.append(btnDelete);
+			bottomBtn.append(btnAddToFavorite);
+			
+			btnDelete.setVisible(false);
+			
+			setBtnStyle(btnLightAll);
+			setBtnStyle(btnCleartAll);
+			setBtnStyle(btnDelete);
+			setBtnStyle(btnAddToFavorite);
+			setBtnStyle(btnOk);
+			setBtnStyle(btnCancel);
 			
 			thumbPane = new ThumbPane(this);
 			thumbPane.addBtn(btnPanel);
 			
-//			thumbPanel = new JPanel(new SoftBoxLayout(SoftBoxLayout.X_AXIS, 4));
-//			presetPanel = new JPanel(new SoftBoxLayout(SoftBoxLayout.Y_AXIS, 4));
-			
 			getContentPane().setLayout(new BorderLayout(4, 4));
 			getContentPane().setBorder(new EmptyBorder(null, new Insets(16, 20, 16, 20)));
 			getContentPane().append(wrapper, BorderLayout.CENTER);
-//			getContentPane().append(btnPanel, BorderLayout.EAST);
 			getContentPane().append(bottomBtn, BorderLayout.NORTH);
-//			getContentPane().append(thumbPanel, BorderLayout.NORTH);
 			getContentPane().append(thumbPane, BorderLayout.SOUTH);
-//			getContentPane().append(presetPanel, BorderLayout.WEST);
 			
 			loadPresets();
 			addEvents();
@@ -143,7 +166,6 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 			for each(var item:File in file.getDirectoryListing()){
 				var str:String = FileUtil.ReadString(item);
 				thumbPane.addThumb(item.name, genBitmapData(str), true);
-//				appendBitmapData(presetPanel, genBitmapData(str));
 			}
 			file = getCustomEmotionDir();
 			if(!file.exists){
@@ -152,8 +174,6 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 			for each(item in file.getDirectoryListing()){
 				str = FileUtil.ReadString(item);
 				thumbPane.addThumb(item.name, genBitmapData(str), false);
-//				var wrapper:AssetPane = appendBitmapData(thumbPanel, genBitmapData(str));
-//				wrapper.name = item.name;
 			}
 		}
 		
@@ -191,40 +211,69 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 		
 		private function __onSelect(evt:Event):void
 		{
-			btnDelete.setEnabled(false);
+			if(focusThumb != null){
+				showDeleteBtn(false);
+				
+				focusThumb.setBorder(ThumbPane.normalBorder);
+				focusThumb = null;
+			}
+		}
+		
+		internal function clearFocus():void
+		{
 			if(focusThumb != null){
 				focusThumb.setBorder(ThumbPane.normalBorder);
 				focusThumb = null;
+				showDeleteBtn(false);
 			}
 		}
 		
 		internal function __onClick(evt:MouseEvent):void
 		{
 			var target:AssetPane = evt.currentTarget as AssetPane;
+			
 			var bmd:BitmapData = (target.getAsset() as Bitmap).bitmapData;
-			sensor.copyFrom(bmd);
 			
-//			btnDelete.setEnabled(target.getParent() == thumbPanel);
-			
-			if(focusThumb != null){
-				focusThumb.setBorder(ThumbPane.normalBorder);
+			if(sensor.isDataDirty){
+				__onAddToFavorite(null);
+				sensor.isDataDirty = false;
 			}
 			
-			focusThumb = target;
-			target.setBorder(ThumbPane.selectBorder);
+			sensor.copyFrom(bmd);
+			
+			clearFocus();
+			
+			if(thumbPane.isPreset(target)){
+				showDeleteBtn(false);
+			}else{
+				showDeleteBtn(true);
+				focusThumb = target;
+				target.setBorder(ThumbPane.selectBorder);
+			}
 		}
 		
 		private function __onDeleteFavorite(evt:AWEvent):void
 		{
-//			thumbPanel.remove(focusThumb);
-			//todo 删除文件
-			var file:File = getCustomEmotionDir().resolvePath(focusThumb.name);
+			if(null == focusThumb){
+				return;
+			}
+			
+			var file:File = getCustomEmotionDir().resolvePath(focusThumb.getName());
 			if(file.exists){
 				file.deleteFileAsync();
 			}
 			
+			thumbPane.removeData(focusThumb.getName());
+			focusThumb.setBorder(ThumbPane.normalBorder);
 			focusThumb = null;
-			btnDelete.setEnabled(false);
+			
+			showDeleteBtn(false);
+		}
+		
+		private function showDeleteBtn(value:Boolean):void
+		{
+			btnDelete.setVisible(value);
+			btnAddToFavorite.setVisible(!value);
 		}
 		
 		static private function genBitmapData(str:String):BitmapData
@@ -248,7 +297,6 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 		{
 			btnLightAll.addActionListener(__onLightAll);
 			btnCleartAll.addActionListener(__onClearAll);
-//			btnRotateView.addActionListener(__onRotateView);
 			btnRotatePixel.addActionListener(__onRotatePixel);
 			btnFlipX.addActionListener(__onFlipX);
 			btnFlipY.addActionListener(__onFlipY);
@@ -266,28 +314,16 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 				JOptionPane.showMessageDialog("notice", "image is empty.");
 				return;
 			}
-//			if(thumbPanel.getComponentCount() >= MAX_CUSTOM_ITEMS){
+			if(thumbPane.getIconCount() >= MAX_CUSTOM_ITEMS){
 //				JOptionPane.showMessageDialog("notice", "favorite is too much,please delete some first.");
-//				return;
-//			}
+				return;
+			}
 			var bmd:BitmapData = sensor.getBitmapData();
 			var fileName:String = saveToFile(bmd);
 			
 			thumbPane.addThumb(fileName, bmd, false);
-//			var wrapper:AssetPane = appendBitmapData(thumbPanel, bmd);
-//			wrapper.name = fileName;
 		}
-		/*
-		private function appendBitmapData(parent:JPanel, bmd:BitmapData):AssetPane
-		{
-			var pane:AssetPane = new AssetPane(LightSensor.createBmp(bmd));
-			pane.setBorder(defaultBorder);
-			parent.append(pane);
-			pane.addEventListener(MouseEvent.CLICK, __onClick);
-//			thumbPane.addThumb(bmd);
-			return pane;
-		}
-		*/
+		
 		private function __onOk(evt:AWEvent):void
 		{
 			hide();
@@ -328,16 +364,7 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 			sensor.eraserMode = !sensor.eraserMode;
 			Mouse.cursor = sensor.eraserMode ? MouseCursor.HAND : MouseCursor.AUTO;
 		}
-		/*
-		private function __onRotateView(evt:AWEvent):void
-		{
-			sensor.rotateView();
-			centerPanel.setPreferredSize(new IntDimension(sensor.width, sensor.height));
-			invalidate();
-			pack();
-			AsWingUtils.centerLocate(this);
-		}
-		*/
+		
 		private function __onRotatePixel(evt:AWEvent):void
 		{
 			sensor.rotatePixel();
@@ -345,20 +372,12 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 		
 		private function __onFlipX(evt:AWEvent):void
 		{
-			if(sensor.isHorizontal()){
-				sensor.flipX();
-			}else{
-				sensor.flipY();
-			}
+			sensor.flipX();
 		}
 		
 		private function __onFlipY(evt:AWEvent):void
 		{
-			if(sensor.isHorizontal()){
-				sensor.flipY();
-			}else{
-				sensor.flipX();
-			}
+			sensor.flipY();
 		}
 		
 		private function __onClearAll(evt:AWEvent):void
@@ -368,6 +387,10 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 		
 		override public function hide():void
 		{
+			if(btnEraser.isSelected()){
+				btnEraser.setSelected(false);
+				__onEraser(null);
+			}
 			super.hide();
 			Translator.unregChangeEvt(__onLangChanged);
 			PopupUtil.enableRightMouseEvent();
@@ -375,15 +398,28 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 		
 		private function __onLangChanged(evt:Event=null):void
 		{
-			btnLightAll.setText(Translator.map("light all"));
-			btnCleartAll.setText(Translator.map("clear all"));
-			btnRotatePixel.setText(Translator.map("rotate pixel"));
-			
-			btnFlipX.setText(Translator.map("flip x"));
-			btnFlipY.setText(Translator.map("flip y"));
-			btnEraser.setText(Translator.map("eraser"));
-			btnDelete.setText(Translator.map("remove emotion"));
-			trace("frame lang changed");
+			btnLightAll.setText(Translator.map("Light All"));
+			btnCleartAll.setText(Translator.map("Clear All"));
+			btnDelete.setText(Translator.map("Remove Emotion"));
+			btnAddToFavorite.setText(Translator.map("Add to Favourite"));
+		}
+		
+		static private function setBtnStyle(btn:JButton):void
+		{
+			btn.setFont(new ASFont("Arial",16));
+			btn.setForeground(new ASColor(0x424242));
+		}
+		
+		static private function setIconBtnStyle(btn:AbstractButton):void
+		{
+			btn.setPreferredSize(new IntDimension(50, 36));
+		}
+		
+		static public function createEmpty(w:int, h:int):Component
+		{
+			var result:Component = new Component();
+			result.setSizeWH(w, h);
+			return result;
 		}
 	}
 }

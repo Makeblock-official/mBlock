@@ -10,22 +10,30 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 	
 	public class LightSensor extends Sprite
 	{
+		[Embed(source="/assets/UI/ledFace/dash_line-horizental.png")]
+		static private const DASH_W:Class;
+		
+		[Embed(source="/assets/UI/ledFace/dash_line-vertical.png")]
+		static private const DASH_H:Class;
+		
+		
 		static public const THUMBNAIL_ON_COLOR:uint = 0x00ABFD;
 		static public const THUMBNAIL_OFF_COLOR:uint = 0xFFFFFF;
 		
 		static public const COUNT_W:int = 16;
 		static public const COUNT_H:int = 8;
 		
-//		static public const PANEL_W:int = 630;
-//		static public const PANEL_H:int = 310;
-		
 		static public const GAP_X:int = 10;
 		static public const GAP_Y:int = 15;
+		
+		static public const OFFSET_X:int = 10;
+		static public const OFFSET_Y:int = 10;
 		
 		private var lightDict:Array;
 		private var direction:int;
 		
 		public var eraserMode:Boolean;
+		public var isDataDirty:Boolean;
 		
 		public function LightSensor()
 		{
@@ -37,18 +45,32 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 		
 		private function drawBg():void
 		{
+			var w:int = width+OFFSET_X*2;
+			var h:int = height+OFFSET_Y*2;
+			
 			var g:Graphics = graphics;
 			g.beginFill(0, 0);
-			g.drawRect(0, 0, width, height);
+			g.drawRect(0, 0, w, h);
 			g.endFill();
+			
+			var pic:Bitmap = new DASH_W();
+			pic.y = 0.5 * (h - pic.height);
+			addChild(pic);
+			
+			pic = new DASH_H();
+			pic.x = 0.5 * (w - pic.width);
+			addChild(pic);
 		}
 		
 		private function __onClick(evt:MouseEvent):void
 		{
 			if(evt.target != this){
 				var light:LightPoint = evt.target as LightPoint;
-				light.toggle();
-				dispatchEvent(new Event(Event.SELECT));
+				if(!eraserMode || light.isOn){
+					isDataDirty = true;
+					light.toggle();
+					dispatchEvent(new Event(Event.SELECT));
+				}
 			}
 		}
 		
@@ -70,6 +92,7 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 				for(var j:int=0; j < COUNT_H; ++j) {
 					var light:LightPoint = getLightAt(i, j);
 					if(eraserMode == light.isOn && light.hitTestPoint(evt.stageX, evt.stageY)){
+						isDataDirty = true;
 						light.toggle();
 					}
 				}
@@ -85,8 +108,8 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 					var light:LightPoint = new LightPoint();
 					light.px = i;
 					light.py = j;
-					light.x = i * (light.width + GAP_X);
-					light.y = j * (light.height + GAP_Y);
+					light.x = i * (light.width + GAP_X) + OFFSET_X;
+					light.y = j * (light.height + GAP_Y) + OFFSET_Y;
 					addChild(light);
 					lightDict[i][j] = light;
 				}
@@ -174,39 +197,6 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 			return lightDict[px][py];
 		}
 		
-		public function isHorizontal():Boolean
-		{
-			return direction % 2 == 0;
-		}
-		/*
-		public function rotateView():void
-		{
-			direction = (direction + 1) % 4;
-			
-			switch(direction){
-				case 0:
-					rotation = 0;
-					x = 0;
-					y = 0;
-					break;
-				case 1:
-					rotation = 90;
-					x = PANEL_H;
-					y = 0;
-					break;
-				case 2:
-					rotation = 180;
-					x = PANEL_W;
-					y = PANEL_H;
-					break;
-				case 3:
-					rotation = -90;
-					x = 0;
-					y = PANEL_W;
-					break;
-			}
-		}
-		*/
 		public function rotatePixel():void
 		{
 			var bytes:ByteArray = getValue();
@@ -282,22 +272,5 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 			bmp.scaleX = bmp.scaleY = BMP_SCALE;
 			return bmp;
 		}
-		/*
-		override public function get width():Number
-		{
-			if(direction % 2 == 0){
-				return PANEL_W;
-			}
-			return PANEL_H;
-		}
-		
-		override public function get height():Number
-		{
-			if(direction % 2 == 0){
-				return PANEL_H;
-			}
-			return PANEL_W;
-		}
-		*/
 	}
 }
