@@ -35,10 +35,12 @@ package {
 	
 	import blocks.Block;
 	
+	import cc.makeblock.mbot.lookandfeel.MyLookAndFeel;
 	import cc.makeblock.mbot.ui.parts.TopSystemMenu;
 	import cc.makeblock.mbot.util.PopupUtil;
 	import cc.makeblock.menu.MenuBuilder;
 	import cc.makeblock.util.FileUtil;
+	import cc.makeblock.util.InitDefaultUIStyle;
 	
 	import extensions.BluetoothManager;
 	import extensions.ConnectionManager;
@@ -53,6 +55,7 @@ package {
 	
 	import org.aswing.AsWingManager;
 	import org.aswing.JOptionPane;
+	import org.aswing.UIManager;
 	
 	import scratch.BlockMenus;
 	import scratch.PaletteBuilder;
@@ -166,6 +169,7 @@ package {
 			removeEventListener(Event.ADDED_TO_STAGE,initStage);
 			stage.nativeWindow.title += "(" + versionString + "," + _currentVer + ")";
 			AsWingManager.initAsStandard(this);
+			UIManager.setLookAndFeel(new MyLookAndFeel());
 			ApplicationManager.sharedManager().isCatVersion = NativeApplication.nativeApplication.applicationDescriptor.toString().indexOf("猫友")>-1;
 			ga = new GATracker(this,"UA-54268669-1","AS3",false);
 			track("/app/launch");
