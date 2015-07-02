@@ -10,12 +10,22 @@ package cc.makeblock.mbot.util
 	{
 		static public function enableRightMouseEvent():void
 		{
-			MBlock.app.stage.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN, MBlock.app.gh.onRightMouseDown);
+			var app:MBlock = MBlock.app;
+			app.stage.addEventListener(MouseEvent.MOUSE_DOWN, app.gh.mouseDown);
+			app.stage.addEventListener(MouseEvent.MOUSE_MOVE, app.gh.mouseMove);
+			app.stage.addEventListener(MouseEvent.MOUSE_UP, app.gh.mouseUp);
+			app.stage.addEventListener(MouseEvent.MOUSE_WHEEL, app.gh.mouseWheel);
+			app.stage.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN, app.gh.onRightMouseDown);
 		}
 		
 		static public function disableRightMouseEvent():void
 		{
-			MBlock.app.stage.removeEventListener(MouseEvent.RIGHT_MOUSE_DOWN, MBlock.app.gh.onRightMouseDown);
+			var app:MBlock = MBlock.app;
+			app.stage.removeEventListener(MouseEvent.MOUSE_DOWN, app.gh.mouseDown);
+			app.stage.removeEventListener(MouseEvent.MOUSE_MOVE, app.gh.mouseMove);
+			app.stage.removeEventListener(MouseEvent.MOUSE_UP, app.gh.mouseUp);
+			app.stage.removeEventListener(MouseEvent.MOUSE_WHEEL, app.gh.mouseWheel);
+			app.stage.removeEventListener(MouseEvent.RIGHT_MOUSE_DOWN, app.gh.onRightMouseDown);
 		}
 		
 		static public function showQuitAlert(callback:Function):void
