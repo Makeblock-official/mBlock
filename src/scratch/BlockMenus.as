@@ -22,7 +22,6 @@ package scratch {
 	import flash.display.DisplayObject;
 	import flash.display.NativeMenu;
 	import flash.display.NativeMenuItem;
-	import flash.display.Stage;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.geom.Matrix;
@@ -33,13 +32,14 @@ package scratch {
 	import blocks.Block;
 	import blocks.BlockArg;
 	
-	import cc.makeblock.mbot.uiwidgets.lightSetter.LightSetter;
 	import cc.makeblock.mbot.uiwidgets.lightSetter.LightSetterFrame;
 	import cc.makeblock.menu.MenuUtil;
 	
 	import extensions.ArduinoManager;
 	
 	import filters.FilterPack;
+	
+	import org.aswing.event.AWEvent;
 	
 	import sound.SoundBank;
 	
@@ -929,9 +929,16 @@ public class BlockMenus implements DragClient {
 	{
 		if(null == faceFrame){
 			faceFrame = new LightSetterFrame();
-			faceFrame.addEventListener(Event.COMPLETE, __onFrameSelect);
 		}
+		faceFrame.addEventListener(AWEvent.HIDDEN, __onFrameClose);
+		faceFrame.addEventListener(Event.COMPLETE, __onFrameSelect);
 		faceFrame.show();
+	}
+	
+	private function __onFrameClose(evt:AWEvent):void
+	{
+		faceFrame.removeEventListener(AWEvent.HIDDEN, __onFrameClose);
+		faceFrame.removeEventListener(Event.COMPLETE, __onFrameSelect);
 	}
 	
 	private function __onFrameSelect(evt:Event):void

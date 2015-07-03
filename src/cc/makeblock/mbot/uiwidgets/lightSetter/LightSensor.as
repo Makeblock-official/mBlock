@@ -67,10 +67,18 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 			if(evt.target != this){
 				var light:LightPoint = evt.target as LightPoint;
 				if(!eraserMode || light.isOn){
-					isDataDirty = true;
 					light.toggle();
-					dispatchEvent(new Event(Event.SELECT));
+					notifyEvt();
+					
 				}
+			}
+		}
+		
+		private function notifyEvt():void
+		{
+			if(!isDataDirty){
+				isDataDirty = true;
+				dispatchEvent(new Event(Event.SELECT));
 			}
 		}
 		
@@ -92,8 +100,8 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 				for(var j:int=0; j < COUNT_H; ++j) {
 					var light:LightPoint = getLightAt(i, j);
 					if(eraserMode == light.isOn && light.hitTestPoint(evt.stageX, evt.stageY)){
-						isDataDirty = true;
 						light.toggle();
+						notifyEvt();
 					}
 				}
 			}
@@ -137,6 +145,18 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 					if(light.isOn == (source.getPixel(i, j) == THUMBNAIL_OFF_COLOR)){
 						light.toggle();
 					}
+				}
+			}
+		}
+		
+		/**
+		 * 颜色反转,亮的变暗,暗的变亮
+		 */		
+		public function revert():void
+		{
+			for(var i:int=0; i < COUNT_W; ++i){
+				for(var j:int=0; j < COUNT_H; ++j) {
+					getLightAt(i, j).toggle();
 				}
 			}
 		}
@@ -258,6 +278,7 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 					var light:LightPoint = getLightAt(i, j);
 					if(light.isOn != value){
 						light.toggle();
+						notifyEvt();
 					}
 				}
 			}

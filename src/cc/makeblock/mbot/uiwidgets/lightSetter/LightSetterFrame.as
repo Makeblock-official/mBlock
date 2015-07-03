@@ -236,7 +236,6 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 			
 			if(sensor.isDataDirty){
 				__onAddToFavorite(null);
-				sensor.isDataDirty = false;
 			}
 			
 			sensor.copyFrom(bmd);
@@ -310,6 +309,7 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 		
 		private function __onAddToFavorite(evt:AWEvent):void
 		{
+			sensor.isDataDirty = false;
 			if(sensor.isEmpty()){
 				JOptionPane.showMessageDialog("notice", "image is empty.");
 				return;
@@ -326,8 +326,8 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 		
 		private function __onOk(evt:AWEvent):void
 		{
-			hide();
 			dispatchEvent(new Event(Event.COMPLETE));
+			hide();
 		}
 		
 		private function __onCanel(evt:AWEvent):void

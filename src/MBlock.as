@@ -8,29 +8,21 @@ package {
 	import flash.display.LoaderInfo;
 	import flash.display.Shape;
 	import flash.display.Sprite;
-	import flash.display.StageAlign;
 	import flash.display.StageDisplayState;
-	import flash.display.StageScaleMode;
 	import flash.events.Event;
 	import flash.events.InvokeEvent;
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
-	import flash.filesystem.File;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.net.FileReference;
-	import flash.net.LocalConnection;
 	import flash.net.URLRequest;
-	import flash.net.navigateToURL;
 	import flash.system.Capabilities;
 	import flash.system.LoaderContext;
 	import flash.system.System;
 	import flash.text.TextField;
-	import flash.text.TextFieldAutoSize;
-	import flash.text.TextFormat;
 	import flash.ui.Keyboard;
 	import flash.utils.ByteArray;
-	import flash.utils.getTimer;
 	import flash.utils.setTimeout;
 	
 	import blocks.Block;
@@ -40,7 +32,6 @@ package {
 	import cc.makeblock.mbot.util.PopupUtil;
 	import cc.makeblock.menu.MenuBuilder;
 	import cc.makeblock.util.FileUtil;
-	import cc.makeblock.util.InitDefaultUIStyle;
 	
 	import extensions.BluetoothManager;
 	import extensions.ConnectionManager;
@@ -89,7 +80,6 @@ package {
 	import uiwidgets.ScriptsPane;
 	
 	import util.ApplicationManager;
-	import util.Clicker;
 	import util.ClickerManager;
 	import util.GestureHandler;
 	import util.LogManager;
