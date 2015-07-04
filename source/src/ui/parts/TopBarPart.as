@@ -150,23 +150,10 @@ package ui.parts {
 //				offlineNotice.selectable = false;
 			}
 		}
-		private var _clicker:Clicker ;
 		public function updateClicker():void{
 			offlineNotice.visible = false;
-			for(var i:uint=0;i<ClickerManager.sharedManager().list.length;i++){
-				_clicker = ClickerManager.sharedManager().list[i];
-				if(_clicker.isShow()){
-					offlineNotice.defaultTextFormat = offlineNoticeFormat;
-					offlineNotice.text = _clicker.desc;
-					offlineNotice.selectable = false;
-					offlineNotice.visible = true;
-					return;
-				}
-			}
-			_clicker = null;
 		}
 		private function onClickLink(evt:MouseEvent):void{
-			_clicker.click();
 			setTimeout(updateClicker,2000);
 		}
 		public function setWidthHeight(w:int, h:int):void {

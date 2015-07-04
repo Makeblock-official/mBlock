@@ -233,7 +233,6 @@ package {
 				SharedObjectManager.sharedManager().setObject(versionString+".0."+ver,true);
 				//SharedObjectManager.sharedManager().setObject("board","mbot_uno");
 			}
-			VersionManager.sharedManager().start();
 			if(!SharedObjectManager.sharedManager().available("first-launch")){
 				SharedObjectManager.sharedManager().setObject("first-launch",true);
 			}
@@ -248,7 +247,6 @@ package {
 			initExtension();
 		}
 		private function initExtension():void{
-			ClickerManager.sharedManager().update();
 			SerialManager.sharedManager().setMBlock(this);
 			HIDManager.sharedManager().setMBlock(this);
 		}
@@ -292,7 +290,6 @@ package {
 		} 
 		public function track(msg:String):void{
 			if(ga!=null){
-				ga.trackPageview(MBlock.versionString+""+msg);
 			}
 		}
 		private function onInvoked(evt:InvokeEvent):void{
@@ -1138,19 +1135,6 @@ package {
 			m.addItem('About', 'about', true, false);
 			m.addLine();
 			m.addItem(''+versionString+"."+_currentVer, 'version', false, false);
-			if(ClickerManager.sharedManager().list){
-				var hasLine:Boolean = true;
-				for(var i:uint=0;i<ClickerManager.sharedManager().list.length;i++){
-					var clicker:Clicker = ClickerManager.sharedManager().list[i];
-					if(clicker.type=="all"||clicker.type=="menu"){
-						if(hasLine){
-							m.addLine();
-							hasLine = false;
-						}
-						m.addItem(clicker.desc, clicker.link, true, false);
-					}
-				}
-			}
 			//			SerialManager.sharedManager().board = SharedObjectManager.sharedManager().getObject("board","uno");
 			//			SerialManager.sharedManager().device = SharedObjectManager.sharedManager().getObject("device","mbot");
 			
