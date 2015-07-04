@@ -99,7 +99,7 @@ package {
 	
 		// Display modes
 		public var editMode:Boolean; // true when project editor showing, false when only the player is showing
-		public var isOffline:Boolean; // true when running as an offline (i.e. stand-alone) app
+//		public const isOffline:Boolean = true; // true when running as an offline (i.e. stand-alone) app
 		public var isSmallPlayer:Boolean; // true when displaying as a scaled-down player (e.g. in search results)
 		public var stageIsContracted:Boolean; // true when the stage is half size to give more space on small screens
 		public var stageIsHided:Boolean;
@@ -113,15 +113,13 @@ package {
 		public var runtime:ScratchRuntime;
 		public var interp:Interpreter;
 		public var extensionManager:ExtensionManager;
-		public var server:Server;
+		public const server:Server = new Server();
 		public var gh:GestureHandler;
+		
+		
 		public var projectID:String = '';
-		public var projectOwner:String = '';
-		public var projectIsPrivate:Boolean;
-		public var oldWebsiteURL:String = '';
 		public var loadInProgress:Boolean;
 	
-		protected var autostart:Boolean;
 		private var viewedObject:ScratchObj;
 		private var lastTab:String = 'scripts';
 		protected var wasEdited:Boolean; // true if the project was edited and autosaved
@@ -129,7 +127,6 @@ package {
 		protected var languageChanged:Boolean; // set when language changed
 	
 		// UI Elements
-//		public var playerBG:Shape;
 		public var palette:BlockPalette;
 		public var scriptsPane:ScriptsPane;
 		public var stagePane:ScratchStage;
@@ -144,11 +141,12 @@ package {
 		public var imagesPart:ImagesPart;
 		protected var soundsPart:SoundsPart;
 		protected var stagePart:StagePart;
-		public var ga:GATracker;
+		private var ga:GATracker;
 		private var tabsPart:TabsPart;
 		private var _welcomeView:Loader;
 		private var _currentVer:String = "06.16.001";
 		public function MBlock(){
+			app = this;
 			addEventListener(Event.ADDED_TO_STAGE,initStage);
 		}
 		private function initStage(evt:Event):void{
@@ -161,9 +159,7 @@ package {
 			track("/app/launch");
 			NativeApplication.nativeApplication.addEventListener(InvokeEvent.INVOKE,onInvoked);
 			stage.nativeWindow.addEventListener(Event.CLOSING,onExiting);
-			isOffline = loaderInfo.url.indexOf('http:') == -1;
 			checkFlashVersion();
-			initServer();
 			if(SharedObjectManager.sharedManager().available("labelSize")){
 				var labelSize:int = SharedObjectManager.sharedManager().getObject("labelSize") as int;
 				var argSize:int = Math.round(0.9 * labelSize);
@@ -175,7 +171,6 @@ package {
 			
 			Block.MenuHandlerFunction = BlockMenus.BlockMenuHandler;
 			CursorTool.init(this);
-			app = this;
 
 			stagePane = new ScratchStage();
 			gh = new GestureHandler(this, (loaderInfo.parameters['inIE'] == 'true'));
@@ -197,7 +192,7 @@ package {
 				stage.addEventListener(KeyboardEvent.KEY_DOWN, keyDown); // to handle escape key
 				stage.addEventListener(Event.ENTER_FRAME, step);
 				stage.addEventListener(Event.RESIZE, onResize);
-				setEditMode(startInEditMode());
+				setEditMode(true);
 			}catch(e:*){
 				var textField:TextField = new TextField;
 				textField.width = 600;
@@ -264,9 +259,9 @@ package {
 		}
 		
 		public function track(msg:String):void{
-			if(ga!=null){
-				ga.trackPageview((ApplicationManager.sharedManager().isCatVersion?"/myh/":"/")+MBlock.versionString+""+msg);
-			}
+			ga.trackPageview(
+				(ApplicationManager.sharedManager().isCatVersion?"/myh/":"/") + MBlock.versionString + msg
+			);
 		}
 		private function onInvoked(evt:InvokeEvent):void{
 			if(evt.arguments.length <= 0){
@@ -289,17 +284,9 @@ package {
 			runtime = new ScratchRuntime(this, interp);
 		}
 	
-		protected function initServer():void {
-			server = new Server();
-		}
-	
 		public function showTip(tipName:String):void {}
 		public function closeTips():void {}
 		public function reopenTips():void {}
-	
-		protected function startInEditMode():Boolean {
-			return isOffline;
-		}
 	
 		public function getMediaLibrary(app:MBlock, type:String, whenDone:Function):MediaLibrary {
 			return new MediaLibrary(app, type, whenDone);
@@ -520,10 +507,10 @@ package {
 					setEditMode(true);
 				}
 			}
-			if (isOffline) {
-				MBlock.app.track(enterPresentation?"enterFullscreen":"enterNormal");
-				stage.displayState = enterPresentation ? StageDisplayState.FULL_SCREEN_INTERACTIVE : StageDisplayState.NORMAL;
-			}
+			
+			track(enterPresentation?"enterFullscreen":"enterNormal");
+			stage.displayState = enterPresentation ? StageDisplayState.FULL_SCREEN_INTERACTIVE : StageDisplayState.NORMAL;
+			
 			for each (var o:ScratchObj in stagePane.allObjects()) o.applyFilters();
 	
 			if (lp) fixLoadProgressLayout();
@@ -564,7 +551,7 @@ package {
 		public function projectLoaded():void {
 			removeLoadProgressBox();
 			System.gc();
-			if (autostart) runtime.startGreenFlags(true);
+//			if (autostart) runtime.startGreenFlags(true);
 			saveNeeded = false;
 	
 			// translate the blocks of the newly loaded project
@@ -644,7 +631,7 @@ package {
 		}
 	
 		protected function shouldShowGreenFlag():Boolean {
-			return !(autostart || editMode);
+			return !editMode;
 		}
 	
 		protected function addParts():void {
@@ -1287,9 +1274,9 @@ package {
 	*/
 		public function startNewProject(newOwner:String, newID:String):void {
 			runtime.installNewProject();
-			projectOwner = newOwner;
+//			projectOwner = newOwner;
 			projectID = newID;
-			projectIsPrivate = true;
+//			projectIsPrivate = true;
 			loadInProgress = false;
 		}
 	
