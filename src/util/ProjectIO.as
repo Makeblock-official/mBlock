@@ -316,6 +316,7 @@ public class ProjectIO {
 
 	private function decodeImage(imageData:ByteArray, imageDict:Dictionary, doneFunction:Function):void {
 		function loadDone(e:Event):void {
+			loader.contentLoaderInfo.removeEventListener(Event.COMPLETE, loadDone);
 			imageDict[imageData] = e.target.content.bitmapData;
 			doneFunction();
 		}

@@ -173,7 +173,7 @@ package {
 			CursorTool.init(this);
 
 			stagePane = new ScratchStage();
-			gh = new GestureHandler(this, (loaderInfo.parameters['inIE'] == 'true'));
+			gh = new GestureHandler(this);
 			initInterpreter();
 			initRuntime();
 			try{
