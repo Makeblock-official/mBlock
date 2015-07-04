@@ -219,15 +219,15 @@ public class ProjectIO {
 		["run\\/encodermotor","runEncoderMotor"],
 		["run\\/sevseg","runSevseg"],
 		["run\\/led","runLed"],
-		["run\\/lightsensor","runLightsensor"],
+		["run\\/lightsensor","runLightSensor"],
 		["run\\/shutter","runShutter"],
 		["get\\/button_inner","getButtonOnBoard"],
 		["get\\/ultrasonic","getUltrasonic"],
 		["get\\/linefollower","getLinefollower"],
-		["get\\/lightsensor","getLightsensor"],
+		["get\\/lightsensor","getLightSensor"],
 		["get\\/joystick","getJoystick"],
 		["get\\/potentiometer","getPotentiometer"],
-		["get\\/soundsensor","getSoundsensor"],
+		["get\\/soundsensor","getSoundSensor"],
 		["get\\/infrared","getInfrared"],
 		["get\\/limitswitch","getLimitswitch"],
 		["get\\/pirmotion","getPirmotion"],
@@ -241,11 +241,15 @@ public class ProjectIO {
 		['["mBot.getButtonOnBoard"]', '["mBot.getButtonOnBoard", "pressed"]'],
 		["mBot.get\\/analog","mBot.getLightOnBoard"],
 		["mBot.getAnalog","mBot.getLightOnBoard"],
+		['["mBot.getLightOnBoard"]','["mBot.getLightSensor", "light sensor on board"]'],
+		['["mBot.runLed", "all",','["mBot.runLed", "led on board","all",']
 	];
 	private function fixForNewExtension(json:String):String{
+		trace(json);
 		for(var i:uint=0;i<fixList.length;i++){
 			json = json.split(fixList[i][0]).join(fixList[i][1]);
 		}
+		trace(json);
 		return json.split("arduino\\/main").join("runArduino");
 	}
 	private function integerName(s:String):String {

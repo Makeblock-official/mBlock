@@ -2,6 +2,7 @@ package {
 	import com.google.analytics.GATracker;
 	
 	import flash.desktop.NativeApplication;
+	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
 	import flash.display.Graphics;
 	import flash.display.Loader;
@@ -19,6 +20,9 @@ package {
 	import flash.events.UncaughtErrorEvent;
 	import flash.external.ExternalInterface;
 	import flash.filesystem.File;
+	import flash.filesystem.FileMode;
+	import flash.filesystem.FileStream;
+	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.net.FileReference;
@@ -31,11 +35,14 @@ package {
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFormat;
+	import flash.ui.Keyboard;
 	import flash.utils.ByteArray;
 	import flash.utils.getTimer;
 	import flash.utils.setTimeout;
 	
 	import blocks.Block;
+	
+	import by.blooddy.crypto.image.JPEGEncoder;
 	
 	import extensions.BluetoothManager;
 	import extensions.ConnectionManager;
@@ -153,7 +160,7 @@ package {
 		public var ga:GATracker;
 		private var tabsPart:TabsPart;
 		private var _welcomeView:Loader;
-		private var _currentVer:String = "06.16.001";
+		private var _currentVer:String = "07.04.001";
 		public function MBlock() {
 			this.addEventListener(Event.ADDED_TO_STAGE,initStage);
 		}
@@ -592,6 +599,24 @@ package {
 				isIn3D ? go2D() : go3D();
 				evt.preventDefault();
 				evt.stopImmediatePropagation();
+			}
+			if(evt.ctrlKey && evt.charCode == 112) {
+				var scale:Number = 3;
+				var bmd:BitmapData = new BitmapData(stage.stageWidth*scale,stage.stageHeight*scale,true);
+				var matrix:Matrix = new Matrix;
+				matrix.scale(scale,scale);
+				scaleX = scaleY = scale;
+				bmd.draw(MBlock.app,matrix);
+				scaleX = scaleY = 1;
+				var jpeg:ByteArray = JPEGEncoder.encode(bmd,90);
+				var now:Date = new Date();
+				var path:String = "screen_"+Math.floor(now.time)+".jpg";
+				var fileScreen:File = File.desktopDirectory.resolvePath(path);
+				var fileStream:FileStream = new FileStream();
+				fileStream.open(fileScreen,FileMode.WRITE);
+				fileStream.writeBytes(jpeg);
+				fileStream.close();
+				bmd.dispose();
 			}
 		}
 	
