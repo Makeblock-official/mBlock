@@ -253,9 +253,6 @@ package ui.parts {
 		}
 	
 		public function refresh():void {
-			if (app.isOffline) {
-				//helpTool.visible = app.isOffline;
-			}
 			fixLayout();
 		}
 	

@@ -177,7 +177,7 @@ public class StagePart extends UIPart {
 		if (app.stagePane) app.stagePane.y = topBarHeight;
 
 		projectTitle.x = 50;
-		projectTitle.y = app.isOffline ? 8 : 2;
+		projectTitle.y = 8;
 		projectInfo.x = projectTitle.x + 3;
 		projectInfo.y = projectTitle.y + 18;
 
@@ -216,7 +216,7 @@ public class StagePart extends UIPart {
 	}
 
 	private function addTitleAndInfo():void {
-		var fmt:TextFormat = app.isOffline ? new TextFormat(CSS.font, 16, CSS.textColor) : CSS.projectTitleFormat;
+		var fmt:TextFormat = new TextFormat(CSS.font, 16, CSS.textColor);
 		projectTitle = getProjectTitle(fmt);
 		projectTitle.mouseEnabled = false;
 		projectTitle.mouseChildren = false;

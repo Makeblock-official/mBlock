@@ -98,7 +98,7 @@ package scratch {
 		//------------------------------
 	
 		public function stepRuntime():void {
-			if (projectToInstall != null && app.isOffline) {
+			if (projectToInstall != null) {
 				installProject(projectToInstall);
 				if (saveAfterInstall) app.setSaveNeeded(true);
 				projectToInstall = null;
@@ -398,7 +398,7 @@ package scratch {
 	
 		public function installEmptyProject():void {
 			app.saveForRevert(null, true);
-			app.oldWebsiteURL = '';
+//			app.oldWebsiteURL = '';
 			installProject(new ScratchStage());
 			var io:ProjectIO = new ProjectIO(app);
 			//21d7c8705a0fdeea32affb616ee6c984
@@ -454,7 +454,7 @@ package scratch {
 		public function installProjectFromFile(fileName:String, data:ByteArray):void {
 			// Install a project from a file with the given name and contents.
 			stopAll();
-			app.oldWebsiteURL = '';
+//			app.oldWebsiteURL = '';
 			app.loadInProgress = true;
 			installProjectFromData(data);
 			app.setProjectName(fileName);
