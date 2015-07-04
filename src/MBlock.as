@@ -32,13 +32,11 @@ package {
 	import cc.makeblock.mbot.util.PopupUtil;
 	import cc.makeblock.menu.MenuBuilder;
 	import cc.makeblock.util.FileUtil;
+	import cc.makeblock.util.FlashSprite;
 	
 	import extensions.BluetoothManager;
-	import extensions.ConnectionManager;
-	import extensions.DeviceManager;
 	import extensions.ExtensionManager;
 	import extensions.HIDManager;
-	import extensions.SerialDevice;
 	import extensions.SerialManager;
 	import extensions.SocketManager;
 	
@@ -75,7 +73,6 @@ package {
 	
 	import uiwidgets.CursorTool;
 	import uiwidgets.DialogBox;
-	import uiwidgets.IconButton;
 	import uiwidgets.Menu;
 	import uiwidgets.ScriptsPane;
 	
@@ -86,7 +83,6 @@ package {
 	import util.ProjectIO;
 	import util.Server;
 	import util.SharedObjectManager;
-	import util.Transition;
 	import util.UpdaterManager;
 	import util.version.VersionManager;
 	
@@ -189,8 +185,8 @@ package {
 				extensionManager = new ExtensionManager(this);
 		//		extensionManager.importExtension();
 				Translator.initializeLanguageList();
-//				playerBG = new Shape(); // create, but don't add
 				addParts();
+//				playerBG = new Shape(); // create, but don't add
 				stage.addEventListener(MouseEvent.MOUSE_DOWN, gh.mouseDown);
 				stage.addEventListener(MouseEvent.MOUSE_MOVE, gh.mouseMove);
 				stage.addEventListener(MouseEvent.MOUSE_UP, gh.mouseUp);
@@ -581,7 +577,6 @@ package {
 			// Step the runtime system and all UI components.
 			gh.step();
 			runtime.stepRuntime();
-			Transition.step(null);
 			stagePart.step();
 			libraryPart.step();
 			scriptsPart.step();
@@ -824,6 +819,7 @@ package {
 		// -----------------------------
 		// Menus
 		//------------------------------
+		/*
 		public function showFileMenu(b:*):void {
 			var m:Menu = new Menu(null, 'File', CSS.topBarColor, 28);
 			m.addItem('New', createNewProject);
@@ -996,7 +992,7 @@ package {
 			var p:Point = b.localToGlobal(new Point(0, 0));
 			m.showOnStage(stage, b.x, topBarPart.bottom() - 1);
 		}
-		/*
+		
 		private var reg:RegExp = /\b(\w)|\s(\w)/g;
 		private function replaceReg(str:String):String{
 			str = str.toLowerCase();
@@ -1120,6 +1116,7 @@ package {
 			this.runtime.selectedProjectFile(filePath);
 			track("/Examples/"+path);
 		}
+		/*
 		protected function addEditMenuItems(b:*, m:Menu):void {}
 	
 		protected function canExportInternals():Boolean {
@@ -1127,6 +1124,7 @@ package {
 		}
 		private function showAboutDialog():void {
 		}
+		*/
 		
 		private function clearProject():void
 		{
@@ -1174,7 +1172,7 @@ package {
 			PopupUtil.showQuitAlert(function(value:int):void{
 				switch(value){
 					case JOptionPane.YES:
-						exportProjectToFile(false,postSaveAction);
+						exportProjectToFile(postSaveAction);
 						break;
 					case JOptionPane.NO:
 						if(postSaveAction != null){
@@ -1188,7 +1186,7 @@ package {
 		
 		private var isPanelShowing:Boolean;
 	
-		public function exportProjectToFile(fromJS:Boolean = false,postSaveAction:Function=null):void {
+		public function exportProjectToFile(postSaveAction:Function=null):void {
 			function squeakSoundsConverted():void {
 				scriptsPane.saveScripts(false);
 				var defaultName:String = (projectName().length > 1) ? projectName() + '.sb2' : 'project.sb2';
@@ -1200,7 +1198,7 @@ package {
 			}
 			function fileSaved(e:Event):void {
 				saveNeeded = false;
-				if (!fromJS) setProjectName(e.target.name);
+				setProjectName(e.target.name);
 				if(postSaveAction!=null){
 					postSaveAction();
 				}
@@ -1255,7 +1253,7 @@ package {
 			this.tabsPart.imagesTab.visible = !stageIsArduino;
 			setTab("scripts");
 		}
-		public function handleTool(tool:String, evt:MouseEvent):void { }
+//		public function handleTool(tool:String, evt:MouseEvent):void { }
 	
 		public function showBubble(text:String, x:* = null, y:* = null, width:Number = 0):void {
 			if (x == null) x = stage.mouseX;
@@ -1266,7 +1264,7 @@ package {
 		// -----------------------------
 		// Project Management and Sign in
 		//------------------------------
-	
+	/*
 		public function setLanguagePressed(b:IconButton):void {
 			function setLanguage(lang:String):void {
 				Translator.setLanguage(lang);
@@ -1286,7 +1284,7 @@ package {
 			var p:Point = b.localToGlobal(new Point(0, 0));
 			m.showOnStage(stage, b.x, topBarPart.bottom() - 1);
 		}
-	
+	*/
 		public function startNewProject(newOwner:String, newID:String):void {
 			runtime.installNewProject();
 			projectOwner = newOwner;
@@ -1305,13 +1303,13 @@ package {
 			saveNow = false;
 			// Set saveNeeded flag and update the status string.
 			saveNeeded = true;
-			if (!wasEdited) saveNow = true; // force a save on first change
+			if (!wasEdited){ saveNow = true;} // force a save on first change
 			clearRevertUndo();
 		}
 	
 		protected function clearSaveNeeded():void {
 			// Clear saveNeeded flag and update the status string.
-			function twoDigits(n:int):String { return ((n < 10) ? '0' : '') + n }
+//			function twoDigits(n:int):String { return ((n < 10) ? '0' : '') + n }
 			saveNeeded = false;
 			wasEdited = true;
 		}
@@ -1331,12 +1329,13 @@ package {
 		protected function doRevert():void {
 			runtime.installProjectFromData(originalProj, false);
 		}
+		
+		private function preDoRevert():void {
+			revertUndo = new ProjectIO(MBlock.app).encodeProjectAsZipFile(stagePane);
+			doRevert();
+		}
 	
 		public function revertToOriginalProject():void {
-			function preDoRevert():void {
-				revertUndo = new ProjectIO(MBlock.app).encodeProjectAsZipFile(stagePane);
-				doRevert();
-			}
 			if (!originalProj) return;
 			DialogBox.confirm('Throw away all changes since opening this project?', stage, preDoRevert);
 		}
@@ -1421,17 +1420,7 @@ package {
 		//------------------------------
 	
 		public function flashSprite(spr:ScratchSprite):void {
-			function doFade(alpha:Number):void { box.alpha = alpha }
-			function deleteBox():void { if (box.parent) { box.parent.removeChild(box) }}
-			var r:Rectangle = spr.getVisibleBounds(this);
-			var box:Shape = new Shape();
-			box.graphics.lineStyle(3, CSS.overColor, 1, true);
-			box.graphics.beginFill(0x808080);
-			box.graphics.drawRoundRect(0, 0, r.width, r.height, 12, 12);
-			box.x = r.x;
-			box.y = r.y;
-			addChild(box);
-			Transition.cubic(doFade, 1, 0, 0.5, deleteBox);
+			new FlashSprite().flash(spr);
 		}
 	
 		// -----------------------------

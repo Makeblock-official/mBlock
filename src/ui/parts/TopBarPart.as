@@ -95,8 +95,8 @@ package ui.parts {
 	
 		public static function strings():Array {
 			if (MBlock.app) {
-				MBlock.app.showFileMenu(Menu.dummyButton());
-				MBlock.app.showEditMenu(Menu.dummyButton());
+//				MBlock.app.showFileMenu(Menu.dummyButton());
+//				MBlock.app.showEditMenu(Menu.dummyButton());
 				//MBlock.app.showSerialMenu(Menu.dummyButton());
 //				MBlock.app.showExamplesMenu(Menu.dummyButton());
 			}

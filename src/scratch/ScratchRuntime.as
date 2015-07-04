@@ -42,10 +42,11 @@ package scratch {
 	import blocks.Block;
 	import blocks.BlockArg;
 	
+	import cc.makeblock.util.FileUtil;
+	
 	import extensions.ConnectionManager;
 	import extensions.ParseManager;
 	import extensions.ScratchExtension;
-	import extensions.SerialManager;
 	
 	import interpreter.Interpreter;
 	import interpreter.Variable;
@@ -60,7 +61,6 @@ package scratch {
 	
 	import uiwidgets.DialogBox;
 	
-	import util.LogManager;
 	import util.ObjReader;
 	import util.OldProjectReader;
 	import util.ProjectIO;
@@ -439,21 +439,17 @@ package scratch {
 		}
 		public function selectedProjectFile(filePath:String):void {
 			// Prompt user for a file name and load that file.
-			var fileName:String, data:ByteArray;
-			
-			function fileLoadHandler(event:Event):void {
-				data = FileReference(event.target).data;
-				if (app.stagePane.isEmpty()) doInstall();
-				else DialogBox.confirm('Replace contents of the current project?', app.stage, doInstall);
-			}
-			function doInstall(ignore:* = null):void {
-				installProjectFromFile(fileName, data);
-			}
 			stopAll();
 			var file:File = new File(filePath);
-			fileName = file.name;
-			file.addEventListener(Event.COMPLETE, fileLoadHandler);
-			file.load();
+			var fileName:String = file.name;
+			var data:ByteArray = FileUtil.ReadBytes(file);
+			if(app.stagePane.isEmpty()) {
+				installProjectFromFile(fileName, data);
+			}else{
+				DialogBox.confirm('Replace contents of the current project?', app.stage, function(ignore:* = null):void {
+					installProjectFromFile(fileName, data);
+				});
+			}
 		}
 		public function installProjectFromFile(fileName:String, data:ByteArray):void {
 			// Install a project from a file with the given name and contents.

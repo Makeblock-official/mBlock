@@ -28,26 +28,24 @@
 package util {
 import flash.display.BitmapData;
 import flash.display.Loader;
-import flash.events.ErrorEvent;
 import flash.events.Event;
-import flash.events.IOErrorEvent;
-import flash.events.SecurityErrorEvent;
 import flash.filesystem.File;
 import flash.geom.Matrix;
 import flash.net.URLLoader;
-import flash.net.URLLoaderDataFormat;
-import flash.net.URLRequest;
 import flash.utils.ByteArray;
 
-public class Server implements IServer {
+import cc.makeblock.util.FileUtil;
+
+public class Server {
 	// -----------------------------
 	// Asset API
 	//------------------------------
-	public function fetchAsset(url:String, whenDone:Function):URLLoader {
+	private function fetchAsset(url:String):ByteArray
+	{
 		// Make a GET or POST request to the given URL (do a POST if the data is not null).
 		// The whenDone() function is called when the request is done, either with the
 		// data returned by the server or with a null argument if the request failed.
-
+/*
 		function completeHandler(e:Event):void {
 			loader.removeEventListener(Event.COMPLETE, completeHandler);
 			loader.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, errorHandler);
@@ -68,41 +66,57 @@ public class Server implements IServer {
 		loader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, errorHandler);
 		loader.addEventListener(IOErrorEvent.IO_ERROR, errorHandler);
 		var request:URLRequest = new URLRequest(url);
-
+	*/	
+		
+		var file:File;
+		if(url.indexOf("://") >= 0){
+			file = new File(url);
+		}else{
+			file = File.applicationDirectory.resolvePath(url);
+		}
+		if(file.exists){
+			return FileUtil.ReadBytes(file);
+		}
+		return null;
+		/*
 		try {
 			loader.load(request);
 		} catch(e:*){
 			// Local sandbox exception?
+			trace(e);
 			whenDone(null);
 		}
 		return loader;
+		*/
 	}
 
-	public function getAsset(md5:String, whenDone:Function):URLLoader {
+	public function getAsset(md5:String):ByteArray
+	{
 //		if (BackpackPart.localAssets[md5] && BackpackPart.localAssets[md5].length > 0) {
 //			whenDone(BackpackPart.localAssets[md5]);
 //			return null;
 //		}
-		return fetchAsset('media/' + md5, whenDone);
+		return fetchAsset('media/' + md5);
 	}
 
-	public function getMediaLibrary(whenDone:Function):URLLoader {
-		return getAsset('mediaLibrary.json', whenDone);
+	public function getMediaLibrary():String
+	{
+		return fetchAsset('media/mediaLibrary.json').toString();
 	}
 
 	public function getThumbnail(md5:String, w:int, h:int, whenDone:Function):URLLoader {
-		function gotAsset(data:ByteArray):void {
+		function imageLoaded(e:Event):void {
+			whenDone(makeThumbnail(e.target.content.bitmapData));
+		}
+		var ext:String = md5.slice(-3);
+		if (['gif', 'png', 'jpg'].indexOf(ext) > -1) {
+			var data:ByteArray = getAsset(md5);
 			if (data) {
 				var loader:Loader = new Loader();
 				loader.contentLoaderInfo.addEventListener(Event.COMPLETE, imageLoaded);
 				try { loader.loadBytes(data) } catch (e:*) {}
 			}
 		}
-		function imageLoaded(e:Event):void {
-			whenDone(makeThumbnail(e.target.content.bitmapData));
-		}
-		var ext:String = md5.slice(-3);
-		if (['gif', 'png', 'jpg'].indexOf(ext) > -1) getAsset(md5, gotAsset);
 		return null;
 	}
 
@@ -123,32 +137,42 @@ public class Server implements IServer {
 	// Translation Support
 	//------------------------------
 
-	public function getLanguageList(whenDone:Function):void {
+	public function getLanguageList():String
+	{
 		var file:File = ApplicationManager.sharedManager().documents.resolvePath("mBlock/locale");
+		var bytes:ByteArray;
 		if(file.exists){
-			fetchAsset(file.url+'/lang_list.txt', whenDone);
+			bytes = fetchAsset(file.url+'/lang_list.txt');
 		}else{
-			fetchAsset('locale/lang_list.txt', whenDone);
+			bytes = fetchAsset('locale/lang_list.txt');
 		}
+		return bytes.toString();
 	}
 
-	public function getPOFile(lang:String, whenDone:Function):void {
+	public function getPOFile(lang:String):ByteArray
+	{
 		var file:File = ApplicationManager.sharedManager().documents.resolvePath("mBlock/locale");
+		var bytes:ByteArray;
 		if(file.exists){
-			fetchAsset(file.url+"/"+  lang +'.po', whenDone);
+			bytes = fetchAsset(file.url+"/"+  lang +'.po');
 		}else{
-			fetchAsset('locale/' + lang + '.po', whenDone);
+			bytes = fetchAsset('locale/' + lang + '.po');
 		}
+		return bytes;
 	}
 
 	public function getSelectedLang(whenDone:Function):void {
 		// Get the language setting.
-		if (SharedObjectManager.sharedManager().available("lang")) whenDone(SharedObjectManager.sharedManager().getObject("lang"));
+		if (SharedObjectManager.sharedManager().available("lang")){
+			whenDone(SharedObjectManager.sharedManager().getObject("lang"));
+		}
 	}
 
 	public function setSelectedLang(lang:String):void {
 		// Record the language setting.
-		if (lang == '') lang = 'en';
+		if (!Boolean(lang)){
+			lang = 'en';
+		}
 		SharedObjectManager.sharedManager().setObject("lang", lang);
 	}
 }}

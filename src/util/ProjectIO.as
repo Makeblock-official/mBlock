@@ -397,28 +397,28 @@ public class ProjectIO {
 			c.baseLayerMD5 = id;
 			whenDone(c);
 		}
-		return app.server.getAsset(id, gotCostumeData);
+		gotCostumeData(app.server.getAsset(id));
+		return null;
 	}
 
 	public function fetchSound(id:String, sndName:String, whenDone:Function):void {
 		// Fetch a sound asset from the server and call whenDone with the resulting ScratchSound.
-		function gotSoundData(sndData:ByteArray):void {
-			if (!sndData) {
-				app.log('Sound not found on server: ' + id);
-				return;
-			}
-			var snd:ScratchSound;
-			try {
-				snd = new ScratchSound(sndName, sndData); // try reading data as WAV file
-			} catch (e:*) { }
-			if (snd && (snd.sampleCount > 0)) { // WAV data
-				snd.md5 = id;
-				whenDone(snd);
-			} else { // try to read data as an MP3 file
-				MP3Loader.convertToScratchSound(sndName, sndData, whenDone);
-			}
+		var sndData:ByteArray = app.server.getAsset(id);
+		if (!sndData) {
+			app.log('Sound not found on server: ' + id);
+			return;
 		}
-		app.server.getAsset(id, gotSoundData);
+		var snd:ScratchSound;
+		try {
+			snd = new ScratchSound(sndName, sndData); // try reading data as WAV file
+		} catch (e:*) { }
+		if (snd && (snd.sampleCount > 0)) { // WAV data
+			snd.md5 = id;
+			whenDone(snd);
+		} else { // try to read data as an MP3 file
+			MP3Loader.convertToScratchSound(sndName, sndData, whenDone);
+		}
+		
 	}
 
 	//----------------------------
@@ -427,12 +427,6 @@ public class ProjectIO {
 
 	public function fetchSprite(md5AndExt:String, whenDone:Function):void {
 		// Fetch a sprite with the md5 hash.
-		function jsonReceived(data:ByteArray):void {
-			if (!data) return;
-			spr.readJSON(util.JSON.parse(data.readUTFBytes(data.length)));
-			spr.instantiateFromJSON(app.stagePane);
-			fetchSpriteAssets([spr], assetsReceived);
-		}
 		function assetsReceived(assetDict:Object):void {
 			installAssets([spr], assetDict);
 			decodeAllImages([spr], done);
@@ -443,7 +437,11 @@ public class ProjectIO {
 			whenDone(spr);
 		}
 		var spr:ScratchSprite = new ScratchSprite();
-		app.server.getAsset(md5AndExt, jsonReceived);
+		var data:ByteArray = app.server.getAsset(md5AndExt);
+		if (!data) return;
+		spr.readJSON(util.JSON.parse(data.readUTFBytes(data.length)));
+		spr.instantiateFromJSON(app.stagePane);
+		fetchSpriteAssets([spr], assetsReceived);
 	}
 
 	private function fetchSpriteAssets(objList:Array, whenDone:Function):void {
@@ -500,8 +498,9 @@ public class ProjectIO {
 		}
 	}
 
-	public function fetchAsset(md5:String, whenDone:Function):URLLoader {
-		return app.server.getAsset(md5, function(data:*):void { whenDone(md5, data); });
+	public function fetchAsset(md5:String, whenDone:Function):void {
+		var data:ByteArray = app.server.getAsset(md5);
+		whenDone(md5, data);
 	}
 
 	//----------------------------

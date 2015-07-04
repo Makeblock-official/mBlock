@@ -25,6 +25,7 @@ package translation {
 	import flash.net.FileReferenceList;
 	import flash.system.Capabilities;
 	import flash.utils.ByteArray;
+	import flash.utils.setTimeout;
 	
 	import blocks.Block;
 	
@@ -64,32 +65,20 @@ public class Translator {
 
 	public static function initializeLanguageList():void {
 		// Get a list of language names for the languages menu from the server.
-		function saveLanguageList(data:String):void {
-			if (!data) return;
-			for each (var line:String in data.split('\n')) {
-				var fields:Array = line.split(',');
-				if (fields.length >= 2) {
-					languages.push([trimWhitespace(fields[0]), trimWhitespace(fields[1])]);
-				}
-			}
-			setLanguage(SharedObjectManager.sharedManager().getObject("lang",Capabilities.language=="zh-CN"?'zh_CN':(Capabilities.language=="zh-TW"?'zh_TW':'en')));
-		}
 		languages = [['en', 'English']]; // English is always the first entry
-		MBlock.app.server.getLanguageList(saveLanguageList);
+		var data:String = MBlock.app.server.getLanguageList();
+		if (!data) return;
+		for each (var line:String in data.split('\n')) {
+			var fields:Array = line.split(',');
+			if (fields.length >= 2) {
+				languages.push([trimWhitespace(fields[0]), trimWhitespace(fields[1])]);
+			}
+		}
+		setLanguage(SharedObjectManager.sharedManager().getObject("lang",Capabilities.language=="zh-CN"?'zh_CN':(Capabilities.language=="zh-TW"?'zh_TW':'en')));
 	}
-
+	
 	public static function setLanguage(lang:String):void {
 	
-		function gotPOFile(data:ByteArray):void {
-			if (data) {
-				dictionary = parsePOData(data);
-				checkBlockTranslations();
-				setFontsFor(lang);
-				MBlock.app.extensionManager.parseAllTranslators();
-			}
-			MBlock.app.translationChanged();
-			langChangedSignal.dispatchEvent(new Event(Event.CHANGE));
-		}
 		if ('import translation file' == lang) { importTranslationFromFile(); return; }
 		else if ('set font size' == lang) { fontSizeMenu(); return; }
 		else{
@@ -100,10 +89,18 @@ public class Translator {
 		setFontsFor(lang);
 		if ('en' == lang){
 			MBlock.app.translationChanged(); // there is no .po file English
-			langChangedSignal.dispatchEvent(new Event(Event.CHANGE));
 		}else {
-			MBlock.app.server.getPOFile(lang, gotPOFile);
+			var data:ByteArray = MBlock.app.server.getPOFile(lang);
+			if (data) {
+				dictionary = parsePOData(data);
+				checkBlockTranslations();
+				setFontsFor(lang);
+				MBlock.app.extensionManager.parseAllTranslators();
+			}
+			setTimeout(MBlock.app.translationChanged, 0);
+//			MBlock.app.translationChanged();
 		}
+		langChangedSignal.dispatchEvent(new Event(Event.CHANGE));
 
 		MBlock.app.server.setSelectedLang(lang);
 	}
