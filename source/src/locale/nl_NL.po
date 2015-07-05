@@ -2236,7 +2236,7 @@ msgid "Message"
 msgstr "Bericht"
 
 msgid "Please connect the serial port."
-msgstr "Verbind de Arduino."
+msgstr "Verbind de seriële poort."
 
 msgid "Arduino IDE not found,"
 msgstr "Arduino IDE niet gevonden."
@@ -2278,7 +2278,7 @@ msgid "Focus On"
 msgstr "focus aan"
 
 msgid "Focus Off"
-msgstr "focus uit",
+msgstr "focus uit"
 
 #msgid "set motor%d.motorPort speed %d.motorvalue"
 #msgstr "faire tourner le moteur %d.motorPort à puissance %d.motorvalue"
@@ -2365,7 +2365,7 @@ msgid "set font size"
 msgstr "lettergrootte"
 
 msgid "unsupported block found, remove them to continue."
-msgstr "Deze blokken worden niet ondersteund, verwijder ze om verder te gaan."
+msgstr "Deze blokken worden niet ondersteund. Verwijder ze om verder te gaan."
 
 msgid "thing"
 msgstr "ding"
