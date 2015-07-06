@@ -2,6 +2,7 @@ package cc.makeblock.mbot.util
 {
 	import flash.events.MouseEvent;
 	
+	import org.aswing.AsWingUtils;
 	import org.aswing.JOptionPane;
 	
 	import translation.Translator;
@@ -34,10 +35,27 @@ package cc.makeblock.mbot.util
 			JOptionPane.NO_STR = Translator.map("Don't save");
 			JOptionPane.CANCEL_STR = Translator.map('Cancel');
 			disableRightMouseEvent();
-			JOptionPane.showMessageDialog(Translator.map('Save project?'), null, function(value:int):void{
-				enableRightMouseEvent();
-				callback(value);
+			var panel:JOptionPane = JOptionPane.showMessageDialog(
+				Translator.map('Save project?'),
+				null,
+				function(value:int):void{
+					enableRightMouseEvent();
+					callback(value);
 			}, null, true, null, JOptionPane.YES | JOptionPane.NO | JOptionPane.CANCEL);
+			
+			panel.getFrame().setClosable(false);
+			
+			panel.getYesButton().setPreferredWidth(50);
+			panel.getNoButton().setPreferredWidth(50);
+			panel.getCancelButton().setPreferredWidth(50);
+			
+			panel.getYesButton().pack();
+			panel.getNoButton().pack();
+			panel.getCancelButton().pack();
+			
+			panel.getFrame().setSizeWH(210, 80);
+			AsWingUtils.centerLocate(panel.getFrame());
+			
 			JOptionPane.YES_STR = "Yes";
 			JOptionPane.NO_STR = "No";
 			JOptionPane.CANCEL_STR = "Cancel";

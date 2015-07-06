@@ -33,6 +33,10 @@ package ui.parts {
 	
 	import assets.Resources;
 	
+	import cc.makeblock.mbot.util.AppTitleMgr;
+	
+	import extensions.DeviceManager;
+	
 	import translation.Translator;
 	
 	import uiwidgets.CursorTool;
@@ -378,6 +382,7 @@ package ui.parts {
 			return result;
 		}
 		public function setConnectedTitle(title:String):void{
+			AppTitleMgr.Instance.setConnectInfo(title);
 			/*
 			removeChild(connectMenu);
 			addChild(connectMenu = makeMenuButton(title, app.showConnectMenu, true));
@@ -404,6 +409,7 @@ package ui.parts {
 	//		this.fixLayout();
 	//	}
 		public function setDisconnectedTitle():void{
+			AppTitleMgr.Instance.setConnectInfo(null);
 			/*
 			removeChild(connectMenu);
 			addChild(connectMenu = makeMenuButton('Connect', app.showConnectMenu, true));
