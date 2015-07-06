@@ -45,15 +45,15 @@ package cc.makeblock.mbot.util
 			
 			panel.getFrame().setClosable(false);
 			
-			panel.getYesButton().setPreferredWidth(50);
-			panel.getNoButton().setPreferredWidth(50);
-			panel.getCancelButton().setPreferredWidth(50);
+			panel.getYesButton().setPreferredWidth(80);
+			panel.getNoButton().setPreferredWidth(80);
+			panel.getCancelButton().setPreferredWidth(80);
 			
 			panel.getYesButton().pack();
 			panel.getNoButton().pack();
 			panel.getCancelButton().pack();
 			
-			panel.getFrame().setSizeWH(210, 80);
+			panel.getFrame().setSizeWH(280, 90);
 			AsWingUtils.centerLocate(panel.getFrame());
 			
 			JOptionPane.YES_STR = "Yes";

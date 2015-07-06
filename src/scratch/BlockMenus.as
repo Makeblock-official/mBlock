@@ -26,6 +26,7 @@ package scratch {
 	import flash.events.MouseEvent;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
+	import flash.profiler.showRedrawRegions;
 	import flash.ui.Mouse;
 	import flash.ui.MouseCursor;
 	
@@ -111,7 +112,13 @@ public class BlockMenus implements DragClient {
 		if (menuName == 'sensor') menuHandler.sensorMenu(evt);
 		if (menuName == 'sound') menuHandler.soundMenu(evt);
 		if (menuName == 'spriteOnly') menuHandler.spriteMenu(evt, false, false, false, true);
-		if (menuName == 'spriteOrMouse') menuHandler.spriteMenu(evt, true, false, false, true);
+		if (menuName == 'spriteOrMouse') {
+			var m:Menu = menuHandler.spriteMenu(evt, true, false, false, true);
+			m.addItem("random horizontal point", "rhp");
+			m.addItem("random vertical point", "rvp");
+			m.addItem("random stage point", "rsp");
+			menuHandler.showMenu(m);
+		}
 		if (menuName == 'spriteOrStage') menuHandler.spriteMenu(evt, false, false, true, true);
 		if (menuName == 'touching') menuHandler.spriteMenu(evt, true, true, false, false);
 		if (menuName == 'stageOrThis') menuHandler.stageOrThisSpriteMenu(evt);
@@ -122,7 +129,7 @@ public class BlockMenus implements DragClient {
 		if (menuName == 'videoMotionType') menuHandler.videoMotionTypeMenu(evt);
 		if (menuName == 'videoState') menuHandler.videoStateMenu(evt);
 	}
-
+	
 	public static function strings():Array {
 		// Exercises all the menus to cause their items to be recorded.
 		// Return a list of additional strings (e.g. from the key menu).
@@ -444,18 +451,51 @@ public class BlockMenus implements DragClient {
 		showMenu(m);
 	}
 
-	private function spriteMenu(evt:MouseEvent, includeMouse:Boolean, includeEdge:Boolean, includeStage:Boolean, includeSelf:Boolean):void {
-		function setSpriteArg(s:*):void {
-			if (blockArg == null) return;
-			if (s == 'edge') blockArg.setArgValue('_edge_', Translator.map('edge'));
-			else if (s == 'mouse-pointer') blockArg.setArgValue('_mouse_', Translator.map('mouse-pointer'));
-			else if (s == 'myself') blockArg.setArgValue('_myself_', Translator.map('myself'));
-			else if (s == 'Stage') blockArg.setArgValue('_stage_', Translator.map('Stage'));
-			else blockArg.setArgValue(s);
-			MBlock.app.setSaveNeeded();
+	private function __setSpriteArg(s:*):void
+	{
+		if (blockArg == null){
+			return;
 		}
+		
+		switch(s)
+		{
+			case "edge":
+				blockArg.setArgValue('_edge_', Translator.map('edge'))
+				break;
+			case "mouse-pointer":
+				blockArg.setArgValue('_mouse_', Translator.map('mouse-pointer'));
+				break;
+			case "myself":
+				blockArg.setArgValue('_myself_', Translator.map('myself'));
+				break;
+			case "Stage":
+				blockArg.setArgValue('_stage_', Translator.map('Stage'));
+				break;
+			case "rhp":
+				blockArg.setArgValue('rhp', Translator.map('random horizontal point'));
+				break;
+			case "rvp":
+				blockArg.setArgValue('rvp', Translator.map('random vertical point'));
+				break;
+			case "rsp":
+				blockArg.setArgValue('rsp', Translator.map('random stage point'));
+				break;
+			default:
+				blockArg.setArgValue(s);
+		}
+		/*
+		if (s == 'edge') blockArg.setArgValue('_edge_', Translator.map('edge'));
+		else if (s == 'mouse-pointer') blockArg.setArgValue('_mouse_', Translator.map('mouse-pointer'));
+		else if (s == 'myself') blockArg.setArgValue('_myself_', Translator.map('myself'));
+		else if (s == 'Stage') blockArg.setArgValue('_stage_', Translator.map('Stage'));
+		else blockArg.setArgValue(s);
+		*/
+		MBlock.app.setSaveNeeded();
+	}
+	
+	private function spriteMenu(evt:MouseEvent, includeMouse:Boolean, includeEdge:Boolean, includeStage:Boolean, includeSelf:Boolean):Menu {
 		var spriteNames:Array = [];
-		var m:Menu = new Menu(setSpriteArg, 'sprite');
+		var m:Menu = new Menu(__setSpriteArg, 'sprite');
 		if (includeMouse) m.addItem('mouse-pointer', 'mouse-pointer');
 		if (includeEdge) m.addItem('edge', 'edge');
 		m.addLine();
@@ -476,6 +516,7 @@ public class BlockMenus implements DragClient {
 			m.addItem(spriteName);
 		}
 		showMenu(m);
+		return m;
 	}
 
 	private function stopMenu(evt:MouseEvent):void {

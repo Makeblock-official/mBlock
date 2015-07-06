@@ -178,11 +178,12 @@ package {
 			gh = new GestureHandler(this);
 			initInterpreter();
 			initRuntime();
-			try{
+//			try{
 				extensionManager = new ExtensionManager(this);
 		//		extensionManager.importExtension();
-				Translator.initializeLanguageList();
 				addParts();
+				systemMenu = new TopSystemMenu(stage, "assets/menu.xml");
+				Translator.initializeLanguageList();
 //				playerBG = new Shape(); // create, but don't add
 				stage.addEventListener(MouseEvent.MOUSE_DOWN, gh.mouseDown);
 				stage.addEventListener(MouseEvent.MOUSE_MOVE, gh.mouseMove);
@@ -195,12 +196,14 @@ package {
 				stage.addEventListener(Event.ENTER_FRAME, step);
 				stage.addEventListener(Event.RESIZE, onResize);
 				setEditMode(true);
+				/*
 			}catch(e:*){
 				var textField:TextField = new TextField;
 				textField.width = 600;
 				textField.text = "The current issue should be due to that the user has his documents folder pointing (right click \"my documents\" -> properties -> location tab) to a folder on a remote drive that's not alway accessible. For example, pointing the folder to X: (\\orc-fs\temp) and then right-clicking on X to disconnect the drive."
 				addChild(textField);
 			}
+			*/
 			// install project before calling fixLayout()
 			if (editMode) runtime.installNewProject();
 			else runtime.installEmptyProject();
@@ -234,7 +237,6 @@ package {
 			//Analyze.countMissingAssets();
 			initExtension();
 			
-			systemMenu = new TopSystemMenu(stage, "assets/menu.xml");
 			MenuBuilder.BuildMenuList(XMLList(FileUtil.LoadFile("assets/context_menus.xml")));
 		}
 		private function initExtension():void{
