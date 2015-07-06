@@ -604,8 +604,10 @@ public class BlockMenus implements DragClient {
 				deleteVarOrList();
 				break;
 			case "rename variable":
+				renameVar(false);
+				break;
 			case "rename list":
-				renameVar();
+				renameVar(true);
 				break;
 			case 'show senders':
 				app.highlightSprites(app.runtime.allSendersOfBroadcast(block.args[0].argValue));
@@ -783,19 +785,31 @@ public class BlockMenus implements DragClient {
 		setBlockVarOrListName(selection);
 	}
 */
-	private function renameVar():void {
+	private function renameVar(isList:Boolean):void {
 		function doVarRename(dialog:DialogBox):void {
 			var newName:String = dialog.fields['New name'].text.replace(/^\s+|\s+$/g, '');
-			if (newName.length == 0 || app.viewedObj().lookupVar(newName)) return;
+			if(newName.length <= 0){
+				return;
+			}
+			if(app.viewedObj().lookupVar(newName) || app.viewedObj().lookupList(newName)) {
+				return;
+			}
 //			if (block.op != Specs.GET_VAR) return;
-			if (block.op != Specs.GET_VAR&&block.op != Specs.GET_LIST) return;
+			if (block.op != Specs.GET_VAR && block.op != Specs.GET_LIST){
+				return;
+			}
 			var oldName:String = blockVarOrListName();
 
 			if (oldName.charAt(0) == '\u2601') { // Retain the cloud symbol
 				newName = '\u2601 ' + newName;
 			}
 
-			app.runtime.renameVariable(oldName, newName, block);
+			if(isList){
+				app.runtime.renameList(oldName, newName, block);
+			}else{
+				app.runtime.renameVariable(oldName, newName, block);
+			}
+			
 			setBlockVarOrListName(newName);
 			app.updatePalette();
 		}
