@@ -169,12 +169,12 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 				for(var j:int=0; j < COUNT_H; ++j) {
 					var light:LightPoint = getLightAt(i, j);
 					if(light.isOn){
-						key |= 1 << j;
+						key |= 1 << (7 - j);
 					}
 				}
 				result.push(key);
 			}
-			return result.reverse();
+			return result;
 		}
 		
 		private function getValue():ByteArray
@@ -185,7 +185,7 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 				for(var j:int=0; j < COUNT_H; ++j) {
 					var light:LightPoint = getLightAt(i, j);
 					if(light.isOn){
-						result[i] |= 1 << j;
+						result[i] |= 1 << (7 - j);
 					}
 				}
 			}
@@ -202,6 +202,26 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 				for(var j:int=0; j < COUNT_H; ++j) {
 					var light:LightPoint = getLightAt(i, j);
 					if(light.isOn){
+						bmd.setPixel(i, j, THUMBNAIL_ON_COLOR);
+					}
+				}
+			}
+			
+			bmd.unlock();
+			
+			return bmd;
+		}
+		
+		static public function arrayToBmd(list:Array):BitmapData
+		{
+			var bmd:BitmapData = new BitmapData(COUNT_W, COUNT_H, false, THUMBNAIL_OFF_COLOR);
+			
+			bmd.lock();
+			
+			for(var i:int=0; i < COUNT_W; ++i){
+				var key:int = list[i];
+				for(var j:int=0; j < COUNT_H; ++j) {
+					if(key & (1 << (7 - j))){
 						bmd.setPixel(i, j, THUMBNAIL_ON_COLOR);
 					}
 				}

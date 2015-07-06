@@ -43,7 +43,7 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 		static public const normalBorder:Border = new EmptyBorder(new LineBorder(null, new ASColor(0xd0d1d2)), new Insets(3,3,3,3));
 		static public const selectBorder:Border = new LineBorder(null, new ASColor(0xd0d1d2), 4);
 		
-		static private const defaultBmd:BitmapData = new BitmapData(16, 8, false, 0xFFFFFF);
+		static internal const defaultBmd:BitmapData = new BitmapData(16, 8, false, 0xFFFFFF);
 		
 		static private const numW:int = 8;
 		static private const numH:int = 2;

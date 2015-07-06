@@ -930,6 +930,7 @@ public class BlockMenus implements DragClient {
 		if(null == faceFrame){
 			faceFrame = new LightSetterFrame();
 		}
+		faceFrame.init(blockArg.base.bmd);
 		faceFrame.addEventListener(AWEvent.HIDDEN, __onFrameClose);
 		faceFrame.addEventListener(Event.COMPLETE, __onFrameSelect);
 		faceFrame.show();

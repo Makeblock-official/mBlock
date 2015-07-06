@@ -228,6 +228,14 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 			}
 		}
 		
+		public function init(bmd:BitmapData):void
+		{
+			if(bmd == null){
+				bmd = ThumbPane.defaultBmd;
+			}
+			sensor.copyFrom(bmd);
+		}
+		
 		internal function __onClick(evt:MouseEvent):void
 		{
 			var target:AssetPane = evt.currentTarget as AssetPane;
