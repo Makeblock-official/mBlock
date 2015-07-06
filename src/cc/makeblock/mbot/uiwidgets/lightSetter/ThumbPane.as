@@ -161,10 +161,12 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 		private function setData(pane:AssetPane, item:DataItem):void
 		{
 			if(null == item){
-				(pane.getAsset() as Bitmap).bitmapData = defaultBmd;
+//				(pane.getAsset() as Bitmap).bitmapData = defaultBmd;
+				pane.setVisible(false);
 				pane.setBorder(normalBorder);
 				return;
 			}
+			pane.setVisible(true);
 			pane.setName(item.name);
 			(pane.getAsset() as Bitmap).bitmapData = item.bmd;
 			if(item.isPreset){

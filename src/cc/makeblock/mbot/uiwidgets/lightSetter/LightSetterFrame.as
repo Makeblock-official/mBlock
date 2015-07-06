@@ -107,7 +107,6 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 			
 			btnEraser.setSelectedIcon(new AssetIcon(new ERASER_CLS()));
 			
-			
 			var centerPanel:Component = new AssetPane(sensor);
 			centerPanel.setBorder(new LineBorder(null, new ASColor(0xd0d1d2)));
 			var wrapper:JPanel = new JPanel(new CenterLayout());
@@ -371,6 +370,8 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 		{
 			sensor.eraserMode = !sensor.eraserMode;
 			Mouse.cursor = sensor.eraserMode ? MouseCursor.HAND : MouseCursor.AUTO;
+			var bgColor:ASColor = btnEraser.isSelected() ? new ASColor(0x17d7ac): null;
+			btnEraser.setBackground(bgColor);
 		}
 		
 		private function __onRotatePixel(evt:AWEvent):void
