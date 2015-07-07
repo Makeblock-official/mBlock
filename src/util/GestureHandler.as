@@ -54,12 +54,10 @@ package util {
 	import flash.display.Sprite;
 	import flash.display.Stage;
 	import flash.events.MouseEvent;
-	import flash.external.ExternalInterface;
 	import flash.filters.DropShadowFilter;
 	import flash.filters.GlowFilter;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-	import flash.net.getClassByAlias;
 	import flash.text.TextField;
 	import flash.text.TextFieldType;
 	import flash.utils.getTimer;
@@ -105,7 +103,6 @@ public class GestureHandler {
 	private var mouseTarget:*;
 	private var objToGrabOnUp:Sprite;
 	private var mouseDownEvent:MouseEvent;
-	private var inIE:Boolean;
 
 	private var bubble:TalkBubble;
 	private var bubbleStartX:Number;
@@ -113,10 +110,9 @@ public class GestureHandler {
 	private static var bubbleRange:Number = 25;
 	private static var bubbleMargin:Number = 5;
 
-	public function GestureHandler(app:MBlock, inIE:Boolean) {
+	public function GestureHandler(app:MBlock) {
 		this.app = app;
 		this.stage = app.stage;
-		this.inIE = inIE;
 	}
 
 	public function setDragClient(newClient:DragClient, evt:MouseEvent):void {
@@ -214,7 +210,10 @@ public class GestureHandler {
 			dragClient.dragBegin(evt);
 			return;
 		}
-		if (DEBUG && evt.shiftKey) return showDebugFeedback(evt);
+		if (DEBUG && evt.shiftKey){
+			showDebugFeedback(evt);
+			return;
+		}
 
 		var t:* = evt.target;
 		if ((t is TextField) && (TextField(t).type == TextFieldType.INPUT)) return;
@@ -481,7 +480,9 @@ public class GestureHandler {
 			obj.y += evt.stageY - mouseDownEvent.stageY;
 		}
 		obj.startDrag();
-		if(obj is DisplayObject) obj.cacheAsBitmap = true;
+		if(obj is DisplayObject) {
+			obj.cacheAsBitmap = true;
+		}
 		carriedObj = obj;
 	}
 

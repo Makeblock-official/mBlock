@@ -2,7 +2,6 @@ package {
 	import com.google.analytics.GATracker;
 	
 	import flash.desktop.NativeApplication;
-	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
 	import flash.display.Graphics;
 	import flash.display.Loader;
@@ -14,10 +13,6 @@ package {
 	import flash.events.InvokeEvent;
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
-	import flash.filesystem.File;
-	import flash.filesystem.FileMode;
-	import flash.filesystem.FileStream;
-	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.net.FileReference;
@@ -32,7 +27,6 @@ package {
 	
 	import blocks.Block;
 	
-	import by.blooddy.crypto.image.JPEGEncoder;
 	import cc.makeblock.mbot.lookandfeel.MyLookAndFeel;
 	import cc.makeblock.mbot.ui.parts.TopSystemMenu;
 	import cc.makeblock.mbot.util.AppTitleMgr;
@@ -151,7 +145,7 @@ package {
 		private var ga:GATracker;
 		private var tabsPart:TabsPart;
 		private var _welcomeView:Loader;
-		private var _currentVer:String = "07.04.001";
+		private var _currentVer:String = "06.16.001";
 		public function MBlock(){
 			app = this;
 			addEventListener(Event.ADDED_TO_STAGE,initStage);
@@ -541,29 +535,6 @@ package {
 	//			evt.stopImmediatePropagation();
 	//		}
 			// Handle ctrl-m and toggle 2d/3d mode
-			else if(evt.ctrlKey && evt.charCode == 109) {
-				isIn3D ? go2D() : go3D();
-				evt.preventDefault();
-				evt.stopImmediatePropagation();
-			}
-			if(evt.ctrlKey && evt.charCode == 112) {
-				var scale:Number = 3;
-				var bmd:BitmapData = new BitmapData(stage.stageWidth*scale,stage.stageHeight*scale,true);
-				var matrix:Matrix = new Matrix;
-				matrix.scale(scale,scale);
-				scaleX = scaleY = scale;
-				bmd.draw(MBlock.app,matrix);
-				scaleX = scaleY = 1;
-				var jpeg:ByteArray = JPEGEncoder.encode(bmd,90);
-				var now:Date = new Date();
-				var path:String = "screen_"+Math.floor(now.time)+".jpg";
-				var fileScreen:File = File.desktopDirectory.resolvePath(path);
-				var fileStream:FileStream = new FileStream();
-				fileStream.open(fileScreen,FileMode.WRITE);
-				fileStream.writeBytes(jpeg);
-				fileStream.close();
-				bmd.dispose();
-			}
 //			else if(evt.ctrlKey && evt.charCode == 109) {
 //				isIn3D ? go2D() : go3D();
 //				evt.preventDefault();

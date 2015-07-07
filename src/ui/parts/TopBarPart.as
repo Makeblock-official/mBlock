@@ -33,6 +33,10 @@ package ui.parts {
 	
 	import assets.Resources;
 	
+	import cc.makeblock.mbot.util.AppTitleMgr;
+	
+	import extensions.DeviceManager;
+	
 	import translation.Translator;
 	
 	import uiwidgets.CursorTool;
@@ -95,10 +99,10 @@ package ui.parts {
 	
 		public static function strings():Array {
 			if (MBlock.app) {
-				MBlock.app.showFileMenu(Menu.dummyButton());
-				MBlock.app.showEditMenu(Menu.dummyButton());
+//				MBlock.app.showFileMenu(Menu.dummyButton());
+//				MBlock.app.showEditMenu(Menu.dummyButton());
 				//MBlock.app.showSerialMenu(Menu.dummyButton());
-				MBlock.app.showExamplesMenu(Menu.dummyButton());
+//				MBlock.app.showExamplesMenu(Menu.dummyButton());
 			}
 			return ['File', 'Edit', 'Tips', 'Duplicate', 'Delete', 'Grow', 'Shrink', 'Block help', 'Offline Editor'];
 		}
@@ -253,9 +257,6 @@ package ui.parts {
 		}
 	
 		public function refresh():void {
-			if (app.isOffline) {
-				//helpTool.visible = app.isOffline;
-			}
 			fixLayout();
 		}
 	
@@ -381,6 +382,7 @@ package ui.parts {
 			return result;
 		}
 		public function setConnectedTitle(title:String):void{
+			AppTitleMgr.Instance.setConnectInfo(title);
 			/*
 			removeChild(connectMenu);
 			addChild(connectMenu = makeMenuButton(title, app.showConnectMenu, true));
@@ -407,6 +409,7 @@ package ui.parts {
 	//		this.fixLayout();
 	//	}
 		public function setDisconnectedTitle():void{
+			AppTitleMgr.Instance.setConnectInfo(null);
 			/*
 			removeChild(connectMenu);
 			addChild(connectMenu = makeMenuButton('Connect', app.showConnectMenu, true));

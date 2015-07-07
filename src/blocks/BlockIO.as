@@ -25,9 +25,13 @@
 // is independent of the internal representation and is easy to convert to/from JSON.
 
 package blocks {
-	import scratch.*;
-	import util.*;
-	import translation.*;
+	import cc.makeblock.mbot.uiwidgets.lightSetter.LightSensor;
+	
+	import scratch.ScratchObj;
+	
+	import translation.Translator;
+	
+	import util.JSON;
 
 public class BlockIO {
 
@@ -55,7 +59,11 @@ public class BlockIO {
 		var topBlock:Block, lastBlock:Block;
 		for each (var cmd:Array in cmdList) {
 			var b:Block = null;
-			try { b = arrayToBlock(cmd, '', forStage) } catch (e:*) { b = new Block('undefined') }
+			try {
+				b = arrayToBlock(cmd, '', forStage);
+			} catch (e:*) {
+				b = new Block('undefined');
+			}
 			if (topBlock == null) topBlock = b;
 			if (lastBlock != null) lastBlock.insertBlock(b);
 			lastBlock = b;
@@ -110,10 +118,20 @@ public class BlockIO {
 			if(forStage && spec[3] == 'whenClicked') label = 'when Stage clicked';
 			b = new Block(label, spec[1], Specs.blockColor(spec[2]), spec[3]);
 		}
-
-		var args:Array = argsForCmd(cmd, b.rightToLeft);
-		var substacks:Array = substacksForCmd(cmd);
+		
+		var args:Array;
 		var hadSpriteRef:Boolean;
+		if(cmd[0] == "mBot.showDraw"){
+			b = new Block(label, spec[1], Specs.blockColor(spec[2]), spec[3], spec[4].slice(0, -1));
+			args = cmd.slice(1);
+			var blockArg:BlockArg = b.args[3];
+			blockArg.argValue = args[3];
+			blockArg.base.bmd = LightSensor.arrayToBmd(args[3]);
+			blockArg.base.setColor(0);
+			blockArg.base.redraw();
+		}else{
+			args = argsForCmd(cmd, b.rightToLeft);
+		var substacks:Array = substacksForCmd(cmd);
 		for (var i:int = 0; i < args.length; i++) {
 			var a:* = args[i];
 			if (a is ScratchObj) {
@@ -124,6 +142,8 @@ public class BlockIO {
 		}
 		if (substacks[0] && (b.base.canHaveSubstack1())) b.insertBlockSub1(substacks[0]);
 		if (substacks[1] && (b.base.canHaveSubstack2())) b.insertBlockSub2(substacks[1]);
+		}
+
 		// if hadSpriteRef is true, don't call fixMouseEdgeRefs() to avoid converting references
 		// to sprites named 'mouse' or 'edge' to '_mouse_' or '_edge_'.
 		if (!hadSpriteRef) fixMouseEdgeRefs(b);

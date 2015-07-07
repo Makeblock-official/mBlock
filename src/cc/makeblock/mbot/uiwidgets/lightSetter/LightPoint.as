@@ -5,10 +5,11 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 	
 	internal class LightPoint extends Sprite
 	{
-		static public const SIZE:int = 30;
+		static public const SIZE_W:int = 32;
+		static public const SIZE_H:int = 24;
 		
-		static public const COLOR_ON:int = 0x00ABFD;
-		static public const COLOR_OFF:int = 0x666666;
+		static public const COLOR_ON:int = 0x1ebaee;
+		static public const COLOR_OFF:int = 0xcbcbcb;
 		
 		private var _isOn:Boolean;
 		public var px:int;
@@ -27,7 +28,7 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 			g.clear();
 			
 			g.beginFill(color);
-			g.drawRect(0, 0, SIZE, SIZE);
+			g.drawRect(0, 0, SIZE_W, SIZE_H);
 			g.endFill();
 		}
 		
