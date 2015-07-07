@@ -52,6 +52,11 @@ package cc.makeblock.mbot.ui.parts
 			register("manage_extensions", ExtensionUtil.OnManagerExtension);
 		}
 		
+		override protected function onAddAppMenu(menu:NativeMenu):void
+		{
+			menu.addItemAt(new NativeMenuItem("mBlock"), 0);
+		}
+		
 		public function changeLang():void
 		{
 			MenuUtil.ForEach(getNativeMenu(), changeLangImpl);

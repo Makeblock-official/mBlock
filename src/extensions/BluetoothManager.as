@@ -213,7 +213,7 @@ package extensions
 					LogManager.sharedManager().log("bt opened:"+btAddr);
 					_isBusy = false;
 					addBluetoothHistory();
-					MBlock.app.topBarPart.setConnectedTitle(Translator.map("Serial Port")+" "+Translator.map("Connected"));
+					MBlock.app.topBarPart.setConnectedTitle("Serial Port");
 				}else{
 					LogManager.sharedManager().log("bt checking:"+btAddr);
 					if(i<10){

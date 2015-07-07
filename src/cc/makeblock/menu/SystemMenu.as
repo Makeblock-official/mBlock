@@ -20,10 +20,15 @@ package cc.makeblock.menu
 			menu = MenuBuilder.BuildMenu(XML(source));
 			if(NativeApplication.supportsMenu){
 				NativeApplication.nativeApplication.menu = menu;
+				onAddAppMenu(menu);
 			}else if(NativeWindow.supportsMenu){
 				stage.nativeWindow.menu = menu;
 			}
 			menu.addEventListener(Event.SELECT, __onSelect);
+		}
+		
+		protected function onAddAppMenu(menu:NativeMenu):void
+		{
 		}
 		
 		private function __onSelect(evt:Event):void
