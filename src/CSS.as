@@ -44,7 +44,7 @@ public class CSS {
 	public static const arrowColor:int = 0xA6A8AC;
 
 	// Fonts
-	public static const font:String = Resources.chooseFont(['Arial', 'Verdana', 'DejaVu Sans','Microsoft Yahei']);
+	public static const font:String = Resources.chooseFont(['微软雅黑','Arial', 'Verdana', 'DejaVu Sans','Microsoft Yahei']);
 	public static const menuFontSize:int = 13;
 	public static const normalTextFormat:TextFormat = new TextFormat(font, 13, textColor);
 	public static const topBarButtonFormat:TextFormat = new TextFormat(font, 12, white, true);

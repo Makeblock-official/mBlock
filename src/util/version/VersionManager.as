@@ -30,7 +30,7 @@ package util.version
 		}
 		public function start():void{
 			_isFirst = SharedObjectManager.sharedManager().getObject("first-launch",true);
-			var req:URLRequest = new URLRequest("http://makeblock.sinaapp.com/scratch/mblock_resources_v4.php");
+			var req:URLRequest = new URLRequest("http://makeblock.sinaapp.com/scratch/mblock_resources_v4.php?time="+new Date().time);
 			_reqLoader.load(req);
 			_reqLoader.addEventListener(IOErrorEvent.IO_ERROR,onReqError);
 			_reqLoader.addEventListener(Event.COMPLETE,onReqComplete);
