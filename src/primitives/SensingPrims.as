@@ -39,7 +39,7 @@ package primitives {
 	
 	import translation.Translator;
 
-public class SensingPrims {
+	internal class SensingPrims {
 
 	private var app:MBlock;
 	private var interp:Interpreter;

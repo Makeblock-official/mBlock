@@ -11,6 +11,7 @@
 	<subMenu name="Edit" label="编辑">
 		<item name="Undelete" label="撤销删除" />
 		<item isSeparator="true" />
+		<item name="Hide stage layout" label="隐藏舞台" keyEquivalent="" />
 		<item name="Small stage layout" label="小舞台布局模式" keyEquivalent="" />
 		<item name="Turbo mode" label="加速模式" keyEquivalent="" />
 		<item name="Arduino mode" label="Arduino模式" keyEquivalent="" />
@@ -30,7 +31,7 @@
 			<item name="Custom Connect" label="自定义连接" action="connect_network" />
 		</subMenu>
 		<item isSeparator="true" />
-		<item label="固件" enabled="false" />
+		<item name="Firmware" label="固件" enabled="false" />
 		<item name="Upgrade Firmware" label="安装固件" action="upgrade_firmware" />
 		<item name="Reset Default Program" label="恢复出厂程序" action="reset_program" />
 		<item name="View Source" label="查看源码" action="view_source" />
@@ -53,7 +54,7 @@
 		<item name="picoboard_unknown" label="PicoBoard" />
 	</subMenu>
 	<subMenu name="Extensions" label="扩展">
-		<item name="manage_extensions" label="管理扩展"/>
+		<item name="manage_extensions" label="管理扩展" keyEquivalent="T" />
 		<item isSeparator="true" />
 	</subMenu>
 	<subMenu name="Language" label="语言">

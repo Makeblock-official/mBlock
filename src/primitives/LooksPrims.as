@@ -28,7 +28,7 @@ package primitives {
 	import interpreter.*;
 	import scratch.*;
 
-public class LooksPrims {
+	internal class LooksPrims {
 
 	private var app:MBlock;
 	private var interp:Interpreter;

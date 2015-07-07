@@ -26,6 +26,7 @@
 package scratch {
 	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
+	import flash.display.NativeMenu;
 	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -37,6 +38,8 @@ package scratch {
 	import flash.geom.Rectangle;
 	import flash.net.FileReference;
 	import flash.utils.ByteArray;
+	
+	import cc.makeblock.menu.MenuBuilder;
 	
 	import filters.FilterPack;
 	
@@ -461,8 +464,19 @@ public class ScratchSprite extends ScratchObj {
 	public function objToGrab(evt:MouseEvent):ScratchSprite { return this } // allow dragging
 
 	/* Menu */
+	private var ctxMenu:NativeMenu;
 
-	public function menu(evt:MouseEvent):Menu {
+	public function menu(evt:MouseEvent):NativeMenu {
+		if(null == ctxMenu){
+			ctxMenu = MenuBuilder.CreateMenu("ScratchSprite");
+			ctxMenu.addEventListener(Event.SELECT, __onSelect);
+		}else{
+			while(ctxMenu.numItems > 6){
+				ctxMenu.removeItemAt(6);
+			}
+		}
+		return ctxMenu;
+		/*
 		var m:Menu = new Menu();
 		m.addItem('info', showDetails);
 		m.addLine();
@@ -471,8 +485,35 @@ public class ScratchSprite extends ScratchObj {
 		m.addLine();
 		m.addItem('save to local file', saveToLocalFile);
 		return m;
+		*/
 	}
-
+	
+	private function __onSelect(evt:Event):void
+	{
+		switch(evt.target.name){
+			case "info":
+				showDetails();
+				break;
+			case "duplicate":
+				duplicateSprite();
+				break;
+			case "delete":
+				deleteSprite();
+				break;
+			case "save to local file":
+				saveToLocalFile();
+				break;
+			case "hide":
+				visible = false;
+				updateBubble();
+				break;
+			case "show":
+				visible = true;
+				updateBubble();
+				break;
+		}
+	}
+	
 	public function handleTool(tool:String, evt:MouseEvent):void {
 		if (tool == 'copy') duplicateSprite(true);
 		if (tool == 'cut') deleteSprite();

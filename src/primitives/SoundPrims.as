@@ -29,7 +29,7 @@ package primitives {
 	import scratch.*;
 	import sound.*;
 
-public class SoundPrims {
+	internal class SoundPrims {
 
 	private var app:MBlock;
 	private var interp:Interpreter;

@@ -12,13 +12,10 @@ package {
 	import flash.display.StageAlign;
 	import flash.display.StageDisplayState;
 	import flash.display.StageScaleMode;
-	import flash.events.ErrorEvent;
 	import flash.events.Event;
 	import flash.events.InvokeEvent;
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
-	import flash.events.UncaughtErrorEvent;
-	import flash.external.ExternalInterface;
 	import flash.filesystem.File;
 	import flash.filesystem.FileMode;
 	import flash.filesystem.FileStream;
@@ -43,19 +40,24 @@ package {
 	import blocks.Block;
 	
 	import by.blooddy.crypto.image.JPEGEncoder;
+	import cc.makeblock.mbot.ui.parts.TopSystemMenu;
+	import cc.makeblock.mbot.util.PopupUtil;
+	import cc.makeblock.menu.MenuBuilder;
+	import cc.makeblock.util.FileUtil;
 	
 	import extensions.BluetoothManager;
 	import extensions.ConnectionManager;
 	import extensions.DeviceManager;
 	import extensions.ExtensionManager;
 	import extensions.HIDManager;
-	import extensions.ParseManager;
-	import extensions.ScratchExtension;
 	import extensions.SerialDevice;
 	import extensions.SerialManager;
 	import extensions.SocketManager;
 	
 	import interpreter.Interpreter;
+	
+	import org.aswing.AsWingManager;
+	import org.aswing.JOptionPane;
 	
 	import scratch.BlockMenus;
 	import scratch.PaletteBuilder;
@@ -102,6 +104,7 @@ package {
 	
 	import watchers.ListWatcher;
 
+	[SWF(frameRate="30")]
 	public class MBlock extends Sprite {
 		// Version
 		private static var vxml:XML = NativeApplication.nativeApplication.applicationDescriptor; 
@@ -115,11 +118,13 @@ package {
 		public var isOffline:Boolean; // true when running as an offline (i.e. stand-alone) app
 		public var isSmallPlayer:Boolean; // true when displaying as a scaled-down player (e.g. in search results)
 		public var stageIsContracted:Boolean; // true when the stage is half size to give more space on small screens
+		public var stageIsHided:Boolean;
 		public var stageIsArduino:Boolean;
 		public var isIn3D:Boolean;
 		public var render3D:IRenderIn3D;
-		public var jsEnabled:Boolean = false; // true when the SWF can talk to the webpage
 	
+		private var systemMenu:TopSystemMenu;
+		
 		// Runtime
 		public var runtime:ScratchRuntime;
 		public var interp:Interpreter;
@@ -131,8 +136,6 @@ package {
 		public var projectIsPrivate:Boolean;
 		public var oldWebsiteURL:String = '';
 		public var loadInProgress:Boolean;
-		public var debugOps:Boolean = false;
-		public var debugOpCmd:String = '';
 	
 		protected var autostart:Boolean;
 		private var viewedObject:ScratchObj;
@@ -142,7 +145,7 @@ package {
 		protected var languageChanged:Boolean; // set when language changed
 	
 		// UI Elements
-		public var playerBG:Shape;
+//		public var playerBG:Shape;
 		public var palette:BlockPalette;
 		public var scriptsPane:ScriptsPane;
 		public var stagePane:ScratchStage;
@@ -165,21 +168,17 @@ package {
 			this.addEventListener(Event.ADDED_TO_STAGE,initStage);
 		}
 		private function initStage(evt:Event):void{
+			removeEventListener(Event.ADDED_TO_STAGE,initStage);
+			stage.nativeWindow.title += "(" + versionString + "," + _currentVer + ")";
+			AsWingManager.initAsStandard(this);
 			ApplicationManager.sharedManager().isCatVersion = NativeApplication.nativeApplication.applicationDescriptor.toString().indexOf("猫友")>-1;
 			ga = new GATracker(this,"UA-54268669-1","AS3",false);
 			track("/app/launch");
-			loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, uncaughtErrorHandler);
-			NativeApplication.nativeApplication.addEventListener(Event.EXITING,onExiting);
-			NativeApplication.nativeApplication.addEventListener(Event.CLOSE,onExiting);
-			NativeApplication.nativeApplication.addEventListener(Event.CLOSING,onExiting);
 			NativeApplication.nativeApplication.addEventListener(InvokeEvent.INVOKE,onInvoked);
-			this.addEventListener(Event.CLOSING,onExiting);
+			stage.nativeWindow.addEventListener(Event.CLOSING,onExiting);
 			isOffline = loaderInfo.url.indexOf('http:') == -1;
 			checkFlashVersion();
 			initServer();
-			stage.align = StageAlign.TOP_LEFT;
-			stage.scaleMode = StageScaleMode.NO_SCALE;
-			stage.frameRate = 30;
 			if(SharedObjectManager.sharedManager().available("labelSize")){
 				var labelSize:int = SharedObjectManager.sharedManager().getObject("labelSize") as int;
 				var argSize:int = Math.round(0.9 * labelSize);
@@ -201,13 +200,13 @@ package {
 				extensionManager = new ExtensionManager(this);
 		//		extensionManager.importExtension();
 				Translator.initializeLanguageList();
-				playerBG = new Shape(); // create, but don't add
+//				playerBG = new Shape(); // create, but don't add
 				addParts();
 				stage.addEventListener(MouseEvent.MOUSE_DOWN, gh.mouseDown);
 				stage.addEventListener(MouseEvent.MOUSE_MOVE, gh.mouseMove);
 				stage.addEventListener(MouseEvent.MOUSE_UP, gh.mouseUp);
 				stage.addEventListener(MouseEvent.MOUSE_WHEEL, gh.mouseWheel);
-				stage.addEventListener('rightClick', gh.rightMouseClick);
+				stage.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN, gh.onRightMouseDown);
 				stage.addEventListener(KeyboardEvent.KEY_DOWN, runtime.keyDown);
 				stage.addEventListener(KeyboardEvent.KEY_UP, runtime.keyUp);
 				stage.addEventListener(KeyboardEvent.KEY_DOWN, keyDown); // to handle escape key
@@ -227,7 +226,6 @@ package {
 			fixLayout();
 			UpdaterManager.sharedManager().checkForUpdate();
 			setTimeout(function():void{
-				NativeApplication.nativeApplication.activeWindow.addEventListener(Event.CLOSING,onExiting);
 				SocketManager.sharedManager();
 			},100);
 			var ver:String = _currentVer;
@@ -253,6 +251,9 @@ package {
 			//Analyze.checkProjects(56086, 64220);
 			//Analyze.countMissingAssets();
 			initExtension();
+			
+			systemMenu = new TopSystemMenu(stage, "assets/menu.xml");
+			MenuBuilder.BuildMenuList(XMLList(FileUtil.LoadFile("assets/context_menus.xml")));
 		}
 		private function initExtension():void{
 			ClickerManager.sharedManager().update();
@@ -276,40 +277,19 @@ package {
 			_welcomeView.y = (h-400)/2+30;
 			setTimeout(function():void{addChild(_welcomeView)},500);
 		}
-		public function createNativeWindow():void { 
-			//create the init options 
-//			var options:NativeWindowInitOptions = new NativeWindowInitOptions(); 
-//			options.transparent = false; 
-//			options.systemChrome = NativeWindowSystemChrome.STANDARD; 
-//			options.type = NativeWindowType.NORMAL; 
-//			
-//			//create the window 
-//			var newWindow:NativeWindow = new NativeWindow(options); 
-//			newWindow.title = "Scratchbot"; 
-//			newWindow.width = 800; 
-//			newWindow.height = 600; 
-//			
-//			newWindow.stage.align = StageAlign.TOP_LEFT; 
-//			newWindow.stage.scaleMode = StageScaleMode.NO_SCALE; 
-//			
-//			//activate and show the new window 
-//			newWindow.activate(); 
-//			var scratchApp:Scratch = new Scratch;
-//			newWindow.stage.addChild(scratchApp);
-		} 
+		
 		public function track(msg:String):void{
 			if(ga!=null){
 				ga.trackPageview((ApplicationManager.sharedManager().isCatVersion?"/myh/":"/")+MBlock.versionString+""+msg);
 			}
 		}
 		private function onInvoked(evt:InvokeEvent):void{
-			if(evt.arguments.length>0){
-				function openExtProject(v:String=null):void{
-					if(v!=null&&v!=null){
-						runtime.selectedProjectFile(v);
-					}
-				}
-				setTimeout(openExtProject,0.5,evt.arguments[0]);
+			if(evt.arguments.length <= 0){
+				return;
+			}
+			var arg:String = evt.arguments[0];
+			if(Boolean(arg)){
+				runtime.selectedProjectFile(arg);
 			}
 		}
 		protected function initTopBarPart():void {
@@ -351,51 +331,40 @@ package {
 		public function getPaletteBuilder():PaletteBuilder {
 			return new PaletteBuilder(this);
 		}
-	
-		private function uncaughtErrorHandler(event:UncaughtErrorEvent):void
-		{
-			if (event.error is Error)
-			{
-				var error:Error = event.error as Error;
-				logException(error);
-			}
-			else if (event.error is ErrorEvent)
-			{
-				var errorEvent:ErrorEvent = event.error as ErrorEvent;
-				logMessage(errorEvent.toString());
-			}
-		}
+		
 		private function onExiting(evt:Event):void{
-			
-			function onExiting():void { 
-				NativeApplication.nativeApplication.exit();
-				track("/app/exit");
-				LogManager.sharedManager().save();
-			}
 			if(saveNeeded){
-				evt.preventDefault(); 
-				saveProjectAndThen(onExiting);
+				evt.preventDefault();
+				saveProjectAndThen(quitApp);
 			}
 			SerialManager.sharedManager().disconnect();
 			HIDManager.sharedManager().disconnect();
 		}
+		
+		public function quitApp():void
+		{
+			NativeApplication.nativeApplication.exit();
+			track("/app/exit");
+			LogManager.sharedManager().save();
+		}
+		
 		public function log(s:String):void {
 			LogManager.sharedManager().log(s+"\r\n");
 		}
 	
-		public function logException(e:Error):void {}
-		public function logMessage(msg:String, extra_data:Object=null):void {}
+		public function logMessage(msg:String, extra_data:Object=null):void {
+			trace(msg);
+		}
 		public function loadProjectFailed():void {}
 		[Embed(source='libs/RenderIn3D.swf', mimeType='application/octet-stream')]
 		public static const MySwfData:Class;
 		protected function checkFlashVersion():void {
 			if(Capabilities.playerType != "Desktop" || Capabilities.version.indexOf('IOS') === 0) {
-				var isArmCPU:Boolean = (jsEnabled && ExternalInterface.call("window.navigator.userAgent.toString").indexOf('CrOS arm') > -1);
 				var versionString:String = Capabilities.version.substr(Capabilities.version.indexOf(' ')+1);
 				var versionParts:Array = versionString.split(',');
 				var majorVersion:int = parseInt(versionParts[0]);
 				var minorVersion:int = parseInt(versionParts[1]);
-				if((majorVersion > 11 || (majorVersion == 11 && minorVersion >=1)) && !isArmCPU && Capabilities.cpuArchitecture == 'x86') {
+				if((majorVersion > 11 || (majorVersion == 11 && minorVersion >=1)) && Capabilities.cpuArchitecture == 'x86') {
 					loadRenderLibrary();
 					return;
 				}
@@ -412,7 +381,6 @@ package {
 			// we need the loaded code to be in the same (main) application domain
 			var ctx:LoaderContext = new LoaderContext(false, loaderInfo.applicationDomain);
 			ctx.allowCodeImport = true;
-			loader.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, uncaughtErrorHandler);
 			loader.loadBytes(new MySwfData() as ByteArray, ctx);
 			loading3DLib = true;
 		}
@@ -453,11 +421,7 @@ package {
 			}
 			stagePane.clearCachedBitmap();
 	
-			// unsupported technique that seems to force garbage collection
-			try {
-				new LocalConnection().connect('foo');
-				new LocalConnection().connect('foo');
-			} catch (e:Error) {}
+			System.gc();
 		}
 	
 		public function go3D():void {
@@ -584,7 +548,7 @@ package {
 	
 		private function keyDown(evt:KeyboardEvent):void {
 			// Escape exists presentation mode.
-			if ((evt.charCode == 27) && stagePart.isInPresentationMode()) {
+			if ((evt.charCode == Keyboard.ESCAPE) && stagePart.isInPresentationMode()) {
 				setPresentationMode(false);
 				stagePart.exitPresentationMode();
 			}
@@ -618,6 +582,11 @@ package {
 				fileStream.close();
 				bmd.dispose();
 			}
+//			else if(evt.ctrlKey && evt.charCode == 109) {
+//				isIn3D ? go2D() : go3D();
+//				evt.preventDefault();
+//				evt.stopImmediatePropagation();
+//			}
 		}
 	
 		private function setSmallStageMode(flag:Boolean):void {
@@ -747,7 +716,7 @@ package {
 			Menu.removeMenusFrom(stage);
 			editMode = newMode;
 			if (editMode) {
-				hide(playerBG);
+//				hide(playerBG);
 				show(topBarPart);
 				show(libraryPart);
 				show(tabsPart);
@@ -755,8 +724,8 @@ package {
 				stagePart.hidePlayButton();
 				runtime.edgeTriggersEnabled = true;
 			} else {
-				addChildAt(playerBG, 0); // behind everything
-				playerBG.visible = false;
+//				addChildAt(playerBG, 0); // behind everything
+//				playerBG.visible = false;
 				hide(topBarPart);
 				hide(libraryPart);
 				hide(tabsPart);
@@ -791,18 +760,24 @@ package {
 		}
 	
 		protected function updateLayout(w:int, h:int):void {
-			topBarPart.x = 0;
-			topBarPart.y = 0;
-			topBarPart.setWidthHeight(w, 28);
+//			topBarPart.x = 0;
+//			topBarPart.y = 0;
+//			topBarPart.setWidthHeight(w, 28);
+			topBarPart.setWidthHeight(w, 0);
 	
 			var extraW:int = 0;
 			var extraH:int = stagePart.computeTopBarHeight() + 1;
 			if (editMode) {
-				// adjust for global scale (from browser zoom)
-				if (stageIsContracted) {
+				
+				if(stageIsHided){
 					stagePart.hideFullScreenButton();
 					stagePart.setWidthHeight((240+ApplicationManager.sharedManager().contractedOffsetX/2) + extraW, ApplicationManager.sharedManager().contractedOffsetY+stage.stageHeight/2, 0.0);
-					//stagePart.setWidthHeight(240 + extraW, 180 + extraH, 0.5);
+				}
+				// adjust for global scale (from browser zoom)
+				else if (stageIsContracted) {
+					stagePart.showFullScreenButton();
+//					stagePart.setWidthHeight((240+ApplicationManager.sharedManager().contractedOffsetX/2) + extraW, ApplicationManager.sharedManager().contractedOffsetY+stage.stageHeight/2, 0.0);
+					stagePart.setWidthHeight(240 + extraW, 180 + extraH, 0.5);
 				} else {
 					stagePart.showFullScreenButton();
 					stagePart.setWidthHeight(480 + extraW, 360 + extraH, 1);
@@ -810,7 +785,6 @@ package {
 				stagePart.x = 5;
 				stagePart.y = topBarPart.bottom() + 5;
 			} else {
-				drawBG();
 				var pad:int = (w > 550) ? 16 : 0; // add padding for full-screen mode
 				var scale:Number = Math.min((w - extraW - pad) / 480, (h - extraH - pad) / 360);
 				scale = Math.max(0.01, scale);
@@ -853,13 +827,6 @@ package {
 			if(isIn3D) render3D.onStageResize();
 		}
 	
-		private function drawBG():void {
-			var g:Graphics = playerBG.graphics;
-			g.clear();
-			g.beginFill(0);
-			g.drawRect(0, 0, stage.stageWidth, stage.stageHeight);
-		}
-	
 		// -----------------------------
 		// Translations utilities
 		//------------------------------
@@ -882,7 +849,9 @@ package {
 			updatePalette(false);
 			imagesPart.updateTranslation();
 			soundsPart.updateTranslation();
-			scriptsPart.updateTranslation()
+			scriptsPart.updateTranslation();
+			
+			systemMenu.changeLang();
 		}
 	
 		// -----------------------------
@@ -910,22 +879,6 @@ package {
 			} else if (canRevert()) {
 				m.addLine();
 				m.addItem('Revert', revertToOriginalProject);
-			}
-	
-			if (b.lastEvent.shiftKey && jsEnabled) {
-				m.addLine();
-				m.addItem('Import experimental extension', function():void {
-					function loadJSExtension(dialog:DialogBox):void {
-						var url:String = dialog.fields['URL'].text.replace(/^\s+|\s+$/g, '');
-						if (url.length == 0) return;
-						ExternalInterface.call('ScratchExtensions.loadExternalJS', url);
-					}
-					var d:DialogBox = new DialogBox(loadJSExtension);
-					d.addTitle('Load Javascript Scratch Extension');
-					d.addField('URL', 120);
-					d.addAcceptCancelButtons('Load');
-					d.showOnStage(app.stage);
-				});
 			}
 		}
 	
@@ -1203,20 +1156,22 @@ package {
 		}
 		private function showAboutDialog():void {
 		}
+		
+		private function clearProject():void
+		{
+			startNewProject('', '');
+			setProjectName('Untitled');
+			topBarPart.refresh();
+			stagePart.refresh();
+		}
 	
-		protected function createNewProject(ignore:* = null):void {
-			function clearProject():void {
-				startNewProject('', '');
-				setProjectName('Untitled');
-				topBarPart.refresh();
-				stagePart.refresh();
-				
-			}
+		public function createNewProject(ignore:* = null):void {
 			saveProjectAndThen(clearProject);
 		}
 	
 		public function saveProjectAndThen(postSaveAction:Function = null):void {
 			// Give the user a chance to save their project, if needed, then call postSaveAction.
+			/*
 			function doNothing():void {}
 			function cancel():void { d.cancel(); }
 			function proceedWithoutSaving():void { d.cancel(); postSaveAction() }
@@ -1226,17 +1181,41 @@ package {
 				if (!saveNeeded) postSaveAction();
 			}
 			if (postSaveAction == null) postSaveAction = doNothing;
-			if (!saveNeeded) {
-				postSaveAction();
+			*/
+			if(isPanelShowing){
 				return;
 			}
+			if (!saveNeeded) {
+				if(postSaveAction != null){
+					postSaveAction();
+				}
+				return;
+			}
+			/*
 			var d:DialogBox = new DialogBox();
 			d.addTitle(Translator.map('Save project') + '?');
 			d.addButton('Save', save);
 			d.addButton('Don\'t save', proceedWithoutSaving);
 			d.addButton('Cancel', cancel);
 			d.showOnStage(stage);
+			*/
+			isPanelShowing = true;
+			PopupUtil.showQuitAlert(function(value:int):void{
+				switch(value){
+					case JOptionPane.YES:
+						exportProjectToFile(false,postSaveAction);
+						break;
+					case JOptionPane.NO:
+						if(postSaveAction != null){
+							postSaveAction();
+						}
+						break;
+				}
+				isPanelShowing = false;
+			});
 		}
+		
+		private var isPanelShowing:Boolean;
 	
 		public function exportProjectToFile(fromJS:Boolean = false,postSaveAction:Function=null):void {
 			function squeakSoundsConverted():void {
@@ -1271,9 +1250,20 @@ package {
 			}
 			return result;
 		}
+		
+		public function toggleHideStage():void
+		{
+			stageIsHided = !stageIsHided;
+			setSmallStageMode(stageIsContracted);
+		}
 	
 		public function toggleSmallStage():void {
-			setSmallStageMode(!stageIsContracted);
+			if(stageIsHided){
+				stageIsHided = false;
+				setSmallStageMode(stageIsContracted);
+			}else{
+				setSmallStageMode(!stageIsContracted);
+			}
 		}
 	
 		public function toggleTurboMode():void {
@@ -1287,6 +1277,7 @@ package {
 		}
 		public function toggleArduinoMode():void {
 			stageIsArduino = !stageIsArduino;
+			stageIsHided = stageIsArduino;
 			setSmallStageMode(stageIsArduino);
 			this.scriptsPart.selector.select(stageIsArduino?6:1);
 			this.tabsPart.soundsTab.visible = !stageIsArduino;
@@ -1370,7 +1361,7 @@ package {
 			runtime.installProjectFromData(originalProj, false);
 		}
 	
-		protected function revertToOriginalProject():void {
+		public function revertToOriginalProject():void {
 			function preDoRevert():void {
 				revertUndo = new ProjectIO(MBlock.app).encodeProjectAsZipFile(stagePane);
 				doRevert();
@@ -1379,14 +1370,14 @@ package {
 			DialogBox.confirm('Throw away all changes since opening this project?', stage, preDoRevert);
 		}
 	
-		protected function undoRevert():void {
+		public function undoRevert():void {
 			if (!revertUndo) return;
 			runtime.installProjectFromData(revertUndo, false);
 			revertUndo = null;
 		}
 	
-		protected function canRevert():Boolean { return originalProj != null }
-		protected function canUndoRevert():Boolean { return revertUndo != null }
+		public function canRevert():Boolean { return originalProj != null }
+		public function canUndoRevert():Boolean { return revertUndo != null }
 		private function clearRevertUndo():void { revertUndo = null }
 	
 		public function addNewSprite(spr:ScratchSprite, showImages:Boolean = false, atMouse:Boolean = false):void {

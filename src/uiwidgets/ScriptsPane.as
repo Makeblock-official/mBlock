@@ -28,7 +28,9 @@ package uiwidgets {
 	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
 	import flash.display.Graphics;
+	import flash.display.NativeMenu;
 	import flash.display.Shape;
+	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -38,6 +40,8 @@ package uiwidgets {
 	import blocks.BlockArg;
 	import blocks.BlockIO;
 	import blocks.BlockShape;
+	
+	import cc.makeblock.menu.MenuBuilder;
 	
 	import scratch.ScratchComment;
 	import scratch.ScratchObj;
@@ -418,21 +422,46 @@ return true; // xxx disable this check for now; it was causing confusion at Scra
 	}
 
 	/* Menu */
+	
+	private var ctxMenu:NativeMenu;
 
-	public function menu(evt:MouseEvent):Menu {
+	public function menu(evt:MouseEvent):NativeMenu {
 		
+		if(app.scriptsPart.isArduinoMode){
+			return null;	
+		}
+		
+		if(null == ctxMenu){
+			ctxMenu = MenuBuilder.CreateMenu("ScriptsPane");
+			ctxMenu.addEventListener(Event.SELECT, __onSelect);
+		}
+		
+		return ctxMenu;
+		
+		
+		/*
 		var x:Number = mouseX;
 		var y:Number = mouseY;
 		function newComment():void { addComment(null, x, y) }
 		var m:Menu = new Menu();
-		if(app.scriptsPart.isArduinoMode){
-			return m;	
-		}
 		m.addItem('cleanup', cleanup);
 		m.addItem('add comment', newComment);
 		return m;
+		*/
 	}
-
+	
+	private function __onSelect(evt:Event):void
+	{
+		switch(evt.target.name){
+			case "cleanup":
+				cleanup();
+				break;
+			case "add comment":
+				addComment(null, mouseX, mouseY);
+				break;
+		}
+	}
+	
 	public function setScale(newScale:Number):void {
 		newScale = Math.max(1/6, Math.min(newScale, 6.0));
 		scaleX = scaleY = newScale;

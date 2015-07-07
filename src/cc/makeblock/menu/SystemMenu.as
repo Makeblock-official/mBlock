@@ -32,7 +32,7 @@ package cc.makeblock.menu
 			
 			var handler:Function = handlerDict[menuItem.name];
 			if(null != handler){
-				handler(menuItem);
+				execHandler(handler, menuItem);
 				return;
 			}
 			
@@ -44,9 +44,18 @@ package cc.makeblock.menu
 				}
 				handler = handlerDict[testItem.name];
 				if(null != handler){
-					handler(menuItem);
+					execHandler(handler, menuItem);
 					return;
 				}
+			}
+		}
+		
+		private function execHandler(handler:Function, menuItem:NativeMenuItem):void
+		{
+			if(handler.length > 0){
+				handler(menuItem);
+			}else{
+				handler();
 			}
 		}
 		

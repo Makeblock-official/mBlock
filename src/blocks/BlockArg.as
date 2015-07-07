@@ -36,6 +36,7 @@
 // arguments, it should set base to a BlockShape to support drag feedback.
 
 package blocks {
+	import flash.display.BitmapData;
 	import flash.display.Graphics;
 	import flash.display.Shape;
 	import flash.display.Sprite;
@@ -47,6 +48,8 @@ package blocks {
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFieldType;
 	
+	import cc.makeblock.mbot.uiwidgets.lightSetter.LightSensor;
+	
 	import scratch.BlockMenus;
 	
 	import translation.Translator;
@@ -55,6 +58,7 @@ package blocks {
 
 public class BlockArg extends Sprite {
 
+	static public const emotion:BitmapData = new BitmapData(16, 8, false, 0);
 	public static const epsilon:Number = 1 / 4294967296;
 
 	public var type:String;
@@ -104,7 +108,7 @@ public class BlockArg extends Sprite {
 			argValue = 0;
 		} else if (type == 's') {
 			base = new BlockShape(BlockShape.RectShape, c);
-		} else {
+		}else {
 			// custom type; subclass is responsible for adding
 			// the desired children, setting width and height,
 			// and optionally defining the base shape
@@ -114,13 +118,15 @@ public class BlockArg extends Sprite {
 		if (type == 'c') {
 			base.setWidthAndTopHeight(13, 13);
 			setArgValue(Color.random());
-		} else {
+		} else if(menuName == "drawFace"){
+			base.setWidthAndTopHeight(LightSensor.COUNT_W * LightSensor.BMP_SCALE, LightSensor.COUNT_H * LightSensor.BMP_SCALE, true);
+		}else {
 			base.setWidthAndTopHeight(30, Block.argTextFormat.size + 6); // 15 for normal arg font
 		}
 		base.filters = blockArgFilters();
 		addChild(base);
 
-		if ((type == 'd') || (type == 'm')) { // add a menu icon
+		if ((type == 'd') || (type == 'm' && menuName != "drawFace")) { // add a menu icon
 			menuIcon = new Shape();
 			var g:Graphics = menuIcon.graphics;
 			g.beginFill(0, 0.6); // darker version of base color
@@ -132,7 +138,7 @@ public class BlockArg extends Sprite {
 			addChild(menuIcon);
 		}
 
-		if (editable || isNumber || (type == 'm')) { // add a string field
+		if (editable || isNumber || (type == 'm' && menuName != "drawFace")) { // add a string field
 			field = makeTextField();
 			if ((type == 'm') && !editable) field.textColor = 0xFFFFFF;
 			else base.setWidthAndTopHeight(30, Block.argTextFormat.size + 5); // 14 for normal arg font
@@ -145,7 +151,7 @@ public class BlockArg extends Sprite {
 			field.addEventListener(FocusEvent.FOCUS_OUT, stopEditing);
 			addChild(field);
 			textChanged(null);
-		} else {
+		}else {
 			base.redraw();
 		}
 	}

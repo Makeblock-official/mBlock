@@ -1,0 +1,12 @@
+<menu name="ScratchSprite">
+	<item name="info" />
+	<item isSeparator="true" />
+	<item name="duplicate" />
+	<item name="delete" />
+	<item isSeparator="true" />
+	<item name="save to local file" />
+</menu>
+<menu name="ScriptsPane">
+	<item name="cleanup" />
+	<item name="add comment" />
+</menu>

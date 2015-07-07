@@ -18,17 +18,36 @@
  */
 
 package ui {
-	import flash.display.*;
-	import flash.events.*;
+	import flash.display.Bitmap;
+	import flash.display.DisplayObject;
+	import flash.display.Graphics;
+	import flash.display.NativeMenu;
+	import flash.display.NativeMenuItem;
+	import flash.display.Shape;
+	import flash.display.Sprite;
+	import flash.events.Event;
+	import flash.events.MouseEvent;
 	import flash.filters.GlowFilter;
-	import flash.text.*;
+	import flash.text.TextField;
+	
 	import assets.Resources;
+	
 	import blocks.Block;
-	import scratch.*;
+	
+	import cc.makeblock.menu.MenuUtil;
+	
+	import scratch.ScratchCostume;
+	import scratch.ScratchObj;
+	import scratch.ScratchSound;
+	import scratch.ScratchSprite;
+	
 	import translation.Translator;
+	
 	import ui.media.MediaInfo;
 	import ui.parts.LibraryPart;
-	import uiwidgets.*;
+	
+	import uiwidgets.IconButton;
+	import uiwidgets.Menu;
 
 public class SpriteThumbnail extends Sprite {
 
@@ -250,7 +269,8 @@ public class SpriteThumbnail extends Sprite {
 		app.selectSprite(targetObj);
 	}
 
-	public function menu(evt:MouseEvent):Menu {
+	public function menu(evt:MouseEvent):NativeMenu {
+		/*
 		function hideInScene():void {
 			t.visible = false;
 			t.updateBubble();
@@ -259,14 +279,18 @@ public class SpriteThumbnail extends Sprite {
 			t.visible = true;
 			t.updateBubble();
 		}
+		*/
 		if (targetObj.isStage) return null;
 		var t:ScratchSprite = targetObj as ScratchSprite;
-		var m:Menu = t.menu(evt); // basic sprite menu
-		m.addLine();
+		var m:NativeMenu = t.menu(evt); // basic sprite menu
+		MenuUtil.AddLine(m);
+//		m.addLine();
 		if (t.visible) {
-			m.addItem('hide', hideInScene);
+//			m.addItem('hide', hideInScene);
+			m.addItem(new NativeMenuItem()).name = "hide";
 		} else {
-			m.addItem('show', showInScene);
+			m.addItem(new NativeMenuItem()).name = "show";
+//			m.addItem('show', showInScene);
 		}
 		return m;
 	}

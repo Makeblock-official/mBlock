@@ -33,7 +33,7 @@ package primitives {
 	
 	import scratch.*;
 
-public class MotionAndPenPrims {
+	internal class MotionAndPenPrims {
 
 	private var app:MBlock;
 	private var interp:Interpreter;

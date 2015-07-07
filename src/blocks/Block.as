@@ -880,5 +880,8 @@ public class Block extends Sprite {
 			if (i == (focusIndex + 1)) return;
 		}
 	}
-
+	 public function adjustArgIndex(index:int):int
+	 {
+		 return rightToLeft ? (args.length - index - 1) : index;
+	 }
 }}
