@@ -39,7 +39,7 @@ package primitives {
 	
 	import translation.Translator;
 
-public class SensingPrims {
+	internal class SensingPrims {
 
 	private var app:MBlock;
 	private var interp:Interpreter;
@@ -98,6 +98,20 @@ public class SensingPrims {
 		if ('_mouse_' == arg) {
 			return mouseTouches(s);
 		}
+		
+		r = s.bounds();
+		switch(arg)
+		{
+			case "top edge":
+				return r.top < 0;
+			case "right edge":
+				return r.right > ScratchObj.STAGEW;
+			case "bottom edge":
+				return r.bottom > ScratchObj.STAGEH;
+			case "left edge":
+				return r.left < 0;
+		}
+		
 		if (!s.visible) return false;
 
 		var s2:ScratchSprite;

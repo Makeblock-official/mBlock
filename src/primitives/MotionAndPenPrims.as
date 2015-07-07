@@ -23,17 +23,20 @@
 // Scratch motion and pen primitives.
 
 package primitives {
-	import blocks.*;
-	
-	import flash.display.*;
-	import flash.geom.*;
+	import flash.display.Graphics;
+	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	import flash.utils.Dictionary;
 	
-	import interpreter.*;
+	import blocks.Block;
 	
-	import scratch.*;
+	import interpreter.Interpreter;
+	
+	import scratch.ScratchObj;
+	import scratch.ScratchSprite;
+	import scratch.ScratchStage;
 
-public class MotionAndPenPrims {
+	internal class MotionAndPenPrims {
 
 	private var app:MBlock;
 	private var interp:Interpreter;
@@ -158,15 +161,29 @@ public class MotionAndPenPrims {
 	}
 
 	private function mouseOrSpritePosition(arg:String):Point {
-		if (arg == "_mouse_") {
-			var w:ScratchStage = app.stagePane;
-			return new Point(w.scratchMouseX(), w.scratchMouseY());
-		} else {
-			var s:ScratchSprite = app.stagePane.spriteNamed(arg);
-			if (s == null) return null;
-			return new Point(s.scratchX, s.scratchY);
+		var targetSprite:ScratchSprite = interp.targetSprite();
+		var w:ScratchStage = app.stagePane;
+		var pt:Point;
+		switch(arg)
+		{
+			case "_mouse_":
+				pt = new Point(w.scratchMouseX(), w.scratchMouseY());
+				break;
+			case "rhp":
+				pt = new Point(w.width * (Math.random() - 0.5), targetSprite.scratchY);
+				break;
+			case "rvp":
+				pt = new Point(targetSprite.scratchX, w.height * (Math.random() - 0.5));
+				break;
+			case "rsp":
+				pt = new Point(w.width * (Math.random() - 0.5), w.height * (Math.random() - 0.5));
+				break;
+			default:
+				var s:ScratchSprite = app.stagePane.spriteNamed(arg);
+				if (s == null) return null;
+				pt = new Point(s.scratchX, s.scratchY);
 		}
-		return null;
+		return pt;
 	}
 
 	private function primChangeX(b:Block):void {

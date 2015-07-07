@@ -94,7 +94,7 @@ public class TranslatableStrings {
 		}
 		new FileReference().save(data, 'helpScreens.txt');
 	}
-
+/*
 	public static function exportUIStrings():void {
 		strings = uiExtras.concat();
 
@@ -130,7 +130,7 @@ public class TranslatableStrings {
 
 		export('uiStrings');
 	}
-
+*/
 	public static function addAll(list:Array, removeParens:Boolean = true):void {
 		for each (var s:String in list) add(s, removeParens);
 	}

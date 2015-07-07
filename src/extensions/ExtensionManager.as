@@ -35,9 +35,7 @@ import flash.utils.setTimeout;
 
 import blocks.Block;
 
-import interpreter.Thread;
-
-import net.MeURLLoader;
+import cc.makeblock.util.FileUtil;
 
 import translation.Translator;
 
@@ -175,7 +173,7 @@ public class ExtensionManager {
 		}
 		onSelectExtension(name);
 	}
-	private function findExtensionByName(name:String):Object{
+	public function findExtensionByName(name:String):Object{
 		for each(var ext:Object in _extensionList){
 			if(ext.extensionName==name){
 				return ext;
@@ -196,6 +194,7 @@ public class ExtensionManager {
 		}
 		return false;
 	}
+	/*
 	private function refreshList():void{
 		_extensionList = [];
 		if(ApplicationManager.sharedManager().documents.resolvePath("mBlock/libraries/").exists){
@@ -224,6 +223,7 @@ public class ExtensionManager {
 			}
 		}
 	}
+	*/
 	public function copyLocalFiles():void{
 		LogManager.sharedManager().log("copy local files:"+File.applicationDirectory.url);
 		var srcFile:File = File.applicationDirectory.resolvePath("ext/libraries/");
@@ -250,6 +250,7 @@ public class ExtensionManager {
 				var fs:Array = doc.getDirectoryListing();
 				for each(var f:File in fs){ 
 					if(f.extension=="s2e"||f.extension=="json"){
+						/*
 						function onLoadedFile(evt:Event):void{
 							var extObj:Object;
 							try {
@@ -266,6 +267,13 @@ public class ExtensionManager {
 						urlloader.addEventListener(Event.COMPLETE,onLoadedFile);
 						urlloader.url = f.url;
 						urlloader.load(new URLRequest(f.url));
+						*/
+						var extObj:Object = util.JSON.parse(FileUtil.ReadString(f));
+						extObj.srcPath = f.url;
+						_extensionList.push(extObj);
+						if(checkExtensionSelected(extObj.extensionName)){
+							loadRawExtension(extObj);
+						}
 					}
 				}
 			}
@@ -400,7 +408,7 @@ public class ExtensionManager {
 		extensionDict[extObj.extensionName] = ext;
 //		parseTranslators(ext);
 		MBlock.app.extensionManager.parseAllTranslators();
-		MBlock.app.translationChanged();
+//		MBlock.app.translationChanged();
 		MBlock.app.updatePalette();
 		// Update the indicator
 		for (var i:int = 0; i < app.palette.numChildren; i++) {

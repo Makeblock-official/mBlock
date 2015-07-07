@@ -42,7 +42,7 @@ package interpreter {
 		public var args:Array;			// arguments to a user-defined procedure
 	
 		// the stack
-		private var stack:Vector.<StackFrame>;
+		private const stack:Vector.<StackFrame> = new Vector.<StackFrame>();
 		private var sp:int;
 	
 		public function Thread(b:Block, targetObj:*, startupDelay:int = 0) {
@@ -51,6 +51,11 @@ package interpreter {
 			topBlock = b;
 			startDelayCount = startupDelay;
 			// initForBlock
+			reset(b);
+		}
+		
+		private function reset(b:Block):void
+		{
 			block = b;
 			isLoop = false;
 			firstTime = true;
@@ -60,26 +65,15 @@ package interpreter {
 		public function pushStateForBlock(b:Block):void {
 			if (sp >= (stack.length - 1)) growStack();
 			var old:StackFrame = stack[sp++];
-			old.block = block;
-			old.isLoop = isLoop;
-			old.firstTime = firstTime;
-			old.tmp = tmp;
-			old.args = args;
+			old.save();
 			// initForBlock
-			block = b;
-			isLoop = false;
-			firstTime = true;
-			tmp = 0;
+			reset(b);
 		}
 	
 		public function popState():Boolean {
 			if (sp == 0) return false;
 			var old:StackFrame = stack[--sp];
-			block		= old.block;
-			isLoop		= old.isLoop;
-			firstTime	= old.firstTime;
-			tmp			= old.tmp;
-			args		= old.args;
+			old.restore();
 			return true;
 		}
 	
@@ -87,11 +81,11 @@ package interpreter {
 	
 		public function stop():void {
 			block = null;
-			stack = new Vector.<StackFrame>(4);
-			stack[0] = new StackFrame();
-			stack[1] = new StackFrame();
-			stack[2] = new StackFrame();
-			stack[3] = new StackFrame();
+			stack.length = 4;
+			stack[0] = new StackFrame(this);
+			stack[1] = new StackFrame(this);
+			stack[2] = new StackFrame(this);
+			stack[3] = new StackFrame(this);
 			sp = 0;
 		}
 	
@@ -133,19 +127,8 @@ package interpreter {
 			var n:int = s + s;
 			stack.length = n;
 			for (var i:int = s; i < n; ++i)
-				stack[i] = new StackFrame();
+				stack[i] = new StackFrame(this);
 		}
 	
 	}
-}
-
-import blocks.*;
-import interpreter.*;
-
-class StackFrame {
-	internal var block:Block;
-	internal var isLoop:Boolean;
-	internal var firstTime:Boolean;
-	internal var tmp:int;
-	internal var args:Array;
 }

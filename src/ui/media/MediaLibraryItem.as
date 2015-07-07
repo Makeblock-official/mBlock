@@ -24,19 +24,32 @@
 // a name, thumbnail, and a line of information for the media object it represents.
 
 package ui.media {
-	import flash.display.*;
+	import flash.display.Bitmap;
+	import flash.display.BitmapData;
+	import flash.display.Graphics;
+	import flash.display.Shape;
+	import flash.display.Sprite;
 	import flash.events.MouseEvent;
-	import flash.net.URLLoader;
-	import flash.text.*;
+	import flash.text.TextField;
+	import flash.text.TextFormat;
 	import flash.utils.ByteArray;
+	
 	import assets.Resources;
-	import scratch.*;
+	
+	import scratch.ScratchCostume;
+	import scratch.ScratchSound;
+	
 	import sound.ScratchSoundPlayer;
 	import sound.mp3.MP3SoundPlayer;
+	
 	import svgutils.SVGImporter;
+	
 	import translation.Translator;
-	import uiwidgets.*;
-	import util.*;
+	
+	import uiwidgets.IconButton;
+	import uiwidgets.ScrollFrameContents;
+	
+	import util.JSON;
 
 public class MediaLibraryItem extends Sprite {
 
@@ -62,8 +75,6 @@ public class MediaLibraryItem extends Sprite {
 
 	private var sndData:ByteArray;
 	private var sndPlayer:ScratchSoundPlayer;
-
-	private var loaders:Array = []; // list of URLLoaders for stopLoading()
 
 	public function MediaLibraryItem(dbObject:Object = null) {
 		this.dbObj = dbObject;
@@ -95,9 +106,6 @@ public class MediaLibraryItem extends Sprite {
 	}
 
 	public function stopLoading():void {
-		var app:MBlock = root as MBlock;
-		for each (var loader:URLLoader in loaders) if (loader) loader.close();
-		loaders = [];
 	}
 
 	private function fileType(s:String):String {
@@ -109,12 +117,12 @@ public class MediaLibraryItem extends Sprite {
 	private function setImageThumbnail(md5:String, done:Function, spriteMD5:String = null):void {
 		var forStage:Boolean = (dbObj.width == 480); // if width is 480, format thumbnail for stage
 		var importer:SVGImporter;
-		function gotSVGData(data:ByteArray):void {
-			if (data) {
-				importer = new SVGImporter(XML(data));
-				importer.loadAllImages(svgImagesLoaded);
-			}
-		}
+//		function gotSVGData(data:ByteArray):void {
+//			if (data) {
+//				importer = new SVGImporter(XML(data));
+//				importer.loadAllImages(svgImagesLoaded);
+//			}
+//		}
 		function svgImagesLoaded():void {
 			var c:ScratchCostume = new ScratchCostume('', null);
 			c.setSVGRoot(importer.root, false);
@@ -132,37 +140,47 @@ public class MediaLibraryItem extends Sprite {
 		if (cachedBM) { setThumbnailBM(cachedBM); done(); return; }
 
 		// if not in the thumbnail cache, fetch/compute it
-		if (fileType(md5) == 'svg') loaders.push(MBlock.app.server.getAsset(md5, gotSVGData));
-		else loaders.push(MBlock.app.server.getThumbnail(md5, thumbnailWidth, thumbnailHeight, setThumbnail));
+		if (fileType(md5) == 'svg'){
+			var data:ByteArray = MBlock.app.server.getAsset(md5);
+			if (data) {
+				importer = new SVGImporter(XML(data));
+				importer.loadAllImages(svgImagesLoaded);
+			}
+		}
+		else{
+			MBlock.app.server.getThumbnail(md5, thumbnailWidth, thumbnailHeight, setThumbnail);
+		}
 	}
 
 	private function setSpriteThumbnail(done:Function):void {
-		function gotJSONData(data:String):void {
-			if (!data) return; // fetch failed
-			var sprObj:Object = util.JSON.parse(data);
-			spriteCache[spriteMD5] = data;
-			dbObj.scriptCount = (sprObj.scripts is Array) ? sprObj.scripts.length : 0;
-			dbObj.costumeCount = (sprObj.costumes is Array) ? sprObj.costumes.length : 0;
-			dbObj.soundCount = (sprObj.sounds is Array) ? sprObj.sounds.length : 0;
-			if (dbObj.scriptCount > 0) setInfo(Translator.map('Scripts:') + ' ' + dbObj.scriptCount);
-			else if (dbObj.costumeCount > 1) setInfo(Translator.map('Costumes:') + ' ' + dbObj.costumeCount);
-			else setInfo('');
-			if ((sprObj.costumes is Array) && (sprObj.currentCostumeIndex is Number)) {
-				var cList:Array = sprObj.costumes;
-				var cObj:Object = cList[Math.round(sprObj.currentCostumeIndex) % cList.length];
-				var md5:String = cObj ? cObj.baseLayerMD5 : null;
-				if (md5) setImageThumbnail(md5, done, spriteMD5);
-			} else {
-				done();
-			}
-		}
 		// first, check the thumbnail cache
 		var spriteMD5:String = dbObj.md5;
 		var cachedBM:BitmapData = thumbnailCache[spriteMD5];
 		if (cachedBM) { setThumbnailBM(cachedBM); done(); return; }
 
-		if (spriteCache[spriteMD5]) gotJSONData(spriteCache[spriteMD5]);
-		else loaders.push(MBlock.app.server.getAsset(spriteMD5, gotJSONData));
+		var data:String;
+		if (spriteCache[spriteMD5]) {
+			data = spriteCache[spriteMD5];
+		}else {
+			data = MBlock.app.server.getAsset(spriteMD5).toString();
+		}
+		if (!data) return; // fetch failed
+		var sprObj:Object = util.JSON.parse(data);
+		spriteCache[spriteMD5] = data;
+		dbObj.scriptCount = (sprObj.scripts is Array) ? sprObj.scripts.length : 0;
+		dbObj.costumeCount = (sprObj.costumes is Array) ? sprObj.costumes.length : 0;
+		dbObj.soundCount = (sprObj.sounds is Array) ? sprObj.sounds.length : 0;
+		if (dbObj.scriptCount > 0) setInfo(Translator.map('Scripts:') + ' ' + dbObj.scriptCount);
+		else if (dbObj.costumeCount > 1) setInfo(Translator.map('Costumes:') + ' ' + dbObj.costumeCount);
+		else setInfo('');
+		if ((sprObj.costumes is Array) && (sprObj.currentCostumeIndex is Number)) {
+			var cList:Array = sprObj.costumes;
+			var cObj:Object = cList[Math.round(sprObj.currentCostumeIndex) % cList.length];
+			var md5:String = cObj ? cObj.baseLayerMD5 : null;
+			if (md5) setImageThumbnail(md5, done, spriteMD5);
+		} else {
+			done();
+		}
 	}
 
 	private function setThumbnailBM(bm:BitmapData):void {
@@ -315,12 +333,10 @@ public class MediaLibraryItem extends Sprite {
 
 	private function downloadAndPlay():void {
 		// Download and play a library sound.
-		function gotSoundData(wavData:ByteArray):void {
-			if (!wavData) return;
-			sndData = wavData;
-			startPlayingSound();
-		}
-		MBlock.app.server.getAsset(dbObj.md5, gotSoundData);
+		var wavData:ByteArray = MBlock.app.server.getAsset(dbObj.md5);
+		if (!wavData) return;
+		sndData = wavData;
+		startPlayingSound();
 	}
 
 }}
