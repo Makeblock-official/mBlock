@@ -9,7 +9,9 @@ package {
 	import flash.display.LoaderInfo;
 	import flash.display.Shape;
 	import flash.display.Sprite;
+	import flash.display.StageAlign;
 	import flash.display.StageDisplayState;
+	import flash.display.StageScaleMode;
 	import flash.events.Event;
 	import flash.events.InvokeEvent;
 	import flash.events.KeyboardEvent;
@@ -33,6 +35,7 @@ package {
 	import blocks.Block;
 	
 	import by.blooddy.crypto.image.JPEGEncoder;
+	
 	import cc.makeblock.mbot.lookandfeel.MyLookAndFeel;
 	import cc.makeblock.mbot.ui.parts.TopSystemMenu;
 	import cc.makeblock.mbot.util.AppTitleMgr;
@@ -168,11 +171,10 @@ package {
 			NativeApplication.nativeApplication.addEventListener(InvokeEvent.INVOKE,onInvoked);
 			stage.nativeWindow.addEventListener(Event.CLOSING,onExiting);
 			checkFlashVersion();
-			initServer();
 			stage.align = StageAlign.TOP_LEFT;
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.frameRate = 30;
-			this.scaleX = this.scaleY = 2.0;
+			this.scaleX = this.scaleY = 1.0;
 			if(SharedObjectManager.sharedManager().available("labelSize")){
 				var labelSize:int = SharedObjectManager.sharedManager().getObject("labelSize") as int;
 				var argSize:int = Math.round(0.9 * labelSize);
