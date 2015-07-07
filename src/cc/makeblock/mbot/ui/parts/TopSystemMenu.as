@@ -1,5 +1,6 @@
 package cc.makeblock.mbot.ui.parts
 {
+	import flash.desktop.NativeApplication;
 	import flash.display.NativeMenu;
 	import flash.display.NativeMenuItem;
 	import flash.display.Stage;
@@ -54,7 +55,13 @@ package cc.makeblock.mbot.ui.parts
 		
 		override protected function onAddAppMenu(menu:NativeMenu):void
 		{
-			menu.addItemAt(new NativeMenuItem("mBlock"), 0);
+			var sysMenu:NativeMenu = NativeApplication.nativeApplication.menu;
+			defaultMenuCount = sysMenu.numItems;
+			trace(sysMenu.numItems, menu.numItems);
+			for(var i:int=menu.numItems-1; i>=0; i--){
+				sysMenu.addItem(menu.removeItemAt(i));
+			}
+//			menu.addItemAt(new NativeMenuItem(), 0).name = "mBlock";
 		}
 		
 		public function changeLang():void
@@ -64,6 +71,12 @@ package cc.makeblock.mbot.ui.parts
 		
 		private function changeLangImpl(item:NativeMenuItem):*
 		{
+			var index:int = getNativeMenu().getItemIndex(item);
+			
+			if(index < defaultMenuCount){
+				return true;
+			}
+			
 			item.label = Translator.map(item.name);
 			if(item.name == "Language"){
 				item = MenuUtil.FindItem(item.submenu, "set font size");

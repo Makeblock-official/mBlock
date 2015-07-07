@@ -48,7 +48,7 @@
   <flashCatalyst validateFlashCatalystCompatibility="false"/>
   <buildTargets>
     <buildTarget buildTargetName="default" platformId="default">
-      <airSettings airCertificatePath="cert/air.p12" airTimestamp="true" anePathSet="true" version="1">
+      <airSettings airCertificatePath="cert/air.p12" airTimestamp="false" anePathSet="true" version="1">
         <airExcludes>
           <pathEntry path=".DS_Store"/>
         </airExcludes>

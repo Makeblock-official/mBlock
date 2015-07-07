@@ -13,14 +13,15 @@ package cc.makeblock.menu
 	{
 		private const handlerDict:Object = {};
 		private var menu:NativeMenu;
+		protected var defaultMenuCount:int;
 		
 		public function SystemMenu(stage:Stage, path:String)
 		{
 			var source:String = FileUtil.LoadFile(path);
 			menu = MenuBuilder.BuildMenu(XML(source));
 			if(NativeApplication.supportsMenu){
-				NativeApplication.nativeApplication.menu = menu;
 				onAddAppMenu(menu);
+				menu = NativeApplication.nativeApplication.menu;
 			}else if(NativeWindow.supportsMenu){
 				stage.nativeWindow.menu = menu;
 			}
