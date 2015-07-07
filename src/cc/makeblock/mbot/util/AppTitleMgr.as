@@ -34,7 +34,10 @@ package cc.makeblock.mbot.util
 		
 		private function updateTitle():void
 		{
-			window.title = strList.join(" - ");
+			if(!window.closed)
+			{
+				window.title = strList.join(" - ");
+			}
 		}
 	}
 }

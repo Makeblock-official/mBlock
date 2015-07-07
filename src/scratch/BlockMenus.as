@@ -112,15 +112,23 @@ public class BlockMenus implements DragClient {
 		if (menuName == 'sensor') menuHandler.sensorMenu(evt);
 		if (menuName == 'sound') menuHandler.soundMenu(evt);
 		if (menuName == 'spriteOnly') menuHandler.spriteMenu(evt, false, false, false, true);
+		var m:Menu;
 		if (menuName == 'spriteOrMouse') {
-			var m:Menu = menuHandler.spriteMenu(evt, true, false, false, true);
+			m = menuHandler.spriteMenu(evt, true, false, false, true);
 			m.addItem("random horizontal point", "rhp");
 			m.addItem("random vertical point", "rvp");
 			m.addItem("random stage point", "rsp");
 			menuHandler.showMenu(m);
 		}
 		if (menuName == 'spriteOrStage') menuHandler.spriteMenu(evt, false, false, true, true);
-		if (menuName == 'touching') menuHandler.spriteMenu(evt, true, true, false, false);
+		if (menuName == 'touching'){
+			m = menuHandler.spriteMenu(evt, true, true, false, false);
+			m.addItem("top edge");
+			m.addItem("right edge");
+			m.addItem("bottom edge");
+			m.addItem("left edge");
+			menuHandler.showMenu(m);
+		}
 		if (menuName == 'stageOrThis') menuHandler.stageOrThisSpriteMenu(evt);
 		if (menuName == 'stop') menuHandler.stopMenu(evt);
 		if (menuName == 'timeAndDate') menuHandler.timeAndDateMenu(evt);
