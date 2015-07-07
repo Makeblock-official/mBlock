@@ -2219,3 +2219,72 @@ msgid "Clear Bluetooth"
 msgstr "清空蓝牙列表"
 msgid "Reset Default Program"
 msgstr "恢复出厂程序"
+
+msgid "random horizontal point"
+msgstr "水平任意位置"
+
+msgid "random vertical point"
+msgstr "垂直任意位置"
+
+msgid "random stage point"
+msgstr "舞台任意位置"
+
+msgid "top edge"
+msgstr "上边缘"
+
+msgid "right edge"
+msgstr "右边缘"
+
+msgid "bottom edge"
+msgstr "下边缘"
+
+msgid "left edge"
+msgstr "左边缘"
+
+msgid "Disconnected"
+msgstr "未连接"
+
+msgid "Hide stage layout"
+msgstr "隐藏舞台模式"
+
+msgid "manage_extentions"
+msgstr "扩展管理"
+
+msgid "Face Panel"
+msgstr "表情面板"
+
+msgid "Clear All"
+msgstr "关闭所有"
+
+msgid "Light All"
+msgstr "点亮所有"
+
+msgid "Add To Favourite"
+msgstr "添加到收藏"
+
+msgid "Remove Emotion"
+msgstr "删除表情"
+
+msgid "Complete"
+msgstr "完成"
+
+msgid "Manage Extensions"
+msgstr "扩展管理器"
+
+msgid "Add Extension"
+msgstr "添加扩展"
+
+msgid "Remove Extension"
+msgstr "移除扩展"
+
+msgid "file is not a valid extension zip!"
+msgstr "该文件不是一个有效的zip扩展包!"
+
+msgid "Want to delete?"
+msgstr "确认删除?"
+
+msgid "Warning"
+msgstr "警告"
+
+msgid "Language"
+msgstr "语言"
