@@ -173,6 +173,7 @@ package {
 			stage.align = StageAlign.TOP_LEFT;
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.frameRate = 30;
+			this.scaleX = this.scaleY = 2.0;
 			if(SharedObjectManager.sharedManager().available("labelSize")){
 				var labelSize:int = SharedObjectManager.sharedManager().getObject("labelSize") as int;
 				var argSize:int = Math.round(0.9 * labelSize);
