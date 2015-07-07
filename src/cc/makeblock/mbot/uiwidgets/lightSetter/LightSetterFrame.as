@@ -8,6 +8,7 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 	import flash.ui.Mouse;
 	import flash.ui.MouseCursor;
 	
+	import cc.makeblock.mbot.uiwidgets.MyFrame;
 	import cc.makeblock.mbot.util.PopupUtil;
 	import cc.makeblock.util.FileUtil;
 	
@@ -22,7 +23,6 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 	import org.aswing.Component;
 	import org.aswing.Insets;
 	import org.aswing.JButton;
-	import org.aswing.JFrame;
 	import org.aswing.JPanel;
 	import org.aswing.JToggleButton;
 	import org.aswing.SoftBoxLayout;
@@ -33,7 +33,7 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 	
 	import translation.Translator;
 	
-	public class LightSetterFrame extends JFrame
+	public class LightSetterFrame extends MyFrame
 	{
 		[Embed("/assets/UI/ledFace/Eraser-normal.png")]
 		static private const ERASER_CLS:Class;
@@ -80,8 +80,6 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 		public function LightSetterFrame()
 		{
 			super(null, "Face Panel", true);
-			setResizable(false);
-			defaultCloseOperation = HIDE_ON_CLOSE;
 			
 			sensor = new LightSensor();
 			sensor.addEventListener(Event.SELECT, __onSelect);

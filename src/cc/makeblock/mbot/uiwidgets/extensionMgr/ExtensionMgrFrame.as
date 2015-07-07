@@ -4,13 +4,13 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 	import flash.filesystem.File;
 	import flash.net.FileFilter;
 	
+	import cc.makeblock.mbot.uiwidgets.MyFrame;
 	import cc.makeblock.mbot.util.ButtonFactory;
 	import cc.makeblock.mbot.util.PopupUtil;
 	
 	import org.aswing.AsWingUtils;
 	import org.aswing.BorderLayout;
 	import org.aswing.JButton;
-	import org.aswing.JFrame;
 	import org.aswing.JList;
 	import org.aswing.JPanel;
 	import org.aswing.SoftBoxLayout;
@@ -18,7 +18,7 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 	
 	import translation.Translator;
 	
-	internal class ExtensionMgrFrame extends JFrame
+	internal class ExtensionMgrFrame extends MyFrame
 	{
 		private var extList:JList;
 		private var btnList:JPanel;
@@ -29,8 +29,6 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 		public function ExtensionMgrFrame(owner:*=null)
 		{
 			super(owner, "Extension Manager", true);
-			defaultCloseOperation = HIDE_ON_CLOSE;
-			setResizable(false);
 			
 			extList = new JList();
 			
