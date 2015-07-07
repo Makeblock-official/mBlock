@@ -111,7 +111,7 @@ package extensions
 				MBlock.app.topBarPart.setDisconnectedTitle();
 				return;
 			}else{
-				MBlock.app.topBarPart.setConnectedTitle(Translator.map("Serial Port")+" "+Translator.map("Connected"));
+				MBlock.app.topBarPart.setConnectedTitle("Serial Port");
 			}
 		}
 		public function sendBytes(bytes:ByteArray):int{
@@ -152,7 +152,7 @@ package extensions
 			_selectPort = port;
 			if(r==0){
 				ArduinoManager.sharedManager().isUploading = false;
-				MBlock.app.topBarPart.setConnectedTitle(Translator.map("Serial Port")+" "+Translator.map("Connected"));
+				MBlock.app.topBarPart.setConnectedTitle("Serial Port");
 			}
 			return r == 0;
 		}

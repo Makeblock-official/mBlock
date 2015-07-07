@@ -1,6 +1,7 @@
 package cc.makeblock.mbot.util
 {
 	import flash.display.NativeWindow;
+	import flash.events.Event;
 	
 	import translation.Translator;
 
@@ -19,16 +20,19 @@ package cc.makeblock.mbot.util
 		{
 			this.window = window;
 			strList = [window.title];
+			
+			Translator.regChangeEvt(__onLangChanged, false);
 			setConnectInfo(null);
+		}
+		
+		private function __onLangChanged(evt:Event):void
+		{
+			updateTitle();
 		}
 		
 		public function setConnectInfo(info:String):void
 		{
-			if(Boolean(info)){
-				strList[1] = info;
-			}else{
-				strList[1] = Translator.map("Disconnected");
-			}
+			strList[1] = info;
 			updateTitle();
 		}
 		
@@ -36,8 +40,26 @@ package cc.makeblock.mbot.util
 		{
 			if(!window.closed)
 			{
-				window.title = strList.join(" - ");
+				window.title = getTitleStr();
 			}
+		}
+		
+		private function getTitleStr():String
+		{
+			var result:String = strList[0];
+			
+			for (var i:int = 1; i < strList.length; i++) 
+			{
+				var str:String = strList[1];
+				if(Boolean(str)){
+					str = Translator.map(str) + " " + Translator.map("Connected");
+				}else{
+					str = Translator.map("Disconnected");
+				}
+				result += " - " + str;
+			}
+			
+			return result;
 		}
 	}
 }

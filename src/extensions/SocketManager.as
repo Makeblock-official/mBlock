@@ -224,7 +224,7 @@ package extensions
 		public function update():void{
 			if(connected()){
 				if(!SerialManager.sharedManager().isConnected&&!HIDManager.sharedManager().isConnected&&!BluetoothManager.sharedManager().isConnected){
-					MBlock.app.topBarPart.setConnectedTitle(Translator.map("Network")+" "+Translator.map("Connected"));
+					MBlock.app.topBarPart.setConnectedTitle("Network");
 				}
 			}
 		}

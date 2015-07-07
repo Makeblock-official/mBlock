@@ -108,9 +108,9 @@ package extensions
 				MBlock.app.topBarPart.setDisconnectedTitle();
 			}else{
 				if(SerialManager.sharedManager().isConnected||HIDManager.sharedManager().isConnected||BluetoothManager.sharedManager().isConnected){
-					MBlock.app.topBarPart.setConnectedTitle(Translator.map("Serial Port")+" "+Translator.map("Connected"));
+					MBlock.app.topBarPart.setConnectedTitle("Serial Port");
 				}else{
-					MBlock.app.topBarPart.setConnectedTitle(Translator.map("Network")+" "+Translator.map("Connected"));
+					MBlock.app.topBarPart.setConnectedTitle("Network");
 				}
 			}
 			this.dispatchEvent(new Event(Event.CLOSE));
