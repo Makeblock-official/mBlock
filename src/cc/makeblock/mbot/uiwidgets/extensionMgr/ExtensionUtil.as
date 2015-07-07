@@ -45,7 +45,7 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 		
 		static public function OnDelExtension(extName:String, callback:Function):void
 		{
-			PopupUtil.showConfirm("Confirm delete?", function(value:int):void{
+			PopupUtil.showConfirm("Want to delete?", function(value:int):void{
 				if(value != JOptionPane.OK){
 					return;
 				}
