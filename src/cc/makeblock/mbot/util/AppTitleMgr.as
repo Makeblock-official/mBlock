@@ -27,7 +27,7 @@ package cc.makeblock.mbot.util
 			if(Boolean(info)){
 				strList[1] = info;
 			}else{
-				strList[1] = Translator.map("Unconnected");
+				strList[1] = Translator.map("Disconnected");
 			}
 			updateTitle();
 		}

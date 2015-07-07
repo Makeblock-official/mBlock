@@ -32,6 +32,7 @@ package scratch {
 	
 	import blocks.Block;
 	import blocks.BlockArg;
+	import blocks.BlockIO;
 	
 	import cc.makeblock.mbot.uiwidgets.lightSetter.LightSetterFrame;
 	import cc.makeblock.menu.MenuUtil;
@@ -40,6 +41,7 @@ package scratch {
 	
 	import filters.FilterPack;
 	
+	import org.aswing.Cursor;
 	import org.aswing.event.AWEvent;
 	
 	import sound.SoundBank;
@@ -48,6 +50,7 @@ package scratch {
 	
 	import ui.ProcedureSpecEditor;
 	
+	import uiwidgets.CursorTool;
 	import uiwidgets.DialogBox;
 	import uiwidgets.Menu;
 	import uiwidgets.Piano;
@@ -195,13 +198,13 @@ public class BlockMenus implements DragClient {
 		this.block = block;
 	}
 
+	static private function isGeneric(s:String):Boolean {
+		return ['duplicate', 'delete', 'add comment'].indexOf(s) > -1;
+	}
 	public static function shouldTranslateItemForMenu(item:String, menuName:String):Boolean {
 		// Return true if the given item from the given menu parameter slot should be
 		// translated. This mechanism prevents translating proper names such as sprite,
 		// costume, or variable names.
-		function isGeneric(s:String):Boolean {
-			return ['duplicate', 'delete', 'add comment'].indexOf(s) > -1;
-		}
 		switch (menuName) {
 		case 'attribute':
 			var attributes:Array = [
@@ -488,6 +491,12 @@ public class BlockMenus implements DragClient {
 			case "rsp":
 				blockArg.setArgValue('rsp', Translator.map('random stage point'));
 				break;
+			case "top edge":
+			case "right edge":
+			case "bottom edge":
+			case "left edge":
+				blockArg.setArgValue(s, Translator.map(s));
+				break;
 			default:
 				blockArg.setArgValue(s);
 		}
@@ -637,7 +646,24 @@ public class BlockMenus implements DragClient {
 				app.scriptsPart.showArduinoCode();
 				break;
 			case "duplicate":
-				duplicateStack();
+				/*
+				if (block.isProcDef()) return; // don't duplicate procedure definition
+				var newStack:Block = BlockIO.stringToStack(BlockIO.stackToString(block), false);
+				newStack.x = block.x + 20;
+				newStack.y = block.y + 20;
+				block.parent.addChild(newStack);
+				*/
+//				app.gh.mouseUp(new MouseEvent(MouseEvent.MOUSE_UP, true, false, 0, 0, null));
+				var prevTool:String = CursorTool.tool;
+				CursorTool.tool = "copy";
+				block.duplicateStack(app.mouseX - startX, app.mouseY - startY);
+				CursorTool.tool = prevTool;
+//				if (objToGrabOnUp != null) {
+//					var prevTool:String = CursorTool.tool;
+//					CursorTool.tool = "copy";
+//					app.gh.grabOnMouseUp(objToGrabOnUp);
+//					CursorTool.tool = prevTool;
+//				}
 				break;
 			case "delete":
 				block.deleteStack();
@@ -672,10 +698,6 @@ public class BlockMenus implements DragClient {
 				setBlockVarOrListName(evt.target.label);
 				break;
 		}
-	}
-
-	private function duplicateStack():void {
-		block.duplicateStack(app.mouseX - startX, app.mouseY - startY);
 	}
 
 	private function changeOpMenu(evt:MouseEvent, opList:Array):void {

@@ -29,11 +29,25 @@ package cc.makeblock.mbot.util
 			app.stage.removeEventListener(MouseEvent.RIGHT_MOUSE_DOWN, app.gh.onRightMouseDown);
 		}
 		
-		static public function showQuitAlert(callback:Function):void
+		static public function showConfirm(title:String, callback:Function):void
+		{
+			var panel:JOptionPane = showQuitAlert(callback);
+			
+			panel.getFrame().setTitle(Translator.map(title));
+			panel.getNoButton().getParent().remove(panel.getNoButton());
+			panel.getYesButton().setText(Translator.map('OK'));
+			panel.getCancelButton().setText(Translator.map('Cancel'));
+			
+			panel.getFrame().setSizeWH(240, 90);
+			AsWingUtils.centerLocate(panel.getFrame());
+		}
+		
+		static public function showQuitAlert(callback:Function):JOptionPane
 		{
 			JOptionPane.YES_STR = Translator.map('Save');
 			JOptionPane.NO_STR = Translator.map("Don't save");
 			JOptionPane.CANCEL_STR = Translator.map('Cancel');
+			
 			disableRightMouseEvent();
 			var panel:JOptionPane = JOptionPane.showMessageDialog(
 				Translator.map('Save project?'),
@@ -56,15 +70,7 @@ package cc.makeblock.mbot.util
 			panel.getFrame().setSizeWH(280, 90);
 			AsWingUtils.centerLocate(panel.getFrame());
 			
-			JOptionPane.YES_STR = "Yes";
-			JOptionPane.NO_STR = "No";
-			JOptionPane.CANCEL_STR = "Cancel";
-			/*
-			d.addTitle(Translator.map('Save project') + '?');
-			d.addButton('Save', save);
-			d.addButton('Don\'t save', proceedWithoutSaving);
-			d.addButton('Cancel', cancel);
-			*/
+			return panel;
 		}
 	}
 }

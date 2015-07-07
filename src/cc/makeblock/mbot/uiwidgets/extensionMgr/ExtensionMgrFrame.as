@@ -108,8 +108,8 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 		{
 			setTitle(Translator.map("Extension Manager"));
 			
-			btnAdd.setText(Translator.map("add extension"));
-			btnRemove.setText(Translator.map("remove extension"));
+			btnAdd.setText(Translator.map("Add Extension"));
+			btnRemove.setText(Translator.map("Remove Extension"));
 		}
 	}
 }

@@ -23,7 +23,6 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 	import org.aswing.Insets;
 	import org.aswing.JButton;
 	import org.aswing.JFrame;
-	import org.aswing.JOptionPane;
 	import org.aswing.JPanel;
 	import org.aswing.JToggleButton;
 	import org.aswing.SoftBoxLayout;
@@ -119,7 +118,7 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 			btnOk.setPreferredWidth(162);
 			btnCancel = new JButton("Cancel");
 			btnCancel.setPreferredWidth(162);
-			btnAddToFavorite = new JButton("add to favorite");
+			btnAddToFavorite = new JButton();
 			btnAddToFavorite.setPreferredSize(new IntDimension(142, 36));
 			
 			btnPanel.append(btnCancel);
@@ -318,7 +317,6 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 		{
 			sensor.isDataDirty = false;
 			if(sensor.isEmpty()){
-				JOptionPane.showMessageDialog("notice", "image is empty.");
 				return;
 			}
 			if(thumbPane.getIconCount() >= MAX_CUSTOM_ITEMS){
@@ -407,10 +405,15 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 		
 		private function __onLangChanged(evt:Event=null):void
 		{
+			setTitle(Translator.map("Face Panel"));
+			
 			btnLightAll.setText(Translator.map("Light All"));
 			btnCleartAll.setText(Translator.map("Clear All"));
 			btnDelete.setText(Translator.map("Remove Emotion"));
-			btnAddToFavorite.setText(Translator.map("Add to Favourite"));
+			btnAddToFavorite.setText(Translator.map("Add To Favourite"));
+			
+			btnOk.setText(Translator.map("Complete"));
+			btnCancel.setText(Translator.map("Cancel"));
 		}
 		
 		static private function setBtnStyle(btn:JButton):void

@@ -4,6 +4,7 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 	import flash.utils.ByteArray;
 	
 	import cc.makeblock.mbot.util.PathUtil;
+	import cc.makeblock.mbot.util.PopupUtil;
 	import cc.makeblock.mbot.util.StringUtil;
 	import cc.makeblock.util.FileUtil;
 	
@@ -11,6 +12,8 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 	import deng.fzip.FZipFile;
 	
 	import org.aswing.JOptionPane;
+	
+	import translation.Translator;
 	
 	import util.JSON;
 
@@ -42,7 +45,7 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 		
 		static public function OnDelExtension(extName:String, callback:Function):void
 		{
-			JOptionPane.showMessageDialog("confirm", "are you sure?", function(value:int):void{
+			PopupUtil.showConfirm("Confirm delete?", function(value:int):void{
 				if(value != JOptionPane.OK){
 					return;
 				}
@@ -50,12 +53,12 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 					MBlock.app.extensionManager.importExtension();
 					callback();
 				}
-			}, null, true, null, JOptionPane.OK | JOptionPane.CANCEL);
+			});
 		}
 		
 		static private function showErrorAlert():void
 		{
-			JOptionPane.showMessageDialog("mBlock", "file is not a valid extension zip!");
+			JOptionPane.showMessageDialog(Translator.map("Warning"), "file is not a valid extension zip!");
 		}
 		
 		static private var extensionDir:String;

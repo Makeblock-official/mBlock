@@ -54,7 +54,7 @@
 		<item name="picoboard_unknown" label="PicoBoard" />
 	</subMenu>
 	<subMenu name="Extensions" label="扩展">
-		<item name="manage_extensions" label="管理扩展" keyEquivalent="T" />
+		<item name="Manage Extensions" label="管理扩展" keyEquivalent="T" />
 		<item isSeparator="true" />
 	</subMenu>
 	<subMenu name="Language" label="语言">
