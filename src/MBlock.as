@@ -5,7 +5,6 @@ package {
 	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
 	import flash.display.Loader;
-	import flash.display.LoaderInfo;
 	import flash.display.Sprite;
 	import flash.display.StageDisplayState;
 	import flash.events.Event;
@@ -17,8 +16,6 @@ package {
 	import flash.geom.Point;
 	import flash.net.FileReference;
 	import flash.net.URLRequest;
-	import flash.system.Capabilities;
-	import flash.system.LoaderContext;
 	import flash.system.System;
 	import flash.ui.Keyboard;
 	import flash.utils.ByteArray;
@@ -162,7 +159,7 @@ package {
 			track("/app/launch");
 			NativeApplication.nativeApplication.addEventListener(InvokeEvent.INVOKE,onInvoked);
 			stage.nativeWindow.addEventListener(Event.CLOSING,onExiting);
-			checkFlashVersion();
+//			checkFlashVersion();
 			if(SharedObjectManager.sharedManager().available("labelSize")){
 				var labelSize:int = SharedObjectManager.sharedManager().getObject("labelSize") as int;
 				var argSize:int = Math.round(0.9 * labelSize);
@@ -211,9 +208,7 @@ package {
 			
 			fixLayout();
 			UpdaterManager.sharedManager().checkForUpdate();
-			setTimeout(function():void{
-				SocketManager.sharedManager();
-			},100);
+			setTimeout(SocketManager.sharedManager, 100);
 			var ver:String = _currentVer;
 			var isFilesAvailable:Boolean = ApplicationManager.sharedManager().documents.resolvePath("mBlock").exists;
 			if(!isFilesAvailable){
@@ -246,13 +241,15 @@ package {
 			HIDManager.sharedManager().setMBlock(this);
 		}
 		private function openWelcome():void{
-			_welcomeView = new Loader();
-			_welcomeView.load(new URLRequest("welcome.swf"));
-			_welcomeView.contentLoaderInfo.addEventListener(Event.COMPLETE,onWelcomeLoaded);
+			openSwf("welcome.swf");
 		}
 		public function openOrion():void{
+			openSwf("orion_buzzer.swf");
+		}
+		private function openSwf(path:String):void
+		{
 			_welcomeView = new Loader();
-			_welcomeView.load(new URLRequest("orion_buzzer.swf"));
+			_welcomeView.load(new URLRequest(path));
 			_welcomeView.contentLoaderInfo.addEventListener(Event.COMPLETE,onWelcomeLoaded);
 		}
 		private function onWelcomeLoaded(evt:Event):void{
@@ -260,7 +257,7 @@ package {
 			var h:uint = stage.stageHeight;
 			_welcomeView.x = (w-550)/2;
 			_welcomeView.y = (h-400)/2+30;
-			setTimeout(function():void{addChild(_welcomeView)},500);
+			setTimeout(addChild, 500, _welcomeView);
 		}
 		
 		public function track(msg:String):void{
@@ -333,6 +330,7 @@ package {
 			trace(msg);
 		}
 		public function loadProjectFailed():void {}
+		/*
 		[Embed(source='libs/RenderIn3D.swf', mimeType='application/octet-stream')]
 		public static const MySwfData:Class;
 		protected function checkFlashVersion():void {
@@ -390,7 +388,7 @@ package {
 			render3D = (new r3dClass() as IRenderIn3D);
 			render3D.setStatusCallback(handleRenderCallback);
 		}
-	
+	*/
 		public function clearCachedBitmaps():void {
 			for(var i:int=0; i<stagePane.numChildren; ++i) {
 				var spr:ScratchSprite = (stagePane.getChildAt(i) as ScratchSprite);
@@ -671,7 +669,7 @@ package {
 		// UI Modes and Resizing
 		//------------------------------
 	
-		public function setEditMode(newMode:Boolean):void {
+		private function setEditMode(newMode:Boolean):void {
 			Menu.removeMenusFrom(stage);
 			editMode = newMode;
 			if (editMode) {
@@ -699,12 +697,12 @@ package {
 		protected function show(obj:DisplayObject):void { addChild(obj) }
 		protected function isShowing(obj:DisplayObject):Boolean { return obj.parent != null }
 	
-		public function onResize(e:Event):void {
+		private function onResize(e:Event):void {
 			fixLayout();
 			
 		}
 	
-		public function fixLayout():void {
+		private function fixLayout():void {
 			var w:int = stage.stageWidth;
 			var h:int = stage.stageHeight - 1; // fix to show bottom border...
 	
@@ -1206,7 +1204,7 @@ package {
 			projIO.convertSqueakSounds(stagePane, squeakSoundsConverted);
 		}
 	
-		public static function fixFileName(s:String):String {
+		private static function fixFileName(s:String):String {
 			// Replace illegal characters in the given string with dashes.
 			const illegal:String = '\\/:*?"<>|%';
 			var result:String = '';
@@ -1295,7 +1293,7 @@ package {
 		// Save status
 		//------------------------------
 	
-		public var saveNeeded:Boolean;
+		private var saveNeeded:Boolean;
 	
 		public function setSaveNeeded(saveNow:Boolean = false):void {
 			saveNow = false;
@@ -1351,7 +1349,7 @@ package {
 		public function addNewSprite(spr:ScratchSprite, showImages:Boolean = false, atMouse:Boolean = false):void {
 			var c:ScratchCostume, byteCount:int;
 			for each (c in spr.costumes) byteCount + c.baseLayerData.length;
-			if (!okayToAdd(byteCount)) return; // not enough room
+//			if (!okayToAdd(byteCount)) return; // not enough room
 			spr.objName = stagePane.unusedSpriteName(spr.objName);
 			spr.indexInLibrary = 1000000; // add at end of library
 			spr.setScratchXY(int(50 * Math.random() - 25), int(50 * Math.random() - 25));
@@ -1368,7 +1366,7 @@ package {
 			}
 		}
 		public function addSound(snd:ScratchSound, targetObj:ScratchObj = null):void {
-			if (snd.soundData && !okayToAdd(snd.soundData.length)) return; // not enough room
+//			if (snd.soundData && !okayToAdd(snd.soundData.length)) return; // not enough room
 			if (!targetObj) targetObj = viewedObj();
 			snd.soundName = targetObj.unusedSoundName(snd.soundName);
 			targetObj.sounds.push(snd);
@@ -1381,7 +1379,7 @@ package {
 	
 		public function addCostume(c:ScratchCostume, targetObj:ScratchObj = null):void {
 			if (!c.baseLayerData) c.prepareToSave();
-			if (!okayToAdd(c.baseLayerData.length)) return; // not enough room
+//			if (!okayToAdd(c.baseLayerData.length)) return; // not enough room
 			if (!targetObj) targetObj = viewedObj();
 			c.costumeName = targetObj.unusedCostumeName(c.costumeName);
 			targetObj.costumes.push(c);
@@ -1390,7 +1388,8 @@ package {
 			if (targetObj == viewedObj()) setTab('images');
 		}
 	
-		public function okayToAdd(newAssetBytes:int):Boolean {
+		/*
+		private function okayToAdd(newAssetBytes:int):Boolean {
 			// Return true if there is room to add an asset of the given size.
 			// Otherwise, return false and display a warning dialog.
 			const assetByteLimit:int = 50 * 1024 * 1024; // 50 megabytes
@@ -1413,6 +1412,7 @@ package {
 			}
 			return true;
 		}
+		*/
 		// -----------------------------
 		// Flash sprite (helps connect a sprite on thestage with a sprite library entry)
 		//------------------------------
