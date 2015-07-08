@@ -612,14 +612,6 @@ package scratch {
 	
 		public function keyDown(evt:KeyboardEvent):void {
 			shiftIsDown = evt.shiftKey;
-			var ctrlIsDown:Boolean = evt.ctrlKey;
-			if(ctrlIsDown&&!shiftIsDown){
-				if(evt.charCode=="s".charCodeAt(0)){
-					MBlock.app.exportProjectToFile();
-				}else if(evt.charCode=="o".charCodeAt(0)){
-					MBlock.app.runtime.selectProjectFile();
-				}
-			}
 			var ch:int = evt.charCode;
 			if (evt.charCode == 0) ch = mapArrowKey(evt.keyCode);
 			if ((65 <= ch) && (ch <= 90)) ch += 32; // map A-Z to a-z
