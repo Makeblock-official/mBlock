@@ -50,18 +50,7 @@ package cc.makeblock.mbot.ui.parts
 			register("Connect", __onConnect);
 			register("Boards", __onSelectBoard);
 			register("Help", __onHelp);
-			register("manage_extensions", ExtensionUtil.OnManagerExtension);
-		}
-		
-		override protected function onAddAppMenu(menu:NativeMenu):void
-		{
-			var sysMenu:NativeMenu = NativeApplication.nativeApplication.menu;
-			defaultMenuCount = sysMenu.numItems;
-			trace(sysMenu.numItems, menu.numItems);
-			for(var i:int=menu.numItems-1; i>=0; i--){
-				sysMenu.addItem(menu.removeItemAt(i));
-			}
-//			menu.addItemAt(new NativeMenuItem(), 0).name = "mBlock";
+			register("Manage Extensions", ExtensionUtil.OnManagerExtension);
 		}
 		
 		public function changeLang():void
@@ -72,11 +61,9 @@ package cc.makeblock.mbot.ui.parts
 		private function changeLangImpl(item:NativeMenuItem):*
 		{
 			var index:int = getNativeMenu().getItemIndex(item);
-			
-			if(index < defaultMenuCount){
+			if(0 == index){
 				return true;
 			}
-			
 			item.label = Translator.map(item.name);
 			if(item.name == "Language"){
 				item = MenuUtil.FindItem(item.submenu, "set font size");
@@ -267,6 +254,7 @@ package cc.makeblock.mbot.ui.parts
 		{
 			var menuItem:NativeMenu = evt.target as NativeMenu;
 			menuItem.removeEventListener(evt.type, __onInitExtMenu);
+			menuItem.addEventListener(evt.type, __onShowExtMenu);
 			var list:Array = MBlock.app.extensionManager.extensionList;
 			if(list.length==0){
 				MBlock.app.extensionManager.copyLocalFiles();
@@ -283,12 +271,20 @@ package cc.makeblock.mbot.ui.parts
 			}
 		}
 		
+		private function __onShowExtMenu(evt:Event):void
+		{
+			var menuItem:NativeMenu = evt.target as NativeMenu;
+			var list:Array = MBlock.app.extensionManager.extensionList;
+			for(var i:int=0;i<list.length;i++){
+				var extName:String = list[i].extensionName;
+				var subMenuItem:NativeMenuItem = menuItem.getItemAt(i+2);
+				subMenuItem.checked = MBlock.app.extensionManager.checkExtensionSelected(extName);
+			}
+		}
+		
 		private function __onExtensions(menuItem:NativeMenuItem):void
 		{
-			var isSuccess:Boolean = MBlock.app.extensionManager.onSelectExtension(menuItem.name);
-			if(isSuccess){
-				menuItem.checked = !menuItem.checked;
-			}
+			MBlock.app.extensionManager.onSelectExtension(menuItem.name);
 		}
 		
 		private function __onHelp(menuItem:NativeMenuItem):void

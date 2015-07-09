@@ -4,10 +4,8 @@ package {
 	import flash.desktop.NativeApplication;
 	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
-	import flash.display.Graphics;
 	import flash.display.Loader;
 	import flash.display.LoaderInfo;
-	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
 	import flash.display.StageDisplayState;
@@ -17,17 +15,13 @@ package {
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
 	import flash.filesystem.File;
-	import flash.filesystem.FileMode;
-	import flash.filesystem.FileStream;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
-	import flash.geom.Rectangle;
 	import flash.net.FileReference;
 	import flash.net.URLRequest;
 	import flash.system.Capabilities;
 	import flash.system.LoaderContext;
 	import flash.system.System;
-	import flash.text.TextField;
 	import flash.ui.Keyboard;
 	import flash.utils.ByteArray;
 	import flash.utils.setTimeout;
@@ -444,20 +438,6 @@ package {
 			stagePane.applyFilters();
 		}
 	
-		private var debugRect:Shape;
-		public function showDebugRect(r:Rectangle):void {
-			// Used during debugging...
-			var p:Point = stagePane.localToGlobal(new Point(0, 0));
-			if (!debugRect) debugRect = new Shape();
-			var g:Graphics = debugRect.graphics;
-			g.clear();
-			if (r) {
-				g.lineStyle(2, 0xFFFF00);
-				g.drawRect(p.x + r.x, p.y + r.y, r.width, r.height);
-				addChild(debugRect);
-			}
-		}
-	
 		public function strings():Array {
 			return [
 				'a copy of the project file on your computer.',
@@ -562,14 +542,11 @@ package {
 				bmd.draw(MBlock.app,matrix);
 				scaleX = scaleY = 1;
 				var jpeg:ByteArray = JPEGEncoder.encode(bmd,90);
+				bmd.dispose();
 				var now:Date = new Date();
 				var path:String = "screen_"+Math.floor(now.time)+".jpg";
 				var fileScreen:File = File.desktopDirectory.resolvePath(path);
-				var fileStream:FileStream = new FileStream();
-				fileStream.open(fileScreen,FileMode.WRITE);
-				fileStream.writeBytes(jpeg);
-				fileStream.close();
-				bmd.dispose();
+				FileUtil.WriteBytes(fileScreen, jpeg);
 			}
 //			else if(evt.ctrlKey && evt.charCode == 109) {
 //				isIn3D ? go2D() : go3D();

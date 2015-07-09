@@ -106,7 +106,7 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 		
 		private function __onLangChanged(evt:Event=null):void
 		{
-			setTitle(Translator.map("Extension Manager"));
+			setTitle(Translator.map("Manage Extensions"));
 			
 			btnAdd.setText(Translator.map("Add Extension"));
 			btnRemove.setText(Translator.map("Remove Extension"));

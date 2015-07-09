@@ -20,6 +20,7 @@ package cc.makeblock.menu
 			var source:String = FileUtil.LoadFile(path);
 			menu = MenuBuilder.BuildMenu(XML(source));
 			if(NativeApplication.supportsMenu){
+				defaultMenuCount = 1;
 				onAddAppMenu(menu);
 				menu = NativeApplication.nativeApplication.menu;
 			}else if(NativeWindow.supportsMenu){
@@ -28,8 +29,15 @@ package cc.makeblock.menu
 			menu.addEventListener(Event.SELECT, __onSelect);
 		}
 		
-		protected function onAddAppMenu(menu:NativeMenu):void
+		private function onAddAppMenu(menu:NativeMenu):void
 		{
+			var sysMenu:NativeMenu = NativeApplication.nativeApplication.menu;
+			while(sysMenu.numItems > defaultMenuCount){
+				sysMenu.removeItemAt(sysMenu.numItems-1);
+			}
+			while(menu.numItems > 0){
+				sysMenu.addItem(menu.removeItemAt(0));
+			}
 		}
 		
 		private function __onSelect(evt:Event):void
