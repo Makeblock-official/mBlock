@@ -5,8 +5,6 @@ package extensions
 	import flash.utils.ByteArray;
 	import flash.utils.setTimeout;
 	
-	import translation.Translator;
-	
 	import util.LogManager;
 	
 	public class HIDManager extends EventDispatcher

@@ -61,7 +61,7 @@ package cc.makeblock.mbot.ui.parts
 		private function changeLangImpl(item:NativeMenuItem):*
 		{
 			var index:int = getNativeMenu().getItemIndex(item);
-			if(0 == index){
+			if(0 <= index && index < defaultMenuCount){
 				return true;
 			}
 			item.label = Translator.map(item.name);

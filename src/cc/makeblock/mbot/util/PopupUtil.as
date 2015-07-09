@@ -2,7 +2,9 @@ package cc.makeblock.mbot.util
 {
 	import flash.events.MouseEvent;
 	
+	import org.aswing.AsWingConstants;
 	import org.aswing.AsWingUtils;
+	import org.aswing.JFrame;
 	import org.aswing.JOptionPane;
 	
 	import translation.Translator;
@@ -58,6 +60,7 @@ package cc.makeblock.mbot.util
 			}, null, true, null, JOptionPane.YES | JOptionPane.NO | JOptionPane.CANCEL);
 			
 			panel.getFrame().setClosable(false);
+			centerFrameTitle(panel.getFrame());
 			
 			panel.getYesButton().setPreferredWidth(80);
 			panel.getNoButton().setPreferredWidth(80);
@@ -71,6 +74,11 @@ package cc.makeblock.mbot.util
 			AsWingUtils.centerLocate(panel.getFrame());
 			
 			return panel;
+		}
+		
+		static public function centerFrameTitle(frame:JFrame):void
+		{
+			frame.getTitleBar().getLabel().setHorizontalAlignment(AsWingConstants.CENTER);
 		}
 	}
 }

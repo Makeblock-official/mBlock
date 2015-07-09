@@ -7,11 +7,8 @@ package extensions
 	import flash.net.navigateToURL;
 	import flash.utils.ByteArray;
 	
-	import translation.Translator;
-	
 	import util.ApplicationManager;
 	import util.LogManager;
-	import util.SharedObjectManager;
 
 	public class ConnectionManager extends EventDispatcher
 	{
