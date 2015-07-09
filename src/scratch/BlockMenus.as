@@ -261,7 +261,7 @@ public class BlockMenus implements DragClient {
 	private function setBlockArg(selection:*):void {
 		if (blockArg != null) blockArg.setArgValue(selection);
 		MBlock.app.setSaveNeeded();
-		MBlock.app.runtime.checkForGraphicEffects();
+//		MBlock.app.runtime.checkForGraphicEffects();
 	}
 
 	private function attributeMenu(evt:MouseEvent):void {

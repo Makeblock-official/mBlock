@@ -115,13 +115,13 @@ package primitives {
 		if (!s.visible) return false;
 
 		var s2:ScratchSprite;
-		if(true || !app.isIn3D) {
+//		if(true || !app.isIn3D) {
 			var sBM:BitmapData = s.bitmap();
 			for each (s2 in app.stagePane.spritesAndClonesNamed(arg))
 				if (s2.visible && sBM.hitTest(s.bounds().topLeft, 1, s2.bitmap(), s2.bounds().topLeft, 1))
 					return true;
-		}
-		else {
+//		}
+//		else {
 			// TODO: Re-implement something like the method above for rotated bitmaps.
 //			var sBM:BitmapData = s.bitmap();
 //            var oBM:BitmapData = new BitmapData(sBM.width, sBM.height, true, 0);
@@ -134,7 +134,7 @@ package primitives {
 //				if (s2.visible && sBM.hitTest(s.bounds().topLeft, 1, oBM, s2.bounds().topLeft, 1))
 //					return true;
 //			}
-		}
+//		}
 
 		return false;
 	}

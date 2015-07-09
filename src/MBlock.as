@@ -2,7 +2,6 @@ package {
 	import com.google.analytics.GATracker;
 	
 	import flash.desktop.NativeApplication;
-	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
 	import flash.display.Loader;
 	import flash.display.Sprite;
@@ -11,8 +10,6 @@ package {
 	import flash.events.InvokeEvent;
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
-	import flash.filesystem.File;
-	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.net.FileReference;
 	import flash.net.URLRequest;
@@ -22,8 +19,6 @@ package {
 	import flash.utils.setTimeout;
 	
 	import blocks.Block;
-	
-	import by.blooddy.crypto.image.JPEGEncoder;
 	
 	import cc.makeblock.mbot.lookandfeel.MyLookAndFeel;
 	import cc.makeblock.mbot.ui.parts.TopSystemMenu;
@@ -103,8 +98,8 @@ package {
 		public var stageIsContracted:Boolean; // true when the stage is half size to give more space on small screens
 		public var stageIsHided:Boolean;
 		public var stageIsArduino:Boolean;
-		public var isIn3D:Boolean;
-		public var render3D:IRenderIn3D;
+//		public var isIn3D:Boolean;
+//		public var render3D:IRenderIn3D;
 	
 		private var systemMenu:TopSystemMenu;
 		
@@ -123,7 +118,7 @@ package {
 		private var lastTab:String = 'scripts';
 		protected var wasEdited:Boolean; // true if the project was edited and autosaved
 		private var _usesUserNameBlock:Boolean = false;
-		protected var languageChanged:Boolean; // set when language changed
+//		protected var languageChanged:Boolean; // set when language changed
 	
 		// UI Elements
 		public var palette:BlockPalette;
@@ -398,7 +393,7 @@ package {
 	
 			System.gc();
 		}
-	
+	/*
 		public function go3D():void {
 			if(!render3D || isIn3D) return;
 	
@@ -429,7 +424,7 @@ package {
 			stagePane.updateCostume();
 			stagePane.applyFilters();
 		}
-	
+	*/
 		public function strings():Array {
 			return [
 				'a copy of the project file on your computer.',
@@ -489,12 +484,9 @@ package {
 				wasEditing = editMode;
 				if (wasEditing) {
 					setEditMode(false);
-					
 				}
-			} else {
-				if (wasEditing) {
-					setEditMode(true);
-				}
+			} else if (wasEditing){
+				setEditMode(true);
 			}
 			
 			track(enterPresentation?"enterFullscreen":"enterNormal");
@@ -504,7 +496,7 @@ package {
 	
 			if (lp) fixLoadProgressLayout();
 			stagePane.updateCostume();
-			if(isIn3D) render3D.onStageResize();
+//			if(isIn3D) render3D.onStageResize();
 		}
 	
 		private function keyDown(evt:KeyboardEvent):void {
@@ -520,25 +512,15 @@ package {
 	//			evt.stopImmediatePropagation();
 	//		}
 			// Handle ctrl-m and toggle 2d/3d mode
+			/*
 			else if(evt.ctrlKey && evt.charCode == 109) {
 				isIn3D ? go2D() : go3D();
 				evt.preventDefault();
 				evt.stopImmediatePropagation();
 			}
-			if(evt.ctrlKey && evt.charCode == 112) {
-				var scale:Number = 3;
-				var bmd:BitmapData = new BitmapData(stage.stageWidth*scale,stage.stageHeight*scale,true);
-				var matrix:Matrix = new Matrix;
-				matrix.scale(scale,scale);
-				scaleX = scaleY = scale;
-				bmd.draw(MBlock.app,matrix);
-				scaleX = scaleY = 1;
-				var jpeg:ByteArray = JPEGEncoder.encode(bmd,90);
-				bmd.dispose();
-				var now:Date = new Date();
-				var path:String = "screen_"+Math.floor(now.time)+".jpg";
-				var fileScreen:File = File.desktopDirectory.resolvePath(path);
-				FileUtil.WriteBytes(fileScreen, jpeg);
+			*/
+			if(evt.ctrlKey && evt.keyCode == Keyboard.P){
+				FileUtil.PrintScreen();
 			}
 //			else if(evt.ctrlKey && evt.charCode == 109) {
 //				isIn3D ? go2D() : go3D();
@@ -782,7 +764,7 @@ package {
 				addChild(frameRateGraph); // put in front
 			}
 	*/
-			if(isIn3D) render3D.onStageResize();
+//			if(isIn3D) render3D.onStageResize();
 		}
 	
 		// -----------------------------
@@ -1249,7 +1231,6 @@ package {
 			this.tabsPart.imagesTab.visible = !stageIsArduino;
 			setTab("scripts");
 		}
-//		public function handleTool(tool:String, evt:MouseEvent):void { }
 	
 		public function showBubble(text:String, x:* = null, y:* = null, width:Number = 0):void {
 			if (x == null) x = stage.mouseX;
@@ -1388,31 +1369,6 @@ package {
 			if (targetObj == viewedObj()) setTab('images');
 		}
 	
-		/*
-		private function okayToAdd(newAssetBytes:int):Boolean {
-			// Return true if there is room to add an asset of the given size.
-			// Otherwise, return false and display a warning dialog.
-			const assetByteLimit:int = 50 * 1024 * 1024; // 50 megabytes
-			var assetByteCount:int = newAssetBytes;
-			for each (var obj:ScratchObj in stagePane.allObjects()) {
-				for each (var c:ScratchCostume in obj.costumes) {
-					if (!c.baseLayerData) c.prepareToSave();
-					assetByteCount += c.baseLayerData.length;
-				}
-				for each (var snd:ScratchSound in obj.sounds) assetByteCount += snd.soundData.length;
-			}
-			if (assetByteCount > assetByteLimit) {
-				var overBy:int = Math.max(1, (assetByteCount - assetByteLimit) / 1024);
-				DialogBox.notify(
-					'Sorry!',
-					'Adding that media asset would put this project over the size limit by ' + overBy + ' KB\n' +
-					'Please remove some costumes, backdrops, or sounds before adding additional media.',
-					stage);
-				return false;
-			}
-			return true;
-		}
-		*/
 		// -----------------------------
 		// Flash sprite (helps connect a sprite on thestage with a sprite library entry)
 		//------------------------------
