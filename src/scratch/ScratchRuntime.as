@@ -290,7 +290,7 @@ package scratch {
 			var extName:String = b.op.substr(0, i);
 			return !app.extensionManager.isInternal(extName);
 		}
-	
+	/*
 		public function hasGraphicEffects():Boolean {
 			var found:Boolean = false;
 			allStacksAndOwnersDo(function (stack:Block, target:ScratchObj):void {
@@ -303,11 +303,11 @@ package scratch {
 			});
 			return found;
 		}
-	
 		private function isGraphicEffectBlock(b:Block):Boolean {
 			return ('op' in b && (b.op == 'changeGraphicEffect:by:' || b.op == 'setGraphicEffect:to:') &&
 					('argValue' in b.args[0]) && b.args[0].argValue != 'ghost' && b.args[0].argValue != 'brightness');
 		}
+	*/
 	
 		// -----------------------------
 		// Edge-trigger sensor hats
@@ -387,8 +387,7 @@ package scratch {
 				}
 	
 				// Should we go 3D?
-				if(isGraphicEffectBlock(b))
-					app.go3D();
+//				trace(isGraphicEffectBlock(b))
 			});
 		}
 	
@@ -507,11 +506,11 @@ package scratch {
 			if (app.stagePane != null) stopAll();
 			if (app.scriptsPane) app.scriptsPane.viewScriptsFor(null);
 	
-			if(app.isIn3D) app.render3D.setStage(project, project.penLayer);
+//			if(app.isIn3D) app.render3D.setStage(project, project.penLayer);
 	
 			for each (var obj:ScratchObj in project.allObjects()) {
 				obj.showCostume(obj.currentCostumeIndex);
-				if(MBlock.app.isIn3D) obj.updateCostume();
+//				if(MBlock.app.isIn3D) obj.updateCostume();
 				var spr:ScratchSprite = obj as ScratchSprite;
 				if (spr) spr.setDirection(spr.direction);
 			}
@@ -532,7 +531,7 @@ package scratch {
 			
 			app.extensionManager.step();
 			app.projectLoaded();
-			checkForGraphicEffects();
+//			checkForGraphicEffects();
 		}
 		private function whenDone(costumeOrSprite:*):void{
 			var spr:ScratchSprite;
@@ -562,8 +561,7 @@ package scratch {
 		}
 	
 		public function checkForGraphicEffects():void {
-			if(hasGraphicEffects()) app.go3D();
-			else app.go2D();
+//			trace(hasGraphicEffects());
 		}
 	
 		// -----------------------------
@@ -612,14 +610,6 @@ package scratch {
 	
 		public function keyDown(evt:KeyboardEvent):void {
 			shiftIsDown = evt.shiftKey;
-			var ctrlIsDown:Boolean = evt.ctrlKey;
-			if(ctrlIsDown&&!shiftIsDown){
-				if(evt.charCode=="s".charCodeAt(0)){
-					MBlock.app.exportProjectToFile();
-				}else if(evt.charCode=="o".charCodeAt(0)){
-					MBlock.app.runtime.selectProjectFile();
-				}
-			}
 			var ch:int = evt.charCode;
 			if (evt.charCode == 0) ch = mapArrowKey(evt.keyCode);
 			if ((65 <= ch) && (ch <= 90)) ch += 32; // map A-Z to a-z

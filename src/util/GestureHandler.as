@@ -335,13 +335,13 @@ public class GestureHandler {
 		// Take sprite shape into account so you can click or grab a sprite
 		// through a hole in another sprite that is in front of it.
 		// Return the stage if no other object is found.
-		if(app.isIn3D) app.stagePane.visible = true;
+//		if(app.isIn3D) app.stagePane.visible = true;
 		var uiLayer:Sprite = app.stagePane.getUILayer();
 		for (var i:int = uiLayer.numChildren - 1; i > 0; i--) {
 			var o:DisplayObject = uiLayer.getChildAt(i) as DisplayObject;
 			if (o is Bitmap) break; // hit the paint layer of the stage; no more elments
 			if (o.visible && o.hitTestPoint(globalX, globalY, true)) {
-				if(app.isIn3D) app.stagePane.visible = false;
+//				if(app.isIn3D) app.stagePane.visible = false;
 				return o;
 			}
 		}
@@ -350,13 +350,13 @@ public class GestureHandler {
 				o = app.stagePane.getChildAt(i) as DisplayObject;
 				if (o is Bitmap) break; // hit the paint layer of the stage; no more elments
 				if (o.visible && o.hitTestPoint(globalX, globalY, true)) {
-					if(app.isIn3D) app.stagePane.visible = false;
+//					if(app.isIn3D) app.stagePane.visible = false;
 					return o;
 				}
 			}
 		}
 
-		if(app.isIn3D) app.stagePane.visible = false;
+//		if(app.isIn3D) app.stagePane.visible = false;
 		return app.stagePane;
 	}
 
@@ -459,13 +459,13 @@ public class GestureHandler {
 			app.scriptsPane.prepareToDragComment(c);
 		}  else {
 			var inStage:Boolean = (obj.parent == app.stagePane);
-			if (obj.parent != null) {
-				if(obj is ScratchSprite && app.isIn3D)
-					(obj as ScratchSprite).prepareToDrag();
+//			if (obj.parent != null) {
+//				if(obj is ScratchSprite && app.isIn3D)
+//					(obj as ScratchSprite).prepareToDrag();
 
 //				obj.parent.removeChild(obj);
 				//拖动时文字会消失
-			}
+//			}
 			if (inStage && (app.stagePane.scaleX != 1)) {
 				obj.scaleX = obj.scaleY = (obj.scaleX * app.stagePane.scaleX);
 			}
@@ -489,13 +489,13 @@ public class GestureHandler {
 	private function dropHandled(droppedObj:*, evt:MouseEvent):Boolean {
 		// Search for an object to handle this drop and return true one is found.
 		// Note: Search from front to back, so the front-most object catches the dropped object.
-		if(app.isIn3D) app.stagePane.visible = true;
+//		if(app.isIn3D) app.stagePane.visible = true;
 		var possibleTargets:Array = stage.getObjectsUnderPoint(new Point(evt.stageX / app.scaleX, evt.stageY / app.scaleY));
-		if(app.isIn3D) {
-			app.stagePane.visible = false;
-			if(possibleTargets.length == 0 && app.stagePane.scrollRect.contains(app.stagePane.mouseX, app.stagePane.mouseY))
-				possibleTargets.push(app.stagePane);
-		}
+//		if(app.isIn3D) {
+//			app.stagePane.visible = false;
+//			if(possibleTargets.length == 0 && app.stagePane.scrollRect.contains(app.stagePane.mouseX, app.stagePane.mouseY))
+//				possibleTargets.push(app.stagePane);
+//		}
 		possibleTargets.reverse();
 		for each (var o:* in possibleTargets) {
 			while (o) { // see if some parent can handle the drop

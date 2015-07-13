@@ -565,7 +565,7 @@ public class Block extends Sprite {
 				b.requestLoader.close();
 		}
 		topBlock().fixStackLayout();
-		MBlock.app.runtime.checkForGraphicEffects();
+//		MBlock.app.runtime.checkForGraphicEffects();
 	}
 
 	public function insertBlock(b:Block):void {
@@ -771,7 +771,7 @@ public class Block extends Sprite {
 		removeComments();
 		app.runtime.recordForUndelete(this, x, y, 0, app.viewedObj());
 		app.scriptsPane.saveScripts();
-		app.runtime.checkForGraphicEffects();
+//		app.runtime.checkForGraphicEffects();
 		app.updatePalette();
 		return true;
 //		if (isProcDef() || isEmbeddedInProcHat()) return true; // don't delete procedure definition this way for now
