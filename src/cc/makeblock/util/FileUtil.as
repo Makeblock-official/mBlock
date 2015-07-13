@@ -1,8 +1,11 @@
 package cc.makeblock.util
 {
+	import flash.display.BitmapData;
+	import flash.display.JPEGEncoderOptions;
 	import flash.filesystem.File;
 	import flash.filesystem.FileMode;
 	import flash.filesystem.FileStream;
+	import flash.geom.Matrix;
 	import flash.utils.ByteArray;
 
 	public class FileUtil
@@ -43,6 +46,28 @@ package cc.makeblock.util
 			fs.open(file, FileMode.WRITE);
 			fs.writeBytes(bytes);
 			fs.close();
+		}
+		
+		static public function PrintScreen():void
+		{
+			var scale:Number = 3;
+			var bmd:BitmapData = new BitmapData(
+				MBlock.app.stage.stageWidth*scale,
+				MBlock.app.stage.stageHeight*scale,true
+			);
+			var matrix:Matrix = new Matrix();
+			matrix.scale(scale,scale);
+			MBlock.app.scaleX = MBlock.app.scaleY = scale;
+			bmd.draw(MBlock.app,matrix);
+			MBlock.app.scaleX = MBlock.app.scaleY = 1;
+//			var jpeg:ByteArray = JPEGEncoder.encode(bmd,90);
+			var jpeg:ByteArray = bmd.encode(bmd.rect, new JPEGEncoderOptions(90));
+			bmd.dispose();
+			var now:Date = new Date();
+			var path:String = "screen_"+Math.floor(now.time)+".jpg";
+			var fileScreen:File = File.desktopDirectory.resolvePath(path);
+			FileUtil.WriteBytes(fileScreen, jpeg);
+			jpeg.clear();
 		}
 	}
 }

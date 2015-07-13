@@ -259,16 +259,16 @@ public class ScratchObj extends Sprite {
 	public function applyFilters(forDragging:Boolean = false):void {
 		img.filters = filterPack.buildFilters(forDragging);
 		clearCachedBitmap();
-		if(!MBlock.app.isIn3D || forDragging) {
+//		if(!MBlock.app.isIn3D || forDragging) {
 			var n:Number = Math.max(0, Math.min(filterPack.getFilterSetting('ghost'), 100));
 			cTrans.alphaMultiplier = 1.0 - (n / 100.0);
 			n = 255 * Math.max(-100, Math.min(filterPack.getFilterSetting('brightness'), 100)) / 100;
 			cTrans.redOffset = cTrans.greenOffset = cTrans.blueOffset = n;
 			img.transform.colorTransform = cTrans;
-		}
-		else {
-			updateEffects();
-		}
+//		}
+//		else {
+//			updateEffects();
+//		}
 	}
 
 	protected function updateEffects():void {

@@ -91,8 +91,6 @@ public class Interpreter {
 
 	public var askThread:Thread;				// thread that opened the ask prompt
 
-	protected var debugFunc:Function;
-
 	public function Interpreter(app:MBlock) {
 		this.app = app;
 		initPrims();
@@ -310,31 +308,21 @@ public class Interpreter {
 		if (!b) return 0; // arg() and friends can pass null if arg index is out of range
 		var op:String = b.op;
 		
-		if(op!=null){
-			if (op.indexOf('.') > -1) {
-				var oop:* = app.extensionManager.primExtensionOp;
-				if(oop==null){
-					return null;
-				}else{
-					b.opFunction = oop;
-				}
-			}
-			else {
-				b.opFunction = (primTable[op] == undefined) ? primNoop : primTable[op];
+		if(op != null){
+			if(op.indexOf('.') >= 0) {
+				b.opFunction = app.extensionManager.primExtensionOp;
+			}else {
+				b.opFunction = (null == primTable[op]) ? primNoop : primTable[op];
 			}
 		}
 		
 		// TODO: Optimize this into a cached check if the args *could* block at all
-		if(b.args.length && checkBlockingArgs(b)) {
+		if(b.args.length > 0 && checkBlockingArgs(b)) {
 			doYield();
 			return null;
 		}
-
-		// Debug code
-		if(debugFunc != null)
-			debugFunc(b);
 		
-		var result:Object;
+		var result:*;
 		if(b.opFunction.length > 1){
 			result = b.opFunction(b, this);
 		}else{
@@ -344,10 +332,18 @@ public class Interpreter {
 	}
 
 	// Returns true if the thread needs to yield while data is requested
-	public function checkBlockingArgs(b:Block):Boolean {
+	private function checkBlockingArgs(b:Block):Boolean {
 		// Do any of the arguments request data?  If so, start any requests and yield.
-		var shouldYield:Boolean = false;
-		var args:Array = b.args;
+//		var shouldYield:Boolean = false;
+//		var args:Array = b.args;
+		for each(var item:* in b.args){
+			var barg:Block = item as Block;
+			if(barg != null && checkBlockingArgs(barg)){
+				return true;
+			}
+		}
+		return false;
+		/*
 		for(var i:uint=0; i<args.length; ++i) {
 			var barg:Block = args[i] as Block;
 			if(barg) {
@@ -361,6 +357,7 @@ public class Interpreter {
 			}
 		}
 		return shouldYield;
+		*/
 	}
 
 	public function arg(b:Block, i:int):* {

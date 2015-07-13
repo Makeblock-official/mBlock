@@ -2,10 +2,8 @@ package {
 	import com.google.analytics.GATracker;
 	
 	import flash.desktop.NativeApplication;
-	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
 	import flash.display.Loader;
-	import flash.display.LoaderInfo;
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
 	import flash.display.StageDisplayState;
@@ -14,21 +12,15 @@ package {
 	import flash.events.InvokeEvent;
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
-	import flash.filesystem.File;
-	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.net.FileReference;
 	import flash.net.URLRequest;
-	import flash.system.Capabilities;
-	import flash.system.LoaderContext;
 	import flash.system.System;
 	import flash.ui.Keyboard;
 	import flash.utils.ByteArray;
 	import flash.utils.setTimeout;
 	
 	import blocks.Block;
-	
-	import by.blooddy.crypto.image.JPEGEncoder;
 	
 	import cc.makeblock.mbot.lookandfeel.MyLookAndFeel;
 	import cc.makeblock.mbot.ui.parts.TopSystemMenu;
@@ -108,8 +100,8 @@ package {
 		public var stageIsContracted:Boolean; // true when the stage is half size to give more space on small screens
 		public var stageIsHided:Boolean;
 		public var stageIsArduino:Boolean;
-		public var isIn3D:Boolean;
-		public var render3D:IRenderIn3D;
+//		public var isIn3D:Boolean;
+//		public var render3D:IRenderIn3D;
 	
 		private var systemMenu:TopSystemMenu;
 		
@@ -128,7 +120,7 @@ package {
 		private var lastTab:String = 'scripts';
 		protected var wasEdited:Boolean; // true if the project was edited and autosaved
 		private var _usesUserNameBlock:Boolean = false;
-		protected var languageChanged:Boolean; // set when language changed
+//		protected var languageChanged:Boolean; // set when language changed
 	
 		// UI Elements
 		public var palette:BlockPalette;
@@ -164,11 +156,12 @@ package {
 			track("/app/launch");
 			NativeApplication.nativeApplication.addEventListener(InvokeEvent.INVOKE,onInvoked);
 			stage.nativeWindow.addEventListener(Event.CLOSING,onExiting);
-			checkFlashVersion();
+			
 			stage.align = StageAlign.TOP_LEFT;
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.frameRate = 30;
 			this.scaleX = this.scaleY = 1.0;
+
 			if(SharedObjectManager.sharedManager().available("labelSize")){
 				var labelSize:int = SharedObjectManager.sharedManager().getObject("labelSize") as int;
 				var argSize:int = Math.round(0.9 * labelSize);
@@ -217,9 +210,7 @@ package {
 			
 			fixLayout();
 			UpdaterManager.sharedManager().checkForUpdate();
-			setTimeout(function():void{
-				SocketManager.sharedManager();
-			},100);
+			setTimeout(SocketManager.sharedManager, 100);
 			var ver:String = _currentVer;
 			var isFilesAvailable:Boolean = ApplicationManager.sharedManager().documents.resolvePath("mBlock").exists;
 			if(!isFilesAvailable){
@@ -252,13 +243,15 @@ package {
 			HIDManager.sharedManager().setMBlock(this);
 		}
 		private function openWelcome():void{
-			_welcomeView = new Loader();
-			_welcomeView.load(new URLRequest("welcome.swf"));
-			_welcomeView.contentLoaderInfo.addEventListener(Event.COMPLETE,onWelcomeLoaded);
+			openSwf("welcome.swf");
 		}
 		public function openOrion():void{
+			openSwf("orion_buzzer.swf");
+		}
+		private function openSwf(path:String):void
+		{
 			_welcomeView = new Loader();
-			_welcomeView.load(new URLRequest("orion_buzzer.swf"));
+			_welcomeView.load(new URLRequest(path));
 			_welcomeView.contentLoaderInfo.addEventListener(Event.COMPLETE,onWelcomeLoaded);
 		}
 		private function onWelcomeLoaded(evt:Event):void{
@@ -266,7 +259,7 @@ package {
 			var h:uint = stage.stageHeight;
 			_welcomeView.x = (w-550)/2;
 			_welcomeView.y = (h-400)/2+30;
-			setTimeout(function():void{addChild(_welcomeView)},500);
+			setTimeout(addChild, 500, _welcomeView);
 		}
 		
 		public function track(msg:String):void{
@@ -339,6 +332,7 @@ package {
 			trace(msg);
 		}
 		public function loadProjectFailed():void {}
+		/*
 		[Embed(source='libs/RenderIn3D.swf', mimeType='application/octet-stream')]
 		public static const MySwfData:Class;
 		protected function checkFlashVersion():void {
@@ -396,7 +390,7 @@ package {
 			render3D = (new r3dClass() as IRenderIn3D);
 			render3D.setStatusCallback(handleRenderCallback);
 		}
-	
+	*/
 		public function clearCachedBitmaps():void {
 			for(var i:int=0; i<stagePane.numChildren; ++i) {
 				var spr:ScratchSprite = (stagePane.getChildAt(i) as ScratchSprite);
@@ -406,7 +400,7 @@ package {
 	
 			System.gc();
 		}
-	
+	/*
 		public function go3D():void {
 			if(!render3D || isIn3D) return;
 	
@@ -437,7 +431,7 @@ package {
 			stagePane.updateCostume();
 			stagePane.applyFilters();
 		}
-	
+	*/
 		public function strings():Array {
 			return [
 				'a copy of the project file on your computer.',
@@ -497,12 +491,9 @@ package {
 				wasEditing = editMode;
 				if (wasEditing) {
 					setEditMode(false);
-					
 				}
-			} else {
-				if (wasEditing) {
-					setEditMode(true);
-				}
+			} else if (wasEditing){
+				setEditMode(true);
 			}
 			
 			track(enterPresentation?"enterFullscreen":"enterNormal");
@@ -512,7 +503,7 @@ package {
 	
 			if (lp) fixLoadProgressLayout();
 			stagePane.updateCostume();
-			if(isIn3D) render3D.onStageResize();
+//			if(isIn3D) render3D.onStageResize();
 		}
 	
 		private function keyDown(evt:KeyboardEvent):void {
@@ -528,25 +519,15 @@ package {
 	//			evt.stopImmediatePropagation();
 	//		}
 			// Handle ctrl-m and toggle 2d/3d mode
+			/*
 			else if(evt.ctrlKey && evt.charCode == 109) {
 				isIn3D ? go2D() : go3D();
 				evt.preventDefault();
 				evt.stopImmediatePropagation();
 			}
-			if(evt.ctrlKey && evt.charCode == 112) {
-				var scale:Number = 3;
-				var bmd:BitmapData = new BitmapData(stage.stageWidth*scale,stage.stageHeight*scale,true);
-				var matrix:Matrix = new Matrix;
-				matrix.scale(scale,scale);
-				scaleX = scaleY = scale;
-				bmd.draw(MBlock.app,matrix);
-				scaleX = scaleY = 1;
-				var jpeg:ByteArray = JPEGEncoder.encode(bmd,90);
-				bmd.dispose();
-				var now:Date = new Date();
-				var path:String = "screen_"+Math.floor(now.time)+".jpg";
-				var fileScreen:File = File.desktopDirectory.resolvePath(path);
-				FileUtil.WriteBytes(fileScreen, jpeg);
+			*/
+			if(evt.ctrlKey && evt.keyCode == Keyboard.P){
+				FileUtil.PrintScreen();
 			}
 //			else if(evt.ctrlKey && evt.charCode == 109) {
 //				isIn3D ? go2D() : go3D();
@@ -677,7 +658,7 @@ package {
 		// UI Modes and Resizing
 		//------------------------------
 	
-		public function setEditMode(newMode:Boolean):void {
+		private function setEditMode(newMode:Boolean):void {
 			Menu.removeMenusFrom(stage);
 			editMode = newMode;
 			if (editMode) {
@@ -705,12 +686,12 @@ package {
 		protected function show(obj:DisplayObject):void { addChild(obj) }
 		protected function isShowing(obj:DisplayObject):Boolean { return obj.parent != null }
 	
-		public function onResize(e:Event):void {
+		private function onResize(e:Event):void {
 			fixLayout();
 			
 		}
 	
-		public function fixLayout():void {
+		private function fixLayout():void {
 			var w:int = stage.stageWidth;
 			var h:int = stage.stageHeight - 1; // fix to show bottom border...
 	
@@ -790,7 +771,7 @@ package {
 				addChild(frameRateGraph); // put in front
 			}
 	*/
-			if(isIn3D) render3D.onStageResize();
+//			if(isIn3D) render3D.onStageResize();
 		}
 	
 		// -----------------------------
@@ -1212,7 +1193,7 @@ package {
 			projIO.convertSqueakSounds(stagePane, squeakSoundsConverted);
 		}
 	
-		public static function fixFileName(s:String):String {
+		private static function fixFileName(s:String):String {
 			// Replace illegal characters in the given string with dashes.
 			const illegal:String = '\\/:*?"<>|%';
 			var result:String = '';
@@ -1257,7 +1238,6 @@ package {
 			this.tabsPart.imagesTab.visible = !stageIsArduino;
 			setTab("scripts");
 		}
-//		public function handleTool(tool:String, evt:MouseEvent):void { }
 	
 		public function showBubble(text:String, x:* = null, y:* = null, width:Number = 0):void {
 			if (x == null) x = stage.mouseX;
@@ -1301,7 +1281,7 @@ package {
 		// Save status
 		//------------------------------
 	
-		public var saveNeeded:Boolean;
+		private var saveNeeded:Boolean;
 	
 		public function setSaveNeeded(saveNow:Boolean = false):void {
 			saveNow = false;
@@ -1357,7 +1337,7 @@ package {
 		public function addNewSprite(spr:ScratchSprite, showImages:Boolean = false, atMouse:Boolean = false):void {
 			var c:ScratchCostume, byteCount:int;
 			for each (c in spr.costumes) byteCount + c.baseLayerData.length;
-			if (!okayToAdd(byteCount)) return; // not enough room
+//			if (!okayToAdd(byteCount)) return; // not enough room
 			spr.objName = stagePane.unusedSpriteName(spr.objName);
 			spr.indexInLibrary = 1000000; // add at end of library
 			spr.setScratchXY(int(50 * Math.random() - 25), int(50 * Math.random() - 25));
@@ -1374,7 +1354,7 @@ package {
 			}
 		}
 		public function addSound(snd:ScratchSound, targetObj:ScratchObj = null):void {
-			if (snd.soundData && !okayToAdd(snd.soundData.length)) return; // not enough room
+//			if (snd.soundData && !okayToAdd(snd.soundData.length)) return; // not enough room
 			if (!targetObj) targetObj = viewedObj();
 			snd.soundName = targetObj.unusedSoundName(snd.soundName);
 			targetObj.sounds.push(snd);
@@ -1387,7 +1367,7 @@ package {
 	
 		public function addCostume(c:ScratchCostume, targetObj:ScratchObj = null):void {
 			if (!c.baseLayerData) c.prepareToSave();
-			if (!okayToAdd(c.baseLayerData.length)) return; // not enough room
+//			if (!okayToAdd(c.baseLayerData.length)) return; // not enough room
 			if (!targetObj) targetObj = viewedObj();
 			c.costumeName = targetObj.unusedCostumeName(c.costumeName);
 			targetObj.costumes.push(c);
@@ -1396,29 +1376,6 @@ package {
 			if (targetObj == viewedObj()) setTab('images');
 		}
 	
-		public function okayToAdd(newAssetBytes:int):Boolean {
-			// Return true if there is room to add an asset of the given size.
-			// Otherwise, return false and display a warning dialog.
-			const assetByteLimit:int = 50 * 1024 * 1024; // 50 megabytes
-			var assetByteCount:int = newAssetBytes;
-			for each (var obj:ScratchObj in stagePane.allObjects()) {
-				for each (var c:ScratchCostume in obj.costumes) {
-					if (!c.baseLayerData) c.prepareToSave();
-					assetByteCount += c.baseLayerData.length;
-				}
-				for each (var snd:ScratchSound in obj.sounds) assetByteCount += snd.soundData.length;
-			}
-			if (assetByteCount > assetByteLimit) {
-				var overBy:int = Math.max(1, (assetByteCount - assetByteLimit) / 1024);
-				DialogBox.notify(
-					'Sorry!',
-					'Adding that media asset would put this project over the size limit by ' + overBy + ' KB\n' +
-					'Please remove some costumes, backdrops, or sounds before adding additional media.',
-					stage);
-				return false;
-			}
-			return true;
-		}
 		// -----------------------------
 		// Flash sprite (helps connect a sprite on thestage with a sprite library entry)
 		//------------------------------

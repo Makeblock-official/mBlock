@@ -248,7 +248,7 @@ public class ScratchSprite extends ScratchObj {
 			if (('leftRight' == rotationStyle) && (isCostumeFlipped() == wasFlipped)) return;
 		}
 
-		if(!MBlock.app.isIn3D) updateImage();
+		updateImage();
 		adjustForRotationCenter();
 		if(wasFlipped != isCostumeFlipped())
 			updateRenderDetails(1);
@@ -354,7 +354,7 @@ public class ScratchSprite extends ScratchObj {
 //	private var testBM:Bitmap = new Bitmap();
 //	private var testSpr:Sprite = new Sprite();
 	public function bitmap(forColorTest:Boolean = false):BitmapData {
-		if (cachedBitmap != null && (!forColorTest || !MBlock.app.isIn3D))
+		if (cachedBitmap != null)
 			return cachedBitmap;
 
 		// compute cachedBitmap
@@ -362,8 +362,10 @@ public class ScratchSprite extends ScratchObj {
 		var m:Matrix = new Matrix();
 		m.rotate((Math.PI * rotation) / 180);
 		m.scale(scaleX, scaleY);
-		var b:Rectangle = (!MBlock.app.render3D || currentCostume().bitmap) ? img.getChildAt(0).getBounds(this) : getVisibleBounds(this);
+//		var b:Rectangle = (!MBlock.app.render3D || currentCostume().bitmap) ? img.getChildAt(0).getBounds(this) : getVisibleBounds(this);
+		var b:Rectangle = img.getChildAt(0).getBounds(this);
 		var r:Rectangle = transformedBounds(b, m);
+		/*
 		if(MBlock.app.isIn3D) {
 			var oldGhost:Number = filterPack.getFilterSetting('ghost');
 			filterPack.setFilter('ghost', 0);
@@ -401,6 +403,7 @@ public class ScratchSprite extends ScratchObj {
 			}
 		}
 		else {
+			*/
 			if ((r.width == 0) || (r.height == 0)) { // empty costume: use an invisible 1x1 bitmap
 				cachedBitmap = new BitmapData(1, 1, true, 0);
 				cachedBounds = cachedBitmap.rect;
@@ -413,7 +416,7 @@ public class ScratchSprite extends ScratchObj {
 			m.translate(-r.left, -r.top);
 			cachedBitmap.draw(this, m);
 			img.transform.colorTransform = oldTrans;
-		}
+//		}
 
 		cachedBounds = cachedBitmap.rect;
 
@@ -562,10 +565,10 @@ public class ScratchSprite extends ScratchObj {
 			hideBubble();
 
 			// Force redisplay (workaround for flash display update bug)
-			if(!MBlock.app.isIn3D) {
+//			if(!MBlock.app.isIn3D) {
 				parent.visible = false;
 				parent.visible = true;
-			}
+//			}
 
 			parent.removeChild(this);
 			if (app) {

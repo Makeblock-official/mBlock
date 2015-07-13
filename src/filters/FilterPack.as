@@ -104,7 +104,7 @@ public class FilterPack {
 
 	public function buildFilters(force:Boolean = false):Array {
 		// disable filters not running on x86 because PixelBender is really slow
-		if((MBlock.app.isIn3D || Capabilities.cpuArchitecture != 'x86') && !force) return [];
+//		if((MBlock.app.isIn3D || Capabilities.cpuArchitecture != 'x86') && !force) return [];
 
 		var scale:Number = targetObj.isStage ? 1 : MBlock.app.stagePane.scaleX;
 		var srcWidth:Number = targetObj.width * scale;

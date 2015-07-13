@@ -1450,8 +1450,15 @@ void updateVar(char * varName,double * var)
 			
 			file.url = new File(arduinoInstallPath+arduinoLibPath+"/Wire").url;
 			listArduinoLib(file)
-			file.url = new File(arduinoInstallPath+"/libraries/Servo").url; // servo still in root library
-			listArduinoLib(file)
+			var servoFile:File = new File(arduinoInstallPath+"/libraries/Servo/src/avr");
+			//support 1.6.5
+			if(servoFile.exists){
+				file.url = new File(arduinoInstallPath+"/libraries/Servo/src/avr").url;
+				listArduinoLib(file);
+			}else{
+				file.url = new File(arduinoInstallPath+"/libraries/Servo").url; // servo still in root library
+				listArduinoLib(file);
+			}
 			file.url = new File(arduinoInstallPath+arduinoLibPath+"/SoftwareSerial").url;
 			listArduinoLib(file)
 			

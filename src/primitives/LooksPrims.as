@@ -247,7 +247,7 @@ package primitives {
 		var s:ScratchSprite = interp.targetSprite();
 		if (s == null) return;
 		s.visible = true;
-		if(!app.isIn3D) s.applyFilters();
+		s.applyFilters();
 		s.updateBubble();
 		if (s.visible) interp.redraw();
 	}
@@ -256,7 +256,7 @@ package primitives {
 		var s:ScratchSprite = interp.targetSprite();
 		if ((s == null) || !s.visible) return;
 		s.visible = false;
-		if(!app.isIn3D) s.applyFilters();
+		s.applyFilters();
 		s.updateBubble();
 		interp.redraw();
 	}

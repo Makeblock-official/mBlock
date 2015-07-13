@@ -15,7 +15,9 @@
         Port7: 7,
         Port8: 8,
 		M1:9,
-		M2:10
+		M2:10,
+		'led on board':7,
+		'light sensor on board':6
     };
 	var slots = {
 		Slot1:1,
@@ -100,10 +102,19 @@
         runPackage(5,short2array(leftSpeed),short2array(rightSpeed));
     };
 	ext.runMotor = function(port,speed) {
-        runPackage(10,ports[port],short2array(speed));
+		if(typeof port=="string"){
+			port = ports[port];
+		}
+		if(port == 9){
+			speed = -speed;
+		}
+        runPackage(10,port,short2array(speed));
     };
     ext.runServo = function(port,slot,angle) {
-        runPackage(11,ports[port],slots[slot],angle);
+		if(typeof port=="string"){
+			port = ports[port];
+		}
+        runPackage(11,port,slots[slot],angle);
     };
 	ext.runBuzzer = function(tone){
 		if(typeof tone == "string"){
@@ -121,14 +132,20 @@
 		}
 		runPackage(9,port,float2array(display));
 	};
-	ext.runLed = function(ledIndex,red,green,blue){
-		runPackage(8,7,ledIndex=="all"?0:ledIndex,red,green,blue);
+	ext.runLed = function(port,ledIndex,red,green,blue){
+		if(typeof port=="string"){
+			port = ports[port];
+		}
+		runPackage(8,port,ledIndex=="all"?0:ledIndex,red,green,blue);
 	};
 	ext.runLightSensor = function(port,status){
 		if(typeof port=="string"){
 			port = ports[port];
 		}
-		runPackage(3,port,switchStatus[status]);
+		if(typeof status=="string"){
+			status = switchStatus[status];
+		}
+		runPackage(3,port,status);
 	};
 	ext.runShutter = function(port,status){
 		runPackage(20,shutterStatus[status]);
@@ -246,13 +263,12 @@
 		}
 		getPackage(nextID,deviceId,port);
     };
-	ext.getLightsensor = function(nextID,port) {
+	ext.getLightSensor = function(nextID,port) {
 		var deviceId = 3;
-		if(typeof port == "string"){
-			getPackage(nextID,deviceId,ports[port]);
-		}else{
-			getPackage(nextID,deviceId,port);
+		if(typeof port=="string"){
+			port = ports[port];
 		}
+		getPackage(nextID,deviceId,port);
     };
 	ext.getJoystick = function(nextID,port,ax) {
 		var deviceId = 5;
@@ -264,15 +280,12 @@
 		}
 		getPackage(nextID,deviceId,port,ax);
     };
-	ext.getSoundsensor = function(nextID,port) {
+	ext.getSoundSensor = function(nextID,port) {
 		var deviceId = 7;
 		if(typeof port=="string"){
 			port = ports[port];
 		}
-		if(typeof ax=="string"){
-			ax = axis[ax];
-		}
-		getPackage(nextID,deviceId,port,ax);
+		getPackage(nextID,deviceId,port);
     };
 	ext.getInfrared = function(nextID,port) {
 		var deviceId = 16;
@@ -281,12 +294,15 @@
 		}
 		getPackage(nextID,deviceId,port);
     };
-	ext.getLimitswitch = function(nextID,port) {
+	ext.getLimitswitch = function(nextID,port,slot) {
 		var deviceId = 21;
 		if(typeof port=="string"){
 			port = ports[port];
 		}
-		getPackage(nextID,deviceId,port);
+		if(typeof slot=="string"){
+			slot = slots[slot];
+		}
+		getPackage(nextID,deviceId,port,slot);
     };
 	ext.getPirmotion = function(nextID,port) {
 		var deviceId = 15;

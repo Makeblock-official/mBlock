@@ -2,8 +2,8 @@
 	<subMenu name="File" label="文件">
 		<item name="New" label="新建项目" keyEquivalent="N" />
 		<item isSeparator="true" />
-		<item name="Load Project" label="打开项目" keyEquivalent="O" />
-		<item name="Save Project" label="保存项目" keyEquivalent="S" />
+		<item name="Load Project" label="打开项目" keyEquivalent="o" />
+		<item name="Save Project" label="保存项目" keyEquivalent="s" />
 		<item isSeparator="true" />
 		<item name="Undo Revert" label="取消转换" keyEquivalent="" />
 		<item name="Revert" label="转换" keyEquivalent="" />
