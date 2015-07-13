@@ -808,6 +808,7 @@ public class BlockMenus implements DragClient {
 	private function varMenu(evt:MouseEvent):void {
 //		var m:Menu = new Menu(varOrListSelection, 'var');
 		var m:NativeMenu = new NativeMenu();
+		m.addEventListener(Event.SELECT, __onSelect);
 		var isGetter:Boolean = (block.op == Specs.GET_VAR);
 		if (isGetter && isInPalette(block)) { // var reporter in palette
 //			m.addItem('rename variable', renameVar);
