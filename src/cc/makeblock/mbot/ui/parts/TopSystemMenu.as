@@ -64,6 +64,9 @@ package cc.makeblock.mbot.ui.parts
 				return true;
 			}
 			item.label = Translator.map(item.name);
+			if(item.name == "Boards"){
+				return true;
+			}
 			if(item.name == "Language"){
 				item = MenuUtil.FindItem(item.submenu, "set font size");
 				item.label = Translator.map(item.name);

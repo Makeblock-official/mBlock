@@ -406,9 +406,9 @@ public class ExtensionManager {
 			ext.sort = extObj.sort;
 		}
 		extensionDict[extObj.extensionName] = ext;
-//		parseTranslators(ext);
-		MBlock.app.extensionManager.parseAllTranslators();
-//		MBlock.app.translationChanged();
+		parseTranslators(ext);
+//		parseAllTranslators();
+		MBlock.app.translationChanged();
 		MBlock.app.updatePalette();
 		// Update the indicator
 		for (var i:int = 0; i < app.palette.numChildren; i++) {
@@ -419,10 +419,10 @@ public class ExtensionManager {
 			}
 		}
 	}
-	public function unloadRawExtension(extObj:Object):void{
+	private function unloadRawExtension(extObj:Object):void{
 		ConnectionManager.sharedManager().onRemoved(extObj.extensionName);
 		delete extensionDict[extObj.extensionName];
-		MBlock.app.extensionManager.parseAllTranslators();
+//		parseAllTranslators();
 		MBlock.app.translationChanged();
 		MBlock.app.updatePalette();
 		// Update the indicator
@@ -435,8 +435,7 @@ public class ExtensionManager {
 		}
 	}
 	public function parseAllTranslators():void{
-		var ext:ScratchExtension;
-		for each (ext in extensionDict) {
+		for each (var ext:ScratchExtension in extensionDict) {
 			parseTranslators(ext);
 		}
 	}
