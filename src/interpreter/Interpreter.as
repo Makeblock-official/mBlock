@@ -119,7 +119,6 @@ public class Interpreter {
 	public function threadCount():int { return threads.length }
 
 	public function toggleThread(b:Block, targetObj:*, startupDelay:int = 0):void {
-		
 		if (b.isReporter) {
 			// click on reporter shows value in log
 			try{
@@ -131,7 +130,8 @@ public class Interpreter {
 			}
 			currentMSecs = getTimer();
 			var oldThread:Thread = activeThread;
-			activeThread = new Thread(b, targetObj);
+			activeThread = new Thread(RobotHelper.Modify(b), targetObj);
+			activeThread.realBlock = b;
 			var p:Point = b.localToGlobal(new Point(0, 0));
 			var s:String = String(evalCmd(b));
 			if(s!="null"){
@@ -157,7 +157,9 @@ public class Interpreter {
 				//
 			}
 			b.showRunFeedback();
-			threads.push(new Thread(b, targetObj, startupDelay));
+			var newThread:Thread = new Thread(RobotHelper.Modify(b), targetObj, startupDelay);
+			newThread.realBlock = b;
+			threads.push(newThread);
 			app.threadStarted();
 		}
 	}
@@ -236,7 +238,7 @@ public class Interpreter {
 				var newThreads:Array = [];
 				for each (var t:Thread in threads) {
 					if (t.block != null) newThreads.push(t);
-					else if(app.editMode) t.topBlock.hideRunFeedback();
+					else if(app.editMode) t.onStoped();
 				}
 				threads = newThreads;
 				if (threads.length == 0) return;

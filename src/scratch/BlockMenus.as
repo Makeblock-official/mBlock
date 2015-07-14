@@ -26,13 +26,11 @@ package scratch {
 	import flash.events.MouseEvent;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
-	import flash.profiler.showRedrawRegions;
 	import flash.ui.Mouse;
 	import flash.ui.MouseCursor;
 	
 	import blocks.Block;
 	import blocks.BlockArg;
-	import blocks.BlockIO;
 	
 	import cc.makeblock.mbot.uiwidgets.lightSetter.LightSetterFrame;
 	import cc.makeblock.menu.MenuUtil;
@@ -41,7 +39,6 @@ package scratch {
 	
 	import filters.FilterPack;
 	
-	import org.aswing.Cursor;
 	import org.aswing.event.AWEvent;
 	
 	import sound.SoundBank;

@@ -28,6 +28,8 @@ package interpreter {
 	import blocks.Block;
 
 	public class Thread {
+		
+		internal var realBlock:Block;
 	
 		public var target:*;			// object that owns the stack
 		public var topBlock:Block;		// top block of the stack
@@ -60,6 +62,11 @@ package interpreter {
 			isLoop = false;
 			firstTime = true;
 			tmp = 0;
+		}
+		
+		internal function onStoped():void
+		{
+			realBlock.hideRunFeedback();
 		}
 	
 		public function pushStateForBlock(b:Block):void {
