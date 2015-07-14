@@ -644,6 +644,10 @@ void updateVar(char * varName,double * var)
 				codeBlock.type = "string";
 				codeBlock.code = "";
 				return codeBlock;
+			}else if(blk.length==16){
+				codeBlock.type = "array";
+				codeBlock.code = blk;
+				return codeBlock;
 			}
 			if(mathOp.indexOf(blk[0])>=0){
 				codeBlock.type = "obj";
@@ -773,13 +777,15 @@ void updateVar(char * varName,double * var)
 		}
 		private function substitute(str:String,params:Array,ext:ScratchExtension=null,offset:uint = 1):String{
 			for(var i:uint=0;i<params.length-offset;i++){
-				
 				var o:CodeBlock = getCodeBlock(params[i+offset]);
+				
 				var v:*=o.type=="string"?(ext.values[o.code]==undefined?o.code:ext.values[o.code]):null;
 				var s:CodeBlock = new CodeBlock();
 				if(ext==null||(v==null||v==undefined)){
+					
 					s = getCodeBlock(params[i+offset]);
 					s.type = (s.type=="obj"&&s.code.type!="code")?"string":"number";
+					
 				}else{
 					s.type = isNaN(Number(v))?"string":"number";
 					s.code = v;
