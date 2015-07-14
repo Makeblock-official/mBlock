@@ -697,14 +697,25 @@ public class BlockMenus implements DragClient {
 			case "@@list":
 				setBlockVarOrListName(evt.target.label);
 				break;
+			case "+":
+			case "-":
+			case "*":
+			case "/":
+			case "<":
+			case "=":
+			case ">":
+				block.changeOperator(evt.target.name);
+				break;
 		}
 	}
 
 	private function changeOpMenu(evt:MouseEvent, opList:Array):void {
+		/*
 		function opMenu(selection:*):void {
 			if (selection is Function) { selection(); return; }
 			block.changeOperator(selection);
 		}
+		*/
 		if (!block) return;
 //		var m:Menu = new Menu(opMenu, 'changeOp');
 		var m:NativeMenu = new NativeMenu();
@@ -775,6 +786,7 @@ public class BlockMenus implements DragClient {
 	private function listMenu(evt:MouseEvent):void {
 //		var m:Menu = new Menu(varOrListSelection, 'list');
 		var m:NativeMenu = new NativeMenu();
+		m.addEventListener(Event.SELECT, __onSelect);
 		if (block.op == Specs.GET_LIST) {
 			if (isInPalette(block)){
 				MenuUtil.AddItem(m, 'delete list');
