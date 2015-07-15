@@ -38,7 +38,7 @@
 		["-"],
 		
 		["w", "set 7-segments display%d.port number %n","runSevseg", "Port1", 100,
-		{"encode":"{d0}{f1}","setup":"","inc":"#include \"Me7SegmentDisplay.h\"\n","def":"Me7SegmentDisplay seg7_{0}({0});\n","work":"seg7_{0}.display({1});\n","loop":""}],
+		{"encode":"{d0}{f1}","setup":"","inc":"#include \"Me7SegmentDisplay.h\"\n","def":"Me7SegmentDisplay seg7_{0}({0});\n","work":"seg7_{0}.display((double){1});\n","loop":""}],
 		
 		
 		
@@ -97,7 +97,7 @@
 		["-"],
 		
 		["R", "timer","getTimer", "0",
-		{"encode":"{n0}","setup":"","inc":"","def":"double currentTime = 0;\ndouble lastTime = 0;\nlong getLastTime(){\n\treturn currentTime = millis()/1000.0 - lastTime;\n}\n","work":"getLastTime()","loop":""}],
+		{"encode":"{n0}","setup":"","inc":"","def":"double currentTime = 0;\ndouble lastTime = 0;\ndouble getLastTime(){\n\treturn currentTime = millis()/1000.0 - lastTime;\n}\n","work":"getLastTime()","loop":""}],
 		
 		["w", "reset timer","resetTimer", "0",
 		{"encode":"{n0}","setup":"","inc":"","def":"double currentTime = 0;\ndouble lastTime = 0;\n","work":"lastTime = millis()/1000.0;\n","loop":""}]
