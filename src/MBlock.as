@@ -214,7 +214,7 @@ package {
 				SharedObjectManager.sharedManager().setObject(versionString+".0."+ver,true);
 				//SharedObjectManager.sharedManager().setObject("board","mbot_uno");
 			}
-			VersionManager.sharedManager().start();
+			//VersionManager.sharedManager().start(); //在线更新资源文件
 			if(!SharedObjectManager.sharedManager().available("first-launch")){
 				SharedObjectManager.sharedManager().setObject("first-launch",true);
 			}
