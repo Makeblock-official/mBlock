@@ -30,7 +30,10 @@
 		{"encode":"{s0}","setup":"","inc":"#include \"MeLEDMatrix.h\"\n","def":"MeLEDMatrix ledMtx_{0}({0});\n","work":"ledMtx_{0}.clearScreen();\nledMtx_{0}.setColorIndex(1);\nledMtx_{0}.setBrightness(6);\nledMtx_{0}.drawStr({1},7-{2},{3});\n","loop":""}],
 		
 		["w", "show time %d.port hour:%n %s min:%n","showTime", "Port1", 10,":",20,
-		{"encode":"{s0}","setup":"","inc":"#include \"MeLEDMatrix.h\"\n","def":"MeLEDMatrix ledMtx_{0}({0});\n","work":"ledMtx_{0}.clearScreen();\nledMtx_{0}.setColorIndex(1);\nledMtx_{0}.setBrightness(6);\nledMtx_{0}.showClock({1},{3},{2}==':');\n","loop":""}],
+		{"encode":"{s0}","setup":"","inc":"#include \"MeLEDMatrix.h\"\n","def":"MeLEDMatrix ledMtx_{0}({0});\n","work":"ledMtx_{0}.clearScreen();\nledMtx_{0}.setColorIndex(1);\nledMtx_{0}.setBrightness(6);\nledMtx_{0}.showClock({1},{3},strcmp({2},\":\")==0);\n","loop":""}],
+		
+		["w", "show drawing %d.port x:%n y:%n draw:%m.drawFace","showDraw", "Port1", 0,0,"        ",
+		{"encode":"{s0}","setup":"","inc":"#include \"MeLEDMatrix.h\"\n","def":"MeLEDMatrix ledMtx_{0}({0});\nunsigned char drawBuffer[16];\n","work":"ledMtx_{0}.clearScreen();\nledMtx_{0}.setColorIndex(1);\nledMtx_{0}.setBrightness(6);\nmemcpy(drawBuffer,new unsigned char[16]{{3}},16);\nledMtx_{0}.drawBitmap({1},{2},16,drawBuffer);\n","loop":""}],
 		
 		["-"],
 		
@@ -209,6 +212,7 @@
 			"set led %d.lport %d.index red%d.value green%d.value blue%d.value":"设置LED %d.lport %d.index 红色%d.value 绿色%d.value 蓝色%d.value",
 			"show time %d.port hour:%n %s min:%n":"表情面板 %d.port 显示时间:%n 时 %s %n分",
 			"show face %d.port x:%n y:%n characters:%s":"表情面板 %d.port x:%n y:%n 显示文字:%s",
+			"show drawing %d.port x:%n y:%n draw:%m.drawFace":"表情面板 %d.port x:%n y:%n 绘画:%m.drawFace",
 			"set 7-segments display%d.port number %n":"设置数码管%d.port 数字%n",
 			"set camera shutter %d.port as %d.shutter":"设置相机快门%d.port 状态为%d.shutter",
 			"light intensity":"光线强度",

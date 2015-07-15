@@ -114,7 +114,10 @@
 		if(typeof port=="string"){
 			port = ports[port];
 		}
-        runPackage(11,port,slots[slot],angle);
+		if(typeof slot=="string"){
+			slot = slots[slot];
+		}
+        runPackage(11,port,slot,angle);
     };
 	ext.runBuzzer = function(tone){
 		if(typeof tone == "string"){
