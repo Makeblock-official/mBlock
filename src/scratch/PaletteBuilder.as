@@ -78,6 +78,7 @@ public class PaletteBuilder {
 
 		var catName:String = Specs.categories[selectedCategory][1];
 		var catColor:int = Specs.blockColor(selectedCategory);
+		/*
 		if (app.viewedObj() && app.viewedObj().isStage) {
 			// The stage has different blocks for some categories:
 			var stageSpecific:Array = ['Control', 'Looks', 'Motion', 'Pen', 'Sensing'];
@@ -89,6 +90,7 @@ public class PaletteBuilder {
 				//return;
 			}
 		}
+		*/
 		addBlocksForCategory(selectedCategory, catColor);
 		updateCheckboxes();
 	}
@@ -98,10 +100,20 @@ public class PaletteBuilder {
 		var targetObj:ScratchObj = app.viewedObj();
 		for each (var spec:Array in Specs.commands) {
 			if ((spec.length > 3) && (spec[2] == category)) {
+				var label:String = spec[0];
+				
+				if(category == Specs.looksCategory && app.viewedObj() && app.viewedObj().isStage){
+					if(spec[3] == "lookLike:"){
+						continue;
+					}
+					if(spec[3] == "nextCostume"){
+						label = "next backdrop";
+					}
+				}
+				
 				var blockColor:int = (app.interp.isImplemented(spec[3])) ? catColor : 0x505050;
 				var defaultArgs:Array = targetObj.defaultArgsFor(spec[3], spec.slice(4));
 				
-				var label:String = spec[0];
 				if(targetObj.isStage && spec[3] == 'whenClicked') label = 'when Stage clicked';
 				var block:Block = new Block(label, spec[1], blockColor, spec[3], defaultArgs);
 				var showCheckbox:Boolean = isCheckboxReporter(spec[3]);
