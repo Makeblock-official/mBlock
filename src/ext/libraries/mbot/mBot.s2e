@@ -38,7 +38,7 @@
 		["-"],
 		
 		["w", "set 7-segments display%d.port number %n","runSevseg", "Port1", 100,
-		{"encode":"{d0}{f1}","setup":"","inc":"#include \"Me7SegmentDisplay.h\"\n","def":"Me7SegmentDisplay seg7_{0}({0});\n","work":"seg7_{0}.display({1});\n","loop":""}],
+		{"encode":"{d0}{f1}","setup":"","inc":"#include \"Me7SegmentDisplay.h\"\n","def":"Me7SegmentDisplay seg7_{0}({0});\n","work":"seg7_{0}.display((double){1});\n","loop":""}],
 		
 		
 		
@@ -88,16 +88,16 @@
 		
 		["-"],
 		
-		["w", "send ir message %s","runIR", "hello",
+		["w", "send mBot's message %s","runIR", "hello",
 		{"encode":"{m0}","setup":"ir.begin();\n","inc":"#include \"MeIR.h\"\n","def":"MeIR ir;\n","work":"ir.sendString({0});\n","loop":""}],
 		
-		["R", "ir message received","getIR",
+		["R", "mBot's message received","getIR",
 		{"encode":"{n0}","setup":"ir.begin();\n","inc":"#include \"MeIR.h\"\n","def":"MeIR ir;\n","work":"ir.getString()","loop":""}],
 		
 		["-"],
 		
 		["R", "timer","getTimer", "0",
-		{"encode":"{n0}","setup":"","inc":"","def":"double currentTime = 0;\ndouble lastTime = 0;\nlong getLastTime(){\n\treturn currentTime = millis()/1000.0 - lastTime;\n}\n","work":"getLastTime()","loop":""}],
+		{"encode":"{n0}","setup":"","inc":"","def":"double currentTime = 0;\ndouble lastTime = 0;\ndouble getLastTime(){\n\treturn currentTime = millis()/1000.0 - lastTime;\n}\n","work":"getLastTime()","loop":""}],
 		
 		["w", "reset timer","resetTimer", "0",
 		{"encode":"{n0}","setup":"","inc":"","def":"double currentTime = 0;\ndouble lastTime = 0;\n","work":"lastTime = millis()/1000.0;\n","loop":""}]
@@ -226,8 +226,8 @@
 			"joystick %d.aport %d.Axis":"摇杆 %d.aport %d.Axis",
 			"pir motion sensor %d.port":"人体红外传感器 %d.port",
 			"temperature %d.port %d.slot °C":"当前温度 %d.port %d.slot °C",
-			"send ir message %s":"发送红外消息 %s",
-			"ir message received":"接收到的红外消息",
+			"send mBot's message %s":"发送mBot消息 %s",
+			"mBot's message received":"接收到的mBot消息",
 			"ir remote %m.ircode pressed":"红外遥控器按下%m.ircode 键",
 			"button %m.button_state":"按钮%m.button_state",
 			"when button %m.button_state":"当按钮%m.button_state",
@@ -273,8 +273,8 @@
 			"joystick %d.aport %d.Axis":"搖桿 %d.aport %d.Axis",
 			"pir motion sensor %d.port":"人體紅外感應器 %d.port",
 			"temperature %d.port %d.slot °C":"當前溫度 %d.port %d.slot °C",
-			"send ir message %s":"發送紅外消息 %s",
-			"ir message received":"接收到的紅外消息",
+			"send mBot's message %s":"發送mBot消息 %s",
+			"mBot's message received":"接收到的mBot消息",
 			"ir remote %m.ircode pressed":"紅外遙控器按下%m.ircode 鍵",
 			"button %m.button_state":"按鈕%m.button_state",
 			"when button %m.button_state":"當按鈕%m.button_state",
