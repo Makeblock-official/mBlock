@@ -39,11 +39,11 @@ void MeDCMotor::move(int direction, int speed){
 	int leftSpeed = 0;
 	int rightSpeed = 0;
 	if(direction==1){
-		leftSpeed = speed;
-		rightSpeed = -speed;
-	}else if(direction==2){
 		leftSpeed = -speed;
 		rightSpeed = speed;
+	}else if(direction==2){
+		leftSpeed = speed;
+		rightSpeed = -speed;
 	}else if(direction==3){
 		leftSpeed = speed;
 		rightSpeed = speed;
