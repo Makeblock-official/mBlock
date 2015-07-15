@@ -320,7 +320,8 @@ void MeIR::loop(){
 boolean MeIR::keyPressed(unsigned char r){
 	irIndex = 0;
      if(millis()/1000.0-lastIRTime>0.2){
-       return false;
+		MeIR::loop();
+        return false;
      }
 	 return irRead==r;
 }
