@@ -171,12 +171,15 @@
 		}
 		getPackage(nextID,deviceId,port);
     };
-	ext.getLimitswitch = function(nextID,port) {
+	ext.getLimitswitch = function(nextID,port,slot) {
 		var deviceId = 21;
 		if(typeof port=="string"){
 			port = ports[port];
 		}
-		getPackage(nextID,deviceId,port);
+		if(typeof slot=="string"){
+			slot = slots[slot];
+		}
+		getPackage(nextID,deviceId,port,slot);
     };
 	ext.getPirmotion = function(nextID,port) {
 		var deviceId = 15;
