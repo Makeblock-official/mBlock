@@ -55,6 +55,7 @@
 	</subMenu>
 	<subMenu name="Extensions" label="扩展">
 		<item name="Manage Extensions" label="管理扩展" keyEquivalent="T" />
+		<item name="Load Extensions" label="加载扩展" />
 		<item isSeparator="true" />
 	</subMenu>
 	<subMenu name="Language" label="语言">

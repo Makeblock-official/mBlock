@@ -1,6 +1,9 @@
 package cc.makeblock.mbot.util
 {
+	import flash.display.NativeWindow;
+	import flash.display.NativeWindowDisplayState;
 	import flash.events.MouseEvent;
+	import flash.geom.Rectangle;
 	
 	import org.aswing.AsWingConstants;
 	import org.aswing.AsWingUtils;
@@ -71,7 +74,16 @@ package cc.makeblock.mbot.util
 			panel.getCancelButton().pack();
 			
 			panel.getFrame().setSizeWH(280, 90);
-			AsWingUtils.centerLocate(panel.getFrame());
+			
+			var window:NativeWindow = panel.stage.nativeWindow;
+			var frame:JFrame = panel.getFrame();
+			if(window.displayState == NativeWindowDisplayState.MINIMIZED){
+				var bounds:Rectangle = window.bounds;
+				frame.setX((bounds.width - frame.getWidth()) * 0.5);
+				frame.setY((bounds.height - frame.getHeight()) * 0.5);
+			}else{
+				AsWingUtils.centerLocate(frame);
+			}
 			
 			return panel;
 		}
