@@ -18,7 +18,7 @@
 		{"encode":"{d0}{d1}{d2}","setup":"servo_{0}_{1}.attach(port_{0}.pin{1}());\n","inc":"#include \"MePort.h\"\n","def":"Servo servo_{0}_{1};\nMePort port_{0}({0});\n","work":"servo_{0}_{1}.write({2});\n","loop":""}],
 		
 		["w", "set led %d.lport %d.index red%d.value green%d.value blue%d.value","runLed", "led on board","all",0,0,0,
-		{"encode":"{d0}{d1}{d2}{d3}{d4}","setup":"rgbled_{0}.setNumber(32);\n","inc":"#include \"MeRGBLed.h\"\n","def":"MeRGBLed rgbled_{0}({0});\n","work":"rgbled_{0}.setColor({1},{2},{3},{4});\nrgbled_{0}.show();\n","loop":""}],
+		{"encode":"{d0}{d1}{d2}{d3}{d4}","setup":"rgbled_{0}.setNumber({0}==7?2:16);\n","inc":"#include \"MeRGBLed.h\"\n","def":"MeRGBLed rgbled_{0}({0});\n","work":"rgbled_{0}.setColor({1},{2},{3},{4});\nrgbled_{0}.show();\n","loop":""}],
 		
 		["w", "play tone on note %d.note","runBuzzer", "C4",
 		{"encode":"{s0}","setup":"","inc":"#include \"MeBuzzer.h\"\n","def":"MeBuzzer buzzer;\n","work":"buzzer.tone({0});\n","loop":""}],
@@ -106,7 +106,7 @@
 	"menus": {
 		"motorPort":["M1","M2"],
 		"slot":["Slot1","Slot2"],
-		"index":["all",1,2,3,4],
+		"index":["all",1,2],
 		"Axis":["X-Axis","Y-Axis"],
 		"port":["Port1","Port2","Port3","Port4"],
 		"aport":["Port3","Port4"],
