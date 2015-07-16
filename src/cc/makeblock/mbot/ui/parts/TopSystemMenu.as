@@ -50,7 +50,7 @@ package cc.makeblock.mbot.ui.parts
 			register("Boards", __onSelectBoard);
 			register("Help", __onHelp);
 			register("Manage Extensions", ExtensionUtil.OnManagerExtension);
-			register("Load Extensions", ExtensionUtil.OnLoadExtension);
+			register("Check New Extensions", ExtensionUtil.OnLoadExtension);
 		}
 		
 		public function changeLang():void
