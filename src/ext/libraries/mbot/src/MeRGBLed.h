@@ -34,7 +34,7 @@ public:
 	
 private:
 	uint16_t count_led;
-	uint8_t *pixels;
+	uint8_t pixels[96];
 	
 	void rgbled_sendarray_mask(uint8_t *array,uint16_t length, uint8_t pinmask,uint8_t *port);
 

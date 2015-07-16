@@ -56,6 +56,7 @@ package {
 	import ui.BlockPalette;
 	import ui.CameraDialog;
 	import ui.LoadProgress;
+	import ui.PaletteSelector;
 	import ui.media.MediaInfo;
 	import ui.media.MediaLibrary;
 	import ui.media.MediaPane;
@@ -140,7 +141,7 @@ package {
 		private var ga:GATracker;
 		private var tabsPart:TabsPart;
 		private var _welcomeView:Loader;
-		private var _currentVer:String = "07.07.001";
+		private var _currentVer:String = "07.16.001";
 		public function MBlock(){
 			app = this;
 			addEventListener(Event.ADDED_TO_STAGE,initStage);
@@ -221,7 +222,7 @@ package {
 				SharedObjectManager.sharedManager().setObject(versionString+".0."+ver,true);
 				//SharedObjectManager.sharedManager().setObject("board","mbot_uno");
 			}
-			VersionManager.sharedManager().start();
+			//VersionManager.sharedManager().start(); //在线更新资源文件
 			if(!SharedObjectManager.sharedManager().available("first-launch")){
 				SharedObjectManager.sharedManager().setObject("first-launch",true);
 			}
@@ -1229,11 +1230,20 @@ package {
 			if(stageIsArduino)
 				scriptsPart.showArduinoCode();
 		}
+		
 		public function toggleArduinoMode():void {
 			stageIsArduino = !stageIsArduino;
 			stageIsHided = stageIsArduino;
 			setSmallStageMode(stageIsArduino);
-			this.scriptsPart.selector.select(stageIsArduino?6:1);
+			
+			if(stageIsArduino){
+				var category:int = scriptsPart.selector.selectedCategory;
+				if(!PaletteSelector.canUseInArduinoMode(category)){
+					scriptsPart.selector.select(Specs.controlCategory);
+				}
+			}
+			
+//			this.scriptsPart.selector.select(stageIsArduino?6:1);
 			this.tabsPart.soundsTab.visible = !stageIsArduino;
 			this.tabsPart.imagesTab.visible = !stageIsArduino;
 			setTab("scripts");

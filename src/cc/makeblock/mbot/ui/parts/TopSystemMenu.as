@@ -51,6 +51,7 @@ package cc.makeblock.mbot.ui.parts
 			register("Boards", __onSelectBoard);
 			register("Help", __onHelp);
 			register("Manage Extensions", ExtensionUtil.OnManagerExtension);
+			register("Check New Extensions", ExtensionUtil.OnLoadExtension);
 		}
 		
 		public function changeLang():void
@@ -65,6 +66,9 @@ package cc.makeblock.mbot.ui.parts
 				return true;
 			}
 			item.label = Translator.map(item.name);
+			if(item.name == "Boards"){
+				return true;
+			}
 			if(item.name == "Language"){
 				item = MenuUtil.FindItem(item.submenu, "set font size");
 				item.label = Translator.map(item.name);
@@ -253,15 +257,18 @@ package cc.makeblock.mbot.ui.parts
 		private function __onInitExtMenu(evt:Event):void
 		{
 			var menuItem:NativeMenu = evt.target as NativeMenu;
-			menuItem.removeEventListener(evt.type, __onInitExtMenu);
-			menuItem.addEventListener(evt.type, __onShowExtMenu);
+//			menuItem.removeEventListener(evt.type, __onInitExtMenu);
+//			menuItem.addEventListener(evt.type, __onShowExtMenu);
 			var list:Array = MBlock.app.extensionManager.extensionList;
 			if(list.length==0){
 				MBlock.app.extensionManager.copyLocalFiles();
 				SharedObjectManager.sharedManager().setObject("first-launch",false);
 			}
+			while(menuItem.numItems > 3){
+				menuItem.removeItemAt(menuItem.numItems-1);
+			}
 			list = MBlock.app.extensionManager.extensionList;
-			var subMenu:NativeMenu = menuItem;
+//			var subMenu:NativeMenu = menuItem;
 			for(var i:int=0;i<list.length;i++){
 				var extName:String = list[i].extensionName;
 				var subMenuItem:NativeMenuItem = menuItem.addItem(new NativeMenuItem(Translator.map(extName)));
@@ -270,7 +277,7 @@ package cc.makeblock.mbot.ui.parts
 				register(extName, __onExtensions);
 			}
 		}
-		
+		/*
 		private function __onShowExtMenu(evt:Event):void
 		{
 			var menuItem:NativeMenu = evt.target as NativeMenu;
@@ -281,7 +288,7 @@ package cc.makeblock.mbot.ui.parts
 				subMenuItem.checked = MBlock.app.extensionManager.checkExtensionSelected(extName);
 			}
 		}
-		
+		*/
 		private function __onExtensions(menuItem:NativeMenuItem):void
 		{
 			MBlock.app.extensionManager.onSelectExtension(menuItem.name);

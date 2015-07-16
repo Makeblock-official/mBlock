@@ -60,7 +60,7 @@ public class WatcherReadout extends Sprite {
 
 	private function fixLayout():void {
 		var w:int = isLarge ? 48 : 40;
-		var h:int = isLarge ? 20 : 14;
+		var h:int = isLarge ? 20 : 16;
 		var hPad:int = isLarge ? 12 : 5;
 		w = Math.max(w, tf.textWidth + hPad);
 		tf.width = w;

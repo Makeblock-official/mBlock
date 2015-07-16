@@ -28,6 +28,20 @@ package interpreter {
 	import blocks.Block;
 
 	public class Thread {
+		
+		private var _realBlock:Block;
+		private var _realBlockStr:String;
+		
+		internal function set realBlock(value:Block):void
+		{
+			_realBlock = value;
+			_realBlockStr = RobotHelper.blockToString(_realBlock);
+		}
+		
+		internal function get realBlock():Block
+		{
+			return _realBlock;
+		}
 	
 		public var target:*;			// object that owns the stack
 		public var topBlock:Block;		// top block of the stack
@@ -60,6 +74,24 @@ package interpreter {
 			isLoop = false;
 			firstTime = true;
 			tmp = 0;
+		}
+		
+		internal function checkRealBlockChanged():void
+		{
+			if(topBlock == realBlock){
+				return;
+			}
+			var newStr:String = RobotHelper.blockToString(realBlock);
+			if(_realBlockStr == newStr){
+				return;
+			}
+			_realBlockStr = newStr;
+			block = RobotHelper.Modify(realBlock);
+		}
+		
+		internal function onStoped():void
+		{
+			realBlock.hideRunFeedback();
 		}
 	
 		public function pushStateForBlock(b:Block):void {

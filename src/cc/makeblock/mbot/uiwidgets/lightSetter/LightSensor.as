@@ -10,6 +10,8 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 	
 	public class LightSensor extends Sprite
 	{
+		static public const defaultValue:Array = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+		
 		[Embed(source="/assets/UI/ledFace/dash_line-horizental.png")]
 		static private const DASH_W:Class;
 		
