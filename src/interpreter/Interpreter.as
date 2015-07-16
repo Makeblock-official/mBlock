@@ -260,6 +260,8 @@ public class Interpreter {
 			}
 		}
 		yield = false;
+		
+		activeThread.checkRealBlockChanged();
 		while (true) {
 			if (activeThread == warpThread) currentMSecs = getTimer();
 			evalCmd(activeThread.block);
