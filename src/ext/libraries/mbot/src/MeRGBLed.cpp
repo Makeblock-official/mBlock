@@ -61,7 +61,7 @@ void MeRGBLed::reset(uint8_t port, uint8_t slot)
 void MeRGBLed::setNumber(uint8_t num_leds)
 {
     count_led = num_leds;
-    pixels = (uint8_t *)malloc(count_led * 3);
+    //pixels = (uint8_t *)malloc(count_led * 3);
     clear();
 }
 cRGB MeRGBLed::getColorAt(uint8_t index)
