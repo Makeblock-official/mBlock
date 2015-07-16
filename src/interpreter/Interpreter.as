@@ -142,7 +142,7 @@ public class Interpreter {
 		}
 		var i:int, newThreads:Array = [], wasRunning:Boolean = false;
 		for (i = 0; i < threads.length; i++) {
-			if ((threads[i].topBlock == b) && (threads[i].target == targetObj)) {
+			if ((threads[i].realBlock == b) && (threads[i].target == targetObj)) {
 				wasRunning = true;
 			} else {
 				newThreads.push(threads[i]);

@@ -24,25 +24,31 @@
 // containing the variables and methods common to both.
 
 package scratch {
-	import blocks.*;
+	import flash.display.Bitmap;
+	import flash.display.DisplayObject;
+	import flash.display.Sprite;
+	import flash.events.MouseEvent;
+	import flash.geom.ColorTransform;
+	import flash.utils.getTimer;
+	
+	import blocks.Block;
+	import blocks.BlockArg;
+	import blocks.BlockIO;
+	
+	import cc.makeblock.util.BlockUtil;
 	
 	import filters.FilterPack;
 	
-	import flash.display.*;
-	import flash.events.MouseEvent;
-import flash.geom.ColorTransform;
-import flash.utils.*;
-	
-	import interpreter.*;
+	import interpreter.Variable;
 	
 	import scratch.ScratchComment;
-import scratch.ScratchSprite;
-
-import translation.Translator;
+	import scratch.ScratchSprite;
 	
-	import util.*;
+	import translation.Translator;
 	
-	import watchers.*;
+	import util.JSON;
+	
+	import watchers.ListWatcher;
 
 public class ScratchObj extends Sprite {
 
@@ -554,7 +560,28 @@ public class ScratchObj extends Sprite {
 			lastClickTime = now;
 		}
 	}
-
+	
+	public function onSpriteNameChanged(oldName:String, newName:String):void
+	{
+		function changeSpriteName(b:Block):void
+		{
+			switch(b.op){
+				case "gotoSpriteOrMouse:":
+				case "pointTowards:":
+					break;
+				default:
+					return;
+			}
+			var blockArg:BlockArg = b.args[0];
+			if(blockArg.argValue == oldName){
+				blockArg.setArgValue(newName);
+			}
+		}
+		for each (var b:Block in scripts) {
+			BlockUtil.ForEach(b, changeSpriteName);
+		}
+	}
+	
 	/* Translation */
 
 	public function updateScriptsAfterTranslation():void {

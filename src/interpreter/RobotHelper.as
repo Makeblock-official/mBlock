@@ -34,6 +34,11 @@ package interpreter
 			return root;
 		}
 		
+		static public function isAutoVarName(varName:String):Boolean
+		{
+			return varName.indexOf("__") == 0;
+		}
+		
 		static private function modifyBlock(b:Block, root:Block):Block
 		{
 			if(b.op == Specs.SET_VAR){
@@ -63,7 +68,7 @@ package interpreter
 		{
 			var offsetStr:String = "";
 			while(offsetStr.length < offset){
-				offsetStr += "-";
+				offsetStr += "\t";
 			}
 			var result:Array = [];
 			while(block != null){
