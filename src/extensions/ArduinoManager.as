@@ -790,7 +790,7 @@ void updateVar(char * varName,double * var)
 					s.type = isNaN(Number(v))?"string":"number";
 					s.code = v;
 				}
-				if((s.code==""||s.code==" ")&&s.type == "number"){
+				if((s.code==""||s.code==" ")&&s.code!=0&&s.type == "number"){
 					s.type = "string";
 				}
 				str = str.split("{"+i+"}").join(( s.type == "string")?('"'+s.code+'"'):(( s.type == "number")?s.code:s.code.code));
