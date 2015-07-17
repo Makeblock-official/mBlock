@@ -205,10 +205,15 @@ package cc.makeblock.mbot.ui.parts
 			while(bluetoothItem.submenu.numItems > 3){
 				bluetoothItem.submenu.removeItemAt(3);
 			}
+			if(bluetoothItem.submenu.numItems>1){
+				bluetoothItem.submenu.items[0].enabled = enabled;
+				bluetoothItem.submenu.items[1].enabled = enabled;
+			}
 			arr = BluetoothManager.sharedManager().history;
 			for(i=0;i<arr.length;i++){
 				item = bluetoothItem.submenu.addItem(new NativeMenuItem(Translator.map(arr[i])));
 				item.name = "bt_"+arr[i];
+				item.enabled = enabled;
 				item.checked = arr[i]==BluetoothManager.sharedManager().currentBluetooth && BluetoothManager.sharedManager().isConnected;
 			}
 			

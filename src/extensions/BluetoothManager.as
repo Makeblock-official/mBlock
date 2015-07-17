@@ -139,6 +139,7 @@ package extensions
 				if(isConnected){
 					close();
 				}
+				trace("bt onOpen");
 				setTimeout(ConnectionManager.sharedManager().onOpen,200,port);
 			}
 		}
@@ -162,7 +163,7 @@ package extensions
 			dev.addr = devAddr;
 			dev.label = _currentBluetooth;
 			_history.push(dev);
-			SharedObjectManager.sharedManager().setObject("btHistory",_history);
+			SharedObjectManager.sharedManager().setLocalFile("btHistory",_history);
 		}
 		private function getBluetoothName(address:String):Object{
 			for(var i:uint=0;i<_history.length;i++){
@@ -175,7 +176,7 @@ package extensions
 			return {};
 		}
 		public function get history():Array{
-			_history = SharedObjectManager.sharedManager().getObject("btHistory",[]);
+			_history = SharedObjectManager.sharedManager().getLocalFile("btHistory",[]);
 			var temp:Array = [];
 			for(var i:uint=0;i<_history.length;i++){
 				var dev:Object = _history[i];
