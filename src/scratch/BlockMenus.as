@@ -39,6 +39,8 @@ package scratch {
 	
 	import filters.FilterPack;
 	
+	import interpreter.RobotHelper;
+	
 	import org.aswing.event.AWEvent;
 	
 	import sound.SoundBank;
@@ -831,6 +833,9 @@ public class BlockMenus implements DragClient {
 			var vName:String;
 			var t:NativeMenuItem;
 			for each (vName in app.stageObj().varNames()) {
+				if(RobotHelper.isAutoVarName(vName)){
+					continue;
+				}
 				if (!isGetter || (vName != myName)){
 					t = new NativeMenuItem(vName);
 					t.name = "@@var";
@@ -841,6 +846,9 @@ public class BlockMenus implements DragClient {
 			if (!app.viewedObj().isStage) {
 				MenuUtil.AddLine(m);
 				for each (vName in app.viewedObj().varNames()) {
+					if(RobotHelper.isAutoVarName(vName)){
+						continue;
+					}
 					if (!isGetter || (vName != myName)){
 						t = new NativeMenuItem(vName);
 						t.name = "@@var";
