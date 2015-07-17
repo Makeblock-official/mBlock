@@ -5,16 +5,21 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 	import flash.net.FileFilter;
 	
 	import cc.makeblock.mbot.uiwidgets.MyFrame;
-	import cc.makeblock.mbot.util.ButtonFactory;
 	import cc.makeblock.mbot.util.PopupUtil;
 	
+	import org.aswing.ASColor;
+	import org.aswing.ASFont;
 	import org.aswing.AsWingUtils;
 	import org.aswing.BorderLayout;
+	import org.aswing.CenterLayout;
+	import org.aswing.DefaultListCellFactory;
 	import org.aswing.JButton;
 	import org.aswing.JList;
 	import org.aswing.JPanel;
 	import org.aswing.SoftBoxLayout;
+	import org.aswing.SolidBackground;
 	import org.aswing.event.AWEvent;
+	import org.aswing.geom.IntDimension;
 	
 	import translation.Translator;
 	
@@ -31,18 +36,27 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 			super(owner, "Extension Manager", true);
 			
 			extList = new JList();
+			extList.setBackgroundDecorator(new SolidBackground(new ASColor(0xFFFFFF)));
+			(extList.getCellFactory() as DefaultListCellFactory).setCellHeight(28);
 			
+			btnList = new JPanel(new SoftBoxLayout(SoftBoxLayout.X_AXIS, 230, SoftBoxLayout.CENTER));
 			
-			btnList = new JPanel(new SoftBoxLayout(SoftBoxLayout.Y_AXIS, 2, SoftBoxLayout.LEFT));
+			btnAdd = new JButton("add extension");
+			setBtnStyle(btnAdd);
+			btnRemove = new JButton("remove extension");
+			setBtnStyle(btnRemove);
 			
-			btnAdd = ButtonFactory.createBtn("add extension");
-			btnRemove = ButtonFactory.createBtn("remove extension");
-			
-			btnList.append(btnAdd);
 			btnList.append(btnRemove);
+			btnList.append(btnAdd);
+			
+			var bottomWrapper:JPanel = new JPanel(new CenterLayout());
+			bottomWrapper.setBackgroundDecorator(new SolidBackground(new ASColor(0xe9e9ea)));
+			bottomWrapper.setPreferredHeight(64);
+			bottomWrapper.append(btnList);
+			
 			
 			getContentPane().append(extList);
-			getContentPane().append(btnList, BorderLayout.EAST);
+			getContentPane().append(bottomWrapper, BorderLayout.SOUTH);
 			
 			pack();
 			setSizeWH(550, 400);
@@ -108,6 +122,13 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 			
 			btnAdd.setText(Translator.map("Add Extension"));
 			btnRemove.setText(Translator.map("Remove Extension"));
+		}
+		
+		static private function setBtnStyle(btn:JButton):void
+		{
+			btn.setPreferredSize(new IntDimension(130, 28));
+			btn.setFont(new ASFont("Arial",14));
+			btn.setForeground(new ASColor(0x424242));
 		}
 	}
 }

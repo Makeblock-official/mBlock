@@ -23,6 +23,9 @@ package cc.makeblock.mbot.lookandfeel
 			uiDefault.put("FrameTitleBar.mideground", uiDefault.get("Frame.mideground"));
 			uiDefault.put("FrameTitleBar.foreground", new ASColorUIResource(0x666666));
 			
+			uiDefault.put("List.selectionBackground", new ASColorUIResource(0xcae297));
+			uiDefault.put("List.selectionForeground", new ASColorUIResource(0x5f6261));
+			
 			return uiDefault;
 		}
 	}

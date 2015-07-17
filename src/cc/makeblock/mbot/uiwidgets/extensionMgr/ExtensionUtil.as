@@ -21,6 +21,12 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 	{
 		static private var panel:ExtensionMgrFrame;
 		
+		static public function OnLoadExtension():void
+		{
+			MBlock.app.extensionManager.copyLocalFiles();
+			MBlock.app.extensionManager.importExtension();
+		}
+		
 		static public function OnManagerExtension():void
 		{
 			if(null == panel){
@@ -46,7 +52,7 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 		static public function OnDelExtension(extName:String, callback:Function):void
 		{
 			PopupUtil.showConfirm("Want to delete?", function(value:int):void{
-				if(value != JOptionPane.OK){
+				if(value != JOptionPane.YES){
 					return;
 				}
 				if(delExt(extName)){

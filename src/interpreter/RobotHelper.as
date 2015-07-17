@@ -13,8 +13,9 @@ package interpreter
 			varIndex = 0;
 			var newBlock:Block = BlockIO.stringToStack(BlockIO.stackToString(block), false);
 			newBlock = modifyBlockList(newBlock);
-			trace("--------------------");
-			trace(printBlockList(newBlock).join("\n"));
+			if(blockToString(block) == blockToString(newBlock)){
+				return block;
+			}
 			return newBlock;
 		}
 		
@@ -62,6 +63,11 @@ package interpreter
 				b.args[i] = new Block(varName, "r", 0xD00000, Specs.GET_VAR);
 			}
 			return root;
+		}
+		
+		static public function blockToString(block:Block):String
+		{
+			return printBlockList(block).join("\n");
 		}
 		
 		static private function printBlockList(block:Block, offset:int=0):Array

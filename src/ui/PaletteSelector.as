@@ -27,14 +27,24 @@
 package ui {
 	import flash.display.Graphics;
 	import flash.display.Sprite;
-	import flash.filters.ColorMatrixFilter;
-	
-	import scratch.PaletteBuilder;
 	
 	import translation.Translator;
 
 public class PaletteSelector extends Sprite {
 
+	static public function canUseInArduinoMode(category:int):Boolean
+	{
+		switch(category)
+		{
+			case Specs.controlCategory:
+			case Specs.operatorsCategory:
+			case Specs.dataCategory:
+			case Specs.myBlocksCategory:
+				return true;
+		}
+		return false;
+	}
+	
 	private static const categories:Array = [
 		'Motion', 'Looks', 'Sound', 'Pen', 'Data&Blocks', // column 1
 		'Events', 'Control', 'Sensing', 'Operators', 'Robots']; // column 2

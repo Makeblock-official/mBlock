@@ -826,12 +826,15 @@ package scratch {
 		public function clearRunFeedback():void {
 			if(app.editMode) {
 				for each (var stack:Block in allStacks()) {
-					stack.allBlocksDo(function(b:Block):void {
-						b.hideRunFeedback();
-					});
+					stack.allBlocksDo(__hideRunFeedback);
 				}
 			}
 			app.updatePalette();
+		}
+		
+		static private function __hideRunFeedback(b:Block):void
+		{
+			b.hideRunFeedback();
 		}
 	
 		public function allSendersOfBroadcast(msg:String):Array {
