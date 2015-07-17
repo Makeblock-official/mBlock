@@ -3,6 +3,7 @@ package extensions
 	import flash.events.Event;
 	import flash.filesystem.File;
 	import flash.utils.ByteArray;
+	import flash.utils.getTimer;
 	import flash.utils.setTimeout;
 	
 	import translation.Translator;
@@ -300,8 +301,14 @@ package extensions
 				trace("no data");
 			}
 		}
+		private var _prevTime:Number = 0;
 		public function sendBytes(bytes:ByteArray):void{
-			_bt.writeBuffer(bytes);
+			
+			var cTime:Number = getTimer();
+			if(cTime-_prevTime>20){
+				_prevTime = cTime; 
+				_bt.writeBuffer(bytes);
+			}
 		}
 	}
 }

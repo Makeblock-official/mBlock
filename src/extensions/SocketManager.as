@@ -15,6 +15,7 @@ package extensions
 	import flash.net.ServerSocket;
 	import flash.net.Socket;
 	import flash.utils.ByteArray;
+	import flash.utils.getTimer;
 	import flash.utils.setTimeout;
 	
 	import translation.Translator;
@@ -238,12 +239,17 @@ package extensions
 			return 0;
 		}
 		
+		private var _prevTime:Number = 0;
 		public function sendBytes(bytes:ByteArray):int{
 			for each(var socket:Socket in _sockets){
 				if(socket){
 					if(socket.connected){
-						socket.writeBytes(bytes);
-						socket.flush();
+						var cTime:Number = getTimer();
+						if(cTime-_prevTime>20){
+							_prevTime = cTime; 
+							socket.writeBytes(bytes);
+							socket.flush();
+						}
 					}
 				}
 			}
