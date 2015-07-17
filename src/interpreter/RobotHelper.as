@@ -16,6 +16,7 @@ package interpreter
 			if(blockToString(block) == blockToString(newBlock)){
 				return block;
 			}
+//			trace(blockToString(newBlock));
 			return newBlock;
 		}
 		
@@ -55,6 +56,9 @@ package interpreter
 				if(block.op.indexOf(".") < 0){
 					continue;
 				}
+				if(!isSimpleOp(b)){
+					break;
+				}
 				var varName:String = "__" + (varIndex++).toString();
 				var newBlock:Block = new Block("set %m.var to %s", " ", 0xD00000, Specs.SET_VAR, [varName, 0]);
 				newBlock.args[1] = block;
@@ -63,6 +67,19 @@ package interpreter
 				b.args[i] = new Block(varName, "r", 0xD00000, Specs.GET_VAR);
 			}
 			return root;
+		}
+		
+		static private function isSimpleOp(b:Block):Boolean
+		{
+			switch(b.op)
+			{
+				case "+":
+				case "-":
+				case "*":
+				case "/":
+					return true;
+			}
+			return false;
 		}
 		
 		static public function blockToString(block:Block):String
