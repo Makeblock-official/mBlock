@@ -205,9 +205,10 @@ package cc.makeblock.mbot.ui.parts
 			while(bluetoothItem.submenu.numItems > 3){
 				bluetoothItem.submenu.removeItemAt(3);
 			}
-			if(bluetoothItem.submenu.numItems>1){
+			if(bluetoothItem.submenu.numItems>2){
 				bluetoothItem.submenu.items[0].enabled = enabled;
 				bluetoothItem.submenu.items[1].enabled = enabled;
+				bluetoothItem.submenu.items[2].enabled = enabled;
 			}
 			arr = BluetoothManager.sharedManager().history;
 			for(i=0;i<arr.length;i++){
