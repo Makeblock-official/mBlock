@@ -205,7 +205,7 @@ package extensions
 			//if(_list.indexOf(port)>-1){
 			var btAddr:String = port.split("( ")[1].split(" )")[0];
 			LogManager.sharedManager().log("bt opening:"+btAddr);
-			_bt["connectByAddress"](btAddr);
+			_bt.connectByAddress(btAddr);
 			_currentBluetooth = port;
 			var i:uint = 0;
 			function checkName():void{
@@ -217,7 +217,7 @@ package extensions
 				}else{
 					LogManager.sharedManager().log("bt checking:"+btAddr);
 					if(i<10){
-						setTimeout(checkName,500);
+						setTimeout(checkName,3000);
 					}else{
 						ConnectionManager.sharedManager().onClose(_currentBluetooth);
 					}
