@@ -2294,3 +2294,6 @@ msgid "Bluetooth Connected"
 msgstr "蓝牙已连接"
 msgid "Connecting Timeout"
 msgstr "连接超时"
+
+msgid "Check New Extensions"
+msgstr "检查新的扩展"

@@ -54,7 +54,7 @@ package interpreter
 		{
 		}
 		
-		static private function doWait(b:Block, target:Interpreter):void {
+		static public function doWait(b:Block, target:Interpreter):void {
 			if (target.activeThread.firstTime) {
 				target.startTimer(target.numarg(b, 0));
 				target.redraw();
