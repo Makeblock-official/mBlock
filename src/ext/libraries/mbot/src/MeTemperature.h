@@ -1,7 +1,7 @@
 #ifndef MeTemperature_h
 #define MeTemperature_h 
 #include "MePort.h"
-#include "MeOneWire.h"
+#include "Me1Wire.h"
 
 ///@brief Class for temperature sensor
 class MeTemperature:public MePort{
@@ -14,6 +14,6 @@ class MeTemperature:public MePort{
 		///@brief get the celsius of temperature
 		float temperature();
 	private:
-		MeOneWire _ts;	
+		Me1Wire _ts;	
 }; 
 #endif
