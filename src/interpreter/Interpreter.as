@@ -321,6 +321,14 @@ public class Interpreter {
 			}
 		}
 		
+		if(b.opFunction == app.extensionManager.primExtensionOp){
+			var isFirstTime:Boolean = activeThread.firstTime;
+			PrimInit.doWait(b, this);
+			if(!isFirstTime){
+				return;
+			}
+		}
+		
 		// TODO: Optimize this into a cached check if the args *could* block at all
 		if(b.args.length > 0 && checkBlockingArgs(b)) {
 			doYield();

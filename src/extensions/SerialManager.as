@@ -11,7 +11,6 @@ package extensions
 	import flash.filesystem.File;
 	import flash.utils.ByteArray;
 	import flash.utils.Timer;
-	import flash.utils.getTimer;
 	import flash.utils.setTimeout;
 	
 	import translation.Translator;
@@ -115,16 +114,11 @@ package extensions
 				MBlock.app.topBarPart.setConnectedTitle("Serial Port");
 			}
 		}
-		private var _prevTime:Number = 0; 
-		public function sendBytes(bytes:ByteArray):int{
+		
+		public function sendBytes(bytes:ByteArray):void{
 			if(_serial.isConnected){
-				var cTime:Number = getTimer();
-				if(cTime-_prevTime>20){
-					_prevTime = cTime; 
-					return _serial.writeBytes(bytes);
-				}
+				_serial.writeBytes(bytes);
 			}
-			return 0;
 		}
 		public function sendString(msg:String):int{
 			return _serial.writeString(msg);

@@ -2288,3 +2288,6 @@ msgstr "警告"
 
 msgid "Language"
 msgstr "语言"
+
+msgid "Check New Extensions"
+msgstr "检查新的扩展"
