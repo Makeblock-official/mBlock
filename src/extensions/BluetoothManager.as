@@ -187,7 +187,7 @@ package extensions
 			return temp;
 		}
 		public function clearHistory():void{
-			SharedObjectManager.sharedManager().setObject("btHistory",[]);
+			SharedObjectManager.sharedManager().setLocalFile("btHistory",[]);
 		}
 		public function open(port:String):Boolean{
 			LogManager.sharedManager().log("bt open:"+port);
@@ -210,17 +210,29 @@ package extensions
 			_bt.connectByAddress(btAddr);
 			_currentBluetooth = port;
 			var i:uint = 0;
+			function cancel():void{
+				removeDiscoverDialogbox(d);
+				d.cancel();
+			}
+			var d:DialogBox = new DialogBox();
+			d.addTitle(Translator.map('Connecting Bluetooth') + '...');
+			d.addButton('Close', cancel);
+			d.showOnStage(MBlock.app.stage);
+			addDiscoverDialogbox(d);
 			function checkName():void{
 				if(_bt.connected){
 					LogManager.sharedManager().log("bt opened:"+btAddr);
 					_isBusy = false;
 					addBluetoothHistory();
 					MBlock.app.topBarPart.setConnectedTitle("Serial Port");
+					d.setTitle(Translator.map("Bluetooth Connected"));
 				}else{
 					LogManager.sharedManager().log("bt checking:"+btAddr);
-					if(i<10){
+					if(i<20){
 						setTimeout(checkName,3000);
 					}else{
+						_isBusy = false;
+						d.setTitle(Translator.map("Connecting Timeout"));
 						ConnectionManager.sharedManager().onClose(_currentBluetooth);
 					}
 					i++;
