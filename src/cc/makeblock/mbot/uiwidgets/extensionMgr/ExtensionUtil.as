@@ -15,6 +15,8 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 	
 	import translation.Translator;
 	
+	import uiwidgets.DialogBox;
+	
 	import util.JSON;
 
 	public class ExtensionUtil
@@ -25,6 +27,13 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 		{
 			MBlock.app.extensionManager.copyLocalFiles();
 			MBlock.app.extensionManager.importExtension();
+			var d:DialogBox = new DialogBox;
+			function closeHandle():void{
+				d.cancel();
+			}
+			d.addTitle(Translator.map('Extension Files Updated'));
+			d.addButton('Close', closeHandle);
+			d.showOnStage(MBlock.app.stage);
 		}
 		
 		static public function OnManagerExtension():void
