@@ -118,11 +118,12 @@ package extensions
 		private var _prevTime:Number = 0; 
 		public function sendBytes(bytes:ByteArray):int{
 			if(_serial.isConnected){
-				var cTime:Number = getTimer();
-				if(cTime-_prevTime>20){
-					_prevTime = cTime; 
-					return _serial.writeBytes(bytes);
-				}
+				//var cTime:Number = getTimer();
+				//if(cTime-_prevTime>20){
+				//	_prevTime = cTime; 
+				var count:int = _serial.writeBytes(bytes);
+				return count;
+				//}
 			}
 			return 0;
 		}

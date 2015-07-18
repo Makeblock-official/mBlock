@@ -317,11 +317,11 @@ package extensions
 		private var _prevTime:Number = 0;
 		public function sendBytes(bytes:ByteArray):void{
 			
-			var cTime:Number = getTimer();
-			if(cTime-_prevTime>20){
-				_prevTime = cTime; 
+			//var cTime:Number = getTimer();
+			//if(cTime-_prevTime>20){
+				//_prevTime = cTime; 
 				_bt.writeBuffer(bytes);
-			}
+			//}
 		}
 	}
 }
