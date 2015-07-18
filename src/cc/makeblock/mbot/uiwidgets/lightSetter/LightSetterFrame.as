@@ -416,7 +416,7 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 		
 		static private function setBtnStyle(btn:JButton):void
 		{
-			btn.setFont(new ASFont("Arial",16));
+			btn.setFont(new ASFont("微软雅黑",14));
 			btn.setForeground(new ASColor(0x424242));
 		}
 		
