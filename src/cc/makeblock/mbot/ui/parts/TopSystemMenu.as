@@ -148,6 +148,14 @@ package cc.makeblock.mbot.ui.parts
 					item.checked = Translator.currentLang==item.name;
 				}
 			}
+			try{
+				var fontItem:NativeMenuItem = languageMenu.items[languageMenu.numItems-1];
+				for each(item in fontItem.submenu.items){
+					item.checked = Translator.currentFontSize==Number(item.label);
+				}
+			}catch(e:Error){
+				
+			}
 		}
 		
 		private function __onLanguageSelect(evt:Event):void
