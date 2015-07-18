@@ -61,8 +61,7 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 				btn = new JLabelButton();
 				btn.addActionListener(__onViewSource);
 				btn.setX(200);
-//				btn.setBackgroundDecorator(null);
-//				btn.setBorder(new SideLineBorder(null, SideLineBorder.WEST));
+				btn.setBorder(new EmptyBorder(null, new Insets(0, 0, 0, 6)));
 				wrapper.append(btn, BorderLayout.EAST);
 				wrapper.setBorder(new SideLineBorder(null, SideLineBorder.SOUTH, new ASColor(0xf5f5f5)));
 				wrapper.setOpaque(true);

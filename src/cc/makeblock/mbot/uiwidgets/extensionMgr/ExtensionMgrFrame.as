@@ -40,7 +40,7 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 			extList = new JList(null, new DefaultListTextCellFactory(DefaultListCell, true, true, 38));
 			extList.setBackgroundDecorator(new SolidBackground(new ASColor(0xFFFFFF)));
 			
-			btnList = new JPanel(new SoftBoxLayout(SoftBoxLayout.X_AXIS, 210, SoftBoxLayout.CENTER));
+			btnList = new JPanel(new SoftBoxLayout(SoftBoxLayout.X_AXIS, 190, SoftBoxLayout.CENTER));
 			
 			btnAdd = new JButton("add extension");
 			setBtnStyle(btnAdd);
@@ -129,7 +129,7 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 		
 		static private function setBtnStyle(btn:JButton):void
 		{
-			btn.setPreferredSize(new IntDimension(130, 28));
+			btn.setPreferredSize(new IntDimension(150, 28));
 			btn.setFont(new ASFont("微软雅黑",14));
 			btn.setForeground(new ASColor(0x424242));
 		}
