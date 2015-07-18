@@ -1,20 +1,20 @@
-#include "MeOneWire.h"
+#include "Me1Wire.h"
 
-MeOneWire::MeOneWire(){
+Me1Wire::Me1Wire(){
 }
-MeOneWire::MeOneWire(uint8_t pin)
+Me1Wire::Me1Wire(uint8_t pin)
 {
 	bitmask = MePIN_TO_BITMASK(pin);
 	baseReg = MePIN_TO_BASEREG(pin);
 	// reset_search();
 }
-void MeOneWire::reset(uint8_t pin)
+void Me1Wire::reset(uint8_t pin)
 {
 	bitmask = MePIN_TO_BITMASK(pin);
 	baseReg = MePIN_TO_BASEREG(pin);
 	// reset_search();
 }
-bool MeOneWire::readIO(void)
+bool Me1Wire::readIO(void)
 {
 	MeIO_REG_TYPE mask = bitmask;
 	volatile MeIO_REG_TYPE *reg MeIO_REG_ASM = baseReg;
@@ -24,13 +24,13 @@ bool MeOneWire::readIO(void)
 	r = MeDIRECT_READ(reg, mask);
 	return r;
 }
-// Perform the MeOneWire reset function. We will wait up to 250uS for
+// Perform the Me1Wire reset function. We will wait up to 250uS for
 // the bus to come high, if it doesn't then it is broken or shorted
 // and we return a 0;
 //
 // Returns 1 if a device asserted a presence pulse, 0 otherwise.
 //
-uint8_t MeOneWire::reset(void)
+uint8_t Me1Wire::reset(void)
 {
 	MeIO_REG_TYPE mask = bitmask;
 	volatile MeIO_REG_TYPE *reg MeIO_REG_ASM = baseReg;
@@ -61,7 +61,7 @@ uint8_t MeOneWire::reset(void)
 // Write a bit. Port and bit is used to cut lookup time and provide
 // more certain timing.
 //
-void MeOneWire::write_bit(uint8_t v)
+void Me1Wire::write_bit(uint8_t v)
 {
 	MeIO_REG_TYPE mask=bitmask;
 	volatile MeIO_REG_TYPE *reg MeIO_REG_ASM = baseReg;
@@ -87,7 +87,7 @@ void MeOneWire::write_bit(uint8_t v)
 // Read a bit. Port and bit is used to cut lookup time and provide
 // more certain timing.
 //
-uint8_t MeOneWire::read_bit(void)
+uint8_t Me1Wire::read_bit(void)
 {
 	MeIO_REG_TYPE mask=bitmask;
 	volatile MeIO_REG_TYPE *reg MeIO_REG_ASM = baseReg;
@@ -110,10 +110,10 @@ uint8_t MeOneWire::read_bit(void)
 // go tri-state at the end of the write to avoid heating in a short or
 // other mishap.
 //
-void MeOneWire::write(uint8_t v, uint8_t power /* = 0 */) {
+void Me1Wire::write(uint8_t v, uint8_t power /* = 0 */) {
 	uint8_t bitMask;
 	for (bitMask = 0x01; bitMask; bitMask <<= 1) {
-		MeOneWire::write_bit( (bitMask & v)?1:0);
+		Me1Wire::write_bit( (bitMask & v)?1:0);
 	}
 	if ( !power) {
 		noInterrupts();
@@ -122,7 +122,7 @@ void MeOneWire::write(uint8_t v, uint8_t power /* = 0 */) {
 		interrupts();
 	}
 }
-void MeOneWire::write_bytes(const uint8_t *buf, uint16_t count, bool power /* = 0 */) {
+void Me1Wire::write_bytes(const uint8_t *buf, uint16_t count, bool power /* = 0 */) {
 	for (uint16_t i = 0 ; i < count ; i++)
 		write(buf[i]);
 	if (!power) {
@@ -135,22 +135,22 @@ void MeOneWire::write_bytes(const uint8_t *buf, uint16_t count, bool power /* = 
 //
 // Read a byte
 //
-uint8_t MeOneWire::read() {
+uint8_t Me1Wire::read() {
 	uint8_t bitMask;
 	uint8_t r = 0;
 	for (bitMask = 0x01; bitMask; bitMask <<= 1) {
-		if ( MeOneWire::read_bit()) r |= bitMask;
+		if ( Me1Wire::read_bit()) r |= bitMask;
 	}
 	return r;
 }
-void MeOneWire::read_bytes(uint8_t *buf, uint16_t count) {
+void Me1Wire::read_bytes(uint8_t *buf, uint16_t count) {
 	for (uint16_t i = 0 ; i < count ; i++)
 		buf[i] = read();
 }
 //
 // Do a ROM select
 //
-void MeOneWire::select(const uint8_t rom[8])
+void Me1Wire::select(const uint8_t rom[8])
 {
 	uint8_t i;
 	write(0x55); // Choose ROM
@@ -159,17 +159,17 @@ void MeOneWire::select(const uint8_t rom[8])
 //
 // Do a ROM skip
 //
-void MeOneWire::skip()
+void Me1Wire::skip()
 {
 	write(0xCC); // Skip ROM
 }
-void MeOneWire::depower()
+void Me1Wire::depower()
 {
 	noInterrupts();
 	MeDIRECT_MODE_INPUT(baseReg, bitmask);
 	interrupts();
 }
-void MeOneWire::reset_search()
+void Me1Wire::reset_search()
 {
 	// reset the search state
 	LastDiscrepancy = 0;
@@ -183,7 +183,7 @@ void MeOneWire::reset_search()
 // Setup the search to find the device type 'family_code' on the next call
 // to search(*newAddr) if it is present.
 //
-void MeOneWire::target_search(uint8_t family_code)
+void Me1Wire::target_search(uint8_t family_code)
 {
 	// set the search state to find SearchFamily type devices
 	ROM_NO[0] = family_code;
@@ -196,10 +196,10 @@ void MeOneWire::target_search(uint8_t family_code)
 //
 // Perform a search. If this function returns a '1' then it has
 // enumerated the next device and you may retrieve the ROM from the
-// MeOneWire::address variable. If there are no devices, no further
+// Me1Wire::address variable. If there are no devices, no further
 // devices, or something horrible happens in the middle of the
 // enumeration then a 0 is returned. If a new device is found then
-// its address is copied to newAddr. Use MeOneWire::reset_search() to
+// its address is copied to newAddr. Use Me1Wire::reset_search() to
 // start over.
 //
 // --- Replaced by the one from the Dallas Semiconductor web site ---
@@ -209,7 +209,7 @@ void MeOneWire::target_search(uint8_t family_code)
 // Return true : device found, ROM number in ROM_NO buffer
 // false : device not found, end of search
 
-uint8_t MeOneWire::search(uint8_t *newAddr)
+uint8_t Me1Wire::search(uint8_t *newAddr)
 {
 	uint8_t id_bit_number;
 	uint8_t last_zero, rom_byte_number, search_result;

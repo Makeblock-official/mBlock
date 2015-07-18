@@ -1,5 +1,5 @@
-#ifndef MeOneWire_h
-#define MeOneWire_h 
+#ifndef Me1Wire_h
+#define Me1Wire_h 
 #include "MePort.h"
 #if defined(__AVR__)
 	#define MePIN_TO_BASEREG(pin) (portInputRegister(digitalPinToPort(pin)))
@@ -13,12 +13,12 @@
 	#define MeDIRECT_WRITE_HIGH(base, mask) ((*((base)+2)) |= (mask))
 #endif 
 
-///@brief Class for MeOneWire
-class MeOneWire
+///@brief Class for Me1Wire
+class Me1Wire
 {
 	public:
-		MeOneWire();
-		MeOneWire( uint8_t pin);
+		Me1Wire();
+		Me1Wire( uint8_t pin);
 		bool readIO(void);
 		void reset(uint8_t pin);
 		// Perform a 1-Wire reset cycle. Returns 1 if a device responds
