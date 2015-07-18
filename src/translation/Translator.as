@@ -139,7 +139,10 @@ public class Translator {
 		Block.setFonts(labelSize, argSize, false, vOffset);
 		MBlock.app.translationChanged();
 	}
-
+	static public function get currentFontSize():int {
+		return SharedObjectManager.sharedManager().getObject("labelSize",14);
+	}
+	
 	private static function fontSizeMenu():void {
 		var m:Menu = new Menu(setFontSize);
 		for (var i:int = 8; i < 25; i++) m.addItem(i.toString(), i);

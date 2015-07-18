@@ -49,7 +49,20 @@
   <buildTargets>
     <buildTarget buildTargetName="default" platformId="default">
       <airSettings airCertificatePath="cert/air.p12" airTimestamp="true" anePathSet="true" version="1">
-        <airExcludes/>
+        <airExcludes>
+          <pathEntry path="pthreadGC2.dll"/>
+          <pathEntry path="cygwin1.dll"/>
+          <pathEntry path="libgcc_s_dw2-1.dll"/>
+          <pathEntry path="libstdc++-6.dll"/>
+          <pathEntry path="msvcr100.dll"/>
+          <pathEntry path="msvcp100.dll"/>
+          <pathEntry path="msvcr100_clr0400.dll"/>
+          <pathEntry path="welcome.swf"/>
+          <pathEntry path="MBlock-app.xml"/>
+          <pathEntry path="orion_buzzer.swf"/>
+          <pathEntry path="MBlock.swf"/>
+          <pathEntry path="InTheHand.Net.Personal.dll"/>
+        </airExcludes>
         <anePaths>
           <anePathEntry path="libs/BluetoothManager_win.ane"/>
           <anePathEntry path="libs/HID2.4G_win.ane"/>

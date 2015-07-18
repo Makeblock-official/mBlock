@@ -117,7 +117,7 @@ package extensions
 		
 		public function sendBytes(bytes:ByteArray):void{
 			if(_serial.isConnected){
-				_serial.writeBytes(bytes);
+				var count:int = _serial.writeBytes(bytes);
 			}
 		}
 		public function sendString(msg:String):int{

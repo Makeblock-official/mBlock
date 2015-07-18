@@ -322,10 +322,12 @@ public class Interpreter {
 		}
 		
 		if(b.opFunction == app.extensionManager.primExtensionOp){
-			var isFirstTime:Boolean = activeThread.firstTime;
-			PrimInit.doWait(b, this);
-			if(!isFirstTime){
-				return;
+			if(!b.isRequester){
+				var isFirstTime:Boolean = activeThread.firstTime;
+				PrimInit.doWait(b, this);
+				if(!isFirstTime){
+					return;
+				}
 			}
 		}
 		
