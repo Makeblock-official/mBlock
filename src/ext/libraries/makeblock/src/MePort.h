@@ -88,6 +88,8 @@ public:
     ///@retval true on HIGH.
     ///@retval false on LOW.
     bool dRead2();
+	bool dpRead1();
+	bool dpRead2();
     ///@brief set the analog value of pin 1 of port
     ///@param value is HIGH or LOW
     void dWrite1(bool value);
