@@ -26,7 +26,7 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 		
 		static public function OnLoadExtension():void
 		{
-			MBlock.app.extensionManager.copyLocalFiles();
+			MBlock.app.extensionManager.copyLocalExtensionFiles();
 			MBlock.app.extensionManager.importExtension();
 			var d:DialogBox = new DialogBox;
 			function closeHandle():void{
