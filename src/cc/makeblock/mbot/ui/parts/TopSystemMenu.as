@@ -250,6 +250,9 @@ package cc.makeblock.mbot.ui.parts
 			netWorkMenuItem.submenu = subMenu;
 			var canReset:Boolean = SerialManager.sharedManager().isConnected && DeviceManager.sharedManager().currentName=="mBot";
 			MenuUtil.FindItem(getNativeMenu(), "Reset Default Program").enabled = canReset;
+			canReset = SerialManager.sharedManager().isConnected && DeviceManager.sharedManager().currentName!="PicoBoard";
+			MenuUtil.FindItem(getNativeMenu(), "Upgrade Firmware").enabled = canReset;
+			MenuUtil.FindItem(getNativeMenu(), "View Source").enabled = canReset;
 		}
 		
 		private function __onSelectBoard(menuItem:NativeMenuItem):void

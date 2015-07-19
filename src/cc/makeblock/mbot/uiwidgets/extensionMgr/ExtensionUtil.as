@@ -17,6 +17,7 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 	
 	import uiwidgets.DialogBox;
 	
+	import util.ApplicationManager;
 	import util.JSON;
 
 	public class ExtensionUtil
@@ -171,7 +172,7 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 		
 		static private function get libPath():File
 		{
-			return File.documentsDirectory.resolvePath("mBlock/libraries");
+			return ApplicationManager.sharedManager().documents.resolvePath("mBlock/libraries");
 		}
 	}
 }
