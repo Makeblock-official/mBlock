@@ -615,7 +615,7 @@ void updateVar(char * varName,double * var)
 			var c:String =  funcode.charAt(funcode.length-1)
 			if(ccode_pointer=="setup"){
 				if((ccode_setup.indexOf(funcode)==-1&&ccode_setup_fun.indexOf(funcode)==-1)||funcode.indexOf("delay")>-1||allowAdd){
-					if(funcode.indexOf("=")>-1&&funcode.indexOf("while")==-1){
+					if(funcode.indexOf("=")>-1&&funcode.indexOf("while")==-1&&funcode.indexOf("for")==-1){
 						ccode_setup_def=funcode+ccode_setup_def;
 					}else{
 						ccode_setup_fun+=funcode;
@@ -1216,7 +1216,7 @@ void updateVar(char * varName,double * var)
 		}
 		public function get projectDocumentName():String{
 			var now:Date = new Date;
-			var pName:String = MBlock.app.projectName().split(" ").join("");
+			var pName:String = MBlock.app.projectName().split(" ").join("").split("(").join("").split(")").join("");
 			for(var i:uint=0;i<pName.length;i++){
 				if(pName.charCodeAt(i)>100){
 					pName = pName.split(pName.charAt(i)).join("_");
