@@ -1476,6 +1476,9 @@ void updateVar(char * varName,double * var)
 			{ 
 				compileCpp(arduinoCppList[i],buildDir)
 			}
+			if(servoFile.exists){
+				compileS(buildDir);
+			}
 			for (i = 0; i < arduinoCList.length; i++)  
 			{ 
 				compileC(arduinoCList[i],buildDir)
@@ -1691,10 +1694,46 @@ void updateVar(char * varName,double * var)
 			cpp = tmp[tmp.length-1]
 			processArgs.push(cpp+".o")
 			nativeProcessStartupInfo.arguments = processArgs;
-			nativeWorkList.push(nativeProcessStartupInfo)
+			nativeWorkList.push(nativeProcessStartupInfo);
 			
 		}
-		
+		private function compileS(dir:File):void{
+			var nativeProcessStartupInfo:NativeProcessStartupInfo =new NativeProcessStartupInfo();
+			var file:File = new File(arduinoInstallPath+"/hardware/tools/avr/bin/avr-gcc"+(ApplicationManager.sharedManager().system==ApplicationManager.WINDOWS?".exe":"")); 
+			nativeProcessStartupInfo.executable = file
+			nativeProcessStartupInfo.workingDirectory = dir;
+			var path:String = arduinoInstallPath;
+			path=path.split("file:///").join("");//.split("/").join("/");
+			//			var cmd:String = " -c -g -Os -w -ffunction-sections -fdata-sections -MMD -mmcu=atmega32u4 -DF_CPU=16000000L -DARDUINO=156 -DARDUINO_AVR_LEONARDO -DARDUINO_ARCH_AVR -DUSB_VID=0x2341 -DUSB_PID=0x8036 -DUSB_MANUFACTURER= -DUSB_PRODUCT=\"Arduino Leonardo\" -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/leonardo -I"+path+arduinoLibPath+"/Wire -I"+path+"/libraries/Servo/src -I"+path+"/libraries/Servo -I"+path+arduinoLibPath+"/SoftwareSerial -I"+path+arduinoLibPath+"/Wire/utility"
+			//			if(boardType!="leonardo")
+			//				cmd = " -c -g -Os -w -ffunction-sections -fdata-sections -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=156 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/standard -I"+path+arduinoLibPath+"/Wire -I"+path+"/libraries/Servo/src -I"+path+"/libraries/Servo -I"+path+arduinoLibPath+"/SoftwareSerial -I"+path+arduinoLibPath+"/Wire/utility"
+			var cmd:String = "";
+			if(_currentDevice=="uno"){
+				cmd = " -c -g -x assembler-with-cpp -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=10605 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/standard "+path+avrPath+"/cores/arduino/wiring_pulse.S";
+			}else if(_currentDevice=="leonardo"){
+				cmd = " -c -g -x assembler-with-cpp -mmcu=atmega32u4 -DF_CPU=16000000L -DARDUINO=156 -DARDUINO_AVR_LEONARDO -DARDUINO_ARCH_AVR -DUSB_VID=0x2a03 -DUSB_PID=0x8036 -DUSB_MANUFACTURER= -DUSB_PRODUCT=\"Arduino Leonardo\" -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/leonardo "+path+avrPath+"/cores/arduino/wiring_pulse.S -o ./wiring_pulse.S.o"
+			}else if(_currentDevice=="mega1280"){
+				cmd = " -c -g -x assembler-with-cpp -mmcu=atmega2560 -DF_CPU=16000000L -DARDUINO=1062 -MMD -DUSB_VID=null -DUSB_PID=null -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/standard "+path+avrPath+"/cores/arduino/wiring_pulse.S -o ./wiring_pulse.S.o"
+			}else if(_currentDevice=="mega2560"){
+				cmd = " -c -g -x assembler-with-cpp -mmcu=atmega2560 -DF_CPU=16000000L -DARDUINO=1062 -MMD -DUSB_VID=null -DUSB_PID=null -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/standard "+path+avrPath+"/cores/arduino/wiring_pulse.S -o ./wiring_pulse.S.o"
+			}else if(_currentDevice=="nano328"){
+				cmd = " -c -g -x assembler-with-cpp -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=1062 -MMD -DUSB_VID=null -DUSB_PID=null -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/standard "+path+avrPath+"/cores/arduino/wiring_pulse.S";
+			}else if(_currentDevice=="nano168"){
+				cmd = " -c -g -x assembler-with-cpp -mmcu=atmega168 -DF_CPU=16000000L -DARDUINO=1062 -MMD -DUSB_VID=null -DUSB_PID=null -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/standard "+path+avrPath+"/cores/arduino/wiring_pulse.S -o ./wiring_pulse.S.o"
+			}
+			
+			var arg:Array = cmd.split(" ")
+			var processArgs:Vector.<String> = new Vector.<String>(); 
+			for(var i:int=0;i<arg.length;i++){
+				if(arg[i].length>0){
+					processArgs.push(arg[i])
+				}
+			}
+			processArgs.push("-o");
+			processArgs.push("./wiring_pulse.S.o");
+			nativeProcessStartupInfo.arguments = processArgs;
+			nativeWorkList.push(nativeProcessStartupInfo);
+		}
 		private function compileElf(token:String,dir:File,elf:Array):void
 		{
 			var cmd:String = ""
@@ -1735,7 +1774,7 @@ void updateVar(char * varName,double * var)
 					processArgs.push(arg[i])
 			}
 			nativeProcessStartupInfo.arguments = processArgs;
-			nativeWorkList.push(nativeProcessStartupInfo)
+			nativeWorkList.push(nativeProcessStartupInfo);
 			//process.start(nativeProcessStartupInfo); 
 		}
 		
