@@ -225,7 +225,7 @@ public class ExtensionManager {
 	}
 	*/
 	public function copyLocalFiles():void{
-		LogManager.sharedManager().log("copy local files:"+File.applicationDirectory.url);
+		LogManager.sharedManager().log("copy local files...");
 		var srcFile:File = File.applicationDirectory.resolvePath("ext/libraries/");
 		for each(var sf:File in srcFile.getDirectoryListing()){
 			var tf:File = ApplicationManager.sharedManager().documents.resolvePath("mBlock/libraries/"+sf.name);

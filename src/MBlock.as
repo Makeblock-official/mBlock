@@ -139,7 +139,7 @@ package {
 		private var ga:GATracker;
 		private var tabsPart:TabsPart;
 		private var _welcomeView:Loader;
-		private var _currentVer:String = "07.18.001";
+		private var _currentVer:String = "07.19.001";
 		public function MBlock(){
 			app = this;
 			addEventListener(Event.ADDED_TO_STAGE,initStage);
@@ -164,7 +164,6 @@ package {
 			}else{
 				Block.setFonts(14, 12, true, 0); // default font sizes
 			}
-			
 			Block.MenuHandlerFunction = BlockMenus.BlockMenuHandler;
 			CursorTool.init(this);
 
@@ -174,6 +173,7 @@ package {
 			initRuntime();
 //			try{
 				extensionManager = new ExtensionManager(this);
+				//extensionManager.copyLocalFiles();
 		//		extensionManager.importExtension();
 				addParts();
 				systemMenu = new TopSystemMenu(stage, "assets/menu.xml");
@@ -211,7 +211,7 @@ package {
 				SharedObjectManager.sharedManager().clear();
 			}
 			if(!SharedObjectManager.sharedManager().getObject(versionString+".0."+ver,false)){
-				SharedObjectManager.sharedManager().clear();
+				//SharedObjectManager.sharedManager().clear();
 				SharedObjectManager.sharedManager().setObject(versionString+".0."+ver,true);
 				//SharedObjectManager.sharedManager().setObject("board","mbot_uno");
 			}

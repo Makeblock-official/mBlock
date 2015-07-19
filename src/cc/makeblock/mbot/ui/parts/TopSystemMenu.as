@@ -252,6 +252,7 @@ package cc.makeblock.mbot.ui.parts
 			MenuUtil.FindItem(getNativeMenu(), "Reset Default Program").enabled = canReset;
 			canReset = SerialManager.sharedManager().isConnected && DeviceManager.sharedManager().currentName!="PicoBoard";
 			MenuUtil.FindItem(getNativeMenu(), "Upgrade Firmware").enabled = canReset;
+			canReset = DeviceManager.sharedManager().currentName!="PicoBoard";
 			MenuUtil.FindItem(getNativeMenu(), "View Source").enabled = canReset;
 		}
 		
