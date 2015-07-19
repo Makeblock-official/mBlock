@@ -10,6 +10,7 @@ package {
 	import flash.events.InvokeEvent;
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
+	import flash.filesystem.File;
 	import flash.geom.Point;
 	import flash.net.FileReference;
 	import flash.net.URLRequest;
@@ -173,7 +174,10 @@ package {
 			initRuntime();
 //			try{
 				extensionManager = new ExtensionManager(this);
-				//extensionManager.copyLocalFiles();
+				var extensionsPath:File = ApplicationManager.sharedManager().documents.resolvePath("mBlock");
+				if(!extensionsPath.exists){
+					extensionManager.copyLocalFiles();
+				}
 		//		extensionManager.importExtension();
 				addParts();
 				systemMenu = new TopSystemMenu(stage, "assets/menu.xml");
