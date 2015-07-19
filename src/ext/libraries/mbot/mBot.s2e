@@ -268,6 +268,7 @@
 			"set led %d.lport %d.index red%d.value green%d.value blue%d.value":"設置LED %d.lport %d.index 紅色%d.value 綠色%d.value 藍色%d.value",
 			"show time %d.port hour:%n %s min:%n":"表情面板 %d.port 顯示時間 %n 時 %s %n分",
 			"show face %d.port x:%n y:%n characters:%s":"表情面板 %d.port x:%n y:%n 顯示文字:%s",
+			"show drawing %d.port x:%n y:%n draw:%m.drawFace":"表情面板 %d.port x:%n y:%n 繪畫:%m.drawFace",
 			"set 7-segments display%d.port number %n":"設置数码管%d.port 数字%n",
 			"set camera shutter %d.port as %d.shutter":"設置相机快门%d.port 状态为%d.shutter",
 			"light intensity":"光線強度",
