@@ -22,11 +22,14 @@ package util{
 		private var _file:File;
 		public function get documents():File{
 			if(_file==null){
-				try{
-					_file = File.documentsDirectory;
-				}catch(err:Error){
-					_file = File.applicationStorageDirectory;
-				}
+				
+				_file = File.applicationStorageDirectory;
+				//不再放入文档目录下
+//				try{
+//					_file = File.documentsDirectory;
+//				}catch(err:Error){
+//					_file = File.applicationStorageDirectory;
+//				}
 			}
 			return _file;
 		}
