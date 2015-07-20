@@ -151,7 +151,10 @@ void loop(){
   currentTime = millis()/1000.0-lastTime;
   if(ir.buttonState()==1){ 
     if(ir.available()>0){
-      irRead = ir.read();
+      int irTemp = ir.read();
+      if(irTemp<255&&irTemp>0){
+        irRead = irTemp;
+      }
     }
   }else{
     irRead = 0;
