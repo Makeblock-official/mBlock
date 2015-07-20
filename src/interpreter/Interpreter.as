@@ -172,7 +172,9 @@ public class Interpreter {
 	}
 
 	public function startThreadForClone(b:Block, clone:*):void {
-		threads.push(new Thread(b, clone));
+		var thread:Thread = new Thread(RobotHelper.Modify(b), clone);
+		thread.realBlock = b;
+		threads.push(thread);
 	}
 
 	public function stopThreadsFor(target:*, skipActiveThread:Boolean = false):void {
