@@ -20,6 +20,8 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 	
 	import translation.Translator;
 	
+	import util.ApplicationManager;
+	
 	/**
 	 * Default list cell, render item value.toString() text.
 	 * @author iiley
@@ -76,7 +78,7 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 			if(extName == "communication"){
 				extName = "serial";
 			}
-			var file:File = File.documentsDirectory.resolvePath("mBlock/libraries");
+			var file:File = ApplicationManager.sharedManager().documents.resolvePath("mBlock/libraries");
 			for each(var item:File in file.getDirectoryListing()){
 				if(item.name.toLowerCase() == extName){
 					item.openWithDefaultApplication();

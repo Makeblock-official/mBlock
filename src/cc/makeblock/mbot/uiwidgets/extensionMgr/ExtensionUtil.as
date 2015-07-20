@@ -15,6 +15,9 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 	
 	import translation.Translator;
 	
+	import uiwidgets.DialogBox;
+	
+	import util.ApplicationManager;
 	import util.JSON;
 
 	public class ExtensionUtil
@@ -23,8 +26,15 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 		
 		static public function OnLoadExtension():void
 		{
-			MBlock.app.extensionManager.copyLocalFiles();
+			MBlock.app.extensionManager.copyLocalExtensionFiles();
 			MBlock.app.extensionManager.importExtension();
+			var d:DialogBox = new DialogBox;
+			function closeHandle():void{
+				d.cancel();
+			}
+			d.addTitle(Translator.map('Extension Files Updated'));
+			d.addButton('Close', closeHandle);
+			d.showOnStage(MBlock.app.stage);
 		}
 		
 		static public function OnManagerExtension():void
@@ -162,7 +172,7 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 		
 		static private function get libPath():File
 		{
-			return File.documentsDirectory.resolvePath("mBlock/libraries");
+			return ApplicationManager.sharedManager().documents.resolvePath("mBlock/libraries");
 		}
 	}
 }

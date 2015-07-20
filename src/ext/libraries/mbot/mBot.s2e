@@ -12,7 +12,7 @@
 		{"encode":"{d0}{s1}","setup":"","inc":"#include \"MeDCMotor.h\"\n","def":"MeDCMotor motor(0);\n","work":"motor.move({0},{1});\n","loop":""}],
 		
 		["w", "set motor%d.motorPort speed %d.motorvalue","runMotor", "M1", 0,
-		{"encode":"{d0}{s1}","setup":"","inc":"#include \"MeDCMotor.h\"\n","def":"MeDCMotor motor_{0}({0});\n","work":"motor_{0}.run({1});\n","loop":""}],
+		{"encode":"{d0}{s1}","setup":"","inc":"#include \"MeDCMotor.h\"\n","def":"MeDCMotor motor_{0}({0});\n","work":"motor_{0}.run(({0})==M1?-({1}):({1}));\n","loop":""}],
 		
 		["w", "set servo %d.port %d.slot angle %d.servovalue","runServo", "Port1","Slot1", 90,
 		{"encode":"{d0}{d1}{d2}","setup":"servo_{0}_{1}.attach(port_{0}.pin{1}());\n","inc":"#include \"MePort.h\"\n","def":"Servo servo_{0}_{1};\nMePort port_{0}({0});\n","work":"servo_{0}_{1}.write({2});\n","loop":""}],
@@ -29,11 +29,11 @@
 		["w", "show face %d.port x:%n y:%n characters:%s","showCharacters", "Port1", 0,0,"Hello",
 		{"encode":"{s0}","setup":"","inc":"#include \"MeLEDMatrix.h\"\n","def":"MeLEDMatrix ledMtx_{0}({0});\n","work":"ledMtx_{0}.clearScreen();\nledMtx_{0}.setColorIndex(1);\nledMtx_{0}.setBrightness(6);\nledMtx_{0}.drawStr({1},7-{2},{3});\n","loop":""}],
 		
-		["w", "show time %d.port hour:%n %s min:%n","showTime", "Port1", 10,":",20,
+		["w", "show time %d.port hour:%n %m.points min:%n","showTime", "Port1", 10,":",20,
 		{"encode":"{s0}","setup":"","inc":"#include \"MeLEDMatrix.h\"\n","def":"MeLEDMatrix ledMtx_{0}({0});\n","work":"ledMtx_{0}.clearScreen();\nledMtx_{0}.setColorIndex(1);\nledMtx_{0}.setBrightness(6);\nledMtx_{0}.showClock({1},{3},strcmp({2},\":\")==0);\n","loop":""}],
 		
 		["w", "show drawing %d.port x:%n y:%n draw:%m.drawFace","showDraw", "Port1", 0,0,"        ",
-		{"encode":"{s0}","setup":"","inc":"#include \"MeLEDMatrix.h\"\n","def":"MeLEDMatrix ledMtx_{0}({0});\nunsigned char drawBuffer[16];\n","work":"ledMtx_{0}.clearScreen();\nledMtx_{0}.setColorIndex(1);\nledMtx_{0}.setBrightness(6);\nmemcpy(drawBuffer,new unsigned char[16]{{3}},16);\nledMtx_{0}.drawBitmap({1},{2},16,drawBuffer);\n","loop":""}],
+		{"encode":"{s0}","setup":"","inc":"#include \"MeLEDMatrix.h\"\n","def":"MeLEDMatrix ledMtx_{0}({0});\nunsigned char drawBuffer[16];\nunsigned char *drawTemp;\n","work":"ledMtx_{0}.clearScreen();\nledMtx_{0}.setColorIndex(1);\nledMtx_{0}.setBrightness(6);\ndrawTemp = new unsigned char[16]{{3}};\nmemcpy(drawBuffer,drawTemp,16);\nfree(drawTemp);\nledMtx_{0}.drawBitmap({1},{2},16,drawBuffer);\n","loop":""}],
 		
 		["-"],
 		
@@ -73,7 +73,8 @@
 		["R", "sound sensor %d.aport","getSoundSensor","Port3",
 		{"encode":"{d0}","setup":"","inc":"#include \"MePort.h\"\n","def":"MePort soundsensor_{0}({0});\n","work":"soundsensor_{0}.aRead2()","loop":""}],
 		["B", "limit switch %d.port %d.slot","getLimitswitch","Port1","Slot1",
-		{"encode":"{d0}{d1}","setup":"","inc":"#include \"MePort.h\"\n","def":"MePort sw_{0}_{1}({0});\n","work":"sw_{0}_{1}.dRead{1}()","loop":""}],
+		{"encode":"{d0}{d1}","setup":"","inc":"#include \"MePort.h\"\n","def":"MePort sw_{0}_{1}({0});\n","work":"
+       sw_{0}_{1}.dpRead{1}()","loop":""}],
 		
 		["R", "temperature %d.port %d.slot °C","getTemperature","Port3","Slot1",
 		{"encode":"{d0}{d1}","setup":"","inc":"#include \"MeTemperature.h\"\n","def":"MeTemperature temperature_{0}_{1}({0},{1});\n","work":"temperature_{0}_{1}.temperature()","loop":""}],
@@ -113,6 +114,7 @@
 		"lport":["led on board","Port1","Port2","Port3","Port4"],
 		"laport":["light sensor on board","Port3","Port4"],
 		"direction":["run forward","run backward","turn right","turn left"],
+		"points":[":"," "],
 		"note":["C2","D2","E2","F2","G2","A2","B2","C3","D3","E3","F3","G3","A3","B3","C4","D4","E4","F4","G4","A4","B4","C5","D5","E5","F5","G5","A5","B5","C6","D6","E6","F6","G6","A6","B6","C7","D7","E7","F7","G7","A7","B7","C8","D8"],
 		"beats":["Half","Quater","Eighth","Whole","Double","Zero"],
 		"servovalue":[0,45,90,135,180],
@@ -162,6 +164,14 @@
 		"Port6":6,
 		"Port7":7,
 		"Port8":8,
+		"On":1,
+		"Off":0,
+		"LOW":0,
+		"HIGH":1,
+		"Press":0,
+		"Release":1,
+		"Focus On":2,
+		"Focus Off":3,
 		"led on board":7,
 		"light sensor on board":8,
 		"M1":9,
@@ -210,7 +220,7 @@
 			"set motor%d.motorPort speed %d.motorvalue":"设置电机%d.motorPort 转速为 %d.motorvalue",
 			"set servo %d.port %d.slot angle %d.servovalue":"设置舵机%d.port %d.slot 角度%d.servovalue",
 			"set led %d.lport %d.index red%d.value green%d.value blue%d.value":"设置LED %d.lport %d.index 红色%d.value 绿色%d.value 蓝色%d.value",
-			"show time %d.port hour:%n %s min:%n":"表情面板 %d.port 显示时间:%n 时 %s %n分",
+			"show time %d.port hour:%n %m.points min:%n":"表情面板 %d.port 显示时间:%n 时 %m.points %n 分",
 			"show face %d.port x:%n y:%n characters:%s":"表情面板 %d.port x:%n y:%n 显示文字:%s",
 			"show drawing %d.port x:%n y:%n draw:%m.drawFace":"表情面板 %d.port x:%n y:%n 绘画:%m.drawFace",
 			"set 7-segments display%d.port number %n":"设置数码管%d.port 数字%n",
@@ -258,8 +268,9 @@
 			"set motor%d.motorPort speed %d.motorvalue":"設置馬達%d.motorPort 轉速為 %d.motorvalue",
 			"set servo %d.port %d.slot angle %d.servovalue":"設置舵机%d.port %d.slot 角度%d.servovalue",
 			"set led %d.lport %d.index red%d.value green%d.value blue%d.value":"設置LED %d.lport %d.index 紅色%d.value 綠色%d.value 藍色%d.value",
-			"show time %d.port hour:%n %s min:%n":"表情面板 %d.port 顯示時間 %n 時 %s %n分",
+			"show time %d.port hour:%n %m.points min:%n":"表情面板 %d.port 顯示時間 %n 時 %m.points %n 分",
 			"show face %d.port x:%n y:%n characters:%s":"表情面板 %d.port x:%n y:%n 顯示文字:%s",
+			"show drawing %d.port x:%n y:%n draw:%m.drawFace":"表情面板 %d.port x:%n y:%n 繪畫:%m.drawFace",
 			"set 7-segments display%d.port number %n":"設置数码管%d.port 数字%n",
 			"set camera shutter %d.port as %d.shutter":"設置相机快门%d.port 状态为%d.shutter",
 			"light intensity":"光線強度",

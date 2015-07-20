@@ -3,8 +3,10 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 	import flash.events.Event;
 	import flash.filesystem.File;
 	import flash.net.FileFilter;
+	import flash.utils.getDefinitionByName;
 	
 	import cc.makeblock.mbot.uiwidgets.MyFrame;
+	import cc.makeblock.mbot.uiwidgets.extensionMgr.DefaultListCell;
 	import cc.makeblock.mbot.util.PopupUtil;
 	
 	import org.aswing.ASColor;
@@ -36,7 +38,6 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 		public function ExtensionMgrFrame(owner:*=null)
 		{
 			super(owner, "Extension Manager", true);
-			
 			extList = new JList(null, new DefaultListTextCellFactory(DefaultListCell, true, true, 38));
 			extList.setBackgroundDecorator(new SolidBackground(new ASColor(0xFFFFFF)));
 			

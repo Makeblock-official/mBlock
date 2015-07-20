@@ -228,7 +228,7 @@ package extensions
 					d.setTitle(Translator.map("Bluetooth Connected"));
 				}else{
 					LogManager.sharedManager().log("bt checking:"+btAddr);
-					if(i<20){
+					if(i<40){
 						setTimeout(checkName,3000);
 					}else{
 						_isBusy = false;

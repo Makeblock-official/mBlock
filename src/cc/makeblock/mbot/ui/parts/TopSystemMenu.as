@@ -50,7 +50,7 @@ package cc.makeblock.mbot.ui.parts
 			register("Boards", __onSelectBoard);
 			register("Help", __onHelp);
 			register("Manage Extensions", ExtensionUtil.OnManagerExtension);
-			register("Check New Extensions", ExtensionUtil.OnLoadExtension);
+			register("Restore Extensions", ExtensionUtil.OnLoadExtension);
 		}
 		
 		public function changeLang():void
@@ -250,6 +250,10 @@ package cc.makeblock.mbot.ui.parts
 			netWorkMenuItem.submenu = subMenu;
 			var canReset:Boolean = SerialManager.sharedManager().isConnected && DeviceManager.sharedManager().currentName=="mBot";
 			MenuUtil.FindItem(getNativeMenu(), "Reset Default Program").enabled = canReset;
+			canReset = SerialManager.sharedManager().isConnected && DeviceManager.sharedManager().currentName!="PicoBoard";
+			MenuUtil.FindItem(getNativeMenu(), "Upgrade Firmware").enabled = canReset;
+			canReset = DeviceManager.sharedManager().currentName!="PicoBoard";
+			MenuUtil.FindItem(getNativeMenu(), "View Source").enabled = canReset;
 		}
 		
 		private function __onSelectBoard(menuItem:NativeMenuItem):void

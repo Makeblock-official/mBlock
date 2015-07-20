@@ -10,6 +10,7 @@ package {
 	import flash.events.InvokeEvent;
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
+	import flash.filesystem.File;
 	import flash.geom.Point;
 	import flash.net.FileReference;
 	import flash.net.URLRequest;
@@ -139,14 +140,14 @@ package {
 		private var ga:GATracker;
 		private var tabsPart:TabsPart;
 		private var _welcomeView:Loader;
-		private var _currentVer:String = "07.16.001";
+		private var _currentVer:String = "07.19.001";
 		public function MBlock(){
 			app = this;
 			addEventListener(Event.ADDED_TO_STAGE,initStage);
 		}
 		private function initStage(evt:Event):void{
 			removeEventListener(Event.ADDED_TO_STAGE,initStage);
-			stage.nativeWindow.title += "(" + versionString + "," + _currentVer + ")";
+			stage.nativeWindow.title += "(" + versionString + "." + _currentVer + ")";
 			AsWingManager.initAsStandard(this);
 			UIManager.setLookAndFeel(new MyLookAndFeel());
 			AppTitleMgr.Instance.init(stage.nativeWindow);
@@ -164,7 +165,6 @@ package {
 			}else{
 				Block.setFonts(14, 12, true, 0); // default font sizes
 			}
-			
 			Block.MenuHandlerFunction = BlockMenus.BlockMenuHandler;
 			CursorTool.init(this);
 
@@ -174,6 +174,10 @@ package {
 			initRuntime();
 //			try{
 				extensionManager = new ExtensionManager(this);
+				var extensionsPath:File = ApplicationManager.sharedManager().documents.resolvePath("mBlock");
+				if(!extensionsPath.exists){
+					extensionManager.copyLocalFiles();
+				}
 		//		extensionManager.importExtension();
 				addParts();
 				systemMenu = new TopSystemMenu(stage, "assets/menu.xml");
@@ -211,7 +215,7 @@ package {
 				SharedObjectManager.sharedManager().clear();
 			}
 			if(!SharedObjectManager.sharedManager().getObject(versionString+".0."+ver,false)){
-				SharedObjectManager.sharedManager().clear();
+				//SharedObjectManager.sharedManager().clear();
 				SharedObjectManager.sharedManager().setObject(versionString+".0."+ver,true);
 				//SharedObjectManager.sharedManager().setObject("board","mbot_uno");
 			}

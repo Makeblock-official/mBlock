@@ -36,14 +36,14 @@ package util
 			return true;
 		}
 		public function setLocalFile(key:String,value:*):void{
-			var file:File = File.applicationStorageDirectory.resolvePath(key+".txt");
+			var file:File = ApplicationManager.sharedManager().documents.resolvePath("mBlock/store/"+key+".txt");
 			var stream:FileStream = new FileStream();
 			stream.open(file,FileMode.WRITE);
 			stream.writeObject(value);
 			stream.close();
 		}
 		public function getLocalFile(key:String,def:*=""):*{
-			var file:File = File.applicationStorageDirectory.resolvePath(key+".txt");
+			var file:File = ApplicationManager.sharedManager().documents.resolvePath("mBlock/store/"+key+".txt");
 			if(file.exists){
 				var stream:FileStream = new FileStream();
 				stream.open(file,FileMode.READ);
