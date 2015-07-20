@@ -43,9 +43,6 @@ package interpreter
 		
 		static private function modifyBlock(b:Block, root:Block):Block
 		{
-			if(b.op == Specs.SET_VAR){
-				return root;
-			}
 			for(var i:int=0; i<b.args.length; i++){
 				var blockArg:* = b.args[i];
 				if(!(blockArg is Block)){
@@ -53,10 +50,10 @@ package interpreter
 				}
 				var block:Block = blockArg as Block;
 				root = modifyBlock(block, root);
-				if(block.op.indexOf(".") < 0){
+				if(!isRobotOp(block)){
 					continue;
 				}
-				if(!isSimpleOp(b)){
+				if(!(isSimpleOp(b) || isRobotOp(b))){
 					break;
 				}
 				var varName:String = "__" + (varIndex++).toString();
@@ -69,6 +66,11 @@ package interpreter
 			return root;
 		}
 		
+		static private function isRobotOp(b:Block):Boolean
+		{
+			return b.op.indexOf(".") >= 0;
+		}
+		
 		static private function isSimpleOp(b:Block):Boolean
 		{
 			switch(b.op)
@@ -77,6 +79,7 @@ package interpreter
 				case "-":
 				case "*":
 				case "/":
+				case "concatenate:with:":
 					return true;
 			}
 			return false;

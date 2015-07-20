@@ -160,6 +160,7 @@
 		if(typeof port=="string"){
 			port = ports[port];
 		}
+		message = message.toString();
 		runPackage(41,port,1,6,3,short2array(x),short2array(7-y),message.length,string2array(message));
 	}
 	ext.showTime = function(port,hour,point,min){

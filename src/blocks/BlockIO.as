@@ -125,6 +125,11 @@ public class BlockIO {
 			args = cmd.slice(1,-1);
 			args.push(spec[4][3]);
 			b = new Block(label, spec[1], Specs.blockColor(spec[2]), spec[3], args);
+			for(i=0; i<args.length-1;i++){
+				if(args[i] is Array){
+					b.setArg(i, arrayToBlock(args[i], 'r'));
+				}
+			}
 			var blockArg:BlockArg = b.args[3];
 			blockArg.argValue = cmd[4] is Array ? cmd[4] : LightSensor.defaultValue;
 			blockArg.base.bmd = LightSensor.arrayToBmd(blockArg.argValue);
