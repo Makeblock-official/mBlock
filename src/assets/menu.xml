@@ -55,7 +55,7 @@
 	</subMenu>
 	<subMenu name="Extensions" label="扩展">
 		<item name="Manage Extensions" label="管理扩展" keyEquivalent="T" />
-		<item name="Check New Extensions" label="检查最新扩展" />
+		<item name="Restore Extensions" label="检查最新扩展" />
 		<item isSeparator="true" />
 	</subMenu>
 	<subMenu name="Language" label="语言">

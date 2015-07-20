@@ -51,7 +51,7 @@ package cc.makeblock.mbot.ui.parts
 			register("Boards", __onSelectBoard);
 			register("Help", __onHelp);
 			register("Manage Extensions", ExtensionUtil.OnManagerExtension);
-			register("Check New Extensions", ExtensionUtil.OnLoadExtension);
+			register("Restore Extensions", ExtensionUtil.OnLoadExtension);
 		}
 		
 		public function changeLang():void
@@ -149,6 +149,14 @@ package cc.makeblock.mbot.ui.parts
 					item.checked = Translator.currentLang==item.name;
 				}
 			}
+			try{
+				var fontItem:NativeMenuItem = languageMenu.items[languageMenu.numItems-1];
+				for each(item in fontItem.submenu.items){
+					item.checked = Translator.currentFontSize==Number(item.label);
+				}
+			}catch(e:Error){
+				
+			}
 		}
 		
 		private function __onLanguageSelect(evt:Event):void
@@ -206,10 +214,16 @@ package cc.makeblock.mbot.ui.parts
 			while(bluetoothItem.submenu.numItems > 3){
 				bluetoothItem.submenu.removeItemAt(3);
 			}
+			if(bluetoothItem.submenu.numItems>2){
+				bluetoothItem.submenu.items[0].enabled = enabled;
+				bluetoothItem.submenu.items[1].enabled = enabled;
+				bluetoothItem.submenu.items[2].enabled = enabled;
+			}
 			arr = BluetoothManager.sharedManager().history;
 			for(i=0;i<arr.length;i++){
 				item = bluetoothItem.submenu.addItem(new NativeMenuItem(Translator.map(arr[i])));
 				item.name = "bt_"+arr[i];
+				item.enabled = enabled;
 				item.checked = arr[i]==BluetoothManager.sharedManager().currentBluetooth && BluetoothManager.sharedManager().isConnected;
 			}
 			
@@ -237,6 +251,10 @@ package cc.makeblock.mbot.ui.parts
 			netWorkMenuItem.submenu = subMenu;
 			var canReset:Boolean = SerialManager.sharedManager().isConnected && DeviceManager.sharedManager().currentName=="mBot";
 			MenuUtil.FindItem(getNativeMenu(), "Reset Default Program").enabled = canReset;
+			canReset = SerialManager.sharedManager().isConnected && DeviceManager.sharedManager().currentName!="PicoBoard";
+			MenuUtil.FindItem(getNativeMenu(), "Upgrade Firmware").enabled = canReset;
+			canReset = DeviceManager.sharedManager().currentName!="PicoBoard";
+			MenuUtil.FindItem(getNativeMenu(), "View Source").enabled = canReset;
 		}
 		
 		private function __onSelectBoard(menuItem:NativeMenuItem):void

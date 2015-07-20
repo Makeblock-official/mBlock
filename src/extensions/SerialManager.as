@@ -114,11 +114,11 @@ package extensions
 				MBlock.app.topBarPart.setConnectedTitle("Serial Port");
 			}
 		}
-		public function sendBytes(bytes:ByteArray):int{
+		
+		public function sendBytes(bytes:ByteArray):void{
 			if(_serial.isConnected){
-				return _serial.writeBytes(bytes);
+				var count:int = _serial.writeBytes(bytes);
 			}
-			return 0;
 		}
 		public function sendString(msg:String):int{
 			return _serial.writeString(msg);

@@ -3,8 +3,10 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 	import flash.events.Event;
 	import flash.filesystem.File;
 	import flash.net.FileFilter;
+	import flash.utils.getDefinitionByName;
 	
 	import cc.makeblock.mbot.uiwidgets.MyFrame;
+	import cc.makeblock.mbot.uiwidgets.extensionMgr.DefaultListCell;
 	import cc.makeblock.mbot.util.PopupUtil;
 	
 	import org.aswing.ASColor;
@@ -12,12 +14,14 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 	import org.aswing.AsWingUtils;
 	import org.aswing.BorderLayout;
 	import org.aswing.CenterLayout;
-	import org.aswing.DefaultListCellFactory;
+	import org.aswing.DefaultListTextCellFactory;
+	import org.aswing.Insets;
 	import org.aswing.JButton;
 	import org.aswing.JList;
 	import org.aswing.JPanel;
 	import org.aswing.SoftBoxLayout;
 	import org.aswing.SolidBackground;
+	import org.aswing.border.EmptyBorder;
 	import org.aswing.event.AWEvent;
 	import org.aswing.geom.IntDimension;
 	
@@ -34,12 +38,10 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 		public function ExtensionMgrFrame(owner:*=null)
 		{
 			super(owner, "Extension Manager", true);
-			
-			extList = new JList();
+			extList = new JList(null, new DefaultListTextCellFactory(DefaultListCell, true, true, 38));
 			extList.setBackgroundDecorator(new SolidBackground(new ASColor(0xFFFFFF)));
-			(extList.getCellFactory() as DefaultListCellFactory).setCellHeight(28);
 			
-			btnList = new JPanel(new SoftBoxLayout(SoftBoxLayout.X_AXIS, 230, SoftBoxLayout.CENTER));
+			btnList = new JPanel(new SoftBoxLayout(SoftBoxLayout.X_AXIS, 190, SoftBoxLayout.CENTER));
 			
 			btnAdd = new JButton("add extension");
 			setBtnStyle(btnAdd);
@@ -54,12 +56,11 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 			bottomWrapper.setPreferredHeight(64);
 			bottomWrapper.append(btnList);
 			
-			
 			getContentPane().append(extList);
 			getContentPane().append(bottomWrapper, BorderLayout.SOUTH);
 			
 			pack();
-			setSizeWH(550, 400);
+			setSizeWH(530, 400);
 			addEvents();
 		}
 		
@@ -118,6 +119,9 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 		
 		private function __onLangChanged(evt:Event=null):void
 		{
+			extList.setListData(null);
+			updateList();
+			
 			setTitle(Translator.map("Manage Extensions"));
 			
 			btnAdd.setText(Translator.map("Add Extension"));
@@ -126,8 +130,8 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 		
 		static private function setBtnStyle(btn:JButton):void
 		{
-			btn.setPreferredSize(new IntDimension(130, 28));
-			btn.setFont(new ASFont("Arial",14));
+			btn.setPreferredSize(new IntDimension(150, 28));
+			btn.setFont(new ASFont("微软雅黑",14));
 			btn.setForeground(new ASColor(0x424242));
 		}
 	}

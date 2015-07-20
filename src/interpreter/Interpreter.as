@@ -192,6 +192,7 @@ public class Interpreter {
 	public function restartThread(b:Block, targetObj:*):Thread {
 		// used by broadcast; stop any thread running on b, then start a new thread on b
 		var newThread:Thread = new Thread(b, targetObj);
+		newThread.realBlock = b;
 		var wasRunning:Boolean = false;
 		for (var i:int = 0; i < threads.length; i++) {
 			if ((threads[i].topBlock == b) && (threads[i].target == targetObj)) {
@@ -317,6 +318,16 @@ public class Interpreter {
 				b.opFunction = app.extensionManager.primExtensionOp;
 			}else {
 				b.opFunction = (null == primTable[op]) ? primNoop : primTable[op];
+			}
+		}
+		
+		if(b.opFunction == app.extensionManager.primExtensionOp){
+			if(!b.isRequester){
+				var isFirstTime:Boolean = activeThread.firstTime;
+				PrimInit.doWait(b, this);
+				if(!isFirstTime){
+					return;
+				}
 			}
 		}
 		

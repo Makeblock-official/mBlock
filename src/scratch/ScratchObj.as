@@ -39,6 +39,7 @@ package scratch {
 	
 	import filters.FilterPack;
 	
+	import interpreter.RobotHelper;
 	import interpreter.Variable;
 	
 	import scratch.ScratchComment;
@@ -364,7 +365,13 @@ public class ScratchObj extends Sprite {
 	}
 
 	public function defaultVarName():String {
-		if (variables.length > 0) return variables[variables.length - 1].name; // local var
+		for(var i:int=variables.length-1; i>=0; i--){
+			var varName:String = variables[i].name;
+			if(!RobotHelper.isAutoVarName(varName)){
+				return varName;
+			}
+		}
+//		if (variables.length > 0) return variables[variables.length - 1].name; // local var
 		return isStage ? '' : MBlock.app.stagePane.defaultVarName(); // global var, if any
 	}
 

@@ -3,6 +3,7 @@ package extensions
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.utils.ByteArray;
+	import flash.utils.getTimer;
 	import flash.utils.setTimeout;
 	
 	import util.LogManager;
@@ -31,13 +32,18 @@ package extensions
 			_isConnected = _hid.isConnected;
 			return _isConnected;
 		}
+		private var _prevTime:Number = 0;
 		public function sendBytes(bytes:ByteArray):int{
 			if(_hid.isConnected){
-				var len:int = _hid.WriteHID(bytes);
-				if(len==-1){
-					//_hid.CloseHID();
+				var cTime:Number = getTimer();
+				if(cTime-_prevTime>20){
+					_prevTime = cTime; 
+					var len:int = _hid.WriteHID(bytes);
+					if(len==-1){
+						//_hid.CloseHID();
+					}
+					return len;
 				}
-				return len;
 			}
 			return 0;
 		}

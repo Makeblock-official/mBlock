@@ -10,6 +10,8 @@ package extensions
 	import flash.utils.Endian;
 	import flash.utils.Timer;
 	
+	import cc.makeblock.util.JsCall;
+	
 	import util.LogManager;
 	
 	public class JavaScriptEngine
@@ -52,7 +54,7 @@ package extensions
 			}
 		}
 		public function call(method:String,param:Array,ext:ScratchExtension):void{
-			if(!this.connected){
+			if(!(connected && JsCall.canCall(method))){
 				return;
 			}
 			try{

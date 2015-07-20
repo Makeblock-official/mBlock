@@ -26,8 +26,11 @@ package scratch {
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
+	import flash.display.NativeMenu;
+	import flash.display.NativeMenuItem;
 	import flash.display.Shape;
 	import flash.display.Sprite;
+	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.external.ExternalInterface;
 	import flash.filters.GlowFilter;
@@ -234,13 +237,27 @@ public class ScratchStage extends ScratchObj {
 	}
 
 	/* Menu */
+	private var _menu:NativeMenu;
 
-	public function menu(evt:MouseEvent):Menu {
+	public function menu(evt:MouseEvent):NativeMenu {
+		if(null == _menu){
+			_menu = new NativeMenu();
+			_menu.addItem(new NativeMenuItem()).name = "save picture of stage";
+			_menu.addEventListener(Event.SELECT, __onSelected);
+		}
+		return _menu;
+		/*
 		var m:Menu = new Menu();
 		m.addItem('save picture of stage', saveScreenshot);
 		return m;
+		*/
 	}
-
+	
+	private function __onSelected(event:Event):void
+	{
+		saveScreenshot();
+	}
+	
 	private function saveScreenshot():void {
 		var bitmapData:BitmapData = new BitmapData(480, 360, true, 0x0);
 		bitmapData.draw(this);

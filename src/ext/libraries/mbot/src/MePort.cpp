@@ -58,7 +58,21 @@ bool MePort::dRead2()
     val = digitalRead(s2);
     return val;
 }
+bool MePort::dpRead1()
+{
+    bool val;
+    pinMode(s1, INPUT_PULLUP);
+    val = digitalRead(s1);
+    return val;
+}
 
+bool MePort::dpRead2()
+{
+    bool val;
+	pinMode(s2, INPUT_PULLUP);
+    val = digitalRead(s2);
+    return val;
+}
 void MePort::dWrite1(bool value)
 {
     pinMode(s1, OUTPUT);
