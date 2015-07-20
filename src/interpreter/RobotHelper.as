@@ -79,6 +79,7 @@ package interpreter
 				case "-":
 				case "*":
 				case "/":
+				case "concatenate:with:":
 					return true;
 			}
 			return false;
