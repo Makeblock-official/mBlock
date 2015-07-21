@@ -163,7 +163,8 @@ package {
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.frameRate = 30;
 			this.scaleX = this.scaleY = 1.0;
-
+			var f:File = File.applicationDirectory.resolvePath("Arduino");
+			trace("app:",f.exists);
 			if(SharedObjectManager.sharedManager().available("labelSize")){
 				var labelSize:int = SharedObjectManager.sharedManager().getObject("labelSize") as int;
 				var argSize:int = Math.round(0.9 * labelSize);

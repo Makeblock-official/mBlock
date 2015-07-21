@@ -1505,7 +1505,7 @@ void updateVar(char * varName,double * var)
 		}
 		
 		public function get arduinoInstallPath():String{
-			if(arduinoPath.length>0){
+			if(arduinoPath.length>0&&arduinoPath.indexOf("app:/")==-1){
 				var ttf:File = new File(); 
 				ttf.url = new File(arduinoPath+(ApplicationManager.sharedManager().system==ApplicationManager.WINDOWS?"/hardware/tools/avr/bin/avr-ar.exe":"/hardware/tools/avr/bin/avr-ar")).url;
 				if(ttf.exists){
@@ -1518,15 +1518,16 @@ void updateVar(char * varName,double * var)
 			}
 			var tf:File = new File(); 
 			if(ApplicationManager.sharedManager().system==ApplicationManager.MAC_OS){
-				tf.url = File.applicationDirectory.resolvePath("/Contents/Resources/Arduino/Arduino.app/Contents/Java/hardware/tools/avr/bin/avr-ar").url;
+				
+				tf.url = File.applicationDirectory.resolvePath("Arduino/Arduino.app/Contents/Resources/Java/hardware/tools/avr/bin/avr-ar").url;
 				if(tf.exists){
-					arduinoPath = File.applicationDirectory.resolvePath("/Contents/Resources/Arduino/Arduino.app/Contents/Java/").url;
+					arduinoPath = File.applicationDirectory.resolvePath("Arduino/Arduino.app/Contents/Resources/Java/").nativePath;
 					SharedObjectManager.sharedManager().setObject("arduinoPath",arduinoPath);
 					return arduinoPath;
 				}else{
-					tf.url = File.applicationDirectory.resolvePath("/Contents/Resources/Arduino/Arduino.app/Contents/Java/hardware/tools/avr/bin/avr-ar").url;
+					tf.url = File.applicationDirectory.resolvePath("Arduino/Arduino.app/Contents/Java/hardware/tools/avr/bin/avr-ar").url;
 					if(tf.exists){
-						arduinoPath = File.applicationDirectory.resolvePath("/Contents/Resources/Arduino/Arduino.app/Contents/Resources/Java").url;
+						arduinoPath = File.applicationDirectory.resolvePath("Arduino/Arduino.app/Contents/Java").nativePath;
 						SharedObjectManager.sharedManager().setObject("arduinoPath",arduinoPath);
 						return arduinoPath;
 					}else{
