@@ -69,7 +69,7 @@ public class Server {
 	*/	
 		
 		var file:File;
-		if(url.indexOf("://") >= 0){
+		if(url.indexOf("://") > -1||url.indexOf("app-storage:/") > -1){
 			file = new File(url);
 		}else{
 			file = File.applicationDirectory.resolvePath(url);

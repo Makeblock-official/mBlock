@@ -184,6 +184,8 @@ package {
 				var extensionsPath:File = ApplicationManager.sharedManager().documents.resolvePath("mBlock");
 				if(!extensionsPath.exists){
 					extensionManager.copyLocalFiles();
+				}else{
+					//trace(extensionsPath.nativePath);
 				}
 		//		extensionManager.importExtension();
 				addParts();

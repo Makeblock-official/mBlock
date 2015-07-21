@@ -207,7 +207,7 @@ package extensions
 			//if(_list.indexOf(port)>-1){
 			var btAddr:String = port.split("( ")[1].split(" )")[0];
 			LogManager.sharedManager().log("bt opening:"+btAddr);
-			_bt.connectByAddress(btAddr);
+			_bt["connectByAddress"](btAddr);
 			_currentBluetooth = port;
 			var i:uint = 0;
 			function cancel():void{
