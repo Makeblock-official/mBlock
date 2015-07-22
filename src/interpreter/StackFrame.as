@@ -4,7 +4,7 @@ package interpreter
 
 	internal class StackFrame
 	{
-		private var block:Block;
+		internal var block:Block;
 		private var isLoop:Boolean;
 		private var firstTime:Boolean;
 		private var tmp:int;
