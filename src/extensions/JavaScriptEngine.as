@@ -54,7 +54,9 @@ package extensions
 			}
 		}
 		public function call(method:String,param:Array,ext:ScratchExtension):void{
-			if(!(connected && JsCall.canCall(method))){
+			var c:Boolean = connected;
+			var jscall:Boolean = JsCall.canCall(method);
+			if(!(c && jscall)){
 				return;
 			}
 			try{
