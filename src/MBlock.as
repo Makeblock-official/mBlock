@@ -321,6 +321,7 @@ package {
 				evt.preventDefault();
 				saveProjectAndThen(quitApp);
 			}
+			MBlock.app.gh.mouseUp(new MouseEvent(MouseEvent.MOUSE_UP));
 			SerialManager.sharedManager().disconnect();
 			HIDManager.sharedManager().disconnect();
 		}
