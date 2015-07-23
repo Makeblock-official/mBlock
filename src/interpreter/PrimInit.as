@@ -54,9 +54,17 @@ package interpreter
 		{
 		}
 		
-		static public function doWait(b:Block, target:Interpreter):void {
+		static private function doWait(b:Block, target:Interpreter):void {
+			var time:Number = 0;
 			if (target.activeThread.firstTime) {
-				target.startTimer(target.numarg(b, 0));
+				time = target.numarg(b, 0);
+			}
+			doWaitImpl(target, time);
+		}
+		
+		static public function doWaitImpl(target:Interpreter, time:Number=0):void {
+			if (target.activeThread.firstTime) {
+				target.startTimer(time);
 				target.redraw();
 			} else {
 				target.checkTimer();
