@@ -78,6 +78,7 @@ package extensions
 			}
 		}
 		private function onError(evt:Event):void{
+			trace(evt);
 			MBlock.app.topBarPart.setDisconnectedTitle();
 			_hid.removeEventListener(AirHID.EVENT_RXDATA,hidRx);  
 			_hid.removeEventListener(AirHID.EVENT_RXERROR,onError);

@@ -5,7 +5,9 @@ package {
 	import flash.display.DisplayObject;
 	import flash.display.Loader;
 	import flash.display.Sprite;
+	import flash.display.StageAlign;
 	import flash.display.StageDisplayState;
+	import flash.display.StageScaleMode;
 	import flash.events.Event;
 	import flash.events.InvokeEvent;
 	import flash.events.KeyboardEvent;
@@ -140,7 +142,7 @@ package {
 		private var ga:GATracker;
 		private var tabsPart:TabsPart;
 		private var _welcomeView:Loader;
-		private var _currentVer:String = "07.19.001";
+		private var _currentVer:String = "07.20.002";
 		public function MBlock(){
 			app = this;
 			addEventListener(Event.ADDED_TO_STAGE,initStage);
@@ -156,7 +158,13 @@ package {
 			track("/app/launch");
 			NativeApplication.nativeApplication.addEventListener(InvokeEvent.INVOKE,onInvoked);
 			stage.nativeWindow.addEventListener(Event.CLOSING,onExiting);
-//			checkFlashVersion();
+			
+			stage.align = StageAlign.TOP_LEFT;
+			stage.scaleMode = StageScaleMode.NO_SCALE;
+			stage.frameRate = 30;
+			this.scaleX = this.scaleY = 1.0;
+			var f:File = File.applicationDirectory.resolvePath("Arduino");
+			trace("app:",f.exists);
 			if(SharedObjectManager.sharedManager().available("labelSize")){
 				var labelSize:int = SharedObjectManager.sharedManager().getObject("labelSize") as int;
 				var argSize:int = Math.round(0.9 * labelSize);
@@ -177,6 +185,8 @@ package {
 				var extensionsPath:File = ApplicationManager.sharedManager().documents.resolvePath("mBlock");
 				if(!extensionsPath.exists){
 					extensionManager.copyLocalFiles();
+				}else{
+					//trace(extensionsPath.nativePath);
 				}
 		//		extensionManager.importExtension();
 				addParts();

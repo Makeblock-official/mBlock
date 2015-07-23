@@ -1,5 +1,6 @@
 package cc.makeblock.mbot.ui.parts
 {
+	import flash.desktop.NativeApplication;
 	import flash.display.NativeMenu;
 	import flash.display.NativeMenuItem;
 	import flash.display.Stage;

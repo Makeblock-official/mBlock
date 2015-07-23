@@ -793,6 +793,11 @@ void updateVar(char * varName,double * var)
 				if((s.code==""||s.code==" ")&&s.code!=0&&s.type == "number"){
 					s.type = "string";
 				}
+				if(str.indexOf(".drawStr(")>-1){
+					if(i==3){
+						s.type = "string";
+					}
+				}
 				str = str.split("{"+i+"}").join(( s.type == "string")?('"'+s.code+'"'):(( s.type == "number")?s.code:s.code.code));
 			}
 			return str;
@@ -1500,7 +1505,7 @@ void updateVar(char * varName,double * var)
 		}
 		
 		public function get arduinoInstallPath():String{
-			if(arduinoPath.length>0){
+			if(arduinoPath.length>0&&arduinoPath.indexOf("app:/")==-1){
 				var ttf:File = new File(); 
 				ttf.url = new File(arduinoPath+(ApplicationManager.sharedManager().system==ApplicationManager.WINDOWS?"/hardware/tools/avr/bin/avr-ar.exe":"/hardware/tools/avr/bin/avr-ar")).url;
 				if(ttf.exists){
@@ -1513,17 +1518,32 @@ void updateVar(char * varName,double * var)
 			}
 			var tf:File = new File(); 
 			if(ApplicationManager.sharedManager().system==ApplicationManager.MAC_OS){
-				tf.url = new File("/Applications/Arduino.app/Contents/Java/hardware/tools/avr/bin/avr-ar").url;
+				
+				tf.url = File.applicationDirectory.resolvePath("Arduino/Arduino.app/Contents/Resources/Java/hardware/tools/avr/bin/avr-ar").url;
 				if(tf.exists){
-					arduinoPath ="/Applications/Arduino.app/Contents/Java";
+					arduinoPath = File.applicationDirectory.resolvePath("Arduino/Arduino.app/Contents/Resources/Java/").nativePath;
 					SharedObjectManager.sharedManager().setObject("arduinoPath",arduinoPath);
 					return arduinoPath;
 				}else{
-					tf.url = new File("/Applications/Arduino.app/Contents/Resources/Java/hardware/tools/avr/bin/avr-ar").url;
+					tf.url = File.applicationDirectory.resolvePath("Arduino/Arduino.app/Contents/Java/hardware/tools/avr/bin/avr-ar").url;
 					if(tf.exists){
-						arduinoPath ="/Applications/Arduino.app/Contents/Resources/Java";
+						arduinoPath = File.applicationDirectory.resolvePath("Arduino/Arduino.app/Contents/Java").nativePath;
 						SharedObjectManager.sharedManager().setObject("arduinoPath",arduinoPath);
 						return arduinoPath;
+					}else{
+						tf.url = new File("/Applications/Arduino.app/Contents/Java/hardware/tools/avr/bin/avr-ar").url;
+						if(tf.exists){
+							arduinoPath = "/Applications/Arduino.app/Contents/Java";
+							SharedObjectManager.sharedManager().setObject("arduinoPath",arduinoPath);
+							return arduinoPath;
+						}else{
+							tf.url = new File("/Applications/Arduino.app/Contents/Resources/Java/hardware/tools/avr/bin/avr-ar").url;
+							if(tf.exists){
+								arduinoPath ="/Applications/Arduino.app/Contents/Resources/Java";
+								SharedObjectManager.sharedManager().setObject("arduinoPath",arduinoPath);
+								return arduinoPath;
+							}
+						}
 					}
 				}
 				return "";
@@ -1709,24 +1729,28 @@ void updateVar(char * varName,double * var)
 			//				cmd = " -c -g -Os -w -ffunction-sections -fdata-sections -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=156 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/standard -I"+path+arduinoLibPath+"/Wire -I"+path+"/libraries/Servo/src -I"+path+"/libraries/Servo -I"+path+arduinoLibPath+"/SoftwareSerial -I"+path+arduinoLibPath+"/Wire/utility"
 			var cmd:String = "";
 			if(_currentDevice=="uno"){
-				cmd = " -c -g -x assembler-with-cpp -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=10605 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/standard "+path+avrPath+"/cores/arduino/wiring_pulse.S";
+				cmd = " -c -g -x -assembler-with-cpp -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=10605 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/standard -"+path+avrPath+"/cores/arduino/wiring_pulse.S";
 			}else if(_currentDevice=="leonardo"){
-				cmd = " -c -g -x assembler-with-cpp -mmcu=atmega32u4 -DF_CPU=16000000L -DARDUINO=156 -DARDUINO_AVR_LEONARDO -DARDUINO_ARCH_AVR -DUSB_VID=0x2a03 -DUSB_PID=0x8036 -DUSB_MANUFACTURER= -DUSB_PRODUCT=\"Arduino Leonardo\" -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/leonardo "+path+avrPath+"/cores/arduino/wiring_pulse.S -o ./wiring_pulse.S.o"
+				cmd = " -c -g -x -assembler-with-cpp -mmcu=atmega32u4 -DF_CPU=16000000L -DARDUINO=156 -DARDUINO_AVR_LEONARDO -DARDUINO_ARCH_AVR -DUSB_VID=0x2a03 -DUSB_PID=0x8036 -DUSB_MANUFACTURER= -DUSB_PRODUCT=\"Arduino Leonardo\" -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/leonardo -"+path+avrPath+"/cores/arduino/wiring_pulse.S -o ./wiring_pulse.S.o"
 			}else if(_currentDevice=="mega1280"){
-				cmd = " -c -g -x assembler-with-cpp -mmcu=atmega2560 -DF_CPU=16000000L -DARDUINO=1062 -MMD -DUSB_VID=null -DUSB_PID=null -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/standard "+path+avrPath+"/cores/arduino/wiring_pulse.S -o ./wiring_pulse.S.o"
+				cmd = " -c -g -x -assembler-with-cpp -mmcu=atmega2560 -DF_CPU=16000000L -DARDUINO=1062 -MMD -DUSB_VID=null -DUSB_PID=null -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/standard -"+path+avrPath+"/cores/arduino/wiring_pulse.S -o ./wiring_pulse.S.o"
 			}else if(_currentDevice=="mega2560"){
-				cmd = " -c -g -x assembler-with-cpp -mmcu=atmega2560 -DF_CPU=16000000L -DARDUINO=1062 -MMD -DUSB_VID=null -DUSB_PID=null -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/standard "+path+avrPath+"/cores/arduino/wiring_pulse.S -o ./wiring_pulse.S.o"
+				cmd = " -c -g -x -assembler-with-cpp -mmcu=atmega2560 -DF_CPU=16000000L -DARDUINO=1062 -MMD -DUSB_VID=null -DUSB_PID=null -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/standard -"+path+avrPath+"/cores/arduino/wiring_pulse.S -o ./wiring_pulse.S.o"
 			}else if(_currentDevice=="nano328"){
-				cmd = " -c -g -x assembler-with-cpp -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=1062 -MMD -DUSB_VID=null -DUSB_PID=null -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/standard "+path+avrPath+"/cores/arduino/wiring_pulse.S";
+				cmd = " -c -g -x -assembler-with-cpp -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=1062 -MMD -DUSB_VID=null -DUSB_PID=null -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/standard -"+path+avrPath+"/cores/arduino/wiring_pulse.S -o ./wiring_pulse.S.o";
 			}else if(_currentDevice=="nano168"){
-				cmd = " -c -g -x assembler-with-cpp -mmcu=atmega168 -DF_CPU=16000000L -DARDUINO=1062 -MMD -DUSB_VID=null -DUSB_PID=null -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/standard "+path+avrPath+"/cores/arduino/wiring_pulse.S -o ./wiring_pulse.S.o"
+				cmd = " -c -g -x -assembler-with-cpp -mmcu=atmega168 -DF_CPU=16000000L -DARDUINO=1062 -MMD -DUSB_VID=null -DUSB_PID=null -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/standard -"+path+avrPath+"/cores/arduino/wiring_pulse.S -o ./wiring_pulse.S.o"
 			}
 			
-			var arg:Array = cmd.split(" ")
+			var arg:Array = cmd.split(" -")
 			var processArgs:Vector.<String> = new Vector.<String>(); 
 			for(var i:int=0;i<arg.length;i++){
 				if(arg[i].length>0){
-					processArgs.push(arg[i])
+					if(arg[i].indexOf("assembler")>-1||arg[i].indexOf("arduino/wiring_pulse.S")>-1){
+						processArgs.push(arg[i]);
+					}else{
+						processArgs.push("-"+arg[i]);
+					}
 				}
 			}
 			processArgs.push("-o");

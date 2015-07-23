@@ -33,6 +33,8 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 	
 	import translation.Translator;
 	
+	import util.ApplicationManager;
+	
 	public class LightSetterFrame extends MyFrame
 	{
 		[Embed("/assets/UI/ledFace/Eraser-normal.png")]
@@ -281,7 +283,7 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 		
 		static private function genBitmapData(str:String):BitmapData
 		{
-			var list:Array = str.split("\r\n");
+			var list:Array = ApplicationManager.sharedManager().system==ApplicationManager.MAC_OS?str.split("\n"):str.split("\r\n");
 			var bmd:BitmapData = new BitmapData(LightSensor.COUNT_W, LightSensor.COUNT_H, false, LightSensor.THUMBNAIL_OFF_COLOR);
 			bmd.lock();
 			for(var i:int=0; i< LightSensor.COUNT_H; i++){
