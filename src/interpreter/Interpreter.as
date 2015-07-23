@@ -226,7 +226,9 @@ public class Interpreter {
 		currentMSecs = getTimer();
 		if (threads.length == 0) return;
 		while ((currentMSecs - startTime) < workTime) {
-			if (warpThread && (warpThread.block == null)) clearWarpBlock();
+			if (warpThread && (warpThread.block == null)) {
+				clearWarpBlock();
+			}
 			var threadStopped:Boolean = false;
 			var runnableCount:int = 0;
 			for each (activeThread in threads) {
@@ -326,7 +328,7 @@ public class Interpreter {
 		if(b.opFunction == app.extensionManager.primExtensionOp){
 			if(!b.isRequester){
 				var isFirstTime:Boolean = activeThread.firstTime;
-				PrimInit.doWait(b, this);
+				PrimInit.doWaitImpl(this);
 				if(!isFirstTime){
 					return;
 				}
