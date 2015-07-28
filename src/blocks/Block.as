@@ -321,14 +321,19 @@ public class Block extends Sprite {
 	public function hideRunFeedback():void {
 		if (filters && (filters.length > 0)) filters = [];
 	}
+	
+	static private var feedbackFilters:Array;
 
 	private function runFeedbackFilters():Array {
-		// filters for showing that a stack is running
-		var f:GlowFilter = new GlowFilter(0xfeffa0);
-		f.strength = 2;
-		f.blurX = f.blurY = 12;
-		f.quality = 3;
-		return [f];
+		if(null == feedbackFilters){
+			// filters for showing that a stack is running
+			var f:GlowFilter = new GlowFilter(0xfeffa0);
+			f.strength = 2;
+			f.blurX = f.blurY = 12;
+			f.quality = 3;
+			feedbackFilters = [f];
+		}
+		return feedbackFilters;
 	}
 
 	public function saveOriginalPosition():void {
