@@ -224,7 +224,7 @@ package extensions
 					LogManager.sharedManager().log("bt opened:"+btAddr);
 					_isBusy = false;
 					addBluetoothHistory();
-					MBlock.app.topBarPart.setConnectedTitle("Serial Port");
+					MBlock.app.topBarPart.setConnectedTitle("Bluetooth");
 					d.setTitle(Translator.map("Bluetooth Connected"));
 				}else{
 					LogManager.sharedManager().log("bt checking:"+btAddr);

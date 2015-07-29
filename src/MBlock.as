@@ -8,10 +8,12 @@ package {
 	import flash.display.StageAlign;
 	import flash.display.StageDisplayState;
 	import flash.display.StageScaleMode;
+	import flash.events.ErrorEvent;
 	import flash.events.Event;
 	import flash.events.InvokeEvent;
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
+	import flash.events.UncaughtErrorEvent;
 	import flash.filesystem.File;
 	import flash.geom.Point;
 	import flash.net.FileReference;
@@ -146,7 +148,20 @@ package {
 		public function MBlock(){
 			app = this;
 			addEventListener(Event.ADDED_TO_STAGE,initStage);
+			loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, __onError);
 		}
+		
+		private function __onError(evt:UncaughtErrorEvent):void
+		{
+			var errorText:String;
+			if(evt.error is Error){
+				errorText = (evt.error as Error).message;
+			}else if(evt.error is ErrorEvent){
+				errorText = (evt.error as ErrorEvent).text;
+			}
+			trace(errorText);
+		}
+		
 		private function initStage(evt:Event):void{
 			removeEventListener(Event.ADDED_TO_STAGE,initStage);
 			stage.nativeWindow.title += "(" + versionString + "." + _currentVer + ")";
