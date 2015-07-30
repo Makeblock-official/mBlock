@@ -36,6 +36,12 @@ package cc.makeblock.mbot.util
 			updateTitle();
 		}
 		
+		public function setProjectModifyInfo(isModified:Boolean):void
+		{
+			strList[2] = isModified;
+			updateTitle();
+		}
+		
 		private function updateTitle():void
 		{
 			if(!window.closed)
@@ -48,15 +54,16 @@ package cc.makeblock.mbot.util
 		{
 			var result:String = strList[0];
 			
-			for (var i:int = 1; i < strList.length; i++) 
-			{
-				var str:String = strList[1];
-				if(Boolean(str)){
-					str = Translator.map(str) + " " + Translator.map("Connected");
-				}else{
-					str = Translator.map("Disconnected");
-				}
-				result += " - " + str;
+			var str:String = strList[1];
+			if(Boolean(str)){
+				str = Translator.map(str) + " " + Translator.map("Connected");
+			}else{
+				str = Translator.map("Disconnected");
+			}
+			result += " - " + str;
+			
+			if(strList[2]){
+				result += " - " + Translator.map("Modified");
 			}
 			
 			return result;

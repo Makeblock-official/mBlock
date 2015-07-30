@@ -552,7 +552,7 @@ public class ProjectIO {
 				DialogBox.notify('', 'Sounds converted', app.stage, false, soundsConverted);
 			}
 		}
-		function soundsConverted(ignore:*):void { done() }
+		function soundsConverted(ignore:*):void { done(this) }
 		var soundsToConvert:Array = [];
 		for each (var obj:ScratchObj in scratchObj.allObjects()) {
 			for each (var snd:ScratchSound in obj.sounds) {
@@ -563,7 +563,7 @@ public class ProjectIO {
 		if (soundsToConvert.length > 0) {
 			app.addLoadProgressBox('Converting sounds...');
 			setTimeout(convertASound, 50);
-		} else done();
+		} else done(this);
 	}
 
 	private function recordImage(img:*, md5:String, recordedAssets:Object, uploading:Boolean):int {

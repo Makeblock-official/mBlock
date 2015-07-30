@@ -116,7 +116,7 @@ package {
 		public const server:Server = new Server();
 		public var gh:GestureHandler;
 		
-		
+		private var projectFile:File;
 		public var projectID:String = '';
 		public var loadInProgress:Boolean;
 	
@@ -296,7 +296,7 @@ package {
 			}
 			var arg:String = evt.arguments[0];
 			if(Boolean(arg)){
-				runtime.selectedProjectFile(arg);
+				runtime.selectedProjectFile(new File(arg));
 			}
 		}
 		protected function initTopBarPart():void {
@@ -493,8 +493,18 @@ package {
 			if (isShowing(scriptsPart)) scriptsPart.updatePalette();
 			if (clearCaches) runtime.clearAllCaches();
 		}
+		
+		public function setProjectFile(file:File):void
+		{
+			if(file != null){
+				setProjectName(file.name);
+			}else{
+				setProjectName('Untitled');
+			}
+			projectFile = file;
+		}
 	
-		public function setProjectName(s:String):void {
+		private function setProjectName(s:String):void {
 			if (s.slice(-3) == '.sb') s = s.slice(0, -3);
 			if (s.slice(-4) == '.sb2') s = s.slice(0, -4);
 			stagePart.setProjectName(s);
@@ -1119,13 +1129,13 @@ package {
 		public function openBluetooth(b:*):void{
 			BluetoothManager.sharedManager().discover();
 		}
+		/*
 		private function openExampleFile(path:String):void{
 			
 			var filePath:String = path;
 			this.runtime.selectedProjectFile(filePath);
 			track("/Examples/"+path);
 		}
-		/*
 		protected function addEditMenuItems(b:*, m:Menu):void {}
 	
 		protected function canExportInternals():Boolean {
@@ -1138,7 +1148,7 @@ package {
 		private function clearProject():void
 		{
 			startNewProject('', '');
-			setProjectName('Untitled');
+			setProjectFile(null);
 			topBarPart.refresh();
 			stagePart.refresh();
 		}
@@ -1193,21 +1203,50 @@ package {
 			});
 		}
 		
+		public function saveFile():void
+		{
+			if(null == projectFile){
+				exportProjectToFile();
+				return;
+			}
+			if(!saveNeeded){
+				return;
+			}
+			var projIO:ProjectIO = new ProjectIO(this);
+			projIO.convertSqueakSounds(stagePane, __onSqueakSoundsConverted);
+		}
+		
+		private function __onSqueakSoundsConverted(projIO:ProjectIO):void
+		{
+			saveNeeded = false;
+			scriptsPane.saveScripts(false);
+			FileUtil.WriteBytes(projectFile, projIO.encodeProjectAsZipFile(stagePane));
+		}
+		
 		private var isPanelShowing:Boolean;
 	
 		public function exportProjectToFile(postSaveAction:Function=null):void {
-			function squeakSoundsConverted():void {
+			function squeakSoundsConverted(projIO:ProjectIO):void {
 				scriptsPane.saveScripts(false);
-				var defaultName:String = (projectName().length > 1) ? projectName() + '.sb2' : 'project.sb2';
-				var zipData:ByteArray = projIO.encodeProjectAsZipFile(stagePane);
-				var file:FileReference = new FileReference();
-				file.addEventListener(Event.COMPLETE, fileSaved);
-				var path:String = fixFileName(defaultName);
-				file.save(zipData, path);
+//				var zipData:ByteArray = projIO.encodeProjectAsZipFile(stagePane);
+				var file:File;
+				if(projectFile != null){
+					file = projectFile.clone();
+				}else{
+					var defaultName:String = (projectName().length > 1) ? projectName() + '.sb2' : 'project.sb2';
+					var path:String = fixFileName(defaultName);
+					file = File.desktopDirectory.resolvePath(path);
+				}
+				file.addEventListener(Event.SELECT, fileSaved);
+				file.browseForSave("please choose file location");
+//				file.save(zipData, path);
 			}
 			function fileSaved(e:Event):void {
+				var file:File = e.target as File;
+				FileUtil.WriteBytes(file, projIO.encodeProjectAsZipFile(stagePane));
+				
 				saveNeeded = false;
-				setProjectName(e.target.name);
+				setProjectFile(file);
 				if(postSaveAction!=null){
 					postSaveAction();
 				}
@@ -1314,7 +1353,18 @@ package {
 		// Save status
 		//------------------------------
 	
-		private var saveNeeded:Boolean;
+		private var _saveNeeded:Boolean;
+		
+		private function get saveNeeded():Boolean{
+			return _saveNeeded;
+		}
+		private function set saveNeeded(value:Boolean):void{
+			if(_saveNeeded == value){
+				return;
+			}
+			_saveNeeded = value;
+			AppTitleMgr.Instance.setProjectModifyInfo(_saveNeeded);
+		}
 	
 		public function setSaveNeeded(saveNow:Boolean = false):void {
 			saveNow = false;

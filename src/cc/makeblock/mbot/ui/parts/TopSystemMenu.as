@@ -87,6 +87,9 @@ package cc.makeblock.mbot.ui.parts
 					MBlock.app.runtime.selectProjectFile();
 					break;
 				case "Save Project":
+					MBlock.app.saveFile();
+					break;
+				case "Save Project As":
 					MBlock.app.exportProjectToFile();
 					break;
 				case "Undo Revert":

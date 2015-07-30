@@ -641,29 +641,29 @@ public class ScratchStage extends ScratchObj {
 		penLayerMD5 = null;
 	}
 
+	static private const defaultMedia:Array = [
+		'510da64cf172d53750dffd23fbf73563.png',
+		'b82f959ab7fa28a70b06c8162b7fef83.svg',
+		'df0e59dcdea889efae55eb77902edc1c.svg',
+		'83a9787d4cb6f3b7632b4ddfebf74367.wav',
+		'f9a1c175dbe2e5dee472858dd30d16bb.svg',
+		'6e8bd9ae68fdb02b7e1e3df656a75635.svg',
+		'f88bf1935daea28f8ca098462a31dbb0.svg',
+		'6e8bd9ae68fdb02b7e1e3df656a75635.svg',
+		'739b5e2a2435f6e1ec2993791b423146.png',
+		'83c36d806dc92327b9e7049a565c6bff.wav',
+		'0aa976d536ad6667ce05f9f2174ceb3d.svg',	// new empty backdrop
+		'790f7842ea100f71b34e5b9a5bfbcaa1.svg', // even newer empty backdrop
+		'c969115cb6a3b75470f8897fbda5c9c9.svg',	// new empty costume
+		'09f6edf0b816a18abd6c79ef2bcf2fb3.svg',
+		'panda_b.svg',
+		'714e598d28e493cc50babc17f2c4895d.wav',
+		'739b5e2a2435f6e1ec2993791b423146.png',
+		'83a9787d4cb6f3b7632b4ddfebf74367.wav'
+	];
 	public function isEmpty():Boolean {
 		// Return true if this project has no scripts, no variables, no lists,
 		// at most one sprite, and only the default costumes and sound media.
-		var defaultMedia:Array = [
-			'510da64cf172d53750dffd23fbf73563.png',
-			'b82f959ab7fa28a70b06c8162b7fef83.svg',
-			'df0e59dcdea889efae55eb77902edc1c.svg',
-			'83a9787d4cb6f3b7632b4ddfebf74367.wav',
-			'f9a1c175dbe2e5dee472858dd30d16bb.svg',
-			'6e8bd9ae68fdb02b7e1e3df656a75635.svg',
-			'f88bf1935daea28f8ca098462a31dbb0.svg',
-			'6e8bd9ae68fdb02b7e1e3df656a75635.svg',
-			'739b5e2a2435f6e1ec2993791b423146.png',
-			'83c36d806dc92327b9e7049a565c6bff.wav',
-			'0aa976d536ad6667ce05f9f2174ceb3d.svg',	// new empty backdrop
-			'790f7842ea100f71b34e5b9a5bfbcaa1.svg', // even newer empty backdrop
-			'c969115cb6a3b75470f8897fbda5c9c9.svg',	// new empty costume
-			'09f6edf0b816a18abd6c79ef2bcf2fb3.svg',
-			'panda_b.svg',
-			'714e598d28e493cc50babc17f2c4895d.wav',
-			'739b5e2a2435f6e1ec2993791b423146.png',
-			'83a9787d4cb6f3b7632b4ddfebf74367.wav'
-		];
 		if (sprites().length > 1) return false;
 		if (scriptCount() > 0) return false;
 		for each (var obj:ScratchObj in allObjects()) {

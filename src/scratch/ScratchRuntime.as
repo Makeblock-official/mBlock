@@ -32,7 +32,6 @@ package scratch {
 	import flash.media.SoundTransform;
 	import flash.net.FileFilter;
 	import flash.net.FileReference;
-	import flash.net.FileReferenceList;
 	import flash.system.System;
 	import flash.text.TextField;
 	import flash.utils.ByteArray;
@@ -149,7 +148,10 @@ package scratch {
 	
 		public function clearRecording():void {
 			recording = false;
-			frames = [];
+			while(frames.length > 0){
+				var bmd:BitmapData = frames.pop();
+				bmd.dispose();
+			}
 			System.gc();
 			trace('mem: ' + System.totalMemory);
 		}
@@ -411,53 +413,43 @@ package scratch {
 	
 		public function selectProjectFile():void {
 			// Prompt user for a file name and load that file.
-			var fileName:String, data:ByteArray;
 			function fileSelected(event:Event):void {
-				if (fileList.fileList.length == 0) return;
-				var file:FileReference = FileReference(fileList.fileList[0]);
-				fileName = file.name;
-				file.addEventListener(Event.COMPLETE, fileLoadHandler);
-				file.load();
+				selectedProjectFile(file);
 			}
-			function fileLoadHandler(event:Event):void {
-				data = FileReference(event.target).data;
-				if (app.stagePane.isEmpty()) doInstall();
-				else DialogBox.confirm('Replace contents of the current project?', app.stage, doInstall);
-			}
-			function doInstall(ignore:* = null):void {
-				installProjectFromFile(fileName, data);
-			}
+			
 			stopAll();
-			var fileList:FileReferenceList = new FileReferenceList();
-			fileList.addEventListener(Event.SELECT, fileSelected);
-			var filter1:FileFilter = new FileFilter('Scratch 2 Project', '*.sb2');
-			var filter2:FileFilter = new FileFilter('Scratch 1.4 Project', '*.sb');
-			try {
-				// Ignore the exception that happens when you call browse() with the file browser open
-				fileList.browse([filter1, filter2]);
-			} catch(e:*) {}
+			var file:File = new File();
+			file.addEventListener(Event.SELECT, fileSelected);
+			file.browseForOpen("choose file to open", fileFilters);
 		}
-		public function selectedProjectFile(filePath:String):void {
+		
+		static private const fileFilters:Array = [
+			new FileFilter('Scratch 2 Project', '*.sb2'),
+			new FileFilter('Scratch 1.4 Project', '*.sb')
+		];
+		
+		public function selectedProjectFile(file:File):void {
 			// Prompt user for a file name and load that file.
 			stopAll();
-			var file:File = new File(filePath);
-			var fileName:String = file.name;
-			var data:ByteArray = FileUtil.ReadBytes(file);
-			if(app.stagePane.isEmpty()) {
-				installProjectFromFile(fileName, data);
-			}else{
-				DialogBox.confirm('Replace contents of the current project?', app.stage, function(ignore:* = null):void {
-					installProjectFromFile(fileName, data);
-				});
+			
+			function doInstall(ignore:* = null):void {
+				installProjectFromFile(file);
+			}
+			
+			if (app.stagePane.isEmpty()) {
+				doInstall();
+			}else {
+				DialogBox.confirm('Replace contents of the current project?', app.stage, doInstall);
 			}
 		}
-		public function installProjectFromFile(fileName:String, data:ByteArray):void {
+		
+		private function installProjectFromFile(file:File):void {
 			// Install a project from a file with the given name and contents.
 			stopAll();
 //			app.oldWebsiteURL = '';
 			app.loadInProgress = true;
-			installProjectFromData(data);
-			app.setProjectName(fileName);
+			installProjectFromData(FileUtil.ReadBytes(file));
+			app.setProjectFile(file);
 			setTimeout(ConnectionManager.sharedManager().onReOpen,1000);
 		}
 	
@@ -561,9 +553,9 @@ package scratch {
 			}
 		}
 	
-		public function checkForGraphicEffects():void {
+//		public function checkForGraphicEffects():void {
 //			trace(hasGraphicEffects());
-		}
+//		}
 	
 		// -----------------------------
 		// Ask prompter
@@ -587,7 +579,7 @@ package scratch {
 	
 		public function askPromptShowing():Boolean {
 			var uiLayer:Sprite = app.stagePane.getUILayer();
-			for (var i:int = 0; i < uiLayer.numChildren; i++) {
+			for (var i:int = uiLayer.numChildren-1; i >= 0; i--) {
 				if (uiLayer.getChildAt(i) is AskPrompter)
 					return true;
 			}
@@ -663,17 +655,13 @@ package scratch {
 		}
 		
 		public function getBooleanSerialReceived():Boolean{
-			var b:Boolean =  ParseManager.sharedManager().lines.length>0;
-			//SerialManager.sharedManager().getFirstLine();
-			return b;
+			return ParseManager.sharedManager().lines.length > 0;
 		}
 		public function getBooleanBroadcastReceived(msg:String):Boolean{
-			var b:Boolean = false;
 			if(ParseManager.sharedManager().lines.length>0 && ParseManager.sharedManager().lines[0].indexOf(msg)>-1){
-				b = ParseManager.sharedManager().getFirstLine().indexOf(msg)>-1;
-			//SerialManager.sharedManager().getFirstLine();
+				return ParseManager.sharedManager().getFirstLine().indexOf(msg)>-1;
 			}
-			return b;
+			return false;
 		}
 		public function getTimeString(which:String):* {
 			// Return local time properties.
@@ -882,69 +870,80 @@ package scratch {
 			return false;
 		}
 	
+		static private const variableBlocks:Array = [Specs.SET_VAR, Specs.CHANGE_VAR, "showVariable:", "hideVariable:"];
 		public function allUsesOfVariable(varName:String, owner:ScratchObj):Array {
-			var variableBlocks:Array = [Specs.SET_VAR, Specs.CHANGE_VAR, "showVariable:", "hideVariable:"];
 			var result:Array = [];
 			var stacks:Array = owner.isStage ? allStacks() : owner.scripts;
+			function __iter(b:Block):void {
+				if (b.op == Specs.GET_VAR && b.spec == varName) result.push(b);
+				if (variableBlocks.indexOf(b.op) != -1 && b.args[0].argValue == varName) result.push(b);
+			}
 			for each (var stack:Block in stacks) {
 				// for each block in stack
-				stack.allBlocksDo(function (b:Block):void {
-					if (b.op == Specs.GET_VAR && b.spec == varName) result.push(b);
-					if (variableBlocks.indexOf(b.op) != -1 && b.args[0].argValue == varName) result.push(b);
-				});
+				stack.allBlocksDo(__iter);
 			}
 			return result;
 		}
-		public function allUsesOfList(listName:String, owner:ScratchObj):Array {
-			var listBlocks:Array = ["append:toList:","deleteLine:ofList:", "insert:at:ofList:",
+		static private const listBlocks:Array = ["append:toList:","deleteLine:ofList:", "insert:at:ofList:",
 				"setLine:ofList:to:", "getLine:ofList:",
 				"lineCountOfList:", "list:contains:", "showList:", "hideList:"];
+		
+		public function allUsesOfList(listName:String, owner:ScratchObj):Array {
 			var result:Array = [];
 			var stacks:Array = owner.isStage ? allStacks() : owner.scripts;
+			function __iter(b:Block):void {
+				if (b.op == Specs.GET_LIST && b.spec == listName) {
+					result.push(b);
+				}
+				if (listBlocks.indexOf(b.op) < 0){
+					return;
+				}
+				if(b.args[0].argValue==listName){
+					result.push(b);
+				}
+				if(b.args[b.args.length-1].argValue == listName){
+					result.push(b);
+				}
+				if (b.args.length>1){
+					if(b.args[1].argValue==listName){
+						result.push(b);
+					}
+				}
+			}
 			for each (var stack:Block in stacks) {
 				// for each block in stack
-				stack.allBlocksDo(function (b:Block):void {
-					if (b.op == Specs.GET_LIST && b.spec == listName) result.push(b);
-					if (listBlocks.indexOf(b.op) != -1 )
-					{
-						if(b.args[0].argValue==listName){
-							result.push(b);
-						}
-						if(b.args[b.args.length-1].argValue == listName){
-							result.push(b);
-						}
- 						if (b.args.length>1){
-							if(b.args[1].argValue==listName){
-								result.push(b);
-							}
-						}
-					}
-				});
+				stack.allBlocksDo(__iter);
 			}
 			return result;
 		}
 		public function allCallsOf(callee:String, owner:ScratchObj):Array {
 			var result:Array = [];
+			function __iter(b:Block):void {
+				if (b.op == Specs.CALL && b.spec == callee) result.push(b);
+			}
 			for each (var stack:Block in owner.scripts) {
 				// for each block in stack
-				stack.allBlocksDo(function (b:Block):void {
-					if (b.op == Specs.CALL && b.spec == callee) result.push(b);
-				});
+				stack.allBlocksDo(__iter);
 			}
 			return result;
 		}
 	
 		public function updateCalls():void {
-			allStacksAndOwnersDo(function (b:Block, target:ScratchObj):void {
-				if (b.op == Specs.CALL) {
-					if (target.lookupProcedure(b.spec) == null) {
-						b.base.setColor(0xFF0000);
-						b.base.redraw();
-					}
-					else b.base.setColor(Specs.procedureColor);
-				}
-			});
+			allStacksAndOwnersDo(__updateCalls);
 			clearAllCaches();
+		}
+		
+		private function __updateCalls(b:Block, target:ScratchObj):void
+		{
+			if (b.op != Specs.CALL) {
+				return;
+			}
+			if (target.lookupProcedure(b.spec) == null) {
+				b.base.setColor(0xFF0000);
+				b.base.redraw();
+			}else{
+				b.base.setColor(Specs.procedureColor);
+			}
 		}
 	
 		public function allStacks():Array {
@@ -1174,13 +1173,14 @@ package scratch {
 		}
 		public function enterRequest():void{
 			_isRequest = true;
-			setTimeout(function():void{
-				_requestCount = 0;
-				_isRequest = false;
-			},1);
-			var t:uint = getTimer();
+			setTimeout(__onRequest, 1);
 		}
 		public function exitRequest():void{
+			_isRequest = false;
+		}
+		private function __onRequest():void
+		{
+			_requestCount = 0;
 			_isRequest = false;
 		}
 	}
