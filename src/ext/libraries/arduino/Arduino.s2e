@@ -94,12 +94,18 @@
 		"fr_FR":{
 			"HIGH":"haut",
 			"LOW":"bas",
+			"read pulse pin %n timeout %n":"durée de l'état 1 sur la broche Numérique %n , dans %n µs",
+			"read ultrasonic sensor trig pin %n echo pin %n":"distance mesurée par ultrason : broche TRIG %n , broche ECHO %n",
 			"play tone pin %n on note %d.notes beat %d.beats":"jouer un son sur la broche %n : note %d.notes fréquence %d.beats",
 			"read digital pin %n":"lire l'état logique de la broche %n",
 			"read analog pin (A)%n":"lire la valeur sur la broche Analogique %n",
 			"set digital pin %n output as %d.digital":"mettre l'état logique de la broche %n à %d.digital",
 			"set pwm pin %n output as %d.pwmvalue":"envoyer sur la broche PWM~ %n la valeur %d.pwmvalue",
 			"set servo pin %n angle as %d.servovalue":"orienter le servo-moteur de la broche %n à un angle de %d.servovalue °"
+		},
+		"de_DE":{
+			"read pulse pin %n timeout %n":"lese Puls-Pin %n Timeout %n",
+			"read ultrasonic sensor trig pin %n echo pin %n":"lese Ultraschall-Sensor Trig-Pin %n Echo-Pin %n"
 		}
 	}
 }
