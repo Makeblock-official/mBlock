@@ -108,6 +108,7 @@ package primitives {
 				}
 				return ("" + r1 + r2).substr(0, 10240);
 			};
+			primTable["castDigitToString:"]	= castDigitToString;
 			primTable["letter:of:"]			= primLetterOf;
 			primTable["stringLength:"]		= function(b:*):* { return String(interp.arg(b, 0)).length };
 			
@@ -156,6 +157,10 @@ package primitives {
 			return (Math.random() * (hi - low)) + low;
 		}
 		
+		private function castDigitToString(b:Block):String {
+			var digit:int = interp.numarg(b, 0);
+			return digit.toString();
+		}
 		private function primLetterOf(b:Block):String {
 			var s:String = interp.arg(b, 1);
 			var i:int = interp.numarg(b, 0) - 1;
