@@ -1,9 +1,7 @@
 package extensions
 {
 	import flash.events.Event;
-	import flash.system.System;
 	import flash.utils.ByteArray;
-	import flash.utils.getTimer;
 
 	public class SerialDevice
 	{
@@ -71,6 +69,7 @@ package extensions
 				buffer.writeByte(bytes[i]);
 			}
 			ConnectionManager.sharedManager().sendBytes(buffer);
+			MBlock.app.scriptsPart.onSerialSend(buffer);
 			buffer.clear();
 		}
 		private var l:uint = 0;
