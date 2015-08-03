@@ -2299,3 +2299,34 @@ msgid "Restore Extensions"
 msgstr "还原出厂扩展"
 msgid "Extension Files Updated"
 msgstr "扩展文件已还原"
+
+msgid "Modified"
+msgstr "已修改"
+
+msgid "Save Project As"
+msgstr "另存为"
+
+msgid "I know"
+msgstr "我知道了"
+
+msgid "Check App Update"
+msgstr "检查程序更新"
+
+msgid "Check Asset Update"
+msgstr "检查资源更新"
+
+msgid "Update Complete"
+msgstr "更新完毕"
+
+msgid "There is a newer version"
+msgstr "有新版本可以下载"
+
+msgid "It's already the newest version"
+msgstr "已经是最新版本"
+
+msgid "Download Now"
+msgstr "立即下载"
+
+msgid "Download Later"
+msgstr "稍后下载"
+

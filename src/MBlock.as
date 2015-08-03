@@ -16,7 +16,6 @@ package {
 	import flash.events.UncaughtErrorEvent;
 	import flash.filesystem.File;
 	import flash.geom.Point;
-	import flash.net.FileReference;
 	import flash.net.URLRequest;
 	import flash.system.System;
 	import flash.ui.Keyboard;
@@ -30,6 +29,7 @@ package {
 	import cc.makeblock.mbot.util.AppTitleMgr;
 	import cc.makeblock.mbot.util.PopupUtil;
 	import cc.makeblock.menu.MenuBuilder;
+	import cc.makeblock.updater.AppUpdater;
 	import cc.makeblock.util.FileUtil;
 	import cc.makeblock.util.FlashSprite;
 	
@@ -173,7 +173,7 @@ package {
 			track("/app/launch");
 			NativeApplication.nativeApplication.addEventListener(InvokeEvent.INVOKE,onInvoked);
 			stage.nativeWindow.addEventListener(Event.CLOSING,onExiting);
-			
+			AppUpdater.getInstance().start();
 			stage.align = StageAlign.TOP_LEFT;
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.frameRate = 30;
@@ -232,7 +232,6 @@ package {
 			else runtime.installEmptyProject();
 			
 			fixLayout();
-			UpdaterManager.sharedManager().checkForUpdate();
 			setTimeout(SocketManager.sharedManager, 100);
 			var ver:String = _currentVer;
 			var isFilesAvailable:Boolean = ApplicationManager.sharedManager().documents.resolvePath("mBlock").exists;

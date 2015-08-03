@@ -722,6 +722,10 @@ void updateVar(char * varName,double * var)
 				codeBlock.type = "obj";
 				codeBlock.code = new CodeObj(StringUtil.substitute("{1}.charAt({0}-1)",getCodeBlock(blk[1]).code,(s2.type=="obj")?"String("+s2.code.code+")":"String(\""+s2.code+"\")"));
 				return codeBlock;
+			}else if(blk[0]=="castDigitToString:"){
+				codeBlock.type = "obj";
+				codeBlock.code = new CodeObj(StringUtil.substitute('String({0})',getCodeBlock(blk[1]).code));
+				return codeBlock;
 			}else if(blk[0]=="stringLength:"){
 				s1 = getCodeBlock(blk[1]);
 				codeBlock.type = "obj";

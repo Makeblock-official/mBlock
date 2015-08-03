@@ -8,9 +8,12 @@ package cc.makeblock.mbot.ui.parts
 	import flash.net.URLRequest;
 	import flash.net.navigateToURL;
 	
+	import air.update.ApplicationUpdater;
+	
 	import cc.makeblock.mbot.uiwidgets.extensionMgr.ExtensionUtil;
 	import cc.makeblock.menu.MenuUtil;
 	import cc.makeblock.menu.SystemMenu;
+	import cc.makeblock.updater.AppUpdater;
 	
 	import extensions.BluetoothManager;
 	import extensions.ConnectionManager;
@@ -24,6 +27,7 @@ package cc.makeblock.mbot.ui.parts
 	
 	import util.ApplicationManager;
 	import util.SharedObjectManager;
+	import util.version.VersionManager;
 	
 	public class TopSystemMenu extends SystemMenu
 	{
@@ -321,7 +325,9 @@ package cc.makeblock.mbot.ui.parts
 			if("Forum" == menuItem.name){
 				path = Translator.map(path);
 			}
-			navigateToURL(new URLRequest(path),"_blank");
+			if(path){
+				navigateToURL(new URLRequest(path),"_blank");
+			}
 			
 			switch(menuItem.name)
 			{
@@ -333,6 +339,15 @@ package cc.makeblock.mbot.ui.parts
 					break;
 				default:
 					MBlock.app.track("/OpenHelp/"+menuItem.data.@key);
+			}
+			
+			switch(menuItem.data.@key.toString()){
+				case "check_app_update":
+					AppUpdater.getInstance().start(true);
+					break;
+				case "check_asset_update":
+					VersionManager.sharedManager().start();
+					break;
 			}
 		}
 	}

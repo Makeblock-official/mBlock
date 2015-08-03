@@ -34,7 +34,15 @@ package cc.makeblock.mbot.util
 			app.stage.removeEventListener(MouseEvent.RIGHT_MOUSE_DOWN, app.gh.onRightMouseDown);
 		}
 		
-		static public function showConfirm(title:String, callback:Function):void
+		static public function showAlert(title:String):void
+		{
+			var panel:JOptionPane = PopupUtil.showConfirm(title, null);
+			panel.getCancelButton().getParent().remove(panel.getCancelButton());
+			panel.getYesButton().setText(Translator.map("I know"));
+			panel.getFrame().setModal(false);
+		}
+		
+		static public function showConfirm(title:String, callback:Function):JOptionPane
 		{
 			var panel:JOptionPane = showQuitAlert(callback);
 			
@@ -45,6 +53,7 @@ package cc.makeblock.mbot.util
 			
 			panel.getFrame().setSizeWH(240, 90);
 			AsWingUtils.centerLocate(panel.getFrame());
+			return panel;
 		}
 		
 		static public function showQuitAlert(callback:Function):JOptionPane
@@ -59,21 +68,23 @@ package cc.makeblock.mbot.util
 				null,
 				function(value:int):void{
 					enableRightMouseEvent();
-					callback(value);
+					if(callback != null){
+						callback(value);
+					}
 			}, null, true, null, JOptionPane.YES | JOptionPane.NO | JOptionPane.CANCEL);
 			
 			panel.getFrame().setClosable(false);
 			centerFrameTitle(panel.getFrame());
 			
-			panel.getYesButton().setPreferredWidth(80);
-			panel.getNoButton().setPreferredWidth(80);
-			panel.getCancelButton().setPreferredWidth(80);
+			panel.getYesButton().setPreferredWidth(100);
+			panel.getNoButton().setPreferredWidth(100);
+			panel.getCancelButton().setPreferredWidth(100);
 			
 			panel.getYesButton().pack();
 			panel.getNoButton().pack();
 			panel.getCancelButton().pack();
 			
-			panel.getFrame().setSizeWH(280, 90);
+			panel.getFrame().setSizeWH(340, 90);
 			
 			var window:NativeWindow = panel.stage.nativeWindow;
 			var frame:JFrame = panel.getFrame();
