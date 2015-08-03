@@ -94,6 +94,9 @@ public class ScriptsPart extends UIPart {
 	private var isByteDisplayMode:Boolean = true;
 	private var displayModeBtn:Button = new Button(Translator.map("binary mode"));
 	
+	private var isByteInputMode:Boolean = false;
+	private var inputModeBtn:Button = new Button(Translator.map("char mode"));
+	
 	public function ScriptsPart(app:MBlock) {
 		this.app = app;
 
@@ -162,6 +165,7 @@ public class ScriptsPart extends UIPart {
 		
 		sendBt.addEventListener(MouseEvent.CLICK,onSendSerial);
 		displayModeBtn.addEventListener(MouseEvent.CLICK,onDisplayModeChange);
+		inputModeBtn.addEventListener(MouseEvent.CLICK,onInputModeChange);
 		
 		arduinoFrame.addChild(openBt);
 		arduinoFrame.addChild(arduinoTextPane);
@@ -170,8 +174,35 @@ public class ScriptsPart extends UIPart {
 		arduinoFrame.addChild(sendTextPane);
 		arduinoFrame.addChild(sendBt);
 		arduinoFrame.addChild(displayModeBtn);
+		arduinoFrame.addChild(inputModeBtn);
 		addChild(arduinoFrame);
 		SerialManager.sharedManager().addEventListener(Event.CHANGE,onSerialDataReceived);
+	}
+	
+	private function onInputModeChange(evt:MouseEvent):void
+	{
+		var str:String = sendTextPane.textField.text;
+		isByteInputMode = !isByteInputMode;
+		if(isByteInputMode){
+			sendTextPane.textField.restrict = "0-9 a-fA-F";
+			inputModeBtn.setLabel(Translator.map("binary mode"));
+		}else{
+			sendTextPane.textField.restrict = null;
+			inputModeBtn.setLabel(Translator.map("char mode"));
+		}
+		if(str.length <= 0){
+			return;
+		}
+		var bytes:ByteArray;
+		if(isByteInputMode){
+			bytes = new ByteArray();
+			bytes.writeUTFBytes(str);
+			sendTextPane.textField.text = HexUtil.bytesToString(bytes);
+		}else{
+			bytes = HexUtil.stringToBytes(str);
+			sendTextPane.textField.text = bytes.readUTFBytes(bytes.length);
+		}
+		bytes.clear();
 	}
 	
 	private function onDisplayModeChange(evt:MouseEvent):void
@@ -184,7 +215,7 @@ public class ScriptsPart extends UIPart {
 		}
 	}
 	public function appendMessage(msg:String):void{
-		messageTextPane.textField.text+=(msg+"\r");
+		messageTextPane.textField.appendText(msg+"\n");
 		messageTextPane.textField.scrollV = messageTextPane.textField.maxScrollV-1;
 	}
 	
@@ -194,7 +225,7 @@ public class ScriptsPart extends UIPart {
 			appendMsgWithTimestamp(HexUtil.bytesToString(bytes), true);
 		}else{
 			bytes.position = 0;
-			var str:String = bytes.readMultiByte(bytes.bytesAvailable, "us-ascii");
+			var str:String = bytes.readUTFBytes(bytes.length);
 			appendMsgWithTimestamp(str, true);
 		}
 	}
@@ -216,12 +247,28 @@ public class ScriptsPart extends UIPart {
 		appendMessage(""+(date.month+1)+"-"+date.date+" "+date.hours+":"+date.minutes+":"+(date.seconds+date.milliseconds/1000)+" < "+SerialManager.sharedManager().asciiString.split("\r\n").join("")+"\n");
 	}
 	private function onSendSerial(evt:MouseEvent):void{
-		if(SerialManager.sharedManager().isConnected){
-			var date:Date = new Date;
-			messageTextPane.append(""+(date.month+1)+"-"+date.date+" "+date.hours+":"+date.minutes+":"+(date.seconds+date.milliseconds/1000)+" > "+sendTextPane.textField.text+"\n");
-			SerialManager.sharedManager().sendString(sendTextPane.textField.text+"\n");
-			messageTextPane.textField.scrollV = messageTextPane.textField.maxScrollV-1;
+		if(!SerialManager.sharedManager().isConnected){
+			return;
 		}
+		var str:String = sendTextPane.textField.text;
+		if(str.length <= 0){
+			return;
+		}
+		var bytes:ByteArray;
+		if(isByteInputMode){
+			bytes = HexUtil.stringToBytes(str);
+			SerialManager.sharedManager().sendBytes(bytes);
+		}else{
+			bytes = new ByteArray();
+			bytes.writeUTFBytes(str);
+			SerialManager.sharedManager().sendString(str+"\n");
+		}
+		onSerialSend(bytes);
+		bytes.clear();
+//		var date:Date = new Date;
+//		messageTextPane.append(""+(date.month+1)+"-"+date.date+" "+date.hours+":"+date.minutes+":"+(date.seconds+date.milliseconds/1000)+" > "+sendTextPane.textField.text+"\n");
+		
+//		messageTextPane.textField.scrollV = messageTextPane.textField.maxScrollV-1;
 	}
 	public function get isArduinoMode():Boolean{
 		return arduinoFrame.visible;
@@ -426,6 +473,7 @@ public class ScriptsPart extends UIPart {
 		openBt.setLabel(Translator.map("Edit with Arduino IDE"));
 		sendBt.setLabel(Translator.map("Send"));
 		displayModeBtn.setLabel(Translator.map(isByteDisplayMode ? "binary mode" :  "char mode"));
+		inputModeBtn.setLabel(Translator.map(isByteInputMode ? "binary mode" :  "char mode"));
 	}
 	public function updateSpriteWatermark():void {
 		var target:ScratchObj = app.viewedObj();
@@ -507,8 +555,10 @@ public class ScriptsPart extends UIPart {
 		sendTextPane.setWidthHeight(arduinoWidth-sendBt.width-sendTextPane.x-10,20);
 		sendBt.x = arduinoWidth - sendBt.width - 10;
 		sendBt.y = arduinoHeight - 35;
-		displayModeBtn.x = lineNumText.x;
-		displayModeBtn.y = sendBt.y;
+		displayModeBtn.x = messageTextPane.x + messageTextPane.width - displayModeBtn.width;
+		displayModeBtn.y = messageTextPane.y;
+		inputModeBtn.x = lineNumText.x;
+		inputModeBtn.y = sendBt.y;
 		arduinoTextPane.updateScrollbar(null);
 		messageTextPane.updateScrollbar(null);
 		spriteWatermark.x = w - arduinoWidth - 60;
