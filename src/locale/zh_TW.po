@@ -2179,3 +2179,33 @@ msgid "Restore Extensions"
 msgstr "還原出廠擴展"
 msgid "Extension Files Updated"
 msgstr "擴展文件已還原"
+
+msgid "Modified"
+msgstr "已修改"
+
+msgid "Save Project As"
+msgstr "另存為"
+
+msgid "I know"
+msgstr "我知道了"
+
+msgid "Check App Update"
+msgstr "檢查程序更新"
+
+msgid "Check Asset Update"
+msgstr "檢查資源更新"
+
+msgid "Update Complete"
+msgstr "更新完畢"
+
+msgid "There is a newer version"
+msgstr "有新版本可以下載"
+
+msgid "It's already the newest version"
+msgstr "已經是最新版本"
+
+msgid "Download Now"
+msgstr "立即下載"
+
+msgid "Download Later"
+msgstr "稍後下載"

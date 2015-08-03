@@ -16,6 +16,8 @@ package cc.makeblock.updater
 	import cc.makeblock.util.FileUtil;
 	
 	import org.aswing.JOptionPane;
+	
+	import translation.Translator;
 
 	public class AppUpdater extends EventDispatcher
 	{
@@ -33,6 +35,7 @@ package cc.makeblock.updater
 		
 		private var ldr:URLLoader;
 		private var frame:UpdateFrame;
+		private var needNotice:Boolean;
 		/*
 		private var needUpdateApp:Boolean;
 		private var needUpdateAsset:Boolean;
@@ -57,8 +60,14 @@ package cc.makeblock.updater
 			if(null == result){
 				return;
 			}
+			var panel:JOptionPane;
 			if(isSourceVerGreatThan(result[1], MBlock.versionString.slice(1))){
-				PopupUtil.showConfirm("有新版本可以下载", __onConfirm);
+				panel = PopupUtil.showConfirm(Translator.map("There is a newer version"), __onConfirm);
+				panel.getYesButton().setText(Translator.map("Download Now"));
+				panel.getCancelButton().setText(Translator.map("Download Later"));
+				panel.getFrame().setModal(false);
+			}else if(needNotice){
+				PopupUtil.showAlert(Translator.map("It's already the newest version"));
 			}
 			/*
 			parseData(JSON.parse(ldr.data));
@@ -85,8 +94,9 @@ package cc.makeblock.updater
 //			closeAndNotify();
 		}
 		
-		public function start():void
+		public function start(needNotice:Boolean=false):void
 		{
+			this.needNotice = needNotice;
 			ldr.load(new URLRequest(CONFIG_PATH));
 		}
 		/*

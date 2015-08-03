@@ -6,9 +6,10 @@ package util.version
 	import flash.net.URLRequest;
 	import flash.utils.setTimeout;
 	
+	import cc.makeblock.mbot.util.PopupUtil;
+	
 	import extensions.DeviceManager;
 	
-	import util.ApplicationManager;
 	import util.LogManager;
 	import util.SharedObjectManager;
 
@@ -68,6 +69,7 @@ package util.version
 				res.load();
 			}else{
 				LogManager.sharedManager().log("finish");
+				PopupUtil.showAlert("Update Complete");
 				//MBlock.app.extensionManager.clearImportedExtensions();
 				setTimeout(DeviceManager.sharedManager().onSelectBoard,1000,DeviceManager.sharedManager().currentBoard);
 				MBlock.app.extensionManager.importExtension();

@@ -91,6 +91,7 @@
 		<item name="License" label="许可" key="license" url="http://mblock.cc/license" />
 		<item name="Acknowledgements" label="鸣谢" key="acknowledgements" url="http://mblock.cc/acknowledgements" />
 		<item name="About" label="关于" key="about" url="http://mblock.cc/about" />
-		<item name="Check Update" label="检查更新" key="check_update" url="http://mblock.cc/download/" />
+		<item name="Check App Update" label="检查应用更新" key="check_app_update" />
+		<item name="Check Asset Update" label="检查资源更新" key="check_asset_update" />
 	</subMenu>
 </menu>
