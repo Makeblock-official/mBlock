@@ -142,7 +142,7 @@ package {
 		private var ga:GATracker;
 		private var tabsPart:TabsPart;
 		private var _welcomeView:Loader;
-		private var _currentVer:String = "07.23.001";
+		private var _currentVer:String = "07.31.003";
 		public function MBlock(){
 			app = this;
 			addEventListener(Event.ADDED_TO_STAGE,initStage);
@@ -237,6 +237,7 @@ package {
 			if(!SharedObjectManager.sharedManager().getObject(versionString+".0."+ver,false)){
 				//SharedObjectManager.sharedManager().clear();
 				SharedObjectManager.sharedManager().setObject(versionString+".0."+ver,true);
+				extensionManager.copyLocalFiles();
 				//SharedObjectManager.sharedManager().setObject("board","mbot_uno");
 			}
 			//VersionManager.sharedManager().start(); //在线更新资源文件

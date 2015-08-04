@@ -34,7 +34,7 @@ package cc.makeblock.updater
 		static public const CONFIG_PATH:String = "http://mblock.cc/download/";
 		
 		private var ldr:URLLoader;
-		private var frame:UpdateFrame;
+//		private var frame:UpdateFrame;
 		private var needNotice:Boolean;
 		/*
 		private var needUpdateApp:Boolean;
