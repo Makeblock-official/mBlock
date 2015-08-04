@@ -2309,12 +2309,6 @@ msgstr "另存为"
 msgid "I know"
 msgstr "我知道了"
 
-msgid "Check App Update"
-msgstr "检查程序更新"
-
-msgid "Check Asset Update"
-msgstr "检查资源更新"
-
 msgid "Update Complete"
 msgstr "更新完毕"
 
@@ -2330,3 +2324,11 @@ msgstr "立即下载"
 msgid "Download Later"
 msgstr "稍后下载"
 
+msgid "Others"
+msgstr "其它"
+
+msgid "Check Software Update"
+msgstr "检查软件更新"
+
+msgid "Check Assets Update"
+msgstr "检查资源更新"
