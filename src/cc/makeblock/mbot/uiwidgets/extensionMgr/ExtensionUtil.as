@@ -111,9 +111,9 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 		
 		static private const s2eKeys:Array = [
 			"extensionName",
-			"extensionPort",
+//			"extensionPort",
 			"sort",
-			"firmware",
+//			"firmware",
 			"javascriptURL",
 			"blockSpecs"
 		];
