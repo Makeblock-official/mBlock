@@ -10,7 +10,6 @@ package {
 	import flash.display.StageScaleMode;
 	import flash.events.ErrorEvent;
 	import flash.events.Event;
-	import flash.events.InvokeEvent;
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
 	import flash.events.UncaughtErrorEvent;
@@ -32,6 +31,7 @@ package {
 	import cc.makeblock.updater.AppUpdater;
 	import cc.makeblock.util.FileUtil;
 	import cc.makeblock.util.FlashSprite;
+	import cc.makeblock.util.InvokeMgr;
 	
 	import extensions.BluetoothManager;
 	import extensions.ExtensionManager;
@@ -83,8 +83,6 @@ package {
 	import util.ProjectIO;
 	import util.Server;
 	import util.SharedObjectManager;
-	import util.UpdaterManager;
-	import util.version.VersionManager;
 	
 	import watchers.ListWatcher;
 
@@ -171,13 +169,11 @@ package {
 			ApplicationManager.sharedManager().isCatVersion = NativeApplication.nativeApplication.applicationDescriptor.toString().indexOf("猫友")>-1;
 			ga = new GATracker(this,"UA-54268669-1","AS3",false);
 			track("/app/launch");
-			NativeApplication.nativeApplication.addEventListener(InvokeEvent.INVOKE,onInvoked);
+			new InvokeMgr();
 			stage.nativeWindow.addEventListener(Event.CLOSING,onExiting);
 			AppUpdater.getInstance().start();
 			stage.align = StageAlign.TOP_LEFT;
 			stage.scaleMode = StageScaleMode.NO_SCALE;
-			stage.frameRate = 30;
-			this.scaleX = this.scaleY = 1.0;
 			var f:File = File.applicationDirectory.resolvePath("Arduino");
 			trace("app:",f.exists);
 			if(SharedObjectManager.sharedManager().available("labelSize")){
@@ -290,15 +286,7 @@ package {
 				(ApplicationManager.sharedManager().isCatVersion?"/myh/":"/") + MBlock.versionString + msg
 			);
 		}
-		private function onInvoked(evt:InvokeEvent):void{
-			if(evt.arguments.length <= 0){
-				return;
-			}
-			var arg:String = evt.arguments[0];
-			if(Boolean(arg)){
-				runtime.selectedProjectFile(new File(arg));
-			}
-		}
+		
 		protected function initTopBarPart():void {
 			topBarPart = new TopBarPart(this);
 		}
