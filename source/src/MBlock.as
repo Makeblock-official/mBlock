@@ -82,8 +82,6 @@ package {
 	import uiwidgets.ScriptsPane;
 	
 	import util.ApplicationManager;
-	import util.Clicker;
-	import util.ClickerManager;
 	import util.GestureHandler;
 	import util.LogManager;
 	import util.ProjectIO;
@@ -91,7 +89,6 @@ package {
 	import util.SharedObjectManager;
 	import util.Transition;
 	import util.UpdaterManager;
-	import util.version.VersionManager;
 	
 	import watchers.ListWatcher;
 

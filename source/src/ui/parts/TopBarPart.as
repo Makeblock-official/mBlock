@@ -49,8 +49,6 @@ package ui.parts {
 	import uiwidgets.SimpleTooltips;
 	
 	import util.ApplicationManager;
-	import util.Clicker;
-	import util.ClickerManager;
 
 	public class TopBarPart extends UIPart {
 	
