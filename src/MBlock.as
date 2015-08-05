@@ -158,6 +158,7 @@ package {
 				errorText = (evt.error as ErrorEvent).text;
 			}
 			trace(errorText);
+			JOptionPane.showInputDialog("","",null,errorText);
 		}
 		
 		private function initStage(evt:Event):void{

@@ -220,11 +220,13 @@ public class Interpreter {
 	}
 
 	public function stepThreads():void {
-		startTime = getTimer();
-		var workTime:int = (0.75 * 1000) / app.stage.frameRate; // work for up to 75% of one frame time
 		doRedraw = false;
-		currentMSecs = getTimer();
-		if (threads.length == 0) return;
+		startTime = getTimer();
+		currentMSecs = startTime;
+		if(threads.length <= 0){
+			return;
+		}
+		var workTime:int = (0.75 * 1000) / app.stage.frameRate; // work for up to 75% of one frame time
 		while ((currentMSecs - startTime) < workTime) {
 			if (warpThread && (warpThread.block == null)) {
 				clearWarpBlock();

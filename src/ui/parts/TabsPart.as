@@ -23,9 +23,13 @@
 // This part holds the tab buttons to view scripts, costumes/scenes, or sounds.
 
 package ui.parts {
-	import flash.display.*;
-	import flash.text.*;
+	import flash.display.Graphics;
+	import flash.display.Sprite;
+	import flash.text.TextField;
+	import flash.text.TextFormat;
+	
 	import translation.Translator;
+	
 	import uiwidgets.IconButton;
 
 public class TabsPart extends UIPart {
@@ -35,18 +39,26 @@ public class TabsPart extends UIPart {
 	public var soundsTab:IconButton;
 
 	public function TabsPart(app:MBlock) {
-		function selectScripts(b:IconButton):void { app.setTab('scripts') }
-		function selectImages(b:IconButton):void { app.setTab('images') }
-		function selectSounds(b:IconButton):void { app.setTab('sounds') }
-
 		this.app = app;
-		scriptsTab = makeTab('Scripts', selectScripts);
-		imagesTab = makeTab('Images', selectImages); // changed to 'Costumes' or 'Scenes' by refresh()
-		soundsTab = makeTab('Sounds', selectSounds);
+		scriptsTab = makeTab('Scripts', __onSelectScripts);
+		imagesTab = makeTab('Images', __onSelectImages); // changed to 'Costumes' or 'Scenes' by refresh()
+		soundsTab = makeTab('Sounds', __onSelectSounds);
 		addChild(scriptsTab);
 		addChild(imagesTab);
 		addChild(soundsTab);
 		scriptsTab.turnOn();
+	}
+	
+	private function __onSelectScripts(b:IconButton):void {
+		app.setTab('scripts');
+	}
+	
+	private function __onSelectImages(b:IconButton):void {
+		app.setTab('images');
+	}
+	
+	private function __onSelectSounds(b:IconButton):void {
+		app.setTab('sounds');
 	}
 
 	public static function strings():Array {
