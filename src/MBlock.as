@@ -25,6 +25,7 @@ package {
 	
 	import cc.makeblock.mbot.lookandfeel.MyLookAndFeel;
 	import cc.makeblock.mbot.ui.parts.TopSystemMenu;
+	import cc.makeblock.mbot.uiwidgets.errorreport.ErrorReportFrame;
 	import cc.makeblock.mbot.util.AppTitleMgr;
 	import cc.makeblock.mbot.util.PopupUtil;
 	import cc.makeblock.menu.MenuBuilder;
@@ -157,8 +158,9 @@ package {
 			}else if(evt.error is ErrorEvent){
 				errorText = (evt.error as ErrorEvent).text;
 			}
-			trace(errorText);
-			JOptionPane.showInputDialog("","",null,errorText);
+			var f:ErrorReportFrame = new ErrorReportFrame();
+			f.setText(errorText);
+			f.show();
 		}
 		
 		private function initStage(evt:Event):void{
