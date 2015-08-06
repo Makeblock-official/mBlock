@@ -49,7 +49,7 @@ package interpreter {
 		public var startDelayCount:int;	// number of frames to delay before starting
 	
 		// the following state is pushed and popped when running substacks
-		public var block:Block;
+		private var block:Block;
 		public var isLoop:Boolean;
 		public var firstTime:Boolean;	// used by certain control structures
 		public var tmp:int;				// used by repeat and wait
@@ -98,6 +98,7 @@ package interpreter {
 			if (sp >= (stack.length - 1)) growStack();
 			var old:StackFrame = stack[sp++];
 			old.save();
+			old.block = block;
 			// initForBlock
 			reset(b);
 		}
@@ -106,6 +107,7 @@ package interpreter {
 			if (sp == 0) return false;
 			var old:StackFrame = stack[--sp];
 			old.restore();
+			block = old.block;
 			return true;
 		}
 	
@@ -161,6 +163,32 @@ package interpreter {
 			for (var i:int = s; i < n; ++i)
 				stack[i] = new StackFrame(this);
 		}
-	
+		
+		public function isBlockNull():Boolean
+		{
+			return null == block;
+		}
+		
+		public function isBlockEquals(other:Block):Boolean
+		{
+			return block == other;
+		}
+		
+		public function isBlockOpEquals(op:String):Boolean
+		{
+			return block.op == op;
+		}
+		
+		public function evalCmd(interp:Interpreter):void
+		{
+			interp.evalCmd(block);
+		}
+		
+		public function nextBlock():void
+		{
+			if(block != null){
+				block = block.nextBlock;
+			}
+		}
 	}
 }

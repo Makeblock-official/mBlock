@@ -19,7 +19,7 @@ package interpreter
 		
 		public function save():void
 		{
-			block 		= thread.block;
+//			block 		= thread.block;
 			isLoop 		= thread.isLoop;
 			firstTime 	= thread.firstTime;
 			tmp 		= thread.tmp;
@@ -28,7 +28,7 @@ package interpreter
 		
 		public function restore():void
 		{
-			thread.block		= block;
+//			thread.block		= block;
 			thread.isLoop		= isLoop;
 			thread.firstTime	= firstTime;
 			thread.tmp			= tmp;

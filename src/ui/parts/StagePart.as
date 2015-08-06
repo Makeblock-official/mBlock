@@ -282,7 +282,7 @@ public class StagePart extends UIPart {
 		// Update the run/stop buttons.
 		// Note: To ensure that the user sees at least a flash of the
 		// on button, it stays on a minumum of two display cycles.
-		if (app.interp.threadCount() > 0) threadStarted();
+		if (app.interp.hasThreads()) threadStarted();
 		else { // nothing running
 			if (runButtonOnTicks > 2) {
 				runButton.turnOff();
