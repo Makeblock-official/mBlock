@@ -34,7 +34,6 @@ package blocks {
 import flash.display.DisplayObject;
 import flash.display.DisplayObjectContainer;
 import flash.display.Sprite;
-import flash.events.Event;
 import flash.events.FocusEvent;
 import flash.events.MouseEvent;
 import flash.filters.GlowFilter;
@@ -53,16 +52,15 @@ import scratch.ScratchStage;
 
 import translation.Translator;
 
-import uiwidgets.DialogBox;
 import uiwidgets.ScriptsPane;
 
 import util.ReadStream;
 
 public class Block extends Sprite {
 
-	private const minCommandWidth:int = 36;
-	private const minHatWidth:int = 80;
-	private const minLoopWidth:int = 80;
+	static private const minCommandWidth:int = 36;
+	static private const minHatWidth:int = 80;
+	static private const minLoopWidth:int = 80;
 
 	public static var argTextFormat:TextFormat;
 	public static var blockLabelFormat:TextFormat;
@@ -247,7 +245,7 @@ public class Block extends Sprite {
 		var b:Block = new Block(spec, "o", Specs.procedureColor, 'proc_declaration');
 		if (!parameterNames) parameterNames = [];
 		for (var i:int = 0; i < parameterNames.length; i++) {
-			var argType:String = (typeof(defaultArgValues[i]) == 'boolean') ? 'b' : 'r';
+			var argType:String = defaultArgValues[i] is Boolean ? 'b' : 'r';
 			var pBlock:Block = new Block(parameterNames[i], argType, Specs.parameterColor, Specs.GET_PARAM);
 			pBlock.parameterIndex = i;
 			b.setArg(i, pBlock);
@@ -289,10 +287,10 @@ public class Block extends Sprite {
 	}
 
 	private function addLabelsAndArgs(spec:String, c:int):void {
-		var specParts:Array = ReadStream.tokenize(spec), i:int;
+		var specParts:Array = ReadStream.tokenize(spec);
 		labelsAndArgs = [];
 		argTypes = [];
-		for (i = 0; i < specParts.length; i++) {
+		for (var i:int = 0; i < specParts.length; i++) {
 			var o:DisplayObject = argOrLabelFor(specParts[i], c);
 			labelsAndArgs.push(o);
 			var argType:String = 'icon';
@@ -505,9 +503,8 @@ public class Block extends Sprite {
 	private function copyArgs(srcArgs:Array):void {
 		// called on a newly created block that is being duplicated to copy the
 		// argument values and/or expressions from the source block's arguments
-		var i:int;
 		collectArgs();
-		for (i = 0; i < srcArgs.length; i++) {
+		for (var i:int = 0; i < srcArgs.length; i++) {
 			var argToCopy:* = srcArgs[i];
 			if (argToCopy is BlockArg) {
 				var arg:BlockArg = argToCopy;
@@ -533,18 +530,21 @@ public class Block extends Sprite {
 				var a:BlockArg = new BlockArg(argToCopy.type, -1);
 				a.argValue = argToCopy.argValue;
 				args.push(a);
+				addChild(a);
 			}
 			if (argToCopy is Block) {
-				args.push(Block(argToCopy).duplicate(true));
+				var block:Block = argToCopy as Block;
+				block = block.duplicate(true);
+				args.push(block);
+				addChild(block);
 			}
 		}
-		for each (var arg:DisplayObject in args) addChild(arg); // fix for cloned proc bug xxx
+//		for each (var arg:DisplayObject in args) addChild(arg); // fix for cloned proc bug xxx
 	}
 
 	private function collectArgs():void {
-		var i:int;
 		args = [];
-		for (i = 0; i < labelsAndArgs.length; i++) {
+		for (var i:int = 0; i < labelsAndArgs.length; i++) {
 			var a:* = labelsAndArgs[i];
 			if ((a is Block) || (a is BlockArg)) args.push(a);
 		}
@@ -651,21 +651,27 @@ public class Block extends Sprite {
 
 	private function owningBlock():Block {
 		var b:Block = this;
+		/*
 		while (true) {
 			if (b.parent is Block) {
-				b = Block(b.parent);
+				b = b.parent as Block;
 				if (!b.isReporter) return b; // owning command block
 			} else {
 				return b; // top-level reporter block
 			}
 		}
-		return b; // never gets here
+		*/
+		while(b.parent is Block){
+			b = b.parent as Block;
+			if (!b.isReporter) break; // owning command block
+		}
+		return b; // top-level reporter block
 	}
 
 	public function topBlock():Block {
 		var result:DisplayObject = this;
 		while (result.parent is Block) result = result.parent;
-		return Block(result);
+		return result as Block;
 	}
 
 	public function bottomBlock():Block {
@@ -719,19 +725,22 @@ public class Block extends Sprite {
 		// Note: Unlike most menu() mehtods, this method invokes
 		// the menu itself rather than returning a menu to the caller.
 		if (MenuHandlerFunction == null) return;
-		if (isEmbeddedInProcHat()) MenuHandlerFunction(null, parent);
-		else MenuHandlerFunction(null, this);
+		var target:Object = isEmbeddedInProcHat() ? parent : this;
+		MenuHandlerFunction(null, target);
 	}
 
 	public function handleTool(tool:String, evt:MouseEvent):void {
-		if (isEmbeddedParameter()) return;
-		if (!isInPalette()) {
-			if ('copy' == tool) duplicateStack(10, 5);
-			if ('cut' == tool) deleteStack();
+		if (isEmbeddedParameter() || isInPalette()) return;
+		switch(tool){
+			case "copy":
+				duplicateStack(10, 5);
+				break;
+			case "cut":
+				deleteStack();
+				break;
 		}
-		//if (tool == 'help') showHelp();
 	}
-
+/*
 	public function showHelp():void {
 		var i:int = -1;
 		if((i = op.indexOf('.')) > -1) {
@@ -745,7 +754,7 @@ public class Block extends Sprite {
 			MBlock.app.showTip(op);
 		}
 	}
-
+*/
 	public function duplicateStack(deltaX:Number, deltaY:Number):void {
 		if (isProcDef()) return; // don't duplicate procedure definition
 		var forStage:Boolean = MBlock.app.viewedObj() && MBlock.app.viewedObj().isStage;
@@ -798,20 +807,19 @@ public class Block extends Sprite {
 	}
 	private function removeComments():void{
 		var comments:Array = attachedCommentsIn(MBlock.app.scriptsPane);
-		if (comments.length) {
-			for each (var c:ScratchComment in comments) {
-				c.parent.removeChild(c);
-			}
-			MBlock.app.scriptsPane.fixCommentLayout();
+		if (comments.length <= 0) {
+			return;
 		}
+		for each (var c:ScratchComment in comments) {
+			c.parent.removeChild(c);
+		}
+		MBlock.app.scriptsPane.fixCommentLayout();
 	}
 	private function attachedCommentsIn(scriptsPane:ScriptsPane):Array {
-		var allBlocks:Array = [];
-		allBlocksDo(function (b:Block):void {
-			allBlocks.push(b);
-		});
 		var result:Array = []
 		if (!scriptsPane) return result;
+		var allBlocks:Array = [];
+		allBlocksDo(allBlocks.push);
 		for (var i:int = 0; i < scriptsPane.numChildren; i++) {
 			var c:ScratchComment = scriptsPane.getChildAt(i) as ScratchComment;
 			if (c && c.blockRef && allBlocks.indexOf(c.blockRef) != -1) {
