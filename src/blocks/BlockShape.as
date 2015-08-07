@@ -54,14 +54,14 @@ public class BlockShape extends Shape {
 	public static const EmptySubstackH:int = 12;
 	public static const SubstackInset:int = 15;
 
-	private const CornerInset:int = 3;
-	private const InnerCornerInset:int = 2;
-	private const BottomBarH:int = 16; // height of the bottom bar of a C or E block
-	private const DividerH:int = 18; // height of the divider bar in an E block
-	private const NotchL1:int = 13;
-	private const NotchL2:int = NotchL1 + NotchDepth;
-	private const NotchR1:int = NotchL2 + 8;
-	private const NotchR2:int = NotchR1 + NotchDepth;
+	static private const CornerInset:int = 3;
+	static private const InnerCornerInset:int = 2;
+	static private const BottomBarH:int = 16; // height of the bottom bar of a C or E block
+	static private const DividerH:int = 18; // height of the divider bar in an E block
+	static private const NotchL1:int = 13;
+	static private const NotchL2:int = NotchL1 + NotchDepth;
+	static private const NotchR1:int = NotchL2 + 8;
+	static private const NotchR2:int = NotchR1 + NotchDepth;
 
 	// Variables
 	public var color:uint;
@@ -182,14 +182,12 @@ public class BlockShape extends Shape {
 
 	private function dropFeedbackFilters(forReporter:Boolean):Array {
 		// filters for command/reporter block drop feedback
-		var f:GlowFilter;
+		var f:GlowFilter = new GlowFilter(0xFFFFFF);
 		if (forReporter) {
-			f = new GlowFilter(0xFFFFFF);
 			f.strength = 5;
 			f.blurX = f.blurY = 8;
 			f.quality = 2;
 		} else {
-			f = new GlowFilter(0xFFFFFF);
 			f.strength = 12;
 			f.blurX = f.blurY = 6;
 			f.inner = true;
@@ -228,6 +226,7 @@ public class BlockShape extends Shape {
 	}
 
 	private function drawNumberShape(g:Graphics):void {
+		/*
 		var centerY:int = topH / 2;
 		g.moveTo(centerY, topH);
 		curve(centerY, topH, 0, centerY);
@@ -235,6 +234,13 @@ public class BlockShape extends Shape {
 		g.lineTo(w - centerY, 0);
 		curve(w - centerY, 0, w, centerY);
 		curve(w, centerY, w - centerY, topH);
+		*/
+		if(w > topH){
+			g.drawRoundRect(0, 0, w, topH, topH, topH);
+		}else{
+			var r:Number = 0.5 * topH;
+			g.drawCircle(r, r, r);
+		}
 	}
 
 	private function drawCmdShape(g:Graphics):void {
@@ -313,12 +319,12 @@ public class BlockShape extends Shape {
 		if (hasLoopArrow) drawLoopArrow(g, h1 + BottomBarH);
 	}
 
-	private function drawLoopArrow(g:Graphics, h:int):void {
-		// Draw the arrow on loop blocks.
-		var arrow:Array = [
+	static private const arrow:Array = [
 			[8, 0], [2, -2], [0, -3],
 			[3, 0], [-4, -5], [-4, 5], [3, 0],
 			[0, 3], [-8, 0], [0, 2]];
+	private function drawLoopArrow(g:Graphics, h:int):void {
+		// Draw the arrow on loop blocks.
 		g.beginFill(0, 0.3);
 		drawPath(g, w - 15, h - 3, arrow); // shadow
 		g.beginFill(0xFFFFFF, 0.9);
