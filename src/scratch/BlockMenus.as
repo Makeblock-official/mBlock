@@ -292,9 +292,9 @@ public class BlockMenus implements DragClient {
 		showMenu(m);
 	}
 
-	private function booleanSensorMenu(evt:MouseEvent):void {
-		var sensorNames:Array = [
+	static private const sensorNames:Array = [
 			'button pressed', 'A connected', 'B connected', 'C connected', 'D connected'];
+	private function booleanSensorMenu(evt:MouseEvent):void {
 		var m:Menu = new Menu(setBlockArg, 'booleanSensor');
 		for each (var s:String in sensorNames) m.addItem(s);
 		showMenu(m);
@@ -353,9 +353,9 @@ public class BlockMenus implements DragClient {
 		showMenu(m);
 	}
 
+	static private const namedKeys:Array = ['up arrow', 'down arrow', 'right arrow', 'left arrow', 'space'];
 	private function keyMenu(evt:MouseEvent):void {
 		var ch:int;
-		var namedKeys:Array = ['up arrow', 'down arrow', 'right arrow', 'left arrow', 'space'];
 		var m:Menu = new Menu(setBlockArg, 'key');
 		for each (var s:String in namedKeys) m.addItem(s);
 		for (ch = 97; ch < 123; ch++) m.addItem(String.fromCharCode(ch)); // a-z
@@ -376,17 +376,17 @@ public class BlockMenus implements DragClient {
 		showMenu(m);
 	}
 
+	static private const mathOpMenu_ops:Array = ['abs', 'floor', 'ceiling', 'sqrt', 'sin', 'cos', 'tan', 'asin', 'acos', 'atan', 'ln', 'log', 'e ^', '10 ^'];
 	private function mathOpMenu(evt:MouseEvent):void {
-		var ops:Array = ['abs', 'floor', 'ceiling', 'sqrt', 'sin', 'cos', 'tan', 'asin', 'acos', 'atan', 'ln', 'log', 'e ^', '10 ^'];
 		var m:Menu = new Menu(setBlockArg, 'mathOp');
-		for each (var op:String in ops) m.addItem(op);
+		for each (var op:String in mathOpMenu_ops) m.addItem(op);
 		showMenu(m);
 	}
 
+	static private const motorDirectionMenu_ops:Array = ['this way', 'that way', 'reverse'];
 	private function motorDirectionMenu(evt:MouseEvent):void {
-		var ops:Array = ['this way', 'that way', 'reverse'];
 		var m:Menu = new Menu(setBlockArg, 'motorDirection');
-		for each (var s:String in ops) m.addItem(s);
+		for each (var s:String in motorDirectionMenu_ops) m.addItem(s);
 		showMenu(m);
 	}
 	private function notePicker(evt:MouseEvent):void {
@@ -397,8 +397,7 @@ public class BlockMenus implements DragClient {
 		var p:Point = blockArg.localToGlobal(new Point(blockArg.width, blockArg.height));
 		piano.showOnStage(app.stage, int(p.x - piano.width / 2), p.y);
 	}
-	private function noteMenu(evt:MouseEvent):void {
-		var notes:Array = [
+	static private const notes:Array = [
 			['Low C', 48],
 			['D', 50],
 			['E', 52],
@@ -415,6 +414,7 @@ public class BlockMenus implements DragClient {
 			['B', 71],
 			['High C', 72],
 		];
+	private function noteMenu(evt:MouseEvent):void {
 		if (!Menu.stringCollectionMode) {
 			for (var i:int = 0; i < notes.length; i++) {
 				notes[i][0] = '(' + notes[i][1] + ') ' + Translator.map(notes[i][0]); // show key number in menu
@@ -428,27 +428,27 @@ public class BlockMenus implements DragClient {
 		showMenu(m);
 	}
 
+	static private const rotationStyles:Array = ['left-right', "don't rotate", 'all around'];
 	private function rotationStyleMenu(evt:MouseEvent):void {
-		const rotationStyles:Array = ['left-right', "don't rotate", 'all around'];
 		var m:Menu = new Menu(setBlockArg, 'rotationStyle');
 		for each (var s:String in rotationStyles) m.addItem(s);
 		showMenu(m);
 	}
 
-	private function scrollAlignMenu(evt:MouseEvent):void {
-		const options:Array = [
+	static private const options:Array = [
 			'bottom-left', 'bottom-right', 'middle', 'top-left', 'top-right'];
+	private function scrollAlignMenu(evt:MouseEvent):void {
 		var m:Menu = new Menu(setBlockArg, 'scrollAlign');
 		for each (var s:String in options) m.addItem(s);
 		showMenu(m);
 	}
 
-	private function sensorMenu(evt:MouseEvent):void {
-		var sensorNames:Array = [
+	static private const sensorMenu_sensorNames:Array = [
 			'slider', 'light', 'sound',
 			'resistance-A', 'resistance-B', 'resistance-B', 'resistance-C', 'resistance-D'];
+	private function sensorMenu(evt:MouseEvent):void {
 		var m:Menu = new Menu(setBlockArg, 'sensor');
-		for each (var s:String in sensorNames) m.addItem(s);
+		for each (var s:String in sensorMenu_sensorNames) m.addItem(s);
 		showMenu(m);
 	}
 
@@ -535,13 +535,13 @@ public class BlockMenus implements DragClient {
 		return m;
 	}
 
+	private function setStopType(selection:*):void {
+		blockArg.setArgValue(selection);
+		block.setTerminal((selection == 'all') || (selection == 'this script'));
+		block.type = block.isTerminal ? 'f' : ' ';
+		MBlock.app.setSaveNeeded();
+	}
 	private function stopMenu(evt:MouseEvent):void {
-		function setStopType(selection:*):void {
-			blockArg.setArgValue(selection);
-			block.setTerminal((selection == 'all') || (selection == 'this script'));
-			block.type = block.isTerminal ? 'f' : ' ';
-			MBlock.app.setSaveNeeded();
-		}
 		var m:Menu = new Menu(setStopType, 'stop');
 		m.addItem('all');
 		m.addItem('this script');
@@ -568,11 +568,11 @@ public class BlockMenus implements DragClient {
 		showMenu(m);
 	}
 
+	private function setTriggerType(s:String):void {
+		if ('video motion' == s) app.libraryPart.showVideoButton();
+		setBlockArg(s);
+	}
 	private function triggerSensorMenu(evt:MouseEvent):void {
-		function setTriggerType(s:String):void {
-			if ('video motion' == s) app.libraryPart.showVideoButton();
-			setBlockArg(s);
-		}
 		var m:Menu = new Menu(setTriggerType, 'triggerSensor');
 		m.addItem('loudness');
 		m.addItem('timer');
@@ -974,11 +974,11 @@ public class BlockMenus implements DragClient {
 
 	// ***** Broadcast menu *****
 
+	private function broadcastMenuSelection(selection:*):void {
+		if (selection is Function) selection();
+		else setBlockArg(selection);
+	}
 	private function broadcastMenu(evt:MouseEvent):void {
-		function broadcastMenuSelection(selection:*):void {
-			if (selection is Function) selection();
-			else setBlockArg(selection);
-		}
 		var msgNames:Array = app.runtime.collectBroadcasts();
 		if (msgNames.indexOf('message1') <= -1) msgNames.push('message1');
 		msgNames.sort();
@@ -990,12 +990,12 @@ public class BlockMenus implements DragClient {
 		showMenu(m);
 	}
 
+	private function changeBroadcast(dialog:DialogBox):void {
+		var newName:String = dialog.fields['Message Name'].text;
+		if (newName.length == 0) return;
+		setBlockArg(newName);
+	}
 	private function newBroadcast():void {
-		function changeBroadcast(dialog:DialogBox):void {
-			var newName:String = dialog.fields['Message Name'].text;
-			if (newName.length == 0) return;
-			setBlockArg(newName);
-		}
 		var d:DialogBox = new DialogBox(changeBroadcast);
 		d.addTitle('New Message');
 		d.addField('Message Name', 120);
