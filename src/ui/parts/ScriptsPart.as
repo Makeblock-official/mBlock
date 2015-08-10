@@ -221,6 +221,9 @@ public class ScriptsPart extends UIPart {
 	
 	public function onSerialSend(bytes:ByteArray):void
 	{
+		if(!MBlock.app.stageIsArduino){
+			return;
+		}
 		if(isByteDisplayMode){
 			appendMsgWithTimestamp(HexUtil.bytesToString(bytes), true);
 		}else{

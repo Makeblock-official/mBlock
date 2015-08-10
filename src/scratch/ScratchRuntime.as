@@ -563,7 +563,7 @@ package scratch {
 	
 		public function showAskPrompt(question:String = ''):void {
 			var p:AskPrompter = new AskPrompter(question, app);
-			interp.askThread = interp.activeThread;
+			interp.setAskThread();
 			p.x = 15;
 			p.y = ScratchObj.STAGEH - p.height - 5;
 			app.stagePane.addChild(p);
@@ -571,7 +571,7 @@ package scratch {
 		}
 	
 		public function hideAskPrompt(p:AskPrompter):void {
-			interp.askThread = null;
+			interp.clearAskThread();
 			lastAnswer = p.answer();
 			p.parent.removeChild(p);
 			app.stage.focus = null;
@@ -587,7 +587,7 @@ package scratch {
 		}
 	
 		public function clearAskPrompts():void {
-			interp.askThread = null;
+			interp.clearAskThread();
 			var allPrompts:Array = [];
 			var uiLayer:Sprite = app.stagePane.getUILayer();
 			var c:DisplayObject;

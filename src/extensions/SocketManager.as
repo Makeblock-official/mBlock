@@ -35,7 +35,7 @@ package extensions
 		//The IP and port for this computer 
 		private var localIP:String = "0.0.0.0"; 
 		private var localPort:int = 55555; 
-		
+		private var _udpIp:String = "";
 		//The IP and port for the target computer 
 		private var broadCastIp:String = "192.168.1.255";
 		private var targetIP:String = "192.168.1.1"; 
@@ -76,6 +76,7 @@ package extensions
 			//Create the socket 
 			datagramSocket = new DatagramSocket(); 
 			datagramSocket.addEventListener( DatagramSocketDataEvent.DATA, dataReceived );
+			
 			//Bind the socket to the local network interface and port 
 			try{
 				datagramSocket.bind(_clientPort); 
@@ -140,7 +141,16 @@ package extensions
 			}else{
 				if(host=="custom"){
 					function connectNow():void{
-						connect(dialog.fields["IP Address"].text+":"+dialog.fields["Port"].text);
+						if(dialog.fields["Port"].text=="1025"){
+							isConnected = true;
+							_udpIp = dialog.fields["IP Address"].text;
+						//datagramSocket.connect(dialog.fields["IP Address"].text,dialog.fields["Port"].text);
+							ConnectionManager.sharedManager().onOpen(dialog.fields["IP Address"].text+":"+dialog.fields["Port"].text);
+							update();
+							dispatchEvent(new Event(Event.CONNECT));
+						}else{
+							connect(dialog.fields["IP Address"].text+":"+dialog.fields["Port"].text);
+						}
 						dialog.cancel();
 					}
 					function cancelNow():void{
@@ -181,10 +191,12 @@ package extensions
 				if(temp.length>3){
 					temp = host.split(":");
 					if(_sockets.length==0){
-						var socket:Socket = new Socket()
-						configureListeners(socket);
-						socket.connect(temp[0], temp[1]);
-						_sockets.push(socket);
+						if(temp[1]!="1025"){
+							var socket:Socket = new Socket()
+							configureListeners(socket);
+							socket.connect(temp[0], temp[1]);
+							_sockets.push(socket);
+						}
 					}
 					LogManager.sharedManager().log("socket connecting:"+host);
 				}
@@ -211,7 +223,7 @@ package extensions
 					}
 				}
 			}
-			return false;
+			return isConnected;
 		}
 		private function onConnected(evt:ServerSocketConnectEvent):void{
 			trace("remote connected - "+evt.socket.remoteAddress+":"+evt.socket.remotePort);
@@ -252,6 +264,9 @@ package extensions
 						}
 					}
 				}
+			}
+			if(_udpIp!=""){
+				datagramSocket.send( bytes, 0, 0, _udpIp,1025);
 			}
 			return 0
 		}

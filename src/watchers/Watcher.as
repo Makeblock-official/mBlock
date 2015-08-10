@@ -24,9 +24,8 @@
 // Represents a variable display.
 
 package watchers {
-import blocks.BlockIO;
 
-import flash.display.*;
+	import flash.display.*;
 	import flash.filters.BevelFilter;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
@@ -209,10 +208,11 @@ public class Watcher extends Sprite implements DragClient {
 		}
 		var app:MBlock = runtime.app;
 		if (cmd == "senseVideoMotion") {
-			var prim:Function = app.interp.getPrim(cmd);
-			if (prim == null) return 0;
+			if(!app.interp.isImplemented(cmd)){
+				return 0;
+			}
 			var block:Block = new Block('video %s on %s', 'r', 0, 'senseVideoMotion', [param, target.objName]);
-			return prim(block);
+			return app.interp.execBlock(cmd, block);
 		}
 		if (target is ScratchSprite) {
 			switch(cmd) {

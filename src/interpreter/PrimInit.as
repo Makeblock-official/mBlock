@@ -134,7 +134,7 @@ package interpreter
 			if (target.arg(b, 0)) {
 				target.startCmdList(b.subStack1, true);
 			} else {
-				target.yield = true;
+				target.setYielded();
 			}
 		}
 		
@@ -197,7 +197,7 @@ package interpreter
 		static private function doWaitUntil(b:Block, target:Interpreter):void
 		{
 			if (!target.arg(b, 0)) {
-				target.yield = true;
+				target.setYielded();
 			}
 		}
 		
@@ -220,7 +220,7 @@ package interpreter
 			// Return from the innermost procedure. If not in a procedure, stop the thread.
 			if (!target.activeThread.returnFromProcedure()) {
 				target.activeThread.stop();
-				target.yield = true;
+				target.setYielded();
 			}
 		}
 		
@@ -230,7 +230,7 @@ package interpreter
 			{
 				case "all":
 					MBlock.app.runtime.stopAll();
-					target.yield = true;
+					target.setYielded();
 					break;
 				case "this script":
 					doReturn(b, target);
@@ -261,7 +261,7 @@ package interpreter
 			
 			if (target.warpThread) {
 				target.activeThread.firstTime = false;
-				if ((target.currentMSecs - target.startTime) > Interpreter.warpMSecs) target.yield = true;
+				if (target.isTimeOut()) target.setYielded();
 			} else {
 				if (proc.warpProcFlag) {
 					// Start running in warp mode.
@@ -270,7 +270,7 @@ package interpreter
 					target.activeThread.firstTime = true;
 				}
 				else if (target.activeThread.isRecursiveCall(b, proc)) {
-					target.yield = true;
+					target.setYielded();
 				}
 			}
 			var argCount:int = proc.parameterNames.length;
@@ -341,7 +341,7 @@ package interpreter
 		static private function stopAll(b:Block, target:Interpreter):void
 		{
 			MBlock.app.runtime.stopAll();
-			target.yield = true;
+			target.setYielded();
 		}
 	}
 }

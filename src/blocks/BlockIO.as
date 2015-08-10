@@ -322,20 +322,48 @@ public class BlockIO {
 		return (arg is Array) ? arrayToBlock(arg, 'r') : arg;
 	}
 
+	static private const refCmds:Array = [
+		'createCloneOf', 'distanceTo:', 'getAttribute:of:',
+		'gotoSpriteOrMouse:', 'pointTowards:', 'touching:'];
+	
 	private static function fixMouseEdgeRefs(b:Block):void {
-		var refCmds:Array = [
-			'createCloneOf', 'distanceTo:', 'getAttribute:of:',
-			'gotoSpriteOrMouse:', 'pointTowards:', 'touching:'];
 		if (refCmds.indexOf(b.op) < 0) return;
 		var arg:BlockArg;
-		if ((b.args.length == 1) && (b.args[0] is BlockArg)) arg = b.args[0];
-		if ((b.args.length == 2) && (b.args[1] is BlockArg)) arg = b.args[1];
-		if (arg) {
-			var oldVal:String = arg.argValue;
-			if (oldVal == 'edge' || oldVal == '_edge_') arg.setArgValue('_edge_', Translator.map('edge'));
-			if (oldVal == 'mouse' || oldVal == '_mouse_') arg.setArgValue('_mouse_', Translator.map('mouse-pointer'));
-			if (oldVal == '_myself_') arg.setArgValue('_myself_', Translator.map('myself'));
-			if (oldVal == '_stage_') arg.setArgValue('_stage_', Translator.map('Stage'));
+		switch(b.args.length){
+			case 1:
+				arg = b.args[0] as BlockArg;
+				break;
+			case 2:
+				arg = b.args[1] as BlockArg;
+				break;
+		}
+		if(null == arg){
+			return;
+		}
+//		if ((b.args.length == 1) && (b.args[0] is BlockArg)) arg = b.args[0];
+//		if ((b.args.length == 2) && (b.args[1] is BlockArg)) arg = b.args[1];
+//		if (arg != null) {
+//			var oldVal:String = arg.argValue;
+//			if (oldVal == 'edge' || oldVal == '_edge_') arg.setArgValue('_edge_', Translator.map('edge'));
+//			if (oldVal == 'mouse' || oldVal == '_mouse_') arg.setArgValue('_mouse_', Translator.map('mouse-pointer'));
+//			if (oldVal == '_myself_') arg.setArgValue('_myself_', Translator.map('myself'));
+//			if (oldVal == '_stage_') arg.setArgValue('_stage_', Translator.map('Stage'));
+//		}
+		switch(arg.argValue){
+			case "edge":
+			case "_edge_":
+				arg.setArgValue('_edge_', Translator.map('edge'));
+				break;
+			case "mouse":
+			case "_mouse_":
+				arg.setArgValue('_mouse_', Translator.map('mouse-pointer'));
+				break;
+			case "_myself_":
+				arg.setArgValue('_myself_', Translator.map('myself'));
+				break;
+			case "_stage_":
+				arg.setArgValue('_stage_', Translator.map('Stage'));
+				break;
 		}
 	}
 
