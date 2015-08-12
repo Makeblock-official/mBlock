@@ -1,3 +1,16 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: de_DE\n"
+"X-Generator: Poedit 1.8.4\n"
+
 # The language name as it will appear in the language menu
 msgid "Language-Name"
 msgstr "German"
@@ -35,10 +48,6 @@ msgstr "frage %s und warte"
 # "backdrop" in Scratch 2.0 is similar to "background" in Scratch 1.4
 msgid "backdrop #"
 msgstr "Bühnenbild #"
-
-# "backdrop" in Scratch 2.0 is similar to "background" in Scratch 1.4
-msgid "backdrop name"
-msgstr "Bühnenbildname"
 
 msgid "Hello!"
 msgstr "Hallo！"
@@ -124,9 +133,6 @@ msgstr "lösche diesen Klon"
 msgid "delete list"
 msgstr "Liste löschen"
 
-msgid "direction"
-msgstr "Richtung"
-
 msgid "distance"
 msgstr "Entfernung"
 
@@ -156,9 +162,6 @@ msgstr "komme nach vorne"
 
 msgid "go to x:%n y:%n"
 msgstr "gehe zu x:%n y:%n"
-
-msgid "hide"
-msgstr "verstecke dich"
 
 msgid "hide list %m.list"
 msgstr "verstecke Liste %m.list"
@@ -356,12 +359,6 @@ msgstr "zeige Liste %m.list"
 msgid "show variable %m.var"
 msgstr "zeige Variable %m.var"
 
-msgid "size"
-msgstr "Größe"
-
-msgid "Sound"
-msgstr "Klang"
-
 msgid "stamp"
 msgstr "hinterlasse Abdruck"
 
@@ -478,48 +475,15 @@ msgstr "Wenn ich angeklickt werde"
 msgid "when tilt = %n"
 msgstr "Wenn Neigung = %n"
 
-msgid "x position"
-msgstr "x-position"
-
-msgid "y position"
-msgstr "y-position"
-
-#~ msgid "forever if %b"
-#~ msgstr "wiederhole fortlaufend, falls %b"
-
-#~ msgid "if %b"
-#~ msgstr "Wenn %b"
-
-#~ msgid "motor direction %m.motorDirection"
-#~ msgstr "setze Motorrichtung auf %m.motorDirection"
-
-#~ msgid "motor off"
-#~ msgstr "schalte Motor aus"
-
-#~ msgid "motor on"
-#~ msgstr "schalte Motor an"
-
-#~ msgid "motor on for %n secs"
-#~ msgstr "schalte Motor für %n Sekunden an"
-
-#~ msgid "motor power %n"
-#~ msgstr "setze Motorkraft auf %n"
-
-#~ msgid "play note %n for %n beats"
-#~ msgstr "spiele Note %d.note für %n Schläge"
-
-##################
+# #################
 # User Interface #
-##################
-
+# #################
 msgid "10 ^"
 msgstr "10 ^"
 
-msgid "<b>Information about Cloud variables</b><br>&nbsp;<br>Currently, only numbers are supported<br>Chat rooms are not allowed, and will be removed<br>For more info, <a href="/help/faq/#clouddata" target="_blank">see the cloud data FAQ!</a>"
-msgstr ""
-"<b>Information zu den Cloud-Variablen</b><br>&nbsp;<br>Zur Zeit werden nur "
-"Zahlen unterstützt<br>Chat-Rooms sind nicht erlaubt und werden "
-"gelöscht!<br>Für weitere Infos, <a href= target=>siehe Cloud-Daten FAQ!</a>"
+msgid ""
+"<b>Information about Cloud variables</b><br>&nbsp;<br>Currently, only numbers are supported<br>Chat rooms are not allowed, and will be removed<br>For more info, <a href=\"/help/faq/#clouddata\" target=\"_blank\">see the cloud data FAQ!</a>"
+msgstr "<b>Information zu den Cloud-Variablen</b><br>&nbsp;<br>Zur Zeit werden nur Zahlen unterstützt<br>Chat-Rooms sind nicht erlaubt und werden gelöscht!<br>Für weitere Infos, <a href= target=>siehe Cloud-Daten FAQ!</a>"
 
 msgid "A connected"
 msgstr "A angeschlossen"
@@ -585,9 +549,6 @@ msgid "Backdrop"
 msgstr "Bühnenbild"
 
 msgid "backdrop"
-msgstr "Bühnenbild"
-
-msgid "backdrop #"
 msgstr "Bühnenbild"
 
 msgid "Backdrop Library"
@@ -672,9 +633,7 @@ msgid "Cannot Delete"
 msgstr "Löschen nicht möglich"
 
 msgid "Can’t find network connection or reach server."
-msgstr ""
-"Es besteht keine Netzwerkverbindung oder der Server kann nicht erreicht "
-"werden."
+msgstr "Es besteht keine Netzwerkverbindung oder der Server kann nicht erreicht werden."
 
 msgid "Castle"
 msgstr "Schloss"
@@ -715,20 +674,14 @@ msgstr "Klarinette"
 msgid "Claves"
 msgstr "Claves"
 
-msgid "cleanup"
-msgstr "aufräumen"
-
 msgid "Clear"
 msgstr "Löschen"
 
 msgid "clear senders/receivers"
 msgstr "lösche Sender/Empfänger"
 
-msgid "Click "Save now" to try again or "Download" to save"
+msgid "Click \"Save now\" to try again or \"Download\" to save"
 msgstr "Klicke  für einen neuen Versuch oder  zum Speichern"
-
-msgid "Close"
-msgstr "Schließen"
 
 msgid "Closed Hi-Hat"
 msgstr "Geschlossenes Hi-Hat"
@@ -771,9 +724,6 @@ msgstr "cos"
 
 msgid "Costume"
 msgstr "Kostüm"
-
-msgid "costume #"
-msgstr "Kostümnummer"
 
 msgid "Costume Library"
 msgstr "Kostüm-Bibliothek"
@@ -1058,9 +1008,6 @@ msgstr "log"
 
 msgid "louder"
 msgstr "lauter"
-
-msgid "loudness"
-msgstr "Lautstärke"
 
 msgid "Low C"
 msgstr ""
@@ -1412,9 +1359,6 @@ msgstr "veröffentlicht"
 msgid "Shift:"
 msgstr "Umschalttaste:"
 
-msgid "show"
-msgstr "zeige dich"
-
 msgid "show receivers"
 msgstr "Empfänger zeigen"
 
@@ -1449,7 +1393,7 @@ msgid "size"
 msgstr "Größe"
 
 msgid "slider"
-msgstr "Schieberegler""
+msgstr "Schieberegler\""
 
 msgid "Slider Range"
 msgstr "Reglerbereich"
@@ -1548,15 +1492,10 @@ msgid "Things"
 msgstr "Dinge"
 
 msgid "This project can detect who is using it, through the “username” block. To hide your identity, sign out before using the project."
-msgstr ""
-"Dieses Projekt kann über den \"Benutzername\"-Block feststellen, wer es "
-"benutzt. Willst du deine Identität verbergen, so melde dich vor der "
-"Benutzung des Projekts ab."
+msgstr "Dieses Projekt kann über den \"Benutzername\"-Block feststellen, wer es benutzt. Willst du deine Identität verbergen, so melde dich vor der Benutzung des Projekts ab."
 
 msgid "This project uses Cloud data ‒ a feature that is available only to signed in users."
-msgstr ""
-"Dieses Projekt nutzt Cloud-Daten ‒ eine Funktion, die nur angemeldeten "
-"Benutzern zur Verfügung steht."
+msgstr "Dieses Projekt nutzt Cloud-Daten ‒ eine Funktion, die nur angemeldeten Benutzern zur Verfügung steht."
 
 msgid "this script"
 msgstr "dieses Skript"
@@ -1568,18 +1507,13 @@ msgid "this way"
 msgstr "soherum"
 
 msgid "Throw away all changes since opening this project?"
-msgstr "Alle Änderungen seit dem Öffnen dieses Projekts verwerfen?""
-
-msgid "timer"
-msgstr "Stoppuhr"
+msgstr "Alle Änderungen seit dem Öffnen dieses Projekts verwerfen?\""
 
 msgid "Tips"
 msgstr "Tipps"
 
 msgid "To delete a block definition, first remove all uses of the block."
-msgstr ""
-"Bevor die Blockdefinition gelöscht werden kann, muss der Block zuerst aus "
-"allen Skripten entfernt werden, in denen er verwendet wird."
+msgstr "Bevor die Blockdefinition gelöscht werden kann, muss der Block zuerst aus allen Skripten entfernt werden, in denen er verwendet wird."
 
 msgid "Transportation"
 msgstr "Verkehrsmittel"
@@ -1679,9 +1613,6 @@ msgstr "Video über:"
 msgid "Vocals"
 msgstr "Gesang"
 
-msgid "volume"
-msgstr "Lautstärke"
-
 #, fuzzy
 msgid "Walking"
 msgstr "Gehen"
@@ -1713,10 +1644,7 @@ msgid "year"
 msgstr "Jahr"
 
 msgid "You cannot edit cloud data in someone else's project.<br>Any change that you make in the editor will be temporary and not persistent."
-msgstr ""
-"Du kannst keine Cloud-Daten in Projekten von jemand Anderem "
-"editieren.<br>Jede von dir im Editor gemachte Änderung ist temporär und geht "
-"verloren."
+msgstr "Du kannst keine Cloud-Daten in Projekten von jemand Anderem editieren.<br>Jede von dir im Editor gemachte Änderung ist temporär und geht verloren."
 
 msgid "Eraser width:"
 msgstr "Radierbreite:"
@@ -1724,293 +1652,595 @@ msgstr "Radierbreite:"
 msgid "Line width:"
 msgstr "Linienbreite"
 
-# 90%
-#, fuzzy
-#~ msgid "New sprite"
-#~ msgstr "Neue Figur"
-
-#~ msgid "Paint"
-#~ msgstr "Malen"
-
-#~ msgid "any"
-#~ msgstr "beliebiges"
-
-#~ msgid "High Tom"
-#~ msgstr "Tomtom (hoch)"
-
-#~ msgid "Long Guiro"
-#~ msgstr "Güiro (lang)"
-
-#~ msgid "Low Bongo"
-#~ msgstr "Bongo (tief)"
-
-#~ msgid "Low Conga"
-#~ msgstr "Conga (tief)"
-
-#~ msgid "Low Tom"
-#~ msgstr "Tomtom (tief)"
-
-#~ msgid "Low Wood Block"
-#~ msgstr "Holzblock (tief)"
-
-#~ msgid "Maracas"
-#~ msgstr "Maracas"
-
-#~ msgid "More"
-#~ msgstr "Mehr"
-
-#~ msgid "Mute Triangle"
-#~ msgstr "Triangel (gedämpft)"
-
-#~ msgid "Open Triangle"
-#~ msgstr "Triangel"
-
-#~ msgid "Pedal Hi-Hat"
-#~ msgstr "Hi-Hat mit Pedal"
-
-#~ msgid "Short Guiro"
-#~ msgstr "Güiro (kurz)"
 msgid "set motor%d.motorPort speed %d.motorvalue"
 msgstr "setze Motor %d.motorPort Geschwindigkeit auf %d.motorvalue"
+
 msgid "set servo %d.servoPort %d.slot angle %d.servovalue"
 msgstr "setze Servo %d.servoPort %d.slot Winkel auf %d.servovalue"
+
 msgid "set 7-segments display%d.normalPort number %n"
 msgstr "setze 7-Segment-Anzeige %d.normalPort Wert auf %n"
+
 msgid "set led %d.normalPort %d.index red%d.value green%d.value blue%d.value"
 msgstr "setze RGB-LED%d.normalPort Index%d.index Rot%d.value Grün%d.value Blau%d.value"
+
 msgid "ultrasonic sensor %d.normalPort distance"
 msgstr "Ultraschall-Sensor%d.normalPort Entfernung"
+
 msgid "sound sensor %d.normalPort"
 msgstr "Sound-Sensor%d.normalPort"
+
 msgid "light sensor %d.normalPort"
 msgstr "Licht-Sensor%d.normalPort"
+
 msgid "set light sensor %d.normalPort led as %d.switch"
 msgstr "setze Licht-Sensor%d.normalPort LED auf %d.switch"
+
 msgid "line follower %d.normalPort"
 msgstr "Line-Follower-Sensor%d.normalPort"
+
 msgid "limit switch %d.normalPort%d.slot"
 msgstr "Endschalter%d.normalPort%d.slot"
+
 msgid "potentiometer %d.normalPort"
 msgstr "Potentiometer%d.normalPort"
+
 msgid "3-axis gyro %d.GyroAxis angle"
 msgstr "Beschleunigungs-Sensor %d.GyroAxis Winkel"
+
 msgid "infrared receiver %d.normalPort"
 msgstr "Infrarot-Sensor %d.normalPort"
+
 msgid "pir motion sensor %d.normalPort"
 msgstr "PIR Bewegungs-Sensor %d.normalPort"
+
 msgid "temperature %d.normalPort%d.slot °C"
 msgstr "Temperatur %d.normalPort%d.slot °C"
+
 msgid "joystick %d.normalPort %d.Axis"
 msgstr "Joystick %d.normalPort %d.Axis"
+
 msgid "set camera shutter %d.normalPort as %d.shutter"
 msgstr "setze Kamera-Shutter%d.normalPort auf %d.shutter"
+
 msgid "read digital pin %n"
 msgstr "lese digitalen Pin %n"
+
 msgid "read analog pin (A)%n"
 msgstr "lese analogen Pin (A)%n"
+
 msgid "set digital pin %n output as %d.digital"
 msgstr "setze digitalen Pin %n Ausgang auf %d.digital"
+
 msgid "set analog pin (A)%n output as %n"
 msgstr "setze anlogen Pin (A)%n Ausgang auf %n"
+
 msgid "set pwm pin %n output as %d.pwmvalue"
 msgstr "setze PWM-Pin %n Ausgang auf %d.pwmvalue"
+
 msgid "set servo pin %n angle as %d.servovalue"
 msgstr "setze Servo-Pin %n Winkel auf %d.servovalue Grad"
+
 msgid "play tone pin %n on note %d.notes beat %d.beats"
 msgstr "spiele an Pin %n den Ton %d.notes für %d.beats Schläge"
+
 msgid "Eighth"
 msgstr "achtel"
+
 msgid "Quater"
 msgstr "viertel"
+
 msgid "Half"
 msgstr "halbe"
+
 msgid "Whole"
 msgstr "ganze"
+
 msgid "Double"
 msgstr "doppelte"
+
 msgid "Zero"
 msgstr "null"
+
 msgid "Ultrasonic"
 msgstr "Ultraschall"
+
 msgid "Light Sensor"
 msgstr "Licht-Sensor"
+
 msgid "Sound Sensor"
 msgstr "Sound-Sensor"
+
 msgid "LED"
 msgstr "LED"
-msgid "Joystick"
-msgstr "Joystick"
+
 msgid "Line Finder"
 msgstr "Linien-Sensor"
+
 msgid "LimitSwitch"
 msgstr "Endschalter"
-msgid "Temperature"
-msgstr "Temperatur"
+
 msgid "Potentiometer"
 msgstr "Potentiometer"
+
 msgid "Button"
 msgstr "Taster"
+
 msgid "HIGH"
 msgstr "HIGH"
+
 msgid "LOW"
 msgstr "LOW"
+
 msgid "X-Axis"
 msgstr "X-Achse"
+
 msgid "Y-Axis"
 msgstr "Y-Achse"
+
 msgid "Z-Axis"
 msgstr "Z-Achse"
+
 msgid "Input"
 msgstr "Eingang"
+
 msgid "Output"
 msgstr "Ausgang"
+
 msgid "Port1"
 msgstr "Port 1"
+
 msgid "Port2"
 msgstr "Port 2"
+
 msgid "Port3"
 msgstr "Port 3"
+
 msgid "Port4"
 msgstr "Port 4"
+
 msgid "Port5"
 msgstr "Port 5"
+
 msgid "Port6"
 msgstr "Port 6"
+
 msgid "Port7"
 msgstr "Port 7"
+
 msgid "Port8"
 msgstr "Port 8"
+
 msgid "Slot1"
 msgstr "Slot 1"
+
 msgid "Slot2"
 msgstr "Slot 2"
+
 msgid "M1"
 msgstr "M1"
+
 msgid "M2"
 msgstr "M2"
+
 msgid "Don't save"
 msgstr "Nicht speichern"
+
 msgid "Save project?"
 msgstr "Projekt speichern?"
+
 msgid "About"
 msgstr "Info"
+
 msgid "Open"
 msgstr "Öffnen"
+
 msgid "Save as"
 msgstr "Speichern als"
+
 msgid "Share to website"
 msgstr "Veröffentlichen"
+
 msgid "Check for updates"
 msgstr "Nach Updates suchen"
+
 msgid "Quit"
 msgstr "Ende"
+
 msgid "Share to Scratch Website"
 msgstr "Auf Scratch-Website veröffentlichen"
+
 msgid "Project name"
 msgstr "Projektname"
+
 msgid "Your Scratch name"
 msgstr "Dein Scratchname"
+
 msgid "Password"
 msgstr "Passwort"
+
 msgid "Setting"
 msgstr "Einstellungen"
+
 msgid "Connect"
 msgstr "Verbinden"
+
 msgid "Disconnect"
 msgstr "Unterbrechen"
+
 msgid "save picture of stage"
 msgstr "sichern des Bühnenbildes"
+
 msgid "Load Project"
 msgstr "Projekt laden"
+
 msgid "Save Project"
 msgstr "Projekt speichern"
+
 msgid "Robots"
 msgstr "Robots"
+
 msgid "Forum"
 msgstr "Forum"
+
 msgid "Upgrade Firmware"
 msgstr "Upgrade Firmware"
+
 msgid "View Source"
 msgstr "Zeige Quellcode"
+
 msgid "cleanup"
 msgstr "Aufräumen"
+
 msgid "Microphone volume:"
 msgstr "Mikrofonlautstärke"
+
 msgid "http://forum.makeblock.cc/#scratch"
 msgstr "http://bbs.makeblock.cc/?scratch"
+
 msgid "Close"
 msgstr "Schließen"
+
 msgid "Executing"
 msgstr "Ausführung"
+
 msgid "Replace contents of the current project?"
 msgstr "Inhalte des aktuellen Projektes ersetzen?"
-msgid "OK"
-msgstr "OK"
+
 msgid "info"
 msgstr "info"
+
 msgid "New Version Available!"
 msgstr "Neue Version verfügbar!"
+
 msgid "Update Now"
 msgstr "Update durchführen"
+
 msgid "New Block"
 msgstr "Neuer Block"
+
 msgid "Updating"
 msgstr "Updating"
+
 msgid "Downloading"
 msgstr "Downloading"
+
 msgid "Connected"
 msgstr "Verbunden"
+
 msgid "Bluetooth"
 msgstr "Bluetooth"
+
 msgid "No Bluetooth"
 msgstr "Kein Bluetooth"
+
 msgid "Disconnect Bluetooth"
 msgstr "Unterbreche Bluetooth"
+
 msgid "Discovering Bluetooth"
 msgstr "Suche Bluetooth"
+
 msgid "Click The Device From List To Connect"
 msgstr "Um zu verbinden, wähle das Gerät aus der Liste"
+
 msgid "Device Not Found"
 msgstr "Gerät nicht gefunden"
+
 msgid "Distance Display"
 msgstr "Entfernung messen"
+
 msgid "Detect Sound"
 msgstr "Erkenne Sound"
+
 msgid "Temperature"
 msgstr "Temperatur"
+
 msgid "Joystick"
 msgstr "Joystick"
+
 msgid "Ultrasonic Car"
 msgstr "Ultraschall Fahrzeug"
+
 msgid "Play Music"
 msgstr "Spiele Musik"
+
 msgid "Voice Command"
 msgstr "Stimmenbefehl"
+
 msgid "Accelerometer X"
 msgstr "Beschleunigung X"
+
 msgid "Accelerometer Y"
 msgstr "Beschleunigung Y"
+
 msgid "Accelerometer Z"
 msgstr "Beschleunigung Z"
+
 msgid "Brightness"
 msgstr "Helligkeit"
+
 msgid "Start Button Pressed?"
 msgstr "Start Taster gedrückt？"
+
 msgid "Select Button Pressed?"
 msgstr "Select Taster gedrückt?"
+
 msgid "Up Button Pressed?"
 msgstr "Pfeil nach oben Taste gedrückt?"
+
 msgid "Down Button Pressed?"
 msgstr "Pfeil nach unten Taste gedrückt?"
+
 msgid "Left Button Pressed?"
 msgstr "Pfeil nach links Taste gedrückt?"
+
 msgid "Right Button Pressed?"
 msgstr "Pfeil nach rechts Taste gedrückt?"
+
 msgid "A Button Pressed?"
 msgstr "A Taste gedrückt?"
+
 msgid "B Button Pressed?"
 msgstr "B Taste gedrückt?"
+
 msgid "X Button Pressed?"
 msgstr "X Taste gedrückt?"
+
 msgid "Y Button Pressed?"
 msgstr "Y Taste gedrückt?"
+
+
+
+msgid "Arduino Program"
+msgstr ""
+
+msgid "upload to arduino"
+msgstr ""
+
+msgid "set font size"
+msgstr ""
+
+msgid "import translation file"
+msgstr ""
+
+msgid "Back"
+msgstr ""
+
+msgid "Upload to Arduino"
+msgstr ""
+
+msgid "Send"
+msgstr ""
+
+msgid "Please connect the serial port."
+msgstr ""
+
+msgid "Message"
+msgstr ""
+
+msgid "Arduino IDE not found,"
+msgstr ""
+
+msgid "or Click 'Download' to install the Arduino IDE."
+msgstr ""
+
+msgid "Click 'Set Path' to find the install path of Arduino,"
+msgstr ""
+
+msgid "Set Path"
+msgstr ""
+
+msgid "Edit with Arduino IDE"
+msgstr ""
+
+msgid "unsupported block found, remove them to continue."
+msgstr ""
+
+msgid "Arduino Project"
+msgstr ""
+
+msgid "Start Uploading"
+msgstr ""
+
+msgid "Waiting Reset Board"
+msgstr ""
+
+msgid "Uploading"
+msgstr ""
+
+msgid "Upload Finish"
+msgstr ""
+
+msgid "Hide"
+msgstr ""
+
+msgid "Arduino mode"
+msgstr ""
+
+msgid "Current Firmware"
+msgstr ""
+
+msgid "Unknown Firmware"
+msgstr ""
+
+msgid "Firmware"
+msgstr ""
+
+msgid "2.4G Serial"
+msgstr ""
+
+msgid "Discover"
+msgstr ""
+
+msgid "Search Network"
+msgstr ""
+
+msgid "Boards"
+msgstr ""
+
+msgid "Help"
+msgstr ""
+
+msgid "Report a Bug"
+msgstr ""
+
+msgid "License"
+msgstr ""
+
+msgid "Acknowledgements"
+msgstr ""
+
+msgid "Share Your Project"
+msgstr ""
+
+msgid "FAQ"
+msgstr ""
+
+msgid "Install Arduino Driver"
+msgstr ""
+
+msgid "Bluetooth need to install .Net Framework 4.0"
+msgstr ""
+
+msgid "Clear Bluetooth"
+msgstr ""
+
+msgid "Reset Default Program"
+msgstr ""
+
+msgid "random horizontal point"
+msgstr ""
+
+msgid "random vertical point"
+msgstr ""
+
+msgid "random stage point"
+msgstr ""
+
+msgid "top edge"
+msgstr ""
+
+msgid "right edge"
+msgstr ""
+
+msgid "bottom edge"
+msgstr ""
+
+msgid "left edge"
+msgstr ""
+
+msgid "Disconnected"
+msgstr ""
+
+msgid "Hide stage layout"
+msgstr ""
+
+msgid "manage_extentions"
+msgstr ""
+
+msgid "Face Panel"
+msgstr ""
+
+msgid "Clear All"
+msgstr ""
+
+msgid "Light All"
+msgstr ""
+
+msgid "Add To Favourite"
+msgstr ""
+
+msgid "Remove Emotion"
+msgstr ""
+
+msgid "Complete"
+msgstr ""
+
+msgid "Manage Extensions"
+msgstr ""
+
+msgid "Add Extension"
+msgstr ""
+
+msgid "Remove Extension"
+msgstr ""
+
+msgid "file is not a valid extension zip!"
+msgstr ""
+
+msgid "Want to delete?"
+msgstr ""
+
+msgid "Warning"
+msgstr ""
+
+msgid "Language"
+msgstr ""
+
+msgid "Connecting Bluetooth"
+msgstr ""
+
+msgid "Bluetooth Connected"
+msgstr ""
+
+msgid "Connecting Timeout"
+msgstr ""
+
+msgid "Restore Extensions"
+msgstr ""
+
+msgid "Extension Files Updated"
+msgstr ""
+
+msgid "Modified"
+msgstr ""
+
+msgid "Save Project As"
+msgstr ""
+
+msgid "I know"
+msgstr ""
+
+msgid "Update Complete"
+msgstr ""
+
+msgid "There is a newer version"
+msgstr ""
+
+msgid "It's already the newest version"
+msgstr ""
+
+msgid "Download Now"
+msgstr ""
+
+msgid "Download Later"
+msgstr ""
+
+msgid "Others"
+msgstr ""
+
+msgid "Check Software Update"
+msgstr ""
+
+msgid "Check Assets Update"
+msgstr ""
