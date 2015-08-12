@@ -606,8 +606,9 @@ package scratch {
 			var ch:int = evt.charCode;
 			if (evt.charCode == 0) ch = mapArrowKey(evt.keyCode);
 			if ((65 <= ch) && (ch <= 90)) ch += 32; // map A-Z to a-z
-			if (!(evt.target is TextField)) 
+			if (!(evt.target is TextField || keyIsDown[ch])) {
 				startKeyHats(ch);
+			}
 			if (ch < 128) keyIsDown[ch] = true;
 		}
 	
