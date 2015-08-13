@@ -69,14 +69,22 @@ package cc.makeblock.mbot.ui.parts
 			if(0 <= index && index < defaultMenuCount){
 				return true;
 			}
-			item.label = Translator.map(item.name);
+			setItemLabel(item);
 			if(item.name == "Boards"){
 				return true;
 			}
 			if(item.name == "Language"){
 				item = MenuUtil.FindItem(item.submenu, "set font size");
-				item.label = Translator.map(item.name);
+				setItemLabel(item);
 				return true;
+			}
+		}
+		
+		private function setItemLabel(item:NativeMenuItem):void
+		{
+			var newLabel:String = Translator.map(item.name);
+			if(item.label != newLabel){
+				item.label = newLabel;
 			}
 		}
 		
