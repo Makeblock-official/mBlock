@@ -148,7 +148,6 @@ void loop(){
     irRead = ((ir.value>>8)>>8)&0xff;
     lastIRTime = millis()/1000.0;
     irPressed = true;
-    Serial.println(irRead);
     if(irRead==0xa||irRead==0xd){
       irIndex = 0;
       irReady = true;
