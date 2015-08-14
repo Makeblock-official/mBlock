@@ -1,16 +1,3 @@
-msgid ""
-msgstr ""
-"Project-Id-Version: \n"
-"POT-Creation-Date: \n"
-"PO-Revision-Date: \n"
-"Last-Translator: \n"
-"Language-Team: \n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Language: zh_TW\n"
-"X-Generator: Poedit 1.8.4\n"
-
 # The language name as it will appear in the language menu
 msgid "Language-Name"
 msgstr "正體中文"
@@ -2262,3 +2249,6 @@ msgstr "檢查軟體更新"
 
 msgid "Check Assets Update"
 msgstr "檢查資源更新"
+
+msgid "cast %n to string"
+msgstr "將 %n 轉換為字符串"
