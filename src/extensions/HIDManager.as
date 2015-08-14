@@ -104,7 +104,7 @@ package extensions
 				if(res==0){
 					trace("hid opened");
 					_isConnected = true;
-					MBlock.app.topBarPart.setConnectedTitle("Serial Port");
+					MBlock.app.topBarPart.setConnectedTitle("2.4G Serial");
 					//				ParseManager.sharedManager().queryVersion();
 					_hid.removeEventListener(AirHID.EVENT_RXDATA,hidRx);  
 					_hid.removeEventListener(AirHID.EVENT_RXERROR,onError);
