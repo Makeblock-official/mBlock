@@ -45,18 +45,9 @@ msgstr "回答"
 msgid "ask %s and wait"
 msgstr "询问 %s 并等待"
 
-# #-#-#-#-#  0catalog.po  #-#-#-#-#
-# "backdrop" in Scratch 2.0 is similar to "background" in Scratch 1.4
-#, fuzzy
 msgid "backdrop #"
-msgstr ""
-"#-#-#-#-#  0catalog.po  #-#-#-#-#\n"
-"背景 #\n"
-"#-#-#-#-#  0catalog.po  #-#-#-#-#\n"
-"背景编号"
+msgstr "背景编号"
 
-# #-#-#-#-#  0catalog.po  #-#-#-#-#
-# "backdrop" in Scratch 2.0 is similar to "background" in Scratch 1.4
 msgid "backdrop name"
 msgstr "背景名称"
 
@@ -114,13 +105,8 @@ msgstr "颜色 %c 碰到 %c?"
 msgid "Control"
 msgstr "控制"
 
-#, fuzzy
 msgid "costume #"
-msgstr ""
-"#-#-#-#-#  0catalog.po  #-#-#-#-#\n"
-"造型 #\n"
-"#-#-#-#-#  0catalog.po  #-#-#-#-#\n"
-"造型编号"
+msgstr "造型编号"
 
 msgid "create clone of %m.spriteOnly"
 msgstr "克隆 %m.spriteOnly"
@@ -510,19 +496,11 @@ msgstr "当倾角 = %n"
 
 #, fuzzy
 msgid "x position"
-msgstr ""
-"#-#-#-#-#  0catalog.po  #-#-#-#-#\n"
-"x座标\n"
-"#-#-#-#-#  0catalog.po  #-#-#-#-#\n"
-"x坐标"
+msgstr "x坐标"
 
 #, fuzzy
 msgid "y position"
-msgstr ""
-"#-#-#-#-#  0catalog.po  #-#-#-#-#\n"
-"y座标\n"
-"#-#-#-#-#  0catalog.po  #-#-#-#-#\n"
-"y坐标"
+msgstr "y坐标"
 
 # #################
 # User Interface #
@@ -2042,43 +2020,23 @@ msgstr "刷新"
 
 #, fuzzy
 msgid "Forward a layer (Shift: Bring to front)"
-msgstr ""
-"#-#-#-#-#  0catalog.po  #-#-#-#-#\n"
-"往上移一层 (Shift: 移到最顶层)\n"
-"#-#-#-#-#  0catalog.po  #-#-#-#-#\n"
-"向前一层 (Shift键：置于顶层)"
+msgstr "向前一层 (Shift键：置于顶层)"
 
 #, fuzzy
 msgid "Back a layer (Shift: Send to back)"
-msgstr ""
-"#-#-#-#-#  0catalog.po  #-#-#-#-#\n"
-"往下移一层 (Shift: 移到最底层)\n"
-"#-#-#-#-#  0catalog.po  #-#-#-#-#\n"
-"退后一层 (Shift键：置为底层)"
+msgstr "退后一层 (Shift键：置为底层)"
 
 #, fuzzy
 msgid "Rectangle (Shift: Square)"
-msgstr ""
-"#-#-#-#-#  0catalog.po  #-#-#-#-#\n"
-"矩形 (Shift: 正方形)\n"
-"#-#-#-#-#  0catalog.po  #-#-#-#-#\n"
-"长方形 (Shift键：正方形)"
+msgstr "长方形 (Shift键：正方形)"
 
 #, fuzzy
 msgid "Ellipse (Shift: Circle)"
-msgstr ""
-"#-#-#-#-#  0catalog.po  #-#-#-#-#\n"
-"圆弧 (Shift: 圆)\n"
-"#-#-#-#-#  0catalog.po  #-#-#-#-#\n"
-"椭圆形 (Shift键:圆形)"
+msgstr "椭圆形 (Shift键:圆形)"
 
 #, fuzzy
 msgid "Duplicate (Shift: Multiple)"
-msgstr ""
-"#-#-#-#-#  0catalog.po  #-#-#-#-#\n"
-"复制 (Shift: 连续复制)\n"
-"#-#-#-#-#  0catalog.po  #-#-#-#-#\n"
-"复制 (Shift键：多重复制)"
+msgstr "复制 (Shift键：多重复制)"
 
 msgid "Arduino Program"
 msgstr "Arduino主程序"
