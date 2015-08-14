@@ -64,6 +64,14 @@ MeIR::MeIR()
 {
   pinMode(2,INPUT);
   // attachInterrupt(INT0, irISR, CHANGE);
+  
+  lastIRTime = 0.0;
+  irDelay = 0;
+  irIndex = 0;
+  irRead = 0;
+  irReady = false;
+  irBuffer = "";
+  irPressed = false;
   begin();
   pinMode(3, OUTPUT);
   digitalWrite(3, LOW); // When not sending PWM, we want it low
@@ -86,16 +94,9 @@ void MeIR::begin()
   sei();  // enable interrupts
 
   // initialize state machine variables
-  irparams.rcvstate = STATE_IDLE;
   irparams.rawlen = 0;
+  irparams.rcvstate = STATE_IDLE;
 
-  lastIRTime = 0.0;
-  irDelay = 0;
-  irIndex = 0;
-  irRead = 0;
-  irReady = false;
-  irBuffer = "";
-  irPressed = false;
   // set pin modes
   // pinMode(2, INPUT);
   // pinMode(irparams.recvpin, INPUT);
@@ -114,20 +115,12 @@ void MeIR::end() {
 ErrorStatus MeIR::decode() {
   rawbuf = irparams.rawbuf;
   rawlen = irparams.rawlen;
-  // if(irparams.rcvstate == STATE_SPACE)
-  // 	{
-  // 		uint32_t time = micros() -irparams.lastTime;
-  // 		if(time> _GAP && time < _GAP+1000)
-  // 		{
-	 //  		irparams.rcvstate = STATE_STOP;
-  // 		}
-  // 	}
   if (irparams.rcvstate != STATE_STOP) {
     return ERROR;
   }
 
   if (decodeNEC()) {
-  	begin();
+    begin();
     return SUCCESS;
   }
   begin();
@@ -261,9 +254,11 @@ void MeIR::sendString(String s){
   for(int i=0;i<s.length();i++){
     l = 0xff000000+s.charAt(i);
     sendNEC(((l<<8)<<8),32);
+    delay(6);
   }
   l = 0xff000000+'\n';
   sendNEC((l<<8)<<8,32);
+  delay(6);
 }
 
 void MeIR::sendString(float v){

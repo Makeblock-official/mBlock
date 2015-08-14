@@ -56,6 +56,16 @@ package extensions
 			
 			_board = SharedObjectManager.sharedManager().getObject("board","uno");
 			_device = SharedObjectManager.sharedManager().getObject("device","uno");
+			var timer:Timer = new Timer(4000);
+			timer.addEventListener(TimerEvent.TIMER,onTimerCheck);
+			timer.start();
+		}
+		private function onTimerCheck(evt:TimerEvent):void{
+			if(_serial.isConnected){
+				if(this.list.indexOf(_selectPort)==-1){
+					this.close();
+				}
+			}
 		}
 		public function setMBlock(mBlock:MBlock):void{
 			_mBlock = mBlock;
