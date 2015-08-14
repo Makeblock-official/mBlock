@@ -2,11 +2,13 @@ package util.version
 {
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
+	import flash.filesystem.File;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	import flash.utils.setTimeout;
 	
-	import cc.makeblock.mbot.util.PopupUtil;
+	import cc.makeblock.updater.AppUpdater;
+	import cc.makeblock.util.FileUtil;
 	
 	import extensions.DeviceManager;
 	
@@ -20,9 +22,27 @@ package util.version
 		private var _list:Array = [];
 		private var _requestIndex:uint = 0;
 		private var _isFirst:Boolean;
+		
+		static public const resource_version_file_name:String = "resource_version.xml";
+		
+		private var localVersionInfo:Object;
+		private var remoteVersionXml:String;
+		private var localVersionFile:File;
+		
 		public function VersionManager()
 		{
+			localVersionFile = File.applicationStorageDirectory.resolvePath("mBlock");
+			if(!localVersionFile.exists){
+				localVersionFile.createDirectory();
+			}
+			localVersionFile = localVersionFile.resolvePath(resource_version_file_name);
+			if(!localVersionFile.exists){
+				var sourceFile:File = File.applicationDirectory.resolvePath("assets/"+resource_version_file_name);
+				sourceFile.copyTo(localVersionFile);
+			}
+			localVersionInfo = AppUpdater.VersionXml2Obj(XML(FileUtil.ReadString(localVersionFile)));
 		}
+		
 		public static function sharedManager():VersionManager{
 			if(_instance==null){
 				_instance = new VersionManager;
@@ -37,21 +57,30 @@ package util.version
 			_reqLoader.addEventListener(Event.COMPLETE,onReqComplete);
 		}
 		private function onReqComplete(evt:Event):void{
-//			trace(evt.target.data);
-			var xml:XML = new XML(evt.target.data);
+			remoteVersionXml = evt.target.data;
+			var xml:XML = XML(remoteVersionXml);
+			var remoteVersionInfo:Object = AppUpdater.VersionXml2Obj(xml);
+			var resList:XMLList = xml.resource;
 			_list = [];
-			for(var i:uint = 0;i<xml[0].resource.length();i++){
+			for(var i:int = 0, n:int=resList.length();i<n;i++){
+				var resXml:XML = resList[i];
 				var res:VerResource = new VerResource();
-				res.name = xml[0].resource[i].@name;
-				res.path = xml[0].resource[i].@path;
-				res.version = xml[0].resource[i].@version;
-				res.url = xml[0].resource[i];
+				res.name = resXml.@name;
+				res.path = resXml.@path;
+				res.version = resXml.@version;
+				res.url = resXml.text();
+				
+				if(!AppUpdater.isSourceVerGreatThan(remoteVersionInfo[res.name], localVersionInfo[res.name])){
+					continue;
+				}
 				res.addEventListener(Event.COMPLETE,onComplete);
 				res.addEventListener("LOADED_ERROR",onError);
 				_list.push(res);
 			}
-			LogManager.sharedManager().log("onReqComplete");
-			startRequest();
+			if(_list.length > 0){
+				LogManager.sharedManager().log("onReqComplete");
+				startRequest();
+			}
 		}
 		private function onReqError(evt:Event):void{
 			LogManager.sharedManager().log("req error!");
@@ -68,8 +97,9 @@ package util.version
 				var res:VerResource = _list[_requestIndex];
 				res.load();
 			}else{
+				FileUtil.WriteString(localVersionFile, remoteVersionXml);
 				LogManager.sharedManager().log("finish");
-				PopupUtil.showAlert("Update Complete");
+//				PopupUtil.showAlert("Update Complete");
 				//MBlock.app.extensionManager.clearImportedExtensions();
 				setTimeout(DeviceManager.sharedManager().onSelectBoard,1000,DeviceManager.sharedManager().currentBoard);
 				MBlock.app.extensionManager.importExtension();
