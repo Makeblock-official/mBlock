@@ -499,6 +499,7 @@ package {
 			if (s.slice(-3) == '.sb') s = s.slice(0, -3);
 			if (s.slice(-4) == '.sb2') s = s.slice(0, -4);
 			stagePart.setProjectName(s);
+			/*
 			if(_welcomeView!=null){
 				_welcomeView.alpha = 0.5;
 				setTimeout(function():void{
@@ -508,6 +509,7 @@ package {
 					}
 				},600);
 			}
+			*/
 		}
 	
 		protected var wasEditing:Boolean;
