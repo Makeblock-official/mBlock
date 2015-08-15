@@ -244,6 +244,7 @@ public class ExtensionManager {
 	}
 	public function importExtension():void {
 		_extensionList = [];
+		SharedObjectManager.sharedManager().setObject("mBot_selected",true);
 		if(ApplicationManager.sharedManager().documents.resolvePath("mBlock/libraries/").exists){
 			var docs:Array =  ApplicationManager.sharedManager().documents.resolvePath("mBlock/libraries/").getDirectoryListing();
 			for each(var doc:File in docs){

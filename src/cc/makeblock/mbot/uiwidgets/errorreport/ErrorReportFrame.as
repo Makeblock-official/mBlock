@@ -66,7 +66,7 @@ package cc.makeblock.mbot.uiwidgets.errorreport
 		
 		private function __onLangChanged(evt:Event=null):void
 		{
-			setTitle(Translator.map("Error Report"));
+			setTitle(Translator.map("Upload Bug"));
 			sendBtn.setText(Translator.map("Send"));
 		}
 	}

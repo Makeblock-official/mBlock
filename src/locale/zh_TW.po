@@ -2245,10 +2245,13 @@ msgid "Others"
 msgstr "其它"
 
 msgid "Check Software Update"
-msgstr "檢查軟體更新"
+msgstr "檢查更新"
 
 msgid "Check Assets Update"
 msgstr "檢查資源更新"
 
 msgid "cast %n to string"
 msgstr "將 %n 轉換為字符串"
+
+msgid "Upload Bug"
+msgstr "提交Bug信息"

@@ -34,12 +34,13 @@ package cc.makeblock.mbot.util
 			app.stage.removeEventListener(MouseEvent.RIGHT_MOUSE_DOWN, app.gh.onRightMouseDown);
 		}
 		
-		static public function showAlert(title:String):void
+		static public function showAlert(title:String):JOptionPane
 		{
 			var panel:JOptionPane = PopupUtil.showConfirm(title, null);
 			panel.getCancelButton().getParent().remove(panel.getCancelButton());
 			panel.getYesButton().setText(Translator.map("I know"));
 			panel.getFrame().setModal(false);
+			return panel;
 		}
 		
 		static public function showConfirm(title:String, callback:Function):JOptionPane

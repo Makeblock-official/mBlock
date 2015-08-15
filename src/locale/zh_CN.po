@@ -2257,10 +2257,13 @@ msgid "Others"
 msgstr "其它"
 
 msgid "Check Software Update"
-msgstr "检查软件更新"
+msgstr "检查更新"
 
 msgid "Check Assets Update"
 msgstr "检查资源更新"
 
 msgid "cast %n to string"
 msgstr "将 %n 转换为字符串"
+
+msgid "Upload Bug"
+msgstr "提交Bug信息"
