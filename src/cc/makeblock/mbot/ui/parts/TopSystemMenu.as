@@ -10,6 +10,7 @@ package cc.makeblock.mbot.ui.parts
 	
 	import air.update.ApplicationUpdater;
 	
+	import cc.makeblock.mbot.uiwidgets.errorreport.ErrorReportFrame;
 	import cc.makeblock.mbot.uiwidgets.extensionMgr.ExtensionUtil;
 	import cc.makeblock.menu.MenuUtil;
 	import cc.makeblock.menu.SystemMenu;
@@ -353,8 +354,8 @@ package cc.makeblock.mbot.ui.parts
 				case "check_app_update":
 					AppUpdater.getInstance().start(true);
 					break;
-				case "check_asset_update":
-					VersionManager.sharedManager().start();
+				case "upload_bug":
+					new ErrorReportFrame().show();
 					break;
 			}
 		}

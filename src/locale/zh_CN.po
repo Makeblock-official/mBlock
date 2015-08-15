@@ -2264,3 +2264,6 @@ msgstr "检查资源更新"
 
 msgid "cast %n to string"
 msgstr "将 %n 转换为字符串"
+
+msgid "Upload Bug"
+msgstr "提交Bug信息"

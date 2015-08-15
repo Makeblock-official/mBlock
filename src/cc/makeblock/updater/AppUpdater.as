@@ -46,11 +46,13 @@ package cc.makeblock.updater
 		
 		private function __onError(evt:IOErrorEvent):void
 		{
+			UpdateFrame.getInstance().hide();
 		}
 		
 		
 		private function __onLoad(evt:Event):void
 		{
+			UpdateFrame.getInstance().hide();
 			var str:String = ldr.data;
 			var result:Array = versionRegExp.exec(str);
 			if(null == result){
@@ -97,6 +99,9 @@ package cc.makeblock.updater
 		{
 			this.needNotice = needNotice;
 			ldr.load(new URLRequest(CONFIG_PATH));
+			if(needNotice){
+				UpdateFrame.getInstance().show();
+			}
 		}
 		/*
 		private function closeAndNotify():void
