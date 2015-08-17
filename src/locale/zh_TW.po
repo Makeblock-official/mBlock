@@ -2079,6 +2079,9 @@ msgstr "上傳完成"
 msgid "Hide"
 msgstr "隱藏"
 
+msgid "Arduino mode"
+msgstr "Arduino模式"
+
 msgid "Arduino Program"
 msgstr "Arduino 主程式"
 
