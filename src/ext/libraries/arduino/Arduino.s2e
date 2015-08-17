@@ -34,7 +34,7 @@
 		{"encode":"{n0}","setup":"","inc":"","def":"double currentTime = 0;\ndouble lastTime = 0;\n","work":"currentTime","loop":"currentTime = millis()/1000.0 - lastTime;"}],
 		
 		["w", "reset timer","resetTimer", "0",
-		{"encode":"{n0}","setup":"","inc":"","def":"double currentTime = 0;\ndouble lastTime = 0;\n","work":"lastTime = millis();\n","loop":""}]
+		{"encode":"{n0}","setup":"","inc":"","def":"double currentTime = 0;\ndouble lastTime = 0;\n","work":"lastTime = millis()/1000.0;\n","loop":""}]
 	],
 	"menus": {
 		"beats":["500","250","125","1000","2000","0"],
