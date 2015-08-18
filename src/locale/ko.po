@@ -2111,7 +2111,46 @@ msgid "Others"
 msgstr ""
 
 msgid "Check Software Update"
-msgstr ""
+msgstr "업데이트 확인"
 
 msgid "Check Assets Update"
 msgstr ""
+
+msgid "Connect"
+msgstr "연결"
+
+msgid "Boards"
+msgstr "보드"
+
+msgid "Language"
+msgstr "언어"
+
+msgid "Help"
+msgstr "도움"
+
+msgid "Forum"
+msgstr "포럼"
+
+msgid "Report a Bug"
+msgstr "제안"
+
+msgid "License"
+msgstr "라이선스"
+
+msgid "Acknowledgements"
+msgstr "치사하다"
+
+msgid "Upload Bug"
+msgstr "업로드 Bug"
+
+msgid "Disconnected"
+msgstr "연결되지 않음"
+
+msgid "Not saved"
+msgstr "저장하지 않은"
+
+msgid "Save project?"
+msgstr "저장 프로그램?"
+
+msgid "Don't save"
+msgstr "저장하지 않음"
