@@ -61,10 +61,7 @@ package cc.makeblock.mbot.util
 				str = Translator.map("Disconnected");
 			}
 			result += " - " + str;
-			
-			if(strList[2]){
-				result += " - " + Translator.map("Modified");
-			}
+			result += " - " + Translator.map(strList[2] ? "Not saved" :  "Saved");
 			
 			return result;
 		}

@@ -1306,6 +1306,9 @@ msgstr "存檔到電腦"
 msgid "Saved"
 msgstr "已儲存"
 
+msgid "Not saved"
+msgstr "未儲存"
+
 msgid "Saving changes..."
 msgstr "正在儲存改變..."
 
@@ -1845,6 +1848,9 @@ msgstr "分享到網站"
 msgid "Check for updates"
 msgstr "檢查更新"
 
+msgid "Checking for updates"
+msgstr "檢查更新中"
+
 msgid "Quit"
 msgstr "退出"
 
@@ -2257,4 +2263,4 @@ msgid "cast %n to string"
 msgstr "將 %n 轉換為字符串"
 
 msgid "Upload Bug"
-msgstr "提交Bug信息"
+msgstr "提交Bug"

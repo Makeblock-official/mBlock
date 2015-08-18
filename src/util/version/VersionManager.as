@@ -99,8 +99,6 @@ package util.version
 			}else{
 				FileUtil.WriteString(localVersionFile, remoteVersionXml);
 				LogManager.sharedManager().log("finish");
-//				PopupUtil.showAlert("Update Complete");
-				//MBlock.app.extensionManager.clearImportedExtensions();
 				setTimeout(DeviceManager.sharedManager().onSelectBoard,1000,DeviceManager.sharedManager().currentBoard);
 				MBlock.app.extensionManager.importExtension();
 			}

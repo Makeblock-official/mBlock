@@ -26,7 +26,7 @@ package cc.makeblock.updater
 		public function show():void
 		{
 			hide();
-			panel = PopupUtil.showAlert("Check for updates");
+			panel = PopupUtil.showAlert("Checking for updates");
 			panel.getYesButton().setText(Translator.map("Cancel"));
 		}
 		
