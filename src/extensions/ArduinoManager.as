@@ -615,7 +615,7 @@ void updateVar(char * varName,double * var)
 			var c:String =  funcode.charAt(funcode.length-1)
 			if(ccode_pointer=="setup"){
 				if((ccode_setup.indexOf(funcode)==-1&&ccode_setup_fun.indexOf(funcode)==-1)||funcode.indexOf("delay")>-1||allowAdd){
-					if(funcode.indexOf("=")>-1&&funcode.indexOf("while")==-1&&funcode.indexOf("for")==-1){
+					if((funcode.indexOf(" = ")>-1)&&funcode.indexOf("while")==-1&&funcode.indexOf("for")==-1){
 						ccode_setup_def=funcode+ccode_setup_def;
 					}else{
 						ccode_setup_fun+=funcode;
