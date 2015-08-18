@@ -40,7 +40,7 @@
 				return lines[1];
 			}
 		}*/
-		air.trace("read:",nextID,lastLine);
+		trace("read:",nextID,lastLine);
 		responseValue(nextID,lastLine);
 	}
 	ext.readCommand = function(nextID,key){
@@ -69,7 +69,7 @@
 				}
 			}
 		}
-		air.trace("lastLine:",lastLine);
+		trace("lastLine:",lastLine);
 		if(lines.length>0){
 			if(lines[0].length>254){
 				lines[0] = "";

@@ -143,7 +143,7 @@ package {
 		private var ga:GATracker;
 		private var tabsPart:TabsPart;
 		private var _welcomeView:Loader;
-		private var _currentVer:String = "08.14.002";
+		private var _currentVer:String = "08.18.001";
 		public function MBlock(){
 			app = this;
 			addEventListener(Event.ADDED_TO_STAGE,initStage);
@@ -154,7 +154,7 @@ package {
 		{
 			var errorText:String;
 			if(evt.error is Error){
-				errorText = (evt.error as Error).message;
+				errorText = (evt.error as Error).getStackTrace();
 			}else if(evt.error is ErrorEvent){
 				errorText = (evt.error as ErrorEvent).text;
 			}

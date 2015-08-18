@@ -899,7 +899,7 @@ package scratch {
 				if (listBlocks.indexOf(b.op) < 0){
 					return;
 				}
-				if(b.args[0].argValue==listName){
+				if(b.args[0] is BlockArg && b.args[0].argValue==listName){
 					result.push(b);
 				}
 				if(b.args[b.args.length-1].argValue == listName){
