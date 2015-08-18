@@ -116,6 +116,7 @@ package extensions
 			_htmlLoader.window.string2array = string2array;
 			_htmlLoader.window.responseValue = responseValue;
 			_htmlLoader.window.trace = trace;
+			_htmlLoader.window.air = {"trace":trace};
 			ConnectionManager.sharedManager().addEventListener(Event.CONNECT,onConnected);
 			ConnectionManager.sharedManager().addEventListener(Event.REMOVED,onRemoved);
 			ConnectionManager.sharedManager().addEventListener(Event.CLOSE,onClosed);
