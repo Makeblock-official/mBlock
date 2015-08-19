@@ -1173,8 +1173,8 @@ package scratch {
 			return _isRequest;
 		}
 		public function enterRequest():void{
-			_isRequest = true;
-			setTimeout(__onRequest, 1);
+//			_isRequest = true;
+//			setTimeout(__onRequest, 1);
 		}
 		public function exitRequest():void{
 			_isRequest = false;
