@@ -225,15 +225,18 @@ public class ExtensionManager {
 	}
 	*/
 	public function copyLocalExtensionFiles():void{
+		trace("copyLocalExtensionFiles");
 		var srcFile:File = File.applicationDirectory.resolvePath("ext/libraries/");
 		for each(var sf:File in srcFile.getDirectoryListing()){
 			var tf:File = ApplicationManager.sharedManager().documents.resolvePath("mBlock/libraries/"+sf.name);
 			if(!tf.exists){
 				sf.copyTo(tf,true);
 			}else{
-				if(sf.modificationDate.time>tf.modificationDate.time+10000){
+				//trace(sf.modificationDate.time-tf.modificationDate.time);
+				//if(sf.modificationDate.time>tf.modificationDate.time){
+					trace("copy files:",sf.nativePath,tf.nativePath);
 					sf.copyTo(tf,true);
-				}
+				//}
 			}
 		}
 	}
