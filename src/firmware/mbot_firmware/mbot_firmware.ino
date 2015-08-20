@@ -127,7 +127,7 @@ void setup(){
   buzzerOff();
   ir.begin();
   led.reset(13);
-  led.setNumber(2);
+  led.setNumber(16);
   led.setColor(0,0,0);
   led.show();
 }

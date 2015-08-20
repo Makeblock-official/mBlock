@@ -23,6 +23,8 @@ uint8_t MeInfraredReceiver::getCode(){
     int r = read();
     if(r<0xff){
       return r;
+    }else{
+      return read();
     }
 	}
 	return 0;
