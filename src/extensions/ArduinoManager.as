@@ -225,6 +225,14 @@ void updateVar(char * varName,double * var)
 			arduinoPath = SharedObjectManager.sharedManager().getObject("arduinoPath","");
 		}
 		
+		public function clearTempFiles():void
+		{
+			var workdir:File = File.applicationStorageDirectory.resolvePath("scratchTemp");
+			if(workdir.exists){
+				workdir.deleteDirectory(true);
+			}
+		}
+		
 		public function setScratch(scratch:MBlock):void{
 			_scratch = scratch;
 		}

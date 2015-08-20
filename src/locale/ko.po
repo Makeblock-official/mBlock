@@ -2154,3 +2154,6 @@ msgstr "저장 프로그램?"
 
 msgid "Don't save"
 msgstr "저장하지 않음"
+
+msgid "Clear Temp Files"
+msgstr "캐시 비우기"

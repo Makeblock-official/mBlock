@@ -16,6 +16,7 @@ package cc.makeblock.mbot.ui.parts
 	import cc.makeblock.menu.SystemMenu;
 	import cc.makeblock.updater.AppUpdater;
 	
+	import extensions.ArduinoManager;
 	import extensions.BluetoothManager;
 	import extensions.ConnectionManager;
 	import extensions.DeviceManager;
@@ -57,6 +58,7 @@ package cc.makeblock.mbot.ui.parts
 			register("Help", __onHelp);
 			register("Manage Extensions", ExtensionUtil.OnManagerExtension);
 			register("Restore Extensions", ExtensionUtil.OnLoadExtension);
+			register("Clear Temp Files", ArduinoManager.sharedManager().clearTempFiles);
 		}
 		
 		public function changeLang():void
@@ -288,6 +290,8 @@ package cc.makeblock.mbot.ui.parts
 			}
 		}
 		
+		private var initExtMenuItemCount:int = -1;
+		
 		private function __onInitExtMenu(evt:Event):void
 		{
 			var menuItem:NativeMenu = evt.target as NativeMenu;
@@ -298,7 +302,10 @@ package cc.makeblock.mbot.ui.parts
 				MBlock.app.extensionManager.copyLocalFiles();
 				SharedObjectManager.sharedManager().setObject("first-launch",false);
 			}
-			while(menuItem.numItems > 3){
+			if(initExtMenuItemCount < 0){
+				initExtMenuItemCount = menuItem.numItems;
+			}
+			while(menuItem.numItems > initExtMenuItemCount){
 				menuItem.removeItemAt(menuItem.numItems-1);
 			}
 			list = MBlock.app.extensionManager.extensionList;
