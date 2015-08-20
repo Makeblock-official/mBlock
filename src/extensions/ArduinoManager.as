@@ -784,6 +784,9 @@ void updateVar(char * varName,double * var)
 				var o:CodeBlock = getCodeBlock(params[i+offset]);
 				
 				var v:*=o.type=="string"?(ext.values[o.code]==undefined?o.code:ext.values[o.code]):null;
+				if(str.indexOf("sendString")>-1){
+					v = o.code;
+				}
 				var s:CodeBlock = new CodeBlock();
 				if(ext==null||(v==null||v==undefined)){
 					

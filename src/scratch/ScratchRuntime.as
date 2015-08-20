@@ -61,6 +61,7 @@ package scratch {
 	
 	import uiwidgets.DialogBox;
 	
+	import util.LogManager;
 	import util.ObjReader;
 	import util.OldProjectReader;
 	import util.ProjectIO;
@@ -356,6 +357,7 @@ package scratch {
 							finalArgs[i] = interp.arg(hat, i);
 						}
 						var ext:ScratchExtension = app.extensionManager.extensionByName(extName);
+						
 						if(ext.js.getValue(op,finalArgs,ext)==true){
 							triggerCondition = true;
 						}

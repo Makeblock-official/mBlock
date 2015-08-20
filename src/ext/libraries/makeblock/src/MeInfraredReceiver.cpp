@@ -20,7 +20,10 @@ uint8_t MeInfraredReceiver::getPort(){
 }
 uint8_t MeInfraredReceiver::getCode(){
 	if(available()){
-		return read();
+    int r = read();
+    if(r<0xff){
+      return r;
+    }
 	}
 	return 0;
 }

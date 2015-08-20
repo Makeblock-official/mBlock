@@ -52,7 +52,7 @@ public:
 	void drawStr(int16_t X_position, int8_t Y_position, const char *str);
 
 	void showClock(uint8_t hour, uint8_t minute, bool = PointOn);
-	
+	void reset(uint8_t port);
 
 private:
 	uint8_t u8_SCKPin;

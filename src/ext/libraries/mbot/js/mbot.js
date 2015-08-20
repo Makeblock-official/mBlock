@@ -173,7 +173,10 @@
 		if(typeof port=="string"){
 			port = ports[port];
 		}
-		runPackage(41,port,2,6,bytes.length,short2array(x),short2array(y),bytes.length,bytes);
+		runPackageForFace(41,port,2,6,bytes.length,short2array(x),short2array(y),bytes.length);
+    setTimeout(function(){
+      device.send(bytes);
+    },40);
 	}
 	ext.resetTimer = function(){
 		startTimer = (new Date().getTime())/1000.0;
@@ -184,6 +187,9 @@
 	}
 	var buttonPressed = false;
 	var buttonReleased = false;
+	var buttonPressedPrev = false;
+	var buttonReleasedPrev = false;
+  var lastTime = 0;
 	ext.whenButtonPressed = function(status){
 		var deviceId = 31;
 		var nextID = 100;
@@ -194,19 +200,34 @@
 				status = 1;
 			}
 		}
-		getPackage(nextID,deviceId,7);
+    if(new Date().getTime()-lastTime>150){
+      lastTime = new Date().getTime();
+      getPackage(nextID,deviceId,7);
+    }
 		if(status==0){
 			values[nextID] = function(v,extId){
 				buttonPressed = v<500;
+				buttonReleasedPrev = buttonReleased;
 				buttonReleased = !buttonPressed;
 			}
-			return buttonPressed;
+      var temp = buttonPressed;
+      if(buttonPressedPrev==buttonPressed){
+       // temp = false;
+      }
+      buttonPressedPrev = buttonPressed;
+			return temp;
 		}else{
 			values[nextID] = function(v,extId){
 				buttonReleased = v>500;
+        buttonPressedPrev = buttonPressed;
 				buttonPressed = !buttonReleased;
 			}
-			return buttonReleased;
+      var temp = buttonReleased;
+      if(buttonReleasedPrev==buttonReleased){
+       // temp = false;
+      }
+      buttonReleasedPrev = buttonReleased;
+			return temp;
 		}
 	}
 	ext.getButtonOnBoard = function(nextID,status){
@@ -367,6 +388,23 @@
 			}
 		}
 		bytes[2] = bytes.length-3;
+		device.send(bytes);
+	}
+  function runPackageForFace(){
+		var bytes = [];
+		bytes.push(0xff);
+		bytes.push(0x55);
+		bytes.push(0);
+		bytes.push(0);
+		bytes.push(2);
+		for(var i=0;i<arguments.length;i++){
+			if(arguments[i].constructor == "[class Array]"){
+				bytes = bytes.concat(arguments[i]);
+			}else{
+				bytes.push(arguments[i]);
+			}
+		}
+		bytes[2] = bytes.length+13;
 		device.send(bytes);
 	}
 	function getPackage(){

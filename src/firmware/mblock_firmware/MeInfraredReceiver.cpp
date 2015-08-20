@@ -53,7 +53,10 @@ void MeInfraredReceiver::loop()
 {
 	if(buttonState()==1){ 
 		if(available()>0){
-			_irCode = read();
+                  int r = read();
+                    if(r<0xff){
+			_irCode = r;
+                    }
 		}
 	}else{
 		_irCode = 0;
