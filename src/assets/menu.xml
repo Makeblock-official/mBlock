@@ -57,7 +57,7 @@
 	<subMenu name="Extensions" label="扩展">
 		<item name="Manage Extensions" label="管理扩展" keyEquivalent="T" />
 		<item name="Restore Extensions" label="检查最新扩展" />
-		<item name="Clear Temp Files" label="清空缓存" />
+		<item name="Clear Cache" label="清空缓存" />
 		<item isSeparator="true" />
 	</subMenu>
 	<subMenu name="Language" label="语言">

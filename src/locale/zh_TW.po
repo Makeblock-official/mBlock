@@ -2265,5 +2265,5 @@ msgstr "將 %n 轉換為字符串"
 msgid "Upload Bug"
 msgstr "提交Bug"
 
-msgid "Clear Temp Files"
+msgid "Clear Cache"
 msgstr "清空緩存"

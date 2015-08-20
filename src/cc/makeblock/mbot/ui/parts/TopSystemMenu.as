@@ -58,7 +58,7 @@ package cc.makeblock.mbot.ui.parts
 			register("Help", __onHelp);
 			register("Manage Extensions", ExtensionUtil.OnManagerExtension);
 			register("Restore Extensions", ExtensionUtil.OnLoadExtension);
-			register("Clear Temp Files", ArduinoManager.sharedManager().clearTempFiles);
+			register("Clear Cache", ArduinoManager.sharedManager().clearTempFiles);
 		}
 		
 		public function changeLang():void
