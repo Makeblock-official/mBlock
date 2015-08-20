@@ -409,7 +409,7 @@ void updateVar(char * varName,double * var)
 			return (callCode);
 		}
 		private function addFunction(blks:Array):void{
-			var funcName:String = blks[0][1];
+			var funcName:String = blks[0][1].split("&").join("_");
 			for each(var o:Object in funcList){ 
 				if(o.name==funcName){
 					return;
