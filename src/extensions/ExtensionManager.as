@@ -549,7 +549,7 @@ public class ExtensionManager {
 				if(b.requestState == 2) {
 					b.requestState = 0;
 					var v:* = b.response;
-					b.response = null;
+//					b.response = null;
 					return v;
 				}else{
 					request(extName, primOrVarName, args, b);

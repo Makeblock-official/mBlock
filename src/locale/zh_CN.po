@@ -2273,3 +2273,6 @@ msgstr "将 %n 转换为字符串"
 
 msgid "Upload Bug"
 msgstr "提交Bug"
+
+msgid "Clear Temp Files"
+msgstr "清空缓存"
