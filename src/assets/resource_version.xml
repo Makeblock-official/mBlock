@@ -1,0 +1,29 @@
+<resources>
+    <resource version="1.0.3" name="mblock" path="firmware">
+        http://mblock.oss-cn-shenzhen.aliyuncs.com/resources/firmware/v2/mblock_firmware.zip
+    </resource>
+    <resource version="1.0.4" name="mbot" path="firmware">
+        http://mblock.oss-cn-shenzhen.aliyuncs.com/resources/firmware/v2/mbot_firmware.zip
+    </resource>
+    <resource version="1.0.8" name="tools" path="tools">
+        http://mblock.oss-cn-shenzhen.aliyuncs.com/resources/tools/v2/hex.zip
+    </resource>
+    <resource version="1.0.11" name="makeblock" path="libraries">
+        http://mblock.oss-cn-shenzhen.aliyuncs.com/resources/libraries/v5/makeblock.zip
+    </resource>
+    <resource version="1.0.9" name="arduino" path="libraries">
+        http://mblock.oss-cn-shenzhen.aliyuncs.com/resources/libraries/v5/arduino.zip
+    </resource>
+    <resource version="1.0.16" name="mbot" path="libraries">
+        http://mblock.oss-cn-shenzhen.aliyuncs.com/resources/libraries/v5/mbot.zip
+    </resource>
+    <resource version="1.0.5" name="picoboard" path="libraries">
+        http://mblock.oss-cn-shenzhen.aliyuncs.com/resources/libraries/v5/picoboard.zip
+    </resource>
+    <resource version="1.0.7" name="serial" path="libraries">
+        http://mblock.oss-cn-shenzhen.aliyuncs.com/resources/libraries/v5/serial.zip
+    </resource>
+    <resource version="1.0.8" name="locale" path="">
+        http://mblock.oss-cn-shenzhen.aliyuncs.com/resources/locale/v2/locale.zip
+    </resource>
+</resources>

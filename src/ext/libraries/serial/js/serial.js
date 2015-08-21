@@ -31,7 +31,10 @@
 	};
 	ext.isAvailable = function(nextID) {
 		responseValue(nextID,lines.length>0&&lines[0]!="");
-    };
+  };
+  ext.isEqual = function(nextID,msg1,msg2){
+      responseValue(nextID,msg1.indexOf(msg2)>-1);
+  };
 	ext.readLine = function(nextID){
 		/*lines.shift();
 		if(lines.length>0){
@@ -40,7 +43,6 @@
 				return lines[1];
 			}
 		}*/
-		air.trace("read:",nextID,lastLine);
 		responseValue(nextID,lastLine);
 	}
 	ext.readCommand = function(nextID,key){
@@ -69,7 +71,6 @@
 				}
 			}
 		}
-		air.trace("lastLine:",lastLine);
 		if(lines.length>0){
 			if(lines[0].length>254){
 				lines[0] = "";

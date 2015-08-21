@@ -31,7 +31,6 @@ package scratch {
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
-	import flash.filters.GlowFilter;
 	import flash.geom.ColorTransform;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
@@ -46,8 +45,6 @@ package scratch {
 	import interpreter.Variable;
 	
 	import translation.Translator;
-	
-	import uiwidgets.Menu;
 	
 	import util.Color;
 	import util.JSON;
@@ -98,7 +95,7 @@ public class ScratchSprite extends ScratchObj {
 
 	private function initMedia():void {
 		var graySquare:BitmapData = new BitmapData(4, 4, true, 0x808080);
-		costumes.push(new ScratchCostume(Translator.map('costume1'), graySquare));
+		costumes.push(new ScratchCostume('costume1', graySquare));
 		sounds.push(new ScratchSound(Translator.map('pop'), new Pop()));
 		sounds[0].prepareToSave();
 	}
@@ -456,7 +453,9 @@ public class ScratchSprite extends ScratchObj {
 		if ('setSizeTo:' == op) return [Math.round(getSize() * 10) / 10];
 		if ((['startScene', 'startSceneAndWait', 'whenSceneStarts'].indexOf(op)) > -1) {
 			var stg:ScratchStage = parent as ScratchStage;
-			if (stg) return [stg.costumes[stg.costumes.length - 1].costumeName];
+			if (stg) {
+				return [stg.costumes[stg.costumes.length - 1].costumeName];
+			}
 		}
 		if ('senseVideoMotion' == op) return ['motion', 'this sprite'];
 		return super.defaultArgsFor(op, specDefaults);

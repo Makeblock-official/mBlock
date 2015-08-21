@@ -225,6 +225,14 @@ void updateVar(char * varName,double * var)
 			arduinoPath = SharedObjectManager.sharedManager().getObject("arduinoPath","");
 		}
 		
+		public function clearTempFiles():void
+		{
+			var workdir:File = File.applicationStorageDirectory.resolvePath("scratchTemp");
+			if(workdir.exists){
+				workdir.deleteDirectory(true);
+			}
+		}
+		
 		public function setScratch(scratch:MBlock):void{
 			_scratch = scratch;
 		}
@@ -615,7 +623,7 @@ void updateVar(char * varName,double * var)
 			var c:String =  funcode.charAt(funcode.length-1)
 			if(ccode_pointer=="setup"){
 				if((ccode_setup.indexOf(funcode)==-1&&ccode_setup_fun.indexOf(funcode)==-1)||funcode.indexOf("delay")>-1||allowAdd){
-					if(funcode.indexOf("=")>-1&&funcode.indexOf("while")==-1&&funcode.indexOf("for")==-1){
+					if((funcode.indexOf(" = ")>-1)&&funcode.indexOf("while")==-1&&funcode.indexOf("for")==-1){
 						ccode_setup_def=funcode+ccode_setup_def;
 					}else{
 						ccode_setup_fun+=funcode;
@@ -784,6 +792,9 @@ void updateVar(char * varName,double * var)
 				var o:CodeBlock = getCodeBlock(params[i+offset]);
 				
 				var v:*=o.type=="string"?(ext.values[o.code]==undefined?o.code:ext.values[o.code]):null;
+				if(str.indexOf("sendString")>-1){
+					v = o.code;
+				}
 				var s:CodeBlock = new CodeBlock();
 				if(ext==null||(v==null||v==undefined)){
 					

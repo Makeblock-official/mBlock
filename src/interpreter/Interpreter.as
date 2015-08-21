@@ -202,7 +202,7 @@ public class Interpreter {
 
 	public function isRunning(b:Block, targetObj:ScratchObj):Boolean {
 		for each (var t:Thread in threads) {
-			if ((t.topBlock == b) && (t.target == targetObj)) return true;
+			if ((t.realBlock == b) && (t.target == targetObj)) return true;
 		}
 		return false;
 	}

@@ -36,8 +36,6 @@ package primitives {
 	import scratch.ScratchObj;
 	import scratch.ScratchSprite;
 	import scratch.ScratchStage;
-	
-	import translation.Translator;
 
 	internal class SensingPrims {
 

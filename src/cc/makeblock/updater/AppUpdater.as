@@ -1,23 +1,19 @@
 package cc.makeblock.updater
 {
-	import flash.desktop.NativeProcess;
-	import flash.desktop.NativeProcessStartupInfo;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.IOErrorEvent;
-	import flash.events.NativeProcessExitEvent;
-	import flash.filesystem.File;
 	import flash.net.URLLoader;
-	import flash.net.URLLoaderDataFormat;
 	import flash.net.URLRequest;
 	import flash.net.navigateToURL;
 	
 	import cc.makeblock.mbot.util.PopupUtil;
-	import cc.makeblock.util.FileUtil;
 	
 	import org.aswing.JOptionPane;
 	
 	import translation.Translator;
+	
+	import util.version.VersionManager;
 
 	public class AppUpdater extends EventDispatcher
 	{
@@ -50,11 +46,13 @@ package cc.makeblock.updater
 		
 		private function __onError(evt:IOErrorEvent):void
 		{
+			UpdateFrame.getInstance().hide();
 		}
 		
 		
 		private function __onLoad(evt:Event):void
 		{
+			UpdateFrame.getInstance().hide();
 			var str:String = ldr.data;
 			var result:Array = versionRegExp.exec(str);
 			if(null == result){
@@ -66,8 +64,11 @@ package cc.makeblock.updater
 				panel.getYesButton().setText(Translator.map("Download Now"));
 				panel.getCancelButton().setText(Translator.map("Download Later"));
 				panel.getFrame().setModal(false);
-			}else if(needNotice){
-				PopupUtil.showAlert(Translator.map("It's already the newest version"));
+			}else{
+				VersionManager.sharedManager().start();
+				if(needNotice){
+					PopupUtil.showAlert(Translator.map("It's already the newest version"));
+				}
 			}
 			/*
 			parseData(JSON.parse(ldr.data));
@@ -98,6 +99,9 @@ package cc.makeblock.updater
 		{
 			this.needNotice = needNotice;
 			ldr.load(new URLRequest(CONFIG_PATH));
+			if(needNotice){
+				UpdateFrame.getInstance().show();
+			}
 		}
 		/*
 		private function closeAndNotify():void
@@ -167,12 +171,12 @@ package cc.makeblock.updater
 			process.start(startInfo);
 		}
 		*/
-		static private function isSourceVerGreatThan(source:String, compareTarget:String):Boolean
+		static public function isSourceVerGreatThan(source:String, compareTarget:String):Boolean
 		{
 			return VerToInt(source) > VerToInt(compareTarget);
 		}
 		
-		static private function VerToInt(str:String):uint
+		static public function VerToInt(str:String):uint
 		{
 			var list:Array = str.split(".");
 			list.length = 3;
@@ -180,6 +184,19 @@ package cc.makeblock.updater
 			for each(var item:String in list){
 				result *= 1000;
 				result += parseInt(item);
+			}
+			return result;
+		}
+		
+		static public function VersionXml2Obj(xml:XML):Object
+		{
+			var result:Object = {};
+			var resList:XMLList = xml.resource;
+			for(var i:int=0, n:int=resList.length(); i<n; i++){
+				var resXml:XML = resList[i];
+				var key:String = resXml.@name;
+				var value:String = resXml.@version;
+				result[key] = value;
 			}
 			return result;
 		}

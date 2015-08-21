@@ -33,10 +33,6 @@ msgid "ask %s and wait"
 msgstr "提問 %s 並等待"
 
 # "backdrop" in Scratch 2.0 is similar to "background" in Scratch 1.4
-msgid "backdrop #"
-msgstr "背景編號 #"
-
-# "backdrop" in Scratch 2.0 is similar to "background" in Scratch 1.4
 msgid "backdrop name"
 msgstr "背景名稱"
 
@@ -120,9 +116,6 @@ msgstr "將第 %d.listDeleteItem 項從 %m.list 中移除"
 
 msgid "delete this clone"
 msgstr "刪除這個分身"
-
-msgid "direction"
-msgstr "方向"
 
 msgid "distance"
 msgstr "距離"
@@ -359,6 +352,9 @@ msgstr "大小"
 msgid "Sound"
 msgstr "聲音"
 
+msgid "sound"
+msgstr "聲音"
+
 msgid "stamp"
 msgstr "蓋章"
 
@@ -478,47 +474,14 @@ msgstr "當角色被點一下"
 msgid "when tilt = %n"
 msgstr "當傾斜度 = %n"
 
-msgid "x position"
-msgstr "x座標"
-
-msgid "y position"
-msgstr "y座標"
-
-#~ msgid "forever if %b"
-#~ msgstr "每當 %b"
-
-#~ msgid "if %b"
-#~ msgstr "如果 %b"
-
-#~ msgid "motor direction %m.motorDirection"
-#~ msgstr "馬達運轉方向 %m.motorDirection"
-
-#~ msgid "motor off"
-#~ msgstr "關閉馬達"
-
-#~ msgid "motor on"
-#~ msgstr "開啟馬達"
-
-#~ msgid "motor on for %n secs"
-#~ msgstr "開啟馬達運轉 %n 秒"
-
-#~ msgid "motor power %n"
-#~ msgstr "馬達動力 %n"
-
-#~ msgid "play note %n for %n beats"
-#~ msgstr "彈奏音符 %d.note %n 拍"
-
-##################
+# #################
 # User Interface #
-##################
-
+# #################
 msgid "10 ^"
 msgstr "10 ^"
 
-msgid "<b>Information about Cloud variables</b><br>&nbsp;<br>Currently, only numbers are supported<br>Chat rooms are not allowed, and will be removed<br>For more info, <a href="/help/faq/#clouddata" target="_blank">see the cloud data FAQ!</a>"
-msgstr ""
-"<b>雲端變數的</b><br>&nbsp;<br>目前只能用數字<br>不能用聊天室，會被刪除。<br>更多相關資訊<a href= "
-"target=>請看雲端資料FAQ!</a>"
+msgid "<b>Information about Cloud variables</b><br>&nbsp;<br>Currently, only numbers are supported<br>Chat rooms are not allowed, and will be removed<br>For more info, <a href=\"/help/faq/#clouddata\" target=\"_blank\">see the cloud data FAQ!</a>"
+msgstr "<b>雲端變數的</b><br>&nbsp;<br>目前只能用數字<br>不能用聊天室，會被刪除。<br>更多相關資訊<a href= target=>請看雲端資料FAQ!</a>"
 
 msgid "A connected"
 msgstr "A 已連接"
@@ -594,9 +557,6 @@ msgstr "背景編號"
 
 msgid "Backdrop Library"
 msgstr "背景範例庫"
-
-msgid "backdrop name"
-msgstr "背景名稱"
 
 msgid "backdrop1"
 msgstr "背景1"
@@ -724,7 +684,7 @@ msgstr "清除"
 msgid "clear senders/receivers"
 msgstr "清除發送者/接收者"
 
-msgid "Click "Save now" to try again or "Download" to save"
+msgid "Click \"Save now\" to try again or \"Download\" to save"
 msgstr "點選以重試或儲存"
 
 msgid "Close"
@@ -771,9 +731,6 @@ msgstr "cos"
 
 msgid "Costume"
 msgstr "服裝造型"
-
-msgid "costume #"
-msgstr "造型編號"
 
 msgid "Costume Library"
 msgstr "造型庫"
@@ -973,9 +930,6 @@ msgstr "吉他"
 msgid "Hand Clap"
 msgstr "拍掌"
 
-msgid "hide"
-msgstr "隱藏"
-
 msgid "High C"
 msgstr ""
 
@@ -1004,9 +958,6 @@ msgstr "安裝中..."
 
 msgid "Instruments"
 msgstr "樂器"
-
-msgid "large readout"
-msgstr ""
 
 msgid "last"
 msgstr "最後的"
@@ -1058,9 +1009,6 @@ msgstr "log"
 
 msgid "louder"
 msgstr "更大聲"
-
-msgid "loudness"
-msgstr "音量值"
 
 msgid "Low C"
 msgstr ""
@@ -1176,9 +1124,6 @@ msgstr "新變數"
 msgid "No motion blocks"
 msgstr "本區無動作積木"
 
-msgid "normal readout"
-msgstr ""
-
 msgid "Not saved; network or server problem."
 msgstr "沒有儲存；網路或伺服器有問題"
 
@@ -1193,9 +1138,6 @@ msgstr "關"
 
 msgid "Offline Editor"
 msgstr ""
-
-msgid "OK"
-msgstr "OK"
 
 msgid "on"
 msgstr "開"
@@ -1364,6 +1306,9 @@ msgstr "存檔到電腦"
 msgid "Saved"
 msgstr "已儲存"
 
+msgid "Not saved"
+msgstr "未儲存"
+
 msgid "Saving changes..."
 msgstr "正在儲存改變..."
 
@@ -1418,9 +1363,6 @@ msgstr "已分享"
 msgid "Shift:"
 msgstr "平移"
 
-msgid "show"
-msgstr "顯示"
-
 msgid "show receivers"
 msgstr "顯示接收者"
 
@@ -1451,9 +1393,6 @@ msgstr "沒聲音"
 msgid "sin"
 msgstr "sin"
 
-msgid "size"
-msgstr "大小"
-
 msgid "slider"
 msgstr "滑桿"
 
@@ -1477,12 +1416,6 @@ msgstr "軍鼓"
 
 msgid "softer"
 msgstr "柔化"
-
-msgid "sound"
-msgstr "聲音"
-
-msgid "Sound"
-msgstr "聲音"
 
 msgid "Sound Library"
 msgstr "音效庫"
@@ -1579,9 +1512,6 @@ msgstr "順時針"
 
 msgid "Throw away all changes since opening this project?"
 msgstr "確定要放棄儲存所有改變嗎？"
-
-msgid "timer"
-msgstr "計時器"
 
 msgid "Tips"
 msgstr "提示"
@@ -1687,9 +1617,6 @@ msgstr "視訊影片於："
 msgid "Vocals"
 msgstr "人聲"
 
-msgid "volume"
-msgstr "音量"
-
 #, fuzzy
 msgid "Walking"
 msgstr "步行"
@@ -1729,381 +1656,489 @@ msgstr "橡皮擦寬度"
 msgid "Line width:"
 msgstr "線條寬度"
 
-# 90%
-#, fuzzy
-#~ msgid "New sprite"
-#~ msgstr "新增角色"
-
-#~ msgid "Paint"
-#~ msgstr "繪製"
-
-#~ msgid "any"
-#~ msgstr "任何的"
-
-#~ msgid "High Tom"
-#~ msgstr "高音鼓"
-
-#~ msgid "Long Guiro"
-#~ msgstr "長梗笛"
-
-#~ msgid "Low Bongo"
-#~ msgstr "南美小鼓-低音"
-
-#~ msgid "Low Conga"
-#~ msgstr "康加鼓-低音"
-
-#~ msgid "Low Tom"
-#~ msgstr "中音鼓-低音"
-
-#~ msgid "Low Wood Block"
-#~ msgstr "低音木魚"
-
-#~ msgid "Maracas"
-#~ msgstr "響葫蘆"
-
-#~ msgid "More"
-#~ msgstr "更多"
-
-#~ msgid "Mute Triangle"
-#~ msgstr "三角鐵-悶音"
-
-#~ msgid "Open Triangle"
-#~ msgstr "三角鐵-開音"
-
-#~ msgid "Pedal Hi-Hat"
-#~ msgstr "踏板雙面鈸"
-
-#~ msgid "Short Guiro"
-#~ msgstr "短梗笛"
 msgid "set motor%d.motorPort speed %d.motorvalue"
 msgstr "設置馬達%d.motorPort 轉速為 %d.motorvalue"
+
 msgid "set servo %d.servoPort %d.slot angle %d.servovalue"
 msgstr "設置伺服馬達%d.servoPort %d.slot 角度%d.servovalue"
+
 msgid "set 7-segments display%d.normalPort number %n"
 msgstr "設置顯示器%d.normalPort 數字%n"
+
 msgid "set led %d.normalPort %d.index red%d.value green%d.value blue%d.value"
 msgstr "設置LED%d.normalPort %d.index 紅色%d.value 綠色%d.value 藍色%d.value"
+
 msgid "ultrasonic sensor %d.normalPort distance"
 msgstr "超音波感應器%d.normalPort 距離"
+
 msgid "sound sensor %d.normalPort"
 msgstr "音量感應器%d.normalPort"
+
 msgid "light sensor %d.normalPort"
 msgstr "光線感應器%d.normalPort"
+
 msgid "set light sensor %d.normalPort led as %d.switch"
 msgstr "設置光線感應器%d.normalPort LED狀態為 %d.switch"
+
 msgid "line follower %d.normalPort"
 msgstr "巡線感應器%d.normalPort"
+
 msgid "limit switch %d.normalPort %d.slot"
 msgstr "限位開關%d.normalPort%d.slot"
+
 msgid "potentiometer %d.normalPort"
 msgstr "可調電阻器%d.normalPort"
+
 msgid "3-axis gyro %d.GyroAxis angle"
 msgstr "陀螺儀 %d.GyroAxis 角度"
+
 msgid "infrared receiver %d.normalPort"
 msgstr "紅外接收器 %d.normalPort"
+
 msgid "pir motion sensor %d.normalPort"
 msgstr "人體紅外感應器 %d.normalPort"
+
 msgid "temperature %d.normalPort%d.slot °C"
 msgstr "當前溫度 %d.normalPort%d.slot °C"
+
 msgid "joystick %d.normalPort %d.Axis"
 msgstr "搖桿 %d.normalPort %d.Axis"
+
 msgid "set camera shutter %d.normalPort as %d.shutter"
 msgstr "設置相機快門%d.normalPort 狀態為%d.shutter"
+
 msgid "read digital pin %n"
 msgstr "數位腳位 %n"
+
 msgid "read analog pin (A)%n"
 msgstr "類比腳位 (A)%n"
+
 msgid "set digital pin %n output as %d.digital"
 msgstr "設置 數位腳位 %n 輸出為 %d.digital"
+
 msgid "set analog pin (A)%n output as %n"
 msgstr "設置 類比腳位 %n 輸出為 %n"
+
 msgid "set pwm pin %n output as %d.pwmvalue"
 msgstr "設置 PWM %n 輸出為 %d.pwmvalue"
+
 msgid "set servo pin %n angle as %d.servovalue"
 msgstr "設置伺服馬達腳位 %n 輸出角度為 %d.servovalue"
+
 msgid "play tone pin %n on note %d.notes beat %d.beats"
 msgstr "播放腳位 %n 音調為 %d.notes 節拍為 %d.beats"
+
 msgid "Eighth"
 msgstr "八分之壹"
+
 msgid "Quater"
 msgstr "四分之壹"
+
 msgid "Half"
 msgstr "二分之壹"
+
 msgid "Whole"
 msgstr "整拍"
+
 msgid "Double"
 msgstr "雙拍"
+
 msgid "Zero"
 msgstr "停止"
+
 msgid "Ultrasonic"
 msgstr "超音波"
+
 msgid "Light Sensor"
 msgstr "光源感應器"
+
 msgid "Sound Sensor"
 msgstr "聲音感應器"
+
 msgid "LED"
 msgstr "彩燈"
-msgid "Joystick"
-msgstr "搖桿"
+
 msgid "Line Finder"
 msgstr "巡線感應器"
+
 msgid "LimitSwitch"
 msgstr "限位開關"
-msgid "Temperature"
-msgstr "溫度感應器"
+
 msgid "Potentiometer"
 msgstr "電位器"
+
 msgid "Button"
 msgstr "按钮"
+
 msgid "High"
 msgstr "高電位"
+
 msgid "Low"
 msgstr "低電位"
+
 msgid "X-Axis"
 msgstr "X轴"
+
 msgid "Y-Axis"
 msgstr "Y轴"
+
 msgid "Z-Axis"
 msgstr "Z轴"
+
 msgid "Input"
 msgstr "輸入"
+
 msgid "Output"
 msgstr "輸出"
+
 msgid "Port1"
 msgstr "連接埠1"
+
 msgid "Port2"
 msgstr "連接埠2"
+
 msgid "Port3"
 msgstr "連接埠3"
+
 msgid "Port4"
 msgstr "連接埠4"
+
 msgid "Port5"
 msgstr "連接埠5"
+
 msgid "Port6"
 msgstr "連接埠6"
+
 msgid "Port7"
 msgstr "連接埠7"
+
 msgid "Port8"
 msgstr "連接埠8"
+
 msgid "Slot1"
 msgstr "插座1"
+
 msgid "Slot2"
 msgstr "插座2"
+
 msgid "M1"
 msgstr "馬達連接埠1"
+
 msgid "M2"
 msgstr "馬達連接埠2"
+
 msgid "Don't save"
 msgstr "不保存"
+
 msgid "Save project?"
 msgstr "保存專案?"
+
 msgid "About"
 msgstr "關於"
+
 msgid "Open"
 msgstr "打開"
+
 msgid "Save as"
 msgstr "另存為"
+
 msgid "Share to website"
 msgstr "分享到網站"
+
 msgid "Check for updates"
 msgstr "檢查更新"
+
+msgid "Checking for updates"
+msgstr "檢查更新中"
+
 msgid "Quit"
 msgstr "退出"
+
 msgid "Share to Scratch Website"
 msgstr "分享到Scratch網站"
+
 msgid "Project name"
 msgstr "專案名稱:"
+
 msgid "Your Scratch name"
 msgstr "使用者名:"
+
 msgid "Password"
 msgstr "密碼:"
+
 msgid "Setting"
 msgstr "設置"
+
 msgid "Connect"
 msgstr "連接"
+
 msgid "Serial Port"
 msgstr "序列埠連接"
+
 msgid "Disconnect"
 msgstr "沒有連接序列埠"
+
 msgid "Network"
 msgstr "網路連接"
+
 msgid "Custom Connect"
 msgstr "自定義連接"
+
 msgid "Refresh"
 msgstr "刷新"
+
 msgid "save picture of stage"
 msgstr "將場景保存為圖片"
+
 msgid "Load Project"
 msgstr "打開專案"
+
 msgid "Save Project"
 msgstr "保存專案"
+
 msgid "Robots"
 msgstr "機器人模組"
+
 msgid "Forum"
 msgstr "論壇"
+
 msgid "Upgrade Firmware"
 msgstr "更新韌體"
+
 msgid "View Source"
 msgstr "查看原始碼"
+
 msgid "Microphone volume:"
 msgstr "麥克風音量:"
+
 msgid "http://forum.makeblock.cc/c/makeblock-products/mblock#scratch"
 msgstr "http://bbs.makeblock.cc/forum-39-1.html?scratch"
-msgid "Close"
-msgstr "關閉"
+
 msgid "Executing"
 msgstr "升級中"
+
 msgid "Replace contents of the current project?"
 msgstr "替換當前專案嗎？"
+
 msgid "OK"
 msgstr "確認"
+
 msgid "info"
 msgstr "訊息"
+
 msgid "New Version Available!"
 msgstr "有新版本可以更新！"
+
 msgid "Update Now"
 msgstr "馬上更新"
+
 msgid "New Block"
 msgstr "新建積木指令"
+
 msgid "Updating"
 msgstr "正在更新"
+
 msgid "Downloading"
 msgstr "已下載"
+
 msgid "Connected"
 msgstr "已連接"
+
 msgid "Bluetooth"
 msgstr "藍牙"
+
 msgid "No Bluetooth"
 msgstr "藍牙未開啟"
+
 msgid "Disconnect Bluetooth"
 msgstr "斷開藍牙"
+
 msgid "Discovering Bluetooth"
 msgstr "正在搜尋藍牙設備"
+
 msgid "Click The Device From List To Connect"
 msgstr "選擇藍牙設備並連接"
+
 msgid "Device Not Found"
 msgstr "附近沒有找到藍牙設備"
+
 msgid "Distance Display"
 msgstr "距離顯示器"
+
 msgid "Chat"
 msgstr "聊天"
+
 msgid "Detect Sound"
 msgstr "聲音監測"
+
 msgid "Temperature"
 msgstr "溫度監測"
+
 msgid "Joystick"
 msgstr "搖桿"
+
 msgid "Ultrasonic Car"
 msgstr "超聲波測距小車"
+
 msgid "Play Music"
 msgstr "音樂演奏"
+
 msgid "Voice Command"
 msgstr "語音指令"
+
 msgid "Accelerometer X"
 msgstr "加速度X"
+
 msgid "Accelerometer Y"
 msgstr "加速度Y"
+
 msgid "Accelerometer Z"
 msgstr "加速度Z"
+
 msgid "Brightness"
 msgstr "亮度"
+
 msgid "Start Button Pressed?"
 msgstr "開始按鈕被按下了嗎？"
+
 msgid "Select Button Pressed?"
 msgstr "選擇按鈕被按下了嗎？"
+
 msgid "Up Button Pressed?"
 msgstr "向上按鈕被按下了嗎？"
+
 msgid "Down Button Pressed?"
 msgstr "向下按鈕被按下了嗎？"
+
 msgid "Left Button Pressed?"
 msgstr "向左按鈕被按下了嗎？"
+
 msgid "Right Button Pressed?"
 msgstr "向右按鈕被按下了嗎？"
+
 msgid "A Button Pressed?"
 msgstr "按鈕A被按下了嗎？"
+
 msgid "B Button Pressed?"
 msgstr "按鈕B被按下了嗎？"
+
 msgid "X Button Pressed?"
 msgstr "按鈕X被按下了嗎？"
+
 msgid "Y Button Pressed?"
 msgstr "按鈕Y被按下了嗎？"
+
 msgid "set font size"
 msgstr "設置字體大小"
+
 msgid "import translation file"
 msgstr "匯入語言文件"
 
-
 msgid "Back"
 msgstr "返回"
+
 msgid "Upload to Arduino"
 msgstr "上傳到Arduino"
-msgid "Download"
-msgstr "下載"
+
 msgid "Send"
 msgstr "發送"
+
 msgid "Please connect the serial port."
 msgstr "請連接序列埠"
+
 msgid "Message"
 msgstr "訊息"
+
 msgid "Arduino IDE not found,"
 msgstr "沒有找到Arduino IDE，"
+
 msgid "or Click 'Download' to install the Arduino IDE."
 msgstr "或者點擊‘下載’，安裝最新的Arduino IDE。"
+
 msgid "Click 'Set Path' to find the install path of Arduino,"
 msgstr "如果已安裝Arduino IDE，請點擊‘設置路徑’找到安裝目錄，"
+
 msgid "Set Path"
 msgstr "設置路徑"
+
 msgid "Edit with Arduino IDE"
 msgstr "用 Arduino IDE 編輯"
+
 msgid "unsupported block found, remove them to continue."
 msgstr "尋找不支持的模組，移除它們後繼續"
+
 msgid "Arduino Project"
 msgstr "Arduino專案"
+
 msgid "Start Uploading"
 msgstr "開始上傳"
+
 msgid "Waiting Reset Board"
 msgstr "等待重置主控板"
+
 msgid "Uploading"
 msgstr "上傳中"
+
 msgid "Upload Finish"
 msgstr "上傳完成"
+
 msgid "Hide"
 msgstr "隱藏"
+
 msgid "Arduino mode"
+msgstr "Arduino模式"
+
 msgid "Arduino Program"
 msgstr "Arduino 主程式"
+
 msgid "Current Firmware"
 msgstr "當前韌體"
+
 msgid "Unknown Firmware"
 msgstr "未知韌體"
+
 msgid "Firmware"
 msgstr "韌體"
+
 msgid "2.4G Serial"
 msgstr "2.4G無線序列埠"
+
 msgid "Discover"
 msgstr "搜尋"
+
 msgid "Search Network"
 msgstr "搜尋網路"
+
 msgid "Extensions"
 msgstr "擴充"
+
 msgid "Boards"
 msgstr "控制板"
+
 msgid "Help"
 msgstr "幫助"
+
 msgid "Report a Bug"
 msgstr "建議回饋"
+
 msgid "License"
 msgstr "授權"
+
 msgid "Acknowledgements"
 msgstr "銘謝"
+
 msgid "Install Arduino Driver"
 msgstr "安裝Arduino驅動"
+
 msgid "Bluetooth need to install .Net Framework 4.0"
 msgstr "藍牙模組需要安裝.Net Framework 4"
+
 msgid "Clear Bluetooth"
 msgstr "清空藍牙清單"
+
 msgid "Reset Default Program"
 msgstr "恢復出廠程序"
+
 msgid "random horizontal point"
 msgstr "水平任意位置"
 
@@ -2169,14 +2204,19 @@ msgstr "警告"
 
 msgid "Language"
 msgstr "語言"
+
 msgid "Connecting Bluetooth"
 msgstr "連接藍牙中"
+
 msgid "Bluetooth Connected"
 msgstr "藍牙已連接"
+
 msgid "Connecting Timeout"
 msgstr "連接超時"
+
 msgid "Restore Extensions"
 msgstr "還原出廠擴展"
+
 msgid "Extension Files Updated"
 msgstr "擴展文件已還原"
 
@@ -2214,7 +2254,16 @@ msgid "Others"
 msgstr "其它"
 
 msgid "Check Software Update"
-msgstr "檢查軟體更新"
+msgstr "檢查更新"
 
 msgid "Check Assets Update"
 msgstr "檢查資源更新"
+
+msgid "cast %n to string"
+msgstr "將 %n 轉換為字符串"
+
+msgid "Upload Bug"
+msgstr "提交Bug"
+
+msgid "Clear Cache"
+msgstr "清空緩存"

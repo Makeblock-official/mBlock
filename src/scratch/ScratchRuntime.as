@@ -61,6 +61,7 @@ package scratch {
 	
 	import uiwidgets.DialogBox;
 	
+	import util.LogManager;
 	import util.ObjReader;
 	import util.OldProjectReader;
 	import util.ProjectIO;
@@ -356,6 +357,7 @@ package scratch {
 							finalArgs[i] = interp.arg(hat, i);
 						}
 						var ext:ScratchExtension = app.extensionManager.extensionByName(extName);
+						
 						if(ext.js.getValue(op,finalArgs,ext)==true){
 							triggerCondition = true;
 						}
@@ -606,8 +608,9 @@ package scratch {
 			var ch:int = evt.charCode;
 			if (evt.charCode == 0) ch = mapArrowKey(evt.keyCode);
 			if ((65 <= ch) && (ch <= 90)) ch += 32; // map A-Z to a-z
-			if (!(evt.target is TextField)) 
+			if (!(evt.target is TextField || keyIsDown[ch])) {
 				startKeyHats(ch);
+			}
 			if (ch < 128) keyIsDown[ch] = true;
 		}
 	
@@ -898,7 +901,7 @@ package scratch {
 				if (listBlocks.indexOf(b.op) < 0){
 					return;
 				}
-				if(b.args[0].argValue==listName){
+				if(b.args[0] is BlockArg && b.args[0].argValue==listName){
 					result.push(b);
 				}
 				if(b.args[b.args.length-1].argValue == listName){
@@ -1172,8 +1175,8 @@ package scratch {
 			return _isRequest;
 		}
 		public function enterRequest():void{
-			_isRequest = true;
-			setTimeout(__onRequest, 1);
+//			_isRequest = true;
+//			setTimeout(__onRequest, 1);
 		}
 		public function exitRequest():void{
 			_isRequest = false;

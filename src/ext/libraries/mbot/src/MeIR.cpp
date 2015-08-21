@@ -64,6 +64,14 @@ MeIR::MeIR()
 {
   pinMode(2,INPUT);
   // attachInterrupt(INT0, irISR, CHANGE);
+  
+  lastIRTime = 0.0;
+  irDelay = 0;
+  irIndex = 0;
+  irRead = 0;
+  irReady = false;
+  irBuffer = "";
+  irPressed = false;
   begin();
   pinMode(3, OUTPUT);
   digitalWrite(3, LOW); // When not sending PWM, we want it low
@@ -89,13 +97,6 @@ void MeIR::begin()
   irparams.rcvstate = STATE_IDLE;
   irparams.rawlen = 0;
 
-  lastIRTime = 0.0;
-  irDelay = 0;
-  irIndex = 0;
-  irRead = 0;
-  irReady = false;
-  irBuffer = "";
-  irPressed = false;
   // set pin modes
   // pinMode(2, INPUT);
   // pinMode(irparams.recvpin, INPUT);
@@ -261,9 +262,11 @@ void MeIR::sendString(String s){
   for(int i=0;i<s.length();i++){
     l = 0xff000000+s.charAt(i);
     sendNEC(((l<<8)<<8),32);
+    delay(6);
   }
   l = 0xff000000+'\n';
   sendNEC((l<<8)<<8,32);
+  delay(6);
 }
 
 void MeIR::sendString(float v){

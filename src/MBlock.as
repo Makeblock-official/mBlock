@@ -143,7 +143,7 @@ package {
 		private var ga:GATracker;
 		private var tabsPart:TabsPart;
 		private var _welcomeView:Loader;
-		private var _currentVer:String = "07.31.003";
+		private var _currentVer:String = "08.20.003";
 		public function MBlock(){
 			app = this;
 			addEventListener(Event.ADDED_TO_STAGE,initStage);
@@ -154,7 +154,7 @@ package {
 		{
 			var errorText:String;
 			if(evt.error is Error){
-				errorText = (evt.error as Error).message;
+				errorText = (evt.error as Error).getStackTrace();
 			}else if(evt.error is ErrorEvent){
 				errorText = (evt.error as ErrorEvent).text;
 			}
@@ -499,6 +499,7 @@ package {
 			if (s.slice(-3) == '.sb') s = s.slice(0, -3);
 			if (s.slice(-4) == '.sb2') s = s.slice(0, -4);
 			stagePart.setProjectName(s);
+			/*
 			if(_welcomeView!=null){
 				_welcomeView.alpha = 0.5;
 				setTimeout(function():void{
@@ -508,6 +509,7 @@ package {
 					}
 				},600);
 			}
+			*/
 		}
 	
 		protected var wasEditing:Boolean;

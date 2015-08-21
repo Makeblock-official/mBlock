@@ -10,11 +10,13 @@ package cc.makeblock.mbot.ui.parts
 	
 	import air.update.ApplicationUpdater;
 	
+	import cc.makeblock.mbot.uiwidgets.errorreport.ErrorReportFrame;
 	import cc.makeblock.mbot.uiwidgets.extensionMgr.ExtensionUtil;
 	import cc.makeblock.menu.MenuUtil;
 	import cc.makeblock.menu.SystemMenu;
 	import cc.makeblock.updater.AppUpdater;
 	
+	import extensions.ArduinoManager;
 	import extensions.BluetoothManager;
 	import extensions.ConnectionManager;
 	import extensions.DeviceManager;
@@ -56,6 +58,7 @@ package cc.makeblock.mbot.ui.parts
 			register("Help", __onHelp);
 			register("Manage Extensions", ExtensionUtil.OnManagerExtension);
 			register("Restore Extensions", ExtensionUtil.OnLoadExtension);
+			register("Clear Cache", ArduinoManager.sharedManager().clearTempFiles);
 		}
 		
 		public function changeLang():void
@@ -69,14 +72,22 @@ package cc.makeblock.mbot.ui.parts
 			if(0 <= index && index < defaultMenuCount){
 				return true;
 			}
-			item.label = Translator.map(item.name);
+			setItemLabel(item);
 			if(item.name == "Boards"){
 				return true;
 			}
 			if(item.name == "Language"){
 				item = MenuUtil.FindItem(item.submenu, "set font size");
-				item.label = Translator.map(item.name);
+				setItemLabel(item);
 				return true;
+			}
+		}
+		
+		private function setItemLabel(item:NativeMenuItem):void
+		{
+			var newLabel:String = Translator.map(item.name);
+			if(item.label != newLabel){
+				item.label = newLabel;
 			}
 		}
 		
@@ -279,6 +290,8 @@ package cc.makeblock.mbot.ui.parts
 			}
 		}
 		
+		private var initExtMenuItemCount:int = -1;
+		
 		private function __onInitExtMenu(evt:Event):void
 		{
 			var menuItem:NativeMenu = evt.target as NativeMenu;
@@ -289,7 +302,10 @@ package cc.makeblock.mbot.ui.parts
 				MBlock.app.extensionManager.copyLocalFiles();
 				SharedObjectManager.sharedManager().setObject("first-launch",false);
 			}
-			while(menuItem.numItems > 3){
+			if(initExtMenuItemCount < 0){
+				initExtMenuItemCount = menuItem.numItems;
+			}
+			while(menuItem.numItems > initExtMenuItemCount){
 				menuItem.removeItemAt(menuItem.numItems-1);
 			}
 			list = MBlock.app.extensionManager.extensionList;
@@ -345,8 +361,8 @@ package cc.makeblock.mbot.ui.parts
 				case "check_app_update":
 					AppUpdater.getInstance().start(true);
 					break;
-				case "check_asset_update":
-					VersionManager.sharedManager().start();
+				case "upload_bug":
+					new ErrorReportFrame().show();
 					break;
 			}
 		}

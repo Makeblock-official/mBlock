@@ -33,18 +33,13 @@ package util.version
 		{
 		}
 		public function load():void{
-			if(url==""||SharedObjectManager.sharedManager().getObject(path+"/"+name)==version){
-//				trace(path+"/"+name+" exist");
-				this.dispatchEvent(new Event(Event.COMPLETE));
-			}else{
-				_request = new URLRequest(url);
-				clearFolder(ApplicationManager.sharedManager().documents.nativePath+"/mBlock/"+path+"/"+name);
-				var zipProcess:FZip = new FZip();
-				zipProcess.load(_request);
-				zipProcess.addEventListener(FZipEvent.FILE_LOADED,onFileLoaded);
-				zipProcess.addEventListener(Event.COMPLETE,onFileComplete);
-				zipProcess.addEventListener(FZipErrorEvent.PARSE_ERROR,onFileError);
-			}
+			_request = new URLRequest(url);
+			clearFolder(ApplicationManager.sharedManager().documents.nativePath+"/mBlock/"+path+"/"+name);
+			var zipProcess:FZip = new FZip();
+			zipProcess.load(_request);
+			zipProcess.addEventListener(FZipEvent.FILE_LOADED,onFileLoaded);
+			zipProcess.addEventListener(Event.COMPLETE,onFileComplete);
+			zipProcess.addEventListener(FZipErrorEvent.PARSE_ERROR,onFileError);
 		}
 		private function clearFolder(path:String):void{
 			var file:File = new File(path);

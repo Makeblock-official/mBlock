@@ -24,7 +24,7 @@
 #if defined(__AVR_ATmega328P__) or defined(__AVR_ATmega168__)
   #include "MeEncoderMotor.h"
 #endif
-Servo servo;  
+Servo servos[8];  
 MeDCMotor dc;
 MeTemperature ts;
 MeRGBLed led;
@@ -119,6 +119,7 @@ char serialRead;
 #define RESET 4
 #define START 5
 float angleServo = 90.0;
+int servo_pins[8]={0,0,0,0,0,0,0,0};
 unsigned char prevc=0;
 double lastTime = 0.0;
 double currentTime = 0.0;
@@ -396,9 +397,14 @@ void runModule(int device){
      int slot = readBuffer(7);
      pin = slot==1?mePort[port].s1:mePort[port].s2;
      int v = readBuffer(8);
+     Servo sv = servos[searchServoPin(pin)];
      if(v>=0&&v<=180){
-       servo.attach(pin);
-       servo.write(v);
+       if(port>0){
+         sv.attach(pin);
+       }else{
+         sv.attach(pin);
+       }
+       sv.write(v);
      }
    }
    break;
@@ -456,8 +462,9 @@ void runModule(int device){
    case SERVO_PIN:{
      int v = readBuffer(7);
      if(v>=0&&v<=180){
-       servo.attach(pin);
-       servo.write(v);
+       Servo sv = servos[searchServoPin(pin)];
+       sv.attach(pin);
+       sv.write(v);
      }
    }
    break;
@@ -466,6 +473,19 @@ void runModule(int device){
    }
    break;
   }
+}
+
+int searchServoPin(int pin){
+    for(int i=0;i<8;i++){
+      if(servo_pins[i] == pin){
+        return i;
+      }
+      if(servo_pins[i]==0){
+        servo_pins[i] = pin;
+        return i;
+      }
+    }
+    return 0;
 }
 void readSensor(int device){
   /**************************************************
@@ -525,7 +545,11 @@ void readSensor(int device){
      if(ir.getPort()!=port){
        ir.reset(port);
      }
-     sendFloat(irRead);
+     if(irRead<0xff){
+       sendFloat(irRead);
+     }else{
+       sendFloat(0);
+     }
    }
    break;
    case  PIRMOTION:{

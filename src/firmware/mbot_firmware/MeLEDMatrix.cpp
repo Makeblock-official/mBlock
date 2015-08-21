@@ -38,7 +38,20 @@ MeLEDMatrix::MeLEDMatrix(uint8_t SCK_Pin, uint8_t DIN_Pin)
     setBrightness(Brightness_5);
     clearScreen();
 }
+void MeLEDMatrix::reset(uint8_t port){
+    u8_SCKPin = mePort[port].s1;
+	u8_DINPin = mePort[port].s2;
 
+
+	pinMode(u8_SCKPin, OUTPUT);
+	pinMode(u8_DINPin, OUTPUT);
+	digitalWrite(u8_SCKPin,HIGH);
+	digitalWrite(u8_DINPin,HIGH);
+
+    writeByte(Mode_Address_Auto_Add_1);
+    setBrightness(Brightness_5);
+    clearScreen();
+}
 
 void MeLEDMatrix::writeByte(uint8_t data)
 {

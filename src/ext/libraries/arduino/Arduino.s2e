@@ -7,10 +7,10 @@
 		["h","Arduino Program","runArduino"],
 		
 		["B", "read digital pin %n","getDigital","9",
-		{"encode":"{d0}","setup":"","inc":"","def":"","work":"pinMode({0},INPUT);\ndigitalRead({0})","loop":""}],
+		{"encode":"{d0}","setup":"pinMode({0},INPUT);\n","inc":"","def":"","work":"digitalRead({0})","loop":""}],
 		
 		["R", "read analog pin (A)%n","getAnalog","0",
-		{"encode":"{d0}","setup":"","inc":"","def":"","work":"pinMode(A{0},INPUT);\nanalogRead(A{0})","loop":""}],
+		{"encode":"{d0}","setup":"pinMode(A{0},INPUT);\n","inc":"","def":"","work":"analogRead(A{0})","loop":""}],
 		
 		["R", "read pulse pin %n timeout %n","getPulse","13",20000,
 		{"encode":"{d0}","setup":"","inc":"","def":"","work":"pinMode({0},INPUT);\npulseIn({0},HIGH,{1})","loop":""}],
@@ -34,7 +34,7 @@
 		{"encode":"{n0}","setup":"","inc":"","def":"double currentTime = 0;\ndouble lastTime = 0;\n","work":"currentTime","loop":"currentTime = millis()/1000.0 - lastTime;"}],
 		
 		["w", "reset timer","resetTimer", "0",
-		{"encode":"{n0}","setup":"","inc":"","def":"double currentTime = 0;\ndouble lastTime = 0;\n","work":"lastTime = millis();\n","loop":""}]
+		{"encode":"{n0}","setup":"","inc":"","def":"double currentTime = 0;\ndouble lastTime = 0;\n","work":"lastTime = millis()/1000.0;\n","loop":""}]
 	],
 	"menus": {
 		"beats":["500","250","125","1000","2000","0"],
