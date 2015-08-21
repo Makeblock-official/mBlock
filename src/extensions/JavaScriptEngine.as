@@ -49,13 +49,11 @@ package extensions
 			}
 			_ext[method].apply(null, param);
 		}
-		public function requestValue(method:String,param:Array,ext:ScratchExtension):Boolean{
-			if(!this.connected){
-				return false;
+		public function requestValue(method:String,param:Array,ext:ScratchExtension, nextID:int):void
+		{
+			if(connected){
+				getValue(method,[nextID].concat(param),ext);
 			}
-			getValue(method,[ext.nextID].concat(param),ext);
-			//MBlock.app.extensionManager.reporterCompleted(ext.name,ext.nextID,v);
-			return true;
 		}
 		public function getValue(method:String,param:Array,ext:ScratchExtension):*{
 			if(!this.connected){
@@ -104,7 +102,7 @@ package extensions
 				"		setTimeout(ScratchExtensions.register,10,name,desc,ext,param);	" +
 				"	}	" +
 				"};";
-			html += FileUtil.ReadString(File.applicationDirectory.resolvePath("js/AIRAliases.js"));
+//			html += FileUtil.ReadString(File.applicationDirectory.resolvePath("js/AIRAliases.js"));
 			html += FileUtil.ReadString(new File(path));
 			_htmlLoader.window.eval(html);
 			_htmlLoader.window.callRegister = register;
