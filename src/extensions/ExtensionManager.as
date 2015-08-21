@@ -353,26 +353,26 @@ public class ExtensionManager {
 	public function reporterCompleted(extensionName:String, id:Number, retval:*):void {
 		var ext:ScratchExtension = extensionDict[extensionName];
 		if (ext == null) return; // unknown extension
-		var maxIndex:int = ext.busy.indexOf(id);
-		if(maxIndex > -1) {
-			for(var index:uint=0;index<=maxIndex;index++){
-				ext.busy.splice(index, 1);
+//		var maxIndex:int = ext.busy.indexOf(id);
+//		if(maxIndex > -1) {
+//			for(var index:uint=0;index<=maxIndex;index++){
+//				ext.busy.splice(index, 1);
 				for(var b:Object in ext.waiting) {
 					var block:Block = b as Block;
-					if(block.nextID.indexOf(id)>-1) {
-						if(retval!=null){
+					if(ext.waiting[b] === id) {
+						delete ext.waiting[b];
+						if(retval != null){
 							//if(block.response!=retval){
-								delete ext.waiting[b];
-								block.nextID = [];
+//								block.nextID = [];
 								block.response = retval;
 								block.requestState = 2;
-								MBlock.app.runtime.exitRequest();
+//								MBlock.app.runtime.exitRequest();
 							//}
 						}
 					}
 				}
-			}
-		}
+//			}
+//		}
 	}
 
 	public function loadRawExtension(extObj:Object):void {
@@ -637,15 +637,27 @@ public class ExtensionManager {
 		if(ext.javascriptURL==null){
 			httpRequest(ext, op, args, b);
 		}else{
-			++ext.nextID;
-			ext.busy.push(ext.nextID);
-			ext.waiting[b] = ext.nextID;
-			b.nextID.push(ext.nextID);
-			MBlock.app.runtime.enterRequest();
-			ext.js.requestValue(op,args,ext);
-			if(ext.nextID>50){
-				ext.nextID = 0;
+//			++ext.nextID;
+//			ext.busy.push(ext.nextID);
+			
+			if(b in ext.waiting){
+				ext.js.requestValue(op,args,ext,ext.waiting[b]);
+			}else{
+				ext.waiting[b] = ++ext.nextID;
+				ext.js.requestValue(op,args,ext, ext.nextID);
+				if(ext.nextID>50){
+					ext.nextID = 0;
+				}
 			}
+			
+			
+//			ext.waiting[b] = ext.nextID;
+//			b.nextID.push(ext.nextID);
+//			MBlock.app.runtime.enterRequest();
+//			ext.js.requestValue(op,args,ext);
+//			if(ext.nextID>50){
+//				ext.nextID = 0;
+//			}
 			//'ScratchExtensions.getReporterAsync', ext.name, op, args, ext.nextID);
 		}
 //		if (ext.port > 0) {
