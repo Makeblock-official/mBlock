@@ -1,6 +1,12 @@
 // makeblock.js
 
 (function(ext) {
+	var idDict = [];
+	var genNextID = function(realId, args){
+		var nextID = (args[0] << 4) | args[1];
+		idDict[nextID] = realId;
+		return nextID;
+	}
     var device = null;
     var _rxBuf = [];
 
@@ -124,6 +130,7 @@
 		if(typeof port=="string"){
 			port = ports[port];
 		}
+		nextID = genNextID(nextID, [port]);
 		getPackage(nextID,deviceId,port);
 	};
 	ext.getPotentiometer = function(nextID,port) {
@@ -131,6 +138,7 @@
 		if(typeof port=="string"){
 			port = ports[port];
 		}
+		nextID = genNextID(nextID, [port]);
 		getPackage(nextID,deviceId,port);
     };
 	ext.getLinefollower = function(nextID,port) {
@@ -138,6 +146,7 @@
 		if(typeof port=="string"){
 			port = ports[port];
 		}
+		nextID = genNextID(nextID, [port]);
 		getPackage(nextID,deviceId,port);
     };
 	ext.getLightsensor = function(nextID,port) {
@@ -145,6 +154,7 @@
 		if(typeof port=="string"){
 			port = ports[port];
 		}
+		nextID = genNextID(nextID, [port]);
 		getPackage(nextID,deviceId,port);
     };
 	ext.getJoystick = function(nextID,port,ax) {
@@ -155,6 +165,7 @@
 		if(typeof ax=="string"){
 			ax = axis[ax];
 		}
+		nextID = genNextID(nextID, [port,ax]);
 		getPackage(nextID,deviceId,port,ax);
     };
 	ext.getSoundsensor = function(nextID,port) {
@@ -162,6 +173,7 @@
 		if(typeof port=="string"){
 			port = ports[port];
 		}
+		nextID = genNextID(nextID, [port]);
 		getPackage(nextID,deviceId,port);
     };
 	ext.getInfrared = function(nextID,port) {
@@ -169,6 +181,7 @@
 		if(typeof port=="string"){
 			port = ports[port];
 		}
+		nextID = genNextID(nextID, [port]);
 		getPackage(nextID,deviceId,port);
     };
 	ext.getLimitswitch = function(nextID,port,slot) {
@@ -179,6 +192,7 @@
 		if(typeof slot=="string"){
 			slot = slots[slot];
 		}
+		nextID = genNextID(nextID, [port,slot]);
 		getPackage(nextID,deviceId,port,slot);
     };
 	ext.getPirmotion = function(nextID,port) {
@@ -186,6 +200,7 @@
 		if(typeof port=="string"){
 			port = ports[port];
 		}
+		nextID = genNextID(nextID, [port]);
 		getPackage(nextID,deviceId,port);
     };
 	ext.getTemperature = function(nextID,port,slot) {
@@ -196,6 +211,7 @@
 		if(typeof slot=="string"){
 			slot = slots[slot];
 		}
+		nextID = genNextID(nextID, [port,slot]);
 		getPackage(nextID,deviceId,port,slot);
     };
 	ext.getGyro = function(nextID,ax) {
@@ -203,6 +219,7 @@
 		if(typeof ax=="string"){
 			ax = axis[ax];
 		}
+		nextID = genNextID(nextID, [0,ax]);
 		getPackage(nextID,deviceId,0,ax);
     };
 	function runPackage(){
@@ -222,12 +239,21 @@
 		bytes[2] = bytes.length-3;
 		device.send(bytes);
 	}
+	var getPackDict = [];
+	function resetPackDict(nextID){
+		getPackDict[nextID] = false;
+	}
 	function getPackage(){
-		var bytes = [];
-		bytes.push(0xff);
-		bytes.push(0x55);
+		var nextID = arguments[0];
+		if(getPackDict[nextID]){
+			return;
+		}
+		getPackDict[nextID] = true;
+		setTimeout(resetPackDict, 0, nextID);
+
+		var bytes = [0xff, 0x55];
 		bytes.push(arguments.length+1);
-		bytes.push(arguments[0]);
+		bytes.push(nextID);
 		bytes.push(1);
 		for(var i=1;i<arguments.length;i++){
 			bytes.push(arguments[i]);
@@ -293,6 +319,7 @@
 							break;
 					}
 					if(type<=5){
+						extId = idDict[extId];
 						if(values[extId]!=undefined){
 							responseValue(extId,values[extId](value,extId));
 						}else{
@@ -353,9 +380,7 @@
             tryNextDevice();
             return;
         }
-        device.set_receive_handler('makeblock',function(data) {
-            processData(data);
-        });
+        device.set_receive_handler('makeblock',processData);
     };
 
     ext._deviceRemoved = function(dev) {
