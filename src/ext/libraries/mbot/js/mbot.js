@@ -440,12 +440,21 @@
 		bytes[2] = bytes.length+13;
 		device.send(bytes);
 	}
+	var getPackDict = [];
+	function resetPackDict(nextID){
+		getPackDict[nextID] = false;
+	}
 	function getPackage(){
-		var bytes = [];
-		bytes.push(0xff);
-		bytes.push(0x55);
+		var nextID = arguments[0];
+		if(getPackDict[nextID]){
+			return;
+		}
+		getPackDict[nextID] = true;
+		setTimeout(resetPackDict, 0, nextID);
+
+		var bytes = [0xff, 0x55];
 		bytes.push(arguments.length+1);
-		bytes.push(arguments[0]);
+		bytes.push(nextID);
 		bytes.push(1);
 		for(var i=1;i<arguments.length;i++){
 			bytes.push(arguments[i]);
