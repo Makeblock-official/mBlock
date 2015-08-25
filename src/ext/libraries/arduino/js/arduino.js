@@ -204,6 +204,7 @@
 							break;
 					}
 					if(type<=5){
+						extId = idDict[extId];
 						if(values[extId]!=undefined){
 							responseValue(extId,values[extId](value));
 						}else{
