@@ -68,9 +68,8 @@ package extensions
 			for(var i:uint=0;i<bytes.length;i++){
 				buffer.writeByte(bytes[i]);
 			}
-			ConnectionManager.sharedManager().sendBytes(buffer);
 			MBlock.app.scriptsPart.onSerialSend(buffer);
-			buffer.clear();
+			ConnectionManager.sharedManager().sendBytes(buffer);
 		}
 		private var l:uint = 0;
 		private var _receivedBuffer:ByteArray;

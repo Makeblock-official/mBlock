@@ -91,8 +91,14 @@
 	var startTimer = 0;
 	var versionIndex = 0xFA;
     ext.resetAll = function(){};
-	ext.runArduino = function(){
-	};
+	ext.runArduino = function(){};
+	
+	var SEND_DELAY = 0;
+	function RESET_DICT(dict, key){
+		dict[key] = false;
+	}
+	
+	var runBotDict = {};
 	ext.runBot = function(direction,speed) {
 		var leftSpeed = 0;
 		var rightSpeed = 0;
@@ -109,8 +115,13 @@
 			leftSpeed = -speed;
 			rightSpeed = -speed;
 		}
+		var key = (leftSpeed << 16) | rightSpeed;
+		if(runBotDict[key])return;
+		runBotDict[key] = true;
+		setTimeout(RESET_DICT, SEND_DELAY, runBotDict, key);
         runPackage(5,short2array(leftSpeed),short2array(rightSpeed));
     };
+    var runMotorDict = {};
 	ext.runMotor = function(port,speed) {
 		if(typeof port=="string"){
 			port = ports[port];
@@ -118,8 +129,13 @@
 		if(port == 9){
 			speed = -speed;
 		}
+		var key = (port << 16) | speed;
+		if(runMotorDict[key])return;
+		runMotorDict[key] = true;
+		setTimeout(RESET_DICT, SEND_DELAY, runMotorDict, key);
         runPackage(10,port,short2array(speed));
     };
+    var runServoDict = {};
     ext.runServo = function(port,slot,angle) {
 		if(typeof port=="string"){
 			port = ports[port];
@@ -127,30 +143,57 @@
 		if(typeof slot=="string"){
 			slot = slots[slot];
 		}
+		var key = (angle << 16) | (port << 8) | slot;
+		if(runServoDict[key])return;
+		runServoDict[key] = true;
+		setTimeout(RESET_DICT, SEND_DELAY, runServoDict, key);
         runPackage(11,port,slot,angle);
     };
+    var runBuzzerDict = {};
 	ext.runBuzzer = function(tone){
 		if(typeof tone == "string"){
-			runPackage(34,short2array(tones[tone]));
-		}else{
-			runPackage(34,short2array(tone));
+			tone = tones[tone];
 		}
+		var key = tone;
+		if(runBuzzerDict[key])return;
+		runBuzzerDict[key] = true;
+		setTimeout(RESET_DICT, SEND_DELAY, runBuzzerDict, key);
+		runPackage(34,short2array(tone));
 	};
+	var stopBuzzerDict = [];
 	ext.stopBuzzer = function(){
+		var key = 0;
+		if(stopBuzzerDict[key])return;
+		stopBuzzerDict[key] = true;
+		setTimeout(RESET_DICT, SEND_DELAY, stopBuzzerDict, key);
 		runPackage(34,short2array(0));
 	};
+	var runSevsegDict = [];
 	ext.runSevseg = function(port,display){
 		if(typeof port=="string"){
 			port = ports[port];
 		}
+		var key = port;
+		if(runSevsegDict[key])return;
+		runSevsegDict[key] = true;
+		setTimeout(RESET_DICT, SEND_DELAY, runSevsegDict, key);
 		runPackage(9,port,float2array(display));
 	};
+	var runLedDict = {};
 	ext.runLed = function(port,ledIndex,red,green,blue){
 		if(typeof port=="string"){
 			port = ports[port];
 		}
-		runPackage(8,port,ledIndex=="all"?0:ledIndex,red,green,blue);
+		if("all" == ledIndex){
+			ledIndex = 0;
+		}
+		var key = (ledIndex << 24) | (red << 16) | (green << 8) | blue;
+		if(runLedDict[key])return;
+		runLedDict[key] = true;
+		setTimeout(RESET_DICT, SEND_DELAY, runLedDict, key);
+		runPackage(8,port,ledIndex,red,green,blue);
 	};
+	var runLightSensorDict = {};
 	ext.runLightSensor = function(port,status){
 		if(typeof port=="string"){
 			port = ports[port];
@@ -158,12 +201,21 @@
 		if(typeof status=="string"){
 			status = switchStatus[status];
 		}
+		var key = (port << 8) | status;
+		if(runLightSensorDict[key])return;
+		runLightSensorDict[key] = true;
+		setTimeout(RESET_DICT, SEND_DELAY, runLightSensorDict, key);
 		runPackage(3,port,status);
 	};
 	ext.runShutter = function(port,status){
 		runPackage(20,shutterStatus[status]);
 	};
+	var runIRDict = {};
 	ext.runIR = function(message){
+		var key = message;
+		if(runIRDict[key])return;
+		runIRDict[key] = true;
+		setTimeout(RESET_DICT, SEND_DELAY, runIRDict, key);
 		runPackage(13,string2array(message));
 	};
 	ext.showCharacters = function(port,x,y,message){
@@ -407,12 +459,7 @@
 		responseValue(nextID,(new Date().getTime())/1000.0-startTimer);
 	}
 	function runPackage(){
-		var bytes = [];
-		bytes.push(0xff);
-		bytes.push(0x55);
-		bytes.push(0);
-		bytes.push(0);
-		bytes.push(2);
+		var bytes = [0xff, 0x55, 0, 0, 2];
 		for(var i=0;i<arguments.length;i++){
 			if(arguments[i].constructor == "[class Array]"){
 				bytes = bytes.concat(arguments[i]);
@@ -424,12 +471,7 @@
 		device.send(bytes);
 	}
   function runPackageForFace(){
-		var bytes = [];
-		bytes.push(0xff);
-		bytes.push(0x55);
-		bytes.push(0);
-		bytes.push(0);
-		bytes.push(2);
+		var bytes = [0xff, 0x55, 0, 0, 2];
 		for(var i=0;i<arguments.length;i++){
 			if(arguments[i].constructor == "[class Array]"){
 				bytes = bytes.concat(arguments[i]);
@@ -441,17 +483,12 @@
 		device.send(bytes);
 	}
 	var getPackDict = [];
-	function resetPackDict(nextID){
-		getPackDict[nextID] = false;
-	}
 	function getPackage(){
 		var nextID = arguments[0];
-		if(getPackDict[nextID]){
-			return;
-		}
+		if(getPackDict[nextID])return;
 		getPackDict[nextID] = true;
-		setTimeout(resetPackDict, 0, nextID);
-
+		setTimeout(RESET_DICT, SEND_DELAY, getPackDict, nextID);
+		
 		var bytes = [0xff, 0x55];
 		bytes.push(arguments.length+1);
 		bytes.push(nextID);

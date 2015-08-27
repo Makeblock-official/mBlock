@@ -4,7 +4,10 @@ package extensions
 	import flash.events.EventDispatcher;
 	import flash.utils.ByteArray;
 	import flash.utils.getTimer;
+	import flash.utils.setInterval;
 	import flash.utils.setTimeout;
+	
+	import by.blooddy.crypto.MD5;
 	
 	import util.LogManager;
 	
@@ -23,6 +26,7 @@ package extensions
 		{
 			_hid = new AirHID();
 			setTimeout(init,500);
+			setInterval(__SendPacket, 20);
 		}
 		
 		public function setMBlock(mBlock:MBlock):void{
@@ -32,21 +36,32 @@ package extensions
 			_isConnected = _hid.isConnected;
 			return _isConnected;
 		}
-		private var _prevTime:Number = 0;
-		public function sendBytes(bytes:ByteArray):int{
-			if(_hid.isConnected){
-				var cTime:Number = getTimer();
-				if(cTime-_prevTime>20){
-					_prevTime = cTime; 
-					var len:int = _hid.WriteHID(bytes);
-					if(len==-1){
-						//_hid.CloseHID();
-					}
-					return len;
-				}
+		
+		private const packetSignQueue:Vector.<String> = new Vector.<String>();
+		private const packetQueue:Vector.<ByteArray> = new Vector.<ByteArray>();
+		private function __SendPacket():void
+		{
+			if(packetQueue.length <= 0){
+				return;
 			}
-			return 0;
+			packetSignQueue.shift();
+			var packet:ByteArray = packetQueue.shift();
+			if(_hid.isConnected){
+				_hid.WriteHID(packet);
+				packet.clear();
+			}
 		}
+		
+		public function sendBytes(bytes:ByteArray):void{
+			var sign:String = MD5.hashBytes(bytes);
+			if(_hid.isConnected && packetSignQueue.indexOf(sign) < 0){
+				packetSignQueue.push(sign);
+				packetQueue.push(bytes);
+			}else{
+				bytes.clear();
+			}
+		}
+		/*
 		public function sendString(msg:String):int{
 			if(_hid.isConnected){
 				var bytes:ByteArray = new ByteArray();
@@ -55,6 +70,7 @@ package extensions
 			}
 			return 0;
 		}
+		*/
 		public function disconnect():void{
 			if(_hid.isConnected){
 				_hid.CloseHID(); 	
