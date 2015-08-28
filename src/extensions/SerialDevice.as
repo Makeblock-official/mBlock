@@ -71,7 +71,6 @@ package extensions
 			MBlock.app.scriptsPart.onSerialSend(buffer);
 			ConnectionManager.sharedManager().sendBytes(buffer);
 		}
-		private var l:uint = 0;
 		private var _receivedBuffer:ByteArray;
 		private var _receivedBytes:Array;
 		private function onReceived(evt:Event):void{

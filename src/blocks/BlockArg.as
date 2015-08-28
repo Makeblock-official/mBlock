@@ -211,22 +211,24 @@ public class BlockArg extends Sprite {
 		field.type = TextFieldType.DYNAMIC;
 		field.selectable = false;
 	}
-
+	
+	// filters for BlockArg outlines
+	static private var _blockArgFilters:Array;
 	private function blockArgFilters():Array {
-		// filters for BlockArg outlines
-		var f:BevelFilter = new BevelFilter(1);
-		f.blurX = f.blurY = 2;
-		f.highlightAlpha = 0.3;
-		f.shadowAlpha = 0.6;
-		f.angle = 240;  // change light angle to show indentation
-		return [f];
+		if(null == _blockArgFilters){
+			var f:BevelFilter = new BevelFilter(1);
+			f.blurX = f.blurY = 2;
+			f.highlightAlpha = 0.3;
+			f.shadowAlpha = 0.6;
+			f.angle = 240;  // change light angle to show indentation
+			_blockArgFilters = [f];
+		}
+		return _blockArgFilters;
 	}
 
 	private function makeTextField():TextField {
 		var tf:TextField = new TextField();
-		var offsets:Array = argTextInsets(type);
-		tf.x = offsets[0];
-		tf.y = offsets[1];
+		offsetTextField(tf);
 		tf.autoSize = TextFieldAutoSize.LEFT;
 		Block.argTextFormat.bold = isNumber;
 		tf.defaultTextFormat = Block.argTextFormat;
@@ -235,9 +237,17 @@ public class BlockArg extends Sprite {
 		return tf;
 	}
 
-	private function argTextInsets(type:String = ''):Array {
-		if (type == 'b') return [5, 0];
-		return isNumber ? [3, 0] : [2, -1];
+	private function offsetTextField(tf:TextField):void {
+		if("b" == type){
+			tf.x = 5;
+			tf.y = 0;
+		}else if(isNumber){
+			tf.x = 3;
+			tf.y = 0;
+		}else{
+			tf.x = 2;
+			tf.y = -1;
+		}
 	}
 
 	private function textChanged(evt:*):void {
