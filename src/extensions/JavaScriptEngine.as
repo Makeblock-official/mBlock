@@ -4,10 +4,17 @@ package extensions
 	import flash.filesystem.File;
 	import flash.html.HTMLLoader;
 	import flash.utils.ByteArray;
-	import flash.utils.Endian;
+	
+	import avm2.intrinsics.memory.lf32;
+	import avm2.intrinsics.memory.li16;
+	import avm2.intrinsics.memory.li8;
+	import avm2.intrinsics.memory.sf32;
+	import avm2.intrinsics.memory.si16;
+	import avm2.intrinsics.memory.si8;
 	
 	import cc.makeblock.util.FileUtil;
 	import cc.makeblock.util.JsCall;
+	import cc.makeblock.util.MemUtil;
 	
 	import util.LogManager;
 	
@@ -16,7 +23,7 @@ package extensions
 		private const _htmlLoader:HTMLLoader = new HTMLLoader();
 		private var _ext:Object;
 		private var _name:String = "";
-		public var port:String = "";
+//		public var port:String = "";
 		public function JavaScriptEngine(name:String="")
 		{
 			_name = name;
@@ -124,60 +131,42 @@ package extensions
 		}
 		
 		static private function readFloat(bytes:Array):Number{
-			var buffer:ByteArray = new ByteArray();
-			buffer.endian = Endian.LITTLE_ENDIAN;
-			for(var i:uint=0;i<bytes.length;i++){
-				buffer.writeByte(bytes[i]);
+			if(bytes.length < 4){
+				return 0;
 			}
-			if(buffer.length>=4){
-				buffer.position = 0;
-				var f:Number = buffer.readFloat();
-				buffer.clear();
-				return f;
-			}
-			return 0;
+			si8(bytes[0], 0);
+			si8(bytes[1], 1);
+			si8(bytes[2], 2);
+			si8(bytes[3], 3);
+			return lf32(0);
 		}
 		static private function readDouble(bytes:Array):Number{
 			return readFloat(bytes);
 		}
 		static private function readShort(bytes:Array):Number{
-			var buffer:ByteArray = new ByteArray();
-			buffer.endian = Endian.LITTLE_ENDIAN;
-			for(var i:uint=0;i<bytes.length;i++){
-				buffer.writeByte(bytes[i]);
+			if(bytes.length < 2){
+				return 0;
 			}
-			if(buffer.length>=2){
-				buffer.position = 0;
-				var v:Number = buffer.readUnsignedShort();
-				buffer.clear();
-				return v;
-			}
-			return 0;
+			si8(bytes[0], 0);
+			si8(bytes[1], 1);
+			return li16(0);
 		}
 		static private function float2array(v:Number):Array{
-			var buffer:ByteArray = new ByteArray;
-			buffer.endian = Endian.LITTLE_ENDIAN;
-			buffer.writeFloat(v);
-			var array:Array = [buffer[0],buffer[1],buffer[2],buffer[3]];
-			buffer.clear();
-			return array;
+			sf32(v, 0);
+			return [li8(0), li8(1), li8(2), li8(3)];
 		}
 		static private function short2array(v:Number):Array{
-			var buffer:ByteArray = new ByteArray;
-			buffer.endian = Endian.LITTLE_ENDIAN;
-			buffer.writeShort(v);
-			var array:Array = [buffer[0],buffer[1]];
-			buffer.clear();
-			return array;
+			si16(v, 0);
+			return [li8(0), li8(1)];
 		}
 		static private function string2array(v:String):Array{
-			var buffer:ByteArray = new ByteArray;
+			var buffer:ByteArray = MemUtil.Mem;
+			buffer.position = 0;
 			buffer.writeUTFBytes(v);
 			var array:Array = [];
-			for(var i:uint=0;i<buffer.length;i++){
-				array[i] = buffer[i];
+			for(var i:int=0;i<buffer.position;i++){
+				array[i] = li8(i);
 			}
-			buffer.clear();
 			return array;
 		}
 	}

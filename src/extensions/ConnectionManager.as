@@ -137,9 +137,11 @@ package extensions
 				BluetoothManager.sharedManager().sendBytes(bytes);
 			}else if(HIDManager.sharedManager().isConnected){
 				HIDManager.sharedManager().sendBytes(bytes);
+				return;//clear later
 			}else if(SocketManager.sharedManager().isConnected){
 				SocketManager.sharedManager().sendBytes(bytes);
 			}
+			bytes.clear();
 		}
 		public function readBytes():ByteArray{
 			if(_bytes){

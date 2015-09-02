@@ -65,8 +65,8 @@ package extensions
 		}
 		public function send(bytes:Array):void{
 			var buffer:ByteArray = new ByteArray();
-			for(var i:uint=0;i<bytes.length;i++){
-				buffer.writeByte(bytes[i]);
+			for(var i:int=0;i<bytes.length;i++){
+				buffer[i] = bytes[i];
 			}
 			MBlock.app.scriptsPart.onSerialSend(buffer);
 			ConnectionManager.sharedManager().sendBytes(buffer);

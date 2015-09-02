@@ -3,7 +3,6 @@ package extensions
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.utils.ByteArray;
-	import flash.utils.getTimer;
 	import flash.utils.setInterval;
 	import flash.utils.setTimeout;
 	
@@ -51,15 +50,35 @@ package extensions
 				packet.clear();
 			}
 		}
-		
+		//hid包最好低于28字节
+		static private const max_packet_size:int = 28;
 		public function sendBytes(bytes:ByteArray):void{
-			var sign:String = MD5.hashBytes(bytes);
-			if(_hid.isConnected && packetSignQueue.indexOf(sign) < 0){
-				packetSignQueue.push(sign);
-				packetQueue.push(bytes);
-			}else{
+			if(!_hid.isConnected){
 				bytes.clear();
+				return;
 			}
+			var sign:String = MD5.hashBytes(bytes);
+			if(packetSignQueue.indexOf(sign) >= 0){
+				bytes.clear();
+				return;
+			}
+			packetSignQueue.push(sign);
+			if(bytes.length <= max_packet_size){
+				packetQueue.push(bytes);
+				return;
+			}
+			bytes.position = 0;
+			var subBytes:ByteArray;
+			while(bytes.bytesAvailable > max_packet_size){
+				subBytes = new ByteArray();
+				bytes.readBytes(subBytes, 0, max_packet_size);
+				packetSignQueue.push(null);
+				packetQueue.push(subBytes);
+			}
+			subBytes = new ByteArray();
+			bytes.readBytes(subBytes);
+			packetQueue.push(subBytes);
+			bytes.clear();
 		}
 		/*
 		public function sendString(msg:String):int{
