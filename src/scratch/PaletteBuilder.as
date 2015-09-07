@@ -78,7 +78,7 @@ public class PaletteBuilder {
 		if (selectedCategory == Specs.dataCategory) return showDataCategory();
 		if (selectedCategory == Specs.myBlocksCategory) return showMyBlocksPalette(shiftKey);
 
-		var catName:String = Specs.categories[selectedCategory][1];
+//		var catName:String = Specs.categories[selectedCategory][1];
 		var catColor:int = Specs.blockColor(selectedCategory);
 		/*
 		if (app.viewedObj() && app.viewedObj().isStage) {
