@@ -335,10 +335,10 @@ return true; // xxx disable this check for now; it was causing confusion at Scra
 		return (minDist < threshold) ? nearest : null;
 	}
 
-	private function dropCompatible(droppedBlock:Block, target:DisplayObject):Boolean {
-		const menusThatAcceptReporters:Array = [
+	static private const menusThatAcceptReporters:Array = [
 			'broadcast', 'costume', 'backdrop', 'scene', 'sound',
 			'spriteOnly', 'spriteOrMouse', 'spriteOrStage', 'touching'];
+	private function dropCompatible(droppedBlock:Block, target:DisplayObject):Boolean {
 		if (!droppedBlock.isReporter) return true; // dropping a command block
 		if (target is Block) {
 			if (Block(target).isEmbeddedInProcHat()) return false;
