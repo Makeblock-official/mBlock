@@ -435,7 +435,7 @@ msgid "when %m.triggerSensor > %n"
 msgstr "Wenn %m.triggerSensor > %n"
 
 msgid "when @greenFlag clicked"
-msgstr "Wenn @greenFlag angelkickt"
+msgstr "Wenn @greenFlag angeklickt"
 
 # "backdrop" in Scratch 2.0 is similar to "background" in Scratch 1.4
 msgid "when backdrop switches to %m.backdrop"
@@ -1865,7 +1865,7 @@ msgid "Save Project"
 msgstr "Projekt speichern"
 
 msgid "Robots"
-msgstr "Robots"
+msgstr "Roboter"
 
 msgid "Forum"
 msgstr "Forum"
@@ -1999,76 +1999,79 @@ msgstr "Y Taste gedrückt?"
 
 
 msgid "Arduino Program"
-msgstr ""
+msgstr "Arduino Programm"
+
+msgid "Makeblock Program"
+msgstr "Makeblock Programm"
 
 msgid "upload to arduino"
-msgstr ""
+msgstr "Upload zum Arduino"
 
 msgid "set font size"
-msgstr ""
+msgstr "Setze Zeichengröße"
 
 msgid "import translation file"
 msgstr ""
 
 msgid "Back"
-msgstr ""
+msgstr "Zurück"
 
 msgid "Upload to Arduino"
-msgstr ""
+msgstr "Upload zum Arduino"
 
 msgid "Send"
-msgstr ""
+msgstr "Senden"
 
 msgid "Please connect the serial port."
-msgstr ""
+msgstr "Bitte einen seriellen Port auswählen!"
 
 msgid "Message"
-msgstr ""
+msgstr "Hinweis"
 
 msgid "Arduino IDE not found,"
-msgstr ""
+msgstr "Arduino IDE nicht gefunden"
 
 msgid "or Click 'Download' to install the Arduino IDE."
-msgstr ""
+msgstr "oder klicke 'Download' zum Installieren der Arduino IDE."
 
 msgid "Click 'Set Path' to find the install path of Arduino,"
-msgstr ""
+msgstr "klicke 'Set Path' um den Installations-Pfad der Arduino IDE zu finden,"
 
 msgid "Set Path"
-msgstr ""
+msgstr "setze Pfad"
 
 msgid "Edit with Arduino IDE"
-msgstr ""
+msgstr "Mit der Arduino IDE editieren"
 
 msgid "unsupported block found, remove them to continue."
 msgstr ""
 
 msgid "Arduino Project"
-msgstr ""
+msgstr "Arduino Projekt"
 
 msgid "Start Uploading"
-msgstr ""
+msgstr "Starte Upload"
 
 msgid "Waiting Reset Board"
-msgstr ""
+msgstr "Warte auf Board-Reset"
 
 msgid "Uploading"
 msgstr ""
 
 msgid "Upload Finish"
-msgstr ""
+msgstr "Upload fertig"
 
 msgid "Hide"
-msgstr ""
+msgstr "Verbergen"
 
 msgid "Arduino mode"
-msgstr ""
+msgstr "Arduino-Modus"
 
 msgid "Current Firmware"
-msgstr ""
+msgstr "Aktuelle Firmware"
 
 msgid "Unknown Firmware"
-msgstr ""
+msgstr "Unbekannte Firmware"
 
 msgid "Firmware"
 msgstr ""
@@ -2077,40 +2080,40 @@ msgid "2.4G Serial"
 msgstr ""
 
 msgid "Discover"
-msgstr ""
+msgstr "suchen"
 
 msgid "Search Network"
-msgstr ""
+msgstr "Suche Netzwerk"
 
 msgid "Boards"
 msgstr ""
 
 msgid "Help"
-msgstr ""
+msgstr "Hilfe"
 
 msgid "Report a Bug"
-msgstr ""
+msgstr "Melde einen Fehler"
 
 msgid "License"
-msgstr ""
+msgstr "Lizenz"
 
 msgid "Acknowledgements"
 msgstr ""
 
 msgid "Share Your Project"
-msgstr ""
+msgstr "Verbreite dein Projekt"
 
 msgid "FAQ"
 msgstr ""
 
 msgid "Install Arduino Driver"
-msgstr ""
+msgstr "Installiere Arduino Treiber"
 
 msgid "Bluetooth need to install .Net Framework 4.0"
-msgstr ""
+msgstr "Bluetooth benötigt .Net Framework 4.0"
 
 msgid "Clear Bluetooth"
-msgstr ""
+msgstr "Historie löschen"
 
 msgid "Reset Default Program"
 msgstr ""
@@ -2140,94 +2143,112 @@ msgid "Disconnected"
 msgstr ""
 
 msgid "Hide stage layout"
-msgstr ""
+msgstr "Verstecke Bühne"
 
 msgid "manage_extentions"
 msgstr ""
 
 msgid "Face Panel"
-msgstr ""
+msgstr "Grid-Panel"
 
 msgid "Clear All"
-msgstr ""
+msgstr "Lösche alles"
 
 msgid "Light All"
-msgstr ""
+msgstr "Setze alles"
 
 msgid "Add To Favourite"
-msgstr ""
+msgstr "zu Favoriten hinzufügen"
 
 msgid "Remove Emotion"
-msgstr ""
+msgstr "Lösche Muster"
 
 msgid "Complete"
-msgstr ""
+msgstr "Fertig"
 
 msgid "Manage Extensions"
-msgstr ""
+msgstr "Extensions verwalten"
 
 msgid "Add Extension"
-msgstr ""
+msgstr "Extension hinzufügen"
 
 msgid "Remove Extension"
-msgstr ""
+msgstr "Extension löschen"
 
 msgid "file is not a valid extension zip!"
-msgstr ""
+msgstr "Keine gültige Extension-Zip Datei"
 
 msgid "Want to delete?"
-msgstr ""
+msgstr "Löschen?"
 
 msgid "Warning"
-msgstr ""
+msgstr "Warnung"
 
 msgid "Language"
-msgstr ""
+msgstr "Sprache"
 
 msgid "Connecting Bluetooth"
-msgstr ""
+msgstr "Verbinde über Bluetooth"
 
 msgid "Bluetooth Connected"
-msgstr ""
+msgstr "Über Bluetooth verbunden"
 
 msgid "Connecting Timeout"
-msgstr ""
+msgstr "Verbindungs-Timeout"
 
 msgid "Restore Extensions"
-msgstr ""
+msgstr "Extensions zurücksetzen"
 
 msgid "Extension Files Updated"
-msgstr ""
+msgstr "Extension updated"
 
 msgid "Modified"
-msgstr ""
+msgstr "Geändert"
 
 msgid "Save Project As"
-msgstr ""
+msgstr "Projekt speichern unter..."
 
 msgid "I know"
-msgstr ""
+msgstr "Ok"
 
 msgid "Update Complete"
 msgstr ""
 
 msgid "There is a newer version"
-msgstr ""
+msgstr "Es ist eine neuere Version verfügbar"
 
 msgid "It's already the newest version"
-msgstr ""
+msgstr "Diese Version ist aktuell"
 
 msgid "Download Now"
-msgstr ""
+msgstr "Jetzt downloaden"
 
 msgid "Download Later"
-msgstr ""
+msgstr "Später downloaden"
 
 msgid "Others"
-msgstr ""
+msgstr "Weitere"
 
 msgid "Check Software Update"
-msgstr ""
+msgstr "Suche Software-Update"
 
 msgid "Check Assets Update"
 msgstr ""
+
+msgid "Upload Bug"
+msgstr "Einen Fehler melden"
+
+msgid "Clear Cache"
+msgstr "Cache leeren"
+
+msgid "Communication"
+msgstr "Kommunikation"
+
+msgid "Serial Port"
+msgstr "Serieller Port"
+
+msgid "binary mode"
+msgstr "Binär-Modus"
+
+msgid "char mode"
+msgstr "Zeichen-Modus"
