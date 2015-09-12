@@ -128,6 +128,7 @@ package extensions
 		private var _bytes:ByteArray;
 		public function onReceived(bytes:ByteArray):void{
 			_bytes = bytes;
+			MBlock.app.scriptsPart.onSerialDataReceived(bytes);
 			this.dispatchEvent(new Event(Event.CHANGE));
 		}
 		public function sendBytes(bytes:ByteArray):void{

@@ -393,15 +393,15 @@ public class Interpreter {
 			}
 		}
 		//*
-		if(b.opFunction == app.extensionManager.primExtensionOp){
-			if(!b.isRequester){
-				var isFirstTime:Boolean = activeThread.firstTime;
-				PrimInit.doWaitImpl(this);
-				if(!isFirstTime){
-					return;
-				}
-			}
-		}
+//		if(b.opFunction == app.extensionManager.primExtensionOp){
+////			if(!b.isRequester){
+////				var isFirstTime:Boolean = activeThread.firstTime;
+//				PrimInit.doWaitImpl(this, 0.02);
+//				if(!activeThread.firstTime){
+//					return;
+//				}
+////			}
+//		}
 		//*/
 		// TODO: Optimize this into a cached check if the args *could* block at all
 		if(b.args.length > 0 && checkBlockingArgs(b)) {
@@ -414,6 +414,10 @@ public class Interpreter {
 			result = b.opFunction(b, this);
 		}else{
 			result = b.opFunction(b);
+		}
+		if(b.opFunction == app.extensionManager.primExtensionOp && b.isReporter && b.isRequester){
+			PrimInit.doWaitImpl(this);
+			return b.response;
 		}
 		return result;
 	}

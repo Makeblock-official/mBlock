@@ -544,19 +544,15 @@ public class ExtensionManager {
 		}
 		var value:*;
 		
-		if (b.isReporter==true) {
-			if(b.isRequester==true){
-				if(b.requestState == 2) {
-					b.requestState = 0;
-					var v:* = b.response;
-//					b.response = null;
-					return v;
-				}else{
+		if (b.isReporter) {
+			if(b.isRequester){
+//				if(b.requestState == 2) {
+//					b.requestState = 0;
+//				}else{
 					request(extName, primOrVarName, args, b);
-					
-					b.requestState = 0;
+//					b.requestState = 0;
 //					return b.response;
-				}
+//				}
 				// Returns null if we just made a request or we're still waiting
 				return b.response;//==null?0:b.response;
 			}else{

@@ -176,7 +176,6 @@ public class ScriptsPart extends UIPart {
 		arduinoFrame.addChild(displayModeBtn);
 		arduinoFrame.addChild(inputModeBtn);
 		addChild(arduinoFrame);
-		SerialManager.sharedManager().addEventListener(Event.CHANGE,onSerialDataReceived);
 	}
 	
 	private function onInputModeChange(evt:MouseEvent):void
@@ -240,14 +239,21 @@ public class ScriptsPart extends UIPart {
 		msg = (date.month+1) + "-" + date.date + " " + date.hours + ":" + date.minutes + ":" + date.seconds + "." +date.milliseconds + sendType + msg;
 		appendMessage(msg);
 	}
-	private function onSerialDataReceived(evt:Event):void{
+	public function onSerialDataReceived(bytes:ByteArray):void{
 		if(ArduinoUploader.sharedManager().state>0)return;
+		if(!SerialManager.sharedManager().isConnected){
+			return;
+		}
+		appendMsgWithTimestamp(HexUtil.bytesToString(bytes), false);
+		/*
+		return;
 		var date:Date = new Date;
 		var s:String = SerialManager.sharedManager().asciiString;
 		if(s.charCodeAt(0)==20){
 			return;
 		}
 		appendMessage(""+(date.month+1)+"-"+date.date+" "+date.hours+":"+date.minutes+":"+(date.seconds+date.milliseconds/1000)+" < "+SerialManager.sharedManager().asciiString.split("\r\n").join("")+"\n");
+		*/
 	}
 	private function onSendSerial(evt:MouseEvent):void{
 		if(!SerialManager.sharedManager().isConnected){
