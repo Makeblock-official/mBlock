@@ -84,7 +84,7 @@
 		"shutter":["Press","Release","Focus On","Focus Off"],
 		"index":["all",1,2,3,4],
 		"servovalue":[0,45,90,135,180],
-		"motorvalue":[-255,-100,-50,0,50,100,255],
+		"motorvalue":[255,100,50,0,-50,-100,-255],
 		"value":[0,20,60,150,255],
 		"encodeType":["time","turns"],
 		"stepType":["time","steps"],
