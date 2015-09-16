@@ -90,7 +90,9 @@
 	var indexs = [];
 	var startTimer = 0;
 	var versionIndex = 0xFA;
-    ext.resetAll = function(){};
+    ext.resetAll = function(){
+    	device.send([0xff, 0x55, 2, 0, 4]);
+    };
 	ext.runArduino = function(){};
 	
 	var SEND_DELAY = 0;

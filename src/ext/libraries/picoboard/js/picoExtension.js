@@ -30,7 +30,9 @@
         'resistance-D': 0
     };
 
-    ext.resetAll = function(){};
+    ext.resetAll = function(){
+        device.send([0xff, 0x55, 2, 0, 4]);
+    };
 
     // Hats / triggers
     ext.whenSensorConnected = function(which) {
