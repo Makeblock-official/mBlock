@@ -47,6 +47,7 @@ package blocks {
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFieldType;
+	import flash.utils.setTimeout;
 	
 	import cc.makeblock.mbot.uiwidgets.lightSetter.LightSensor;
 	
@@ -280,6 +281,9 @@ public class BlockArg extends Sprite {
 		if (parent is Block) Block(parent).fixExpressionLayout();
 
 		if (evt && MBlock.app) MBlock.app.setSaveNeeded();
+		if(MBlock.app.stageIsArduino){
+			setTimeout(MBlock.app.scriptsPart.showArduinoCode, 0);
+		}
 	}
 
 	private function invokeMenu(evt:MouseEvent):void {
