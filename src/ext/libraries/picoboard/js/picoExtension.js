@@ -82,7 +82,7 @@
             var hb = bytes[i*2] & 127;
             var channel = hb >> 3;
             var lb = bytes[i*2+1] & 127;
-            inputArray[channel] = ((hb & 7) << 7) + lb;
+            inputArray[channel] = ((hb & 7) << 8) + lb;
         }
 
         if (watchdog && (inputArray[15] == 0x04)) {
@@ -103,8 +103,11 @@
                     //noise ceiling
                     25 + Math.min(75, Math.round((v - 50) * (75 / 580)));
             }
-            else {
-                v = (100 * v) / 1023;
+            else if(name == "slider"){
+                v /= 19.19;
+            }else if(name.indexOf("resistance")==0){
+                v *= 10.44;
+               // v = (100 * v) / 1023;
             }
             inputs[name] = v;
         }
