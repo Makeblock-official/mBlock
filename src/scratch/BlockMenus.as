@@ -665,7 +665,7 @@ public class BlockMenus implements DragClient {
 //				}
 				break;
 			case "delete":
-				block.deleteStack();
+				block.deleteSelf();
 				break;
 			case "add comment":
 				block.addComment();

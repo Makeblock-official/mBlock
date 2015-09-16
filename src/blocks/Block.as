@@ -764,6 +764,66 @@ public class Block extends Sprite {
 		parent.addChild(newStack);
 		MBlock.app.gh.grabOnMouseUp(newStack);
 	}
+	
+	public function deleteSelf():void
+	{
+		if (op == 'proc_declaration') {
+			(parent as Block).deleteStack();
+		}
+		var app:MBlock = MBlock.app;
+		var top:Block = topBlock();
+		if (top == this && app.interp.isRunning(top, app.viewedObj())) {
+			app.interp.toggleThread(top, app.viewedObj());
+		}
+		var prevParent:DisplayObjectContainer = parent;
+		if (parent is Block) {
+			var selfPos:String = getSelfPos();
+			Block(parent).removeBlock(this);
+			appendBlockToPos(prevParent as Block, nextBlock, selfPos);
+		}else if (parent) {
+			parent.removeChild(this);
+			if(nextBlock != null){
+				prevParent.addChild(nextBlock);
+			}
+		}
+		removeComments();
+		app.scriptsPane.saveScripts();
+		app.updatePalette();
+		deleteStack();
+	}
+	
+	private function getSelfPos():String
+	{
+		var parentBlock:Block = parent as Block;
+		if(parentBlock.nextBlock == this){
+			return "next";
+		}
+		if(parentBlock.subStack1 == this){
+			return "sub1";
+		}
+		if(parentBlock.subStack2 == this){
+			return "sub2";
+		}
+		return null;
+	}
+	
+	static private function appendBlockToPos(parent:Block, target:Block, pos:String):void
+	{
+		if(null == parent || null == target){
+			return;
+		}
+		switch(pos){
+			case "next":
+				parent.insertBlock(target);
+				break;
+			case "sub1":
+				parent.insertBlockSub1(target);
+				break;
+			case "sub2":
+				parent.insertBlockSub2(target);
+				break;
+		}
+	}
 
 	public function deleteStack():Boolean {
 		if (op == 'proc_declaration') {
