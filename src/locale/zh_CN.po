@@ -2276,3 +2276,19 @@ msgstr "提交Bug"
 
 msgid "Clear Cache"
 msgstr "清空缓存"
+
+msgid "Import Image"
+msgstr "导入图片"
+
+msgid "Export Image"
+msgstr "导出图片"
+
+msgid "Please choose export directory"
+msgstr "请选择要导出到的目录"
+
+msgid "Please choose images to import"
+msgstr "请选择要导入的图片"
+
+msgid "Favourite"
+msgstr "个人收藏"
+

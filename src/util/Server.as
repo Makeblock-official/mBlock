@@ -96,12 +96,12 @@ public class Server {
 //			whenDone(BackpackPart.localAssets[md5]);
 //			return null;
 //		}
-		return fetchAsset('media/' + md5);
+		return fetchAsset('app-storage:/mBlock/media/' + md5);
 	}
 
 	public function getMediaLibrary():String
 	{
-		return fetchAsset('media/mediaLibrary.json').toString();
+		return fetchAsset('app-storage:/mBlock/media/mediaLibrary.json').toString();
 	}
 
 	public function getThumbnail(md5:String, w:int, h:int, whenDone:Function):URLLoader {

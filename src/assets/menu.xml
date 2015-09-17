@@ -6,6 +6,9 @@
 		<item name="Save Project" label="保存项目" keyEquivalent="s" />
 		<item name="Save Project As" label="另存项目" keyEquivalent="S" />
 		<item isSeparator="true" />
+		<item name="Import Image" label="导入图片" />
+		<item name="Export Image" label="导入图片" />
+		<item isSeparator="true" />
 		<item name="Undo Revert" label="取消转换" keyEquivalent="" />
 		<item name="Revert" label="转换" keyEquivalent="" />
 	</subMenu>

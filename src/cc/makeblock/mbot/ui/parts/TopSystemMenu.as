@@ -1,6 +1,5 @@
 package cc.makeblock.mbot.ui.parts
 {
-	import flash.desktop.NativeApplication;
 	import flash.display.NativeMenu;
 	import flash.display.NativeMenuItem;
 	import flash.display.Stage;
@@ -8,10 +7,9 @@ package cc.makeblock.mbot.ui.parts
 	import flash.net.URLRequest;
 	import flash.net.navigateToURL;
 	
-	import air.update.ApplicationUpdater;
-	
 	import cc.makeblock.mbot.uiwidgets.errorreport.ErrorReportFrame;
 	import cc.makeblock.mbot.uiwidgets.extensionMgr.ExtensionUtil;
+	import cc.makeblock.media.MediaManager;
 	import cc.makeblock.menu.MenuUtil;
 	import cc.makeblock.menu.SystemMenu;
 	import cc.makeblock.updater.AppUpdater;
@@ -29,7 +27,6 @@ package cc.makeblock.mbot.ui.parts
 	
 	import util.ApplicationManager;
 	import util.SharedObjectManager;
-	import util.version.VersionManager;
 	
 	public class TopSystemMenu extends SystemMenu
 	{
@@ -112,6 +109,12 @@ package cc.makeblock.mbot.ui.parts
 					break;
 				case "Revert":
 					MBlock.app.revertToOriginalProject();
+					break;
+				case "Import Image":
+					MediaManager.getInstance().importImage();
+					break;
+				case "Export Image":
+					MediaManager.getInstance().exportImage();
 					break;
 			}
 		}

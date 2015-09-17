@@ -61,9 +61,9 @@ public class MediaLibrary extends Sprite {
 	private const titleFormat:TextFormat = new TextFormat(CSS.font, 24, 0x444143);
 
 	private static const backdropCategories:Array = [
-		'All', 'Indoors', 'Outdoors', 'Other'];
+		'All', 'Indoors', 'Outdoors', 'Other', 'Favourite'];
 	private static const costumeCategories:Array = [
-		'All', 'Animals', 'Fantasy', 'People', 'Things', 'Transportation'];
+		'All', 'Animals', 'Fantasy', 'People', 'Things', 'Transportation', 'Favourite'];
 	private static const extensionCategories:Array = [
 		'All', 'Hardware'];
 	private static const soundCategories:Array = [
@@ -113,7 +113,7 @@ public class MediaLibrary extends Sprite {
 		addResultsFrame();
 		addButtons();
 	}
-
+/*
 	public static function strings():Array {
 		var result:Array = [
 			'Backdrop Library', 'Costume Library', 'Sprite Library', 'Sound Library',
@@ -134,7 +134,7 @@ public class MediaLibrary extends Sprite {
 
 		return result;
 	}
-
+*/
 	public function open():void {
 		app.closeTips();
 		app.mediaLibrary = this;
@@ -325,10 +325,10 @@ spriteFeaturesFilter.visible = false; // disable features filter for now
 			addScratchExtensions();
 			return;
 		}
-		if (!libraryCache){
+//		if (!libraryCache){
 			var s:String = app.server.getMediaLibrary();
 			libraryCache = util.JSON.parse(stripComments(s)) as Array;
-		}
+//		}
 		allItems = [];
 		for each (var entry:Object in libraryCache) {
 			if (entry.type == assetType) {
@@ -373,7 +373,7 @@ spriteFeaturesFilter.visible = false; // disable features filter for now
 		startLoadingThumbnails();		
 	}
 
-	private function stripComments(s:String):String {
+	static public function stripComments(s:String):String {
 		// Remove full-line comments starting with '//'. The comment delimiter must be at the very start of the line.
 		var result:String = '';
 		for each (var line:String in s.split('\n')) {

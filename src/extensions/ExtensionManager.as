@@ -226,6 +226,8 @@ public class ExtensionManager {
 	*/
 	public function copyLocalExtensionFiles():void{
 		trace("copyLocalExtensionFiles");
+		copyDir("ext/libraries", "libraries");
+		/*
 		var srcFile:File = File.applicationDirectory.resolvePath("ext/libraries/");
 		for each(var sf:File in srcFile.getDirectoryListing()){
 			var tf:File = ApplicationManager.sharedManager().documents.resolvePath("mBlock/libraries/"+sf.name);
@@ -239,11 +241,13 @@ public class ExtensionManager {
 				//}
 			}
 		}
+		*/
 	}
 	public function copyLocalFiles():void{
 		LogManager.sharedManager().log("copy local files...");
 		copyLocalExtensionFiles();
 		copyFirmwareAndHex();
+		copyDir("media", null, true);
 	}
 	public function importExtension():void {
 		_extensionList = [];
@@ -312,6 +316,7 @@ public class ExtensionManager {
 		
 	}
 	private function copyFirmwareAndHex():void{
+		/*
 		var srcFile:File = File.applicationDirectory.resolvePath("firmware/mblock_firmware/");
 		var tf:File = ApplicationManager.sharedManager().documents.resolvePath("mBlock/firmware/mblock_firmware/");
 		srcFile.copyTo(tf,true);
@@ -324,7 +329,24 @@ public class ExtensionManager {
 		var localsFile:File = File.applicationDirectory.resolvePath("locale/");
 		var ltf:File = ApplicationManager.sharedManager().documents.resolvePath("mBlock/locale/");
 		localsFile.copyTo(ltf,true);
+		*/
+		copyDir("firmware/mblock_firmware");
+		copyDir("firmware/mbot_firmware");
+		copyDir("tools/hex");
+		copyDir("locale");
 	}
+	
+	static private function copyDir(dirName:String, destDirName:String=null, async:Boolean=false):void
+	{
+		var fromFile:File = File.applicationDirectory.resolvePath(dirName);
+		var toFile:File = File.applicationStorageDirectory.resolvePath("mBlock").resolvePath(destDirName || dirName);
+		if(async){
+			fromFile.copyToAsync(toFile, true);
+		}else{
+			fromFile.copyTo(toFile, true);
+		}
+	}
+	
 	public function extensionsToSave():Array {
 		// Answer an array of extension descriptor objects for imported extensions to be saved with the project.
 		var result:Array = [];
