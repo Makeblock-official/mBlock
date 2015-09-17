@@ -642,6 +642,7 @@ public class ScratchStage extends ScratchObj {
 	}
 
 	static private const defaultMedia:Array = [
+		'bcb096d2b695d5623e814e1033620f2c.svg',
 		'510da64cf172d53750dffd23fbf73563.png',
 		'b82f959ab7fa28a70b06c8162b7fef83.svg',
 		'df0e59dcdea889efae55eb77902edc1c.svg',
