@@ -9,10 +9,15 @@ package cc.makeblock.updater
 	
 	import cc.makeblock.mbot.util.PopupUtil;
 	
+	import org.aswing.BorderLayout;
+	import org.aswing.Insets;
+	import org.aswing.JCheckBox;
 	import org.aswing.JOptionPane;
+	import org.aswing.border.EmptyBorder;
 	
 	import translation.Translator;
 	
+	import util.SharedObjectManager;
 	import util.version.VersionManager;
 
 	public class AppUpdater extends EventDispatcher
@@ -59,11 +64,15 @@ package cc.makeblock.updater
 				return;
 			}
 			var panel:JOptionPane;
-			if(isSourceVerGreatThan(result[1], MBlock.versionString.slice(1))){
+			if(isSourceVerGreatThan(result[1], MBlock.versionString.slice(1)) && (needNotice || SharedObjectManager.sharedManager().getObject(_key, true))){
 				panel = PopupUtil.showConfirm(Translator.map("There is a newer version"), __onConfirm);
 				panel.getYesButton().setText(Translator.map("Download Now"));
 				panel.getCancelButton().setText(Translator.map("Download Later"));
 				panel.getFrame().setModal(false);
+				_checkBox = new JCheckBox(Translator.map("Dont't show next time"));
+				_checkBox.setBorder(new EmptyBorder(null, new Insets(10, 0, 0, 0)));
+				panel.append(_checkBox, BorderLayout.CENTER);
+				panel.getFrame().setSizeWH(240, 100);
 			}else{
 				VersionManager.sharedManager().start();
 				if(needNotice){
@@ -87,11 +96,16 @@ package cc.makeblock.updater
 			*/
 		}
 		
+		private var _checkBox:JCheckBox;
+		private var _key:String = "show app update panel";
+		
 		private function __onConfirm(value:int):void
 		{
+			SharedObjectManager.sharedManager().setObject(_key, !_checkBox.isSelected());
 			if(value == JOptionPane.YES){
 				navigateToURL(new URLRequest("http://mblock.cc/download/"));
 			}
+			_checkBox = null;
 //			closeAndNotify();
 		}
 		

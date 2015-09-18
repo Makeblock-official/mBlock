@@ -2282,3 +2282,6 @@ msgstr "請選擇要導入的圖片"
 
 msgid "Favourite"
 msgstr "個人收藏"
+
+msgid "Dont't show next time"
+msgstr "不再提示"
