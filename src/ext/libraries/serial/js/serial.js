@@ -54,27 +54,11 @@
 		responseValue(nextID, "");
 	};
 	
-    var inputArray = [];
-	var _isParseStart = false;
-	var _isParseStartIndex = 0;
     function processData(bytes) {
-		var len = bytes.length;	
-		isReceived = true;
-		for(var index=0;index<bytes.length;index++){
-			if(bytes[index]==0xA){
-				lastLine = lines[0];
-				lines[0] = "";
-			}else{
-				if(bytes[index]!=0xA){
-					var c = String.fromCharCode(bytes[index]);
-					lines[0]+=c;
-				}
-			}
-		}
-		if(lines.length>0){
-			if(lines[0].length>254){
-				lines[0] = "";
-			}
+		isReceived = bytes.indexOf(0xA) >= 0;
+		if(isReceived){
+			lastLine = array2string(bytes);
+			lastLine = lastLine.replace(/^\s+|\s+$/g, "");
 		}
     }
 	function readFloat(arr,position){
@@ -125,9 +109,7 @@
             tryNextDevice();
             return;
         }
-        device.set_receive_handler('serial',function(data) {
-            processData(data);
-        });
+        device.set_receive_handler('serial',processData);
     };
 
     ext._deviceRemoved = function(dev) {

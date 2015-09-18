@@ -119,6 +119,7 @@ package extensions
 			_htmlLoader.window.float2array = float2array;
 			_htmlLoader.window.short2array = short2array;
 			_htmlLoader.window.string2array = string2array;
+			_htmlLoader.window.array2string = array2string;
 			_htmlLoader.window.responseValue = responseValue;
 			_htmlLoader.window.trace = trace;
 			_htmlLoader.window.air = {"trace":trace};
@@ -168,6 +169,14 @@ package extensions
 				array[i] = li8(i);
 			}
 			return array;
+		}
+		static private function array2string(bytes:Array):String{
+			var buffer:ByteArray = MemUtil.Mem;
+			buffer.position = 0;
+			for(var i:int=0;i<bytes.length;i++){
+				si8(bytes[i], i);
+			}
+			return buffer.readUTFBytes(bytes.length);
 		}
 	}
 }
