@@ -1,4 +1,3 @@
-﻿
 # The lanuage name as it will appear in the language menu
 msgid "Language-Name"
 msgstr "Русский"
@@ -32,14 +31,6 @@ msgstr "ответ"
 
 msgid "ask %s and wait"
 msgstr "спросить %s и ждать"
-
-# "backdrop" in Scratch 2.0 is similar to "background" in Scratch 1.4
-msgid "backdrop #"
-msgstr "фон"
-
-# "backdrop" in Scratch 2.0 is similar to "background" in Scratch 1.4
-msgid "backdrop name"
-msgstr "имя фона"
 
 msgid "broadcast %m.broadcast"
 msgstr "передать %m.broadcast"
@@ -187,9 +178,6 @@ msgstr "буква %n в %s"
 
 msgid "Looks"
 msgstr "Внешность"
-
-msgid "loudness"
-msgstr "громкость"
 
 msgid "More Blocks"
 msgstr "Другие Блоки"
@@ -345,9 +333,6 @@ msgstr "показать список %m.list"
 msgid "show variable %m.var"
 msgstr "показать переменную %m.var"
 
-msgid "size"
-msgstr "размер"
-
 msgid "Sound"
 msgstr "Звук"
 
@@ -383,9 +368,6 @@ msgstr "думать %s  %n секунд"
 msgid "tilt"
 msgstr "наклон"
 
-msgid "timer"
-msgstr "таймер"
-
 msgid "touching %m.touching?"
 msgstr "касается %m.touching?"
 
@@ -418,9 +400,6 @@ msgstr "имя пользователя"
 
 msgid "video %m.videoMotionType on %m.stageOrThis"
 msgstr "видео %m.videoMotionType на %m.stageOrThis"
-
-msgid "volume"
-msgstr "громкость"
 
 msgid "wait %n secs"
 msgstr "ждать %n секунд"
@@ -467,50 +446,15 @@ msgstr "когда вы нажмете на этот спрайт"
 msgid "when tilt = %n"
 msgstr "когда встряхнуть = %n"
 
-msgid "x position"
-msgstr "x-позиция"
-
-msgid "y position"
-msgstr "y-позиция"
-
-#~ msgid "user name"
-#~ msgstr "имя пользователя"
-
-#~ msgid "forever if %b"
-#~ msgstr "всегда если %b"
-
-#~ msgid "if %b"
-#~ msgstr "если %b"
-
-#~ msgid "motor direction %m.motorDirection"
-#~ msgstr "направление мотора %m.motorDirection"
-
-#~ msgid "motor off"
-#~ msgstr "мотор выключить"
-
-#~ msgid "motor on"
-#~ msgstr "мотор включить"
-
-#~ msgid "motor on for %n secs"
-#~ msgstr "мотор включить на %n сек."
-
-#~ msgid "motor power %n"
-#~ msgstr "мощность мотора %n"
-
-#~ msgid "play note %n for %n beats"
-#~ msgstr "играть примечание %d.note для %n"
-
-##################
+# #################
 # User Interface/Пользовательский интерфейс #
-##################
-
+# #################
 msgid "10 ^"
 msgstr "10 ^"
 
-msgid "<b>Information about Cloud variables</b><br>&nbsp;<br>Currently, only numbers are supported<br>Chat rooms are not allowed, and will be removed<br>For more info, <a href="/help/faq/#clouddata" target="_blank">see the cloud data FAQ!</a>"
-msgstr ""
-"<b>Информация об облачных переменных</b><br>&nbsp;<br>В настоящее время, только цифры поддерживаются "
-"tal<br>Чаты не допускается, и будут удалены<br>Для получения дополнительной информации <a href= target=>см облачные данные FAQ!</a>"
+msgid ""
+"<b>Information about Cloud variables</b><br>&nbsp;<br>Currently, only numbers are supported<br>Chat rooms are not allowed, and will be removed<br>For more info, <a href=\"/help/faq/#clouddata\" target=\"_blank\">see the cloud data FAQ!</a>"
+msgstr "<b>Информация об облачных переменных</b><br>&nbsp;<br>В настоящее время, только цифры поддерживаются tal<br>Чаты не допускается, и будут удалены<br>Для получения дополнительной информации <a href= target=>см облачные данные FAQ!</a>"
 
 msgid "A connected"
 msgstr "A соединен"
@@ -609,8 +553,7 @@ msgid "Bassoon"
 msgstr "Фагот"
 
 msgid "Because you have a new Scratch account, any changes to cloud data won't be saved yet. Keep participating on the site you'll be able to use cloud data soon!"
-msgstr ""
-"Поскольку вы имеете новую учетную запись Скретч, любые изменения в облачных данных еще не будут сохранены. Участвуйте в просмотре сайта и скоро вы сможете использовать облачные данные!"
+msgstr "Поскольку вы имеете новую учетную запись Скретч, любые изменения в облачных данных еще не будут сохранены. Участвуйте в просмотре сайта и скоро вы сможете использовать облачные данные!"
 
 msgid "Bitmap"
 msgstr "Растровый"
@@ -661,7 +604,7 @@ msgid "Cancel"
 msgstr "Отмена нафик"
 
 msgid "Cannot Delete"
-msgstr "Сори немогу удалить
+msgstr "Сори немогу удалит"
 
 msgid "Can’t find network connection or reach server."
 msgstr "Немогу найти сетевое подключение или связаться с сервером."
@@ -693,9 +636,6 @@ msgstr "Выберите звук из библиотеки"
 msgid "Choose sprite from library"
 msgstr "Выберите спрайт из библиотеки"
 
-msgid "Circle"
-msgstr ”Круг"
-
 msgid "City"
 msgstr "Город"
 
@@ -705,20 +645,14 @@ msgstr "Кларнет"
 msgid "Claves"
 msgstr "Клавес"
 
-msgid "cleanup"
-msgstr ""
-
 msgid "Clear"
 msgstr "Очистить"
 
 msgid "clear senders/receivers"
 msgstr "очистить отправителей/получателей"
 
-msgid "Click "Save now" to try again or "Download" to save"
+msgid "Click \"Save now\" to try again or \"Download\" to save"
 msgstr "Нажмите “Сохранить” или попробуйте снова “Скачать” для сохранения"
-
-msgid "Close"
-msgstr "Закрыть"
 
 msgid "Closed Hi-Hat"
 msgstr "Закрытое Привет-Hat"
@@ -762,9 +696,6 @@ msgstr "кос"
 
 msgid "Costume"
 msgstr "Костюм"
-
-msgid "costume #"
-msgstr "костюм №"
 
 msgid "Costume Library"
 msgstr "Библиотека костюмов"
@@ -820,9 +751,6 @@ msgstr "удалить"
 
 msgid "delete variable"
 msgstr "удалить переменную"
-
-msgid "direction"
-msgstr "направление"
 
 msgid "direction:"
 msgstr "направление:"
@@ -963,9 +891,6 @@ msgstr "Гитара"
 msgid "Hand Clap"
 msgstr "Ручной клап"
 
-msgid "hide"
-msgstr "спрятать"
-
 msgid "High C"
 msgstr "Высокий C"
 
@@ -1012,6 +937,7 @@ msgstr "влево-вправо"
 
 msgid "length"
 msgstr ""
+
 # Daemon pride делал
 msgid "Library"
 msgstr "Библиотека"
@@ -1400,9 +1326,6 @@ msgstr "Опубликовать"
 msgid "Shift:"
 msgstr "Сдвиг:"
 
-msgid "show"
-msgstr "Показать"
-
 msgid "show receivers"
 msgstr "Показать приемники"
 
@@ -1457,9 +1380,6 @@ msgstr "мягче"
 
 msgid "sound"
 msgstr "звук"
-
-msgid "Sound"
-msgstr "Звук"
 
 msgid "Sound Library"
 msgstr "Библиотека звуков"
@@ -1535,12 +1455,10 @@ msgid "Things"
 msgstr "Вещи"
 
 msgid "This project can detect who is using it, through the “username” block. To hide your identity, sign out before using the project."
-msgstr ""
-"Этот проект может обнаружить, кто использует его, через блок “имени пользователя” Чтобы скрыть свою личность, выйдите перед использованием проекта."
+msgstr "Этот проект может обнаружить, кто использует его, через блок “имени пользователя” Чтобы скрыть свою личность, выйдите перед использованием проекта."
 
 msgid "This project uses Cloud data ‒ a feature that is available only to signed in users."
-msgstr ""
-"Этот проект использует данные облачного сервиса ‒ функция, которая доступна только подписанным пользователям."
+msgstr "Этот проект использует данные облачного сервиса ‒ функция, которая доступна только подписанным пользователям."
 
 msgid "this script"
 msgstr "этот скрипт"
@@ -1692,8 +1610,7 @@ msgid "year"
 msgstr "год"
 
 msgid "You cannot edit cloud data in someone else's project.<br>Any change that you make in the editor will be temporary and not persistent."
-msgstr ""
-"Вы не можете редактировать облачные данные в чужом проекте.<br>Любое изменение, которое вы делаете в редакторе будет носить временный характер и не является постоянным."
+msgstr "Вы не можете редактировать облачные данные в чужом проекте.<br>Любое изменение, которое вы делаете в редакторе будет носить временный характер и не является постоянным."
 
 msgid "Eraser width:"
 msgstr "Ширина удаления:"
@@ -1701,61 +1618,11 @@ msgstr "Ширина удаления:"
 msgid "Line width:"
 msgstr "Ширина линии:"
 
-# 90%
-#, fuzzy
-#~ msgid "New sprite"
-#~ msgstr "Новый спрайт"
-
-#~ msgid "Paint"
-#~ msgstr "Краски"
-
-#~ msgid "any"
-#~ msgstr "любой"
-
-#~ msgid "High Tom"
-#~ msgstr "Высокий Том"
-
-#~ msgid "Long Guiro"
-#~ msgstr "Длинный Гуиро"
-
-#~ msgid "Low Bongo"
-#~ msgstr "Низкий Bongo"
-
-#~ msgid "Low Conga"
-#~ msgstr "Низкий Conga"
-
-#~ msgid "Low Tom"
-#~ msgstr "Низкий Том"
-
-#~ msgid "Low Wood Block"
-#~ msgstr "Низкий деревянный блок"
-
-#~ msgid "Maracas"
-#~ msgstr "Маракас"
-
-#~ msgid "More"
-#~ msgstr "Больше"
-
-#~ msgid "Mute Triangle"
-#~ msgstr "Тихий треугольник"
-
-#~ msgid "Open Triangle"
-#~ msgstr "Открытый треугольник"
-
-#~ msgid "Pedal Hi-Hat"
-#~ msgstr "Педаль хай-хэт"
-
-#~ msgid "Short Guiro"
-#~ msgstr "Короткое Гуиро"
-
-
-
-#################################
+# ################################
 # Makeblock Section Секция Мейкблок            #
 # Translation by Daemon pride #
 # zerocan@mail.ru            #
-#################################
-
+# ################################
 msgid "set motor%m.motorPort speed %d.motorvalue"
 msgstr "установить мотор %m.motorPort скорость %d.motorvalue"
 
@@ -1855,20 +1722,11 @@ msgstr "Датчик звука"
 msgid "LED"
 msgstr "LED"
 
-msgid "Joystick"
-msgstr "Джойстик"
-
 msgid "Line Finder"
 msgstr "Датчик линии"
 
 msgid "LimitSwitch"
 msgstr "Концевик"
-
-msgid "Temperature"
-msgstr "Температура"
-
-msgid "Joystick"
-msgstr "Джойстик"
 
 msgid "Potentiometer"
 msgstr "Потенциометр"
