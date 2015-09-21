@@ -1406,13 +1406,13 @@ void updateVar(char * varName,double * var)
 				return "Arduino IDE not found.";
 			}
 			prepareProjectDir(ccode)
-			var file:File = new File(); 
+			var file:File;
 			if(ApplicationManager.sharedManager().system==ApplicationManager.WINDOWS){
-				file.url = arduinoInstallPath+"/arduino.exe";
+				file = new File(arduinoInstallPath+"/arduino.exe");
 			}else{
-				file.url = new File(arduinoInstallPath+"/../../MacOS/JavaApplicationStub").url;
+				file = new File(arduinoInstallPath+"/../../MacOS/JavaApplicationStub");
 				if(!file.exists){
-					file.url = new File(arduinoInstallPath+"/../MacOS/Arduino").url; 
+					file = new File(arduinoInstallPath+"/../MacOS/Arduino");
 				}
 			}
 			

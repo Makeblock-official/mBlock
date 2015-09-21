@@ -61,7 +61,7 @@ package cc.makeblock.media
 			var libData:Array = util.JSON.parse(MediaLibrary.stripComments(s)) as Array;
 			
 			for each(var file:File in evt.files){
-				file.copyTo(mediaDir.resolvePath(file.name));
+				file.copyTo(mediaDir.resolvePath(file.name), true);
 				var info:Object = {};
 				info.name = file.name.split(".")[0];
 				info.md5 = file.name;
