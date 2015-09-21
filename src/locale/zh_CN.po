@@ -2294,3 +2294,6 @@ msgstr "个人收藏"
 
 msgid "Dont't show next time"
 msgstr "不再提示"
+
+msgid "Import Success"
+msgstr "导入成功"

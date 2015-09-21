@@ -72,6 +72,7 @@ package cc.makeblock.media
 			}
 			
 			FileUtil.WriteString(jsonPath, util.JSON.stringify(libData));
+			PopupUtil.showAlert("Import Success");
 		}
 		
 		public function exportImage():void
