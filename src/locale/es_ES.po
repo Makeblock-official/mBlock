@@ -500,33 +500,8 @@ msgstr "posición en y"
 #~ msgid "play note %n for %n beats"
 #~ msgstr "tocar nota %d.note durante %n pulsos"
 
-##################
-# User Interface #
-##################
-msgid ""
-msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-07-19 20:51+0200\n"
-"PO-Revision-Date: 2013-05-04 16:17+0200\n"
-"Last-Translator: Bastián <technoguyx@gmail.com>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: es\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Pootle 2.1.6\n"
-
 msgid "10 ^"
 msgstr "10 ^"
-
-msgid "<b>Information about Cloud variables</b><br>&nbsp;<br>Currently, only numbers are supported<br>Chat rooms are not allowed, and will be removed<br>For more info, <a href="/help/faq/#clouddata" target="_blank">see the cloud data FAQ!</a>"
-msgstr ""
-"<b>Información sobre variables de nube</b><br>&nbsp;<br>Ahora, sólo se "
-"pueden utilizar números<br>No se permiten las salas de chat; serán "
-"removidas<br>Para más información, <a href=\"/help/faq/#clouddata\" "
-"target=\"_blank\">revisa las preguntas sobre información de la nube!</a>"
 
 msgid "A connected"
 msgstr "A conectado"
@@ -1548,15 +1523,10 @@ msgid "Things"
 msgstr "Cosas"
 
 msgid "This project can detect who is using it, through the “username” block. To hide your identity, sign out before using the project."
-msgstr ""
-"Este proyecto puede detectar quién lo usa, usando el bloque \"nombre de "
-"usuario\". Para no revelar tu identidad, sal de tu cuenta antes de usar el "
-"proyecto."
+msgstr "Este proyecto puede detectar quién lo usa, usando el bloque \"nombre de usuario\". Para no revelar tu identidad, sal de tu cuenta antes de usar el proyecto."
 
 msgid "This project uses Cloud data ‒ a feature that is available only to signed in users."
-msgstr ""
-"Este proyecto usa información de nube, una característica sólo para usuarios "
-"que hayan ingresado."
+msgstr "Este proyecto usa información de nube, una característica sólo para usuarios que hayan ingresado."
 
 msgid "this script"
 msgstr "este programa"
@@ -1577,9 +1547,7 @@ msgid "Tips"
 msgstr "Sugerencias"
 
 msgid "To delete a block definition, first remove all uses of the block."
-msgstr ""
-"Para borrar una definición de bloque, primero borra todos los usos de éste "
-"bloque."
+msgstr "Para borrar una definición de bloque, primero borra todos los usos de éste bloque."
 
 msgid "Transportation"
 msgstr "Transportes"
@@ -1710,9 +1678,7 @@ msgid "year"
 msgstr "año"
 
 msgid "You cannot edit cloud data in someone else's project.<br>Any change that you make in the editor will be temporary and not persistent."
-msgstr ""
-"No puedes editar información de la nube en el proyecto de otro.<br>Cualquier "
-"cambio hecho en el editor será temporal y no persistente."
+msgstr "No puedes editar información de la nube en el proyecto de otro.<br>Cualquier cambio hecho en el editor será temporal y no persistente."
 
 msgid "Eraser width:"
 msgstr "Grosor de la goma:"
