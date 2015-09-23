@@ -81,11 +81,14 @@
 		}
 		runPackage(40,port,short2array(speed),short2array(distance));
 	};
-	ext.runEncoderMotor = function(slot, speed, distance){
+	ext.runEncoderMotor = function(port, slot, speed, distance){
+		if(typeof port=="string"){
+			port = ports[port];
+		}
 		if(typeof slot=="string"){
 			slot = slots[slot];
 		}
-		runPackage(41,slots[slot],short2array(speed),short2array(distance));
+		runPackage(41,port,short2array(speed),short2array(distance));
 	};
 	ext.runSevseg = function(port,display){
 		if(typeof port=="string"){
