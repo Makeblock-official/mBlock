@@ -1179,17 +1179,12 @@ void updateVar(char * varName,double * var)
 				return;
 			}
 			// copy firmware directory
-			//			srcdir = srcdir.resolvePath("firmware");
 			workdir = workdir.resolvePath(projectDocumentName); 
 			//srcdir.copyTo(workdir,true); 
 			for each(var path:String in srcDocuments){
 				srcdir = new File(path);
-				if(srcdir.exists){
-					if(srcdir.isDirectory){
-						if(srcdir.getDirectoryListing().length>0){
-							copyCompileFiles(srcdir.getDirectoryListing(),workdir);
-						}
-					}
+				if(srcdir.exists && srcdir.isDirectory){
+					copyCompileFiles(srcdir.getDirectoryListing(),workdir);
 				}
 			}
 			var projCpp:File = File.applicationStorageDirectory.resolvePath("scratchTemp/"+projectDocumentName+"/"+projectDocumentName+".ino")
@@ -1222,15 +1217,14 @@ void updateVar(char * varName,double * var)
 		
 		private var compileErr:Boolean = false;
 		private function copyCompileFiles(files:Array,workdir:File):void{
-			var dstFile:File;
-			var cppList:Array = requiredCpp;
-			for (var i:uint = 0; i < files.length; i++)  
+			for (var i:int = 0; i < files.length; i++)  
 			{ 
 				if(files[i].extension=="cpp" || files[i].extension=="c" || files[i].extension=="h"){
-					dstFile = workdir.resolvePath(files[i].name);
 					var n:String = files[i].name.split("."+files[i].extension).join("");;
-					if(cppList.indexOf(n)==-1)cppList.push(n);
-					files[i].copyTo(dstFile,true);
+					if(requiredCpp.indexOf(n) < 0){
+						requiredCpp.push(n);
+					}
+					files[i].copyTo(workdir.resolvePath(files[i].name), true);
 				}
 			}
 		}
@@ -1290,24 +1284,17 @@ void updateVar(char * varName,double * var)
 				workdir.createDirectory(); 
 			} 
 			
-			var srcdir:File = ApplicationManager.sharedManager().documents.resolvePath("mBlock/libraries/"+_extSrcPath+"/src");
-			//			var srcdir:File = File.applicationDirectory.resolvePath("compiler"); 
 			if(!workdir.exists){
 				return "workdir not exists";
 			}
 			nativeWorkList = []
 			// copy firmware directory
-			srcdir = srcdir.resolvePath("firmware");
 			workdir = workdir.resolvePath(projectDocumentName);
 			//srcdir.copyTo(workdir,true); 
 			for each(var path:String in srcDocuments){
-				srcdir = new File(path);
-				if(srcdir.exists){
-					if(srcdir.isDirectory){
-						if(srcdir.getDirectoryListing().length>0){
-							copyCompileFiles(srcdir.getDirectoryListing(),workdir);
-						}
-					}
+				var srcdir:File = new File(path);
+				if(srcdir.exists && srcdir.isDirectory){
+					copyCompileFiles(srcdir.getDirectoryListing(), workdir);
 				}
 			}
 			var projCpp:File = File.applicationStorageDirectory.resolvePath("scratchTemp/"+projectDocumentName+"/"+projectDocumentName+".ino")
