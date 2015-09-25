@@ -313,6 +313,31 @@ public class ScriptsPart extends UIPart {
 	private function onScroll(evt:Event):void{
 		lineNumText.scrollV = arduinoTextPane.textField.scrollV;
 	}
+	
+	static private const classNameList:Array = [
+		"SoftwareSerial",
+		"MeBoard",
+		"MeDCMotor",
+		"MeServo",
+		"MeIR",
+		"Me7SegmentDisplay",
+		"MeRGBLed",
+		"MePort",
+		"MeGyro",
+		"MeJoystick",
+		"MeLight",
+		"MeSound",
+		"MeStepper",
+		"MeEncoderMotor",
+		"MeInfraredReceiver",
+		"MeTemperature",
+		"MeUltrasonicSensor",
+		"MeSerial",
+		"Servo",
+		"mBot",
+		"Arduino",
+	];
+	
 	public function showArduinoCode(arg:String=""):Boolean{
 		var retcode:String = util.JSON.stringify(app.stagePane);
 		var formatCode:String = ArduinoManager.sharedManager().jsonToCpp(retcode);
@@ -400,27 +425,10 @@ public class ScriptsPart extends UIPart {
 		formatKeyword(arduinoTextPane.textField,"tone(",fontRed,0,1);
 		formatKeyword(arduinoTextPane.textField,"noTone(",fontRed,0,1);
 		formatKeyword(arduinoTextPane.textField,"Wire.",fontGreen,0,1);
-		formatKeyword(arduinoTextPane.textField,"SoftwareSerial",fontGreen,0,0);
-		formatKeyword(arduinoTextPane.textField,"MeBoard",fontGreen,0,0);
-		formatKeyword(arduinoTextPane.textField,"MeDCMotor",fontGreen,0,0);
-		formatKeyword(arduinoTextPane.textField,"MeServo",fontGreen,0,0);
-		formatKeyword(arduinoTextPane.textField,"MeIR",fontGreen,0,0);
-		formatKeyword(arduinoTextPane.textField,"Me7SegmentDisplay",fontGreen,0,0);
-		formatKeyword(arduinoTextPane.textField,"MeRGBLed",fontGreen,0,0);
-		formatKeyword(arduinoTextPane.textField,"MePort",fontGreen,0,0);
-		formatKeyword(arduinoTextPane.textField,"MeGyro",fontGreen,0,0);
-		formatKeyword(arduinoTextPane.textField,"MeJoystick",fontGreen,0,0);
-		formatKeyword(arduinoTextPane.textField,"MeLight",fontGreen,0,0);
-		formatKeyword(arduinoTextPane.textField,"MeSound",fontGreen,0,0);
-		formatKeyword(arduinoTextPane.textField,"MeStepper",fontGreen,0,0);
-		formatKeyword(arduinoTextPane.textField,"MeEncoderMotor",fontGreen,0,0);
-		formatKeyword(arduinoTextPane.textField,"MeInfraredReceiver",fontGreen,0,0);
-		formatKeyword(arduinoTextPane.textField,"MeTemperature",fontGreen,0,0);
-		formatKeyword(arduinoTextPane.textField,"MeUltrasonic",fontGreen,0,0);
-		formatKeyword(arduinoTextPane.textField,"MeSerial",fontGreen,0,0);
-		formatKeyword(arduinoTextPane.textField,"Servo",fontGreen,0,0);
-		formatKeyword(arduinoTextPane.textField,"mBot",fontGreen,0,0);
-		formatKeyword(arduinoTextPane.textField,"Arduino",fontGreen,0,0);
+		
+		for each(var clsName:String in classNameList){
+			formatKeyword(arduinoTextPane.textField, clsName, fontGreen, 0, 0);
+		}
 		
 		
 		lineNumText.text = "";
@@ -460,14 +468,17 @@ public class ScriptsPart extends UIPart {
 		}
 		return true;
 	}
-	private function formatKeyword(txt:TextField,word:String,format:TextFormat,subStart:uint=0,subEnd:uint=0):void{
-		var index:uint = 0;
+	private function formatKeyword(txt:TextField,word:String,format:TextFormat,subStart:uint=0,subEnd:uint=0):void
+	{
+		var index:int = 0;
 		var msg:String = txt.text;
-		var i:int = msg.indexOf(word,index);
-		while(i>-1){
-			txt.setTextFormat(format,i+subStart,i+word.length-subEnd);
-			index = i+word.length;
-			i = msg.indexOf(word,index);
+		for(;;){
+			index = msg.indexOf(word, index);
+			if(index < 0){
+				break;
+			}
+			txt.setTextFormat(format, index + subStart, index + word.length - subEnd);
+			index += word.length;
 		}
 	}
 	public function resetCategory():void { selector.select(Specs.motionCategory) }

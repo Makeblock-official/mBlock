@@ -83,6 +83,7 @@ package interpreter
 				case "<":
 				case "=":
 				case "concatenate:with:":
+				case "doIf":
 					return true;
 			}
 			return false;

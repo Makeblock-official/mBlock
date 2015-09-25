@@ -1,5 +1,6 @@
 package extensions
 {
+	import flash.debugger.enterDebugger;
 	import flash.desktop.NativeProcess;
 	import flash.desktop.NativeProcessStartupInfo;
 	import flash.events.Event;
@@ -1078,6 +1079,8 @@ void updateVar(char * varName,double * var)
 			return funcCodes;
 		}
 		private function getRequiredCpp():Array{
+			return [];
+			/*
 			var modMapCpp:Object={"motor":"MeDCMotor","ultrasonic":"MeUltrasonic","servo":"MeServo","temperature":"MeTemperature","led":"MeRGBLed","gyro":"MeGyro","infrared":"MeInfraredReceiver","sevseg":"Me7SegmentDisplay"}
 			var cppList:Array=[];
 			return cppList;
@@ -1092,6 +1095,7 @@ void updateVar(char * varName,double * var)
 			//			if(cppList.length>0 || moduleList.length>0)
 			//cppList.push("MePort")
 			return cppList
+			*/
 		}
 		
 		public function uploadCode(code:String):void{
@@ -1173,7 +1177,6 @@ void updateVar(char * varName,double * var)
 			if(!workdir.exists){
 				workdir.createDirectory(); 
 			}
-			var srcdir:File = ApplicationManager.sharedManager().documents.resolvePath("mBlock/libraries/"+_extSrcPath+"/src");
 			//			var srcdir:File = File.applicationDirectory.resolvePath("compiler"); 
 			if(!workdir.exists){
 				return;
@@ -1182,7 +1185,7 @@ void updateVar(char * varName,double * var)
 			workdir = workdir.resolvePath(projectDocumentName); 
 			//srcdir.copyTo(workdir,true); 
 			for each(var path:String in srcDocuments){
-				srcdir = new File(path);
+				var srcdir:File = new File(path);
 				if(srcdir.exists && srcdir.isDirectory){
 					copyCompileFiles(srcdir.getDirectoryListing(),workdir);
 				}
@@ -1216,15 +1219,22 @@ void updateVar(char * varName,double * var)
 		}
 		
 		private var compileErr:Boolean = false;
-		private function copyCompileFiles(files:Array,workdir:File):void{
-			for (var i:int = 0; i < files.length; i++)  
-			{ 
-				if(files[i].extension=="cpp" || files[i].extension=="c" || files[i].extension=="h"){
-					var n:String = files[i].name.split("."+files[i].extension).join("");;
-					if(requiredCpp.indexOf(n) < 0){
-						requiredCpp.push(n);
+		private function copyCompileFiles(files:Array, workdir:File):void
+		{
+			for(var i:int = 0; i < files.length; ++i){
+				var file:File = files[i];
+				switch(file.extension){
+					case "cpp":
+					case "c":{
+						var fileName:String = file.name.split(".")[0];
+						if(requiredCpp.indexOf(fileName) < 0){
+							requiredCpp.push(fileName);
+						}
 					}
-					files[i].copyTo(workdir.resolvePath(files[i].name), true);
+						//fall through
+					case "h":
+						file.copyTo(workdir.resolvePath(file.name), true);
+						break;
 				}
 			}
 		}
@@ -1277,7 +1287,6 @@ void updateVar(char * varName,double * var)
 				return "Arduino IDE not found.";
 			}
 			_currentDevice = DeviceManager.sharedManager().currentDevice;
-			var cppList:Array =  requiredCpp;
 			// get building direcotry ready
 			var workdir:File = File.applicationStorageDirectory.resolvePath("scratchTemp")
 			if(!workdir.exists){
@@ -1331,20 +1340,11 @@ void updateVar(char * varName,double * var)
 			*/
 			// prebuild arduino lib
 			buildArduinoLib(workdir);
-			// copy files
-			var dstFile:File;
-			for (var i:uint = 0; i < files.length; i++)  
-			{ 
-				if(files[i].extension=="cpp" || files[i].extension=="c" || files[i].extension=="h"){
-					dstFile = workdir.resolvePath(files[i].name);
-					var n:String = files[i].name.split("."+files[i].extension).join("");;
-					if(cppList.indexOf(n)==-1)cppList.push(n);
-					files[i].copyTo(dstFile,true);
-				}
-			}
+			copyCompileFiles(files, workdir);
+			
 			// copy project.ino to ./build/project.ino.cpp
 			// combine aux ino and main ino into 1 cpp file
-			dstFile = workdir.resolvePath(projectDocumentName+".ino.cpp")
+			var dstFile:File = workdir.resolvePath(projectDocumentName+".ino.cpp")
 			outStream = new FileStream();
 			outStream.open(dstFile, FileMode.WRITE);
 			outStream.writeUTFBytes(ccode);
@@ -1358,7 +1358,7 @@ void updateVar(char * varName,double * var)
 			dispatchEvent(new Event(EVENT_NATIVE_DONE));
 			tc_projCpp = projCpp
 			tc_workdir = workdir
-			tc_cppList = cppList;
+			tc_cppList = requiredCpp;
 			return ""
 		}
 		
@@ -1475,10 +1475,10 @@ void updateVar(char * varName,double * var)
 				file.url = new File(arduinoInstallPath+"/libraries/Servo").url; // servo still in root library
 				listArduinoLib(file);
 			}
+			
 			file.url = new File(arduinoInstallPath+arduinoLibPath+"/SoftwareSerial").url;
 			listArduinoLib(file)
 			
-			//
 			for (var i:uint = 0; i < arduinoCppList.length; i++)  
 			{ 
 				compileCpp(arduinoCppList[i],buildDir)

@@ -247,7 +247,7 @@ public class ExtensionManager {
 		LogManager.sharedManager().log("copy local files...");
 		copyLocalExtensionFiles();
 		copyFirmwareAndHex();
-		copyDir("media", null, true);
+		copyDir("media", null);
 	}
 	public function importExtension():void {
 		_extensionList = [];
@@ -336,15 +336,11 @@ public class ExtensionManager {
 		copyDir("locale");
 	}
 	
-	static private function copyDir(dirName:String, destDirName:String=null, async:Boolean=false):void
+	static private function copyDir(dirName:String, destDirName:String=null):void
 	{
 		var fromFile:File = File.applicationDirectory.resolvePath(dirName);
 		var toFile:File = File.applicationStorageDirectory.resolvePath("mBlock").resolvePath(destDirName || dirName);
-		if(async){
-			fromFile.copyToAsync(toFile, true);
-		}else{
-			fromFile.copyTo(toFile, true);
-		}
+		fromFile.copyTo(toFile, true);
 	}
 	
 	public function extensionsToSave():Array {
