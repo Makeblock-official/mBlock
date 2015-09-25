@@ -103,8 +103,6 @@ package {
 		public var stageIsContracted:Boolean; // true when the stage is half size to give more space on small screens
 		public var stageIsHided:Boolean;
 		public var stageIsArduino:Boolean;
-//		public var isIn3D:Boolean;
-//		public var render3D:IRenderIn3D;
 	
 		private var systemMenu:TopSystemMenu;
 		
@@ -143,11 +141,15 @@ package {
 		private var ga:GATracker;
 		private var tabsPart:TabsPart;
 		private var _welcomeView:Loader;
-		private var _currentVer:String = "08.21.003";
+		private var _currentVer:String = "09.24.001";
 		public function MBlock(){
 			app = this;
 			addEventListener(Event.ADDED_TO_STAGE,initStage);
 			loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, __onError);
+			
+			if(!NativeApplication.nativeApplication.isSetAsDefaultApplication("sb2")){
+				NativeApplication.nativeApplication.setAsDefaultApplication("sb2");
+			}
 		}
 		
 		private function __onError(evt:UncaughtErrorEvent):void
@@ -177,8 +179,7 @@ package {
 			AppUpdater.getInstance().start();
 			stage.align = StageAlign.TOP_LEFT;
 			stage.scaleMode = StageScaleMode.NO_SCALE;
-			var f:File = File.applicationDirectory.resolvePath("Arduino");
-			trace("app:",f.exists);
+			
 			if(SharedObjectManager.sharedManager().available("labelSize")){
 				var labelSize:int = SharedObjectManager.sharedManager().getObject("labelSize") as int;
 				var argSize:int = Math.round(0.9 * labelSize);
@@ -198,9 +199,9 @@ package {
 				extensionManager = new ExtensionManager(this);
 				var extensionsPath:File = ApplicationManager.sharedManager().documents.resolvePath("mBlock");
 				if(!extensionsPath.exists){
+					SharedObjectManager.sharedManager().clear();
+					SharedObjectManager.sharedManager().setObject(versionString+".0."+_currentVer,true);
 					extensionManager.copyLocalFiles();
-				}else{
-					//trace(extensionsPath.nativePath);
 				}
 		//		extensionManager.importExtension();
 				addParts();
@@ -218,45 +219,25 @@ package {
 				stage.addEventListener(Event.ENTER_FRAME, step);
 				stage.addEventListener(Event.RESIZE, onResize);
 				setEditMode(true);
-				/*
-			}catch(e:*){
-				var textField:TextField = new TextField;
-				textField.width = 600;
-				textField.text = "The current issue should be due to that the user has his documents folder pointing (right click \"my documents\" -> properties -> location tab) to a folder on a remote drive that's not alway accessible. For example, pointing the folder to X: (\\orc-fs\temp) and then right-clicking on X to disconnect the drive."
-				addChild(textField);
-			}
-			*/
 			// install project before calling fixLayout()
 			if (editMode) runtime.installNewProject();
 			else runtime.installEmptyProject();
 			
 			fixLayout();
 			setTimeout(SocketManager.sharedManager, 100);
-			var ver:String = _currentVer;
-			var isFilesAvailable:Boolean = ApplicationManager.sharedManager().documents.resolvePath("mBlock").exists;
-			if(!isFilesAvailable){
-				SharedObjectManager.sharedManager().clear();
-			}
-			if(!SharedObjectManager.sharedManager().getObject(versionString+".0."+ver,false)){
+			if(!SharedObjectManager.sharedManager().getObject(versionString+".0."+_currentVer,false)){
 				//SharedObjectManager.sharedManager().clear();
-				SharedObjectManager.sharedManager().setObject(versionString+".0."+ver,true);
+				SharedObjectManager.sharedManager().setObject(versionString+".0."+_currentVer,true);
+				extensionsPath.moveToTrash();
 				extensionManager.copyLocalFiles();
 				//SharedObjectManager.sharedManager().setObject("board","mbot_uno");
 			}
 			//VersionManager.sharedManager().start(); //在线更新资源文件
-			if(!SharedObjectManager.sharedManager().available("first-launch")){
-				SharedObjectManager.sharedManager().setObject("first-launch",true);
-			}
-			if(SharedObjectManager.sharedManager().getObject("first-launch",false)==true){
+			if(SharedObjectManager.sharedManager().getObject("first-launch",true)){
 				SharedObjectManager.sharedManager().setObject("first-launch",false);
 				openWelcome();
 			}
-			//SerialManager.sharedManager().executeUpgrade();
-			//Analyze.collectAssets(0, 119110);
-			//Analyze.checkProjects(56086, 64220);
-			//Analyze.countMissingAssets();
 			initExtension();
-			
 			MenuBuilder.BuildMenuList(XMLList(FileUtil.LoadFile("assets/context_menus.xml")));
 		}
 		private function initExtension():void{
@@ -347,65 +328,7 @@ package {
 			trace(msg);
 		}
 		public function loadProjectFailed():void {}
-		/*
-		[Embed(source='libs/RenderIn3D.swf', mimeType='application/octet-stream')]
-		public static const MySwfData:Class;
-		protected function checkFlashVersion():void {
-			if(Capabilities.playerType != "Desktop" || Capabilities.version.indexOf('IOS') === 0) {
-				var versionString:String = Capabilities.version.substr(Capabilities.version.indexOf(' ')+1);
-				var versionParts:Array = versionString.split(',');
-				var majorVersion:int = parseInt(versionParts[0]);
-				var minorVersion:int = parseInt(versionParts[1]);
-				if((majorVersion > 11 || (majorVersion == 11 && minorVersion >=1)) && Capabilities.cpuArchitecture == 'x86') {
-					loadRenderLibrary();
-					return;
-				}
-			}
-	
-			render3D = null;
-		}
-	
-		protected var loading3DLib:Boolean = false;
-		protected function loadRenderLibrary():void
-		{
-			var loader:Loader = new Loader();
-			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onSwfLoaded);
-			// we need the loaded code to be in the same (main) application domain
-			var ctx:LoaderContext = new LoaderContext(false, loaderInfo.applicationDomain);
-			ctx.allowCodeImport = true;
-			loader.loadBytes(new MySwfData() as ByteArray, ctx);
-			loading3DLib = true;
-		}
-	
-		protected function handleRenderCallback(enabled:Boolean):void {
-			loading3DLib = false;
-	
-			if(!enabled) {
-				go2D();
-				render3D = null;
-			}
-			else {
-				for(var i:int=0; i<stagePane.numChildren; ++i) {
-					var spr:ScratchSprite = (stagePane.getChildAt(i) as ScratchSprite);
-					if(spr) {
-						spr.clearCachedBitmap();
-						spr.updateCostume();
-						spr.applyFilters();
-					}
-				}
-				stagePane.clearCachedBitmap();
-				stagePane.updateCostume();
-				stagePane.applyFilters();
-			}
-		}
-	
-		protected function onSwfLoaded(e:Event):void {
-			var info:LoaderInfo = LoaderInfo(e.target);
-			var r3dClass:Class = info.applicationDomain.getDefinition("DisplayObjectContainerIn3D") as Class;
-			render3D = (new r3dClass() as IRenderIn3D);
-			render3D.setStatusCallback(handleRenderCallback);
-		}
-	*/
+		
 		public function clearCachedBitmaps():void {
 			for(var i:int=0; i<stagePane.numChildren; ++i) {
 				var spr:ScratchSprite = (stagePane.getChildAt(i) as ScratchSprite);
@@ -414,47 +337,6 @@ package {
 			stagePane.clearCachedBitmap();
 	
 			System.gc();
-		}
-	/*
-		public function go3D():void {
-			if(!render3D || isIn3D) return;
-	
-			var i:int = stagePart.getChildIndex(stagePane);
-			stagePart.removeChild(stagePane);
-			render3D.setStage(stagePane, stagePane.penLayer);
-			stagePart.addChildAt(stagePane, i);
-			isIn3D = true;
-		}
-	
-		public function go2D():void {
-			if(!render3D || !isIn3D) return;
-	
-			var i:int = stagePart.getChildIndex(stagePane);
-			stagePart.removeChild(stagePane);
-			render3D.setStage(null, null);
-			stagePart.addChildAt(stagePane, i);
-			isIn3D = false;
-			for(i=0; i<stagePane.numChildren; ++i) {
-				var spr:ScratchSprite = (stagePane.getChildAt(i) as ScratchSprite);
-				if(spr) {
-					spr.clearCachedBitmap();
-					spr.updateCostume();
-					spr.applyFilters();
-				}
-			}
-			stagePane.clearCachedBitmap();
-			stagePane.updateCostume();
-			stagePane.applyFilters();
-		}
-	*/
-		public function strings():Array {
-			return [
-				'a copy of the project file on your computer.',
-				'Project not saved!', 'Save now', 'Not saved; project did not load.',
-				'Save now', 'Saved',
-				'Revert', 'Undo Revert', 'Reverting...',
-				'Throw away all changes since opening this project?',
-			];
 		}
 	
 		public function viewedObj():ScratchObj { return viewedObject; }
@@ -499,17 +381,6 @@ package {
 			if (s.slice(-3) == '.sb') s = s.slice(0, -3);
 			if (s.slice(-4) == '.sb2') s = s.slice(0, -4);
 			stagePart.setProjectName(s);
-			/*
-			if(_welcomeView!=null){
-				_welcomeView.alpha = 0.5;
-				setTimeout(function():void{
-					if(contains(_welcomeView)){
-						setChildIndex(_welcomeView,numChildren-1);
-						_welcomeView.alpha = 1.0;
-					}
-				},600);
-			}
-			*/
 		}
 	
 		protected var wasEditing:Boolean;
@@ -530,7 +401,6 @@ package {
 	
 			if (lp) fixLoadProgressLayout();
 			stagePane.updateCostume();
-//			if(isIn3D) render3D.onStageResize();
 		}
 	
 		private function keyDown(evt:KeyboardEvent):void {
@@ -539,28 +409,9 @@ package {
 				setPresentationMode(false);
 				stagePart.exitPresentationMode();
 			}
-			// Handle enter key
-	//		else if(evt.keyCode == 13 && !stage.focus) {
-	//			stagePart.playButtonPressed(null);
-	//			evt.preventDefault();
-	//			evt.stopImmediatePropagation();
-	//		}
-			// Handle ctrl-m and toggle 2d/3d mode
-			/*
-			else if(evt.ctrlKey && evt.charCode == 109) {
-				isIn3D ? go2D() : go3D();
-				evt.preventDefault();
-				evt.stopImmediatePropagation();
-			}
-			*/
 			if(evt.ctrlKey && evt.keyCode == Keyboard.P){
 				FileUtil.PrintScreen();
 			}
-//			else if(evt.ctrlKey && evt.charCode == 109) {
-//				isIn3D ? go2D() : go3D();
-//				evt.preventDefault();
-//				evt.stopImmediatePropagation();
-//			}
 		}
 	
 		private function setSmallStageMode(flag:Boolean):void {
@@ -792,13 +643,6 @@ package {
 			scriptsPart.setWidthHeight(contentW, contentH);
 	
 			if (mediaLibrary) mediaLibrary.setWidthHeight(topBarPart.w, fullH);
-			/*
-			if (frameRateGraph) {
-				frameRateGraph.y = stage.stageHeight - frameRateGraphH;
-				addChild(frameRateGraph); // put in front
-			}
-	*/
-//			if(isIn3D) render3D.onStageResize();
 		}
 	
 		// -----------------------------
@@ -827,316 +671,10 @@ package {
 			
 			systemMenu.changeLang();
 		}
-	
-		// -----------------------------
-		// Menus
-		//------------------------------
-		/*
-		public function showFileMenu(b:*):void {
-			var m:Menu = new Menu(null, 'File', CSS.topBarColor, 28);
-			m.addItem('New', createNewProject);
-			m.addLine();
-	
-			// Derived class will handle this
-			addFileMenuItems(b, m);
-	
-			m.showOnStage(stage, b.x, topBarPart.bottom() - 1);
-			
-			track("/OpenFile");
-		}
-	
-		protected function addFileMenuItems(b:*, m:Menu):void {
-			m.addItem('Load Project', runtime.selectProjectFile);
-			m.addItem('Save Project', exportProjectToFile);
-			if (canUndoRevert()) {
-				m.addLine();
-				m.addItem('Undo Revert', undoRevert);
-			} else if (canRevert()) {
-				m.addLine();
-				m.addItem('Revert', revertToOriginalProject);
-			}
-		}
-	
-		public function showEditMenu(b:*):void {
-			var m:Menu = new Menu(null, 'More', CSS.topBarColor, 28);
-			m.addItem('Undelete', runtime.undelete, runtime.canUndelete());
-			m.addLine();
-			m.addItem('Small stage layout', toggleSmallStage, true, stageIsContracted);
-			m.addItem('Turbo mode', toggleTurboMode, true, interp.turboMode);
-			m.addItem('Arduino mode', changeToArduinoMode, true, stageIsArduino);
-			addEditMenuItems(b, m);
-			var p:Point = b.localToGlobal(new Point(0, 0));
-			m.showOnStage(stage, b.x, topBarPart.bottom() - 1);
-			track("/OpenEdit");
-		}
-		public function  showConnectMenu(b:*):void {
-			SocketManager.sharedManager().probe();
-			HIDManager.sharedManager();
-			
-			var enabled:Boolean = extensionManager.checkExtensionEnabled();
-			var m:Menu = new Menu(ConnectionManager.sharedManager().onConnect, 'Connect', CSS.topBarColor, 28);
-			m.addItem('Serial Port', '', false, false);
-			var arr:Array = SerialManager.sharedManager().list;
-			for(var i:uint=0;i<arr.length;i++){
-				m.addItem(arr[i], "serial_"+arr[i], enabled, SerialDevice.sharedDevice().ports.indexOf(arr[i])>-1&&SerialManager.sharedManager().isConnected);
-			}
-			m.addLine();
-			if(ApplicationManager.sharedManager().system == ApplicationManager.WINDOWS){
-				if(BluetoothManager.sharedManager().isSupported){
-					m.addItem('Bluetooth', '', false, false);
-					arr = BluetoothManager.sharedManager().history;
-					for(i=0;i<arr.length;i++){
-						m.addItem(arr[i], "bt_"+arr[i], enabled, arr[i]==BluetoothManager.sharedManager().currentBluetooth&&BluetoothManager.sharedManager().isConnected);
-					}
-					if(arr.length>0){
-						m.addItem('Clear Bluetooth', 'clear_bt', enabled, false);
-					}
-					m.addItem('Discover', 'discover_bt', enabled, false);
-				}else{
-					if(BluetoothManager.sharedManager().hasNetFramework){
-						m.addItem('No Bluetooth', '', false, false);
-					}else{
-						m.addItem('Bluetooth need to install .Net Framework 4.0', 'netframework', true, false);
-					}
-				}
-				m.addLine();
-			}
-			m.addItem('2.4G Serial', '', false, false);
-			m.addItem('Connect', 'connect_hid', enabled, HIDManager.sharedManager().isConnected);
-			m.addLine();
-			m.addItem('Network', '', false, false);
-			arr = SocketManager.sharedManager().list;
-			for(i=0;i<arr.length;i++){
-				var ips:Array = arr[i].split(":");
-				if(ips.length<3)continue;
-				m.addItem(ips[0]+" - "+ips[2], "net_"+arr[i], enabled, SocketManager.sharedManager().connected(ips[0]));
-			}
-			m.addItem('Custom Connect', 'connect_network', enabled, false);
-			m.addLine();
-			if(DeviceManager.sharedManager().currentName!="PicoBoard"){
-				m.addItem('Firmware', '', false, false);
-				m.addItem(Translator.map('Upgrade Firmware')+" ( "+DeviceManager.sharedManager().currentName+" )", 'upgrade_firmware', SerialManager.sharedManager().isConnected, false);
-				if(DeviceManager.sharedManager().currentName=="mBot"){
-					m.addItem(Translator.map('Reset Default Program'), 'reset_program', SerialManager.sharedManager().isConnected, false);
-					
-				}
-				m.addItem('View Source', 'view_source', DeviceManager.sharedManager().currentBoard.indexOf("unknown")>-1?false:true, false);
-			}
-			m.addItem('Install Arduino Driver', 'driver', true, false);
-			m.showOnStage(stage, b.x, topBarPart.bottom() - 1);
-		}
-		public function  showBoardMenu(b:*):void {
-			var m:Menu = new Menu(DeviceManager.sharedManager().onSelectBoard, 'Board', CSS.topBarColor, 28);
-			m.addItem('Arduino', '', false, false);
-			m.addItem('Arduino Uno', 'arduino_uno', true, DeviceManager.sharedManager().checkCurrentBoard('arduino_uno'));
-			m.addItem('Arduino Leonardo', 'arduino_leonardo', true, DeviceManager.sharedManager().checkCurrentBoard('arduino_leonardo'));
-			m.addItem('Arduino Nano ( mega328 )', 'arduino_nano328', true, DeviceManager.sharedManager().checkCurrentBoard('arduino_nano328'));
-//			m.addItem('Arduino Nano (mega168)', 'arduino_nano168', true, DeviceManager.sharedManager().checkCurrentBoard('arduino_nano168'));
-			m.addItem('Arduino Mega 1280', 'arduino_mega1280', true, DeviceManager.sharedManager().checkCurrentBoard('arduino_mega1280'));
-			m.addItem('Arduino Mega 2560', 'arduino_mega2560', true, DeviceManager.sharedManager().checkCurrentBoard('arduino_mega2560'));
-			m.addLine();
-			m.addItem('Makeblock', '', false, false);
-			m.addItem('Me Orion', 'me/orion_uno', true, DeviceManager.sharedManager().checkCurrentBoard('me/orion_uno'));
-			m.addItem('Me Baseboard', 'me/baseboard_leonardo', true, DeviceManager.sharedManager().checkCurrentBoard('me/baseboard_leonardo'));
-			m.addItem('mBot', 'mbot_uno', true, DeviceManager.sharedManager().checkCurrentBoard('mbot_uno'));
-			m.addLine();
-			m.addItem('Others', '', false, false);
-			m.addItem('PicoBoard', 'picoboard_unknown', true, DeviceManager.sharedManager().checkCurrentBoard('picoboard_unknown'));
-			m.showOnStage(stage, b.x, topBarPart.bottom() - 1);
-		}
-		public function showExtensionMenu(b:*):void {
-			var m:Menu = new Menu(extensionManager.onSelectExtension, 'Extension', CSS.topBarColor, 28);
-			var list:Array = extensionManager.extensionList;
-			if(list.length==0){
-				MBlock.app.extensionManager.copyLocalFiles();
-				SharedObjectManager.sharedManager().setObject("first-launch",false);
-			}
-			for(var i:uint=0;i<list.length;i++){
-				var n:String = list[i].extensionName;
-				m.addItem(n, n, true, extensionManager.checkExtensionSelected(n));
-			}
-//			m.addLine();
-			//m.addItem('import extension file', '_import_', true, false);
-			m.showOnStage(stage, b.x, topBarPart.bottom() - 1);
-		}
-//		public function showSerialMenu(b:*):void {
-//			var m:Menu = new Menu(SerialManager.sharedManager().connect, 'Serial', CSS.topBarColor, 28);
-//			
-//			var arr:Array = SerialManager.sharedManager().list;
-//			var enabled:Boolean = extensionManager.checkExtensionEnabled();
-//			for(var i:uint=0;i<arr.length;i++){
-//				m.addItem(arr[i], arr[i], enabled, arr[i]==SerialManager.sharedManager().currentPort&&SerialManager.sharedManager().isConnected);
-//			}
-//			m.addLine();
-//			var device:String = SharedObjectManager.sharedManager().getObject("device","uno");
-//			var ext:ScratchExtension = MBlock.app.extensionManager.extensionByName(device=="mbot"?"mBot":"Makeblock");
-//			
-//			var hasNew:Boolean = ParseManager.sharedManager().firmVersion!=""&&ext.firmware!=ParseManager.sharedManager().firmVersion;
-//			m.addItem(Translator.map('Upgrade Firmware')+(hasNew?' ( new )':''), 'upgrade', !SerialManager.sharedManager().isConnected, false);
-//			m.addItem('View Source', 'source', true, false);
-//			m.addLine();
-//			m.addItem('Arduino Uno', 'uno', true, device=="uno");
-//			m.addItem('Arduino Leonardo', 'leonardo', true, device=="leonardo");
-//			m.addItem('Makeblock Orion', 'orion', true, device=="orion");
-//			m.addItem('Makeblock Baseboard', 'baseboard', true, device=="baseboard");
-//			m.addItem('mBot', 'mbot', true, device=="mbot");
-//			
-////			SerialManager.sharedManager().board = SharedObjectManager.sharedManager().getObject("board","uno");
-////			SerialManager.sharedManager().device = SharedObjectManager.sharedManager().getObject("device","mbot");
-//			
-//			addEditMenuItems(b, m);
-//			var p:Point = b.localToGlobal(new Point(0, 0));
-//			m.showOnStage(stage, b.x, topBarPart.bottom() - 1);
-//		}
-		public function showNetworkMenu(b:*):void{
-			var m:Menu = new Menu(SocketManager.sharedManager().probe, '', CSS.topBarColor, 28);
-			var arr:Array = SocketManager.sharedManager().list;
-			for(var i:uint=0;i<arr.length;i++){
-				var ips:Array = arr[i].split(":");
-				if(ips.length<3)continue;
-				m.addItem(ips[0]+" - "+ips[2], arr[i], true, SocketManager.sharedManager().connected(ips[0]));
-			}
-			m.addLine();
-			m.addItem('Custom Connect', 'custom', true, false);
-			m.addItem('Refresh', '', true, false);
-			
-			addEditMenuItems(b, m);
-			var p:Point = b.localToGlobal(new Point(0, 0));
-			m.showOnStage(stage, b.x, topBarPart.bottom() - 1);
-		}
 		
-		private var reg:RegExp = /\b(\w)|\s(\w)/g;
-		private function replaceReg(str:String):String{
-			str = str.toLowerCase();
-			return str.replace(reg,function(m):*{
-				return m.toUpperCase();
-			});
-		}
-		public function showExamplesMenu(b:*):void {
-			var url:URLRequest = new URLRequest("http://mblock.cc/examples/?mblock");
-			navigateToURL(url,"_blank");
-			track("/OpenExamples/");
-			return;
-			var m:Menu = new Menu(openExampleFile, '', CSS.topBarColor, 28);
-			var df:File = File.applicationDirectory.resolvePath("examples");
-			if(df.exists){
-				var fs:Array = df.getDirectoryListing();
-				for each(var f:File in fs){
-					if(!f.isDirectory){
-						if(f.extension.indexOf("sb2")>-1){
-							m.addItem(Translator.map(replaceReg(f.name.split(".sb2").join("").split("_").join(" "))), f.url, true, false);
-						}
-					}
-				}
-			}
-			df = File.applicationDirectory.resolvePath("examples/arduino");
-			if(df.exists){
-				fs = df.getDirectoryListing();
-				m.addLine();
-				for each(f in fs){
-					if(!f.isDirectory){
-						if(f.extension.indexOf("sb2")>-1){
-							m.addItem(Translator.map(replaceReg(f.name.split(".sb2").join("").split("_").join(" "))), f.url, true, false);
-						}
-					}
-				}
-			}
-			addEditMenuItems(b, m);
-			var p:Point = b.localToGlobal(new Point(0, 0));
-			m.showOnStage(stage, b.x, topBarPart.bottom() - 1);
-		}
-		
-		public function openShare(b:*):void {
-			var url:URLRequest = new URLRequest("http://www.maoyouhui.org/forum.php?gid=57&mblock");
-			navigateToURL(url,"_blank");
-			track("/OpenShare/");
-		}
-		public function openFaq(b:*):void {
-			var url:URLRequest = new URLRequest("http://www.maoyouhui.org/forum.php?mod=forumdisplay&fid=62&mblock");
-			navigateToURL(url,"_blank");
-			track("/OpenFaq/");
-		}
-		private function openHelpMenu(v:String):void{
-			var url:URLRequest;
-			if(v=="forum"){
-				url = new URLRequest(Translator.map("http://forum.makeblock.cc/c/makeblock-products/mblock#scratch"));
-				navigateToURL(url,"_blank");
-			}else if(v=="report"){
-				url = new URLRequest("http://mblock.cc/report-a-bug");
-				navigateToURL(url,"_blank");
-			}else if(v=="license"){
-				url = new URLRequest("http://mblock.cc/license");
-				navigateToURL(url,"_blank");
-			}else if(v=="acknowledgements"){
-				url = new URLRequest("http://mblock.cc/acknowledgements");
-				navigateToURL(url,"_blank");
-			}else if(v=="about"){
-				url = new URLRequest("http://mblock.cc/about");
-				navigateToURL(url,"_blank");
-			}else if(v=="features"){
-				openWelcome();
-			}else if(v.indexOf("http")>-1){
-				url = new URLRequest(v);
-				navigateToURL(url,"_blank");
-			}
-			track("/OpenHelp/"+v);
-		}
-		
-		public function openAbout(b:*):void {
-			var m:Menu = new Menu(openHelpMenu, 'Help', CSS.topBarColor, 28);
-			
-			m.addItem('Forum', 'forum', true, false);
-			m.addItem('Report a Bug', 'report', true, false);
-			m.addLine();
-			m.addItem('License', 'license', true, false);
-			m.addItem('Acknowledgements', 'acknowledgements', true, false);
-//			m.addItem('Features','features',true,false);
-			m.addItem('About', 'about', true, false);
-			m.addLine();
-			m.addItem(''+versionString+"."+_currentVer, 'version', false, false);
-			if(ClickerManager.sharedManager().list){
-				var hasLine:Boolean = true;
-				for(var i:uint=0;i<ClickerManager.sharedManager().list.length;i++){
-					var clicker:Clicker = ClickerManager.sharedManager().list[i];
-					if(clicker.type=="all"||clicker.type=="menu"){
-						if(hasLine){
-							m.addLine();
-							hasLine = false;
-						}
-						m.addItem(clicker.desc, clicker.link, true, false);
-					}
-				}
-			}
-			//			SerialManager.sharedManager().board = SharedObjectManager.sharedManager().getObject("board","uno");
-			//			SerialManager.sharedManager().device = SharedObjectManager.sharedManager().getObject("device","mbot");
-			
-			addEditMenuItems(b, m);
-			var p:Point = b.localToGlobal(new Point(0, 0));
-			m.showOnStage(stage, b.x, topBarPart.bottom() - 1);
-			
-//			var url:URLRequest = new URLRequest(Translator.map("http://forum.makeblock.cc/c/makeblock-products/mblock#scratch"));
-//			track("/OpenForum/"+url.url);
-//			navigateToURL(url,"_blank");
-		}
-		*/
 		public function openBluetooth(b:*):void{
 			BluetoothManager.sharedManager().discover();
 		}
-		/*
-		private function openExampleFile(path:String):void{
-			
-			var filePath:String = path;
-			this.runtime.selectedProjectFile(filePath);
-			track("/Examples/"+path);
-		}
-		protected function addEditMenuItems(b:*, m:Menu):void {}
-	
-		protected function canExportInternals():Boolean {
-			return false;
-		}
-		private function showAboutDialog():void {
-		}
-		*/
 		
 		private function clearProject():void
 		{
@@ -1310,30 +848,6 @@ package {
 			gh.showBubble(text, Number(x), Number(y), width);
 		}
 	
-		// -----------------------------
-		// Project Management and Sign in
-		//------------------------------
-	/*
-		public function setLanguagePressed(b:IconButton):void {
-			function setLanguage(lang:String):void {
-				Translator.setLanguage(lang);
-				languageChanged = true;
-			}
-			if (Translator.languages.length == 0) return; // empty language list
-			var m:Menu = new Menu(setLanguage, 'Language', CSS.topBarColor, 28);
-			if (b.lastEvent.shiftKey) {
-				m.addItem('import translation file');
-				m.addLine();
-			}
-			for each (var entry:Array in Translator.languages) {
-				m.addItem(entry[1], entry[0],true,Translator.currentLang==entry[0]);
-			}
-			m.addLine();
-			m.addItem('set font size');
-			var p:Point = b.localToGlobal(new Point(0, 0));
-			m.showOnStage(stage, b.x, topBarPart.bottom() - 1);
-		}
-	*/
 		public function startNewProject(newOwner:String, newID:String):void {
 			runtime.installNewProject();
 //			projectOwner = newOwner;
