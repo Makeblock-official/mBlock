@@ -130,11 +130,26 @@ public class PaletteBuilder {
 					}
 				}
 				cmdCount++;
-			} else {
-				if ((spec.length == 1) && (cmdCount > 0)) nextY += 10 * spec[0].length; // add some space
-				cmdCount = 0;
+			} else if(spec.length < 3){
+				if (cmdCount > 0) {
+					nextY += 10 * spec[0].length; // add some space
+					cmdCount = 0;
+				}
+				addLabelText(spec[1]);
 			}
 		}
+	}
+	
+	private function addLabelText(text:String):void
+	{
+		if(!Boolean(text)){
+			return;
+		}
+		var labelTxt:TextField = new TextField();
+		labelTxt.mouseEnabled = false;
+		labelTxt.autoSize = TextFieldAutoSize.LEFT;
+		labelTxt.text = text;
+		addItem(labelTxt);
 	}
 
 	protected function addItem(o:DisplayObject, hasCheckbox:Boolean = false):void {
@@ -438,7 +453,8 @@ public class PaletteBuilder {
 				if (showCheckbox) addReporterCheckbox(block);
 				addItem(block, showCheckbox);
 			} else {
-				if (spec.length == 1) nextY += 10 * spec[0].length; // add some space
+				nextY += 10 * spec[0].length; // add some space
+				addLabelText(spec[1]);
 			}
 		}
 	}
