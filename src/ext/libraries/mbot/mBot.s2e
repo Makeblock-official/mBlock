@@ -21,10 +21,10 @@
 		{"encode":"{d0}{d1}{d2}{d3}{d4}","setup":"","inc":"","def":"MeRGBLed rgbled_{0}({0}, {0}==7?2:16);\n","work":"rgbled_{0}.setColor({1},{2},{3},{4});\nrgbled_{0}.show();\n","loop":""}],
 		
 		["w", "play tone on note %d.note","runBuzzer", "C4",
-		{"encode":"{s0}","setup":"","inc":"","def":"MeBuzzer buzzer;\n","work":"buzzer.tone({0});\n","loop":""}],
+		{"encode":"{s0}","setup":"","inc":"","def":"","work":"tone(8, {0});\n","loop":""}],
 		
 		["w", "stop tone","stopBuzzer",0,
-		{"encode":"{s0}","setup":"","inc":"","def":"MeBuzzer buzzer;\n","work":"buzzer.noTone();\n","loop":""}],
+		{"encode":"{s0}","setup":"","inc":"","def":"","work":"noTone(8);\n","loop":""}],
 	
 		["w", "show face %d.port x:%n y:%n characters:%s","showCharacters", "Port1", 0,0,"Hello",
 		{"encode":"{s0}","setup":"","inc":"","def":"MeLEDMatrix ledMtx_{0}({0});\n","work":"ledMtx_{0}.clearScreen();\nledMtx_{0}.setColorIndex(1);\nledMtx_{0}.setBrightness(6);\nledMtx_{0}.drawStr({1},7-{2},{3});\n","loop":""}],
