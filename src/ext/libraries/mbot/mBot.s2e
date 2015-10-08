@@ -17,7 +17,7 @@
 		["w", "set servo %d.port %d.slot angle %d.servovalue","runServo", "Port1","Slot1", 90,
 		{"encode":"{d0}{d1}{d2}","setup":"servo_{0}_{1}.attach(port_{0}.pin{1}());\n","inc":"","def":"Servo servo_{0}_{1};\nMePort port_{0}({0});\n","work":"servo_{0}_{1}.write({2});\n","loop":""}],
 		
-		["w", "set led %d.lport %d.index red%d.value green%d.value blue%d.value","runLed", "led on board","all",0,0,0,
+		["w", "set led %d.lport %d.slot %d.index red%d.value green%d.value blue%d.value","runLed", "led on board","Slot2","all",0,0,0,
 		{"encode":"{d0}{d1}{d2}{d3}{d4}","setup":"","inc":"","def":"MeRGBLed rgbled_{0}({0}, {0}==7?2:16);\n","work":"rgbled_{0}.setColor({1},{2},{3},{4});\nrgbled_{0}.show();\n","loop":""}],
 		
 		["w", "play tone on note %d.note","runBuzzer", "C4",
@@ -73,8 +73,7 @@
 		["R", "sound sensor %d.aport","getSoundSensor","Port3",
 		{"encode":"{d0}","setup":"","inc":"","def":"MePort soundsensor_{0}({0});\n","work":"soundsensor_{0}.aRead2()","loop":""}],
 		["B", "limit switch %d.port %d.slot","getLimitswitch","Port1","Slot1",
-		{"encode":"{d0}{d1}","setup":"","inc":"","def":"MePort sw_{0}_{1}({0});\n","work":"
-       sw_{0}_{1}.dpRead{1}()","loop":""}],
+		{"encode":"{d0}{d1}","setup":"","inc":"","def":"MePort sw_{0}_{1}({0});\n","work":"sw_{0}_{1}.dpRead{1}()","loop":""}],
 		
 		["R", "temperature %d.port %d.slot °C","getTemperature","Port3","Slot1",
 		{"encode":"{d0}{d1}","setup":"","inc":"","def":"MeTemperature temperature_{0}_{1}({0},{1});\n","work":"temperature_{0}_{1}.temperature()","loop":""}],
@@ -219,7 +218,7 @@
 			"%m.direction at speed %d.motorvalue":"%m.direction 转速为 %d.motorvalue",
 			"set motor%d.motorPort speed %d.motorvalue":"设置电机%d.motorPort 转速为 %d.motorvalue",
 			"set servo %d.port %d.slot angle %d.servovalue":"设置舵机%d.port %d.slot 角度%d.servovalue",
-			"set led %d.lport %d.index red%d.value green%d.value blue%d.value":"设置LED %d.lport %d.index 红色%d.value 绿色%d.value 蓝色%d.value",
+			"set led %d.lport %d.slot %d.index red%d.value green%d.value blue%d.value":"设置LED %d.lport %d.slot %d.index 红色%d.value 绿色%d.value 蓝色%d.value",
 			"show time %d.port hour:%n %m.points min:%n":"表情面板 %d.port 显示时间:%n 时 %m.points %n 分",
 			"show face %d.port x:%n y:%n characters:%s":"表情面板 %d.port x:%n y:%n 显示文字:%s",
 			"show drawing %d.port x:%n y:%n draw:%m.drawFace":"表情面板 %d.port x:%n y:%n 绘画:%m.drawFace",
