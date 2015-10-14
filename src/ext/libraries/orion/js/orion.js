@@ -1,4 +1,4 @@
-// mBot.js
+// makeblock.js
 
 (function(ext) {
 	var idDict = [];
@@ -21,9 +21,7 @@
         Port7: 7,
         Port8: 8,
 		M1:9,
-		M2:10,
-		'led on board':7,
-		'light sensor on board':6
+		M2:10
     };
 	var slots = {
 		Slot1:1,
@@ -39,40 +37,6 @@
 		'Focus On':2,
 		'Focus Off':3,
 	};
-	var tones ={"B0":31,"C1":33,"D1":37,"E1":41,"F1":44,"G1":49,"A1":55,"B1":62,
-			"C2":65,"D2":73,"E2":82,"F2":87,"G2":98,"A2":110,"B2":123,
-			"C3":131,"D3":147,"E3":165,"F3":175,"G3":196,"A3":220,"B3":247,
-			"C4":262,"D4":294,"E4":330,"F4":349,"G4":392,"A4":440,"B4":494,
-			"C5":523,"D5":587,"E5":659,"F5":698,"G5":784,"A5":880,"B5":988,
-			"C6":1047,"D6":1175,"E6":1319,"F6":1397,"G6":1568,"A6":1760,"B6":1976,
-			"C7":2093,"D7":2349,"E7":2637,"F7":2794,"G7":3136,"A7":3520,"B7":3951,
-	"C8":4186,"D8":4699};
-	var beats = {"Half":500,"Quater":250,"Eighth":125,"Whole":1000,"Double":2000,"Zero":0};
-	var ircodes = {	"A":69,
-		"B":70,
-		"C":71,
-		"D":68,
-		"E":67,
-		"F":13,
-		"↑":64,
-		"↓":25,
-		"←":7,
-		"→":9,
-		"Setting":21,
-		"R0":22,
-		"R1":12,
-		"R2":24,
-		"R3":94,
-		"R4":8,
-		"R5":28,
-		"R6":90,
-		"R7":66,
-		"R8":82,
-		"R9":74};
-	var __irCodes = [];
-	for(var key in ircodes){
-		__irCodes.push(ircodes[key]);
-	}
 	var axis = {
 		'X-Axis':1,
 		'Y-Axis':2,
@@ -90,55 +54,18 @@
     };
 	var values = {};
 	var indexs = [];
-	var startTimer = 0;
 	var versionIndex = 0xFA;
     ext.resetAll = function(){
     	device.send([0xff, 0x55, 2, 0, 4]);
     };
-	ext.runArduino = function(){};
-	
-	var SEND_DELAY = 0;
-	function RESET_DICT(dict, key){
-		dict[key] = false;
+	ext.runArduino = function(){
 	}
-	var runBotDict = {};
-	ext.runBot = function(direction,speed) {
-		var leftSpeed = 0;
-		var rightSpeed = 0;
-		if(direction=="run forward"){
-			leftSpeed = -speed;
-			rightSpeed = speed;
-		}else if(direction=="run backward"){
-			leftSpeed = speed;
-			rightSpeed = -speed;
-		}else if(direction=="turn left"){
-			leftSpeed = speed;
-			rightSpeed = speed;
-		}else if(direction=="turn right"){
-			leftSpeed = -speed;
-			rightSpeed = -speed;
-		}
-		var key = (leftSpeed << 16) | rightSpeed;
-		if(runBotDict[key])return;
-		runBotDict[key] = true;
-		setTimeout(RESET_DICT, SEND_DELAY, runBotDict, key);
-        runPackage(5,short2array(leftSpeed),short2array(rightSpeed));
-    };
-    var runMotorDict = {};
 	ext.runMotor = function(port,speed) {
 		if(typeof port=="string"){
 			port = ports[port];
 		}
-		if(port == 9){
-			speed = -speed;
-		}
-		var key = (port << 16) | speed;
-		if(runMotorDict[key])return;
-		runMotorDict[key] = true;
-		setTimeout(RESET_DICT, SEND_DELAY, runMotorDict, key);
         runPackage(10,port,short2array(speed));
     };
-    var runServoDict = {};
     ext.runServo = function(port,slot,angle) {
 		if(typeof port=="string"){
 			port = ports[port];
@@ -146,83 +73,46 @@
 		if(typeof slot=="string"){
 			slot = slots[slot];
 		}
-		var key = (angle << 16) | (port << 8) | slot;
-		if(runServoDict[key])return;
-		runServoDict[key] = true;
-		setTimeout(RESET_DICT, SEND_DELAY, runServoDict, key);
         runPackage(11,port,slot,angle);
     };
-    var runBuzzerDict = {};
-	ext.runBuzzer = function(tone, beat){
-		if(typeof tone == "string"){
-			tone = tones[tone];
+	ext.runStepperMotor = function(port, speed, distance){
+		if(typeof port=="string"){
+			port = ports[port];
 		}
-		if(typeof beat == "string"){
-			beat = beats[beat];
+		runPackage(40,port,short2array(speed),short2array(distance));
+	};
+	ext.runEncoderMotor = function(port, slot, speed, distance){
+		if(typeof port=="string"){
+			port = ports[port];
 		}
-		var key = tone;
-		if(runBuzzerDict[key])return;
-		runBuzzerDict[key] = true;
-		setTimeout(RESET_DICT, SEND_DELAY, runBuzzerDict, key);
-		runPackage(34,short2array(tone), short2array(beat));
+		if(typeof slot=="string"){
+			slot = slots[slot];
+		}
+		runPackage(41,port,short2array(speed),short2array(distance));
 	};
-	var stopBuzzerDict = [];
-	ext.stopBuzzer = function(){
-		var key = 0;
-		if(stopBuzzerDict[key])return;
-		stopBuzzerDict[key] = true;
-		setTimeout(RESET_DICT, SEND_DELAY, stopBuzzerDict, key);
-		runPackage(34,short2array(0));
-	};
-	var runSevsegDict = [];
 	ext.runSevseg = function(port,display){
 		if(typeof port=="string"){
 			port = ports[port];
 		}
-		var key = port;
-		if(runSevsegDict[key])return;
-		runSevsegDict[key] = true;
-		setTimeout(RESET_DICT, SEND_DELAY, runSevsegDict, key);
 		runPackage(9,port,float2array(display));
 	};
-	var runLedDict = {};
 	ext.runLed = function(port,slot,ledIndex,red,green,blue){
 		if(typeof port=="string"){
 			port = ports[port];
 		}
-		if("all" == ledIndex){
-			ledIndex = 0;
-		}
-		var key = (ledIndex << 24) | (red << 16) | (green << 8) | blue;
-		if(runLedDict[key])return;
-		runLedDict[key] = true;
-		setTimeout(RESET_DICT, SEND_DELAY, runLedDict, key);
-		runPackage(8,port,ledIndex,red,green,blue);
+		runPackage(8,port,ledIndex=="all"?0:ledIndex,red,green,blue);
 	};
-	var runLightSensorDict = {};
-	ext.runLightSensor = function(port,status){
+	ext.runLightsensor = function(port,status){
 		if(typeof port=="string"){
 			port = ports[port];
 		}
-		if(typeof status=="string"){
-			status = switchStatus[status];
-		}
-		var key = (port << 8) | status;
-		if(runLightSensorDict[key])return;
-		runLightSensorDict[key] = true;
-		setTimeout(RESET_DICT, SEND_DELAY, runLightSensorDict, key);
-		runPackage(3,port,status);
+		runPackage(3,port,switchStatus[status]);
 	};
 	ext.runShutter = function(port,status){
-		runPackage(20,shutterStatus[status]);
-	};
-	var runIRDict = {};
-	ext.runIR = function(message){
-		var key = message;
-		if(runIRDict[key])return;
-		runIRDict[key] = true;
-		setTimeout(RESET_DICT, SEND_DELAY, runIRDict, key);
-		runPackage(13,string2array(message));
+		if(typeof port=="string"){
+			port = ports[port];
+		}
+		runPackage(20,port,shutterStatus[status]);
 	};
 	ext.showCharacters = function(port,x,y,message){
 		if(typeof port=="string"){
@@ -245,81 +135,18 @@
     setTimeout(function(){
       device.send(bytes);
     },40);
-	}
-	ext.resetTimer = function(){
-		startTimer = (new Date().getTime())/1000.0;
 	};
-	/*
-	ext.getLightOnBoard = function(nextID){
-		var deviceId = 31;
-		getPackage(nextID,deviceId,6);
-	}
-	*/
-	var buttonPressed = false;
-	var buttonReleased = false;
-	var buttonPressedPrev = false;
-	var buttonReleasedPrev = false;
-  var lastTime = 0;
-	ext.whenButtonPressed = function(status){
-		var deviceId = 31;
-		var nextID = 100;
-		if(typeof status == "string"){
-			if(status=="pressed"){
-				status = 0;
-			}else if(status=="released"){
-				status = 1;
+	function runPackageForFace(){
+		var bytes = [0xff, 0x55, 0, 0, 2];
+		for(var i=0;i<arguments.length;i++){
+			if(arguments[i].constructor == "[class Array]"){
+				bytes = bytes.concat(arguments[i]);
+			}else{
+				bytes.push(arguments[i]);
 			}
 		}
-    if(new Date().getTime()-lastTime>150){
-      lastTime = new Date().getTime();
-      getPackage(genNextID(nextID, [10,status]),deviceId,7);
-    }
-		if(status==0){
-			values[nextID] = function(v,extId){
-				buttonPressed = v<500;
-				buttonReleasedPrev = buttonReleased;
-				buttonReleased = !buttonPressed;
-			}
-      var temp = buttonPressed;
-      if(buttonPressedPrev==buttonPressed){
-       // temp = false;
-      }
-      buttonPressedPrev = buttonPressed;
-			return temp;
-		}else{
-			values[nextID] = function(v,extId){
-				buttonReleased = v>500;
-        buttonPressedPrev = buttonPressed;
-				buttonPressed = !buttonReleased;
-			}
-      var temp = buttonReleased;
-      if(buttonReleasedPrev==buttonReleased){
-       // temp = false;
-      }
-      buttonReleasedPrev = buttonReleased;
-			return temp;
-		}
-	}
-	ext.getButtonOnBoard = function(nextID,status){
-		var deviceId = 31;
-		if(typeof status == "string"){
-			if(status=="pressed"){
-				status = 0;
-			}else if(status=="released"){
-				status = 1;
-			}
-		}
-		if(status==0){
-			values[nextID] = function(v,extId){
-				return v<500;
-			}
-		}else{
-			values[nextID] = function(v,extId){
-				return v>500;
-			}
-		}
-		nextID = genNextID(nextID, [10,status]);
-		getPackage(nextID,deviceId,7);
+		bytes[2] = bytes.length+13;
+		device.send(bytes);
 	}
 	var distPrev=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 	var dist=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
@@ -327,17 +154,16 @@
 	ext.getUltrasonic = function(nextID,port){
 		var deviceId = 1;
 		values[nextID] = function(v,extId){
-			
 			if(v<1){
 				v = 0;
 			}
-		/*	distPrev[extId] = dist[extId];
+			distPrev[extId] = dist[extId];
 			dist[extId] = v;
 			if(Math.abs(dist[extId]-distPrev[extId])<400&&dist[extId]<400){
 				dist_output[extId]-=(dist_output[extId]-dist[extId])*0.4;
 			}else{
 				dist[extId] = distPrev[extId];
-			}*/
+			}
 			return v;//dist_output[extId];
 		}
 		if(typeof port=="string"){
@@ -354,41 +180,6 @@
 		nextID = genNextID(nextID, [port]);
 		getPackage(nextID,deviceId,port);
     };
-    ext.getHumiture = function(nextID,port,valueType){
-    	var deviceId = 23;
-		if(typeof port=="string"){
-			port = ports[port];
-		}
-		if(typeof valueType=="string"){
-			valueType = ("humidity" == valueType) ? 0 : 1;
-		}
-		nextID = genNextID(nextID, [port,valueType]);
-		getPackage(nextID,deviceId,port,valueType);
-    };
-    ext.getFlame = function(nextID,port){
-   		var deviceId = 24;
-		if(typeof port=="string"){
-			port = ports[port];
-		}
-		nextID = genNextID(nextID, [port]);
-		getPackage(nextID,deviceId,port);
-    };
-    ext.getGas = function(nextID,port){
-    	var deviceId = 25;
-		if(typeof port=="string"){
-			port = ports[port];
-		}
-		nextID = genNextID(nextID, [port]);
-		getPackage(nextID,deviceId,port);
-    };
-    ext.gatCompass = function(nextID,port){
-    	var deviceId = 26;
-		if(typeof port=="string"){
-			port = ports[port];
-		}
-		nextID = genNextID(nextID, [port]);
-		getPackage(nextID,deviceId,port);
-    };
 	ext.getLinefollower = function(nextID,port) {
 		var deviceId = 17;
 		if(typeof port=="string"){
@@ -397,7 +188,7 @@
 		nextID = genNextID(nextID, [port]);
 		getPackage(nextID,deviceId,port);
     };
-	ext.getLightSensor = function(nextID,port) {
+	ext.getLightsensor = function(nextID,port) {
 		var deviceId = 3;
 		if(typeof port=="string"){
 			port = ports[port];
@@ -416,7 +207,7 @@
 		nextID = genNextID(nextID, [port,ax]);
 		getPackage(nextID,deviceId,port,ax);
     };
-	ext.getSoundSensor = function(nextID,port) {
+	ext.getSoundsensor = function(nextID,port) {
 		var deviceId = 7;
 		if(typeof port=="string"){
 			port = ports[port];
@@ -464,43 +255,54 @@
     };
 	ext.getGyro = function(nextID,ax) {
 		var deviceId = 6;
+		if(typeof ax=="string"){
+			ax = axis[ax];
+		}
+		nextID = genNextID(nextID, [0,ax]);
+		getPackage(nextID,deviceId,0,ax);
+    };
+    ext.getHumiture = function(nextID,port,valueType){
+    	var deviceId = 23;
 		if(typeof port=="string"){
 			port = ports[port];
 		}
-		if(typeof slot=="string"){
-			slot = slots[slot];
+		if(typeof valueType=="string"){
+			valueType = ("humidity" == valueType) ? 0 : 1;
 		}
-		nextID = genNextID(nextID, [port,slot]);
-		getPackage(nextID,deviceId,port,slot);
+		nextID = genNextID(nextID, [port,valueType]);
+		getPackage(nextID,deviceId,port,valueType);
     };
-	ext.getIrRemote = function(nextID,code){
-		var deviceId = 14;
-		if(typeof code=="string"){
-			code = ircodes[code];
+    ext.getFlame = function(nextID,port){
+   		var deviceId = 24;
+		if(typeof port=="string"){
+			port = ports[port];
 		}
-		var port = 11;
-		var slot = __irCodes.indexOf(code);
-		var halfSize = __irCodes.length >> 1;
-		if(slot >= halfSize){
-			++port;
-			slot -= halfSize;
+		nextID = genNextID(nextID, [port]);
+		getPackage(nextID,deviceId,port);
+    };
+    ext.getGas = function(nextID,port){
+    	var deviceId = 25;
+		if(typeof port=="string"){
+			port = ports[port];
 		}
-		nextID = genNextID(nextID, [port,slot]);
-		getPackage(nextID,deviceId,0,code);
-	}
-	ext.getIR = function(nextID){
-		var deviceId = 13;
-		nextID = genNextID(nextID, [9]);
-		getPackage(nextID,deviceId);
-	}
-	ext.getTimer = function(nextID){
-		if(startTimer==0){
-			startTimer = (new Date().getTime())/1000.0;
+		nextID = genNextID(nextID, [port]);
+		getPackage(nextID,deviceId,port);
+    };
+    ext.gatCompass = function(nextID,port){
+    	var deviceId = 26;
+		if(typeof port=="string"){
+			port = ports[port];
 		}
-		responseValue(nextID,(new Date().getTime())/1000.0-startTimer);
-	}
+		nextID = genNextID(nextID, [port]);
+		getPackage(nextID,deviceId,port);
+    };
 	function runPackage(){
-		var bytes = [0xff, 0x55, 0, 0, 2];
+		var bytes = [];
+		bytes.push(0xff);
+		bytes.push(0x55);
+		bytes.push(0);
+		bytes.push(0);
+		bytes.push(2);
 		for(var i=0;i<arguments.length;i++){
 			if(arguments[i].constructor == "[class Array]"){
 				bytes = bytes.concat(arguments[i]);
@@ -511,25 +313,18 @@
 		bytes[2] = bytes.length-3;
 		device.send(bytes);
 	}
-  function runPackageForFace(){
-		var bytes = [0xff, 0x55, 0, 0, 2];
-		for(var i=0;i<arguments.length;i++){
-			if(arguments[i].constructor == "[class Array]"){
-				bytes = bytes.concat(arguments[i]);
-			}else{
-				bytes.push(arguments[i]);
-			}
-		}
-		bytes[2] = bytes.length+13;
-		device.send(bytes);
-	}
 	var getPackDict = [];
+	function resetPackDict(nextID){
+		getPackDict[nextID] = false;
+	}
 	function getPackage(){
 		var nextID = arguments[0];
-		if(getPackDict[nextID])return;
+		if(getPackDict[nextID]){
+			return;
+		}
 		getPackDict[nextID] = true;
-		setTimeout(RESET_DICT, SEND_DELAY, getPackDict, nextID);
-		
+		setTimeout(resetPackDict, 0, nextID);
+
 		var bytes = [0xff, 0x55];
 		bytes.push(arguments.length+1);
 		bytes.push(nextID);
@@ -539,7 +334,7 @@
 		}
 		device.send(bytes);
 	}
-
+    
     var inputArray = [];
 	var _isParseStart = false;
 	var _isParseStartIndex = 0;
@@ -659,7 +454,7 @@
             tryNextDevice();
             return;
         }
-        device.set_receive_handler('mbot',processData);
+        device.set_receive_handler('makeblock',processData);
     };
 
     ext._deviceRemoved = function(dev) {
@@ -673,11 +468,11 @@
     };
 
     ext._getStatus = function() {
-        if(!device) return {status: 1, msg: 'mBot disconnected'};
-        if(watchdog) return {status: 1, msg: 'Probing for mBot'};
-        return {status: 2, msg: 'mBot connected'};
+        if(!device) return {status: 1, msg: 'Makeblock disconnected'};
+        if(watchdog) return {status: 1, msg: 'Probing for Makeblock'};
+        return {status: 2, msg: 'Makeblock connected'};
     }
 
     var descriptor = {};
-	ScratchExtensions.register('mBot', descriptor, ext, {type: 'serial'});
+	ScratchExtensions.register('Makeblock', descriptor, ext, {type: 'serial'});
 })({});

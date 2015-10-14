@@ -2241,7 +2241,7 @@ msgstr "更新完畢"
 msgid "There is a newer version"
 msgstr "有新版本可以下載"
 
-msgid "It's already the newest version"
+msgid "It's already the latest version"
 msgstr "已經是最新版本"
 
 msgid "Download Now"

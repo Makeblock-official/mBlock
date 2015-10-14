@@ -250,6 +250,8 @@ public class BlockArg extends Sprite {
 			tf.y = -1;
 		}
 	}
+	
+	static private var isShowingCode:Boolean;
 
 	private function textChanged(evt:*):void {
 		argValue = field.text;
@@ -281,9 +283,16 @@ public class BlockArg extends Sprite {
 		if (parent is Block) Block(parent).fixExpressionLayout();
 
 		if (evt && MBlock.app) MBlock.app.setSaveNeeded();
-		if(MBlock.app.stageIsArduino){
-			setTimeout(MBlock.app.scriptsPart.showArduinoCode, 0);
+		if(MBlock.app.stageIsArduino && !isShowingCode){
+			isShowingCode = true;
+			setTimeout(onShowArduinoCode, 0);
 		}
+	}
+	
+	private function onShowArduinoCode():void
+	{
+		MBlock.app.scriptsPart.showArduinoCode();
+		isShowingCode = false;
 	}
 
 	private function invokeMenu(evt:MouseEvent):void {

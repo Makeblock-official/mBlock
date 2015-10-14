@@ -4,12 +4,12 @@
 	"firmware":"1.2.103",
 	"javascriptURL":"js/mbot.js",
 	"blockSpecs": [
-		["h","mBot Program","runArduino",{"src":"mbot","inc":"#include \"MeMbot.h\"","def":"","setup":"","loop":""}],
+		["h","mBot Program","runArduino",{"src":"mbot","inc":"#include <MeMbot.h>","def":"","setup":"","loop":""}],
 		
 		["-"],
 	
 		["w", "%m.direction at speed %d.motorvalue","runBot", "run forward", 0,
-		{"encode":"{d0}{s1}","setup":"","inc":"","def":"MeDCMotor motor(0);\n","work":"motor.move({0},{1});\n","loop":""}],
+		{"encode":"{d0}{s1}","setup":"","inc":"","def":"MBotDCMotor motor(0);\n","work":"motor.move({0},{1});\n","loop":""}],
 		
 		["w", "set motor%d.motorPort speed %d.motorvalue","runMotor", "M1", 0,
 		{"encode":"{d0}{s1}","setup":"","inc":"","def":"MeDCMotor motor_{0}({0});\n","work":"motor_{0}.run(({0})==M1?-({1}):({1}));\n","loop":""}],
@@ -20,8 +20,8 @@
 		["w", "set led %d.lport %d.slot %d.index red%d.value green%d.value blue%d.value","runLed", "led on board","Slot2","all",0,0,0,
 		{"encode":"{d0}{d1}{d2}{d3}{d4}","setup":"","inc":"","def":"MeRGBLed rgbled_{0}({0}, {0}==7?2:16);\n","work":"rgbled_{0}.setColor({1},{2},{3},{4});\nrgbled_{0}.show();\n","loop":""}],
 		
-		["w", "play tone on note %d.note","runBuzzer", "C4",
-		{"encode":"{s0}","setup":"","inc":"","def":"MeBuzzer buzzer;\n","work":"buzzer.tone({0});\n","loop":""}],
+		["w", "play tone on note %d.note beat %d.beats","runBuzzer", "C4", "Half",
+		{"encode":"{s0}","setup":"","inc":"","def":"MeBuzzer buzzer;\n","work":"buzzer.tone({0}, {1});\n","loop":""}],
 		
 		["w", "stop tone","stopBuzzer",0,
 		{"encode":"{s0}","setup":"","inc":"","def":"MeBuzzer buzzer;\n","work":"buzzer.noTone();\n","loop":""}],
@@ -81,6 +81,11 @@
 		["R", "pir motion sensor %d.port","getPirmotion","Port2",
 		{"encode":"{d0}","setup":"","inc":"","def":"MePort pir_{0}({0});\n","work":"pir_{0}.dRead2()","loop":""}],
 		
+		["R", "humiture %d.port %d.humiture", "getHumiture", "Port1", "humidity", {"encode":"", "setup":"", "inc":"", "def":"MeHumiture humiture_{0}({0});\n", "work":"humiture_{0}.getValue({1})", "loop":"humiture_{0}.update();\n"}],
+		["R", "flame %d.port intensity", "getFlame", "Port1", {"encode":"", "setup":"", "inc":"", "def":"MeFlameSensor flameSensor_{0}({0});\n", "work":"flameSensor_{0}.readAnalog()", "loop":""}],
+		["R", "gas %d.port concentration", "getGas", "Port1", {"encode":"", "setup":"", "inc":"", "def":"MeGasSensor gasSensor_{0}({0});\n", "work":"gasSensor_{0}.readAnalog()", "loop":""}],
+		["R", "campass %d.port bearing", "gatCompass", "Port1",{"encode":"", "setup":"compass_{0}.begin();\n", "inc":"", "def":"MeCompass compass_{0}({0});\n", "work":"compass_{0}.getAngle()", "loop":""}],
+		
 		["-"],
 		
 		["B","ir remote %m.ircode pressed","getIrRemote","A",
@@ -123,8 +128,10 @@
 		"shutter":["Press","Release","Focus On","Focus Off"],
 		"switch":["Off","On"],
 		"ircode":["A","B","C","D","E","F","↑","↓","←","→","Setting","R0","R1","R2","R3","R4","R5","R6","R7","R8","R9"],
+		"humiture":["humidity","temperature"]
 	},
 	"values":{
+		"Half":500,"Quater":250,"Eighth":125,"Whole":1000,"Double":2000,"Zero":0,
 		"servovalue":[0,45,90,135,180],
 		"all":0,
 		"run":2,
@@ -210,6 +217,8 @@
 		"R7":66,
 		"R8":82,
 		"R9":74,
+		"humidity":0,
+		"temperature":1,
 		"Setting":21
 	},
 	"translators":{
@@ -254,12 +263,18 @@
 			"Off":"关",
 			"led on board":"板载",
 			"light sensor on board":"板载",
-			"play tone on note %d.note":"播放 音调为 %d.note",
+			"play tone on note %d.note beat %d.beats":"播放 音调为 %d.note 节拍为 %d.beats",
 			"stop tone":"停止播放",
 			"Press":"按下快门",
 			"Release":"松开快门",
 			"Focus On":"开始对焦",
-			"Focus Off":"停止对焦"
+			"Focus Off":"停止对焦",
+			"humidity":"湿度",
+			"temperature":"温度",
+			"humiture %d.port %d.humiture":"温湿度  %d.port %d.humiture",
+			"flame %d.port intensity":"火焰 %d.port 强度",
+			"gas %d.port concentration":"气体 %d.port 浓度",
+			"campass %d.port bearing":"罗盘 %d.port 方位"
 		},
 		"zh_TW":{
 			"mBot Program":"mBot 主程式",
@@ -300,7 +315,7 @@
 			"all":"所有",
 			"led on board":"板載",
 			"light sensor on board":"板載",
-			"play tone on note %d.note":"播放 音調為 %d.note",
+			"play tone on note %d.note %d.beats":"播放 音調為 %d.note 節拍為 %d.beats",
 			"stop tone":"停止播放",
 			"On":"開",
 			"Off":"關",
@@ -315,7 +330,7 @@
 			"set servo %d.port %d.slot angle %d.servovalue":"setze Servo %d.port %d.slot Winkel auf %d.servovalue",
 			"set led %d.lport %d.index red%d.value green%d.value blue%d.value":"setze LED %d.lport %d.index Rot%d.value Grün%d.value Blau%d.value",
 			"set led %d.index red%d.value green%d.value blue%d.value":"setze LED %d.index Rot%d.value Grün%d.value Blau%d.value",
-			"play tone on note %d.note":"Spiele Ton %d.note",
+			"play tone on note %d.note %d.beats":"Spiele Ton %d.note %d.beats",
 			"show face %d.port x:%n y:%n characters:%s":"zeige Text %d.port x:%n y:%n Zeichen:%s",
 			"show time %d.port hour:%n %m.points min:%n":"zeige Zeit %d.port Stunde:%n Minute %m.points %n",
 			"show drawing %d.port x:%n y:%n draw:%m.drawFace":"zeige Zeichnung %d.port x:%n y:%n Muster:%m.drawFace",
@@ -395,7 +410,7 @@
 			"turn left":"좌회전",
 			"turn right":"우회전",
 			"all":"모두",
-			"play tone on note %d.note":"메모 톤을 재생 %d.note",
+			"play tone on note %d.note %d.beats":"메모 톤을 재생 %d.note %d.beats",
 			"stop tone":"톤을 중지",
 			"light sensor on board":"보드 장착 센서",
 			"led on board":"보드 장착 LED",
@@ -430,7 +445,7 @@
 			"code":"コード",
 			"message":"メッセージ",
 			"all":"全て",
-			"play tone on note %d.note":"音 %d.note を鳴らす",
+			"play tone on note %d.note %d.beats":"音 %d.note を鳴らす %d.beats",
 			"stop tone":"音を止める",
 			"%m.direction at speed %d.motorvalue":"%m.direction スピードで %d.motorvalue",
 			"run forward":"正転",
@@ -479,7 +494,7 @@
 			"Off":"arrêt",
 			"led on board":"la carte",
 			"light sensor on board":"la carte",
-			"play tone on note %d.note":"joue la note %d.note",
+			"play tone on note %d.note %d.beats":"joue la note %d.note fréquence %d.beats",
 			"stop tone":"arrêter le son",
 			"Press":"pressé",
 			"Release":"relâché",

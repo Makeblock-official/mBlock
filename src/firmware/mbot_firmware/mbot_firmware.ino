@@ -11,29 +11,23 @@
 **************************************************************************/
 #include <Servo.h>
 #include <Wire.h>
-#include "MePort.h"
-#include "MeDCMotor.h" 
-#include "MeUltrasonic.h" 
-#include "Me7SegmentDisplay.h"
-#include "MeTemperature.h"
-#include "MeRGBLed.h"
-#include "MeInfraredReceiver.h"
-#include "MeLEDMatrix.h"
-#include "MeIR.h"
-#include "mBot.h"
+#include <MeMbot.h>
 
-MeBoard myBoard(mBot);
-
-MeBuzzer buzzer;
 Servo servos[8];  
 MeDCMotor dc;
 MeTemperature ts;
-MeRGBLed led;
-MeUltrasonic us;
+MeRGBLed led(0,4);
+MeUltrasonicSensor us;
 Me7SegmentDisplay seg;
 MePort generalDevice;
 MeLEDMatrix ledMx;
+MeBuzzer buzzer;
 MeIR ir;
+MeCompass Compass;
+MeHumiture humiture;
+MeFlameSensor FlameSensor;
+MeGasSensor GasSensor;
+
 typedef struct MeModule
 {
     int device;
@@ -99,6 +93,10 @@ char serialRead;
 #define SHUTTER 20
 #define LIMITSWITCH 21
 #define BUTTON 22
+#define HUMITURE 23
+#define FLAMESENSOR 24
+#define GASSENSOR 25
+#define COMPASS 26
 #define DIGITAL 30
 #define ANALOG 31
 #define PWM 32
@@ -122,12 +120,11 @@ void setup(){
   digitalWrite(13,LOW);
   Serial.begin(115200);
   delay(500);
-  buzzerOn();
+  buzzer.tone(500,50); 
   delay(50);
   buzzerOff();
   ir.begin();
-  led.reset(13);
-  led.setNumber(16);
+  led.setpin(13);
   led.setColor(0,0,0);
   led.show();
 }
@@ -201,7 +198,7 @@ void loop(){
   }
 }
 void buzzerOn(){
-  buzzer.tone(500); 
+  buzzer.tone(500,1000); 
 }
 void buzzerOff(){
   buzzer.noTone(); 
@@ -263,7 +260,6 @@ void parseData(){
         dc.reset(M2);
         dc.run(0);
         buzzerOff();
-        
         callOK();
       }
      break;
@@ -488,8 +484,9 @@ void runModule(int device){
    case TONE:{
 //     pinMode(pin,OUTPUT);
      int hz = readShort(6);
+     int tone_time = readShort(8);
      if(hz>0){
-       buzzer.tone(hz); 
+       buzzer.tone(hz,tone_time);
      }else{
        buzzer.noTone(); 
      }
@@ -607,7 +604,7 @@ void readSensor(int device){
      irIndex = 0;
    }
    break;
-   case  PIRMOTION:{
+   case PIRMOTION:{
      if(generalDevice.getPort()!=port){
        generalDevice.reset(port);
        pinMode(generalDevice.pin2(),INPUT);
@@ -650,6 +647,47 @@ void readSensor(int device){
      buttonPressed = currentPressed;
    }
    break;
+   case COMPASS:{
+     if(Compass.getPort()!=port){
+       Compass.reset(port);
+       Compass.setpin(Compass.pin1(),Compass.pin2());
+     }
+     double CompassAngle;
+     CompassAngle = Compass.getAngle();
+     sendDouble(CompassAngle);
+   }
+   break;
+   case HUMITURE:{
+     uint8_t index = readBuffer(7);
+     if(humiture.getPort()!=port){
+       humiture.reset(port);
+     }
+     uint8_t HumitureData;
+     humiture.update();
+     HumitureData = humiture.getValue(index);
+     sendByte(HumitureData);
+   }
+   break;
+   case FLAMESENSOR:{
+     if(FlameSensor.getPort()!=port){
+       FlameSensor.reset(port);
+       FlameSensor.setpin(FlameSensor.pin2(),FlameSensor.pin1());
+     }
+     int16_t FlameData; 
+     FlameData = FlameSensor.readAnalog();
+     sendShort(FlameData);
+   }
+   break;
+   case GASSENSOR:{
+     if(GasSensor.getPort()!=port){
+       GasSensor.reset(port);
+       GasSensor.setpin(GasSensor.pin2(),GasSensor.pin1());
+     }
+     int16_t GasData; 
+     GasData = GasSensor.readAnalog();
+     sendShort(GasData);
+   }
+   break;
    case  GYRO:{
 //       int axis = readBuffer(7);
 //       gyro.update();
@@ -686,3 +724,5 @@ void readSensor(int device){
    break;
   }
 }
+
+

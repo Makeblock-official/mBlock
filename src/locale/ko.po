@@ -2098,7 +2098,7 @@ msgstr ""
 msgid "There is a newer version"
 msgstr ""
 
-msgid "It's already the newest version"
+msgid "It's already the latest version"
 msgstr ""
 
 msgid "Download Now"

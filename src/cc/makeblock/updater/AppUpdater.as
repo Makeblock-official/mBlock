@@ -76,7 +76,7 @@ package cc.makeblock.updater
 			}else{
 				VersionManager.sharedManager().start();
 				if(needNotice){
-					PopupUtil.showAlert(Translator.map("It's already the newest version"));
+					PopupUtil.showAlert(Translator.map("It's already the latest version"));
 				}
 			}
 			/*

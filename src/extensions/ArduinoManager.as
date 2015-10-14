@@ -1,6 +1,5 @@
 package extensions
 {
-	import flash.debugger.enterDebugger;
 	import flash.desktop.NativeProcess;
 	import flash.desktop.NativeProcessStartupInfo;
 	import flash.events.Event;
@@ -1183,13 +1182,15 @@ void updateVar(char * varName,double * var)
 			}
 			// copy firmware directory
 			workdir = workdir.resolvePath(projectDocumentName); 
-			//srcdir.copyTo(workdir,true); 
+			//srcdir.copyTo(workdir,true);
+			/*
 			for each(var path:String in srcDocuments){
 				var srcdir:File = new File(path);
 				if(srcdir.exists && srcdir.isDirectory){
 					copyCompileFiles(srcdir.getDirectoryListing(),workdir);
 				}
 			}
+			//*/
 			var projCpp:File = File.applicationStorageDirectory.resolvePath("scratchTemp/"+projectDocumentName+"/"+projectDocumentName+".ino")
 			LogManager.sharedManager().log("projCpp:"+projCpp.nativePath);
 			var outStream:FileStream = new FileStream();
@@ -1219,6 +1220,7 @@ void updateVar(char * varName,double * var)
 		}
 		
 		private var compileErr:Boolean = false;
+		/*
 		private function copyCompileFiles(files:Array, workdir:File):void
 		{
 			for(var i:int = 0; i < files.length; ++i){
@@ -1238,6 +1240,7 @@ void updateVar(char * varName,double * var)
 				}
 			}
 		}
+		//*/
 		public function get projectDocumentName():String{
 			var now:Date = new Date;
 			var pName:String = MBlock.app.projectName().split(" ").join("").split("(").join("").split(")").join("");
@@ -1299,13 +1302,15 @@ void updateVar(char * varName,double * var)
 			nativeWorkList = []
 			// copy firmware directory
 			workdir = workdir.resolvePath(projectDocumentName);
-			//srcdir.copyTo(workdir,true); 
+			//srcdir.copyTo(workdir,true);
+			/*
 			for each(var path:String in srcDocuments){
 				var srcdir:File = new File(path);
 				if(srcdir.exists && srcdir.isDirectory){
 					copyCompileFiles(srcdir.getDirectoryListing(), workdir);
 				}
 			}
+			*/
 			var projCpp:File = File.applicationStorageDirectory.resolvePath("scratchTemp/"+projectDocumentName+"/"+projectDocumentName+".ino")
 			var outStream:FileStream = new FileStream();
 			outStream.open(projCpp, FileMode.WRITE);
@@ -1340,7 +1345,7 @@ void updateVar(char * varName,double * var)
 			*/
 			// prebuild arduino lib
 			buildArduinoLib(workdir);
-			copyCompileFiles(files, workdir);
+//			copyCompileFiles(files, workdir);
 			
 			// copy project.ino to ./build/project.ino.cpp
 			// combine aux ino and main ino into 1 cpp file
@@ -1421,7 +1426,7 @@ void updateVar(char * varName,double * var)
 			var cpp:File = tc_projCpp
 			var dir:File = tc_workdir
 			var cppList:Array = tc_cppList
-			archOutputFiles(cpp,dir,cppList)
+			archOutputFiles(cpp,dir)
 			compileCpp(projectDocumentName+".ino",dir);
 			var elf:Array=[projectDocumentName+".ino.o"]
 			for(var i:int=0;i<cppList.length;i++){
@@ -1477,7 +1482,10 @@ void updateVar(char * varName,double * var)
 			}
 			
 			file.url = new File(arduinoInstallPath+arduinoLibPath+"/SoftwareSerial").url;
-			listArduinoLib(file)
+			listArduinoLib(file);
+			
+			file = new File(arduinoInstallPath+"/libraries/makeblock");
+			listArduinoLib(file);
 			
 			for (var i:uint = 0; i < arduinoCppList.length; i++)  
 			{ 
@@ -1610,7 +1618,7 @@ void updateVar(char * varName,double * var)
 			return arduinoPath;
 		}
 		
-		private function archOutputFiles(cpp:File,dir:File,cppList:Array):void{
+		private function archOutputFiles(cpp:File,dir:File):void{
 			var file:File = new File(arduinoInstallPath+"/hardware/tools/avr/bin/avr-ar"+(ApplicationManager.sharedManager().system==ApplicationManager.WINDOWS?".exe":"")); 
 			
 			var cmd:Array = ["rcs","core.a","file.o"]
@@ -1645,7 +1653,7 @@ void updateVar(char * varName,double * var)
 			var cmd:String = "";
 			trace("currentDevice:",_currentDevice);
 			if(_currentDevice=="uno"){
-				cmd = " -c -g -Os -w -fno-exceptions -ffunction-sections -fdata-sections -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=156 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/standard -I"+path+"/libraries/Servo/src -I"+path+"/libraries/Servo -I"+path+arduinoLibPath+"/Wire -I"+path+arduinoLibPath+"/Wire/utility -I"+path+arduinoLibPath+"/SoftwareSerial"
+				cmd = " -c -g -Os -w -fno-exceptions -ffunction-sections -fdata-sections -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=156 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/standard -I"+path+"/libraries/Servo/src -I"+path+"/libraries/Servo -I"+path+arduinoLibPath+"/Wire -I"+path+arduinoLibPath+"/Wire/utility -I"+path+arduinoLibPath+"/SoftwareSerial -I" + path+"/libraries/makeblock/src"
 			}else if(_currentDevice=="leonardo"){
 				cmd = " -c -g -Os -w -fno-exceptions -ffunction-sections -fdata-sections -MMD -mmcu=atmega32u4 -DF_CPU=16000000L -DARDUINO=156 -DARDUINO_AVR_LEONARDO -DARDUINO_ARCH_AVR -DUSB_VID=0x2a03 -DUSB_PID=0x8036 -DUSB_MANUFACTURER= -DUSB_PRODUCT=\"Arduino Leonardo\" -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/leonardo -I"+path+"/libraries/Servo/src -I"+path+"/libraries/Servo -I"+path+arduinoLibPath+"/Wire -I"+path+arduinoLibPath+"/Wire/utility -I"+path+arduinoLibPath+"/SoftwareSerial"
 			}else if(_currentDevice=="mega1280"){
@@ -1688,7 +1696,7 @@ void updateVar(char * varName,double * var)
 			//				cmd = " -c -g -Os -w -ffunction-sections -fdata-sections -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=156 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/standard -I"+path+arduinoLibPath+"/Wire -I"+path+"/libraries/Servo/src -I"+path+"/libraries/Servo -I"+path+arduinoLibPath+"/SoftwareSerial -I"+path+arduinoLibPath+"/Wire/utility"
 			var cmd:String = "";
 			if(_currentDevice=="uno"){
-				cmd = " -c -g -Os -w -ffunction-sections -fdata-sections -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=156 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/standard -I"+path+"/libraries/Servo/src -I"+path+"/libraries/Servo -I"+path+arduinoLibPath+"/Wire -I"+path+arduinoLibPath+"/Wire/utility -I"+path+arduinoLibPath+"/SoftwareSerial"
+				cmd = " -c -g -Os -w -ffunction-sections -fdata-sections -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=156 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/standard -I"+path+"/libraries/Servo/src -I"+path+"/libraries/Servo -I"+path+arduinoLibPath+"/Wire -I"+path+arduinoLibPath+"/Wire/utility -I"+path+arduinoLibPath+"/SoftwareSerial -I" + path+"/libraries/makeblock/src"
 			}else if(_currentDevice=="leonardo"){
 				cmd = " -c -g -Os -w -ffunction-sections -fdata-sections -MMD -mmcu=atmega32u4 -DF_CPU=16000000L -DARDUINO=156 -DARDUINO_AVR_LEONARDO -DARDUINO_ARCH_AVR -DUSB_VID=0x2a03 -DUSB_PID=0x8036 -DUSB_MANUFACTURER= -DUSB_PRODUCT=\"Arduino Leonardo\" -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/leonardo -I"+path+"/libraries/Servo/src -I"+path+"/libraries/Servo -I"+path+arduinoLibPath+"/Wire -I"+path+arduinoLibPath+"/Wire/utility -I"+path+arduinoLibPath+"/SoftwareSerial"
 			}else if(_currentDevice=="mega1280"){

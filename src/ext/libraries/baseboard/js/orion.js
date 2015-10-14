@@ -114,6 +114,40 @@
 		}
 		runPackage(20,port,shutterStatus[status]);
 	};
+	ext.showCharacters = function(port,x,y,message){
+		if(typeof port=="string"){
+			port = ports[port];
+		}
+		message = message.toString();
+		runPackage(41,port,1,6,3,short2array(x),short2array(7-y),message.length,string2array(message));
+	}
+	ext.showTime = function(port,hour,point,min){
+		if(typeof port=="string"){
+			port = ports[port];
+		}
+		runPackage(41,port,3,6,point==":"?1:0,short2array(hour),short2array(min));
+	}
+	ext.showDraw = function(port,x,y,bytes){
+		if(typeof port=="string"){
+			port = ports[port];
+		}
+		runPackageForFace(41,port,2,6,bytes.length,short2array(x),short2array(y),bytes.length);
+    setTimeout(function(){
+      device.send(bytes);
+    },40);
+	};
+	function runPackageForFace(){
+		var bytes = [0xff, 0x55, 0, 0, 2];
+		for(var i=0;i<arguments.length;i++){
+			if(arguments[i].constructor == "[class Array]"){
+				bytes = bytes.concat(arguments[i]);
+			}else{
+				bytes.push(arguments[i]);
+			}
+		}
+		bytes[2] = bytes.length+13;
+		device.send(bytes);
+	}
 	var distPrev=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 	var dist=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 	var dist_output =[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
@@ -226,6 +260,41 @@
 		}
 		nextID = genNextID(nextID, [0,ax]);
 		getPackage(nextID,deviceId,0,ax);
+    };
+    ext.getHumiture = function(nextID,port,valueType){
+    	var deviceId = 23;
+		if(typeof port=="string"){
+			port = ports[port];
+		}
+		if(typeof valueType=="string"){
+			valueType = ("humidity" == valueType) ? 0 : 1;
+		}
+		nextID = genNextID(nextID, [port,valueType]);
+		getPackage(nextID,deviceId,port,valueType);
+    };
+    ext.getFlame = function(nextID,port){
+   		var deviceId = 24;
+		if(typeof port=="string"){
+			port = ports[port];
+		}
+		nextID = genNextID(nextID, [port]);
+		getPackage(nextID,deviceId,port);
+    };
+    ext.getGas = function(nextID,port){
+    	var deviceId = 25;
+		if(typeof port=="string"){
+			port = ports[port];
+		}
+		nextID = genNextID(nextID, [port]);
+		getPackage(nextID,deviceId,port);
+    };
+    ext.gatCompass = function(nextID,port){
+    	var deviceId = 26;
+		if(typeof port=="string"){
+			port = ports[port];
+		}
+		nextID = genNextID(nextID, [port]);
+		getPackage(nextID,deviceId,port);
     };
 	function runPackage(){
 		var bytes = [];
