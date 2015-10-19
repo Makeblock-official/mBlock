@@ -259,7 +259,7 @@ public class ExtensionManager {
 					continue;
 				}
 				var fs:Array = doc.getDirectoryListing();
-				for each(var f:File in fs){ 
+				for each(var f:File in fs){
 					if(f.extension=="s2e"||f.extension=="json"){
 						/*
 						function onLoadedFile(evt:Event):void{
@@ -287,6 +287,7 @@ public class ExtensionManager {
 						}
 					}
 				}
+				_extensionList.sortOn("sort", Array.NUMERIC);
 			}
 		}else{
 			if(SharedObjectManager.sharedManager().available("first-launch")){

@@ -171,7 +171,7 @@ void loop(){
     unsigned char c = serialRead&0xff;
     if(c==0x55&&isStart==false){
      if(prevc==0xff){
-      index=1; 
+      index=1;
       isStart = true;
      }
     }else{
@@ -494,7 +494,7 @@ void runModule(int device){
    break;
    case SERVO_PIN:{
      int v = readBuffer(7);
-     if(v>=0&&v<=180){
+     if(v >= 0 && v <= 180){
        int sp = searchServoPin(pin);
        servos[sp].attach(pin);
        servos[sp].write(v);
@@ -724,5 +724,3 @@ void readSensor(int device){
    break;
   }
 }
-
-

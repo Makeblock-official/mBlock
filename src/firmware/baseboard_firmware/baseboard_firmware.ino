@@ -13,7 +13,7 @@
 #include <Wire.h>
 #include <SoftwareSerial.h>
 #include <Arduino.h>
-#include <MeOrion.h>
+#include <MeBaseBoard.h>
 
 Servo servos[8];  
 MeDCMotor dc;

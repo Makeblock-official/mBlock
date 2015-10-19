@@ -21,8 +21,11 @@
 		["w", "set 7-segments display%d.normalPort number %n","runSevseg", "Port3", 100,
 		{"encode":"{d0}{f1}","setup":"","inc":"","def":"Me7SegmentDisplay seg7_{0}({0});\n","work":"seg7_{0}.display({1});\n","loop":""}],
 		
-		["w", "set led %d.normalPort %d.slot %d.index red%d.value green%d.value blue%d.value","runLed", "Port3","Slot2","all",0,0,0,
-		{"encode":"{d0}{d1}{d2}{d3}{d4}","setup":"rgbled_{0}.setNumber(32);\n","inc":"","def":"MeRGBLed rgbled_{0}({0});\n","work":"rgbled_{0}.setColor({1},{2},{3},{4});\nrgbled_{0}.show();\n","loop":""}],
+		["w", "set led strip %d.normalPort %d.slot %d.index2 red%d.value green%d.value blue%d.value","runLedStrip", "Port3","Slot2","all",0,0,0,
+		{"encode":"{d0}{d1}{d2}{d3}{d4}","setup":"","inc":"","def":"MeRGBLed rgbled_{0}({0}, {1}, 32);\n","work":"rgbled_{0}.setColor({2},{3},{4},{5});\nrgbled_{0}.show();\n","loop":""}],
+		
+		["w", "set led %d.normalPort %d.index red%d.value green%d.value blue%d.value","runLed", "Port3","all",0,0,0,
+		{"encode":"{d0}{d1}{d2}{d3}{d4}","setup":"","inc":"","def":"MeRGBLed rgbled_{0}({0}, 32);\n","work":"rgbled_{0}.setColor({1},{2},{3},{4});\nrgbled_{0}.show();\n","loop":""}],
 		
 		["w", "set light sensor %d.normalPort led as %d.switch","runLightsensor", "Port3", "On",
 		{"encode":"{d0}{d1}","setup":"","inc":"","def":"MePort lightsensor_{0}({0});\n","work":"lightsensor_{0}.dWrite1({1});\n","loop":""}],
@@ -40,7 +43,6 @@
 		
 		["w", "show drawing %d.normalPort x:%n y:%n draw:%m.drawFace","showDraw", "Port3", 0,0,"        ",
 		{"encode":"{s0}","setup":"","inc":"","def":"MeLEDMatrix ledMtx_{0}({0});\nunsigned char drawBuffer[16];\nunsigned char *drawTemp;\n","work":"ledMtx_{0}.clearScreen();\nledMtx_{0}.setColorIndex(1);\nledMtx_{0}.setBrightness(6);\ndrawTemp = new unsigned char[16]{{3}};\nmemcpy(drawBuffer,drawTemp,16);\nfree(drawTemp);\nledMtx_{0}.drawBitmap({1},{2},16,drawBuffer);\n","loop":""}],
-		
 		
 		["-"],
 		["R", "ultrasonic sensor %d.normalPort distance","getUltrasonic","Port3",
@@ -99,6 +101,7 @@
 		"switch":["Off","On"],
 		"shutter":["Press","Release","Focus On","Focus Off"],
 		"index":["all",1,2,3,4],
+		"index2":["all",1,2,3,4,16,32],
 		"servovalue":[0,45,90,135,180],
 		"motorvalue":[255,100,50,0,-50,-100,-255],
 		"value":[0,20,60,150,255],
@@ -176,7 +179,8 @@
 			"set stepper motor%d.exMotorPort speed %d.stepperSpeed distance %n":"设置步进电机%d.exMotorPort 速度 %d.stepperSpeed 距离 %n",
 			"set encoder motor%d.exMotorPort %d.slot speed %d.encoderSpeed distance %n":"设置编码电机%d.exMotorPort %d.slot 速度 %d.encoderSpeed 距离 %n",
 			"set 7-segments display%d.normalPort number %n":"设置数码管%d.normalPort 数字%n",
-			"set led %d.normalPort %d.slot %d.index red%d.value green%d.value blue%d.value":"设置LED %d.normalPort %d.slot %d.index 红色%d.value 绿色%d.value 蓝色%d.value",
+			"set led %d.normalPort %d.index red%d.value green%d.value blue%d.value":"设置LED %d.normalPort %d.index 红色%d.value 绿色%d.value 蓝色%d.value",
+			"set led strip %d.normalPort %d.slot %d.index2 red%d.value green%d.value blue%d.value":"设置灯带 %d.normalPort %d.slot %d.index2 红色%d.value 绿色%d.value 蓝色%d.value",
 			"ultrasonic sensor %d.normalPort distance":"超声波传感器%d.normalPort 距离",
 			"sound sensor %d.normalPort":"音量传感器%d.normalPort",
 			"light sensor %d.normalPort":"光线传感器%d.normalPort",

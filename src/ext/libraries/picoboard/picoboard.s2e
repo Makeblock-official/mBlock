@@ -1,6 +1,6 @@
 {	"extensionName": "PicoBoard",
 	"extensionPort": 0,
-	"sort":4,
+	"sort":6,
 	"firmware":"1.2.103",
 	"javascriptURL":"js/picoExtension.js",
 	"blockSpecs": [
