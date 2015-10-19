@@ -1812,6 +1812,12 @@ msgstr "連接埠7"
 msgid "Port8"
 msgstr "連接埠8"
 
+msgid "Port9"
+msgstr "連接埠9"
+
+msgid "Port10"
+msgstr "連接埠10"
+
 msgid "Slot1"
 msgstr "插座1"
 

@@ -1796,6 +1796,12 @@ msgstr "Poort 7"
 msgid "Port8"
 msgstr "Poort 8"
 
+msgid "Port9"
+msgstr "Poort 9"
+
+msgid "Port10"
+msgstr "Poort 10"
+
 msgid "Slot1"
 msgstr "Slot 1"
 
