@@ -10,3 +10,4 @@ ko,한국어
 nl_NL,Nederlands
 ru-RU,Русский
 it_IT,Italiano
+hebrew,HEBREW

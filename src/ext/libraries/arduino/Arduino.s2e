@@ -106,6 +106,32 @@
 		"de_DE":{
 			"read pulse pin %n timeout %n":"lese Puls-Pin %n Timeout %n",
 			"read ultrasonic sensor trig pin %n echo pin %n":"lese Ultraschall-Sensor Trig-Pin %n Echo-Pin %n"
+		},
+		"hebrew":{
+			"HIGH":"גבוה",
+			"LOW":"נמוך",
+			"read pulse pin %n timeout %n":"תיקרא את הפולס בפין%n נגמר הזמן %n",
+			"read ultrasonic sensor trig pin %n echo pin %n":"תקרא את פלט הפין האולטרא סוני trig %n echo פלט פין הד-אולטרא סוני  %n",
+			"play tone pin %n on note %d.notes beat %d.beats":"נגן טון בפין %n טון %d.notes טון %d.beats",
+			"read digital pin %n":"קרא- את הפין הדיגיטלי 口 %n",
+			"read analog pin (A)%n":"קרא את הפין האנלוגי口 (A)%n",
+			"set digital pin %n output as %d.digital":"קבע פין דיגיטלי口 %n יציאה דיגיטלית %d.digital",
+			"set pwm pin %n output as %d.pwmvalue":"קבע פין מהירות PWM %n יציאת מהירות %d.pwmvalue",
+			"set servo pin %n angle as %d.servovalue":"קבע פין סרוו%n קבע זווית %d.servovalue",
+			"play tone pin %n on note %d.notes beat %d.beats":"נגן צליל פין %n צליל %d.notes צליל %d.beats"
+		},
+		"it_IT":{
+			"HIGH":"ALTO",
+			"LOW":"BASSO",
+			"read pulse pin %n timeout %n":"leggi il pin di impulso %n timeout %n",
+			"read ultrasonic sensor trig pin %n echo pin %n":"leggi il sensore ad ultrasuoni trig pin %n echo pin %n",
+			"play tone pin %n on note %d.notes beat %d.beats":"suona nota %d.notes sul pin %d alla battuta %d.beats",
+			"read digital pin %n":"leggi pin digitale %n",
+			"read analog pin (A)%n":"leggi pin analogico (A)%n",
+			"set digital pin %n output as %d.digital":"imposta l'uscita del pin digitale %n come %d.digital",
+			"set pwm pin %n output as %d.pwmvalue":"imposta l'usita PWM del pin analogico %n a %d.pwmvalue",
+			"set servo pin %n angle as %d.servovalue":"imposta l'angolo del servo al pin %n a %d.servovalue",
+			"play tone pin %n on note %d.notes beat %d.beats":"播放引脚 %n 音调为 %d.notes 节拍为 %d.beats"
 		}
 	}
 }

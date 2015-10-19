@@ -2,7 +2,7 @@
 	"extensionPort": 0,
 	"extensionHost": "127.0.0.1",
 	"extensionType":"serial",
-	"sort":4,
+	"sort":7,
 	"firmware":"1.1.102",
 	"javascriptURL":"js/serial.js",
 	"blockSpecs": [
@@ -64,6 +64,16 @@
 			"send command %s = %s":"sende Kommando %s = %s",
 			"read command %s":"lese Kommando %s",
 			"clear buffer":"lösche Puffer"
+		},
+		"it_IT":{
+			"Communication":"Comunicazione",
+			"data available?":"dati disponibili?",
+			"read line":"leggi la linea",
+			"%s is equal %s?":"%s è uguale a %s ?",
+			"read command %s":"legg il comando %s",
+			"write line %s":"scrivi la linea %s",
+			"send command %s = %s":"invia il comando %s = %s",
+			"clear buffer":"svuota il buffer"
 		}
 	}
 }
