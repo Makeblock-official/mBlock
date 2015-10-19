@@ -4,6 +4,7 @@ package extensions
 	import flash.filesystem.File;
 	import flash.html.HTMLLoader;
 	import flash.utils.ByteArray;
+	import flash.utils.Endian;
 	
 	import avm2.intrinsics.memory.lf32;
 	import avm2.intrinsics.memory.li16;
@@ -135,11 +136,11 @@ package extensions
 			if(bytes.length < 4){
 				return 0;
 			}
-			si8(bytes[0], 0);
-			si8(bytes[1], 1);
-			si8(bytes[2], 2);
-			si8(bytes[3], 3);
-			return lf32(0);
+			for(var i:int=0; i<4; ++i){
+				tempBytes[i] = bytes[i];
+			}
+			tempBytes.position = 0;
+			return tempBytes.readFloat();
 		}
 		static private function readDouble(bytes:Array):Number{
 			return readFloat(bytes);
@@ -148,35 +149,39 @@ package extensions
 			if(bytes.length < 2){
 				return 0;
 			}
-			si8(bytes[0], 0);
-			si8(bytes[1], 1);
-			return li16(0);
+			for(var i:int=0; i<2; ++i){
+				tempBytes[i] = bytes[i];
+			}
+			tempBytes.position = 0;
+			return tempBytes.readShort();
 		}
 		static private function float2array(v:Number):Array{
-			sf32(v, 0);
-			return [li8(0), li8(1), li8(2), li8(3)];
+			tempBytes.position = 0;
+			tempBytes.writeFloat(v);
+			return [tempBytes[0], tempBytes[1], tempBytes[2], tempBytes[3]];
 		}
 		static private function short2array(v:Number):Array{
-			si16(v, 0);
-			return [li8(0), li8(1)];
+			tempBytes.position = 0;
+			tempBytes.writeShort(v);
+			return [tempBytes[0], tempBytes[1]];
 		}
 		static private function string2array(v:String):Array{
-			var buffer:ByteArray = MemUtil.Mem;
-			buffer.position = 0;
-			buffer.writeUTFBytes(v);
+			tempBytes.position = 0;
+			tempBytes.writeUTFBytes(v);
 			var array:Array = [];
-			for(var i:int=0;i<buffer.position;i++){
-				array[i] = li8(i);
+			for(var i:int=0;i<tempBytes.position;i++){
+				array[i] = tempBytes[i];
 			}
 			return array;
 		}
 		static private function array2string(bytes:Array):String{
-			var buffer:ByteArray = MemUtil.Mem;
-			buffer.position = 0;
 			for(var i:int=0;i<bytes.length;i++){
-				si8(bytes[i], i);
+				tempBytes[i] = bytes[i];
 			}
-			return buffer.readUTFBytes(bytes.length);
+			tempBytes.position = 0;
+			return tempBytes.readUTFBytes(bytes.length);
 		}
+		static private const tempBytes:ByteArray = new ByteArray();
+		tempBytes.endian = Endian.LITTLE_ENDIAN;
 	}
 }

@@ -35,12 +35,18 @@ package extensions
 					if(!MBlock.app.extensionManager.checkExtensionSelected("Arduino")){
 						MBlock.app.extensionManager.singleSelectExtension("Arduino");
 					}
-				}else if(_board.indexOf("me/")>-1){
-					if(_board == "me/orion_uno"){
-						MBlock.app.openOrion();
+				}else if(_board.indexOf("me/orion_uno")>-1){
+					MBlock.app.openOrion();
+					if(!MBlock.app.extensionManager.checkExtensionSelected("Orion")){
+						MBlock.app.extensionManager.singleSelectExtension("Orion");
 					}
-					if(!MBlock.app.extensionManager.checkExtensionSelected("Makeblock")){
-						MBlock.app.extensionManager.singleSelectExtension("Makeblock");
+				}else if(_board.indexOf("me/baseboard")>-1){
+					if(!MBlock.app.extensionManager.checkExtensionSelected("BaseBoard")){
+						MBlock.app.extensionManager.singleSelectExtension("BaseBoard");
+					}
+				}else if(_board.indexOf("me/uno_shield")>-1){
+					if(!MBlock.app.extensionManager.checkExtensionSelected("UNO Shield")){
+						MBlock.app.extensionManager.singleSelectExtension("UNO Shield");
 					}
 				}else if(MBlock.app.extensionManager.checkExtensionSelected("PicoBoard")){
 					MBlock.app.extensionManager.singleSelectExtension("PicoBoard");
@@ -63,6 +69,8 @@ package extensions
 				_name = "Arduino "+_device.substr(0,1).toLocaleUpperCase()+_device.substr(1,_device.length);
 			}else if(_board.indexOf("picoboard")>-1){
 				_name = "PicoBoard";
+			}else if(_board.indexOf("shield") > -1){
+				_name = "UNO Shield";
 			}
 			return _name;
 		}
