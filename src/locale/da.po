@@ -506,12 +506,6 @@ msgstr "y-position"
 msgid "10 ^"
 msgstr "10 ^"
 
-msgid "<b>Information about Cloud variables</b><br>&nbsp;<br>Currently, only numbers are supported<br>Chat rooms are not allowed, and will be removed<br>For more info, <a href="/help/faq/#clouddata" target="_blank">see the cloud data FAQ!</a>"
-msgstr ""
-"<b>Information om skyvariable</b><br>&nbsp;<br>Aktuelt, understøttes kun "
-"tal<br>Chatsteder er ikke tilladt og de bliver fjernet<br>For mere "
-"information, <a href= target=>se skydata FAQ!</a>"
-
 msgid "A connected"
 msgstr "A opkoblet"
 
@@ -607,11 +601,6 @@ msgstr "Stortromme"
 
 msgid "Bassoon"
 msgstr "Fagot"
-
-msgid "Because you have a new Scratch account, any changes to cloud data won't be saved yet. Keep participating on the site you'll be able to use cloud data soon!"
-msgstr ""
-"Fordi du har en ny Scratchkonto, vil ændringer i skydata ikke bliver gemt "
-"endnu. Fortsæt med at bruge websiden og du vil snart kunne bruge skydata! "
 
 msgid "Bitmap"
 msgstr "Bitmap"
@@ -724,12 +713,6 @@ msgstr "Luk"
 msgid "Closed Hi-Hat"
 msgstr "Lukket high-hat"
 
-msgid "Cloud"
-msgstr "Sky"
-
-msgid "Cloud data"
-msgstr "Skydata"
-
 msgid "color"
 msgstr "farve"
 
@@ -738,9 +721,6 @@ msgstr "Farvelæg en figur"
 
 msgid "Conga"
 msgstr "Conga"
-
-msgid "Connecting to Cloud data server..."
-msgstr "Opkobling til Skydataserver..."
 
 msgid "Convert to bitmap"
 msgstr "Konverter til bitmap"
@@ -796,9 +776,6 @@ msgstr "Bækken"
 
 msgid "Creating..."
 msgstr "Opretter..."
-
-msgid "Currently, only numbers can be stored in Cloud variables."
-msgstr "Aktuelt kan kun tal gemmes i skyvariabler."
 
 msgid "cut"
 msgstr "klip"
@@ -1540,11 +1517,6 @@ msgstr ""
 "Dette project kan afsløre hvem der bruger det, gennem \"brugernavn\"-klodsen. "
 " For at skjule din identitet, log af inden du andvender projektet."
 
-msgid "This project uses Cloud data ‒ a feature that is available only to signed in users."
-msgstr ""
-"Projektet anvender Skydata ‒ en funktion der kun er tilgængelig hvis man er logget "
-"på."
-
 msgid "this script"
 msgstr "dette script"
 
@@ -1693,11 +1665,6 @@ msgstr "y-position"
 
 msgid "year"
 msgstr "år"
-
-msgid "You cannot edit cloud data in someone else's project.<br>Any change that you make in the editor will be temporary and not persistent."
-msgstr ""
-"Du kan ikke editere skydata i en andens projekt.<br>Eventuelle ændringer "
-"bliver kun midlertidige, ikke vedvarende."
 
 msgid "Eraser width:"
 msgstr "Viskelæderets bredde:"

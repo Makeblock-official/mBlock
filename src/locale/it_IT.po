@@ -1,4 +1,4 @@
-# The language name as it will appear in the language menu
+﻿# The language name as it will appear in the language menu
 msgid "Language-Name"
 msgstr "Italiano"
 
@@ -488,9 +488,6 @@ msgstr "posizione y"
 #, fuzzy
 msgid "10 ^"
 msgstr "10 ^"
-
-msgid "<b>Information about Cloud variables</b><br>&nbsp;<br>Currently, only numbers are supported<br>Chat rooms are not allowed, and will be removed<br>For more info, <a href="/help/faq/#clouddata" target="_blank">see the cloud data FAQ!</a>"
-msgstr "<b>Informazioni sulle variabili Cloud</b><br>&nbsp;<br>Al momento sono supportati soltanto valori numerici<br>Non è inoltre permesso lo sviluppo di Chat room (saranno rimosse)<br>Per maggiori informazioni consultate la pagina <a href= target=>Domande Frequenti sui dati Cloud</a>"
 
 msgid "A connected"
 msgstr "A connesso"
@@ -1105,7 +1102,7 @@ msgid "New sprite from camera"
 msgstr "Nuovo sprite dall webcam"
 
 msgid "New sprite:"
-msgstr "Nuovo sprite"
+msgstr "Nuovo sprite:"
 
 msgid "New Variable"
 msgstr "Nuova Variabile"
@@ -1182,7 +1179,7 @@ msgstr "Piano"
 
 # 92%
 msgid "Pick up color"
-msgstr "Seleziona un  colore"
+msgstr "Seleziona un colore"
 
 msgid "pixelate"
 msgstr "effetto pixel"

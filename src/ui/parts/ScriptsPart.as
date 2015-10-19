@@ -446,19 +446,23 @@ public class ScriptsPart extends UIPart {
 			lineNumText.appendText((preS+(i+1)).substr(-tt,tt)+".\n");
 		}
 		if(ArduinoManager.sharedManager().hasUnknownCode){
-			var dBox:DialogBox = new DialogBox();
-			dBox.addTitle(Translator.map("unsupported block found, remove them to continue."));
-			for each(var b:Block in ArduinoManager.sharedManager().unknownBlocks){
-				b.mouseEnabled = false;
-				b.mouseChildren = false;
-				dBox.addBlock(b);
+			if(!isDialogBoxShowing){
+				isDialogBoxShowing = true;
+				var dBox:DialogBox = new DialogBox();
+				dBox.addTitle(Translator.map("unsupported block found, remove them to continue."));
+				for each(var b:Block in ArduinoManager.sharedManager().unknownBlocks){
+					b.mouseEnabled = false;
+					b.mouseChildren = false;
+					dBox.addBlock(b);
+				}
+				function cancelHandle():void{
+					isDialogBoxShowing = false;
+					dBox.cancel();
+				}
+				dBox.addButton("OK",cancelHandle);
+				dBox.showOnStage(app.stage);
+				dBox.fixLayout();
 			}
-			function cancelHandle():void{
-				dBox.cancel();
-			}
-			dBox.addButton("OK",cancelHandle);
-			dBox.showOnStage(app.stage);
-			dBox.fixLayout();
 			arduinoFrame.visible = false;
 			if(app.stageIsArduino){
 				app.toggleArduinoMode();
@@ -468,6 +472,7 @@ public class ScriptsPart extends UIPart {
 		}
 		return true;
 	}
+	static private var isDialogBoxShowing:Boolean;
 	private function formatKeyword(txt:TextField,word:String,format:TextFormat,subStart:uint=0,subEnd:uint=0):void
 	{
 		var index:int = 0;

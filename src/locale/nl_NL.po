@@ -1,4 +1,4 @@
-# The language name as it will appear in the language menu
+﻿# The language name as it will appear in the language menu
 msgid "Language-Name"
 msgstr "Nederlands"
 
@@ -461,9 +461,6 @@ msgstr "wanneer tilt = %n"
 # #################
 msgid "10 ^"
 msgstr "10 ^"
-
-msgid "<b>Information about Cloud variables</b><br>&nbsp;<br>Currently, only numbers are supported<br>Chat rooms are not allowed, and will be removed<br>For more info, <a href=\"/help/faq/#clouddata\" target=\"_blank\">see the cloud data FAQ!</a>"
-msgstr "<b>Informatie over Cloud variabelen</b><br>&nbsp;<br>Op dit moment worden alleen cijfers ondersteund.<br>Chatrooms zijn niet toegestaan en zullen worden verwijderd.<br><a href=\"/help/faq/#clouddata\" target=\"_blank\">Zie de veelgestelde vragen over cloud data voor meer informatie.</a>"
 
 msgid "A connected"
 msgstr "A aangesloten"

@@ -21,7 +21,7 @@ msgid "%m.sensor sensor value"
 msgstr "valeur du capteur %m.sensor"
 
 msgid "%n mod %n"
-msgstr "%n modulo %n
+msgstr "%n modulo %n"
 
 msgid "add %s to %m.list"
 msgstr "ajouter %s à %m.list"
@@ -53,7 +53,7 @@ msgid "broadcast %m.broadcast and wait"
 msgstr "envoyer à tous %m.broadcast et attendre"
 
 msgid "change %m.effect effect by %n"
-msgstr "ajouter à l'effet %m.effect %n
+msgstr "ajouter à l'effet %m.effect %n"
 
 msgid "change %m.var by %n"
 msgstr "ajouter à %m.var %n"
@@ -2130,7 +2130,7 @@ msgstr "Ellipse (Majuscule : cercle)"
 msgid "Duplicate (Shift: Multiple)"
 msgstr "Dupliquer (Majuscule : multiplier)"
 msgid "Arduino Program"
-msgstr "Programme Arduino
+msgstr "Programme Arduino"
 msgid "upload to arduino"
 msgstr "téléverser dans l'Arduino"
 msgid "set font size"
@@ -2245,7 +2245,7 @@ msgstr "relâché"
 msgid "Focus On"
 msgstr "focus activé"
 msgid "Focus Off"
-msgstr "focus relâché",
+msgstr "focus relâché"
 msgid "set motor%d.motorPort speed %d.motorvalue"
 msgstr "faire tourner le moteur %d.motorPort à puissance %d.motorvalue"
 msgid "set servo %d.servoPort %d.slot angle %d.servovalue"

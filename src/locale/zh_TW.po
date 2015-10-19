@@ -1,4 +1,4 @@
-# The language name as it will appear in the language menu
+﻿# The language name as it will appear in the language menu
 msgid "Language-Name"
 msgstr "正體中文"
 
@@ -479,9 +479,6 @@ msgstr "當傾斜度 = %n"
 # #################
 msgid "10 ^"
 msgstr "10 ^"
-
-msgid "<b>Information about Cloud variables</b><br>&nbsp;<br>Currently, only numbers are supported<br>Chat rooms are not allowed, and will be removed<br>For more info, <a href=\"/help/faq/#clouddata\" target=\"_blank\">see the cloud data FAQ!</a>"
-msgstr "<b>雲端變數的</b><br>&nbsp;<br>目前只能用數字<br>不能用聊天室，會被刪除。<br>更多相關資訊<a href= target=>請看雲端資料FAQ!</a>"
 
 msgid "A connected"
 msgstr "A 已連接"

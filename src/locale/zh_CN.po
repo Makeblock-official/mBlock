@@ -1675,11 +1675,7 @@ msgstr "限位开关"
 
 #, fuzzy
 msgid "Temperature"
-msgstr ""
-"#-#-#-#-#  0catalog.po  #-#-#-#-#\n"
-"温度传感器\n"
-"#-#-#-#-#  0catalog.po  #-#-#-#-#\n"
-"温度监测"
+msgstr "温度传感器\n"
 
 msgid "Potentiometer"
 msgstr "电位器"

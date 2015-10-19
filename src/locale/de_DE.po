@@ -468,10 +468,6 @@ msgstr "Wenn Neigung = %n"
 msgid "10 ^"
 msgstr "10 ^"
 
-msgid ""
-"<b>Information about Cloud variables</b><br>&nbsp;<br>Currently, only numbers are supported<br>Chat rooms are not allowed, and will be removed<br>For more info, <a href=\"/help/faq/#clouddata\" target=\"_blank\">see the cloud data FAQ!</a>"
-msgstr "<b>Information zu den Cloud-Variablen</b><br>&nbsp;<br>Zur Zeit werden nur Zahlen unterstützt<br>Chat-Rooms sind nicht erlaubt und werden gelöscht!<br>Für weitere Infos, <a href= target=>siehe Cloud-Daten FAQ!</a>"
-
 msgid "A connected"
 msgstr "A angeschlossen"
 
@@ -564,9 +560,6 @@ msgstr "Basstrommel"
 
 msgid "Bassoon"
 msgstr "Fagott"
-
-msgid "Because you have a new Scratch account, any changes to cloud data won't be saved yet. Keep participating on the site you'll be able to use cloud data soon!"
-msgstr ""
 
 msgid "Bitmap"
 msgstr "Rastergrafik"
@@ -673,12 +666,6 @@ msgstr "Klicke  für einen neuen Versuch oder  zum Speichern"
 msgid "Closed Hi-Hat"
 msgstr "Geschlossenes Hi-Hat"
 
-msgid "Cloud"
-msgstr "Cloud"
-
-msgid "Cloud data"
-msgstr "Cloud-Daten"
-
 msgid "color"
 msgstr "Farbe"
 
@@ -687,9 +674,6 @@ msgstr "Eine Kontur einfärben"
 
 msgid "Conga"
 msgstr "Conga"
-
-msgid "Connecting to Cloud data server..."
-msgstr "Verbinde mit Cloud-Daten-Server..."
 
 msgid "Convert to bitmap"
 msgstr "In Rastergrafik umwandeln"
@@ -741,9 +725,6 @@ msgstr "Crash-Becken"
 
 msgid "Creating..."
 msgstr "Erzeuge..."
-
-msgid "Currently, only numbers can be stored in Cloud variables."
-msgstr "Momentan können nur Zahlen in Cloud-Variablen gespeichert werden."
 
 msgid "cut"
 msgstr "Ausschneiden"
@@ -1481,9 +1462,6 @@ msgstr "Dinge"
 msgid "This project can detect who is using it, through the “username” block. To hide your identity, sign out before using the project."
 msgstr "Dieses Projekt kann über den \"Benutzername\"-Block feststellen, wer es benutzt. Willst du deine Identität verbergen, so melde dich vor der Benutzung des Projekts ab."
 
-msgid "This project uses Cloud data ‒ a feature that is available only to signed in users."
-msgstr "Dieses Projekt nutzt Cloud-Daten ‒ eine Funktion, die nur angemeldeten Benutzern zur Verfügung steht."
-
 msgid "this script"
 msgstr "dieses Skript"
 
@@ -1629,9 +1607,6 @@ msgstr "y-Position"
 
 msgid "year"
 msgstr "Jahr"
-
-msgid "You cannot edit cloud data in someone else's project.<br>Any change that you make in the editor will be temporary and not persistent."
-msgstr "Du kannst keine Cloud-Daten in Projekten von jemand Anderem editieren.<br>Jede von dir im Editor gemachte Änderung ist temporär und geht verloren."
 
 msgid "Eraser width:"
 msgstr "Radierbreite:"
