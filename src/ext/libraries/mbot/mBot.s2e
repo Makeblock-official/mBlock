@@ -85,8 +85,8 @@
 		{"encode":"{d0}","setup":"","inc":"","def":"MePort pir_{0}({0});\n","work":"pir_{0}.dRead2()","loop":""}],
 		
 		["R", "humiture %d.port %d.humiture", "getHumiture", "Port1", "humidity", {"encode":"", "setup":"", "inc":"", "def":"MeHumiture humiture_{0}({0});\n", "work":"humiture_{0}.getValue({1})", "loop":"humiture_{0}.update();\n"}],
-		["R", "flame %d.port intensity", "getFlame", "Port1", {"encode":"", "setup":"", "inc":"", "def":"MeFlameSensor flameSensor_{0}({0});\n", "work":"flameSensor_{0}.readAnalog()", "loop":""}],
-		["R", "gas %d.port concentration", "getGas", "Port1", {"encode":"", "setup":"", "inc":"", "def":"MeGasSensor gasSensor_{0}({0});\n", "work":"gasSensor_{0}.readAnalog()", "loop":""}],
+		["R", "flame %d.blackPorts intensity", "getFlame", "Port3", {"encode":"", "setup":"", "inc":"", "def":"MeFlameSensor flameSensor_{0}({0});\n", "work":"flameSensor_{0}.readAnalog()", "loop":""}],
+		["R", "gas %d.blackPorts concentration", "getGas", "Port3", {"encode":"", "setup":"", "inc":"", "def":"MeGasSensor gasSensor_{0}({0});\n", "work":"gasSensor_{0}.readAnalog()", "loop":""}],
 		["R", "campass %d.port bearing", "gatCompass", "Port1",{"encode":"", "setup":"compass_{0}.begin();\n", "inc":"", "def":"MeCompass compass_{0}({0});\n", "work":"compass_{0}.getAngle()", "loop":""}],
 		
 		["-"],
@@ -112,6 +112,11 @@
 		
 	],
 	"menus": {
+		"yellowPorts":["Port1","Port2","Port3","Port4"],
+    	"bluePorts":["Port1","Port2","Port3","Port4"],
+    	"grayPorts":[],
+    	"whitePorts":["Port1","Port2","Port3","Port4"],
+    	"blackPorts":["Port3","Port4"],
 		"motorPort":["M1","M2"],
 		"slot":["Slot1","Slot2"],
 		"index":["all",1,2,3,4],
@@ -277,8 +282,8 @@
 			"humidity":"湿度",
 			"temperature":"温度",
 			"humiture %d.port %d.humiture":"温湿度  %d.port %d.humiture",
-			"flame %d.port intensity":"火焰 %d.port 强度",
-			"gas %d.port concentration":"气体 %d.port 浓度",
+			"flame %d.blackPorts intensity":"火焰 %d.blackPorts 强度",
+			"gas %d.blackPorts concentration":"气体 %d.blackPorts 浓度",
 			"campass %d.port bearing":"罗盘 %d.port 方位"
 		},
 		"zh_TW":{

@@ -80,8 +80,8 @@
 		{"encode":"{d0}","setup":"gyro.begin();\n","inc":"","def":"MeGyro gyro;\n","work":"gyro.getAngle({0})","loop":"gyro.update();\n"}],
 		
 		["R", "humiture %d.normalPort %d.humiture", "getHumiture", "Port3", "humidity", {"encode":"", "setup":"", "inc":"", "def":"MeHumiture humiture_{0}({0});\n", "work":"humiture_{0}.getValue({1})", "loop":"humiture_{0}.update();\n"}],
-		["R", "flame %d.normalPort intensity", "getFlame", "Port3", {"encode":"", "setup":"", "inc":"", "def":"MeFlameSensor flameSensor_{0}({0});\n", "work":"flameSensor_{0}.readAnalog()", "loop":""}],
-		["R", "gas %d.normalPort concentration", "getGas", "Port3", {"encode":"", "setup":"", "inc":"", "def":"MeGasSensor gasSensor_{0}({0});\n", "work":"gasSensor_{0}.readAnalog()", "loop":""}],
+		["R", "flame %d.blackPorts intensity", "getFlame", "Port3", {"encode":"", "setup":"", "inc":"", "def":"MeFlameSensor flameSensor_{0}({0});\n", "work":"flameSensor_{0}.readAnalog()", "loop":""}],
+		["R", "gas %d.blackPorts concentration", "getGas", "Port3", {"encode":"", "setup":"", "inc":"", "def":"MeGasSensor gasSensor_{0}({0});\n", "work":"gasSensor_{0}.readAnalog()", "loop":""}],
 		["R", "campass %d.normalPort bearing", "gatCompass", "Port3",{"encode":"", "setup":"compass_{0}.begin();\n", "inc":"", "def":"MeCompass compass_{0}({0});\n", "work":"compass_{0}.getAngle()", "loop":""}]
 		
         ],
@@ -203,8 +203,8 @@
 			"humidity":"湿度",
 			"temperature":"温度",
 			"humiture %d.normalPort %d.humiture":"温湿度  %d.normalPort %d.humiture",
-			"flame %d.normalPort intensity":"火焰 %d.normalPort 强度",
-			"gas %d.normalPort concentration":"气体 %d.normalPort 浓度",
+			"flame %d.blackPorts intensity":"火焰 %d.blackPorts 强度",
+			"gas %d.blackPorts concentration":"气体 %d.blackPorts 浓度",
 			"campass %d.normalPort bearing":"罗盘 %d.normalPort 方位",
 			"show time %d.normalPort hour:%n %m.points min:%n":"表情面板 %d.normalPort 显示时间:%n 时 %m.points %n 分",
 			"show face %d.normalPort x:%n y:%n characters:%s":"表情面板 %d.normalPort x:%n y:%n 显示文字:%s",
