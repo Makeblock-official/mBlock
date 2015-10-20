@@ -292,9 +292,15 @@ package extensions
 					v.push("-D");
 					v.push("-U");
 					if(_hexToDownload.length==0){
-						var hexFile:String = (ApplicationManager.sharedManager().documents.nativePath+"/mBlock/tools/hex/leonardo.hex");//.split("\\").join("/");
-						tf = new File(hexFile);
-						v.push("flash:w:"+hexFile+":i");
+						if(DeviceManager.sharedManager().currentBoard.indexOf("me/baseboard")>-1){
+							var hexFile_baseboard:String = (ApplicationManager.sharedManager().documents.nativePath+"/mBlock/tools/hex/baseboard.hex");//.split("\\").join("/");
+							tf = new File(hexFile_baseboard);
+							v.push("flash:w:"+hexFile_baseboard+":i");
+						}else{
+							var hexFile:String = (ApplicationManager.sharedManager().documents.nativePath+"/mBlock/tools/hex/leonardo.hex");//.split("\\").join("/");
+							tf = new File(hexFile);
+							v.push("flash:w:"+hexFile+":i");
+						}
 					}else{
 						tf = new File(_hexToDownload);
 						v.push("flash:w:"+_hexToDownload+":i");

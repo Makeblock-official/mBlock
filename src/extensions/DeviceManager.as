@@ -22,7 +22,8 @@ package extensions
 		}
 		public function onSelectBoard(board:String):void{
 			_board = board.toString();
-			_device = _board.split("_")[1];
+			var tempList:Array = _board.split("_");
+			_device = tempList[tempList.length-1];
 			SharedObjectManager.sharedManager().setObject("board",board);
 			if(_board=="picoboard_unknown"){
 				MBlock.app.extensionManager.singleSelectExtension("PicoBoard");
@@ -37,8 +38,8 @@ package extensions
 					}
 				}else if(_board.indexOf("me/orion_uno")>-1){
 					MBlock.app.openOrion();
-					if(!MBlock.app.extensionManager.checkExtensionSelected("Orion")){
-						MBlock.app.extensionManager.singleSelectExtension("Orion");
+					if(!MBlock.app.extensionManager.checkExtensionSelected("Makeblock")){
+						MBlock.app.extensionManager.singleSelectExtension("Makeblock");
 					}
 				}else if(_board.indexOf("me/baseboard")>-1){
 					if(!MBlock.app.extensionManager.checkExtensionSelected("BaseBoard")){
