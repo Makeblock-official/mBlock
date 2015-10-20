@@ -46,7 +46,7 @@
 		
 		
 		["-"],
-		["R", "ultrasonic sensor %d.normalPort distance","getUltrasonic","Port3",
+		["R", "ultrasonic sensor %d.yellowPorts distance","getUltrasonic","Port3",
 		{"encode":"{d0}","setup":"","inc":"","def":"MeUltrasonicSensor ultrasonic_{0}({0});\n","work":"ultrasonic_{0}.distanceCm()","loop":""}],
 		
 		["R", "line follower %d.normalPort","getLinefollower","Port3",
@@ -187,7 +187,7 @@
 			"set 7-segments display%d.bluePorts number %n":"设置数码管%d.bluePorts 数字%n",
 			"set led %d.normalPort %d.index red%d.value green%d.value blue%d.value":"设置LED %d.normalPort %d.index 红色%d.value 绿色%d.value 蓝色%d.value",
 			"set led strip %d.normalPort %d.slot %d.index2 red%d.value green%d.value blue%d.value":"设置灯带 %d.normalPort %d.slot %d.index2 红色%d.value 绿色%d.value 蓝色%d.value",
-			"ultrasonic sensor %d.normalPort distance":"超声波传感器%d.normalPort 距离",
+			"ultrasonic sensor %d.yellowPorts distance":"超声波传感器%d.yellowPorts 距离",
 			"sound sensor %d.blackPorts":"音量传感器%d.blackPorts",
 			"light sensor %d.blackPorts":"光线传感器%d.blackPorts",
 			"set light sensor %d.normalPort led as %d.switch":"设置光线传感器%d.normalPort LED状态为 %d.switch",
@@ -249,7 +249,7 @@
 			"set light sensor %d.normalPort led as %d.switch":"régler le détecteur de lumière du %d.normalPort sur %d.switch",
 			"set camera shutter %d.normalPort as %d.shutter":"mettre l'obturateur du %d.normalPort en mode %d.shutter",
 			"limit switch %d.normalPort %d.slot":"état du fin de course sur %d.normalPort %d.slot",
-			"ultrasonic sensor %d.normalPort distance":"distance mesurée par le capteur ultrasons du %d.normalPort",
+			"ultrasonic sensor %d.yellowPorts distance":"distance mesurée par le capteur ultrasons du %d.yellowPorts",
 			"line follower %d.normalPort":"état du suiveur de ligne sur le %d.normalPort",
 			"light sensor %d.blackPorts":"luminosité mesurée sur le %d.blackPorts",
 			"joystick %d.blackPorts %d.Axis":"angle du Joystick sur le %d.blackPorts suivant l'%d.Axis",
