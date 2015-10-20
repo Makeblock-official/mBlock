@@ -4,7 +4,7 @@
 	"firmware":"1.2.103",
 	"javascriptURL":"js/mbot.js",
 	"blockSpecs": [
-		["h","mBot Program","runArduino",{"src":"mbot","inc":"#include <MeMbot.h>","def":"","setup":"","loop":""}],
+		["h","mBot Program","runArduino",{"src":"mbot","inc":"#include <MeMCore.h>","def":"","setup":"","loop":""}],
 		
 		["-"],
 	

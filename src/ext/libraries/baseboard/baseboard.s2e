@@ -81,8 +81,7 @@
 		
 		["R", "humiture %d.normalPort %d.humiture", "getHumiture", "Port3", "humidity", {"encode":"", "setup":"", "inc":"", "def":"MeHumiture humiture_{0}({0});\n", "work":"humiture_{0}.getValue({1})", "loop":"humiture_{0}.update();\n"}],
 		["R", "flame %d.blackPorts intensity", "getFlame", "Port3", {"encode":"", "setup":"", "inc":"", "def":"MeFlameSensor flameSensor_{0}({0});\n", "work":"flameSensor_{0}.readAnalog()", "loop":""}],
-		["R", "gas %d.blackPorts concentration", "getGas", "Port3", {"encode":"", "setup":"", "inc":"", "def":"MeGasSensor gasSensor_{0}({0});\n", "work":"gasSensor_{0}.readAnalog()", "loop":""}],
-		["R", "campass %d.normalPort bearing", "gatCompass", "Port3",{"encode":"", "setup":"compass_{0}.begin();\n", "inc":"", "def":"MeCompass compass_{0}({0});\n", "work":"compass_{0}.getAngle()", "loop":""}]
+		["R", "gas %d.blackPorts concentration", "getGas", "Port3", {"encode":"", "setup":"", "inc":"", "def":"MeGasSensor gasSensor_{0}({0});\n", "work":"gasSensor_{0}.readAnalog()", "loop":""}]
 		
         ],
     "menus": {
