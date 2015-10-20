@@ -18,7 +18,7 @@
 		["w", "set encoder motor%d.exMotorPort %d.slot speed %d.encoderSpeed distance %n","runEncoderMotor", "Port1", "Slot1", 100, 1000,
 		{"encode":"{d0}{s1}{s2}","setup":"encoder_{0}.begin();\nencoder_{0}.runSpeed(0);\n","inc":"","def":"MeEncoderMotor encoder_{0}({0});\n","work":"encoder_{0}.move({3},{2});\n","loop":""}],
 		
-		["w", "set 7-segments display%d.normalPort number %n","runSevseg", "Port3", 100,
+		["w", "set 7-segments display%d.bluePorts number %n","runSevseg", "Port3", 100,
 		{"encode":"{d0}{f1}","setup":"","inc":"","def":"Me7SegmentDisplay seg7_{0}({0});\n","work":"seg7_{0}.display({1});\n","loop":""}],
 		
 		["w", "set led %d.normalPort %d.index red%d.value green%d.value blue%d.value","runLed", "Port3","all",0,0,0,
@@ -184,7 +184,7 @@
 			"set servo %d.servoPort %d.slot angle %d.servovalue":"设置舵机%d.servoPort %d.slot 角度%d.servovalue",
 			"set stepper motor%d.exMotorPort speed %d.stepperSpeed distance %n":"设置步进电机%d.exMotorPort 速度 %d.stepperSpeed 距离 %n",
 			"set encoder motor%d.exMotorPort %d.slot speed %d.encoderSpeed distance %n":"设置编码电机%d.exMotorPort %d.slot 速度 %d.encoderSpeed 距离 %n",
-			"set 7-segments display%d.normalPort number %n":"设置数码管%d.normalPort 数字%n",
+			"set 7-segments display%d.bluePorts number %n":"设置数码管%d.bluePorts 数字%n",
 			"set led %d.normalPort %d.index red%d.value green%d.value blue%d.value":"设置LED %d.normalPort %d.index 红色%d.value 绿色%d.value 蓝色%d.value",
 			"set led strip %d.normalPort %d.slot %d.index2 red%d.value green%d.value blue%d.value":"设置灯带 %d.normalPort %d.slot %d.index2 红色%d.value 绿色%d.value 蓝色%d.value",
 			"ultrasonic sensor %d.normalPort distance":"超声波传感器%d.normalPort 距离",
@@ -244,7 +244,7 @@
 			"set servo %d.servoPort %d.slot angle %d.servovalue":"régler le servomoteur du %d.servoPort %d.slot à un angle de %d.servovalue °",
 			"set stepper motor%d.exMotorPort speed %d.stepperSpeed distance %n":"régler moteur pas à pas du %d.exMotorPort vitesse : %d.stepperSpeed distance : %n",
 			"set encoder motor%d.exMotorPort %d.slot speed %d.encoderSpeed distance %n":"régler roue codeuse du %d.exMotorPort %d.slot à la vitesse de %d.encoderSpeed sur une distance de %n",
-			"set 7-segments display%d.normalPort number %n":"sur le 7 segments du %d.normalPort afficher %n",
+			"set 7-segments display%d.bluePorts number %n":"sur le 7 segments du %d.bluePorts afficher %n",
 			"set led %d.normalPort %d.index red%d.value green%d.value blue%d.value":"régler la DEL sur %d.normalPort n° %d.index en Rouge%d.value Vert%d.value Bleu%d.value",
 			"set light sensor %d.normalPort led as %d.switch":"régler le détecteur de lumière du %d.normalPort sur %d.switch",
 			"set camera shutter %d.normalPort as %d.shutter":"mettre l'obturateur du %d.normalPort en mode %d.shutter",
