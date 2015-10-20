@@ -786,6 +786,7 @@ public class Block extends Sprite {
 				prevParent.addChild(nextBlock);
 			}
 		}
+		nextBlock = null;
 		removeComments();
 		app.scriptsPane.saveScripts();
 		app.updatePalette();
