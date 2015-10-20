@@ -35,17 +35,6 @@
 		
 		["-"],
 		
-		["w", "show face %d.normalPort x:%n y:%n characters:%s","showCharacters", "Port3", 0,0,"Hello",
-		{"encode":"{s0}","setup":"","inc":"","def":"MeLEDMatrix ledMtx_{0}({0});\n","work":"ledMtx_{0}.clearScreen();\nledMtx_{0}.setColorIndex(1);\nledMtx_{0}.setBrightness(6);\nledMtx_{0}.drawStr({1},7-{2},{3});\n","loop":""}],
-		
-		["w", "show time %d.normalPort hour:%n %m.points min:%n","showTime", "Port3", 10,":",20,
-		{"encode":"{s0}","setup":"","inc":"","def":"MeLEDMatrix ledMtx_{0}({0});\n","work":"ledMtx_{0}.clearScreen();\nledMtx_{0}.setColorIndex(1);\nledMtx_{0}.setBrightness(6);\nledMtx_{0}.showClock({1},{3},strcmp({2},\":\")==0);\n","loop":""}],
-		
-		["w", "show drawing %d.normalPort x:%n y:%n draw:%m.drawFace","showDraw", "Port3", 0,0,"        ",
-		{"encode":"{s0}","setup":"","inc":"","def":"MeLEDMatrix ledMtx_{0}({0});\nunsigned char drawBuffer[16];\nunsigned char *drawTemp;\n","work":"ledMtx_{0}.clearScreen();\nledMtx_{0}.setColorIndex(1);\nledMtx_{0}.setBrightness(6);\ndrawTemp = new unsigned char[16]{{3}};\nmemcpy(drawBuffer,drawTemp,16);\nfree(drawTemp);\nledMtx_{0}.drawBitmap({1},{2},16,drawBuffer);\n","loop":""}],
-		
-		
-		["-"],
 		["R", "ultrasonic sensor %d.normalPort distance","getUltrasonic","Port3",
 		{"encode":"{d0}","setup":"","inc":"","def":"MeUltrasonicSensor ultrasonic_{0}({0});\n","work":"ultrasonic_{0}.distanceCm()","loop":""}],
 		
