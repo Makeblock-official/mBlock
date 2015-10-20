@@ -54,7 +54,7 @@
 		{"encode":"{d0}","setup":"","inc":"","def":"MePort soundsensor_{0}({0});\n","work":"soundsensor_{0}.aRead2()","loop":""}],
 		
 		["R", "infrared receiver %d.normalPort","getInfrared","Port6",
-		{"encode":"{d0}","setup":"ir_{0}.begin();\n","inc":"","def":"MeInfraredReceiver ir_{0}({0});\n","work":"ir_{0}.read()","loop":""}],
+		{"encode":"{d0}","setup":"ir_{0}.begin();\n","inc":"","def":"MeInfraredReceiver ir_{0}({0});\n","work":"ir_{0}.getCode()","loop":"ir_{0}.loop();\n"}],
 		
 		["B", "limit switch %d.normalPort %d.slot","getLimitswitch","Port6","Slot1",
 		{"encode":"{d0}{d1}","setup":"","inc":"","def":"MePort sw_{0}_{1}({0});\n","work":"sw_{0}_{1}.dpRead{1}()","loop":""}],
@@ -95,7 +95,7 @@
 		"switch":["Off","On"],
 		"shutter":["Press","Release","Focus On","Focus Off"],
 		"index":["all",1,2,3,4],
-		"index2":["all",1,2,3,4,16,32],
+		"index2":["all",1,15,30],
 		"servovalue":[0,45,90,135,180],
 		"motorvalue":[255,100,50,0,-50,-100,-255],
 		"value":[0,20,60,150,255],

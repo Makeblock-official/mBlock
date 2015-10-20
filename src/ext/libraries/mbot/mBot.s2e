@@ -120,7 +120,7 @@
 		"motorPort":["M1","M2"],
 		"slot":["Slot1","Slot2"],
 		"index":["all",1,2,3,4],
-		"index2":["all",1,2,3,4,16,32],
+		"index2":["all",1,15,30],
 		"Axis":["X-Axis","Y-Axis"],
 		"port":["Port1","Port2","Port3","Port4"],
 		"aport":["Port3","Port4"],
