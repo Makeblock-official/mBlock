@@ -51,7 +51,7 @@
 		["R", "line follower %d.normalPort","getLinefollower","Port3",
 		{"encode":"{d0}","setup":"","inc":"","def":"MePort linefollower_{0}({0});\n","work":"linefollower_{0}.dRead1()*2+linefollower_{0}.dRead2()","loop":""}],
 		
-		["R", "light sensor %d.normalPort","getLightsensor","Port6",
+		["R", "light sensor %d.blackPorts","getLightsensor","Port6",
 		{"encode":"{d0}","setup":"","inc":"","def":"MePort lightsensor_{0}({0});\n","work":"lightsensor_{0}.aRead2()","loop":""}],
 		
 		["R", "joystick %d.normalPort %d.Axis","getJoystick","Port6","X-Axis",
@@ -85,6 +85,11 @@
 		
         ],
     "menus": {
+    	"yellowPorts":["Port3","Port4","Port5","Port6","Port7","Port8"],
+    	"bluePorts":["Port3","Port4","Port5","Port6"],
+    	"grayPorts":["Port5"],
+    	"whitePorts":["Port3","Port4","Port6","Port7","Port8"],
+    	"blackPorts":["Port6","Port7","Port8"],
 		"normalPort":["Port3","Port4","Port5","Port6","Port7","Port8"],
 		"motorPort":["M1","M2","Port1","Port2"],
 		"exMotorPort":["Port1","Port2"],
@@ -183,7 +188,7 @@
 			"set led strip %d.normalPort %d.slot %d.index2 red%d.value green%d.value blue%d.value":"设置灯带 %d.normalPort %d.slot %d.index2 红色%d.value 绿色%d.value 蓝色%d.value",
 			"ultrasonic sensor %d.normalPort distance":"超声波传感器%d.normalPort 距离",
 			"sound sensor %d.normalPort":"音量传感器%d.normalPort",
-			"light sensor %d.normalPort":"光线传感器%d.normalPort",
+			"light sensor %d.blackPorts":"光线传感器%d.blackPorts",
 			"set light sensor %d.normalPort led as %d.switch":"设置光线传感器%d.normalPort LED状态为 %d.switch",
 			"line follower %d.normalPort":"巡线传感器%d.normalPort",
 			"limit switch %d.normalPort %d.slot":"限位开关 %d.normalPort %d.slot",
@@ -245,7 +250,7 @@
 			"limit switch %d.normalPort %d.slot":"état du fin de course sur %d.normalPort %d.slot",
 			"ultrasonic sensor %d.normalPort distance":"distance mesurée par le capteur ultrasons du %d.normalPort",
 			"line follower %d.normalPort":"état du suiveur de ligne sur le %d.normalPort",
-			"light sensor %d.normalPort":"luminosité mesurée sur le %d.normalPort",
+			"light sensor %d.blackPorts":"luminosité mesurée sur le %d.blackPorts",
 			"joystick %d.normalPort %d.Axis":"angle du Joystick sur le %d.normalPort suivant l'%d.Axis",
 			"potentiometer %d.normalPort":"valeur du potentiomètre sur le %d.normalPort",
 			"sound sensor %d.normalPort":"son mesuré sur le %d.normalPort",
@@ -281,7 +286,7 @@
 			"set led %d.normalPort %d.index red%d.value green%d.value blue%d.value":"הפעל לדLED %d.normalPort %d.index אדום%d.valueירוק%d.value כחול%d.value",
 			"ultrasonic sensor %d.normalPort distance":"חישן אולטראסוני%d.normalPort מרחק",
 			"sound sensor %d.normalPort":"חישן קול%d.normalPort",
-			"light sensor %d.normalPort":"חישן  אור%d.normalPort",
+			"light sensor %d.blackPorts":"חישן  אור%d.blackPorts",
 			"set light sensor %d.normalPort led as %d.switch":"הפעל חישן אור%d.normalPort LEDפורט רגיל  %d.switch",
 			"line follower %d.normalPort":"עוקב קו%d.normalPort",
 			"limit switch %d.normalPort %d.slot":"מתג לימיט-קצה %d.normalPort %d.slot",
