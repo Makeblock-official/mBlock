@@ -21,11 +21,11 @@
 		["w", "set 7-segments display%d.normalPort number %n","runSevseg", "Port3", 100,
 		{"encode":"{d0}{f1}","setup":"","inc":"","def":"Me7SegmentDisplay seg7_{0}({0});\n","work":"seg7_{0}.display({1});\n","loop":""}],
 		
-		["w", "set led strip %d.normalPort %d.slot %d.index2 red%d.value green%d.value blue%d.value","runLedStrip", "Port3","Slot2","all",0,0,0,
-		{"encode":"{d0}{d1}{d2}{d3}{d4}","setup":"","inc":"","def":"MeRGBLed rgbled_{0}({0}, {1}, 32);\n","work":"rgbled_{0}.setColor({2},{3},{4},{5});\nrgbled_{0}.show();\n","loop":""}],
-		
 		["w", "set led %d.normalPort %d.index red%d.value green%d.value blue%d.value","runLed", "Port3","all",0,0,0,
 		{"encode":"{d0}{d1}{d2}{d3}{d4}","setup":"","inc":"","def":"MeRGBLed rgbled_{0}({0}, 32);\n","work":"rgbled_{0}.setColor({1},{2},{3},{4});\nrgbled_{0}.show();\n","loop":""}],
+		
+		["w", "set led strip %d.normalPort %d.slot %d.index2 red%d.value green%d.value blue%d.value","runLedStrip", "Port3","Slot2","all",0,0,0,
+		{"encode":"{d0}{d1}{d2}{d3}{d4}","setup":"","inc":"","def":"MeRGBLed rgbled_{0}({0}, {1}, 32);\n","work":"rgbled_{0}.setColor({2},{3},{4},{5});\nrgbled_{0}.show();\n","loop":""}],
 		
 		["w", "set light sensor %d.normalPort led as %d.switch","runLightsensor", "Port3", "On",
 		{"encode":"{d0}{d1}","setup":"","inc":"","def":"MePort lightsensor_{0}({0});\n","work":"lightsensor_{0}.dWrite1({1});\n","loop":""}],
