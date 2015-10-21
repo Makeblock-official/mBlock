@@ -20,6 +20,8 @@
         Port6: 6,
         Port7: 7,
         Port8: 8,
+        Port9: 9,
+        Port10: 10,
 		M1:9,
 		M2:10
     };
