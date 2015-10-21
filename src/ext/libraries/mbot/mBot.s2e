@@ -257,7 +257,7 @@
 			"potentiometer %d.aport":"电位器 %d.aport",
 			"joystick %d.aport %d.Axis":"摇杆 %d.aport %d.Axis",
 			"pir motion sensor %d.port":"人体红外传感器 %d.port",
-			"temperature %d.port %d.slot °C":"当前温度 %d.port %d.slot °C",
+			"temperature %d.port %d.slot °C":"温度传感器 %d.port %d.slot °C",
 			"send mBot's message %s":"发送mBot消息 %s",
 			"mBot's message received":"接收到的mBot消息",
 			"ir remote %m.ircode pressed":"红外遥控器按下%m.ircode 键",
@@ -286,10 +286,10 @@
 			"Focus Off":"停止对焦",
 			"humidity":"湿度",
 			"temperature":"温度",
-			"humiture %d.port %d.humiture":"温湿度  %d.port %d.humiture",
-			"flame %d.blackPorts intensity":"火焰 %d.blackPorts 强度",
-			"gas %d.blackPorts concentration":"气体 %d.blackPorts 浓度",
-			"campass %d.port bearing":"罗盘 %d.port 方位"
+			"humiture %d.port %d.humiture":"温湿度传感器  %d.port %d.humiture",
+			"flame %d.blackPorts intensity":"火焰传感器 %d.blackPorts",
+			"gas %d.blackPorts concentration":"气体传感器 %d.blackPorts",
+			"campass %d.port bearing":"电子罗盘 %d.port"
 		},
 		"zh_TW":{
 			"mBot Program":"mBot 主程式",
