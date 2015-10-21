@@ -84,6 +84,9 @@
 		["R", "pir motion sensor %d.port","getPirmotion","Port2",
 		{"encode":"{d0}","setup":"","inc":"","def":"MePort pir_{0}({0});\n","work":"pir_{0}.dRead2()","loop":""}],
 		
+		["R", "3-axis gyro %d.GyroAxis angle","getGyro","X-Axis",
+		{"encode":"{d0}","setup":"gyro.begin();\n","inc":"","def":"MeGyro gyro;\n","work":"gyro.getAngle({0})","loop":"gyro.update();\n"}],
+		
 		["R", "humiture %d.port %d.humiture", "getHumiture", "Port1", "humidity", {"encode":"", "setup":"", "inc":"", "def":"MeHumiture humiture_{0}({0});\n", "work":"humiture_{0}.getValue({1})", "loop":"humiture_{0}.update();\n"}],
 		["R", "flame %d.blackPorts intensity", "getFlame", "Port3", {"encode":"", "setup":"", "inc":"", "def":"MeFlameSensor flameSensor_{0}({0});\n", "work":"flameSensor_{0}.readAnalog()", "loop":""}],
 		["R", "gas %d.blackPorts concentration", "getGas", "Port3", {"encode":"", "setup":"", "inc":"", "def":"MeGasSensor gasSensor_{0}({0});\n", "work":"gasSensor_{0}.readAnalog()", "loop":""}],
@@ -122,6 +125,7 @@
 		"index":["all",1,2,3,4],
 		"index2":["all",1,15,30],
 		"Axis":["X-Axis","Y-Axis"],
+		"GyroAxis":["X-Axis","Y-Axis","Z-Axis"],
 		"port":["Port1","Port2","Port3","Port4"],
 		"aport":["Port3","Port4"],
 		"lport":["led on board","Port1","Port2","Port3","Port4"],
@@ -259,6 +263,7 @@
 			"ir remote %m.ircode pressed":"红外遥控器按下%m.ircode 键",
 			"button %m.button_state":"按钮%m.button_state",
 			"when button %m.button_state":"当按钮%m.button_state",
+			"3-axis gyro %d.GyroAxis angle":"陀螺仪 %d.GyroAxis 角度",
 			"pressed":"已按下",
 			"released":"已松开",
 			"Setting":"设置",
@@ -514,6 +519,7 @@
 			"Clear All":"Tout éteindre",
 			"Light All":"Tout allumer",
 			"Add To Favourite":"Ajouter aux favoris",
+			"3-axis gyro %d.GyroAxis angle":"mesure d'angle du gyroscope 3-axes sur l'%d.GyroAxis",
 			"Complete":"Valider"
 		},
 		"it_IT":{
@@ -543,6 +549,7 @@
 			"ir remote %m.ircode pressed":"telecomando %m.ircode premuto",
 			"button %m.button_state":"pulsante %m.button_state",
 			"when button %m.button_state":"quando il pulsante viene %m.button_state",
+			"3-axis gyro %d.GyroAxis angle":"angolo del giroscopio a tre assi %d.GyroAxis",
 			"pressed":"premuto",
 			"released":"rilasciato",
 			"Setting":"Impostazioni",

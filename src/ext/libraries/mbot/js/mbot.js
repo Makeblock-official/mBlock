@@ -465,16 +465,13 @@
 		nextID = genNextID(nextID, [port,slot]);
 		getPackage(nextID,deviceId,port,slot);
     };
-	ext.getGyro = function(nextID,ax) {
+    ext.getGyro = function(nextID,ax) {
 		var deviceId = 6;
-		if(typeof port=="string"){
-			port = ports[port];
+		if(typeof ax=="string"){
+			ax = axis[ax];
 		}
-		if(typeof slot=="string"){
-			slot = slots[slot];
-		}
-		nextID = genNextID(nextID, [port,slot]);
-		getPackage(nextID,deviceId,port,slot);
+		nextID = genNextID(nextID, [0,ax]);
+		getPackage(nextID,deviceId,0,ax);
     };
 	ext.getIrRemote = function(nextID,code){
 		var deviceId = 14;
