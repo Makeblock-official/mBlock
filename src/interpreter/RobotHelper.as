@@ -6,24 +6,67 @@ package interpreter
 
 	public class RobotHelper
 	{
+		static private function cloneBlock(block:Block):Block
+		{
+			return BlockIO.stringToStack(BlockIO.stackToString(block), false);
+		}
+		
 		static private var varIndex:int;
 		
 		static public function Modify(block:Block):Block
 		{
 			varIndex = 0;
-			var newBlock:Block = BlockIO.stringToStack(BlockIO.stackToString(block), false);
+			var newBlock:Block = cloneBlock(block);
 			newBlock = modifyBlockList(newBlock);
+//			trace(blockToString(newBlock));
 			if(blockToString(block) == blockToString(newBlock)){
 				return block;
 			}
-//			trace(blockToString(newBlock));
 			return newBlock;
 		}
+		
+		static private function checkLoop(block:Block, prevBlock:Block):Block
+		{
+			switch(block.op){
+				case "doWaitUntil":
+					var newBlock:Block = new Block("repeat until %b", "c", 0xD00000, "doUntil");
+					newBlock.args[0] = block.args[0];
+					newBlock.nextBlock = block.nextBlock;
+					if(prevBlock != null){
+						prevBlock.nextBlock = newBlock;
+					}
+					block = newBlock;
+				case "doRepeat":
+				case "doUntil":
+					_loopBlock = block;
+					break;
+				default:
+					_loopBlock = null;
+			}
+			return block;
+		}
+		
+		static private function addBlockToLoop(block:Block):void
+		{
+			if(null == _loopBlock.subStack1){
+				_loopBlock.subStack1 = block;
+				return;
+			}
+			var b:Block = _loopBlock.subStack1;
+			while(b.nextBlock != null){
+				b = b.nextBlock;
+			}
+			b.nextBlock = block;
+		}
+		
+		static private var _loopBlock:Block;
 		
 		static private function modifyBlockList(block:Block):Block
 		{
 			var root:Block = block;
+			var prevBlock:Block;
 			while(block != null){
+				block = checkLoop(block, prevBlock);
 				root = modifyBlock(block, root);
 				if(block.subStack1 != null){
 					block.subStack1 = modifyBlockList(block.subStack1);
@@ -31,6 +74,7 @@ package interpreter
 				if(block.subStack2 != null){
 					block.subStack2 = modifyBlockList(block.subStack2);
 				}
+				prevBlock = block;
 				block = block.nextBlock;
 			}
 			return root;
@@ -59,6 +103,9 @@ package interpreter
 				var varName:String = "__" + (varIndex++).toString();
 				var newBlock:Block = new Block("set %m.var to %s", " ", 0xD00000, Specs.SET_VAR, [varName, 0]);
 				newBlock.args[1] = block;
+				if(_loopBlock != null){
+					addBlockToLoop(cloneBlock(newBlock));
+				}
 				newBlock.nextBlock = root;
 				root = newBlock;
 				b.args[i] = new Block(varName, "r", 0xD00000, Specs.GET_VAR);
