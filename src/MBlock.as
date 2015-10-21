@@ -16,6 +16,8 @@ package {
 	import flash.filesystem.File;
 	import flash.geom.Point;
 	import flash.net.URLRequest;
+	import flash.net.URLVariables;
+	import flash.net.navigateToURL;
 	import flash.system.System;
 	import flash.ui.Keyboard;
 	import flash.utils.ByteArray;
@@ -141,8 +143,13 @@ package {
 		private var ga:GATracker;
 		private var tabsPart:TabsPart;
 		private var _welcomeView:Loader;
-		private var _currentVer:String = "09.24.001";
+		private var _currentVer:String = "10.21.001";
 		public function MBlock(){
+			/*
+			if(File.applicationStorageDirectory.exists){
+				File.applicationStorageDirectory.deleteDirectory(true);
+			}
+			//*/
 			app = this;
 			addEventListener(Event.ADDED_TO_STAGE,initStage);
 			loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, __onError);
@@ -160,9 +167,12 @@ package {
 			}else if(evt.error is ErrorEvent){
 				errorText = (evt.error as ErrorEvent).text;
 			}
-			var f:ErrorReportFrame = new ErrorReportFrame();
-			f.setText(errorText);
-			f.show();
+			var request:URLRequest = new URLRequest("http://feedback.makeblock.com/");
+			var data:URLVariables = new URLVariables();
+			data.m = errorText;
+			data.l = (Translator.currentLang.indexOf("zh_") == 0) ? "zh" : "en";
+			request.data = data;
+			navigateToURL(request);
 		}
 		
 		private function initStage(evt:Event):void{
