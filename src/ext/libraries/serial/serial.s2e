@@ -10,22 +10,22 @@
 		{"setup":"","inc":"","def":"","work":"","loop":""}],
 		
 		["b","data available?","isAvailable",
-		{"setup":"Serial.begin(115200);\n","inc":"#include \"MeSerial.h\"\n","def":"MeSerial se;\n","work":"se.dataLineAvailable()","loop":""}],
+		{"setup":"Serial.begin(115200);\n","inc":"","def":"MeSerial se;\n","work":"se.dataLineAvailable()","loop":""}],
 		
 		["b","%s is equal %s?","isEqual","","",
-		{"setup":"Serial.begin(115200);\n","inc":"#include \"MeSerial.h\"\n","def":"MeSerial se;\n","work":"se.equalString({0},{1})","loop":""}],
+		{"setup":"Serial.begin(115200);\n","inc":"","def":"MeSerial se;\n","work":"se.equalString({0},{1})","loop":""}],
 		
 		["R","read line","readLine",
-		{"setup":"Serial.begin(115200);\n","inc":"#include \"MeSerial.h\"\n","def":"MeSerial se;\n","work":"se.readDataLine()","loop":""}],
+		{"setup":"Serial.begin(115200);\n","inc":"","def":"MeSerial se;\n","work":"se.readDataLine()","loop":""}],
 		
 		["w", "write line %s","writeLine", "hello",
-		{"setup":"Serial.begin(115200);\n","inc":"#include \"MeSerial.h\"\n","def":"MeSerial se;\n","work":"Serial.println({0});\n","loop":""}],
+		{"setup":"Serial.begin(115200);\n","inc":"","def":"MeSerial se;\n","work":"Serial.println({0});\n","loop":""}],
 		
 		["w", "send command %s = %s","writeCommand","var","value",
-		{"setup":"Serial.begin(115200);\n","inc":"#include \"MeSerial.h\"\n","def":"MeSerial se;\n","work":"Serial.print({0});Serial.print(\"=\");Serial.println({1});\n","loop":""}],
+		{"setup":"Serial.begin(115200);\n","inc":"","def":"MeSerial se;\n","work":"Serial.print({0});Serial.print(\"=\");Serial.println({1});\n","loop":""}],
 		
 		["R", "read command %s","readCommand", "var",
-		{"setup":"Serial.begin(115200);\n","inc":"#include \"MeSerial.h\"\n","def":"MeSerial se;\n","work":"se.getValue({0})","loop":""}],
+		{"setup":"Serial.begin(115200);\n","inc":"","def":"MeSerial se;\n","work":"se.getValue({0})","loop":""}],
 		
 		["w", "clear buffer","clearBuffer",
 		{"setup":"","inc":"","def":"","work":"","loop":""}]
