@@ -314,15 +314,9 @@ package extensions
 					v.push("-V");
 					v.push("-U");
 					if(_hexToDownload.length==0){
-						if(DeviceManager.sharedManager().currentBoard.indexOf("mbot")>-1){
-							var hexFile_mbot:String = (ApplicationManager.sharedManager().documents.nativePath+"/mBlock/tools/hex/mbot.hex");//.split("\\").join("/");
-							v.push("flash:w:"+hexFile_mbot+":i");
-							tf = new File(hexFile_mbot);
-						}else{
-							var hexFile_uno:String = (ApplicationManager.sharedManager().documents.nativePath+"/mBlock/tools/hex/uno.hex");//.split("\\").join("/");
-							v.push("flash:w:"+hexFile_uno+":i");
-							tf = new File(hexFile_uno);
-						}
+						var hexFile_uno:String = getHexFilePath();
+						v.push("flash:w:"+hexFile_uno+":i");
+						tf = new File(hexFile_uno);
 					}else{
 						v.push("flash:w:"+_hexToDownload+":i");
 						tf = new File(_hexToDownload);
@@ -408,6 +402,21 @@ package extensions
 			}
 			
 		}
+		
+		private function getHexFilePath():String
+		{
+			var board:String = DeviceManager.sharedManager().currentBoard;
+			var fileName:String;
+			if(board.indexOf("mbot") >= 0){
+				fileName = "mbot";
+			}else if(board.indexOf("shield") >= 0){
+				fileName = "shield";
+			}else{
+				fileName = "uno";
+			}
+			return ApplicationManager.sharedManager().documents.nativePath + "/mBlock/tools/hex/" + fileName + ".hex";
+		}
+		
 		private function onStandardOutputData(event:ProgressEvent):void {
 //			_upgradeBytesLoaded+=process.standardOutput.bytesAvailable;
 			
