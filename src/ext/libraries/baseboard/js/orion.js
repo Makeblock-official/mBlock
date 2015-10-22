@@ -103,7 +103,10 @@
 		if(typeof port=="string"){
 			port = ports[port];
 		}
-		runPackage(8,port,ledIndex=="all"?0:ledIndex,red,green,blue);
+		if(typeof slot=="string"){
+			slot = slots[slot];
+		}
+		runPackage(8,port,slot,ledIndex=="all"?0:ledIndex,red,green,blue);
 	};
 	ext.runLightsensor = function(port,status){
 		if(typeof port=="string"){

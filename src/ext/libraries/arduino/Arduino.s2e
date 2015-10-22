@@ -13,10 +13,10 @@
 		{"encode":"{d0}","setup":"pinMode(A{0},INPUT);\n","inc":"","def":"","work":"analogRead(A{0})","loop":""}],
 		
 		["R", "read pulse pin %n timeout %n","getPulse","13",20000,
-		{"encode":"{d0}","setup":"","inc":"","def":"","work":"pinMode({0},INPUT);\npulseIn({0},HIGH,{1})","loop":""}],
+		{"encode":"{d0}","setup":"pinMode({0},INPUT);\n","inc":"","def":"","work":"pulseIn({0},HIGH,{1})","loop":""}],
 		
 		["w", "set digital pin %n output as %d.digital","runDigital", "9", "HIGH",
-		{"encode":"{d0}{d1}","setup":"","inc":"","def":"","work":"pinMode({0},OUTPUT);\ndigitalWrite({0},{1});\n","loop":""}],
+		{"encode":"{d0}{d1}","setup":"pinMode({0},OUTPUT);\n","inc":"","def":"","work":"digitalWrite({0},{1});\n","loop":""}],
 		
 		["w", "set pwm pin %n output as %d.pwmvalue","runPwm", "5", 0,
 		{"encode":"{d0}{d1}","setup":"","inc":"","def":"","work":"pinMode({0},OUTPUT);\nanalogWrite({0},{1});\n","loop":""}],
