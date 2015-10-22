@@ -53,7 +53,7 @@
 		["R", "sound sensor %d.blackPorts","getSoundsensor","Port7",
 		{"encode":"{d0}","setup":"","inc":"","def":"MePort soundsensor_{0}({0});\n","work":"soundsensor_{0}.aRead2()","loop":""}],
 		
-		["R", "infrared receiver %d.normalPort","getInfrared","Port6",
+		["R", "infrared receiver %d.bluePorts","getInfrared","Port3",
 		{"encode":"{d0}","setup":"ir_{0}.begin();\n","inc":"","def":"MeInfraredReceiver ir_{0}({0});\n","work":"ir_{0}.getCode()","loop":"ir_{0}.loop();\n"}],
 		
 		["B", "limit switch %d.normalPort %d.slot","getLimitswitch","Port6","Slot1",
@@ -184,7 +184,7 @@
 			"limit switch %d.normalPort %d.slot":"限位开关 %d.normalPort %d.slot",
 			"potentiometer %d.blackPorts":"电位器 %d.blackPorts",
 			"3-axis gyro %d.GyroAxis angle":"陀螺仪 %d.GyroAxis 角度",
-			"infrared receiver %d.normalPort":"红外接收器 %d.normalPort",
+			"infrared receiver %d.bluePorts":"红外接收器 %d.bluePorts",
 			"pir motion sensor %d.normalPort":"人体红外传感器 %d.normalPort",
 			"temperature %d.normalPort%d.slot °C":"温度传感器 %d.normalPort%d.slot °C",
 			"joystick %d.blackPorts %d.Axis":"摇杆 %d.blackPorts %d.Axis",
@@ -244,7 +244,7 @@
 			"joystick %d.blackPorts %d.Axis":"angle du Joystick sur le %d.blackPorts suivant l'%d.Axis",
 			"potentiometer %d.blackPorts":"valeur du potentiomètre sur le %d.blackPorts",
 			"sound sensor %d.blackPorts":"son mesuré sur le %d.blackPorts",
-			"infrared receiver %d.normalPort":"réception infrarouge connectée sur le %d.normalPort",
+			"infrared receiver %d.bluePorts":"réception infrarouge connectée sur le %d.bluePorts",
 			"pir motion sensor %d.normalPort":"mouvement mesuré par IR sur le %d.normalPort",
 			"temperature %d.normalPort%d.slot °C":"température mesurée sur le %d.normalPort%d.slot en °C",
 			"3-axis gyro %d.GyroAxis angle":"mesure d'angle du gyroscope 3-axes sur l'%d.GyroAxis",
