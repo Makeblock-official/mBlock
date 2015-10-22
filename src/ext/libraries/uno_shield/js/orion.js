@@ -99,7 +99,7 @@
 		runPackage(9,port,float2array(display));
 	};
 	ext.runLed = function(port,ledIndex,red,green,blue){
-		ext.runLedStrip(port, 1, ledIndex, red,green,blue);
+		ext.runLedStrip(port, 2, ledIndex, red,green,blue);
 	};
 	ext.runLedStrip = function(port,slot,ledIndex,red,green,blue){
 		if(typeof port=="string"){
