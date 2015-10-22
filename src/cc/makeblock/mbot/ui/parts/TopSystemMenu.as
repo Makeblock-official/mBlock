@@ -167,13 +167,13 @@ package cc.makeblock.mbot.ui.parts
 					if(item.isSeparator){
 						break;
 					}
-					item.checked = Translator.currentLang==item.name;
+					MenuUtil.setChecked(item, Translator.currentLang==item.name);
 				}
 			}
 			try{
 				var fontItem:NativeMenuItem = languageMenu.items[languageMenu.numItems-1];
 				for each(item in fontItem.submenu.items){
-					item.checked = Translator.currentFontSize==Number(item.label);
+					MenuUtil.setChecked(item, Translator.currentFontSize==int(item.label));
 				}
 			}catch(e:Error){
 				
@@ -194,8 +194,8 @@ package cc.makeblock.mbot.ui.parts
 		{
 			var menu:NativeMenu = evt.target as NativeMenu;
 			
-			menu.getItemByName("Undo Revert").enabled = MBlock.app.canUndoRevert();
-			menu.getItemByName("Revert").enabled = MBlock.app.canRevert();
+			MenuUtil.setEnable(menu.getItemByName("Undo Revert"), MBlock.app.canUndoRevert());
+			MenuUtil.setEnable(menu.getItemByName("Revert"), MBlock.app.canRevert());
 			
 			MBlock.app.track("/OpenFile");
 		}
@@ -203,11 +203,11 @@ package cc.makeblock.mbot.ui.parts
 		private function __onInitEditMenu(evt:Event):void
 		{
 			var menu:NativeMenu = evt.target as NativeMenu;
-			menu.getItemByName("Undelete").enabled = MBlock.app.runtime.canUndelete();
-			menu.getItemByName("Hide stage layout").checked = MBlock.app.stageIsHided;
-			menu.getItemByName("Small stage layout").checked = !MBlock.app.stageIsHided && MBlock.app.stageIsContracted;
-			menu.getItemByName("Turbo mode").checked = MBlock.app.interp.turboMode;
-			menu.getItemByName("Arduino mode").checked = MBlock.app.stageIsArduino;
+			MenuUtil.setEnable(menu.getItemByName("Undelete"), MBlock.app.runtime.canUndelete());
+			MenuUtil.setChecked(menu.getItemByName("Hide stage layout"), MBlock.app.stageIsHided);
+			MenuUtil.setChecked(menu.getItemByName("Small stage layout"), !MBlock.app.stageIsHided && MBlock.app.stageIsContracted);
+			MenuUtil.setChecked(menu.getItemByName("Turbo mode"), MBlock.app.interp.turboMode);
+			MenuUtil.setChecked(menu.getItemByName("Arduino mode"), MBlock.app.stageIsArduino);
 			MBlock.app.track("/OpenEdit");
 		}
 		
@@ -288,7 +288,7 @@ package cc.makeblock.mbot.ui.parts
 			var menu:NativeMenu = evt.target as NativeMenu;
 			for each(var item:NativeMenuItem in menu.items){
 				if(item.enabled){
-					item.checked = DeviceManager.sharedManager().checkCurrentBoard(item.name);
+					MenuUtil.setChecked(item, DeviceManager.sharedManager().checkCurrentBoard(item.name));
 				}
 			}
 		}

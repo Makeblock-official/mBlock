@@ -90,5 +90,19 @@ package cc.makeblock.menu
 			}
 			return null;
 		}
+		
+		static public function setEnable(item:NativeMenuItem, value:Boolean):void
+		{
+			if(item.enabled != value){
+				item.enabled = value;
+			}
+		}
+		
+		static public function setChecked(item:NativeMenuItem, value:Boolean):void
+		{
+			if(item.checked != value){
+				item.checked = value;
+			}
+		}
 	}
 }
