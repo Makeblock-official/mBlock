@@ -25,7 +25,7 @@
 		{"encode":"{d0}{d1}{d2}{d3}{d4}","setup":"","inc":"","def":"MeRGBLed rgbled_{0}({0}, 32);\n","work":"rgbled_{0}.setColor({1},{2},{3},{4});\nrgbled_{0}.show();\n","loop":""}],
 		
 		["w", "set led strip %d.normalPort %d.slot %d.index2 red%d.value green%d.value blue%d.value","runLedStrip", "Port3","Slot2","all",0,0,0,
-		{"encode":"{d0}{d1}{d2}{d3}{d4}","setup":"","inc":"","def":"MeRGBLed rgbled_{0}({0}, {1}, 32);\n","work":"rgbled_{0}.setColor({2},{3},{4},{5});\nrgbled_{0}.show();\n","loop":""}],
+		{"encode":"{d0}{d1}{d2}{d3}{d4}","setup":"","inc":"","def":"MeRGBLed rgbled_{0}_{1}({0}, {1}, 32);\n","work":"rgbled_{0}_{1}.setColor({2},{3},{4},{5});\nrgbled_{0}_{1}.show();\n","loop":""}],
 		
 		["w", "set light sensor %d.normalPort led as %d.switch","runLightsensor", "Port3", "On",
 		{"encode":"{d0}{d1}","setup":"","inc":"","def":"MePort lightsensor_{0}({0});\n","work":"lightsensor_{0}.dWrite1({1});\n","loop":""}],
