@@ -87,6 +87,16 @@ package interpreter
 		
 		static private function modifyBlock(b:Block, root:Block):Block
 		{
+			if(b.op.indexOf("runBuzzer") >= 0){
+				var delayTime:int = beatsDict[b.args[1].argValue];
+				var delayBlock:Block = new Block("wait:elapsed:from:", " ", 0xD00000, "wait %n secs", [0]);
+				delayBlock.args[0] = new BlockArg("n", 0, false,"");
+				delayBlock.args[0].argValue = delayTime;
+				
+				delayBlock.nextBlock = b.nextBlock;
+				b.nextBlock = delayBlock;
+				return b;
+			}
 			for(var i:int=0; i<b.args.length; i++){
 				var blockArg:* = b.args[i];
 				if(!(blockArg is Block)){
@@ -181,5 +191,14 @@ package interpreter
 			
 			return block.op + "(" + argList.join(", ") + ")";
 		}
+		
+		static private const beatsDict:Object = {
+			"Half":500,
+			"Quater":250,
+			"Eighth":125,
+			"Whole":1000,
+			"Double":2000,
+			"Zero":0
+		};
 	}
 }
