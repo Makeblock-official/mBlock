@@ -58,7 +58,7 @@
 		["B", "limit switch %d.normalPort %d.slot","getLimitswitch","Port6","Slot1",
 		{"encode":"{d0}{d1}","setup":"","inc":"","def":"MePort sw_{0}_{1}({0});\n","work":"sw_{0}_{1}.dpRead{1}()","loop":""}],
 		
-		["R", "pir motion sensor %d.normalPort","getPirmotion","Port6",
+		["R", "pir motion sensor %d.bluePorts","getPirmotion","Port6",
 		{"encode":"{d0}","setup":"","inc":"","def":"MePort pir_{0}({0});\n","work":"pir_{0}.dRead2()","loop":""}],
 		
 		["R", "temperature %d.normalPort%d.slot °C","getTemperature","Port3","Slot1",
@@ -184,7 +184,7 @@
 			"potentiometer %d.blackPorts":"电位器 %d.blackPorts",
 			"3-axis gyro %d.GyroAxis angle":"陀螺仪 %d.GyroAxis 角度",
 			"infrared receiver %d.bluePorts":"红外接收器 %d.bluePorts",
-			"pir motion sensor %d.normalPort":"人体红外传感器 %d.normalPort",
+			"pir motion sensor %d.bluePorts":"人体红外传感器 %d.bluePorts",
 			"temperature %d.normalPort%d.slot °C":"温度传感器 %d.normalPort%d.slot °C",
 			"joystick %d.blackPorts %d.Axis":"摇杆 %d.blackPorts %d.Axis",
 			"set camera shutter %d.normalPort as %d.shutter":"设置相机快门%d.normalPort 状态为%d.shutter",
@@ -244,7 +244,7 @@
 			"potentiometer %d.blackPorts":"valeur du potentiomètre sur le %d.blackPorts",
 			"sound sensor %d.blackPorts":"son mesuré sur le %d.blackPorts",
 			"infrared receiver %d.bluePorts":"réception infrarouge connectée sur le %d.bluePorts",
-			"pir motion sensor %d.normalPort":"mouvement mesuré par IR sur le %d.normalPort",
+			"pir motion sensor %d.bluePorts":"mouvement mesuré par IR sur le %d.bluePorts",
 			"temperature %d.normalPort%d.slot °C":"température mesurée sur le %d.normalPort%d.slot en °C",
 			"3-axis gyro %d.GyroAxis angle":"mesure d'angle du gyroscope 3-axes sur l'%d.GyroAxis",
 			"when %m.sensor %m.lessMore %n":"quand %m.sensor %m.lessMore %n",			
@@ -282,7 +282,7 @@
 			"potentiometer %d.normalPort":"פוטנציומטר %d.normalPort",
 			"3-axis gyro %d.GyroAxis angle":"ג'ירו 3 צירים %d.GyroAxis זוית",
 			"infrared receiver %d.bluePorts":"חישן מקלט אינפרא אדום %d.bluePorts",
-			"pir motion sensor %d.normalPort":"חשין תנועה אינפרא אדום %d.normalPort",
+			"pir motion sensor %d.bluePorts":"חשין תנועה אינפרא אדום %d.bluePorts",
 			"temperature %d.normalPort%d.slot °C":"טצפרטורה  %d.normalPort%d.slot °C",
 			"joystick %d.normalPort %d.Axis":"ג'וי סטיק %d.normalPort %d.Axis",
 			"set camera shutter %d.normalPort as %d.shutter":"כוון מהירות צילום%d.normalPort פורט רגיל%d.shutter"
@@ -311,7 +311,7 @@
 			"potentiometer %d.normalPort":"potenziomentro %d.normalPort",
 			"3-axis gyro %d.GyroAxis angle":"angolo del giroscopio a tre assi %d.GyroAxis",
 			"infrared receiver %d.bluePorts":"riceviore ad infrarossi %d.bluePorts",
-			"pir motion sensor %d.normalPort":"sensore di movimento PIR %d.normalPort",
+			"pir motion sensor %d.bluePorts":"sensore di movimento PIR %d.bluePorts",
 			"temperature %d.normalPort%d.slot °C":"temperatura %d.normalPort%d.slot °C",
 			"joystick %d.normalPort %d.Axis":"joystick %d.normalPort %d.Axis",
 			"set camera shutter %d.normalPort as %d.shutter":"setta l'otturatore della camera %d.normalPort a %d.shutter"
