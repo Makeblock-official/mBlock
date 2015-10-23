@@ -10,7 +10,7 @@
 		{"encode":"{d0}","setup":"pinMode({0},INPUT);\n","inc":"","def":"","work":"digitalRead({0})","loop":""}],
 		
 		["R", "read analog pin (A)%n","getAnalog","0",
-		{"encode":"{d0}","setup":"pinMode(A{0},INPUT);\n","inc":"","def":"","work":"analogRead(A{0})","loop":""}],
+		{"encode":"{d0}","setup":"pinMode(A0+{0},INPUT);\n","inc":"","def":"","work":"analogRead(A0+{0})","loop":""}],
 		
 		["R", "read pulse pin %n timeout %n","getPulse","13",20000,
 		{"encode":"{d0}","setup":"pinMode({0},INPUT);\n","inc":"","def":"","work":"pulseIn({0},HIGH,{1})","loop":""}],
