@@ -51,7 +51,7 @@
 		<item isSeparator="true" />
 		<item name="Makeblock" label="Makeblock" enabled="false" />
 		<item name="me/orion_uno" label="Me Orion" />
-		<!--<item name="me/baseboard_leonardo" label="Me BaseBoard" />-->
+		<item name="me/baseboard_leonardo" label="Me BaseBoard" />
 		<item name="me/uno_shield_uno" label="Me UNO Shield" />
 		<item name="mbot_uno" label="mBot" />
 		<item isSeparator="true" />
