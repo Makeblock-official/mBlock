@@ -27,6 +27,7 @@ package {
 	
 	import cc.makeblock.mbot.lookandfeel.MyLookAndFeel;
 	import cc.makeblock.mbot.ui.parts.TopSystemMenu;
+	import cc.makeblock.mbot.uiwidgets.errorreport.ErrorReportFrame;
 	import cc.makeblock.mbot.util.AppTitleMgr;
 	import cc.makeblock.mbot.util.PopupUtil;
 	import cc.makeblock.menu.MenuBuilder;
@@ -142,7 +143,7 @@ package {
 		private var ga:GATracker;
 		private var tabsPart:TabsPart;
 		private var _welcomeView:Loader;
-		private var _currentVer:String = "10.21.002";
+		private var _currentVer:String = "10.26.001";
 		public function MBlock(){
 			/*
 			if(File.applicationStorageDirectory.exists){
@@ -170,12 +171,7 @@ package {
 				return;
 			}
 			errorFlag = true;
-			var request:URLRequest = new URLRequest("http://feedback.makeblock.com/");
-			var data:URLVariables = new URLVariables();
-			data.m = errorText;
-			data.l = (Translator.currentLang.indexOf("zh_") == 0) ? "zh" : "en";
-			request.data = data;
-			navigateToURL(request);
+			ErrorReportFrame.OpenSendWindow(errorText);
 		}
 		
 		private function initStage(evt:Event):void{

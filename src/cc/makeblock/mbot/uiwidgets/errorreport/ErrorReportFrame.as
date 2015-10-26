@@ -1,10 +1,12 @@
 package cc.makeblock.mbot.uiwidgets.errorreport
 {
 	import flash.events.Event;
+	import flash.net.URLRequest;
+	import flash.net.URLVariables;
+	import flash.net.navigateToURL;
 	
 	import cc.makeblock.mbot.uiwidgets.MyFrame;
 	import cc.makeblock.mbot.util.PopupUtil;
-	import cc.makeblock.util.Email;
 	
 	import org.aswing.AsWingUtils;
 	import org.aswing.BorderLayout;
@@ -18,6 +20,16 @@ package cc.makeblock.mbot.uiwidgets.errorreport
 	
 	public class ErrorReportFrame extends MyFrame
 	{
+		static public function OpenSendWindow(msg:String):void
+		{
+			var request:URLRequest = new URLRequest("http://feedback.makeblock.com/");
+			var data:URLVariables = new URLVariables();
+			data.m = msg;
+			data.l = (Translator.currentLang.indexOf("zh_") == 0) ? "zh" : "en";
+			request.data = data;
+			navigateToURL(request);
+		}
+		
 		private var textArea:JTextArea;
 		private var sendBtn:JButton;
 		
@@ -41,7 +53,7 @@ package cc.makeblock.mbot.uiwidgets.errorreport
 		
 		private function __onSend(evt:AWEvent):void
 		{
-			new Email("testing@makeblock.cc", "bug report", textArea.getText()).send();
+			OpenSendWindow(textArea.getText());
 		}
 		
 		public function setText(value:String):void
