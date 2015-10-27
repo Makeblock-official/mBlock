@@ -292,15 +292,9 @@ package extensions
 					v.push("-D");
 					v.push("-U");
 					if(_hexToDownload.length==0){
-						if(DeviceManager.sharedManager().currentBoard.indexOf("me/baseboard")>-1){
-							var hexFile_baseboard:String = (ApplicationManager.sharedManager().documents.nativePath+"/mBlock/tools/hex/baseboard.hex");//.split("\\").join("/");
-							tf = new File(hexFile_baseboard);
-							v.push("flash:w:"+hexFile_baseboard+":i");
-						}else{
-							var hexFile:String = (ApplicationManager.sharedManager().documents.nativePath+"/mBlock/tools/hex/leonardo.hex");//.split("\\").join("/");
-							tf = new File(hexFile);
-							v.push("flash:w:"+hexFile+":i");
-						}
+						var hexFile_baseboard:String = getHexFilePath();
+						tf = new File(hexFile_baseboard);
+						v.push("flash:w:"+hexFile_baseboard+":i");
 					}else{
 						tf = new File(_hexToDownload);
 						v.push("flash:w:"+_hexToDownload+":i");
@@ -407,12 +401,22 @@ package extensions
 		{
 			var board:String = DeviceManager.sharedManager().currentBoard;
 			var fileName:String;
-			if(board.indexOf("mbot") >= 0){
-				fileName = "mbot";
-			}else if(board.indexOf("shield") >= 0){
-				fileName = "shield";
+			if(board.indexOf("_uno") > 0){
+				if(board.indexOf("mbot") >= 0){
+					fileName = "mbot";
+				}else if(board.indexOf("shield") >= 0){
+					fileName = "shield";
+				}else{
+					fileName = "uno";
+				}
+			}else if(board.indexOf("_leonardo") > 0){
+				if(board.indexOf("baseboard") >= 0){
+					fileName = "baseboard";
+				}else{
+					fileName = "leonardo";
+				}
 			}else{
-				fileName = "uno";
+				throw new Error(board);
 			}
 			return ApplicationManager.sharedManager().documents.nativePath + "/mBlock/tools/hex/" + fileName + ".hex";
 		}
