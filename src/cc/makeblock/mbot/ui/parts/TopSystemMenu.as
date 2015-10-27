@@ -315,11 +315,38 @@ package cc.makeblock.mbot.ui.parts
 //			var subMenu:NativeMenu = menuItem;
 			for(var i:int=0;i<list.length;i++){
 				var extName:String = list[i].extensionName;
+				if(!canShowExt(extName)){
+					continue;
+				}
 				var subMenuItem:NativeMenuItem = menuItem.addItem(new NativeMenuItem(Translator.map(extName)));
 				subMenuItem.name = extName;
 				subMenuItem.checked = MBlock.app.extensionManager.checkExtensionSelected(extName);
 				register(extName, __onExtensions);
 			}
+		}
+		static private function canShowExt(extName:String):Boolean
+		{
+			var board:String = DeviceManager.sharedManager().currentBoard;
+			var result:Boolean = true;
+			switch(extName)
+			{
+				case "Makeblock":
+					result = board.indexOf("orion") >= 0;
+					break;
+				case "mBot":
+					result = board.indexOf("mbot") >= 0;
+					break;
+				case "UNO Shield":
+					result = board.indexOf("shield") >= 0;
+					break;
+				case "BaseBoard":
+					result = board.indexOf("baseboard") >= 0;
+					break;
+				case "PicoBoard":
+					result = board.indexOf("picoboard") >= 0;
+					break;
+			}
+			return result;
 		}
 		/*
 		private function __onShowExtMenu(evt:Event):void

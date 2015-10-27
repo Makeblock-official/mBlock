@@ -274,7 +274,7 @@ package extensions
 			var currentDevice:String = DeviceManager.sharedManager().currentDevice;
 			currentPort = SerialDevice.sharedDevice().port;
 			trace("avrdude:",file.nativePath,currentDevice,currentPort,"\n");
-			if(NativeProcess.isSupported) {
+//			if(NativeProcess.isSupported) {
 				var nativeProcessStartupInfo:NativeProcessStartupInfo =new NativeProcessStartupInfo();
 				nativeProcessStartupInfo.executable = file;
 				var v:Vector.<String> = new Vector.<String>();//外部应用程序需要的参数
@@ -376,24 +376,24 @@ package extensions
 						v.push("flash:w:"+_hexToDownload+":i");
 					}
 				}
-				if(tf!=null){
-					if(tf.exists){
-						_upgradeBytesTotal = tf.size;
-						trace("total:",_upgradeBytesTotal);
-					}
+				if(tf!=null && tf.exists){
+					_upgradeBytesTotal = tf.size;
+					trace("total:",_upgradeBytesTotal);
+				}else{
+					_upgradeBytesTotal = 0;
 				}
 				nativeProcessStartupInfo.arguments = v;
 				process = new NativeProcess();
-				process.addEventListener(ProgressEvent.STANDARD_OUTPUT_DATA,onStandardOutputData);
+//				process.addEventListener(ProgressEvent.STANDARD_OUTPUT_DATA,onStandardOutputData);
 				process.addEventListener(ProgressEvent.STANDARD_ERROR_DATA, onErrorData);
 				process.addEventListener(NativeProcessExitEvent.EXIT, onExit);
-				process.addEventListener(IOErrorEvent.STANDARD_OUTPUT_IO_ERROR, onIOError);
-				process.addEventListener(IOErrorEvent.STANDARD_ERROR_IO_ERROR, onIOError);
+//				process.addEventListener(IOErrorEvent.STANDARD_OUTPUT_IO_ERROR, onIOError);
+//				process.addEventListener(IOErrorEvent.STANDARD_ERROR_IO_ERROR, onIOError);
 				process.start(nativeProcessStartupInfo);
 				ArduinoManager.sharedManager().isUploading = true;
-			}else{
-				trace("no support");
-			}
+//			}else{
+//				trace("no support");
+//			}
 			
 		}
 		
@@ -420,47 +420,62 @@ package extensions
 			}
 			return ApplicationManager.sharedManager().documents.nativePath + "/mBlock/tools/hex/" + fileName + ".hex";
 		}
-		
+		/*
 		private function onStandardOutputData(event:ProgressEvent):void {
 //			_upgradeBytesLoaded+=process.standardOutput.bytesAvailable;
 			
 //			_dialog.setText(Translator.map('Executing')+" ... "+_upgradeBytesLoaded+"%");
 			LogManager.sharedManager().log(process.standardOutput.readUTFBytes(process.standardOutput.bytesAvailable ));
 		}
-		public function onErrorData(event:ProgressEvent):void
+		*/
+		private var errorText:String;
+		private function onErrorData(event:ProgressEvent):void
 		{
 			var msg:String = process.standardError.readUTFBytes(process.standardError.bytesAvailable);
-			var arr:Array = msg.split(DeviceManager.sharedManager().currentDevice.indexOf("leonardo")>-1?"Send: B [42] . [00] . [":(DeviceManager.sharedManager().currentDevice.indexOf("nano")>-1?"Send: t [74] . [00] . [":"Send: d [64] . [00] . ["));
-			if(msg.indexOf("writing flash (")>0){
-				_upgradeBytesTotal = Math.max(3000,Number(msg.split("writing flash (")[1].split(" bytes)")[0]));
-				
-			}
-//			trace("total:",_upgradeBytesLoaded,_upgradeBytesTotal);
-			_upgradeBytesLoaded+=arr.length>1?Number("0x"+arr[1].split("]")[0]):0;
-			var progress:Number = Math.min(100,Math.floor(_upgradeBytesLoaded/_upgradeBytesTotal*105));
-			if(progress>=100){
-//				setTimeout(_dialog.cancel,2000); 
-				_dialog.setText(Translator.map('Upload Finish')+" ... "+100+"%");
-//				setTimeout(connect,2000,_selectPort);
+			if(null == errorText){
+				errorText = msg;
 			}else{
-				_dialog.setText(Translator.map('Uploading')+" ... "+Math.min(100,isNaN(progress)?100:progress)+"%");
+				errorText += msg;
 			}
-			LogManager.sharedManager().log(msg); 
+//			var arr:Array = msg.split(DeviceManager.sharedManager().currentDevice.indexOf("leonardo")>-1?"Send: B [42] . [00] . [":(DeviceManager.sharedManager().currentDevice.indexOf("nano")>-1?"Send: t [74] . [00] . [":"Send: d [64] . [00] . ["));
+//			if(msg.indexOf("writing flash (")>0){
+//				_upgradeBytesTotal = Math.max(3000,Number(msg.split("writing flash (")[1].split(" bytes)")[0]));
+//				
+//			}
+////			trace("total:",_upgradeBytesLoaded,_upgradeBytesTotal);
+//			_upgradeBytesLoaded+=arr.length>1?Number("0x"+arr[1].split("]")[0]):0;
+//			var progress:Number = Math.min(100,Math.floor(_upgradeBytesLoaded/_upgradeBytesTotal*105));
+//			if(progress>=100){
+////				setTimeout(_dialog.cancel,2000); 
+//				_dialog.setText(Translator.map('Upload Finish')+" ... "+100+"%");
+////				setTimeout(connect,2000,_selectPort);
+//			}else{
+				_dialog.setText(Translator.map('Uploading'));
+//			}
+//			LogManager.sharedManager().log(msg); 
 		}
 		
-		public function onExit(event:NativeProcessExitEvent):void
+		private function onExit(event:NativeProcessExitEvent):void
 		{
 			ArduinoManager.sharedManager().isUploading = false;
 			LogManager.sharedManager().log("Process exited with "+event.exitCode);
-			_dialog.setText(Translator.map('Upload Finish')+" ... "+100+"%");
+			if(event.exitCode > 0){
+				_dialog.setText(Translator.map('Upload Failed'));
+				LogManager.sharedManager().log(errorText);
+				MBlock.app.scriptsPart.appendMsgWithTimestamp(errorText, true);
+			}else{
+				_dialog.setText(Translator.map('Upload Finish'));
+			}
 			setTimeout(open,2000,_selectPort);
+			errorText = null;
 			//setTimeout(_dialog.cancel,2000);
 		}
-		
+		/*
 		public function onIOError(event:IOErrorEvent):void
 		{
 			LogManager.sharedManager().log(event.toString());
 		}
+		*/
 		public function executeUpgrade():void {
 			if(!_isInitUpgrade){
 				_isInitUpgrade = true;

@@ -81,9 +81,15 @@ public class ExtensionManager {
 		for each (var ext:ScratchExtension in extensionDict) {
 			var prefix:String = ext.useScratchPrimitives ? '' : (ext.name + '.');
 			for each (var spec:Array in ext.blockSpecs) {
-				if ((spec.length > 2) && ((prefix + spec[2]) == op)) {
-					return [spec[1], spec[0], Specs.extensionsCategory, op, spec.slice(3)];
+				if(spec.length <= 2){
+					continue;
 				}
+				if(op.indexOf("." + spec[2]) < 0){
+					continue;
+				}
+//				if ((spec.length > 2) && ((prefix + spec[2]) == op)) {
+					return [spec[1], spec[0], Specs.extensionsCategory, prefix + spec[2], spec.slice(3)];
+//				}
 			}
 		}
 		return null;
@@ -151,12 +157,15 @@ public class ExtensionManager {
 		if(name=="_import_"){
 			return;
 		}
+		if(!isCommonExt(name)){
+			return;
+		}
 		var ext:Object = findExtensionByName(name);
 		if(null == ext){
 			return;
 		}
 		var extensionSelected:Boolean = !checkExtensionSelected(name);
-		if(isCommonExt(name)){
+//		if(isCommonExt(name)){
 			SharedObjectManager.sharedManager().setObject(name+"_selected",extensionSelected);
 			if(extensionSelected){
 				loadRawExtension(ext);
@@ -166,6 +175,7 @@ public class ExtensionManager {
 			}else{
 				unloadRawExtension(ext);
 			}
+			/*
 		}else if(extensionSelected){
 			for each(var tempExt:Object in _extensionList){
 				var extName:String = tempExt.extensionName;
@@ -181,6 +191,7 @@ public class ExtensionManager {
 			SharedObjectManager.sharedManager().setObject(name+"_selected",true);
 			loadRawExtension(ext);
 		}
+			*/
 	}
 	static private function isCommonExt(extName:String):Boolean
 	{
@@ -192,12 +203,23 @@ public class ExtensionManager {
 		return false;
 	}
 	public function singleSelectExtension(name:String):void{
-		for each(var ext:Object in _extensionList){
-			if(checkExtensionSelected(ext.extensionName)){
-				onSelectExtension(ext.extensionName);
+		var ext:Object = findExtensionByName(name);
+		if(null == ext){
+			return;
+		}
+		for each(var tempExt:Object in _extensionList){
+			var extName:String = tempExt.extensionName;
+			if(isCommonExt(extName)){
+				continue;
+			}
+			if(checkExtensionSelected(extName)){
+				SharedObjectManager.sharedManager().setObject(extName+"_selected",false);
+				ConnectionManager.sharedManager().onRemoved(extName);
+				delete extensionDict[extName];
 			}
 		}
-		onSelectExtension(name);
+		SharedObjectManager.sharedManager().setObject(name+"_selected",true);
+		loadRawExtension(ext);
 	}
 	public function findExtensionByName(name:String):Object{
 		for each(var ext:Object in _extensionList){
@@ -277,7 +299,7 @@ public class ExtensionManager {
 	}
 	public function importExtension():void {
 		_extensionList = [];
-		SharedObjectManager.sharedManager().setObject("mBot_selected",true);
+//		SharedObjectManager.sharedManager().setObject("mBot_selected",true);
 		if(ApplicationManager.sharedManager().documents.resolvePath("mBlock/libraries/").exists){
 			var docs:Array =  ApplicationManager.sharedManager().documents.resolvePath("mBlock/libraries/").getDirectoryListing();
 			for each(var doc:File in docs){
@@ -492,15 +514,18 @@ public class ExtensionManager {
 		}
 	}
 	private function parseTranslators(ext:ScratchExtension):void{
-		if(ext.translators!=null){
-			for(var key:String in ext.translators){
-				if(Translator.currentLang==key){
-					var dict:Object = ext.translators[key];
-					for(var entryKey:String in dict){
-						Translator.addEntry(entryKey,dict[entryKey]);
-					}
-				}
+		if(null == ext.translators){
+			return;
+		}
+		for(var key:String in ext.translators){
+			if(Translator.currentLang != key){
+				continue;
 			}
+			var dict:Object = ext.translators[key];
+			for(var entryKey:String in dict){
+				Translator.addEntry(entryKey,dict[entryKey]);
+			}
+			break;
 		}
 	}
 	public function loadSavedExtensions(savedExtensions:Array):void {
@@ -921,5 +946,3 @@ public class ExtensionManager {
 
 	}
 }
-
-
