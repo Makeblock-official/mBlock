@@ -208,7 +208,7 @@ package extensions
 							timer.addEventListener(TimerEvent.TIMER_COMPLETE,onCLoseDialog);
 							timer.start();
 						}
-					},100);
+					},500);
 				},100);
 				if(ApplicationManager.sharedManager().system==ApplicationManager.MAC_OS){
 					setTimeout(upgradeFirmware,2000);

@@ -84,7 +84,7 @@ public class ExtensionManager {
 				if(spec.length <= 2){
 					continue;
 				}
-				if(op.indexOf("." + spec[2]) < 0){
+				if(op.split(".")[1] != spec[2]){
 					continue;
 				}
 //				if ((spec.length > 2) && ((prefix + spec[2]) == op)) {
