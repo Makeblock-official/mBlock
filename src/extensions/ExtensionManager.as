@@ -152,8 +152,11 @@ public class ExtensionManager {
 			return;
 		}
 		var ext:Object = findExtensionByName(name);
-		if(ext){
-			var extensionSelected:Boolean = !checkExtensionSelected(name);
+		if(null == ext){
+			return;
+		}
+		var extensionSelected:Boolean = !checkExtensionSelected(name);
+		if(isCommonExt(name)){
 			SharedObjectManager.sharedManager().setObject(name+"_selected",extensionSelected);
 			if(extensionSelected){
 				loadRawExtension(ext);
@@ -163,7 +166,30 @@ public class ExtensionManager {
 			}else{
 				unloadRawExtension(ext);
 			}
+		}else if(extensionSelected){
+			for each(var tempExt:Object in _extensionList){
+				var extName:String = tempExt.extensionName;
+				if(isCommonExt(extName)){
+					continue;
+				}
+				if(checkExtensionSelected(extName)){
+					SharedObjectManager.sharedManager().setObject(extName+"_selected",false);
+					ConnectionManager.sharedManager().onRemoved(extName);
+					delete extensionDict[extName];
+				}
+			}
+			SharedObjectManager.sharedManager().setObject(name+"_selected",true);
+			loadRawExtension(ext);
 		}
+	}
+	static private function isCommonExt(extName:String):Boolean
+	{
+		switch(extName){
+			case "Arduino":
+			case "Communication":
+				return true;
+		}
+		return false;
 	}
 	public function singleSelectExtension(name:String):void{
 		for each(var ext:Object in _extensionList){
@@ -809,7 +835,7 @@ public class ExtensionManager {
 			}
 		}
 	}
-
+/*
 	private function httpGetSpecs(ext:ScratchExtension):void {
 		// Fetch the block specs (and optional menu specs) from the helper app.
 		function completeHandler(e:Event):void {
@@ -830,7 +856,7 @@ public class ExtensionManager {
 //		loader.addEventListener(IOErrorEvent.IO_ERROR, errorHandler);
 //		loader.load(new URLRequest(url));
 	}
-
+*/
 	private function httpPoll(ext:ScratchExtension):void {
 		// Poll via HTTP.
 		if(ext.isBusy){
