@@ -2093,6 +2093,9 @@ msgstr "上传中"
 msgid "Upload Finish"
 msgstr "上传完成"
 
+msgid "Upload Failed"
+msgstr "上传失败"
+
 msgid "Hide"
 msgstr "隐藏"
 
