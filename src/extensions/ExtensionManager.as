@@ -193,7 +193,7 @@ public class ExtensionManager {
 		}
 			*/
 	}
-	static private function isCommonExt(extName:String):Boolean
+	static public function isCommonExt(extName:String):Boolean
 	{
 		switch(extName){
 			case "Arduino":

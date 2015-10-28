@@ -18,6 +18,7 @@ package cc.makeblock.mbot.ui.parts
 	import extensions.BluetoothManager;
 	import extensions.ConnectionManager;
 	import extensions.DeviceManager;
+	import extensions.ExtensionManager;
 	import extensions.HIDManager;
 	import extensions.SerialDevice;
 	import extensions.SerialManager;
@@ -68,6 +69,12 @@ package cc.makeblock.mbot.ui.parts
 			var index:int = getNativeMenu().getItemIndex(item);
 			if(0 <= index && index < defaultMenuCount){
 				return true;
+			}
+			var p:NativeMenuItem = MenuUtil.FindParentItem(item);
+			if(p != null && p.name == "Extensions"){
+				if(p.submenu.getItemIndex(item) > 2){
+					return true;
+				}
 			}
 			setItemLabel(item);
 			if(item.name == "Boards"){
@@ -320,6 +327,7 @@ package cc.makeblock.mbot.ui.parts
 				}
 				var subMenuItem:NativeMenuItem = menuItem.addItem(new NativeMenuItem(Translator.map(extName)));
 				subMenuItem.name = extName;
+				subMenuItem.label = ExtensionManager.isCommonExt(extName) ? extName : "Makeblock";
 				subMenuItem.checked = MBlock.app.extensionManager.checkExtensionSelected(extName);
 				register(extName, __onExtensions);
 			}
