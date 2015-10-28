@@ -11,7 +11,7 @@ package extensions
 		private var _name:String = "";
 		public function DeviceManager()
 		{
-			board = SharedObjectManager.sharedManager().getObject("board","mbot_uno");
+			onSelectBoard(SharedObjectManager.sharedManager().getObject("board","mbot_uno"));
 		}
 		public static function sharedManager():DeviceManager{
 			if(_instance==null){
