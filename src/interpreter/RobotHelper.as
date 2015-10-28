@@ -23,7 +23,7 @@ package interpreter
 			trace("----------");
 			trace(blockToString(newBlock));
 			trace("----------");
-			*/
+			//*/
 			if(blockToString(block) == blockToString(newBlock)){
 				return block;
 			}
@@ -71,7 +71,11 @@ package interpreter
 			var root:Block = block;
 			var prevBlock:Block;
 			while(block != null){
+				var isRoot:Boolean = root == block;
 				block = checkLoop(block, prevBlock);
+				if(isRoot){
+					root = block;
+				}
 				root = modifyBlock(block, root);
 				if(block.subStack1 != null){
 					block.subStack1 = modifyBlockList(block.subStack1);
