@@ -4,7 +4,6 @@ package extensions
 	import flash.desktop.NativeProcessStartupInfo;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
-	import flash.events.IOErrorEvent;
 	import flash.events.NativeProcessExitEvent;
 	import flash.events.ProgressEvent;
 	import flash.events.TimerEvent;
@@ -487,7 +486,7 @@ package extensions
 				_dialog.setButton(('Close'));
 			}
 			_upgradeBytesLoaded = 0;
-			_dialog.setText(Translator.map('Executing')+" ... 0%");
+			_dialog.setText(Translator.map('Executing'));
 			_dialog.showOnStage(_mBlock.stage);
 		}
 	}
