@@ -1,7 +1,8 @@
 package cc.makeblock.util
 {
 	import flash.display.BitmapData;
-	import flash.display.JPEGEncoderOptions;
+	import flash.display.PNGEncoderOptions;
+	import flash.display.StageQuality;
 	import flash.filesystem.File;
 	import flash.filesystem.FileMode;
 	import flash.filesystem.FileStream;
@@ -58,13 +59,12 @@ package cc.makeblock.util
 			var matrix:Matrix = new Matrix();
 			matrix.scale(scale,scale);
 			MBlock.app.scaleX = MBlock.app.scaleY = scale;
-			bmd.draw(MBlock.app,matrix);
+			bmd.drawWithQuality(MBlock.app, matrix, null, null, null, false, StageQuality.BEST);
 			MBlock.app.scaleX = MBlock.app.scaleY = 1;
-//			var jpeg:ByteArray = JPEGEncoder.encode(bmd,90);
-			var jpeg:ByteArray = bmd.encode(bmd.rect, new JPEGEncoderOptions(90));
+			var jpeg:ByteArray = bmd.encode(bmd.rect, new PNGEncoderOptions());
 			bmd.dispose();
 			var now:Date = new Date();
-			var path:String = "screen_"+Math.floor(now.time)+".jpg";
+			var path:String = "screen_"+Math.floor(now.time)+".png";
 			var fileScreen:File = File.desktopDirectory.resolvePath(path);
 			FileUtil.WriteBytes(fileScreen, jpeg);
 			jpeg.clear();
