@@ -376,9 +376,6 @@
 						case 2:{
 							value = readFloat(_rxBuf,position);
 							position+=4;
-							if(value<-255||value>1023){
-								value = 0;
-							}
 						}
 							break;
 						case 3:{
