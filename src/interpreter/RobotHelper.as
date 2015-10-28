@@ -18,7 +18,12 @@ package interpreter
 			varIndex = 0;
 			var newBlock:Block = cloneBlock(block);
 			newBlock = modifyBlockList(newBlock);
-//			trace(blockToString(newBlock));
+			/*
+			trace(blockToString(block));
+			trace("----------");
+			trace(blockToString(newBlock));
+			trace("----------");
+			*/
 			if(blockToString(block) == blockToString(newBlock)){
 				return block;
 			}
@@ -89,13 +94,13 @@ package interpreter
 		{
 			if(b.op.indexOf("runBuzzer") >= 0){
 				var delayTime:int = beatsDict[b.args[1].argValue];
-				var delayBlock:Block = new Block("wait:elapsed:from:", " ", 0xD00000, "wait %n secs", [0]);
+				var delayBlock:Block = new Block("wait %n secs", " ", 0xD00000, "wait:elapsed:from:", [0]);
 				delayBlock.args[0] = new BlockArg("n", 0, false,"");
-				delayBlock.args[0].argValue = delayTime;
+				delayBlock.args[0].argValue = delayTime * 0.001;
 				
 				delayBlock.nextBlock = b.nextBlock;
 				b.nextBlock = delayBlock;
-				return b;
+				return root;
 			}
 			for(var i:int=0; i<b.args.length; i++){
 				var blockArg:* = b.args[i];
