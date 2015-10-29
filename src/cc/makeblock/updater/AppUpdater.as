@@ -193,11 +193,10 @@ package cc.makeblock.updater
 		static public function VerToInt(str:String):uint
 		{
 			var list:Array = str.split(".");
-			list.length = 3;
 			var result:uint = 0;
-			for each(var item:String in list){
+			for(var i:int=0; i<3; ++i){
 				result *= 1000;
-				result += parseInt(item);
+				result += list[i] ? parseInt(list[i]) : 0;
 			}
 			return result;
 		}
