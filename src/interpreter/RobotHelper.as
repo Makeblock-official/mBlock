@@ -96,8 +96,14 @@ package interpreter
 		
 		static private function modifyBlock(b:Block, root:Block):Block
 		{
+			var delayTime:int;
 			if(b.op.indexOf("runBuzzer") >= 0){
-				var delayTime:int = beatsDict[b.args[1].argValue];
+				delayTime = beatsDict[b.args[1].argValue];
+				createDelayBlock(b, delayTime);
+				return root;
+			}
+			if(b.op.indexOf("runTone") >= 0){
+				delayTime = beatsDict[b.args[2].argValue];
 				createDelayBlock(b, delayTime);
 				return root;
 			}
