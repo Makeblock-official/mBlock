@@ -15,9 +15,6 @@
 		["w", "set stepper motor%d.exMotorPort speed %d.stepperSpeed distance %n","runStepperMotor", "Port1", 3000, 1000,
 		{"encode":"{d0}{s1}{s2}","setup":"","inc":"","def":"MeStepper stepper_{0}({0});\n","work":"stepper_{0}.moveTo({2});\nstepper_{0}.setMaxSpeed({1});\nstepper_{0}.setSpeed({1});\n","loop":"stepper_{0}.runSpeedToPosition();\n"}],
 		
-		["w", "set encoder motor%d.exMotorPort %d.slot speed %d.encoderSpeed distance %n","runEncoderMotor", "Port1", "Slot1", 100, 1000,
-		{"encode":"{d0}{s1}{s2}","setup":"encoder_{0}.begin();\nencoder_{0}.runSpeed(0);\n","inc":"","def":"MeEncoderMotor encoder_{0}({0});\n","work":"encoder_{0}.move({3},{2});\n","loop":""}],
-		
 		["w", "set 7-segments display%d.normalPort number %n","runSevseg", "Port3", 100,
 		{"encode":"{d0}{f1}","setup":"","inc":"","def":"Me7SegmentDisplay seg7_{0}({0});\n","work":"seg7_{0}.display({1});\n","loop":""}],
 		

@@ -98,12 +98,11 @@ package interpreter
 		{
 			if(b.op.indexOf("runBuzzer") >= 0){
 				var delayTime:int = beatsDict[b.args[1].argValue];
-				var delayBlock:Block = new Block("wait %n secs", " ", 0xD00000, "wait:elapsed:from:", [0]);
-				delayBlock.args[0] = new BlockArg("n", 0, false,"");
-				delayBlock.args[0].argValue = delayTime * 0.001;
-				
-				delayBlock.nextBlock = b.nextBlock;
-				b.nextBlock = delayBlock;
+				createDelayBlock(b, delayTime);
+				return root;
+			}
+			if(b.op.indexOf("runLedStrip") >= 0){
+				createDelayBlock(b, 0.01);
 				return root;
 			}
 			for(var i:int=0; i<b.args.length; i++){
@@ -199,6 +198,16 @@ package interpreter
 			}
 			
 			return block.op + "(" + argList.join(", ") + ")";
+		}
+		
+		static private function createDelayBlock(b:Block, delaySeconds:Number):void
+		{
+			var delayBlock:Block = new Block("wait %n secs", " ", 0xD00000, "wait:elapsed:from:", [0]);
+			delayBlock.args[0] = new BlockArg("n", 0, false,"");
+			delayBlock.args[0].argValue = delaySeconds * 0.001;
+			
+			delayBlock.nextBlock = b.nextBlock;
+			b.nextBlock = delayBlock;
 		}
 		
 		static private const beatsDict:Object = {

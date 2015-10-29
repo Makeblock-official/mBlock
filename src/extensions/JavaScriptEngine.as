@@ -6,16 +6,8 @@ package extensions
 	import flash.utils.ByteArray;
 	import flash.utils.Endian;
 	
-	import avm2.intrinsics.memory.lf32;
-	import avm2.intrinsics.memory.li16;
-	import avm2.intrinsics.memory.li8;
-	import avm2.intrinsics.memory.sf32;
-	import avm2.intrinsics.memory.si16;
-	import avm2.intrinsics.memory.si8;
-	
 	import cc.makeblock.util.FileUtil;
 	import cc.makeblock.util.JsCall;
-	import cc.makeblock.util.MemUtil;
 	
 	import util.LogManager;
 	
@@ -55,7 +47,11 @@ package extensions
 			if(!(c && jscall)){
 				return;
 			}
-			_ext[method].apply(null, param);
+			try{
+				_ext[method].apply(null, param);
+			}catch(error:Error) {
+				trace(error.getStackTrace());
+			}
 		}
 		public function requestValue(method:String,param:Array,ext:ScratchExtension, nextID:int):void
 		{
