@@ -199,10 +199,6 @@
 		if(typeof slot=="string"){
 			slot = slots[slot];
 		}
-		var key = (ledIndex << 24) | (red << 16) | (green << 8) | blue;
-		if(runLedDict[key])return;
-		runLedDict[key] = true;
-		setTimeout(RESET_DICT, SEND_DELAY, runLedDict, key);
 		runPackage(8,port,slot,ledIndex,red,green,blue);
 	};
 	var runLightSensorDict = {};

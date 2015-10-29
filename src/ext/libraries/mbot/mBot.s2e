@@ -18,10 +18,10 @@
 		{"encode":"{d0}{d1}{d2}","setup":"servo_{0}_{1}.attach(port_{0}.pin{1}());\n","inc":"","def":"Servo servo_{0}_{1};\nMePort port_{0}({0});\n","work":"servo_{0}_{1}.write({2});\n","loop":""}],
 		
 		["w", "set led %d.lport %d.index red%d.value green%d.value blue%d.value","runLed", "led on board","all",0,0,0,
-		{"encode":"{d0}{d1}{d2}{d3}{d4}","setup":"","inc":"","def":"MeRGBLed rgbled_{0}({0}, {0}==7?2:16);\n","work":"rgbled_{0}.setColor({1},{2},{3},{4});\nrgbled_{0}.show();\n","loop":""}],
+		{"encode":"{d0}{d1}{d2}{d3}{d4}","setup":"","inc":"","def":"MeRGBLed rgbled_{0}({0}, {0}==7?2:4);\n","work":"rgbled_{0}.setColor({1},{2},{3},{4});\nrgbled_{0}.show();\n","loop":""}],
 		
 		["w", "set led strip %d.port %d.slot %d.index2 red%d.value green%d.value blue%d.value","runLedStrip", "Port1","Slot2","all",0,0,0,
-		{"encode":"{d0}{d1}{d2}{d3}{d4}","setup":"","inc":"","def":"MeRGBLed rgbled_{0}_{1}({0}, {1}, {0}==7?2:16);\n","work":"rgbled_{0}_{1}.setColor({2},{3},{4},{5});\nrgbled_{0}_{1}.show();\n","loop":""}],
+		{"encode":"{d0}{d1}{d2}{d3}{d4}","setup":"","inc":"","def":"MeRGBLed rgbled_{0}_{1}({0}, {1}, 32);\n","work":"rgbled_{0}_{1}.setColor({2},{3},{4},{5});\nrgbled_{0}_{1}.show();\n","loop":""}],
 		
 		["w", "play tone on note %d.note beat %d.beats","runBuzzer", "C4", "Half",
 		{"encode":"{s0}","setup":"","inc":"","def":"MeBuzzer buzzer;\n","work":"buzzer.tone({0}, {1});\n","loop":""}],
