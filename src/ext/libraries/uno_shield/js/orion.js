@@ -90,7 +90,7 @@
 		if(typeof slot=="string"){
 			slot = slots[slot];
 		}
-		runPackage(12,0x9,slot,short2array(speed),short2array(distance));
+		runPackage(12,0x8,slot,short2array(speed),short2array(distance));
 	};
 	ext.runSevseg = function(port,display){
 		if(typeof port=="string"){
