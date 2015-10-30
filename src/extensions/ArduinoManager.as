@@ -1181,9 +1181,12 @@ void updateVar(char * varName,double * var)
 				return;
 			}
 			// copy firmware directory
-			workdir = workdir.resolvePath(projectDocumentName); 
-			//srcdir.copyTo(workdir,true);
-			/*
+			workdir = workdir.resolvePath(projectDocumentName);
+//			var srcdir:File = ApplicationManager.sharedManager().documents.resolvePath("mBlock/libraries/"+_extSrcPath+"/src");
+//			if(srcdir.exists && srcdir.getDirectoryListing().length > 0){
+//				srcdir.copyTo(workdir,true);
+//			}
+			//*
 			for each(var path:String in srcDocuments){
 				var srcdir:File = new File(path);
 				if(srcdir.exists && srcdir.isDirectory){
@@ -1220,7 +1223,7 @@ void updateVar(char * varName,double * var)
 		}
 		
 		private var compileErr:Boolean = false;
-		/*
+		//*
 		private function copyCompileFiles(files:Array, workdir:File):void
 		{
 			for(var i:int = 0; i < files.length; ++i){
@@ -1302,15 +1305,18 @@ void updateVar(char * varName,double * var)
 			nativeWorkList = []
 			// copy firmware directory
 			workdir = workdir.resolvePath(projectDocumentName);
-			//srcdir.copyTo(workdir,true);
-			/*
+//			var srcdir:File = ApplicationManager.sharedManager().documents.resolvePath("mBlock/libraries/"+_extSrcPath+"/src");
+//			if(srcdir.exists && srcdir.getDirectoryListing().length > 0){
+//				srcdir.copyTo(workdir,true);
+//			}
+			//*
 			for each(var path:String in srcDocuments){
 				var srcdir:File = new File(path);
 				if(srcdir.exists && srcdir.isDirectory){
 					copyCompileFiles(srcdir.getDirectoryListing(), workdir);
 				}
 			}
-			*/
+			//*/
 			var projCpp:File = File.applicationStorageDirectory.resolvePath("scratchTemp/"+projectDocumentName+"/"+projectDocumentName+".ino")
 			var outStream:FileStream = new FileStream();
 			outStream.open(projCpp, FileMode.WRITE);
@@ -1345,7 +1351,7 @@ void updateVar(char * varName,double * var)
 			*/
 			// prebuild arduino lib
 			buildArduinoLib(workdir);
-//			copyCompileFiles(files, workdir);
+			copyCompileFiles(files, workdir);
 			
 			// copy project.ino to ./build/project.ino.cpp
 			// combine aux ino and main ino into 1 cpp file

@@ -4,7 +4,7 @@
 	"firmware":"1.2.103",
 	"javascriptURL":"js/orion.js",
 	"blockSpecs": [
-		["h","UNO Shield Program","runArduino",{"src":"orion","inc":"#include <MeShield.h>","def":"","setup":"","loop":""}],
+		["h","UNO Shield Program","runArduino",{"src":"orion","inc":"#include <MeShield.h>\n","def":"","setup":"","loop":""}],
 		
 		["w", "set motor%d.motorPort speed %d.motorvalue","runMotor", "M1", 0,
 		{"encode":"{d0}{s1}","setup":"","inc":"","def":"MeDCMotor motor_{0}({0});\n","work":"motor_{0}.run({1});\n","loop":""}],
