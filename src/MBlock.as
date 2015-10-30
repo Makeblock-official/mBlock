@@ -16,8 +16,6 @@ package {
 	import flash.filesystem.File;
 	import flash.geom.Point;
 	import flash.net.URLRequest;
-	import flash.net.URLVariables;
-	import flash.net.navigateToURL;
 	import flash.system.System;
 	import flash.ui.Keyboard;
 	import flash.utils.ByteArray;
@@ -143,7 +141,7 @@ package {
 		private var ga:GATracker;
 		private var tabsPart:TabsPart;
 		private var _welcomeView:Loader;
-		private var _currentVer:String = "10.26.001";
+		private var _currentVer:String = "10.29.001";
 		public function MBlock(){
 			/*
 			if(File.applicationStorageDirectory.exists){
@@ -176,7 +174,7 @@ package {
 		
 		private function initStage(evt:Event):void{
 			removeEventListener(Event.ADDED_TO_STAGE,initStage);
-			stage.nativeWindow.title += "(" + versionString + "." + _currentVer + ")";
+			stage.nativeWindow.title += "(" + versionString + ")";
 			AsWingManager.initAsStandard(this);
 			UIManager.setLookAndFeel(new MyLookAndFeel());
 			AppTitleMgr.Instance.init(stage.nativeWindow);
