@@ -157,7 +157,7 @@ public class ExtensionManager {
 		if(name=="_import_"){
 			return;
 		}
-		if(!isCommonExt(name)){
+		if(isMekeBlockExt(name)){
 			return;
 		}
 		var ext:Object = findExtensionByName(name);
@@ -202,6 +202,18 @@ public class ExtensionManager {
 		}
 		return false;
 	}
+	static public function isMekeBlockExt(extName:String):Boolean
+	{
+		switch(extName){
+			case "Makeblock":
+			case "mBot":
+			case "UNO Shield":
+			case "BaseBoard":
+			case "PicoBoard":
+				return true;
+		}
+		return false;
+	}
 	public function singleSelectExtension(name:String):void{
 		var ext:Object = findExtensionByName(name);
 		if(null == ext){
@@ -209,7 +221,7 @@ public class ExtensionManager {
 		}
 		for each(var tempExt:Object in _extensionList){
 			var extName:String = tempExt.extensionName;
-			if(isCommonExt(extName)){
+			if(!isMekeBlockExt(extName)){
 				continue;
 			}
 			if(checkExtensionSelected(extName)){

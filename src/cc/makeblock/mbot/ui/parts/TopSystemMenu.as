@@ -327,11 +327,12 @@ package cc.makeblock.mbot.ui.parts
 				}
 				var subMenuItem:NativeMenuItem = menuItem.addItem(new NativeMenuItem(Translator.map(extName)));
 				subMenuItem.name = extName;
-				subMenuItem.label = ExtensionManager.isCommonExt(extName) ? extName : "Makeblock";
+				subMenuItem.label = ExtensionManager.isMekeBlockExt(extName) ? "Makeblock" : extName;
 				subMenuItem.checked = MBlock.app.extensionManager.checkExtensionSelected(extName);
 				register(extName, __onExtensions);
 			}
 		}
+		
 		static private function canShowExt(extName:String):Boolean
 		{
 			var board:String = DeviceManager.sharedManager().currentBoard;
