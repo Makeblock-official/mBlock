@@ -307,7 +307,7 @@ public class ExtensionManager {
 		LogManager.sharedManager().log("copy local files...");
 		copyLocalExtensionFiles();
 		copyFirmwareAndHex();
-		copyDir("media", null);
+		copyDir("media/mediaLibrary.json");
 	}
 	public function importExtension():void {
 		_extensionList = [];

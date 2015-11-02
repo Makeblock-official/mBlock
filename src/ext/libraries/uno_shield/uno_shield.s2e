@@ -21,13 +21,13 @@
 		["w", "set 7-segments display%d.bluePorts number %n","runSevseg", "Port3", 100,
 		{"encode":"{d0}{f1}","setup":"","inc":"","def":"Me7SegmentDisplay seg7_{0}({0});\n","work":"seg7_{0}.display({1});\n","loop":""}],
 		
-		["w", "set led %d.normalPort %d.index red%d.value green%d.value blue%d.value","runLed", "Port3","all",0,0,0,
+		["w", "set led %d.lport %d.index red%d.value green%d.value blue%d.value","runLed", "Port3","all",0,0,0,
 		{"encode":"{d0}{d1}{d2}{d3}{d4}","setup":"","inc":"","def":"MeRGBLed rgbled_{0}({0}, 32);\n","work":"rgbled_{0}.setColor({1},{2},{3},{4});\nrgbled_{0}.show();\n","loop":""}],
 		
 		["w", "set led strip %d.normalPort %d.slot %d.index2 red%d.value green%d.value blue%d.value","runLedStrip", "Port3","Slot2","all",0,0,0,
 		{"encode":"{d0}{d1}{d2}{d3}{d4}","setup":"","inc":"","def":"MeRGBLed rgbled_{0}_{1}({0}, {1}, 32);\n","work":"rgbled_{0}_{1}.setColor({2},{3},{4},{5});\nrgbled_{0}_{1}.show();\n","loop":""}],
 		
-		["w", "set light sensor %d.normalPort led as %d.switch","runLightsensor", "Port3", "On",
+		["w", "set light sensor %d.blackPorts led as %d.switch","runLightsensor", "Port7", "On",
 		{"encode":"{d0}{d1}","setup":"","inc":"","def":"MePort lightsensor_{0}({0});\n","work":"lightsensor_{0}.dWrite1({1});\n","loop":""}],
 		
 		["w", "set camera shutter %d.normalPort as %d.shutter","runShutter","Port6", "Press",
@@ -35,13 +35,13 @@
 		
 		["-"],
 		
-		["R", "ultrasonic sensor %d.yellowPorts distance","getUltrasonic","Port3",
+		["R", "ultrasonic sensor %d.whitePorts distance","getUltrasonic","Port3",
 		{"encode":"{d0}","setup":"","inc":"","def":"MeUltrasonicSensor ultrasonic_{0}({0});\n","work":"ultrasonic_{0}.distanceCm()","loop":""}],
 		
 		["R", "line follower %d.normalPort","getLinefollower","Port3",
 		{"encode":"{d0}","setup":"","inc":"","def":"MePort linefollower_{0}({0});\n","work":"linefollower_{0}.dRead1()*2+linefollower_{0}.dRead2()","loop":""}],
 		
-		["R", "light sensor %d.blackPorts","getLightsensor","Port7",
+		["R", "light sensor %d.laport","getLightsensor","Port7",
 		{"encode":"{d0}","setup":"","inc":"","def":"MePort lightsensor_{0}({0});\n","work":"lightsensor_{0}.aRead2()","loop":""}],
 		
 		["R", "joystick %d.blackPorts %d.Axis","getJoystick","Port7","X-Axis",
@@ -68,9 +68,9 @@
 		["R", "3-axis gyro %d.GyroAxis angle","getGyro","X-Axis",
 		{"encode":"{d0}","setup":"gyro.begin();\n","inc":"","def":"MeGyro gyro;\n","work":"gyro.getAngle({0})","loop":"gyro.update();\n"}],
 		
-		["R", "humiture %d.normalPort %d.humiture", "getHumiture", "Port3", "humidity", {"encode":"", "setup":"", "inc":"", "def":"MeHumiture humiture_{0}({0});\n", "work":"humiture_{0}.getValue({1})", "loop":"humiture_{0}.update();\n"}],
-		["R", "flame %d.blackPorts intensity", "getFlame", "Port7", {"encode":"", "setup":"", "inc":"", "def":"MeFlameSensor flameSensor_{0}({0});\n", "work":"flameSensor_{0}.readAnalog()", "loop":""}],
-		["R", "gas %d.blackPorts concentration", "getGas", "Port7", {"encode":"", "setup":"", "inc":"", "def":"MeGasSensor gasSensor_{0}({0});\n", "work":"gasSensor_{0}.readAnalog()", "loop":""}]
+		["R", "humiture sensor %d.normalPort %d.humiture", "getHumiture", "Port3", "humidity", {"encode":"", "setup":"", "inc":"", "def":"MeHumiture humiture_{0}({0});\n", "work":"humiture_{0}.getValue({1})", "loop":"humiture_{0}.update();\n"}],
+		["R", "flame sensor %d.blackPorts", "getFlame", "Port7", {"encode":"", "setup":"", "inc":"", "def":"MeFlameSensor flameSensor_{0}({0});\n", "work":"flameSensor_{0}.readAnalog()", "loop":""}],
+		["R", "gas sensor %d.blackPorts", "getGas", "Port7", {"encode":"", "setup":"", "inc":"", "def":"MeGasSensor gasSensor_{0}({0});\n", "work":"gasSensor_{0}.readAnalog()", "loop":""}]
 		
         ],
     "menus": {
@@ -79,7 +79,9 @@
     	"grayPorts":["Port5"],
     	"whitePorts":["Port3","Port4","Port6","Port7","Port8"],
     	"blackPorts":["Port7","Port8"],
+    	"laport":["Port7","Port8"],
 		"normalPort":["Port3","Port4","Port5","Port6","Port7","Port8"],
+		"lport":["Port3","Port4","Port5","Port6","Port7","Port8"],
 		"motorPort":["Port1","Port2","Port9","Port10"],
 		"exMotorPort":["Port1","Port2","Port9","Port10"],
 		"servoPort":["Port1","Port2","Port3","Port4","Port5","Port6","Port7","Port8","Port9","Port10"],
@@ -159,104 +161,5 @@
 		"temperature":1
 	},
 	"translators":{
-		"zh_CN":{
-			"UNO Shield Program":"UNO Shield 主程序",
-			"all":"全部",
-			"On":"开",
-			"Off":"关",
-			"Press":"按下快门",
-			"Release":"松开快门",
-			"Focus On":"开始对焦",
-			"Focus Off":"停止对焦",
-			"set motor%d.motorPort speed %d.motorvalue":"设置电机%d.motorPort 转速为 %d.motorvalue",
-			"set servo %d.servoPort %d.slot angle %d.servovalue":"设置舵机%d.servoPort %d.slot 角度%d.servovalue",
-			"set stepper motor%d.exMotorPort speed %d.stepperSpeed distance %n":"设置步进电机%d.exMotorPort 速度 %d.stepperSpeed 距离 %n",
-			"set encoder motor%d.exMotorPort %d.slot speed %d.encoderSpeed distance %n":"设置编码电机%d.exMotorPort %d.slot 速度 %d.encoderSpeed 距离 %n",
-			"set 7-segments display%d.bluePorts number %n":"设置数码管%d.bluePorts 数字%n",
-			"set led %d.normalPort %d.index red%d.value green%d.value blue%d.value":"设置LED %d.normalPort %d.index 红色%d.value 绿色%d.value 蓝色%d.value",
-			"set led strip %d.normalPort %d.slot %d.index2 red%d.value green%d.value blue%d.value":"设置灯带 %d.normalPort %d.slot %d.index2 红色%d.value 绿色%d.value 蓝色%d.value",
-			"ultrasonic sensor %d.yellowPorts distance":"超声波传感器%d.yellowPorts 距离",
-			"sound sensor %d.blackPorts":"音量传感器%d.blackPorts",
-			"light sensor %d.blackPorts":"光线传感器%d.blackPorts",
-			"set light sensor %d.normalPort led as %d.switch":"设置光线传感器%d.normalPort LED状态为 %d.switch",
-			"line follower %d.normalPort":"巡线传感器%d.normalPort",
-			"limit switch %d.normalPort %d.slot":"限位开关 %d.normalPort %d.slot",
-			"potentiometer %d.blackPorts":"电位器 %d.blackPorts",
-			"3-axis gyro %d.GyroAxis angle":"陀螺仪 %d.GyroAxis 角度",
-			"infrared receiver %d.bluePorts":"红外接收器 %d.bluePorts",
-			"pir motion sensor %d.bluePorts":"人体红外传感器 %d.bluePorts",
-			"temperature %d.normalPort%d.slot °C":"温度传感器 %d.normalPort%d.slot °C",
-			"joystick %d.blackPorts %d.Axis":"摇杆 %d.blackPorts %d.Axis",
-			"set camera shutter %d.normalPort as %d.shutter":"设置相机快门%d.normalPort 状态为%d.shutter",
-			"humidity":"湿度",
-			"temperature":"温度",
-			"humiture %d.normalPort %d.humiture":"温湿度传感器  %d.normalPort %d.humiture",
-			"flame %d.blackPorts intensity":"火焰传感器 %d.blackPorts",
-			"gas %d.blackPorts concentration":"气体传感器 %d.blackPorts",
-			"campass %d.normalPort bearing":"电子罗盘 %d.normalPort",
-			"show time %d.normalPort hour:%n %m.points min:%n":"表情面板 %d.normalPort 显示时间:%n 时 %m.points %n 分",
-			"show face %d.normalPort x:%n y:%n characters:%s":"表情面板 %d.normalPort x:%n y:%n 显示文字:%s",
-			"show drawing %d.normalPort x:%n y:%n draw:%m.drawFace":"表情面板 %d.normalPort x:%n y:%n 绘画:%m.drawFace"
-		},
-		"zh_TW":{
-			"UNO Shield Program":"UNO Shield 主程式",
-			"all":"全部",
-			"On":"開",
-			"Off":"關",
-			"Press":"按下快門",
-			"Release":"松開快門",
-			"Focus On":"開始聚焦",
-			"Focus Off":"停止聚焦",
-			"set stepper motor%d.exMotorPort speed %d.stepperSpeed distance %n":"設置步進馬達%d.exMotorPort 速度 %d.stepperSpeed 距離 %n",
-			"set encoder motor%d.exMotorPort %d.slot speed %d.encoderSpeed distance %n":"設置編碼馬達%d.exMotorPort %d.slot 速度 %d.encoderSpeed 距離 %n",
-			"show time %d.normalPort hour:%n %m.points min:%n":"表情面板 %d.normalPort 顯示時間 %n 時 %m.points %n 分",
-			"show face %d.normalPort x:%n y:%n characters:%s":"表情面板 %d.normalPort x:%n y:%n 顯示文字:%s",
-			"show drawing %d.normalPort x:%n y:%n draw:%m.drawFace":"表情面板 %d.normalPort x:%n y:%n 繪畫:%m.drawFace"
-		},
-		"de_DE":{
-			"limit switch %d.normalPort %d.slot":"Endschalter%d.normalPort%d.slot",
-			"set stepper motor%d.exMotorPort speed %d.stepperSpeed distance %n":"setze Schrittmotor%d.exMotorPort Geschwindigkeit %d.stepperSpeed Entfernung %n",
-			"set encoder motor%d.exMotorPort %d.slot speed %d.encoderSpeed distance %n":"setze Encodermotor%d.exMotorPort %d.slot Geschwindigkeit %d.encoderSpeed Entfernung %n",
-			"show face %d.normalPort x:%n y:%n characters:%s":"zeige Text %d.normalPort x:%n y:%n Zeichen:%s",
-			"show time %d.normalPort hour:%n %m.points min:%n":"zeige Zeit %d.normalPort Stunde:%n Minute %m.points %n",
-			"show drawing %d.normalPort x:%n y:%n draw:%m.drawFace":"zeige Zeichnung %d.normalPort x:%n y:%n Muster:%m.drawFace"
-		},
-		"ko":{
-			"show time %d.normalPort hour:%n %m.points min:%n":"시간표시 %d.normalPort 시간:%n 분 %m.points %n",
-			"show face %d.normalPort x:%n y:%n characters:%s":"face보기 %d.normalPort x:%n y:%n 문자:%s",
-			"show drawing %d.normalPort x:%n y:%n draw:%m.drawFace":"face보기  %d.normalPort x:%n y:%n draw:%m.drawFace"
-		},
-		"fr_FR":{
-			"UNO Shield Program":"UNO Shield - générer le code",
-			"set motor%d.motorPort speed %d.motorvalue":"activer le moteur %d.motorPort à la puissance %d.motorvalue",
-			"set servo %d.servoPort %d.slot angle %d.servovalue":"régler le servomoteur du %d.servoPort %d.slot à un angle de %d.servovalue °",
-			"set stepper motor%d.exMotorPort speed %d.stepperSpeed distance %n":"régler moteur pas à pas du %d.exMotorPort vitesse : %d.stepperSpeed distance : %n",
-			"set encoder motor%d.exMotorPort %d.slot speed %d.encoderSpeed distance %n":"régler roue codeuse du %d.exMotorPort %d.slot à la vitesse de %d.encoderSpeed sur une distance de %n",
-			"set 7-segments display%d.bluePorts number %n":"sur le 7 segments du %d.bluePorts afficher %n",
-			"set led %d.normalPort %d.index red%d.value green%d.value blue%d.value":"régler la DEL sur %d.normalPort n° %d.index en Rouge%d.value Vert%d.value Bleu%d.value",
-			"set light sensor %d.normalPort led as %d.switch":"régler le détecteur de lumière du %d.normalPort sur %d.switch",
-			"set camera shutter %d.normalPort as %d.shutter":"mettre l'obturateur du %d.normalPort en mode %d.shutter",
-			"limit switch %d.normalPort %d.slot":"état du fin de course sur %d.normalPort %d.slot",
-			"ultrasonic sensor %d.yellowPorts distance":"distance mesurée par le capteur ultrasons du %d.yellowPorts",
-			"line follower %d.normalPort":"état du suiveur de ligne sur le %d.normalPort",
-			"light sensor %d.blackPorts":"luminosité mesurée sur le %d.blackPorts",
-			"joystick %d.blackPorts %d.Axis":"angle du Joystick sur le %d.blackPorts suivant l'%d.Axis",
-			"potentiometer %d.blackPorts":"valeur du potentiomètre sur le %d.blackPorts",
-			"sound sensor %d.blackPorts":"son mesuré sur le %d.blackPorts",
-			"infrared receiver %d.bluePorts":"réception infrarouge connectée sur le %d.bluePorts",
-			"pir motion sensor %d.bluePorts":"mouvement mesuré par IR sur le %d.bluePorts",
-			"temperature %d.normalPort%d.slot °C":"température mesurée sur le %d.normalPort%d.slot en °C",
-			"3-axis gyro %d.GyroAxis angle":"mesure d'angle du gyroscope 3-axes sur l'%d.GyroAxis",
-			"when %m.sensor %m.lessMore %n":"quand %m.sensor %m.lessMore %n",			
-			"On":"marche",
-			"Off":"arrêt",
-			"Press":"pressé",
-			"Release":"relâché",
-			"Focus On":"focus activé",
-			"Focus Off":"focus relâché",
-			"show time %d.normalPort hour:%n %m.points min:%n":"afficheur sur %d.normalPort : heure :%n séparateur %m.points minutes : %n",
-			"show face %d.normalPort x:%n y:%n characters:%s":"afficheur sur %d.normalPort : afficher en x=%n y=%n la phrase %s",
-			"show drawing %d.normalPort x:%n y:%n draw:%m.drawFace":"afficheur sur %d.normalPort : dessiner en x=%n y=%n le motif %m.drawFace"
-		}
 	}
  }

@@ -231,7 +231,7 @@ public class BlockArg extends Sprite {
 		var tf:TextField = new TextField();
 		offsetTextField(tf);
 		tf.autoSize = TextFieldAutoSize.LEFT;
-		Block.argTextFormat.bold = isNumber;
+		Block.argTextFormat.bold = false;
 		tf.defaultTextFormat = Block.argTextFormat;
 		tf.selectable = false;
 		tf.addEventListener(Event.CHANGE, textChanged);

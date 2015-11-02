@@ -57,23 +57,15 @@ public class Translator {
 	public static var rightToLeft:Boolean;
 	public static var rightToLeftMath:Boolean; // true only for Arabic
 
-	private static const font12:Array = ['fa', 'he','ja','ja_HIRA', 'zh_CN'];
-	private static const font13:Array = ['ar'];
+//	private static const font12:Array = ['fa', 'he','ja','ja_HIRA', 'zh_CN'];
+//	private static const font13:Array = ['ar'];
 
 	private static var dictionary:Object = new Object();
 	private static var isEnglish:Boolean = true;
 
 	public static function initializeLanguageList():void {
 		// Get a list of language names for the languages menu from the server.
-		languages = [['en', 'English']]; // English is always the first entry
-		var data:String = MBlock.app.server.getLanguageList();
-		if (!data) return;
-		for each (var line:String in data.split('\n')) {
-			var fields:Array = line.split(',');
-			if (fields.length >= 2) {
-				languages.push([trimWhitespace(fields[0]), trimWhitespace(fields[1])]);
-			}
-		}
+		languages = MBlock.app.server.getLanguageList();
 		setLanguage(SharedObjectManager.sharedManager().getObject("lang",Capabilities.language=="zh-CN"?'zh_CN':(Capabilities.language=="zh-TW"?'zh_TW':'en')));
 	}
 	

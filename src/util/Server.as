@@ -95,11 +95,20 @@ public class Server {
 
 	public function getAsset(md5:String):ByteArray
 	{
+		var file:File = File.applicationDirectory.resolvePath("media/" + md5);
+		if(file.exists){
+			return FileUtil.ReadBytes(file);
+		}
+		file = File.applicationStorageDirectory.resolvePath("mBlock/media/" + md5);
+		if(file.exists){
+			return FileUtil.ReadBytes(file);
+		}
+		return null;
 //		if (BackpackPart.localAssets[md5] && BackpackPart.localAssets[md5].length > 0) {
 //			whenDone(BackpackPart.localAssets[md5]);
 //			return null;
 //		}
-		return fetchAsset('app-storage:/mBlock/media/' + md5);
+//		return fetchAsset('app-storage:/mBlock/media/' + md5);
 	}
 
 	public function getMediaLibrary():String
@@ -140,16 +149,19 @@ public class Server {
 	// Translation Support
 	//------------------------------
 
-	public function getLanguageList():String
+	public function getLanguageList():Array
 	{
-		var file:File = ApplicationManager.sharedManager().documents.resolvePath("mBlock/locale");
-		var bytes:ByteArray;
-		if(file.exists){
-			bytes = fetchAsset(file.url+'/lang_list.txt');
-		}else{
-			bytes = fetchAsset('locale/lang_list.txt');
+		var file:File = File.applicationDirectory.resolvePath("locale/locale.xlsx");
+		var bytes:ByteArray = FileUtil.ReadBytes(file);
+		var list:Array = Excel.Parse(bytes);
+		var obj:Object = CsvReader.ReadDict(list[0]);
+		var result:Array = []
+		for(var key:String in obj){
+			result.push([key, obj[key]["Language-Name"]]);
 		}
-		return bytes.toString();
+		result.sortOn("0", Array.DESCENDING);
+		result.unshift(['en', 'English']);
+		return result;
 	}
 
 	public function getPOFile(lang:String):Object
