@@ -36,6 +36,9 @@ import flash.utils.ByteArray;
 
 import cc.makeblock.util.FileUtil;
 
+import snjdck.fileformat.csv.CsvReader;
+import snjdck.fileformat.xlsx.Excel;
+
 public class Server {
 	// -----------------------------
 	// Asset API
@@ -149,8 +152,14 @@ public class Server {
 		return bytes.toString();
 	}
 
-	public function getPOFile(lang:String):ByteArray
+	public function getPOFile(lang:String):Object
 	{
+		var file:File = File.applicationDirectory.resolvePath("locale/locale.xlsx");
+		var bytes:ByteArray = FileUtil.ReadBytes(file);
+		var list:Array = Excel.Parse(bytes);
+		var obj:Object = CsvReader.ReadDict(list[0]);
+		return obj[lang];
+		/*
 		var file:File = ApplicationManager.sharedManager().documents.resolvePath("mBlock/locale");
 		var bytes:ByteArray;
 		if(file.exists){
@@ -159,6 +168,7 @@ public class Server {
 			bytes = fetchAsset('locale/' + lang + '.po');
 		}
 		return bytes;
+		*/
 	}
 
 	public function getSelectedLang(whenDone:Function):void {

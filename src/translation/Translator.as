@@ -90,9 +90,9 @@ public class Translator {
 		if ('en' == lang){
 			MBlock.app.translationChanged(); // there is no .po file English
 		}else {
-			var data:ByteArray = MBlock.app.server.getPOFile(lang);
+			var data:Object = MBlock.app.server.getPOFile(lang);
 			if (data) {
-				dictionary = parsePOData(data);
+				dictionary = data;
 				checkBlockTranslations();
 				setFontsFor(lang);
 				MBlock.app.extensionManager.parseAllTranslators();
