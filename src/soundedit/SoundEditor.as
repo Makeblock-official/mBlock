@@ -81,14 +81,14 @@ public class SoundEditor extends Sprite {
 		addMicVolumeSlider();
 		updateIndicators();
 	}
-
+/*
 	public static function strings():Array {
 		var editor:SoundEditor = new SoundEditor(null, null);
 		editor.editMenu(Menu.dummyButton());
 		editor.effectsMenu(Menu.dummyButton());
 		return ['Edit', 'Effects', 'Microphone Volume:'];
 	}
-
+*/
 	public function updateTranslation():void {
 		if (editButton.parent) {
 			removeChild(editButton);

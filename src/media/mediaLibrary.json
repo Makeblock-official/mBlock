@@ -166,7 +166,7 @@
 {"name": "Sunglasses2", "md5": "7e70643cefba998bb7dfb9ea74c02c11.json", "type": "sprite", "tags": ["things", "drawing", "vector"], "info": [0, 1, 1]},
 {"name": "Tennis Ball", "md5": "c1b3bff53f83d2e14d63060ea8fb69c7.json", "type": "sprite", "tags": ["things", "sports", "photo", "bitmap"], "info": [0, 1, 1]},
 {"name": "Trampoline", "md5": "365a89dc9e015fc1e7ec48cdf453ad86.json", "type": "sprite", "tags": ["things", "photo", "bitmap"], "info": [0, 1, 1]},
-{"name": "Tree", "md5": "98060be10c1e9c3b4ed0e89fb473129a.json", "type": "sprite", "tags": ["thing", "holiday", "drawing", "vector"], "info": [0, 1, 1]},
+{"name": "Tree", "md5": "98060be10c1e9c3b4ed0e89fb473129a.json", "type": "sprite", "tags": ["things", "holiday", "drawing", "vector"], "info": [0, 1, 1]},
 {"name": "Tree-lights", "md5": "9cd26229c19cdcb998fcfffcef90e461.json", "type": "sprite", "tags": ["things", "holiday", "drawing", "vector"], "info": [0, 2, 1]},
 {"name": "Umbrella", "md5": "f325bf501590f853ee1bf8eb2573998f.json", "type": "sprite", "tags": ["things", "photo", "bitmap"], "info": [0, 1, 1]},
 {"name": "Watermelon", "md5": "ca05b21f0f5f78a5a0a1babe195de11f.json", "type": "sprite", "tags": ["things", "vector", "drawing"], "info": [0, 3, 1]},
