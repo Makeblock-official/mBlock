@@ -151,10 +151,7 @@ public class Server {
 
 	public function getLanguageList():Array
 	{
-		var file:File = File.applicationDirectory.resolvePath("locale/locale.xlsx");
-		var bytes:ByteArray = FileUtil.ReadBytes(file);
-		var list:Array = Excel.Parse(bytes);
-		var obj:Object = CsvReader.ReadDict(list[0]);
+		var obj:Object = getLangObj();
 		var result:Array = []
 		for(var key:String in obj){
 			result.push([key, obj[key]["Language-Name"]]);
@@ -166,10 +163,7 @@ public class Server {
 
 	public function getPOFile(lang:String):Object
 	{
-		var file:File = File.applicationDirectory.resolvePath("locale/locale.xlsx");
-		var bytes:ByteArray = FileUtil.ReadBytes(file);
-		var list:Array = Excel.Parse(bytes);
-		var obj:Object = CsvReader.ReadDict(list[0]);
+		var obj:Object = getLangObj();
 		return obj[lang];
 		/*
 		var file:File = ApplicationManager.sharedManager().documents.resolvePath("mBlock/locale");
@@ -181,6 +175,17 @@ public class Server {
 		}
 		return bytes;
 		*/
+	}
+	
+	static private function getLangObj():Object
+	{
+		var file:File = File.applicationStorageDirectory.resolvePath("mBlock/locale/locale.xlsx");
+		if(!file.exists){
+			file = File.applicationDirectory.resolvePath("locale/locale.xlsx");
+		}
+		var bytes:ByteArray = FileUtil.ReadBytes(file);
+		var list:Array = Excel.Parse(bytes);
+		return CsvReader.ReadDict(list[0]);
 	}
 
 	public function getSelectedLang(whenDone:Function):void {
