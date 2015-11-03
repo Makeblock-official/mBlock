@@ -11,18 +11,20 @@
 **************************************************************************/
 #include <Servo.h>
 #include <Wire.h>
-#include <MeMbot.h>
+#include <MeMCore.h>
 
 Servo servos[8];  
 MeDCMotor dc;
 MeTemperature ts;
-MeRGBLed led(0,4);
+MeRGBLed led(0,30);
 MeUltrasonicSensor us;
 Me7SegmentDisplay seg;
 MePort generalDevice;
 MeLEDMatrix ledMx;
 MeBuzzer buzzer;
 MeIR ir;
+MeGyro gyro;
+MeJoystick joystick;
 MeCompass Compass;
 MeHumiture humiture;
 MeFlameSensor FlameSensor;
@@ -53,19 +55,17 @@ union{
   byte byteVal[2];
   short shortVal;
 }valShort;
-MeModule modules[12];
+
 #if defined(__AVR_ATmega32U4__) 
-int analogs[12]={A0,A1,A2,A3,A4,A5,A6,A7,A8,A9,A10,A11};
+const int analogs[12] PROGMEM = {A0,A1,A2,A3,A4,A5,A6,A7,A8,A9,A10,A11};
 #else
-int analogs[8]={A0,A1,A2,A3,A4,A5,A6,A7};
+const int analogs[8] PROGMEM = {A0,A1,A2,A3,A4,A5,A6,A7};
 #endif
 String mVersion = "1.2.103";
 boolean isAvailable = false;
-boolean isBluetooth = false;
 
 int len = 52;
 char buffer[52];
-char bufferBt[52];
 byte index = 0;
 byte dataLen;
 byte modulesLen=0;
@@ -113,6 +113,7 @@ char serialRead;
 float angleServo = 90.0;
 int servo_pins[8]={0,0,0,0,0,0,0,0};
 unsigned char prevc=0;
+
 void setup(){
   pinMode(13,OUTPUT);
   digitalWrite(13,HIGH);
@@ -127,6 +128,7 @@ void setup(){
   led.setpin(13);
   led.setColor(0,0,0);
   led.show();
+  gyro.begin();
 }
 int irDelay = 0;
 int irIndex = 0;
@@ -204,14 +206,10 @@ void buzzerOff(){
   buzzer.noTone(); 
 }
 unsigned char readBuffer(int index){
- return isBluetooth?bufferBt[index]:buffer[index]; 
+ return buffer[index]; 
 }
 void writeBuffer(int index,unsigned char c){
- if(isBluetooth){
-  bufferBt[index]=c;
- }else{
   buffer[index]=c;
- } 
 }
 void writeHead(){
   writeSerial(0xff);
@@ -227,7 +225,6 @@ void readSerial(){
   isAvailable = false;
   if(Serial.available()>0){
     isAvailable = true;
-    isBluetooth = false;
     serialRead = Serial.read();
   }
 }
@@ -369,11 +366,12 @@ void runModule(int device){
     }
     break;
    case RGBLED:{
-     int idx = readBuffer(7);
-     int r = readBuffer(8);
-     int g = readBuffer(9);
-     int b = readBuffer(10);
-     led.reset(port);
+     int slot = readBuffer(7);
+     int idx = readBuffer(8);
+     int r = readBuffer(9);
+     int g = readBuffer(10);
+     int b = readBuffer(11);
+     led.reset(port,slot);
      if(idx>0){
        led.setColorAt(idx-1,r,g,b); 
      }else{
@@ -449,12 +447,13 @@ void runModule(int device){
    }
    break;
    case IR:{
+     String Str_data;
      int len = readBuffer(2)-3;
-     String s ="";
      for(int i=0;i<len;i++){
-       s+=(char)readBuffer(6+i);
+       Str_data+=(char)readBuffer(6+i);
      }
-     ir.sendString(s);
+     ir.sendString(Str_data);
+     Str_data = "";
    }
    break;
    case SHUTTER:{
@@ -482,7 +481,6 @@ void runModule(int device){
    }
    break;
    case TONE:{
-//     pinMode(pin,OUTPUT);
      int hz = readShort(6);
      int tone_time = readShort(8);
      if(hz>0){
@@ -560,24 +558,14 @@ void readSensor(int device){
    break;
    case  JOYSTICK:{
      slot = readBuffer(7);
-     if(generalDevice.getPort()!=port){
-       generalDevice.reset(port);
-       pinMode(generalDevice.pin1(),INPUT);
-       pinMode(generalDevice.pin2(),INPUT);
+     if(joystick.getPort() != port){
+       joystick.reset(port);
      }
-     if(slot==1){
-       value = generalDevice.aRead1();
-       sendFloat(value);
-     }else if(slot==2){
-       value = generalDevice.aRead2();
-       sendFloat(value);
-     }
+     value = joystick.read(slot);
+     sendFloat(value);
    }
    break;
    case  IR:{
-//     if(ir.getPort()!=port){
-//       ir.reset(port);
-//     }
       if(irReady){
          sendString(irBuffer);
          irReady = false;
@@ -639,7 +627,8 @@ void readSensor(int device){
    }
    break;
    case BUTTON_INNER:{
-     pin = analogs[pin];
+     //pin = analogs[pin];
+     pin = pgm_read_byte(&analogs[pin]);
      char s = readBuffer(7);
      pinMode(pin,INPUT);
      boolean currentPressed = !(analogRead(pin)>10);
@@ -689,18 +678,10 @@ void readSensor(int device){
    }
    break;
    case  GYRO:{
-//       int axis = readBuffer(7);
-//       gyro.update();
-//       if(axis==1){
-//         value = gyro.getAngleX();
-//         sendFloat(value);
-//       }else if(axis==2){
-//         value = gyro.getAngleY();
-//         sendFloat(value);
-//       }else if(axis==3){
-//         value = gyro.getAngleZ();
-//         sendFloat(value);
-//       }
+       int axis = readBuffer(7);
+       gyro.update();
+       value = gyro.getAngle(axis);
+       sendFloat(value);
    }
    break;
    case  VERSION:{
@@ -713,7 +694,8 @@ void readSensor(int device){
    }
    break;
    case  ANALOG:{
-     pin = analogs[pin];
+     //pin = analogs[pin];
+     pin = pgm_read_byte(&analogs[pin]);
      pinMode(pin,INPUT);
      sendFloat(analogRead(pin));
    }

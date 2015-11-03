@@ -1,5 +1,5 @@
 /*************************************************************************
-* File Name          : Firmware.ino
+* File Name          : orion_firmware.ino
 * Author             : Ander
 * Updated            : Ander
 * Version            : V1.10101
@@ -22,12 +22,12 @@ MeRGBLed led;
 MeUltrasonicSensor us;
 Me7SegmentDisplay seg;
 MePort generalDevice;
-MeInfraredReceiver ir;
+MeInfraredReceiver *ir = NULL;
 MeGyro gyro;
+MeJoystick joystick;
 MeStepper steppers[2];
 MeBuzzer buzzer;
-MeLEDMatrix ledMx;
-MeCompass Compass;
+//MeCompass Compass;
 MeHumiture humiture;
 MeFlameSensor FlameSensor;
 MeGasSensor GasSensor;
@@ -93,7 +93,7 @@ char serialRead;
 #define SEVSEG 9
 #define MOTOR 10
 #define SERVO 11
-//#define ENCODER 12
+#define ENCODER 12
 #define IR 13
 #define PIRMOTION 15
 #define INFRARED 16
@@ -101,6 +101,10 @@ char serialRead;
 #define SHUTTER 20
 #define LIMITSWITCH 21
 #define BUTTON 22
+#define HUMITURE 23
+#define FLAMESENSOR 24
+#define GASSENSOR 25
+#define COMPASS 26
 #define DIGITAL 30
 #define ANALOG 31
 #define PWM 32
@@ -109,7 +113,7 @@ char serialRead;
 #define PULSEIN 35
 #define ULTRASONIC_ARDUINO 36
 #define STEPPER 40
-#define ENCODER 41
+#define LEDMATRIX 41
 #define TIMER 50
 
 #define GET 1
@@ -132,8 +136,6 @@ void setup(){
   buzzerOn();
   delay(100);
   buzzerOff();
-  steppers[0] = MeStepper();
-  steppers[1] = MeStepper();
   #if defined(__AVR_ATmega328P__) or defined(__AVR_ATmega168__)
     encoders[0] = MeEncoderMotor(SLOT_1);
     encoders[1] = MeEncoderMotor(SLOT_2);
@@ -145,22 +147,17 @@ void setup(){
   #else
     Serial1.begin(115200);
   #endif
+    gyro.begin();
 }
 void loop(){
   currentTime = millis()/1000.0-lastTime;
-  if(ir.buttonState()==1){ 
-    if(ir.available()>0){
-      int irTemp = ir.read();
-      if(irTemp<255&&irTemp>0){
-        irRead = irTemp;
-      }
-    }
-  }else{
-    irRead = 0;
+  if(ir != NULL)
+  {
+    ir->loop();
   }
   readSerial();
-  steppers[0].run();
-  steppers[1].run();
+  steppers[0].runSpeedToPosition();
+  steppers[1].runSpeedToPosition();
   if(isAvailable){
     unsigned char c = serialRead&0xff;
     if(c==0x55&&isStart==false){
@@ -206,9 +203,9 @@ void writeHead(){
   writeSerial(0x55);
 }
 void writeEnd(){
- Serial.println(); 
+  Serial.println(); 
  #if defined(__AVR_ATmega32U4__) 
-   Serial1.println();
+  Serial1.println();
  #endif
 }
 void writeSerial(unsigned char c){
@@ -224,13 +221,13 @@ void readSerial(){
     isBluetooth = false;
     serialRead = Serial.read();
   }
-  #if defined(__AVR_ATmega32U4__) 
-  if(Serial1.available()>0){
-    isAvailable = true;
-    isBluetooth = true;
-    serialRead = Serial1.read();
-  }
- #endif
+//#if defined(__AVR_ATmega32U4__) 
+//  if(Serial1.available()>0){
+//    isAvailable = true;
+//    isBluetooth = false;
+//    serialRead = Serial1.read();
+//  }
+// #endif
 }
 /*
 ff 55 len idx action device port  slot  data a
@@ -331,7 +328,7 @@ float readFloat(int idx){
   return val.floatVal;
 }
 void runModule(int device){
-  //0xff 0x55 0x6 0x0 0x1 0xa 0x9 0x0 0x0 0xa 
+  //0xff 0x55 0x6 0x0 0x1 0xa 0x9 0x0 0x0 0xa
   int port = readBuffer(6);
   int pin = port;
   switch(device){
@@ -339,7 +336,7 @@ void runModule(int device){
      int speed = readShort(7);
      dc.reset(port);
      dc.run(speed);
-   } 
+    }
     break;
     case JOYSTICK:{
      int leftSpeed = readShort(6);
@@ -355,19 +352,21 @@ void runModule(int device){
      int distance = readShort(9);
      if(port==PORT_1){
       steppers[0] = MeStepper(PORT_1);
-      steppers[0].setMaxSpeed(maxSpeed);
       steppers[0].moveTo(distance);
+      steppers[0].setMaxSpeed(maxSpeed);
+      steppers[0].setSpeed(maxSpeed);
      }else if(port==PORT_2){
       steppers[1] = MeStepper(PORT_2);
-      steppers[1].setMaxSpeed(maxSpeed);
       steppers[1].moveTo(distance);
+      steppers[1].setMaxSpeed(maxSpeed);
+      steppers[1].setSpeed(maxSpeed);
      }
    } 
     break;
     case ENCODER:{
-      int maxSpeed = readShort(7);
-      int distance = readShort(9);
-      int slot = port;
+      int slot = readBuffer(7);
+      int maxSpeed = readShort(8);
+      int distance = readShort(10);
       #if defined(__AVR_ATmega328P__)
         if(slot==SLOT_1){
            encoders[0].move(distance,maxSpeed);
@@ -378,11 +377,12 @@ void runModule(int device){
     }
     break;
    case RGBLED:{
-     int idx = readBuffer(7);
-     int r = readBuffer(8);
-     int g = readBuffer(9);
-     int b = readBuffer(10);
-     led.reset(port);
+     int slot = readBuffer(7);
+     int idx = readBuffer(8);
+     int r = readBuffer(9);
+     int g = readBuffer(10);
+     int b = readBuffer(11);
+     led.reset(port,slot);
      if(idx>0){
        led.setColorAt(idx-1,r,g,b); 
      }else{
@@ -525,27 +525,33 @@ void readSensor(int device){
    break;
    case  JOYSTICK:{
      slot = readBuffer(7);
-     if(generalDevice.getPort()!=port){
-       generalDevice.reset(port);
-       pinMode(generalDevice.pin1(),INPUT);
-       pinMode(generalDevice.pin2(),INPUT);
+     if(joystick.getPort() != port){
+       joystick.reset(port);
      }
-     if(slot==1){
-       value = generalDevice.aRead1();
-       sendFloat(value);
-     }else if(slot==2){
-       value = generalDevice.aRead2();
-       sendFloat(value);
-     }
+     value = joystick.read(slot);
+     sendFloat(value);
    }
    break;
-   case  INFRARED:{
-     if(ir.getPort()!=port){
-       ir.reset(port);
+   case  INFRARED:
+   {
+     if(ir == NULL)
+     {
+       ir = new MeInfraredReceiver(port);
+       ir->begin();
      }
-     if(irRead<0xff){
-       sendFloat(irRead);
-     }else{
+     else if(ir->getPort() != port)
+     {
+       delete ir;
+       ir = new MeInfraredReceiver(port);
+       ir->begin();
+     }
+     irRead = ir->getCode();
+     if((irRead < 255) && (irRead > 0))
+     {
+       sendFloat((float)irRead);
+     }
+     else
+     {
        sendFloat(0);
      }
    }
@@ -584,16 +590,57 @@ void readSensor(int device){
      sendFloat(value);  
    }
    break;
+//   case COMPASS:{
+//     if(Compass.getPort()!=port){
+//       Compass.reset(port);
+//       Compass.setpin(Compass.pin1(),Compass.pin2());
+//     }
+//     double CompassAngle;
+//     CompassAngle = Compass.getAngle();
+//     sendDouble(CompassAngle);
+//   }
+//   break;
+   case HUMITURE:{
+     uint8_t index = readBuffer(7);
+     if(humiture.getPort()!=port){
+       humiture.reset(port);
+     }
+     uint8_t HumitureData;
+     humiture.update();
+     HumitureData = humiture.getValue(index);
+     sendByte(HumitureData);
+   }
+   break;
+   case FLAMESENSOR:{
+     if(FlameSensor.getPort()!=port){
+       FlameSensor.reset(port);
+       FlameSensor.setpin(FlameSensor.pin2(),FlameSensor.pin1());
+     }
+     int16_t FlameData; 
+     FlameData = FlameSensor.readAnalog();
+     sendShort(FlameData);
+   }
+   break;
+   case GASSENSOR:{
+     if(GasSensor.getPort()!=port){
+       GasSensor.reset(port);
+       GasSensor.setpin(GasSensor.pin2(),GasSensor.pin1());
+     }
+     int16_t GasData; 
+     GasData = GasSensor.readAnalog();
+     sendShort(GasData);
+   }
+   break;
    case  GYRO:{
        int axis = readBuffer(7);
        gyro.update();
-       if(axis==1){
+       if(axis == 1){
          value = gyro.getAngleX();
          sendFloat(value);
-       }else if(axis==2){
+       }else if(axis == 2){
          value = gyro.getAngleY();
          sendFloat(value);
-       }else if(axis==3){
+       }else if(axis == 3){
          value = gyro.getAngleZ();
          sendFloat(value);
        }
