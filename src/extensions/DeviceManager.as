@@ -30,6 +30,7 @@ package extensions
 				return;
 			}
 			this.board = value;
+			var oldBoard:String = SharedObjectManager.sharedManager().getObject("board");
 			SharedObjectManager.sharedManager().setObject("board",_board);
 			if(_board=="picoboard_unknown"){
 				MBlock.app.extensionManager.singleSelectExtension("PicoBoard");
@@ -39,7 +40,9 @@ package extensions
 				}else if(_board.indexOf("arduino")>-1){
 					MBlock.app.extensionManager.singleSelectExtension("Arduino");
 				}else if(_board.indexOf("me/orion_uno")>-1){
-					MBlock.app.openOrion();
+					if(oldBoard.indexOf("me/orion_uno") < 0){
+						MBlock.app.openOrion();
+					}
 					MBlock.app.extensionManager.singleSelectExtension("Makeblock");
 				}else if(_board.indexOf("me/baseboard")>-1){
 					MBlock.app.extensionManager.singleSelectExtension("BaseBoard");

@@ -126,7 +126,7 @@ package extensions
 		
 		public function sendBytes(bytes:ByteArray):void{
 			if(_serial.isConnected){
-				var count:int = _serial.writeBytes(bytes);
+				_serial.writeBytes(bytes);
 			}
 		}
 		public function sendString(msg:String):int{
@@ -220,8 +220,27 @@ package extensions
 		}
 		public function openSource():void{
 			MBlock.app.track("/OpenSerial/ViewSource");
-			var file:File = new File(ApplicationManager.sharedManager().documents.nativePath+"/mBlock/firmware/"+(DeviceManager.sharedManager().currentBoard.indexOf("mbot")>-1?"mbot_firmware":"mblock_firmware"));
-			file.openWithDefaultApplication();
+			var file:File = ApplicationManager.sharedManager().documents.resolvePath("mBlock/firmware/" + getFirmwareName());
+			if(file.exists && file.isDirectory){
+				file.openWithDefaultApplication();
+			}
+		}
+		static private function getFirmwareName():String
+		{
+			var boardName:String = DeviceManager.sharedManager().currentBoard;
+			if(boardName == "mbot_uno"){
+				return "mbot_firmware";
+			}
+			if(boardName.indexOf("me/orion_uno")>-1){
+				return "orion_firmware";
+			}
+			if(boardName.indexOf("me/baseboard")>-1){
+				return "baseboard_firmware";
+			}
+			if(boardName.indexOf("me/uno_shield")>-1){
+				return "shield_firmware";
+			}
+			return "orion_firmware";
 		}
 		public function disconnect():void{
 			currentPort = "";

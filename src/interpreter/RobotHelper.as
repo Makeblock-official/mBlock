@@ -107,8 +107,8 @@ package interpreter
 				createDelayBlock(b, delayTime);
 				return root;
 			}
-			if(b.op.indexOf("runLedStrip") >= 0){
-				createDelayBlock(b, 0.01);
+			if(b.op.indexOf("runLed") >= 0){
+				createDelayBlock(b, 0.001);
 				return root;
 			}
 			for(var i:int=0; i<b.args.length; i++){

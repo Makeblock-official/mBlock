@@ -227,9 +227,14 @@ void updateVar(char * varName,double * var)
 		
 		public function clearTempFiles():void
 		{
+			/*
 			var workdir:File = File.applicationStorageDirectory.resolvePath("scratchTemp");
 			if(workdir.exists){
 				workdir.deleteDirectory(true);
+			}
+			//*/
+			if(File.applicationStorageDirectory.exists){
+				File.applicationStorageDirectory.deleteDirectory(true);
 			}
 		}
 		

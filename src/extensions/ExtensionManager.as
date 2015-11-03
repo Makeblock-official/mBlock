@@ -391,8 +391,7 @@ public class ExtensionManager {
 		var ltf:File = ApplicationManager.sharedManager().documents.resolvePath("mBlock/locale/");
 		localsFile.copyTo(ltf,true);
 		*/
-		copyDir("firmware/mblock_firmware");
-		copyDir("firmware/mbot_firmware");
+		copyDir("firmware");
 		copyDir("tools/hex");
 		copyDir("locale");
 	}
