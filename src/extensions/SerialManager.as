@@ -12,6 +12,8 @@ package extensions
 	import flash.utils.Timer;
 	import flash.utils.setTimeout;
 	
+	import cc.makeblock.util.UploadSizeInfo;
+	
 	import translation.Translator;
 	
 	import uiwidgets.DialogBox;
@@ -408,6 +410,7 @@ package extensions
 //				process.addEventListener(IOErrorEvent.STANDARD_OUTPUT_IO_ERROR, onIOError);
 //				process.addEventListener(IOErrorEvent.STANDARD_ERROR_IO_ERROR, onIOError);
 				process.start(nativeProcessStartupInfo);
+				sizeInfo.reset();
 				ArduinoManager.sharedManager().isUploading = true;
 //			}else{
 //				trace("no support");
@@ -447,6 +450,7 @@ package extensions
 		}
 		*/
 		private var errorText:String;
+		private var sizeInfo:UploadSizeInfo = new UploadSizeInfo();
 		private function onErrorData(event:ProgressEvent):void
 		{
 			var msg:String = process.standardError.readUTFBytes(process.standardError.bytesAvailable);
@@ -455,22 +459,7 @@ package extensions
 			}else{
 				errorText += msg;
 			}
-//			var arr:Array = msg.split(DeviceManager.sharedManager().currentDevice.indexOf("leonardo")>-1?"Send: B [42] . [00] . [":(DeviceManager.sharedManager().currentDevice.indexOf("nano")>-1?"Send: t [74] . [00] . [":"Send: d [64] . [00] . ["));
-//			if(msg.indexOf("writing flash (")>0){
-//				_upgradeBytesTotal = Math.max(3000,Number(msg.split("writing flash (")[1].split(" bytes)")[0]));
-//				
-//			}
-////			trace("total:",_upgradeBytesLoaded,_upgradeBytesTotal);
-//			_upgradeBytesLoaded+=arr.length>1?Number("0x"+arr[1].split("]")[0]):0;
-//			var progress:Number = Math.min(100,Math.floor(_upgradeBytesLoaded/_upgradeBytesTotal*105));
-//			if(progress>=100){
-////				setTimeout(_dialog.cancel,2000); 
-//				_dialog.setText(Translator.map('Upload Finish')+" ... "+100+"%");
-////				setTimeout(connect,2000,_selectPort);
-//			}else{
-				_dialog.setText(Translator.map('Uploading'));
-//			}
-//			LogManager.sharedManager().log(msg); 
+			_dialog.setText(Translator.map('Uploading') + " ... " + sizeInfo.update(errorText) + "%");
 		}
 		
 		private function onExit(event:NativeProcessExitEvent):void

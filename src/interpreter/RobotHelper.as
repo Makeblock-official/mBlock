@@ -108,7 +108,7 @@ package interpreter
 				return root;
 			}
 			if(b.op.indexOf("runLed") >= 0){
-				createDelayBlock(b, 0.001);
+				createDelayBlock(b, 0.01);
 				return root;
 			}
 			for(var i:int=0; i<b.args.length; i++){
