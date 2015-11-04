@@ -70,18 +70,14 @@ package cc.makeblock.mbot.ui.parts
 			if(0 <= index && index < defaultMenuCount){
 				return true;
 			}
+			if(item.name.indexOf("serial_") == 0){
+				return;
+			}
 			var p:NativeMenuItem = MenuUtil.FindParentItem(item);
 			if(p != null && p.name == "Extensions"){
 				if(p.submenu.getItemIndex(item) > 2){
 					return true;
 				}
-			}
-			if(item.name.indexOf("serial_") == 0){
-				var label:String = item.name.slice(7);
-				if(item.label != label){
-					item.label = label;
-				}
-				return;
 			}
 			setItemLabel(item);
 			if(item.name == "Boards"){
