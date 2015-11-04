@@ -76,6 +76,13 @@ package cc.makeblock.mbot.ui.parts
 					return true;
 				}
 			}
+			if(item.name.indexOf("serial_") == 0){
+				var label:String = item.name.slice(7);
+				if(item.label != label){
+					item.label = label;
+				}
+				return;
+			}
 			setItemLabel(item);
 			if(item.name == "Boards"){
 				return true;
