@@ -1564,7 +1564,7 @@ void updateVar(char * varName,double * var)
 				}
 				return "";
 			}
-			var file:File = File.applicationDirectory.resolvePath("arduino");
+			var file:File = File.applicationDirectory.resolvePath("Arduino");
 			if(file.exists){
 				tf.url = file.url+"/hardware/tools/avr/bin/avr-ar.exe"
 				if(tf.exists){
