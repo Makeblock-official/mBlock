@@ -243,10 +243,7 @@
 		if(typeof port=="string"){
 			port = ports[port];
 		}
-		runPackageForFace(41,port,2,6,bytes.length,short2array(x),short2array(y),bytes.length);
-    setTimeout(function(){
-      device.send(bytes);
-    },40);
+		runPackage(41,port,2,6,bytes.length,short2array(x),short2array(y),bytes.length,bytes);
 	}
 	ext.resetTimer = function(){
 		startTimer = (new Date().getTime())/1000.0;

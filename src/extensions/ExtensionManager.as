@@ -84,12 +84,15 @@ public class ExtensionManager {
 				if(spec.length <= 2){
 					continue;
 				}
-				if(op.split(".")[1] != spec[2]){
-					continue;
+				if(isCommonExt(ext.name)){
+					if ((prefix + spec[2]) == op) {
+						return [spec[1], spec[0], Specs.extensionsCategory, prefix + spec[2], spec.slice(3)];
+					}
+				}else{
+					if(op.split(".")[1] == spec[2]){
+						return [spec[1], spec[0], Specs.extensionsCategory, prefix + spec[2], spec.slice(3)];
+					}
 				}
-//				if ((spec.length > 2) && ((prefix + spec[2]) == op)) {
-					return [spec[1], spec[0], Specs.extensionsCategory, prefix + spec[2], spec.slice(3)];
-//				}
 			}
 		}
 		return null;
