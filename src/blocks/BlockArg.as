@@ -138,6 +138,10 @@ public class BlockArg extends Sprite {
 			menuIcon.y = 5;
 			addChild(menuIcon);
 		}
+		
+		if(menuName == "drawFace"){
+			base.bmd = defaultBmd;
+		}
 
 		if (editable || isNumber || (type == 'm' && menuName != "drawFace")) { // add a string field
 			field = makeTextField();
@@ -156,6 +160,8 @@ public class BlockArg extends Sprite {
 			base.redraw();
 		}
 	}
+	
+	static private const defaultBmd:BitmapData = new BitmapData(16, 8, false, 0xFFFFFF);
 
 	public function get isEditable():Boolean {
 		return _isEditable;

@@ -953,32 +953,14 @@ void updateVar(char * varName,double * var)
 			unknownBlocks = [];
 			// params for compiler
 			requiredCpp=[];
+			var buildSuccess:Boolean = false;
 			var objs:Object = util.JSON.parse(code);
 			var childs:Array = objs.children.reverse();
 			for(var i:int=0;i<childs.length;i++){
-				var child:Object = childs[i]
-				if("scripts" in child){
-					for(var j:uint=0;j<child.scripts.length;j++){
-						var scr:Object = child.scripts[j][2];
-						if(scr[0][0].indexOf("runArduino")==-1){
-							if(scr[0][0]=="procDef"){
-								addFunction(scr as Array);
-								parseModules(scr);
-								buildCodes();
-							}
-							continue;
-						}//选中的Arduino主代码
-						
-						if(!parseCodeBlocks(scr)){
-							continue;
-						}
-						buildCodes();
-						if(_scratch!=null){
-							_scratch.dispatchEvent(new RobotEvent(RobotEvent.CCODE_GOT,retcode));
-						}
-						//break; // only the first entrance is parsed
-					}
-				}
+				buildSuccess = parseScripts(childs[i].scripts);
+			}
+			if(!buildSuccess){
+				parseScripts(objs.scripts);
 			}
 			ccode_func+=buildFunctions();
 			retcode = codeTemplate.replace("//setup",ccode_setup).replace("//loop", ccode_loop).replace("//define", ccode_def).replace("//include", ccode_inc).replace("//function",ccode_func);
@@ -990,6 +972,34 @@ void updateVar(char * varName,double * var)
 			if(!NativeProcess.isSupported) return "";
 			return (retcode);
 			//			buildAll(retcode, requiredCpp);
+		}
+		private function parseScripts(scripts:Object):Boolean
+		{
+			if(null == scripts){
+				return false;
+			}
+			for(var j:uint=0;j<scripts.length;j++){
+				var scr:Object = scripts[j][2];
+				if(scr[0][0].indexOf("runArduino")==-1){
+					if(scr[0][0]=="procDef"){
+						addFunction(scr as Array);
+						parseModules(scr);
+						buildCodes();
+					}
+					continue;
+				}//选中的Arduino主代码
+				
+				if(!parseCodeBlocks(scr)){
+					continue;
+				}
+				buildCodes();
+				if(_scratch!=null){
+					_scratch.dispatchEvent(new RobotEvent(RobotEvent.CCODE_GOT,""));
+				}
+				return true;
+				//break; // only the first entrance is parsed
+			}
+			return false;
 		}
 		private function buildCodes():void{
 			buildInclude();			
