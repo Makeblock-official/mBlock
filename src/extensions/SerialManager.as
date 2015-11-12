@@ -10,6 +10,7 @@ package extensions
 	import flash.filesystem.File;
 	import flash.utils.ByteArray;
 	import flash.utils.Timer;
+	import flash.utils.getTimer;
 	import flash.utils.setTimeout;
 	
 	import cc.makeblock.util.UploadSizeInfo;
@@ -459,7 +460,7 @@ package extensions
 			}else{
 				errorText += msg;
 			}
-			_dialog.setText(Translator.map('Uploading') + " ... " + sizeInfo.update(errorText) + "%");
+			_dialog.setText(Translator.map('Uploading') + " ... " + sizeInfo.update(msg) + "%");
 		}
 		
 		private function onExit(event:NativeProcessExitEvent):void
