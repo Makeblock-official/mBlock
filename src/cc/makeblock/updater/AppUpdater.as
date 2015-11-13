@@ -17,6 +17,7 @@ package cc.makeblock.updater
 	
 	import translation.Translator;
 	
+	import util.ApplicationManager;
 	import util.SharedObjectManager;
 	import util.version.VersionManager;
 
@@ -31,7 +32,6 @@ package cc.makeblock.updater
 			return _instance;
 		}
 		
-		static private const versionRegExp:RegExp = /v([\d.]+)\.zip/;
 		static public const CONFIG_PATH:String = "http://mblock.cc/download/";
 		
 		private var ldr:URLLoader;
@@ -59,7 +59,12 @@ package cc.makeblock.updater
 		{
 			UpdateFrame.getInstance().hide();
 			var str:String = ldr.data;
-			var result:Array = versionRegExp.exec(str);
+			var result:Array;
+			if(ApplicationManager.sharedManager().system == ApplicationManager.WINDOWS){
+				result = /v([\d.]+)\.zip/i.exec(str);
+			}else{
+				result = /mac.+?v([\d.]+)\.zip/i.exec(str);
+			}
 			if(null == result){
 				return;
 			}
