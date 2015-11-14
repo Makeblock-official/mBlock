@@ -3,6 +3,8 @@ package interpreter
 	import blocks.Block;
 	import blocks.BlockArg;
 	import blocks.BlockIO;
+	
+	import cc.makeblock.util.BlockJsonPrinter;
 
 	public class RobotHelper
 	{
@@ -18,11 +20,12 @@ package interpreter
 			varIndex = 0;
 			var newBlock:Block = cloneBlock(block);
 			newBlock = modifyBlockList(newBlock);
-			/*
-			trace(blockToString(block));
-			trace("----------");
-			trace(blockToString(newBlock));
-			trace("----------");
+			//*
+//			trace(blockToString(block));
+//			trace("----------");
+//			trace(JSON.stringify(new BlockJsonPrinter().printBlockList(block)));
+//			trace(blockToString(newBlock));
+//			trace("----------");
 			//*/
 			if(blockToString(block) == blockToString(newBlock)){
 				return block;
@@ -108,7 +111,7 @@ package interpreter
 				return root;
 			}
 			if(b.op.indexOf("runLed") >= 0){
-				createDelayBlock(b, 0.01);
+				createDelayBlock(b, 100);
 				return root;
 			}
 			for(var i:int=0; i<b.args.length; i++){
@@ -155,6 +158,10 @@ package interpreter
 				case "=":
 				case "concatenate:with:":
 				case "doIf":
+				case "append:toList:":
+				case "insert:at:ofList:":
+				case "setLine:ofList:to:":
+				case "list:contains:":
 					return true;
 			}
 			return false;
