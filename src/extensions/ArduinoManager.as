@@ -978,6 +978,7 @@ void updateVar(char * varName,double * var)
 			if(null == scripts){
 				return false;
 			}
+			var result:Boolean = false;
 			for(var j:uint=0;j<scripts.length;j++){
 				var scr:Object = scripts[j][2];
 				if(scr[0][0].indexOf("runArduino")==-1){
@@ -996,10 +997,10 @@ void updateVar(char * varName,double * var)
 				if(_scratch!=null){
 					_scratch.dispatchEvent(new RobotEvent(RobotEvent.CCODE_GOT,""));
 				}
-				return true;
+				result = true;
 				//break; // only the first entrance is parsed
 			}
-			return false;
+			return result;
 		}
 		private function buildCodes():void{
 			buildInclude();			

@@ -50,13 +50,13 @@ package cc.makeblock.util
 				}
 				switch(buffer.substr(i, 5)){
 					case "Send:":
-						index = buffer.indexOf("\r", i);
+						index = buffer.indexOf("\n", i);
 						if(index > 0 && buffer.charAt(i+6) == "d"){
 							bytesLoad += buffer.slice(i+7, index).match(regExp).length - 5;
 						}
 						break;
 					case "Recv:":
-						index = buffer.indexOf("\r", i);
+						index = buffer.indexOf("\n", i);
 						break;
 					default:
 						continue;
