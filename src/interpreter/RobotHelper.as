@@ -1,10 +1,9 @@
 package interpreter
 {
+	
 	import blocks.Block;
 	import blocks.BlockArg;
 	import blocks.BlockIO;
-	
-	import cc.makeblock.util.BlockJsonPrinter;
 
 	public class RobotHelper
 	{
@@ -23,7 +22,7 @@ package interpreter
 			//*
 //			trace(blockToString(block));
 //			trace("----------");
-//			trace(JSON.stringify(new BlockJsonPrinter().printBlockList(block)));
+////			trace(JSON.stringify(new BlockJsonPrinter().printBlockList(block)));
 //			trace(blockToString(newBlock));
 //			trace("----------");
 			//*/
@@ -101,8 +100,17 @@ package interpreter
 		{
 			var delayTime:int;
 			if(b.op.indexOf("runBuzzer") >= 0){
-				delayTime = beatsDict[b.args[1].argValue];
-				createDelayBlock(b, delayTime);
+				if(b.args[1] is BlockArg){
+					delayTime = beatsDict[b.args[1].argValue];
+					createDelayBlock(b, delayTime);
+				}else{
+					createDelayBlock(b, delayTime);
+					var tempBlock:Block = new Block("%n * %n", "r", 0xd00000, "*", ["",""]);
+					tempBlock.args[0] = b.args[1];
+					tempBlock.args[1] = new BlockArg("n",0, false);
+					tempBlock.args[1].argValue = 0.001;
+					b.nextBlock.args[0] = tempBlock;
+				}
 				return root;
 			}
 			if(b.op.indexOf("runTone") >= 0){
