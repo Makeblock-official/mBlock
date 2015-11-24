@@ -161,6 +161,7 @@ package interpreter
 				case "-":
 				case "*":
 				case "/":
+				case "%":
 				case ">":
 				case "<":
 				case "=":
@@ -170,6 +171,8 @@ package interpreter
 				case "insert:at:ofList:":
 				case "setLine:ofList:to:":
 				case "list:contains:":
+				case "computeFunction:of:":
+				case "rounded":
 					return true;
 			}
 			return false;
