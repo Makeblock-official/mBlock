@@ -364,6 +364,15 @@ public class BlockIO {
 			case "_stage_":
 				arg.setArgValue('_stage_', Translator.map('Stage'));
 				break;
+			case "rhp":
+				arg.setArgValue('rhp', Translator.map('random horizontal point'));
+				break;
+			case "rvp":
+				arg.setArgValue('rvp', Translator.map('random vertical point'));
+				break;
+			case "rsp":
+				arg.setArgValue('rsp', Translator.map('random stage point'));
+				break;
 		}
 	}
 

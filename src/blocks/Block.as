@@ -355,6 +355,9 @@ public class Block extends Sprite {
 			if ('_mouse_' == v) argLabel = Translator.map('mouse-pointer');
 			if ('_myself_' == v) argLabel = Translator.map('myself');
 			if ('_stage_' == v) argLabel = Translator.map('Stage');
+			if ('rhp' == v) argLabel = Translator.map('random horizontal point');
+			if ('rvp' == v) argLabel = Translator.map('random vertical point');
+			if ('rsp' == v) argLabel = Translator.map('random stage point');
 			if (args[i] is BlockArg) args[i].setArgValue(v, argLabel);
 		}
 		defaultArgValues = defaults;
