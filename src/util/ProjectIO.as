@@ -242,6 +242,14 @@ public class ProjectIO {
 		["mBot.get\\/analog","mBot.getLightOnBoard"],
 		["mBot.getAnalog","mBot.getLightOnBoard"],
 		['["mBot.getLightOnBoard"]','["mBot.getLightSensor", "light sensor on board"]'],
+		['Communication.serial\\/received','Communication.whenReceived'],
+		['Communication.serial\\/read\\/available','Communication.isAvailable'],
+		['Communication.serial\\/read\\/equal','Communication.isEqual'],
+		['Communication.serial\\/read\\/line','Communication.readLine'],
+		['Communication.serial\\/write\\/line','Communication.writeLine'],
+		['Communication.serial\\/write\\/command','Communication.writeCommand'],
+		['Communication.serial\\/read\\/command','Communication.readCommand'],
+		['Communication.serial\\/clear','Communication.clearBuffer'],
 		['["mBot.runLed", "all",','["mBot.runLed", "led on board","all",']
 	];
 	private function fixForNewExtension(json:String):String{
