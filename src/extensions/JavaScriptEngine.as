@@ -115,6 +115,7 @@ package extensions
 			_htmlLoader.window.parseDouble = readDouble;
 			_htmlLoader.window.float2array = float2array;
 			_htmlLoader.window.short2array = short2array;
+			_htmlLoader.window.int2array = int2array;
 			_htmlLoader.window.string2array = string2array;
 			_htmlLoader.window.array2string = array2string;
 			_htmlLoader.window.responseValue = responseValue;
@@ -160,6 +161,11 @@ package extensions
 			tempBytes.position = 0;
 			tempBytes.writeShort(v);
 			return [tempBytes[0], tempBytes[1]];
+		}
+		static private function int2array(v:Number):Array{
+			tempBytes.position = 0;
+			tempBytes.writeInt(v);
+			return [tempBytes[0], tempBytes[1], tempBytes[2], tempBytes[3]];
 		}
 		static private function string2array(v:String):Array{
 			tempBytes.position = 0;
