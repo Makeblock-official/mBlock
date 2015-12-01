@@ -7,8 +7,10 @@ package cc.makeblock.mbot.ui.parts
 	import flash.net.URLRequest;
 	import flash.net.navigateToURL;
 	
+	import cc.makeblock.mbot.uiwidgets.DynamicCompiler;
 	import cc.makeblock.mbot.uiwidgets.errorreport.ErrorReportFrame;
 	import cc.makeblock.mbot.uiwidgets.extensionMgr.ExtensionUtil;
+	import cc.makeblock.mbot.util.PopupUtil;
 	import cc.makeblock.media.MediaManager;
 	import cc.makeblock.menu.MenuUtil;
 	import cc.makeblock.menu.SystemMenu;
@@ -23,6 +25,8 @@ package cc.makeblock.mbot.ui.parts
 	import extensions.SerialDevice;
 	import extensions.SerialManager;
 	import extensions.SocketManager;
+	
+	import org.aswing.AsWingUtils;
 	
 	import translation.Translator;
 	
@@ -159,7 +163,13 @@ package cc.makeblock.mbot.ui.parts
 			}else{
 				key = menuItem.name;
 			}
-			ConnectionManager.sharedManager().onConnect(key);
+			if("upgrade_custom_firmware" == key){
+				var panel:DynamicCompiler = new DynamicCompiler();
+				panel.show();
+				AsWingUtils.centerLocate(panel);
+			}else{
+				ConnectionManager.sharedManager().onConnect(key);
+			}
 		}
 		
 		private function __onShowLanguage(evt:Event):void
