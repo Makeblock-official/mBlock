@@ -158,7 +158,7 @@
 			tone = tones[tone];
 		}
 		if(typeof beat == "string"){
-			beat = beats[beat];
+			beat = parseInt(beat) || beats[beat];
 		}
 		var key = tone;
 		if(runBuzzerDict[key])return;
