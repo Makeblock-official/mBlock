@@ -18,10 +18,10 @@ package extensions
 	import flash.net.navigateToURL;
 	import flash.utils.getQualifiedClassName;
 	
-	import mx.utils.StringUtil;
-	
 	import blocks.Block;
 	import blocks.BlockIO;
+	
+	import cc.makeblock.mbot.util.StringUtil;
 	
 	import translation.Translator;
 	
