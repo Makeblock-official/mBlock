@@ -68,7 +68,7 @@
 		
 	};
 	ext.runDigital = function(pin,level) {
-        runPackage(30,pin,typeof level=="number"?level:levels[level]);
+        runPackage(30,pin,typeof level=="string"?levels[level]:new Number(level));
     };
     ext.runPwm = function(pin,pwm) {
         runPackage(32,pin,pwm);
