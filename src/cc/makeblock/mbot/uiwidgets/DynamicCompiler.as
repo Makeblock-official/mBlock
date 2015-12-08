@@ -5,6 +5,7 @@ package cc.makeblock.mbot.uiwidgets
 	import cc.makeblock.util.FileUtil;
 	
 	import extensions.ArduinoManager;
+	import extensions.DeviceManager;
 	
 	import org.aswing.AsWingConstants;
 	import org.aswing.BorderLayout;
@@ -20,6 +21,8 @@ package cc.makeblock.mbot.uiwidgets
 		static private const sensorDict:Object = {
 			"Servo":"use_servo",
 			"DC Motor":"use_dcMotor",
+			"Steper Motor":"use_steperMotor",
+			"Encode Motor":"use_encodeMotor",
 			"Temperature":"",
 			"RGB Led":"",
 			"Ultrasonic":"",
@@ -79,13 +82,32 @@ package cc.makeblock.mbot.uiwidgets
 			compileBtn.addActionListener(__onCompile);
 		}
 		
+		private function getFileName():String
+		{
+			switch(DeviceManager.sharedManager().currentName){
+				case "mBot":
+					return "firmware/mbot_firmware/mbot_firmware.ino";
+				case "Me Orion":
+					return "firmware/orion_firmware/orion_firmware.ino";
+				case "Me Baseboard":
+					return "firmware/baseboard_firmware/baseboard_firmware.ino";
+				case "UNO Shield":
+					return "firmware/shield_firmware/shield_firmware.ino";
+			}
+			return null;
+		}
+		
 		private function __onCompile(evt:AWEvent):void
 		{
+			var fileName:String = getFileName();
+			if(null == fileName){
+				return;
+			}
 			if(!MBlock.app.stageIsArduino){
 				MBlock.app.changeToArduinoMode();
 				show();
 			}
-			var source:String = FileUtil.ReadString(File.applicationDirectory.resolvePath("firmware/mbot_firmware/mbot_firmware.ino"));
+			var source:String = FileUtil.ReadString(File.applicationDirectory.resolvePath(fileName));
 			for(var i:int=0; i<checkBoxList.length; ++i){
 				var checkBox:JCheckBox = checkBoxList[i];
 				if(checkBox.isSelected()){
