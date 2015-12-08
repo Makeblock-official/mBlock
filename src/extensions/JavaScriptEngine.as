@@ -7,7 +7,6 @@ package extensions
 	import flash.utils.Endian;
 	
 	import cc.makeblock.util.FileUtil;
-	import cc.makeblock.util.JsCall;
 	
 	import util.LogManager;
 	
@@ -42,17 +41,20 @@ package extensions
 			return "Disconnected";
 		}
 		public function call(method:String,param:Array,ext:ScratchExtension):void{
-			var c:Boolean = connected;
-			var jscall:Boolean = JsCall.canCall(method);
-			if(!(c && jscall)){
+			if(!connected){
 				return;
 			}
 			try{
-				_ext[method].apply(null, param);
+				if(_ext[method].length > param.length){
+					_ext[method].apply(null, [0].concat(param));
+				}else{
+					_ext[method].apply(null, param);
+				}
 			}catch(error:Error) {
 				trace(error.getStackTrace());
 			}
 		}
+		/*
 		public function requestValue(method:String,param:Array,ext:ScratchExtension, nextID:int):void
 		{
 			if(connected){
@@ -68,6 +70,7 @@ package extensions
 			}
 			return _ext[method].apply(null, param);
 		}
+		*/
 		public function closeDevice():void{
 			if(_ext){
 				_ext._shutdown();

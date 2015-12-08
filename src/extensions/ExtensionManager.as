@@ -721,10 +721,10 @@ public class ExtensionManager {
 //			ext.busy.push(ext.nextID);
 			
 			if(b in ext.waiting){
-				ext.js.requestValue(op,args,ext,ext.waiting[b]);
+//				ext.js.requestValue(op,args,ext,ext.waiting[b]);
 			}else{
 				ext.waiting[b] = ++ext.nextID;
-				ext.js.requestValue(op,args,ext, ext.nextID);
+//				ext.js.requestValue(op,args,ext, ext.nextID);
 				if(ext.nextID>50){
 					ext.nextID = 0;
 				}
