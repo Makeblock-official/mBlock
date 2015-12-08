@@ -32,6 +32,7 @@ package scratch {
 	import flash.media.SoundTransform;
 	import flash.net.FileFilter;
 	import flash.net.FileReference;
+	import flash.signals.Signal;
 	import flash.system.System;
 	import flash.text.TextField;
 	import flash.utils.ByteArray;
@@ -345,7 +346,7 @@ package scratch {
 				}catch(e){
 					triggerCondition = getBooleanBroadcastReceived(""+(hat.args[0] as Block).response);
 				}
-			} else if (true) {
+			}/* else if (true) {
 				var dotIndex:int = hat.op.indexOf('.');
 				if (dotIndex > -1) {
 					var extName:String = hat.op.substr(0, dotIndex);
@@ -363,7 +364,7 @@ package scratch {
 						}
 					}
 				}
-			}
+			}*/
 			if (triggerCondition) {
 				if (triggeredHats.indexOf(hat) == -1) { // not already trigged
 					// only start the stack if it is not already running
@@ -577,8 +578,10 @@ package scratch {
 			lastAnswer = p.answer();
 			p.parent.removeChild(p);
 			app.stage.focus = null;
+			askPromptHideSignal.notify();
 		}
 	
+		public const askPromptHideSignal:Signal = new Signal();
 		public function askPromptShowing():Boolean {
 			var uiLayer:Sprite = app.stagePane.getUILayer();
 			for (var i:int = uiLayer.numChildren-1; i >= 0; i--) {

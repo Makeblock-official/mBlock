@@ -249,7 +249,7 @@ public class ListWatcher extends Sprite {
 	// Visual feedback for list changes
 	//------------------------------
 
-	public function updateWatcher(i:int, readOnly:Boolean, interp:Interpreter):void {
+	public function updateWatcher(i:int, readOnly:Boolean):void {
 		// Colled by list primitives. Reccord access to entry at i and if list contents has changed.
 		// readOnly should be true for read operations, false for operations that change the list.
 		// Note: To reduce the cost of list operations, this function merely records changes,
@@ -263,7 +263,7 @@ public class ListWatcher extends Sprite {
 		if ((i < 1) || (i > lastAccess.length)) return;
 		lastAccess[i - 1] = getTimer();
 		lastActiveIndex = i - 1;
-		interp.redraw();
+		MBlock.app.interp.redraw();
 	}
 
 	public function prepareToShow():void {
