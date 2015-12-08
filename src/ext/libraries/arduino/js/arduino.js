@@ -93,7 +93,7 @@
 		getPackage(nextID,deviceId,pin);
     };
 	ext.getPulse = function(nextID,pin,timeout) {
-		var deviceId = 35;
+		var deviceId = 37;
 		nextID = genNextID(nextID, [pin]);
 		getPackage(nextID,deviceId,pin,short2array(timeout));
     };
