@@ -1,12 +1,6 @@
 // arduino.js
 
 (function(ext) {
-	var idDict = [];
-	var genNextID = function(realId, args){
-		var nextID = (args[0] << 4) | args[1];
-		idDict[nextID] = realId;
-		return nextID;
-	}
     var device = null;
     var _rxBuf = [];
 
@@ -84,22 +78,18 @@
 	};
 	ext.getDigital = function(nextID,pin){
 		var deviceId = 30;
-		nextID = genNextID(nextID, [pin]);
 		getPackage(nextID,deviceId,pin);
 	};
 	ext.getAnalog = function(nextID,pin) {
 		var deviceId = 31;
-		nextID = genNextID(nextID, [pin]);
 		getPackage(nextID,deviceId,pin);
     };
 	ext.getPulse = function(nextID,pin,timeout) {
 		var deviceId = 37;
-		nextID = genNextID(nextID, [pin]);
 		getPackage(nextID,deviceId,pin,short2array(timeout));
     };
 	ext.getUltrasonic = function(nextID,trig,echo){
 		var deviceId = 36;
-		nextID = genNextID(nextID, [trig,echo]);
 		getPackage(nextID,deviceId,trig,echo);
 	}
 	ext.getTimer = function(nextID){
@@ -126,21 +116,12 @@
 		bytes[2] = bytes.length-3;
 		device.send(bytes);
 	}
-	var getPackDict = [];
-	function resetPackDict(nextID){
-		getPackDict[nextID] = false;
-	}
 	function getPackage(){
 		var nextID = arguments[0];
-		if(getPackDict[nextID]){
-			return;
-		}
-		getPackDict[nextID] = true;
-		setTimeout(resetPackDict, 0, nextID);
 
 		var bytes = [0xff, 0x55];
 		bytes.push(arguments.length+1);
-		bytes.push(nextID);
+		bytes.push(0);
 		bytes.push(1);
 		for(var i=1;i<arguments.length;i++){
 			bytes.push(arguments[i]);
@@ -206,7 +187,6 @@
 							break;
 					}
 					if(type<=5){
-						extId = idDict[extId];
 						if(values[extId]!=undefined){
 							responseValue(extId,values[extId](value));
 						}else{
