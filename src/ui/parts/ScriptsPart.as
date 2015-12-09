@@ -241,9 +241,6 @@ public class ScriptsPart extends UIPart {
 	}
 	public function onSerialDataReceived(bytes:ByteArray):void{
 		if(ArduinoUploader.sharedManager().state>0)return;
-		if(!SerialManager.sharedManager().isConnected){
-			return;
-		}
 		appendMsgWithTimestamp(HexUtil.bytesToString(bytes), false);
 		/*
 		return;
