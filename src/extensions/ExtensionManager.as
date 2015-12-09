@@ -614,7 +614,7 @@ public class ExtensionManager {
 	// -----------------------------
 	// Execution
 	//------------------------------
-
+/*
 	public function primExtensionOp(b:Block):* {
 		
 		var i:int = b.op.indexOf('.');
@@ -684,7 +684,7 @@ public class ExtensionManager {
 			call(extName, primOrVarName, args);
 		}
 	}
-
+*/
 	public function call(extensionName:String, op:String, args:Array):void {
 		var ext:ScratchExtension = extensionDict[extensionName];
 		

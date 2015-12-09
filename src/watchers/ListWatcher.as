@@ -263,7 +263,7 @@ public class ListWatcher extends Sprite {
 		if ((i < 1) || (i > lastAccess.length)) return;
 		lastAccess[i - 1] = getTimer();
 		lastActiveIndex = i - 1;
-		MBlock.app.interp.redraw();
+//		MBlock.app.interp.redraw();
 	}
 
 	public function prepareToShow():void {
