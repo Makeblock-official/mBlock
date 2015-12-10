@@ -204,23 +204,6 @@
 		getPackage(nextID,deviceId,6);
 	}
 	*/
-	var buttonPressed = false;
-	var buttonReleased = false;
-	var buttonPressedPrev = false;
-	var buttonReleasedPrev = false;
-  var lastTime = 0;
-	ext.whenButtonPressed = function(status){
-		var deviceId = 31;
-		var nextID = 100;
-		if(typeof status == "string"){
-			if(status=="pressed"){
-				status = 0;
-			}else if(status=="released"){
-				status = 1;
-			}
-		}
-      getPackage(0,deviceId,7);
-	}
 	ext.getButtonOnBoard = function(nextID,status){
 		var deviceId = 35;
 		if(typeof status == "string"){

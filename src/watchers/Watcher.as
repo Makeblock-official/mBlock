@@ -154,7 +154,7 @@ public class Watcher extends Sprite implements DragClient {
 		var newValue:* = getValue(runtime);
 		if (newValue != lastValue) {
 			showValue(newValue);
-			runtime.interp.redraw();
+//			runtime.interp.redraw();
 		}
 		lastValue = newValue;
 		updateLabel();
@@ -238,7 +238,7 @@ public class Watcher extends Sprite implements DragClient {
 			case "xScroll": return app.stagePane.xScroll;
 			case "yScroll": return app.stagePane.yScroll;
 		}
-
+/*
 		if(cmd.indexOf('.') > -1) {
 			var spec:Array = MBlock.app.extensionManager.specForCmd(cmd);
 			if(spec) {
@@ -246,7 +246,7 @@ public class Watcher extends Sprite implements DragClient {
 				return MBlock.app.interp.evalCmd(block);
 			}
 		}
-
+*/
 		return "unknown: " + cmd;
 	}
 

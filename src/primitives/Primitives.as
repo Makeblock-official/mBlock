@@ -35,7 +35,7 @@ package primitives {
 	
 	import translation.Translator;
 	
-	public class Primitives {
+	internal class Primitives {
 		
 		private const MaxCloneCount:int = 300;
 		

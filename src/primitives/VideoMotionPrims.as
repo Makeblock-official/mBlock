@@ -30,7 +30,7 @@ package primitives {
 	import interpreter.*;
 	import scratch.*;
 
-public class VideoMotionPrims {
+internal class VideoMotionPrims {
 
 	public static var readMotionSensor:Function;
 
