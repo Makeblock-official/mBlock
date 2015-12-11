@@ -32,6 +32,16 @@ package cc.makeblock.interpreter
 			return result;
 		}
 		
+		private function addFrameSuspend(block:Block):Array
+		{
+			var result:Array = printBlockList(block.subStack1);
+			if(null == result){
+				return null;
+			}
+			result.push(SyntaxTreeFactory.NewStatement("suspendUntilNextFrame", []));
+			return result;
+		}
+		
 		public function printBlock(block:Block, result:Array):void
 		{
 			if(block.isHat){
@@ -39,14 +49,14 @@ package cc.makeblock.interpreter
 			}
 			switch(block.op){
 				case "doForever":
-					result.push(SyntaxTreeFactory.NewWhile(SyntaxTreeFactory.NewNumber(1), printBlockList(block.subStack1)));
+					result.push(SyntaxTreeFactory.NewWhile(SyntaxTreeFactory.NewNumber(1), addFrameSuspend(block)));
 					break;
 				case "doRepeat":
-					result.push(SyntaxTreeFactory.NewLoop(getArg(block, 0), printBlockList(block.subStack1)));
+					result.push(SyntaxTreeFactory.NewLoop(getArg(block, 0), addFrameSuspend(block)));
 					break;
 				case "doWaitUntil":
 				case "doUntil":
-					result.push(SyntaxTreeFactory.NewUntil(getArg(block, 0), printBlockList(block.subStack1)));
+					result.push(SyntaxTreeFactory.NewUntil(getArg(block, 0), addFrameSuspend(block)));
 					break;
 				case "doIfElse":
 					result.push(

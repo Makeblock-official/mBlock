@@ -910,20 +910,20 @@ public class ExtensionManager {
 			ext.success = "";
 			ext.problem = ext.js.msg;
 		}
-//		function completeHandler(e:Event):void {
-//			ext.isBusy = false;
-//			processPollResponse(ext, loader.data);
-//		}
-//		function errorHandler(e:Event):void {
-//			ext.isBusy = false;
-//		} // ignore errors
-//		var url:String = 'http://' + ext.host + ':' + ext.port + '/poll';
-//		var loader:URLLoader = new URLLoader();
-//		loader.addEventListener(Event.COMPLETE, completeHandler);
-//		loader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, errorHandler);
-//		loader.addEventListener(IOErrorEvent.IO_ERROR, errorHandler);
-//		loader.load(new URLRequest(url));
-//		ext.isBusy = true;
+		function completeHandler(e:Event):void {
+			ext.isBusy = false;
+			processPollResponse(ext, loader.data);
+		}
+		function errorHandler(e:Event):void {
+			ext.isBusy = false;
+		} // ignore errors
+		var url:String = 'http://' + ext.host + ':' + ext.port + '/poll';
+		var loader:URLLoader = new URLLoader();
+		loader.addEventListener(Event.COMPLETE, completeHandler);
+		loader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, errorHandler);
+		loader.addEventListener(IOErrorEvent.IO_ERROR, errorHandler);
+		loader.load(new URLRequest(url));
+		ext.isBusy = true;
 	}
 
 	private function processPollResponse(ext:ScratchExtension, response:String):void {

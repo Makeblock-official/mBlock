@@ -47,12 +47,20 @@ package cc.makeblock.interpreter
 					return;
 			}
 			var ext:ScratchExtension = MBlock.app.extensionManager.extensionByName(extName);
-			if (ext == null || (ext.useSerial && !SerialDevice.sharedDevice().connected) || !ext.js.connected){
+			if(null == ext){
 				thread.interrupt();
 				return;
 			}
-			thread.suspend();
-			remoteCallMgr.call(thread, opName, argList, ext);
+			if(ext.useSerial){
+				if(!(SerialDevice.sharedDevice().connected && ext.js.connected)){
+					thread.interrupt();
+					return;
+				}
+				thread.suspend();
+				remoteCallMgr.call(thread, opName, argList, ext);
+			}else{
+				thread.push(ext.stateVars[opName]);
+			}
 		}
 	}
 }

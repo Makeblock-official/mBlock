@@ -27,8 +27,13 @@ package cc.makeblock.interpreter
 			provider.register(Specs.GET_VAR, doGetVar);
 			provider.register(Specs.SET_VAR, doSetVar);
 			provider.register(Specs.CHANGE_VAR, increaseVar);
+			
+			provider.register("suspendUntilNextFrame", __onSuspendUntilNextFrame);
 		}
 		
+		static private function __onSuspendUntilNextFrame(thread:Thread, argList:Array):void {
+			thread.suspendUntilNextFrame();
+		}
 		static private function doWait(thread:Thread, argList:Array):void {
 			thread.suspend();
 			thread.suspendUpdater = [_checkTimeout, argList[0] * 1000];
