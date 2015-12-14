@@ -47,6 +47,13 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 		
 		static public function OnAddExtension(file:File):void
 		{
+			if(file.extension == "json"){
+				var fileName:String = file.name.slice(0, file.name.lastIndexOf("."));
+				file.copyTo(libPath.resolvePath(fileName + "/" + file.name), true);
+				MBlock.app.extensionManager.importExtension();
+				return;
+			}
+			
 			var fileData:ByteArray = FileUtil.ReadBytes(file);
 			
 			var fzip:FZip = new FZip();

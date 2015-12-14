@@ -77,7 +77,7 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 				ExtensionUtil.OnAddExtension(file);
 				updateList();
 			});
-			file.browseForOpen("please select file", [new FileFilter("zip file", "*.zip")]);
+			file.browseForOpen("please select file", [new FileFilter("json file", "*.json"), new FileFilter("zip file", "*.zip")]);
 		}
 		
 		private function __onRemoveExtension(evt:AWEvent):void
