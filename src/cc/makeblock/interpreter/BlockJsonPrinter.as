@@ -22,7 +22,10 @@ package cc.makeblock.interpreter
 				for each(var b:Block in argBlockList){
 					argList.push(b.spec);
 				}
-				return SyntaxTreeFactory.NewDefine(argList, printBlockList(block.nextBlock));
+				return [
+					SyntaxTreeFactory.NewFunction(argList, printBlockList(block.nextBlock)),
+					SyntaxTreeFactory.NewVar(block.args[0].spec)
+				];
 			}
 			var result:Array = [];
 			while(block != null){
@@ -71,11 +74,14 @@ package cc.makeblock.interpreter
 					break;
 				default:
 					if("call" == block.op){
-						result.push(SyntaxTreeFactory.NewInvoke(block.spec, collectArgs(block), 0));
+						result.push(
+							SyntaxTreeFactory.GetVar(block.spec),
+							SyntaxTreeFactory.NewInvoke(collectArgs(block), 0)
+						);
 					}else{
 						var blockType:String = block.type.toLowerCase();
 						var retCount:int = (blockType == "r") || (blockType == "b") ? 1 : 0;
-						result.push(SyntaxTreeFactory.NewFunction(block.op, collectArgs(block), retCount));
+						result.push(SyntaxTreeFactory.Call(block.op, collectArgs(block), retCount));
 					}
 					break;
 			}
@@ -104,7 +110,7 @@ package cc.makeblock.interpreter
 				return SyntaxTreeFactory.NewString(item.argValue);
 			}
 			if(Specs.GET_PARAM == item.op){
-				return SyntaxTreeFactory.NewGetVar(item.spec);
+				return SyntaxTreeFactory.GetParam(item.spec);
 			}
 			if(item.op == Specs.GET_VAR){
 				return SyntaxTreeFactory.NewExpression(item.op, [SyntaxTreeFactory.NewString(item.spec)]);

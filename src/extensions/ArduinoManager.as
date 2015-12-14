@@ -328,9 +328,9 @@ void updateVar(char * varName,double * var)
 						varStringList.push(varName);
 					}
 				}
-				return (StringUtil.substitute("{0} = {1};\n",varName,varValue.type=="obj"?varValue.code.code:varValue.code))
+				return (StringUtil.substitute("{0} = {1};\n",castVarName(varName),varValue.type=="obj"?varValue.code.code:varValue.code))
 			}else{
-				return (StringUtil.substitute("{0} = {1};\n",varName,varValue is CodeObj?varValue.code:varValue));
+				return (StringUtil.substitute("{0} = {1};\n",castVarName(varName),varValue is CodeObj?varValue.code:varValue));
 			}
 		}
 		
@@ -386,7 +386,7 @@ void updateVar(char * varName,double * var)
 				funcName = "func "+funcName;
 			}
 			var ps:Array = funcName.split(" ");
-			var tmp:Array = [ps[0]];
+			var tmp:Array = [castVarName(ps[0], true)];
 			for(var i:uint=0;i<ps.length;i++){
 				if(i>0){
 					if(ps[i].indexOf("%")>-1){
@@ -405,9 +405,11 @@ void updateVar(char * varName,double * var)
 				}
 				if(cBlk.type=="obj"){
 					vars += cBlk.code.code;//(isNaN(Number(params[i]))?'"'+params[i]+'"':(params[i]==""?(ps[i-1]=="s"?'"s"':"false"):params[i]))+(i<params.length-1?", ":"");
+				}else if(cBlk.type == "string"){
+					vars += '"' + cBlk.code + '"';
 				}else{
-					
 					vars += cBlk.code;
+					
 				}
 			}
 			var callCode:String = StringUtil.substitute("{0}({1});\n",ps[0],vars);
@@ -435,13 +437,13 @@ void updateVar(char * varName,double * var)
 			params = tmp;
 			var vars:String = "";
 			for(i = 1;i<params.length;i++){
-				vars += (params[i]=='n'?("double"):(params[i]=='s'?"String":(params[i]=='b'?"boolean":"")))+" "+blks[0][2][i-1].split(" ").join("_")+(i<params.length-1?", ":"");
+				vars += (params[i]=='n'?("double"):(params[i]=='s'?"String":(params[i]=='b'?"boolean":"")))+" "+castVarName(blks[0][2][i-1].split(" ").join("_"))+(i<params.length-1?", ":"");
 			}
-			var defFunc:String = "void "+params[0]+"("+vars+");\n";
+			var defFunc:String = "void "+castVarName(params[0], true)+"("+vars+");\n";
 			if(ccode_def.indexOf(defFunc)==-1){
 				ccode_def+=defFunc;
 			}
-			var funcCode:String = "void "+params[0]+"("+vars+")\n{\n";
+			var funcCode:String = "void "+castVarName(params[0], true)+"("+vars+")\n{\n";
 			for(i=0;i<blks.length;i++){
 				if(i>0){
 					
@@ -776,7 +778,7 @@ void updateVar(char * varName,double * var)
 				var b:Block = BlockIO.arrayToStack([blk]);
 				if(b.op=="getParam"){
 					codeBlock.type = "number";
-					codeBlock.code = b.spec.split(" ").join("_");
+					codeBlock.code = castVarName(b.spec.split(" ").join("_"));
 					return codeBlock;
 				}
 				if(b.op=="procDef"){
@@ -1026,12 +1028,24 @@ void updateVar(char * varName,double * var)
 			}
 			return modInitCode;
 		}
+		static private const varNamePattern:RegExp = /^[_A-Za-z][_A-Za-z0-9]*$/;
+		static private function castVarName(name:String, isFunction:Boolean=false):String
+		{
+			if(varNamePattern.test(name)){
+				return name;
+			}
+			var newName:String = isFunction ? "__func_" : "__var_";
+			for(var i:int=0; i<name.length; ++i){
+				newName += "_" + name.charCodeAt(i).toString();
+			}
+			return newName;
+		}
 		
 		private function buildDefine():String{
 			var modDefineCode:String = ""
 			for(var i:int=0;i<varList.length;i++){
-				var v:Object = varList[i]
-				var code:* = StringUtil.substitute("double {0};\n" ,v)
+				var v:String = varList[i];
+				var code:* = StringUtil.substitute("double {0};\n" ,castVarName(v))
 				if(ccode_def.indexOf(code)==-1){
 					ccode_def+=code;
 				}
