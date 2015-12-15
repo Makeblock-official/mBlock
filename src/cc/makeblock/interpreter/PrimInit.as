@@ -15,35 +15,15 @@ package cc.makeblock.interpreter
 	{
 		static public function Init(provider:FunctionProvider):void
 		{
-			provider.register("wait:elapsed:from:", doWait);
+			provider.alias("sleep", "wait:elapsed:from:");
 			provider.register("broadcast:", doBroadcast);
 			provider.register("doBroadcastAndWait", doBroadcastAndWait);
 			provider.register("stopAll", stopAll);
 			provider.register("stopScripts", stopScripts);
 			
-			// procedures
-			
-			// variables
 			provider.register(Specs.GET_VAR, doGetVar);
 			provider.register(Specs.SET_VAR, doSetVar);
 			provider.register(Specs.CHANGE_VAR, increaseVar);
-			
-			provider.register("suspendUntilNextFrame", __onSuspendUntilNextFrame);
-		}
-		
-		static private function __onSuspendUntilNextFrame(thread:Thread, argList:Array):void {
-			thread.suspendUntilNextFrame();
-		}
-		static private function doWait(thread:Thread, argList:Array):void {
-			thread.suspend();
-			thread.suspendUpdater = [_checkTimeout, argList[0] * 1000];
-		}
-		
-		static private function _checkTimeout(thread:Thread, timeout:int):void
-		{
-			if(thread.timeElapsedSinceSuspend >= timeout){
-				thread.resume();
-			}
 		}
 		
 		static private function broadcast(thread:Thread, msg:String, waitFlag:Boolean):void

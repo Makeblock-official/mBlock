@@ -55,7 +55,7 @@ package cc.makeblock.interpreter
 					result.push(SyntaxTreeFactory.NewWhile(SyntaxTreeFactory.NewNumber(1), addFrameSuspend(block)));
 					break;
 				case "doRepeat":
-					result.push(SyntaxTreeFactory.NewLoop(getArg(block, 0), addFrameSuspend(block)));
+					result.push(SyntaxTreeFactory.NewLoop(getArg(block, 0), printBlockList(block.subStack1)));
 					break;
 				case "doWaitUntil":
 				case "doUntil":
@@ -110,7 +110,7 @@ package cc.makeblock.interpreter
 				return SyntaxTreeFactory.NewString(item.argValue);
 			}
 			if(Specs.GET_PARAM == item.op){
-				return SyntaxTreeFactory.GetParam(item.spec);
+				return SyntaxTreeFactory.GetVar(item.spec);
 			}
 			if(item.op == Specs.GET_VAR){
 				return SyntaxTreeFactory.NewExpression(item.op, [SyntaxTreeFactory.NewString(item.spec)]);

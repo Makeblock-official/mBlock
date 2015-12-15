@@ -33,6 +33,12 @@
 		'Focus On':2,
 		'Focus Off':3,
 	};
+	var button_keys = {
+		"key1":1,
+		"key2":2,
+		"key3":3,
+		"key4":4
+	};
 	var tones ={"B0":31,"C1":33,"D1":37,"E1":41,"F1":44,"G1":49,"A1":55,"B1":62,
 			"C2":65,"D2":73,"E2":82,"F2":87,"G2":98,"A2":110,"B2":123,
 			"C3":131,"D3":147,"E3":165,"F3":175,"G3":196,"A3":220,"B3":247,
@@ -307,6 +313,23 @@
 			slot = slots[slot];
 		}
 		getPackage(nextID,deviceId,port,slot);
+    };
+    ext.getTouchSensor = function(port, mode){
+    	var deviceId = 51;
+    	if(typeof port=="string"){
+			port = ports[port];
+		}
+		getPackage(0,deviceId,port, mode == "toggle");
+    };
+    ext.getButton = function(port, key){
+    	var deviceId = 22;
+    	if(typeof port=="string"){
+			port = ports[port];
+		}
+		if(typeof key == "string"){
+			key = button_keys[key];
+		}
+		getPackage(0,deviceId,port, key);
     };
 	ext.getPirmotion = function(nextID,port) {
 		var deviceId = 15;

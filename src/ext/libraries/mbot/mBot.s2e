@@ -91,7 +91,10 @@
 		["R", "flame sensor %d.blackPorts", "getFlame", "Port3", {"encode":"", "setup":"", "inc":"", "def":"MeFlameSensor flameSensor_{0}({0});\n", "work":"flameSensor_{0}.readAnalog()", "loop":""}],
 		["R", "gas sensor %d.blackPorts", "getGas", "Port3", {"encode":"", "setup":"", "inc":"", "def":"MeGasSensor gasSensor_{0}({0});\n", "work":"gasSensor_{0}.readAnalog()", "loop":""}],
 		["R", "compass sensor %d.normalPort", "gatCompass", "Port1",{"encode":"", "setup":"compass_{0}.begin();\n", "inc":"", "def":"MeCompass compass_{0}({0});\n", "work":"compass_{0}.getAngle()", "loop":""}],
-		
+		["B", "touch sensor %d.normalPort mode %m.touch_mode","getTouchSensor","Port1","direct",
+		{"encode":"{d0}","setup":"touchSensor_{0}.SetTogMode({1});\n","inc":"","def":"MeTouchSensor touchSensor_{0}({0});\n","work":"touchSensor_{0}.touched()","loop":""}],
+		["B", "button %d.blackPorts %m.button_key pressed","getButton","Port3","key1",
+		{"encode":"{d0}","setup":"","inc":"","def":"Me4Button buttonSensor_{0}({0});\n","work":"(buttonSensor_{0}.pressed()=={1})","loop":""}],
 		["-"],
 		
 		["B","ir remote %m.ircode pressed","getIrRemote","A",
@@ -142,6 +145,8 @@
 		"shutter":["Press","Release","Focus On","Focus Off"],
 		"switch":["Off","On"],
 		"ircode":["A","B","C","D","E","F","↑","↓","←","→","Setting","R0","R1","R2","R3","R4","R5","R6","R7","R8","R9"],
+		"touch_mode":["direct","toggle"],
+		"button_key":["key1","key2","key3","key4"],
 		"humiture":["humidity","temperature"]
 	},
 	"values":{
@@ -233,7 +238,13 @@
 		"R9":74,
 		"humidity":0,
 		"temperature":1,
-		"Setting":21
+		"Setting":21,
+		"direct":0,
+		"toggle":1,
+		"key1":1,
+		"key2":2,
+		"key3":3,
+		"key4":4
 	},
 	"translators":{
 	}
