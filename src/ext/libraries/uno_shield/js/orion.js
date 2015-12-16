@@ -19,6 +19,12 @@
 		M1:9,
 		M2:10
     };
+    var button_keys = {
+		"key1":1,
+		"key2":2,
+		"key3":3,
+		"key4":4
+	};
 	var slots = {
 		Slot1:1,
 		Slot2:2
@@ -55,7 +61,24 @@
     	device.send([0xff, 0x55, 2, 0, 4]);
     };
 	ext.runArduino = function(){
-	}
+	};
+	ext.getTouchSensor = function(port){
+    	var deviceId = 51;
+    	if(typeof port=="string"){
+			port = ports[port];
+		}
+		getPackage(0,deviceId,port);
+    };
+    ext.getButton = function(port, key){
+    	var deviceId = 22;
+    	if(typeof port=="string"){
+			port = ports[port];
+		}
+		if(typeof key == "string"){
+			key = button_keys[key];
+		}
+		getPackage(0,deviceId,port, key);
+    };
 	ext.runMotor = function(port,speed) {
 		if(typeof port=="string"){
 			port = ports[port];

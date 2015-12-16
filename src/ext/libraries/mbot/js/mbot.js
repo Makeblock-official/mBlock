@@ -314,12 +314,12 @@
 		}
 		getPackage(nextID,deviceId,port,slot);
     };
-    ext.getTouchSensor = function(port, mode){
+    ext.getTouchSensor = function(port){
     	var deviceId = 51;
     	if(typeof port=="string"){
 			port = ports[port];
 		}
-		getPackage(0,deviceId,port, mode == "toggle");
+		getPackage(0,deviceId,port);
     };
     ext.getButton = function(port, key){
     	var deviceId = 22;

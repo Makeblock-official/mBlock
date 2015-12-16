@@ -70,7 +70,9 @@
 		
 		["R", "humiture sensor %d.normalPort %d.humiture", "getHumiture", "Port3", "humidity", {"encode":"", "setup":"", "inc":"", "def":"MeHumiture humiture_{0}({0});\n", "work":"humiture_{0}.getValue({1})", "loop":"humiture_{0}.update();\n"}],
 		["R", "flame sensor %d.blackPorts", "getFlame", "Port7", {"encode":"", "setup":"", "inc":"", "def":"MeFlameSensor flameSensor_{0}({0});\n", "work":"flameSensor_{0}.readAnalog()", "loop":""}],
-		["R", "gas sensor %d.blackPorts", "getGas", "Port7", {"encode":"", "setup":"", "inc":"", "def":"MeGasSensor gasSensor_{0}({0});\n", "work":"gasSensor_{0}.readAnalog()", "loop":""}]
+		["R", "gas sensor %d.blackPorts", "getGas", "Port7", {"encode":"", "setup":"", "inc":"", "def":"MeGasSensor gasSensor_{0}({0});\n", "work":"gasSensor_{0}.readAnalog()", "loop":""}],
+		["B", "touch sensor %d.normalPort","getTouchSensor","Port3",{"encode":"{d0}","setup":"","inc":"","def":"MeTouchSensor touchSensor_{0}({0});\n","work":"touchSensor_{0}.touched()","loop":""}],
+		["B", "button %d.blackPorts %m.button_key pressed","getButton","Port7","key1",{"encode":"{d0}","setup":"","inc":"","def":"Me4Button buttonSensor_{0}({0});\n","work":"(buttonSensor_{0}.pressed()=={1})","loop":""}]
 		
         ],
     "menus": {
@@ -105,6 +107,7 @@
 		"stepType":["time","steps"],
 		"stepperSpeed":[100,500,1000,1500,3000],
 		"encoderSpeed":[0,50,100,150,300],
+		"button_key":["key1","key2","key3","key4"],
 		"humiture":["humidity","temperature"]
         },
 		"values":{
@@ -158,7 +161,11 @@
 		"Address 1":0x70,
 		"Address 2":0x71,
 		"humidity":0,
-		"temperature":1
+		"temperature":1,
+		"key1":1,
+		"key2":2,
+		"key3":3,
+		"key4":4
 	},
 	"translators":{
 	}
