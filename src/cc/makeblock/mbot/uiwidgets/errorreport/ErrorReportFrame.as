@@ -4,6 +4,7 @@ package cc.makeblock.mbot.uiwidgets.errorreport
 	import flash.net.URLRequest;
 	import flash.net.URLVariables;
 	import flash.net.navigateToURL;
+	import flash.system.Capabilities;
 	
 	import cc.makeblock.mbot.uiwidgets.MyFrame;
 	import cc.makeblock.mbot.util.PopupUtil;
@@ -25,6 +26,8 @@ package cc.makeblock.mbot.uiwidgets.errorreport
 			var request:URLRequest = new URLRequest("http://feedback.makeblock.com/");
 			var data:URLVariables = new URLVariables();
 			data.m = msg;
+			data.os = Capabilities.os;
+			data.v = "mBlock " + MBlock.versionString;
 			data.l = (Translator.currentLang.indexOf("zh_") == 0) ? "zh" : "en";
 			request.data = data;
 			navigateToURL(request);

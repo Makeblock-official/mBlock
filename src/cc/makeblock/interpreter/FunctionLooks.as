@@ -87,11 +87,17 @@ package cc.makeblock.interpreter {
 	
 	static private function onThink(thread:Thread, argList:Array):void
 	{
+		if(!(thread.userData is ScratchSprite)){
+			return;
+		}
 		showBubble(thread.userData, argList[0], "think");
 	}
 	
 	static private function onSay(thread:Thread, argList:Array):void
 	{
+		if(!(thread.userData is ScratchSprite)){
+			return;
+		}
 		showBubble(thread.userData, argList[0], "talk");
 	}
 	
