@@ -16,6 +16,7 @@ package extensions
 	import flash.net.URLRequestMethod;
 	import flash.net.URLVariables;
 	import flash.net.navigateToURL;
+	import flash.system.Capabilities;
 	import flash.utils.getQualifiedClassName;
 	
 	import blocks.Block;
@@ -67,7 +68,7 @@ package extensions
 		public var unknownBlocks:Array = [];
 		
 		// maintance of project and arduino path
-		private var arduinoPath:String = "";
+		private var arduinoPath:String;
 		private var avrPath:String = "";
 		private var arduinoLibPath:String = "";
 		private var projectPath:String = "";
@@ -222,7 +223,6 @@ void updateVar(char * varName,double * var)
 			addEventListener(EVENT_NATIVE_DONE, gotoNextNativeCmd)
 			addEventListener(EVENT_LIBCOMPILE_DONE,runToolChain,false)
 			addEventListener(EVENT_COMPILE_DONE,uploadHex,false);
-			arduinoPath = SharedObjectManager.sharedManager().getObject("arduinoPath","");
 		}
 		
 		public function clearTempFiles():void
@@ -1293,6 +1293,7 @@ void updateVar(char * varName,double * var)
 			if(isUploading){
 				return "uploading";
 			}
+			/*
 			if(arduinoInstallPath==""){
 				var dialog:DialogBox = new DialogBox();
 				dialog.addTitle("Message");
@@ -1306,7 +1307,6 @@ void updateVar(char * varName,double * var)
 					function onPathSelected(evt:Event):void{
 						var f:File = evt.target as File;
 						arduinoPath = ApplicationManager.sharedManager().system==ApplicationManager.WINDOWS?f.url:(f.url+"/Arduino.app/Contents/Resources/Java");
-						SharedObjectManager.sharedManager().setObject("arduinoPath",arduinoPath);
 					}
 					fileRef.browseForDirectory(Translator.map("Arduino IDE"));
 					fileRef.addEventListener(Event.SELECT,onPathSelected);
@@ -1322,6 +1322,7 @@ void updateVar(char * varName,double * var)
 				dialog.showOnStage(MBlock.app.stage);
 				return "Arduino IDE not found.";
 			}
+			*/
 			_currentDevice = DeviceManager.sharedManager().currentDevice;
 			// get building direcotry ready
 			var workdir:File = File.applicationStorageDirectory.resolvePath("scratchTemp")
@@ -1405,6 +1406,7 @@ void updateVar(char * varName,double * var)
 		
 		
 		public function openArduinoIDE(ccode:String):String{
+			/*
 			if(arduinoInstallPath==""){
 				var dialog:DialogBox = new DialogBox();
 				dialog.addTitle("Message");
@@ -1417,7 +1419,6 @@ void updateVar(char * varName,double * var)
 					function onPathSelected(evt:Event):void{
 						var f:File = evt.target as File;
 						arduinoPath = f.url;
-						SharedObjectManager.sharedManager().setObject("arduinoPath",arduinoPath);
 					}
 					fileRef.browseForDirectory(Translator.map("Arduino IDE"));
 					fileRef.addEventListener(Event.SELECT,onPathSelected);
@@ -1433,15 +1434,16 @@ void updateVar(char * varName,double * var)
 				dialog.showOnStage(MBlock.app.stage);
 				return "Arduino IDE not found.";
 			}
+			*/
 			prepareProjectDir(ccode)
 			var file:File;
 			if(ApplicationManager.sharedManager().system==ApplicationManager.WINDOWS){
 				file = new File(arduinoInstallPath+"/arduino.exe");
 			}else{
-				file = new File(arduinoInstallPath+"/../../MacOS/JavaApplicationStub");
-				if(!file.exists){
+//				file = new File(arduinoInstallPath+"/../../MacOS/JavaApplicationStub");
+//				if(!file.exists){
 					file = new File(arduinoInstallPath+"/../MacOS/Arduino");
-				}
+//				}
 			}
 			
 			var processArgs:Vector.<String> = new Vector.<String>(); 
@@ -1546,104 +1548,11 @@ void updateVar(char * varName,double * var)
 		}
 		
 		public function get arduinoInstallPath():String{
-			if(arduinoPath.length>0&&arduinoPath.indexOf("app:/")==-1){
-				var ttf:File = new File(); 
-				ttf.url = new File(arduinoPath+(ApplicationManager.sharedManager().system==ApplicationManager.WINDOWS?"/hardware/tools/avr/bin/avr-ar.exe":"/hardware/tools/avr/bin/avr-ar")).url;
-				if(ttf.exists){
-					return arduinoPath;
+			if(null == arduinoPath){
+				if(Capabilities.os.indexOf("Windows") == 0){
+					arduinoPath = File.applicationDirectory.resolvePath("Arduino").nativePath;
 				}else{
-					SharedObjectManager.sharedManager().setObject("arduinoPath","");
-					arduinoPath = "";
-					//return "";
-				}
-			}
-			var tf:File = new File(); 
-			if(ApplicationManager.sharedManager().system==ApplicationManager.MAC_OS){
-				
-				tf.url = File.applicationDirectory.resolvePath("Arduino/Arduino.app/Contents/Resources/Java/hardware/tools/avr/bin/avr-ar").url;
-				if(tf.exists){
-					arduinoPath = File.applicationDirectory.resolvePath("Arduino/Arduino.app/Contents/Resources/Java/").nativePath;
-					SharedObjectManager.sharedManager().setObject("arduinoPath",arduinoPath);
-					return arduinoPath;
-				}else{
-					tf.url = File.applicationDirectory.resolvePath("Arduino/Arduino.app/Contents/Java/hardware/tools/avr/bin/avr-ar").url;
-					if(tf.exists){
-						arduinoPath = File.applicationDirectory.resolvePath("Arduino/Arduino.app/Contents/Java").nativePath;
-						SharedObjectManager.sharedManager().setObject("arduinoPath",arduinoPath);
-						return arduinoPath;
-					}else{
-						tf.url = new File("/Applications/Arduino.app/Contents/Java/hardware/tools/avr/bin/avr-ar").url;
-						if(tf.exists){
-							arduinoPath = "/Applications/Arduino.app/Contents/Java";
-							SharedObjectManager.sharedManager().setObject("arduinoPath",arduinoPath);
-							return arduinoPath;
-						}else{
-							tf.url = new File("/Applications/Arduino.app/Contents/Resources/Java/hardware/tools/avr/bin/avr-ar").url;
-							if(tf.exists){
-								arduinoPath ="/Applications/Arduino.app/Contents/Resources/Java";
-								SharedObjectManager.sharedManager().setObject("arduinoPath",arduinoPath);
-								return arduinoPath;
-							}
-						}
-					}
-				}
-				return "";
-			}
-			var file:File = File.applicationDirectory.resolvePath("Arduino");
-			if(file.exists){
-				tf.url = file.url+"/hardware/tools/avr/bin/avr-ar.exe"
-				if(tf.exists){
-					arduinoPath = "file:///"+file.nativePath.split("%20").join("\ ").split("\\").join("/");
-					SharedObjectManager.sharedManager().setObject("arduinoPath",arduinoPath);
-					return arduinoPath;
-				}
-			}
-			var files:Array = File.getRootDirectories();
-			for each(file in files){
-				if(file.isDirectory){
-					var tmp:Array = file.getDirectoryListing();
-					for each(var f:File in tmp){
-						if(f.url.toLocaleLowerCase().indexOf("arduino")>-1){
-							tf.url = f.url+"/hardware/tools/avr/bin/avr-ar.exe"
-							if(tf.exists){
-								arduinoPath =(f.url.split("%20").join("\ "));
-								SharedObjectManager.sharedManager().setObject("arduinoPath",arduinoPath);
-								return arduinoPath;
-							}
-						}
-					}
-					var subFile:File = new File(file.nativePath+"Program Files");
-					if(subFile.exists){
-						if(subFile.isDirectory){
-							tmp = subFile.getDirectoryListing();
-							for each(f in tmp){
-								if(f.url.toLocaleLowerCase().indexOf("arduino")>-1){
-									tf.url = f.url+"/hardware/tools/avr/bin/avr-ar.exe"
-									if(tf.exists){
-										arduinoPath = (f.url.split("%20").join("\ "));
-										SharedObjectManager.sharedManager().setObject("arduinoPath",arduinoPath);
-										return arduinoPath;
-									}
-								}
-							}
-						}
-					}
-					subFile = new File(file.nativePath+"Program Files (x86)");
-					if(subFile.exists){
-						if(subFile.isDirectory){
-							tmp = subFile.getDirectoryListing();
-							for each(f in tmp){
-								if(f.url.toLocaleLowerCase().indexOf("arduino")>-1){
-									tf.url = f.url+"/hardware/tools/avr/bin/avr-ar.exe"
-									if(tf.exists){
-										arduinoPath = (f.url.split("%20").join("\ "));
-										SharedObjectManager.sharedManager().setObject("arduinoPath",arduinoPath);
-										return arduinoPath;
-									}
-								}
-							}
-						}
-					}
+					arduinoPath = File.applicationDirectory.resolvePath("Arduino/Arduino.app/Contents/Java").nativePath;
 				}
 			}
 			return arduinoPath;
@@ -1682,7 +1591,7 @@ void updateVar(char * varName,double * var)
 			var path:String = arduinoInstallPath;
 			path=path.split("file:///").join("");//.split("/").join("\\");
 			var cmd:String = "";
-			trace("currentDevice:",_currentDevice);
+//			trace("currentDevice:",_currentDevice);
 			if(_currentDevice=="uno"){
 				cmd = " -c -g -Os -w -fno-exceptions -ffunction-sections -fdata-sections -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=10605 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/standard -I"+path+"/libraries/Servo/src -I"+path+"/libraries/Servo -I"+path+arduinoLibPath+"/Wire -I"+path+arduinoLibPath+"/Wire/utility -I"+path+arduinoLibPath+"/SoftwareSerial -I" + path+"/libraries/makeblock/src"
 			}else if(_currentDevice=="leonardo"){

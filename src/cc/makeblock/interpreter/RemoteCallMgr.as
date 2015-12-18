@@ -1,7 +1,5 @@
 package cc.makeblock.interpreter
 {
-	import flash.utils.ByteArray;
-	import flash.utils.Endian;
 	import flash.utils.clearTimeout;
 	import flash.utils.setTimeout;
 	
@@ -12,59 +10,68 @@ package cc.makeblock.interpreter
 
 	internal class RemoteCallMgr
 	{
-		static private const PACKET_MIN_SIZE:int = 4;
-		private const ba:ByteArray = new ByteArray();
+//		static private const PACKET_MIN_SIZE:int = 4;
+//		private const ba:ByteArray = new ByteArray();
 		
 		private const requestList:Array = [];
-		private const recvBytes:Array = [];
+//		private const recvBytes:Array = [];
 		private var timerId:uint;
+		
+		private var reader:PacketParser;
 		
 		public function RemoteCallMgr()
 		{
-			ba.endian = Endian.LITTLE_ENDIAN;
+			reader = new PacketParser(onPacketRecv);
+//			ba.endian = Endian.LITTLE_ENDIAN;
 			SerialDevice.sharedDevice().dataRecvSignal.add(__onSerialRecv);
 		}
 		
 		private function __onSerialRecv(bytes:Array):void
 		{
-			if(bytes.length <= 0){
-				return;
-			}
-			recvBytes.push.apply(null, bytes);
-			for(;;){
-				if(recvBytes.length < PACKET_MIN_SIZE){
-					return;
-				}
-				if(recvBytes[0] == 0xFF && recvBytes[1] == 0x55){
-					break;
-				}
-				recvBytes.shift();
-			}
-			if(recvBytes[recvBytes.length-2] != 0xD || recvBytes[recvBytes.length-1] != 0xA){
-				return;
-			}
-			ba.clear();
-			for(var i:int=2, n:int=recvBytes.length-2; i<n; ++i){
-				ba.writeByte(recvBytes[i]);
-			}
-			recvBytes.length = 0;
-			if(ba.length > 0){
-				ba.position = 0;
-				switch(ba.readUnsignedByte()){
-					case 0x80://button pressed
-						MBlock.app.runtime.mbotButtonPressed.notify(Boolean(readValue()));
-						break;
-					default:
-						onPacketRecv(readValue());
-				}
-			}else{
-				onPacketRecv();
-			}
-			clearTimeout(timerId);
-			send();
+			reader.append(bytes);
+//			if(bytes == null || bytes.length <= 0){
+//				return;
+//			}
+//			trace(bytes);
+//			recvBytes.push.apply(null, bytes);
+//			for(;;){
+//				if(recvBytes.length < PACKET_MIN_SIZE){
+//					return;
+//				}
+//				if(recvBytes[0] == 0xFF && recvBytes[1] == 0x55){
+//					break;
+//				}
+//				recvBytes.shift();
+//			}
+//			if(recvBytes[2] == 0x0D && recvBytes[3] == 0x0A){
+//				onPacketRecv();
+//			}else{
+//				
+//			}
+//			if(recvBytes[recvBytes.length-2] != 0xD || recvBytes[recvBytes.length-1] != 0xA){
+//				return;
+//			}
+//			ba.clear();
+//			for(var i:int=2, n:int=recvBytes.length-2; i<n; ++i){
+//				ba.writeByte(recvBytes[i]);
+//			}
+//			recvBytes.length = 0;
+//			if(ba.length > 0){
+//				ba.position = 0;
+//				switch(ba.readUnsignedByte()){
+//					case 0x80://button pressed
+//						MBlock.app.runtime.mbotButtonPressed.notify(Boolean(readValue()));
+//						return;
+//					default:
+//						onPacketRecv(readValue());
+//				}
+//			}else{
+//				onPacketRecv();
+//			}
+//			
 		}
 		
-		private function onPacketRecv(value:Object=null):void
+		internal function onPacketRecv(value:Object=null):void
 		{
 			if(requestList.length <= 0){
 				return;
@@ -75,6 +82,8 @@ package cc.makeblock.interpreter
 				thread.push(value);
 			}
 			thread.resume();
+			clearTimeout(timerId);
+			send();
 		}
 		
 		public function call(thread:Thread, method:String, param:Array, ext:ScratchExtension):void
@@ -105,7 +114,7 @@ package cc.makeblock.interpreter
 				thread.interrupt();
 			}
 		}
-		
+		/*
 		private function readValue():*
 		{
 			var valueType:uint = ba.readUnsignedByte();
@@ -121,5 +130,6 @@ package cc.makeblock.interpreter
 					return ba.readUTFBytes(ba.readUnsignedByte());
 			}
 		}
+		*/
 	}
 }
