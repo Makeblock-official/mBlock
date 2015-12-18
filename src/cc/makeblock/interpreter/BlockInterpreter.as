@@ -26,13 +26,14 @@ package cc.makeblock.interpreter
 		public function execute(block:Block, targetObj:ScratchObj):Thread
 		{
 			var funcList:Array = targetObj.procedureDefinitions();
-			var funcDict:Object = {};
+			var blockList:Array = [];
 			for each(var funcBlock:Block in funcList){
-				funcDict[funcBlock.args[0].spec] = converter.printBlockList(funcBlock);
+				blockList.push.apply(null, converter.printBlockList(funcBlock));
 			}
 			
-			var blockList:Array = converter.printBlockList(block);
-			var thread:Thread = realInterpreter.execute(blockList, funcDict);
+			blockList.push.apply(null, converter.printBlockList(block));
+//			trace(realInterpreter.compile(blockList).join("\n"));
+			var thread:Thread = realInterpreter.execute(blockList);
 			thread.userData = targetObj;
 			threadDict[thread] = block;
 			return thread;

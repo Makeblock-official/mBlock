@@ -36,23 +36,19 @@ package scratch {
 	import flash.system.System;
 	import flash.text.TextField;
 	import flash.utils.ByteArray;
-	import flash.utils.getTimer;
 	import flash.utils.setTimeout;
 	
 	import blocks.Block;
 	import blocks.BlockArg;
 	
+	import cc.makeblock.interpreter.FunctionVideoMotion;
 	import cc.makeblock.util.FileUtil;
 	
 	import extensions.ConnectionManager;
 	import extensions.ParseManager;
-	import extensions.ScratchExtension;
 	
 	import interpreter.Interpreter;
-	import interpreter.RobotHelper;
 	import interpreter.Variable;
-	
-	import primitives.VideoMotionPrims;
 	
 	import sound.ScratchSoundPlayer;
 	
@@ -62,7 +58,6 @@ package scratch {
 	
 	import uiwidgets.DialogBox;
 	
-	import util.LogManager;
 	import util.ObjReader;
 	import util.OldProjectReader;
 	import util.ProjectIO;
@@ -75,7 +70,7 @@ package scratch {
 	
 		public var app:MBlock;
 		public var interp:Interpreter;
-		public var motionDetector:VideoMotionPrims;
+		public var motionDetector:FunctionVideoMotion;
 		public var keyIsDown:Array = new Array(128); // records key up/down state
 		public var shiftIsDown:Boolean;
 		public var lastAnswer:String = '';
@@ -87,14 +82,29 @@ package scratch {
 	
 		protected var projectToInstall:ScratchStage;
 		protected var saveAfterInstall:Boolean;
+		
+		public const mbotButtonPressed:Signal = new Signal(Boolean);
 	
 		public function ScratchRuntime(app:MBlock, interp:Interpreter) {
 			this.app = app;
 			this.interp = interp;
 			timerBase = interp.currentMSecs;
 			clearKeyDownArray();
+			mbotButtonPressed.add(__onMbotButtonPressed);
 		}
-	
+		
+		private function __onMbotButtonPressed(isPressed:Boolean):void
+		{
+			allStacksAndOwnersDo(function(stack:Block, target:ScratchObj):void{
+				if(stack.op != "mBot.whenButtonPressed"){
+					return;
+				}
+				if((stack.args[0].argValue == "pressed") == isPressed){
+					interp.toggleThread(stack, target);
+				}
+			});
+		}
+		
 		// -----------------------------
 		// Running and stopping
 		//------------------------------
@@ -330,12 +340,12 @@ package scratch {
 			}
 			var triggerCondition:Boolean = false;
 			if ('whenSensorGreaterThan' == hat.op) {
-				var sensorName:String = interp.arg(hat, 0);
-				var threshold:Number = interp.numarg(hat, 1);
+				var sensorName:String = hat.args[0];
+				var threshold:Number = Number(hat.args[1]);
 				triggerCondition = (
 						(('loudness' == sensorName) && (soundLevel() > threshold)) ||
-						(('timer' == sensorName) && (timer() > threshold)) ||
-						(('video motion' == sensorName) && (VideoMotionPrims.readMotionSensor('motion', target) > threshold)));
+						(('timer' == sensorName) && (timer() > threshold))/* ||
+						(('video motion' == sensorName) && (VideoMotionPrims.readMotionSensor('motion', target) > threshold))*/);
 //			} else if ('whenSensorConnected' == hat.op) {
 //				triggerCondition = getBooleanSensor(interp.arg(hat, 0));
 //			} else if('Communication.serial/received' == hat.op){
@@ -388,7 +398,7 @@ package scratch {
 			stack.allBlocksDo(function(b:Block):void {
 				var op:String = b.op;
 				if (('senseVideoMotion' == op) ||
-					(('whenSensorGreaterThan' == op) && ('video motion' == interp.arg(b, 0)))) {
+					(('whenSensorGreaterThan' == op) && ('video motion' == b.args[0]))) {
 						app.libraryPart.showVideoButton();
 				}
 	
@@ -566,7 +576,7 @@ package scratch {
 	
 		public function showAskPrompt(question:String = ''):void {
 			var p:AskPrompter = new AskPrompter(question, app);
-			interp.setAskThread();
+//			interp.setAskThread();
 			p.x = 15;
 			p.y = ScratchObj.STAGEH - p.height - 5;
 			app.stagePane.addChild(p);
@@ -574,7 +584,7 @@ package scratch {
 		}
 	
 		public function hideAskPrompt(p:AskPrompter):void {
-			interp.clearAskThread();
+//			interp.clearAskThread();
 			lastAnswer = p.answer();
 			p.parent.removeChild(p);
 			app.stage.focus = null;
@@ -592,7 +602,7 @@ package scratch {
 		}
 	
 		public function clearAskPrompts():void {
-			interp.clearAskThread();
+//			interp.clearAskThread();
 			var allPrompts:Array = [];
 			var uiLayer:Sprite = app.stagePane.getUILayer();
 			var c:DisplayObject;
@@ -706,16 +716,16 @@ package scratch {
 		public function allVarNames():Array {
 			var result:Array = [], v:Variable;
 			for each (v in app.stageObj().variables) {
-				if(RobotHelper.isAutoVarName(v.name)){
-					continue;
-				}
+//				if(RobotHelper.isAutoVarName(v.name)){
+//					continue;
+//				}
 				result.push(v.name);
 			}
 			if (!app.viewedObj().isStage) {
 				for each (v in app.viewedObj().variables) {
-					if(RobotHelper.isAutoVarName(v.name)){
-						continue;
-					}
+//					if(RobotHelper.isAutoVarName(v.name)){
+//						continue;
+//					}
 					result.push(v.name);
 				}
 			}
