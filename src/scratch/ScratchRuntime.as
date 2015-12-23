@@ -100,7 +100,9 @@ package scratch {
 					return;
 				}
 				if((stack.args[0].argValue == "pressed") == isPressed){
-					interp.toggleThread(stack, target);
+					if(!stack.isExecuting){
+						interp.toggleThread(stack, target);
+					}
 				}
 			});
 		}
