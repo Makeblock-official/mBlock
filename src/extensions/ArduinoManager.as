@@ -308,7 +308,7 @@ void updateVar(char * varName,double * var)
 			if(varList.indexOf(varName)==-1){
 				varList.push(varName);
 			}
-			var code:CodeObj = new CodeObj(StringUtil.substitute("{0}",varName));
+			var code:CodeObj = new CodeObj(StringUtil.substitute("{0}",castVarName(varName.toString())));
 			return code;
 		}
 		
@@ -748,7 +748,7 @@ void updateVar(char * varName,double * var)
 				return codeBlock;
 			}else if(blk[0]=="changeVar:by:"){
 				codeBlock.type = "string";
-				codeBlock.code = StringUtil.substitute("{0} += {1};\n",getCodeBlock(blk[1]).code,getCodeBlock(blk[2]).code);
+				codeBlock.code = StringUtil.substitute("{0} += {1};\n",getCodeBlock(castVarName(blk[1])).code,getCodeBlock(blk[2]).code);
 				return codeBlock;
 			}
 				//			else if(blk[0].indexOf("Makeblock")>=0||blk[0].indexOf("Arduino")>=0||blk[0].indexOf("Communication")>=0){
