@@ -176,6 +176,24 @@ public class ScriptsPart extends UIPart {
 		arduinoFrame.addChild(displayModeBtn);
 		arduinoFrame.addChild(inputModeBtn);
 		addChild(arduinoFrame);
+		
+		paletteFrame.addEventListener(MouseEvent.MOUSE_OVER, __onMouseOver);
+		paletteFrame.addEventListener(MouseEvent.MOUSE_OUT, __onMouseOut);
+		paletteIndex = getChildIndex(paletteFrame);
+	}
+	
+	private var paletteIndex:int;
+	
+	private function __onMouseOver(event:MouseEvent):void
+	{
+		paletteFrame.showRightPart();
+		setChildIndex(paletteFrame, numChildren-1);
+	}
+	
+	private function __onMouseOut(event:MouseEvent):void
+	{
+		paletteFrame.hideRightPart();
+		setChildIndex(paletteFrame, paletteIndex);
 	}
 	
 	private function onInputModeChange(evt:MouseEvent):void
