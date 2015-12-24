@@ -31,6 +31,8 @@ package blocks {
 	import flash.geom.Matrix;
 	
 	import cc.makeblock.mbot.uiwidgets.lightSetter.LightSensor;
+	
+	import translation.Translator;
 
 public class BlockShape extends Shape {
 
@@ -154,9 +156,10 @@ public class BlockShape extends Shape {
 		g.clear();
 		if(bmd != null){
 			var matrix:Matrix = new Matrix();
-			matrix.scale(LightSensor.BMP_ICON_SCALE, LightSensor.BMP_ICON_SCALE);
+			var scaleValue:Number = topH / LightSensor.COUNT_H;
+			matrix.scale(scaleValue, scaleValue);
 			g.beginBitmapFill(bmd, matrix, false);
-			g.drawRect(0, 0, LightSensor.COUNT_W*LightSensor.BMP_ICON_SCALE, LightSensor.COUNT_H*LightSensor.BMP_ICON_SCALE);
+			g.drawRect(0, 0, LightSensor.COUNT_W*scaleValue, LightSensor.COUNT_H*scaleValue);
 		}else{
 			g.beginFill(color);
 			drawFunction(g);

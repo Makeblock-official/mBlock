@@ -36,6 +36,7 @@ package ui.parts {
 	import cc.makeblock.mbot.util.AppTitleMgr;
 	
 	import extensions.DeviceManager;
+	import extensions.ParseManager;
 	
 	import translation.Translator;
 	
@@ -76,9 +77,9 @@ package ui.parts {
 		private var helpTool:IconButton;
 		private var toolOnMouseDown:String;
 	
-		private var offlineNotice:TextField = new TextField;
-		private var mcNotice:Sprite = new Sprite;
-		private const offlineNoticeFormat:TextFormat = new TextFormat(CSS.font, 12, CSS.white, true,null,null,null,null,"right");
+//		private var offlineNotice:TextField = new TextField;
+//		private var mcNotice:Sprite = new Sprite;
+//		private const offlineNoticeFormat:TextFormat = new TextFormat(CSS.font, 12, CSS.white, true,null,null,null,null,"right");
 	
 		public function TopBarPart(app:MBlock) {
 			this.app = app;
@@ -126,51 +127,53 @@ package ui.parts {
 				}
 				removeChild(aboutMenu);
 				*/
-			if (mcNotice.parent) {
-				removeChild(mcNotice);
-				mcNotice.removeEventListener(MouseEvent.CLICK,onClickLink); 
-			}
+//			if (mcNotice.parent) {
+//				removeChild(mcNotice);
+//				mcNotice.removeEventListener(MouseEvent.CLICK,onClickLink); 
+//			}
 		}
 	
 		public function updateTranslation():void {
 			removeTextButtons();
 			addTextButtons();
-			updateVersion();
+//			updateVersion();
 			refresh();
 		}
+		/*
 		public function updateVersion():void{
 			if (offlineNotice) 
 			{
-//				offlineNotice.visible = false;
-//				offlineNotice.defaultTextFormat = offlineNoticeFormat;
-//				if(ParseManager.sharedManager().firmVersion.split(".").length<=1){
-//					offlineNotice.text = Translator.map('Unknown Firmware');
-//				}else{
-//					var hardwareVer:uint = ParseManager.sharedManager().firmVersion.split(".")[1];
-//					offlineNotice.text = Translator.map('Current Firmware') + ' v '+ParseManager.sharedManager().firmVersion+(hardwareVer==1?" (Arduino)":" (mBot)");
-//				}
-//				offlineNotice.selectable = false;
-			}
-		}
-		private var _clicker:Clicker ;
-		public function updateClicker():void{
-			offlineNotice.visible = false;
-			for(var i:uint=0;i<ClickerManager.sharedManager().list.length;i++){
-				_clicker = ClickerManager.sharedManager().list[i];
-				if(_clicker.isShow()){
-					offlineNotice.defaultTextFormat = offlineNoticeFormat;
-					offlineNotice.text = _clicker.desc;
-					offlineNotice.selectable = false;
-					offlineNotice.visible = true;
-					return;
+				offlineNotice.visible = false;
+				offlineNotice.defaultTextFormat = offlineNoticeFormat;
+				if(ParseManager.sharedManager().firmVersion.split(".").length<=1){
+					offlineNotice.text = Translator.map('Unknown Firmware');
+				}else{
+					var hardwareVer:uint = ParseManager.sharedManager().firmVersion.split(".")[1];
+					offlineNotice.text = Translator.map('Current Firmware') + ' v '+ParseManager.sharedManager().firmVersion+(hardwareVer==1?" (Arduino)":" (mBot)");
 				}
+				offlineNotice.selectable = false;
 			}
-			_clicker = null;
 		}
-		private function onClickLink(evt:MouseEvent):void{
-			_clicker.click();
-			setTimeout(updateClicker,2000);
-		}
+		*/
+//		private var _clicker:Clicker ;
+//		public function updateClicker():void{
+//			offlineNotice.visible = false;
+//			for(var i:uint=0;i<ClickerManager.sharedManager().list.length;i++){
+//				_clicker = ClickerManager.sharedManager().list[i];
+//				if(_clicker.isShow()){
+//					offlineNotice.defaultTextFormat = offlineNoticeFormat;
+//					offlineNotice.text = _clicker.desc;
+//					offlineNotice.selectable = false;
+//					offlineNotice.visible = true;
+//					return;
+//				}
+//			}
+//			_clicker = null;
+//		}
+//		private function onClickLink(evt:MouseEvent):void{
+//			_clicker.click();
+//			setTimeout(updateClicker,2000);
+//		}
 		public function setWidthHeight(w:int, h:int):void {
 			this.w = w;
 			this.h = h;
@@ -250,10 +253,10 @@ package ui.parts {
 			//helpTool.x = shrinkTool.right() + space;
 			copyTool.y = cutTool.y = shrinkTool.y = growTool.y = 4;//buttonY - 3;
 	
-			if(mcNotice) {
-				mcNotice.x = w - offlineNotice.width - 5;
-				mcNotice.y = 5;
-			}
+//			if(mcNotice) {
+//				mcNotice.x = w - offlineNotice.width - 5;
+//				mcNotice.y = 5;
+//			}
 		}
 	
 		public function refresh():void {
@@ -288,16 +291,16 @@ package ui.parts {
 			}
 			addChild(aboutMenu = makeMenuButton('Help', app.openAbout, true));
 			*/
-			addChild(mcNotice);
-			mcNotice.addChild(offlineNotice);
-			mcNotice.addEventListener(MouseEvent.CLICK,onClickLink); 
-			mcNotice.buttonMode = true;
-			mcNotice.useHandCursor = true;
-			mcNotice.mouseChildren = false;
-			mcNotice.mouseEnabled = true;
-			offlineNotice.visible = true;
-			offlineNotice.width = 400;
-			offlineNotice.height = 30;
+//			addChild(mcNotice);
+//			mcNotice.addChild(offlineNotice);
+//			mcNotice.addEventListener(MouseEvent.CLICK,onClickLink); 
+//			mcNotice.buttonMode = true;
+//			mcNotice.useHandCursor = true;
+//			mcNotice.mouseChildren = false;
+//			mcNotice.mouseEnabled = true;
+//			offlineNotice.visible = true;
+//			offlineNotice.width = 400;
+//			offlineNotice.height = 30;
 		}
 	
 		private function addToolButtons():void {

@@ -761,7 +761,7 @@ public class ExtensionManager {
 			}
 			ext.busy.push(ext.nextID);
 			ext.waiting[b] = ext.nextID;
-			b.nextID.push(ext.nextID);
+//			b.nextID.push(ext.nextID);
 			url = ''+op;
 			for each (var arg:* in args) {
 				url += '/' + ((arg is String) ? escape(arg) : arg);

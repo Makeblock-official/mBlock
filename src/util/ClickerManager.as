@@ -41,7 +41,7 @@ package util
 					clicker.type = list[i].type;
 					_list.push(clicker);
 				}
-				MBlock.app.topBarPart.updateClicker();
+//				MBlock.app.topBarPart.updateClicker();
 			}catch(err:*){
 				trace(err);
 			}
