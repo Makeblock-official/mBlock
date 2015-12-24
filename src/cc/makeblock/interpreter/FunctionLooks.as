@@ -62,8 +62,8 @@ package cc.makeblock.interpreter {
 
 		provider.register("say:", onSay);
 		provider.register("think:", onThink);
-		provider.register('say:duration:elapsed:from:', function(thread:Thread, argList:Array):void { showBubbleAndWait(thread.userData, argList[0], argList[1], 'talk') });
-		provider.register('think:duration:elapsed:from:', function(thread:Thread, argList:Array):void { showBubbleAndWait(thread.userData, argList[0], argList[1], 'think') });
+		provider.register('say:duration:elapsed:from:', function(thread:Thread, argList:Array):void { showBubbleAndWait(thread, argList[0], argList[1], 'talk') });
+		provider.register('think:duration:elapsed:from:', function(thread:Thread, argList:Array):void { showBubbleAndWait(thread, argList[0], argList[1], 'think') });
 
 		provider.register('changeGraphicEffect:by:', primChangeEffect);
 		provider.register('setGraphicEffect:to:', primSetEffect);
@@ -195,14 +195,22 @@ package cc.makeblock.interpreter {
 		return costumes[(i + costumes.length) % costumes.length].costumeName;
 	}
 
-	private function showBubbleAndWait(s:ScratchSprite, text:String, secs:Number, type:String):void {
+	private function showBubbleAndWait(thread:Thread, text:String, secs:Number, type:String):void {
+		var s:ScratchSprite = thread.userData;
 		if (s == null) return;
 		s.showBubble(text, type);
-		setTimeout(function():void{
-			if (s.bubble && (s.bubble.getText() == text)) s.hideBubble();
-		}, secs * 1000);
+		thread.suspend();
+		thread.suspendUpdater = [__CheckTimeOut, s, text, secs * 1000];
 	}
 
+	static private function __CheckTimeOut(thread:Thread, s:ScratchSprite, text:String, timeout:int):void
+	{
+		if(thread.timeElapsedSinceSuspend < timeout){
+			return;
+		}
+		thread.resume();
+		if (s.bubble && (s.bubble.getText() == text)) s.hideBubble();
+	}
 
 	private function primChangeEffect(thread:Thread, argList:Array):void {
 		var s:ScratchObj = thread.userData;
