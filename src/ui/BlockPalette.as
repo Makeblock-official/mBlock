@@ -31,6 +31,7 @@ package ui {
 
 public class BlockPalette extends ScrollFrameContents {
 
+	static public const WIDTH:int = 270;
 	public const isBlockPalette:Boolean = true;
 
 	public function BlockPalette():void {
@@ -83,7 +84,7 @@ public class BlockPalette extends ScrollFrameContents {
 		// Draw myself using the texture bitmap, if available, or a solid gray color if not.
 		graphics.clear();
 		graphics.beginFill(0xFF0000, 0);
-		graphics.drawRect(0, 0, 270, h);
+		graphics.drawRect(0, 0, WIDTH, h);
 		graphics.endFill();
 	}
 }}

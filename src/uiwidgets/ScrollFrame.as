@@ -81,9 +81,9 @@ public class ScrollFrame extends Sprite implements DragClient {
 	private var _prevWidth:int;
 	private var _prevHeight:int;
 	
-	public function showRightPart():void
+	public function showRightPart(w:int):void
 	{
-		drawShape(Shape(mask).graphics, 1000, _prevHeight);
+		drawShape(Shape(mask).graphics, _prevWidth+w, _prevHeight);
 	}
 	
 	public function hideRightPart():void
