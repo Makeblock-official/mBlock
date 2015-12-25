@@ -11,6 +11,8 @@ package cc.makeblock.interpreter
 	
 	import scratch.ScratchObj;
 	
+	import uiwidgets.StretchyBitmap;
+	
 	internal class PrimInit
 	{
 		static public function Init(provider:FunctionProvider):void
@@ -48,7 +50,7 @@ package cc.makeblock.interpreter
 			MBlock.app.runtime.allStacksAndOwnersDo(findReceivers);
 			var threadList:Array = [];
 			for each(var item:Array in receivers){
-				var newThread:Thread = BlockInterpreter.Instance.execute(item[0], item[1]);
+				var newThread:Thread = MBlock.app.interp.toggleThread(item[0], item[1]);
 				threadList.push(newThread);
 			}
 //			target.startAllReceivers(receivers, waitFlag);
@@ -218,17 +220,27 @@ package cc.makeblock.interpreter
 			target.startCmdList(proc, false, argList);
 		}
 		*/
+		static private const numPattern:RegExp = /^-?\d+(.\d+)?$/;
+		static private function getVarRealVal(val:*):*
+		{
+			var result:* = val;
+			if(val is String && numPattern.test(val)){
+				return parseFloat(val);
+			}
+			return result;
+		}
+		
 		static private function doGetVar(thread:Thread, argList:Array):void
 		{
 			var target:* = thread.userData;
 			var v:Variable = target.varCache[argList[0]];
 			if(v != null){
 				// XXX: Do we need a get() for persistent variables here ?
-				thread.push( v.value);
+				thread.push(getVarRealVal(v.value));
 				return;
 			}
 			v = target.varCache[argList[0]] = target.lookupOrCreateVar(argList[0]);
-			thread.push( (v != null) ? v.value : 0);
+			thread.push( (v != null) ? getVarRealVal(v.value) : 0);
 		}
 		
 		static private function doSetVar(thread:Thread, argList:Array):void

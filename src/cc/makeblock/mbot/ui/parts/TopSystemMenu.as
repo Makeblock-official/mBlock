@@ -414,7 +414,7 @@ package cc.makeblock.mbot.ui.parts
 					AppUpdater.getInstance().start(true);
 					break;
 				case "upload_bug":
-					new ErrorReportFrame().show();
+					ErrorReportFrame.OpenSendWindow("");
 					break;
 			}
 		}

@@ -1,25 +1,13 @@
 package cc.makeblock.mbot.uiwidgets.errorreport
 {
-	import flash.events.Event;
 	import flash.net.URLRequest;
 	import flash.net.URLVariables;
 	import flash.net.navigateToURL;
 	import flash.system.Capabilities;
 	
-	import cc.makeblock.mbot.uiwidgets.MyFrame;
-	import cc.makeblock.mbot.util.PopupUtil;
-	
-	import org.aswing.AsWingUtils;
-	import org.aswing.BorderLayout;
-	import org.aswing.CenterLayout;
-	import org.aswing.JButton;
-	import org.aswing.JPanel;
-	import org.aswing.JTextArea;
-	import org.aswing.event.AWEvent;
-	
 	import translation.Translator;
 	
-	public class ErrorReportFrame extends MyFrame
+	public class ErrorReportFrame// extends MyFrame
 	{
 		static public function OpenSendWindow(msg:String):void
 		{
@@ -32,7 +20,7 @@ package cc.makeblock.mbot.uiwidgets.errorreport
 			request.data = data;
 			navigateToURL(request);
 		}
-		
+		/*
 		private var textArea:JTextArea;
 		private var sendBtn:JButton;
 		
@@ -84,5 +72,6 @@ package cc.makeblock.mbot.uiwidgets.errorreport
 			setTitle(Translator.map("Upload Bug"));
 			sendBtn.setText(Translator.map("Send"));
 		}
+		//*/
 	}
 }

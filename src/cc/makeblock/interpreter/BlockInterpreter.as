@@ -60,7 +60,8 @@ package cc.makeblock.interpreter
 		*/
 		public function isRunning(block:Block, targetObj:ScratchObj):Boolean
 		{
-			for(var t:* in threadDict){
+			var list:Vector.<Thread> = realInterpreter.getCopyOfThreadList();
+			for each(var t:Thread in list){
 				if(threadDict[t] == block && t.userData == targetObj){
 					return true;
 				}
@@ -69,7 +70,8 @@ package cc.makeblock.interpreter
 		}
 		public function stopThread(block:Block, targetObj:ScratchObj):void
 		{
-			for(var t:* in threadDict){
+			var list:Vector.<Thread> = realInterpreter.getCopyOfThreadList();
+			for each(var t:Thread in list){
 				if(threadDict[t] == block && t.userData == targetObj){
 					t.interrupt();
 					delete threadDict[t];

@@ -49,7 +49,7 @@ public class ZoomWidget extends Sprite {
 	private function zoomIn(b:IconButton):void { changeZoomBy(1) }
 
 	private function changeZoomBy(delta:int):void {
-		const scaleFactors:Array = [25, 50, 75, 100, 125, 150, 200];
+		const scaleFactors:Array = [30, 50, 80, 100, 125, 150, 200];
 		zoom += delta;
 		zoom = Math.max(-3, Math.min(zoom, 3));
 		SharedObjectManager.sharedManager().setObject("pane_zoom",zoom);

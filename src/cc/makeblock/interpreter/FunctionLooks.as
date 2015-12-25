@@ -183,7 +183,7 @@ package cc.makeblock.interpreter {
 		MBlock.app.runtime.allStacksAndOwnersDo(findSceneHats);
 		var threadList:Array = [];
 		for each(var item:Array in receivers){
-			threadList.push(BlockInterpreter.Instance.execute(item[0], item[1]));
+			threadList.push(MBlock.app.interp.toggleThread(item[0], item[1]));
 		}
 		return threadList;
 //		startAllReceivers(receivers, waitFlag);

@@ -31,7 +31,6 @@ package cc.makeblock.interpreter {
 	
 	import blocks.Block;
 	
-	
 	import interpreter.Interpreter;
 	
 	import scratch.ScratchSprite;
@@ -177,7 +176,7 @@ package cc.makeblock.interpreter {
 			clone.isClone = true;
 			for each (var stack:Block in clone.scripts) {
 				if (stack.op == "whenCloned") {
-					BlockInterpreter.Instance.execute(stack, null).userData = clone;
+					MBlock.app.interp.toggleThread(stack, clone).userData = clone;
 				}
 			}
 			MBlock.app.runtime.cloneCount++;
