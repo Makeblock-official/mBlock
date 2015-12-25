@@ -78,5 +78,12 @@ public class BlockPalette extends ScrollFrameContents {
 	public static function strings():Array {
 		return ['Cannot Delete', 'To delete a block definition, first remove all uses of the block.'];
 	}
-
+	
+	override public function setWidthHeight(w:int, h:int):void {
+		// Draw myself using the texture bitmap, if available, or a solid gray color if not.
+		graphics.clear();
+		graphics.beginFill(0xFF0000, 0);
+		graphics.drawRect(0, 0, 270, h);
+		graphics.endFill();
+	}
 }}
