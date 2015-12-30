@@ -11,8 +11,6 @@ package cc.makeblock.interpreter
 	
 	internal class ArduinoFunctionProvider extends FunctionProvider
 	{
-		private const remoteCallMgr:RemoteCallMgr = new RemoteCallMgr();
-		
 		public function ArduinoFunctionProvider()
 		{
 			FunctionProviderHelper.InitMath(this);
@@ -25,6 +23,7 @@ package cc.makeblock.interpreter
 			new FunctionVideoMotion().addPrimsTo(this);
 			PrimInit.Init(this);
 		}
+		
 		private var mbotTimer:int;
 		
 		override protected function onCallUnregisteredFunction(thread:Thread, name:String, argList:Array):void
@@ -57,7 +56,7 @@ package cc.makeblock.interpreter
 					return;
 				}
 				thread.suspend();
-				remoteCallMgr.call(thread, opName, argList, ext);
+				RemoteCallMgr.Instance.call(thread, opName, argList, ext);
 			}else{
 				thread.push(ext.stateVars[opName]);
 			}

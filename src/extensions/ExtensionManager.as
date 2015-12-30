@@ -35,6 +35,7 @@ import flash.utils.setTimeout;
 
 import blocks.Block;
 
+import cc.makeblock.interpreter.RemoteCallMgr;
 import cc.makeblock.util.FileUtil;
 
 import translation.Translator;
@@ -141,8 +142,9 @@ public class ExtensionManager {
 	}
 	public function stopButtonPressed():* {
 		// Send a reset_all command to all active extensions.
+		var args:Array = [];
 		for each (var ext:ScratchExtension in enabledExtensions()) {
-			call(ext.name, 'resetAll', []);
+			RemoteCallMgr.Instance.call(null, 'resetAll', args, ext);
 		}
 	}
 
