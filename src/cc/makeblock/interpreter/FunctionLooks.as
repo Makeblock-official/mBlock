@@ -23,8 +23,6 @@
 // Looks primitives.
 
 package cc.makeblock.interpreter {
-	import flash.utils.setTimeout;
-	
 	import blockly.runtime.FunctionProvider;
 	import blockly.runtime.Thread;
 	

@@ -76,9 +76,9 @@ package cc.makeblock.interpreter {
 		
 		private function onRandomInt(thread:Thread, argList:Array):void
 		{
-			var min:int = argList[0];
-			var max:int = argList[1];
-			var val:int = min + (max - min) * Math.random();
+			var min:Number = argList[0];
+			var max:Number = argList[1];
+			var val:Number = min + (max - min) * Math.random();
 			thread.push(val);
 		}
 		
@@ -176,7 +176,7 @@ package cc.makeblock.interpreter {
 			clone.isClone = true;
 			for each (var stack:Block in clone.scripts) {
 				if (stack.op == "whenCloned") {
-					MBlock.app.interp.toggleThread(stack, clone).userData = clone;
+					MBlock.app.interp.toggleThread(stack, clone);
 				}
 			}
 			MBlock.app.runtime.cloneCount++;

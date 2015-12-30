@@ -35,16 +35,8 @@ package cc.makeblock.interpreter
 			var receivers:Array = [];
 			msg = msg.toLowerCase();
 			function findReceivers(stack:Block, obj:ScratchObj):void {
-				try{
-					if ((stack.op == "whenIReceive") && (stack.args[0].argValue.toLowerCase() == msg)) {
-						receivers.push([stack, obj]);
-					}
-				}catch(e:Error){
-//					trace(e);
-//					var b:Block = (stack.args[0] as Block);
-//					if ((stack.op == "whenIReceive") && (target.evalCmd(b).toLowerCase() == msg)) {
-//						receivers.push([stack, obj]);
-//					}
+				if ((stack.op == "whenIReceive") && (stack.args[0].argValue.toLowerCase() == msg)) {
+					receivers.push([stack, obj]);
 				}
 			}
 			MBlock.app.runtime.allStacksAndOwnersDo(findReceivers);

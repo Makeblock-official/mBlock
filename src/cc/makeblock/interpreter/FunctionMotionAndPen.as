@@ -32,7 +32,6 @@ package cc.makeblock.interpreter {
 	import blockly.runtime.FunctionProvider;
 	import blockly.runtime.Thread;
 	
-	
 	import scratch.ScratchObj;
 	import scratch.ScratchSprite;
 	import scratch.ScratchStage;
@@ -132,17 +131,20 @@ package cc.makeblock.interpreter {
 			return;
 		}
 		thread.suspend();
-		// record state: [0]start msecs, [1]duration, [2]startX, [3]startY, [4]endX, [5]endY
-//		[interp.currentMSecs, 1000 * secs, s.scratchX, s.scratchY, destX, destY];
-		// in progress: move to intermediate position along path
-//		var frac:Number = (interp.currentMSecs - state[0]) / state[1];
-//		var newX:Number = state[2] + (frac * (state[4] - state[2]));
-//		var newY:Number = state[3] + (frac * (state[5] - state[3]));
-		var obj:Object = {"x":s.scratchX,"y":s.scratchY}
-		TweenLite.to(obj, secs, {"x":destX, "y":destY,"onUpdate":function():void{
-				moveSpriteTo(s, obj.x, obj.y);
-			},"onComplete":thread.resume}
-		);
+		thread.suspendUpdater = [__primGlide, s, secs * 1000, s.scratchX, s.scratchY, destX, destY];
+	}
+	
+	private function __primGlide(thread:Thread, s:ScratchSprite, duration:int, startX:Number, startY:Number, destX:Number, destY:Number):void
+	{
+		if(thread.timeElapsedSinceSuspend >= duration){
+			moveSpriteTo(s, destX, destY);
+			thread.resume();
+		}else{
+			var frac:Number = thread.timeElapsedSinceSuspend / duration;
+			var newX:Number = startX + (frac * (destX - startX));
+			var newY:Number = startY + (frac * (destY - startY));
+			moveSpriteTo(s, newX, newY);
+		}
 	}
 
 	private function mouseOrSpritePosition(targetSprite:ScratchSprite, arg:String):Point {
