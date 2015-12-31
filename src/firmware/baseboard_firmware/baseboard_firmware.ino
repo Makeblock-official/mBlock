@@ -31,6 +31,8 @@ MeBuzzer buzzer;
 MeHumiture humiture;
 MeFlameSensor FlameSensor;
 MeGasSensor GasSensor;
+MeTouchSensor touchSensor;
+Me4Button buttonSensor;
 
 typedef struct MeModule
 {
@@ -110,11 +112,12 @@ char serialRead;
 #define PWM 32
 #define SERVO_PIN 33
 #define TONE 34
-#define PULSEIN 35
+#define PULSEIN 37
 #define ULTRASONIC_ARDUINO 36
 #define STEPPER 40
 #define LEDMATRIX 41
 #define TIMER 50
+#define TOUCH_SENSOR         51
 
 #define GET 1
 #define RUN 2
@@ -125,6 +128,7 @@ int servo_pins[8]={0,0,0,0,0,0,0,0};
 unsigned char prevc=0;
 double lastTime = 0.0;
 double currentTime = 0.0;
+uint8_t keyPressed = 0;
 
 void setup(){
   pinMode(13,OUTPUT);
@@ -150,6 +154,7 @@ void setup(){
     gyro.begin();
 }
 void loop(){
+  keyPressed = buttonSensor.pressed();
   currentTime = millis()/1000.0-lastTime;
   if(ir != NULL)
   {
@@ -684,5 +689,22 @@ void readSensor(int device){
      sendFloat((float)currentTime);
    }
    break;
+    case TOUCH_SENSOR:
+    {
+     if(touchSensor.getPort() != port)
+     {
+        touchSensor.reset(port);
+      }
+      sendByte(touchSensor.touched());
+    }
+    break;
+    case BUTTON:
+    {
+      if(buttonSensor.getPort() != port){
+        buttonSensor.reset(port);
+      }
+      sendByte(keyPressed == readBuffer(7));
+    }
+    break;
   }
 }
