@@ -5,6 +5,8 @@ package cc.makeblock.interpreter
 	
 	import blocks.Block;
 	
+	import cc.makeblock.util.StringChecker;
+	
 	import extensions.ParseManager;
 	
 	import interpreter.Variable;
@@ -212,11 +214,10 @@ package cc.makeblock.interpreter
 			target.startCmdList(proc, false, argList);
 		}
 		*/
-		static private const numPattern:RegExp = /^-?\d+(.\d+)?$/;
 		static private function getVarRealVal(val:*):*
 		{
 			var result:* = val;
-			if(val is String && numPattern.test(val)){
+			if(val is String && StringChecker.IsNumber(val)){
 				return parseFloat(val);
 			}
 			return result;
@@ -224,7 +225,7 @@ package cc.makeblock.interpreter
 		
 		static private function doGetVar(thread:Thread, argList:Array):void
 		{
-			var target:* = thread.userData;
+			var target:ScratchObj = thread.userData;
 			var v:Variable = target.varCache[argList[0]];
 			if(v != null){
 				// XXX: Do we need a get() for persistent variables here ?
@@ -237,7 +238,7 @@ package cc.makeblock.interpreter
 		
 		static private function doSetVar(thread:Thread, argList:Array):void
 		{
-			var target:* = thread.userData;
+			var target:ScratchObj = thread.userData;
 			var v:Variable = target.varCache[argList[0]];
 			if (!v) {
 				v = target.varCache[argList[0]] = target.lookupOrCreateVar(argList[0]);
@@ -250,7 +251,7 @@ package cc.makeblock.interpreter
 		
 		static private function increaseVar(thread:Thread, argList:Array):void
 		{
-			var target:* = thread.userData;
+			var target:ScratchObj = thread.userData;
 			var v:Variable = target.varCache[argList[0]];
 			if (!v) {
 				v = target.varCache[argList[0]] = target.lookupOrCreateVar(argList[0]);

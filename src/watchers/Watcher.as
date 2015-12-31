@@ -25,17 +25,35 @@
 
 package watchers {
 
-	import flash.display.*;
-	import flash.filters.BevelFilter;
+	import flash.display.Graphics;
+	import flash.display.Shape;
+	import flash.display.Sprite;
 	import flash.events.MouseEvent;
+	import flash.filters.BevelFilter;
 	import flash.geom.Point;
-	import flash.text.*;
-	import interpreter.*;
-	import scratch.*;
-	import uiwidgets.*;
-	import util.*;
+	import flash.text.TextField;
+	import flash.text.TextFormat;
+	
 	import blocks.Block;
+	
+	import cc.makeblock.util.StringChecker;
+	
+	import extensions.ScratchExtension;
+	
+	import interpreter.Variable;
+	
+	import scratch.ScratchObj;
+	import scratch.ScratchRuntime;
+	import scratch.ScratchSprite;
+	
 	import translation.Translator;
+	
+	import uiwidgets.DialogBox;
+	import uiwidgets.Menu;
+	import uiwidgets.ResizeableFrame;
+	
+	import util.DragClient;
+	import util.JSON;
 
 public class Watcher extends Sprite implements DragClient {
 
@@ -237,6 +255,16 @@ public class Watcher extends Sprite implements DragClient {
 			case "timeAndDate": return runtime.getTimeString(param);
 			case "xScroll": return app.stagePane.xScroll;
 			case "yScroll": return app.stagePane.yScroll;
+		}
+		var index:int = cmd.indexOf(".");
+		
+		if(index >= 0){
+			var extName:String = cmd.slice(0, index);
+			var opName:String = cmd.slice(index+1);
+			var ext:ScratchExtension = MBlock.app.extensionManager.extensionByName(extName);
+			if(ext != null && !ext.useSerial){
+				return ext.getStateVar(opName);
+			}
 		}
 /*
 		if(cmd.indexOf('.') > -1) {

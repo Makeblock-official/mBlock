@@ -4,6 +4,8 @@ package cc.makeblock.interpreter
 	
 	import blocks.Block;
 	import blocks.BlockArg;
+	
+	import cc.makeblock.util.StringChecker;
 
 	internal class BlockJsonPrinter
 	{
@@ -23,8 +25,8 @@ package cc.makeblock.interpreter
 					argList.push(b.spec);
 				}
 				return [
-					SyntaxTreeFactory.NewFunction(argList, printBlockList(block.nextBlock)),
-					SyntaxTreeFactory.NewVar(block.args[0].spec)
+//					SyntaxTreeFactory.NewFunction(argList, printBlockList(block.nextBlock)),
+					SyntaxTreeFactory.NewVar(block.args[0].spec, SyntaxTreeFactory.NewFunction(argList, printBlockList(block.nextBlock)))
 				];
 			}
 			var result:Array = [];
@@ -35,13 +37,64 @@ package cc.makeblock.interpreter
 			return result;
 		}
 		
+		private function needAddFrameSuspend(block:Block):Boolean
+		{
+			var testBlock:Block = block;
+			while(block != null){
+				switch(block.op){
+					case "forward:":
+					case "turnRight:":
+					case "turnLeft:":
+					case "heading:":
+					case "pointTowards:":
+					case "gotoX:y:":
+					case "gotoSpriteOrMouse:":
+					case "glideSecs:toX:y:elapsed:from:":
+					case "changeXposBy:":
+					case "xpos:":
+					case "changeYposBy:":
+					case "ypos:":
+						
+					case "say:":
+					case "think:":
+					case "show":
+					case "hide":
+					case 'changeGraphicEffect:by:':
+					case 'setGraphicEffect:to:':
+					case 'filterReset':
+					case 'changeSizeBy:':
+					case 'setSizeTo:':
+						
+					case 'clearPenTrails':
+						
+					case "setVar:to:":
+					case "changeVar:by:":
+						return true;
+					case "doIfElse":
+						if( needAddFrameSuspend(block.subStack1) || needAddFrameSuspend(block.subStack2)){
+							return true;
+						}
+						break;
+					case "doIf":
+						if( needAddFrameSuspend(block.subStack1)){
+							return true;
+						}
+						break;
+				}
+				block = block.nextBlock;
+			}
+			return false;
+		}
+		
 		private function addFrameSuspend(block:Block):Array
 		{
 			var result:Array = printBlockList(block.subStack1);
 			if(null == result){
 				return null;
 			}
-			result.push(SyntaxTreeFactory.NewStatement("suspendUntilNextFrame", []));
+			if(needAddFrameSuspend(block.subStack1)){
+				result.push(SyntaxTreeFactory.NewStatement("suspendUntilNextFrame", []));
+			}
 			return result;
 		}
 		
@@ -55,7 +108,7 @@ package cc.makeblock.interpreter
 					result.push(SyntaxTreeFactory.NewWhile(SyntaxTreeFactory.NewNumber(1), addFrameSuspend(block)));
 					break;
 				case "doRepeat":
-					result.push(SyntaxTreeFactory.NewLoop(getArg(block, 0), printBlockList(block.subStack1)));
+					result.push(SyntaxTreeFactory.NewLoop(getArg(block, 0), addFrameSuspend(block)));
 					break;
 				case "doWaitUntil":
 				case "doUntil":
@@ -75,8 +128,8 @@ package cc.makeblock.interpreter
 				default:
 					if("call" == block.op){
 						result.push(
-							SyntaxTreeFactory.GetVar(block.spec),
-							SyntaxTreeFactory.NewInvoke(collectArgs(block), 0)
+//							SyntaxTreeFactory.GetVar(block.spec),
+							SyntaxTreeFactory.NewInvoke(SyntaxTreeFactory.GetVar(block.spec), collectArgs(block), 0)
 						);
 					}else{
 						var blockType:String = block.type.toLowerCase();
@@ -106,6 +159,8 @@ package cc.makeblock.interpreter
 						value = item.argValue;
 					}
 					return SyntaxTreeFactory.NewNumber(value);
+				}else if(StringChecker.IsNumber(item.argValue)){
+					return SyntaxTreeFactory.NewNumber(parseFloat(item.argValue));
 				}
 				return SyntaxTreeFactory.NewString(item.argValue);
 			}

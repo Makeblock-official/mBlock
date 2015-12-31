@@ -196,9 +196,6 @@ package extensions
 //				trace(dbgStr);
 ////				return;
 //			}
-			if(ArduinoUploader.sharedManager().parseCmd(bytes)){
-				return;
-			}
 			try{
 				bytes.position = 0;
 				var len:uint = bytes.length;

@@ -70,8 +70,6 @@ public class Block extends Sprite {
 	private static var useEmbeddedFont:Boolean = false;
 
 	public static var MenuHandlerFunction:Function;	// optional function to handle block and blockArg menus
-
-	public var isExecuting:Boolean;
 	
 	public var spec:String;
 	public var type:String;
@@ -313,14 +311,12 @@ public class Block extends Sprite {
 	}
 
 	public function showRunFeedback():void {
-		isExecuting = true;
 		if (!filters || (filters.length == 0)) {
 			filters = runFeedbackFilters();
 		}
 	}
 
 	public function hideRunFeedback():void {
-		isExecuting = false;
 		if (filters && (filters.length > 0)) filters = [];
 	}
 	

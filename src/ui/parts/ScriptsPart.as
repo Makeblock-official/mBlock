@@ -40,7 +40,6 @@ package ui.parts {
 	import cc.makeblock.util.HexUtil;
 	
 	import extensions.ArduinoManager;
-	import extensions.ArduinoUploader;
 	import extensions.SerialManager;
 	
 	import scratch.ScratchObj;
@@ -272,7 +271,6 @@ public class ScriptsPart extends UIPart {
 		appendMessage(msg);
 	}
 	public function onSerialDataReceived(bytes:ByteArray):void{
-		if(ArduinoUploader.sharedManager().state>0)return;
 		appendMsgWithTimestamp(HexUtil.bytesToString(bytes), false);
 		/*
 		return;

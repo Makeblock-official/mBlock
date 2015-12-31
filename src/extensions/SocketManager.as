@@ -1,6 +1,5 @@
 package extensions
 {
-	import flash.desktop.NativeApplication;
 	import flash.events.DatagramSocketDataEvent;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
@@ -10,13 +9,14 @@ package extensions
 	import flash.events.ServerSocketConnectEvent;
 	import flash.net.DatagramSocket;
 	import flash.net.InterfaceAddress;
-	import flash.net.NetworkInfo;
-	import flash.net.NetworkInterface;
 	import flash.net.ServerSocket;
 	import flash.net.Socket;
+	import flash.signals.Signal;
 	import flash.utils.ByteArray;
 	import flash.utils.getTimer;
 	import flash.utils.setTimeout;
+	
+	import cc.makeblock.util.getLocalAddress;
 	
 	import translation.Translator;
 	
@@ -58,21 +58,9 @@ package extensions
 		
 		public function SocketManager()
 		{
-			//get lan ip, and construct broadcast ip
-			var networkInfo:NetworkInfo = NetworkInfo.networkInfo;
-			
-			var interfaces:Vector.<NetworkInterface> = networkInfo.findInterfaces();
-			var address:InterfaceAddress;
-			for each(var n:NetworkInterface in interfaces){
-				address = n.addresses[0];
-				broadCastIp = address.broadcast as String;
-				if(address.address.indexOf("169.254")==-1){
-					_currentIp = address.address ;
-				}
-				if(broadCastIp.indexOf("169.254")==-1&&broadCastIp!=""){
-					break;
-				}
-			}
+			var address:InterfaceAddress = getLocalAddress();
+			broadCastIp = address.broadcast;
+			trace(broadCastIp, address.address, address.broadcast);
 			//Create the socket 
 			datagramSocket = new DatagramSocket(); 
 			datagramSocket.addEventListener( DatagramSocketDataEvent.DATA, dataReceived );
@@ -86,7 +74,6 @@ package extensions
 				
 			}
 			
-			NativeApplication.nativeApplication.addEventListener(Event.EXITING,onExiting);
 			_server = new ServerSocket();
 			try{
 				_server.bind(_clientPort);
@@ -96,9 +83,9 @@ package extensions
 			}
 			_server.addEventListener(ServerSocketConnectEvent.CONNECT,onConnected);
 		}
-		private function onExiting(evt:Event):void{
-			close();
-		}
+//		private function onExiting(evt:Event):void{
+//			close();
+//		}
 		public function get list():Array{
 			this.probe();
 			return _list;
@@ -310,12 +297,13 @@ package extensions
 		private function securityErrorHandler(event:SecurityErrorEvent):void {
 			trace("securityErrorHandler: " + event);
 		}
-		
+		public const dataRecvSignal:Signal = new Signal(ByteArray);
 		private function socketDataHandler(evt:ProgressEvent):void {
 			dispatchEvent(new Event(Event.CHANGE));
 			var bytes:ByteArray = new ByteArray();
 			var socket:Socket = evt.target as Socket;
 			socket.readBytes(bytes);
+			dataRecvSignal.notify(bytes);
 			ConnectionManager.sharedManager().onReceived(bytes);
 //			ParseManager.sharedManager().parseBuffer(bytes);
 			trace("socketDataHandler: " + evt);
@@ -324,6 +312,7 @@ package extensions
 		private function dataReceived( evt:DatagramSocketDataEvent ):void 
 		{
 			var srcName:String = evt.data.readUTFBytes( evt.data.bytesAvailable );
+			trace("udp", srcName);
 			//Read the data from the datagram
 			if(evt.srcAddress!=_currentIp){
 				//				trace("Received from " + evt.srcAddress + ":" + evt.srcPort + "> " + srcName );

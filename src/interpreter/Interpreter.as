@@ -155,17 +155,9 @@ public class Interpreter {
 	}
 	
 	static private const zeroPt:Point = new Point();
-
-	public function toggleThread(b:Block, targetObj:*, startupDelay:int = 0):Thread {
-//		if(b.isHat){
-//			return;
-//		}
-		if(b.isExecuting){
-			BlockInterpreter.Instance.stopThread(b, targetObj);
-			if(app.editMode) b.hideRunFeedback();
-			return null;
-		}
-		b.isExecuting = true;
+	
+	public function runThread(b:Block, targetObj:ScratchObj):Thread
+	{
 		var thread:Thread = BlockInterpreter.Instance.execute(b, targetObj);
 		thread.finishSignal.add(function(isInterput:Boolean):void{
 			b.hideRunFeedback();
@@ -182,6 +174,18 @@ public class Interpreter {
 		b.showRunFeedback();
 		app.threadStarted();
 		return thread;
+	}
+
+	public function toggleThread(b:Block, targetObj:ScratchObj, startupDelay:int = 0):Thread {
+//		if(b.isHat){
+//			return;
+//		}
+		if(BlockInterpreter.Instance.isRunning(b, targetObj)){
+			BlockInterpreter.Instance.stopThread(b, targetObj);
+			if(app.editMode) b.hideRunFeedback();
+			return null;
+		}
+		return runThread(b, targetObj);
 	}
 
 	public function isRunning(b:Block, targetObj:ScratchObj):Boolean {

@@ -41,6 +41,7 @@ package scratch {
 	import blocks.Block;
 	import blocks.BlockArg;
 	
+	import cc.makeblock.interpreter.BlockInterpreter;
 	import cc.makeblock.interpreter.FunctionVideoMotion;
 	import cc.makeblock.util.FileUtil;
 	
@@ -100,7 +101,7 @@ package scratch {
 					return;
 				}
 				if((stack.args[0].argValue == "pressed") == isPressed){
-					if(!stack.isExecuting){
+					if(!BlockInterpreter.Instance.isRunning(stack, target)){
 						interp.toggleThread(stack, target);
 					}
 				}
@@ -209,7 +210,7 @@ package scratch {
 	
 		public function startGreenFlags(firstTime:Boolean = false):void {
 			function startIfGreenFlag(stack:Block, target:ScratchObj):void {
-				if (stack.op == 'whenGreenFlag') {
+				if (stack.op == 'whenGreenFlag' && !BlockInterpreter.Instance.isRunning(stack, target)) {
 					interp.toggleThread(stack, target);
 				}
 			}
@@ -221,9 +222,8 @@ package scratch {
 			}
 			clearEdgeTriggeredHats();
 			timerReset();
-			setTimeout(function():void {
-				allStacksAndOwnersDo(startIfGreenFlag);
-			}, 0);
+//			allStacksAndOwnersDo(startIfGreenFlag);
+			setTimeout(allStacksAndOwnersDo, 100, startIfGreenFlag);
 		}
 	
 		public function startClickedHats(clickedObj:ScratchObj):void {
@@ -391,7 +391,7 @@ package scratch {
 		private function processEdgeTriggeredHats():void {
 			if (!edgeTriggersEnabled) return;
 			activeHats = [];
-			allStacksAndOwnersDo(startEdgeTriggeredHats);
+//			allStacksAndOwnersDo(startEdgeTriggeredHats);
 			triggeredHats = activeHats;
 		}
 	
@@ -980,10 +980,14 @@ package scratch {
 			for (var i:int = stage.numChildren - 1; i >= 0; i--) {
 				var o:* = stage.getChildAt(i);
 				if (o is ScratchObj) {
-					for each (stack in ScratchObj(o).scripts) f(stack, o);
+					for each (stack in ScratchObj(o).scripts) {
+						f(stack, o);
+					}
 				}
 			}
-			for each (stack in stage.scripts) f(stack, stage);
+			for each (stack in stage.scripts) {
+				f(stack, stage);
+			}
 		}
 	
 		public function clearAllCaches():void {

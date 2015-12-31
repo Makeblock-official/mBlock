@@ -7,6 +7,7 @@ package cc.makeblock.interpreter
 	
 	import extensions.ScratchExtension;
 	import extensions.SerialDevice;
+	import extensions.SocketManager;
 
 	public class RemoteCallMgr
 	{
@@ -25,7 +26,11 @@ package cc.makeblock.interpreter
 		
 		private function __onSerialRecv(bytes:Array):void
 		{
-			reader.append(bytes);
+			if(SocketManager.sharedManager().isConnected){
+				
+			}else{
+				reader.append(bytes);
+			}
 		}
 		
 		private function onPacketRecv(value:Object=null):void

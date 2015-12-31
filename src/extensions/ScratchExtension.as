@@ -39,6 +39,8 @@
 package extensions {
 import flash.utils.Dictionary;
 
+import cc.makeblock.util.StringChecker;
+
 import util.SharedObjectManager;
 
 public class ScratchExtension {
@@ -77,6 +79,19 @@ public class ScratchExtension {
 		this.name = name;
 		this.port = port;
 		_jsEngine = new JavaScriptEngine(name);
+	}
+	
+	public function getStateVar(key:String):*
+	{
+		var value:* = stateVars[key];
+		if(value == "true"){
+			return true;
+		}else if(value == "false"){
+			return false;
+		}else if(StringChecker.IsNumber(value)){
+			return parseFloat(value);
+		}
+		return value;
 	}
 	
 	public function set showBlocks(v:Boolean):void{

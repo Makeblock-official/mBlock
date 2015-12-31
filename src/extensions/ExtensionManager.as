@@ -144,7 +144,8 @@ public class ExtensionManager {
 		// Send a reset_all command to all active extensions.
 		var args:Array = [];
 		for each (var ext:ScratchExtension in enabledExtensions()) {
-			RemoteCallMgr.Instance.call(null, 'resetAll', args, ext);
+			ext.js.call('resetAll', args, ext);
+//			RemoteCallMgr.Instance.call(null, 'resetAll', args, ext);
 		}
 	}
 

@@ -5,6 +5,7 @@ package extensions
 	import flash.filesystem.File;
 	import flash.net.URLRequest;
 	import flash.net.navigateToURL;
+	import flash.signals.Signal;
 	import flash.utils.ByteArray;
 	
 	import util.ApplicationManager;
@@ -126,6 +127,7 @@ package extensions
 			}
 		}
 		private var _bytes:ByteArray;
+		
 		public function onReceived(bytes:ByteArray):void{
 			_bytes = bytes;
 			MBlock.app.scriptsPart.onSerialDataReceived(bytes);
@@ -139,8 +141,6 @@ package extensions
 			}else if(HIDManager.sharedManager().isConnected){
 				HIDManager.sharedManager().sendBytes(bytes);
 				return;//clear later
-			}else if(SocketManager.sharedManager().isConnected){
-				SocketManager.sharedManager().sendBytes(bytes);
 			}
 			bytes.clear();
 		}
