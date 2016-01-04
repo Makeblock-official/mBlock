@@ -64,6 +64,7 @@ package interpreter {
 	import blocks.Block;
 	
 	import cc.makeblock.interpreter.BlockInterpreter;
+	import cc.makeblock.interpreter.RemoteCallMgr;
 	
 	import scratch.ScratchObj;
 	
@@ -95,6 +96,7 @@ public class Interpreter {
 		this.app = app;
 //		initPrims();
 		_currentMSecs = getTimer();
+		RemoteCallMgr.Instance.init();
 //		workTime = (0.75 * 1000) / app.stage.frameRate; // work for up to 75% of one frame time
 //		checkPrims();
 	}

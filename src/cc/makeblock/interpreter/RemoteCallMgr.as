@@ -21,6 +21,10 @@ package cc.makeblock.interpreter
 		public function RemoteCallMgr()
 		{
 			reader = new PacketParser(onPacketRecv);
+		}
+		
+		public function init():void
+		{
 			SerialDevice.sharedDevice().dataRecvSignal.add(__onSerialRecv);
 		}
 		

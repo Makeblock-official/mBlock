@@ -8,7 +8,6 @@ package cc.makeblock.interpreter
 	
 	import extensions.ScratchExtension;
 	import extensions.SerialDevice;
-	import extensions.SocketManager;
 	
 	internal class ArduinoFunctionProvider extends FunctionProvider
 	{

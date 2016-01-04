@@ -37,8 +37,8 @@ package extensions
 		private var localPort:int = 55555; 
 		private var _udpIp:String = "";
 		//The IP and port for the target computer 
-		private var broadCastIp:String = "192.168.1.255";
-		private var targetIP:String = "192.168.1.1"; 
+		private var broadCastIp:String;
+		private var targetIP:String = "192.168.1.1";
 		private var targetPort:int = 333; 
 		
 		private var _clientPort:int = 54321;
@@ -59,8 +59,7 @@ package extensions
 		public function SocketManager()
 		{
 			var address:InterfaceAddress = getLocalAddress();
-			broadCastIp = address.broadcast;
-			trace(broadCastIp, address.address, address.broadcast);
+			broadCastIp = address != null ? address.broadcast : "";
 			//Create the socket 
 			datagramSocket = new DatagramSocket(); 
 			datagramSocket.addEventListener( DatagramSocketDataEvent.DATA, dataReceived );
