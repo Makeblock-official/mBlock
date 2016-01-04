@@ -24,10 +24,18 @@ package cc.makeblock.interpreter
 			provider.register("doBroadcastAndWait", doBroadcastAndWait);
 			provider.register("stopAll", stopAll);
 			provider.register("stopScripts", stopScripts);
+			provider.register("suspendUntilNextFrame", onSuspendUntilNextFrame);
 			
 			provider.register(Specs.GET_VAR, doGetVar);
 			provider.register(Specs.SET_VAR, doSetVar);
 			provider.register(Specs.CHANGE_VAR, increaseVar);
+		}
+		
+		static private function onSuspendUntilNextFrame(thread:Thread, argList:Array):void
+		{
+			if(!MBlock.app.interp.turboMode){
+				thread.suspendUntilNextFrame();
+			}
 		}
 		
 		static private function broadcast(thread:Thread, msg:String, waitFlag:Boolean):void

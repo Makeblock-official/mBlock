@@ -220,12 +220,8 @@ public class Interpreter {
 	}
 
 	public function restartThread(b:Block, targetObj:*):void {
-		if(b.isHat){
-			return;
-		}
 		BlockInterpreter.Instance.stopThread(b, targetObj);
-		if(app.editMode) b.showRunFeedback();
-		app.threadStarted();
+		runThread(b, targetObj);
 	}
 
 	public function stopAllThreads():void {
