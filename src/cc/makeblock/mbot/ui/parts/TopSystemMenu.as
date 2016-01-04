@@ -10,7 +10,6 @@ package cc.makeblock.mbot.ui.parts
 	import cc.makeblock.mbot.uiwidgets.DynamicCompiler;
 	import cc.makeblock.mbot.uiwidgets.errorreport.ErrorReportFrame;
 	import cc.makeblock.mbot.uiwidgets.extensionMgr.ExtensionUtil;
-	import cc.makeblock.mbot.util.PopupUtil;
 	import cc.makeblock.media.MediaManager;
 	import cc.makeblock.menu.MenuUtil;
 	import cc.makeblock.menu.SystemMenu;
@@ -85,6 +84,7 @@ package cc.makeblock.mbot.ui.parts
 			}
 			setItemLabel(item);
 			if(item.name == "Boards"){
+				setItemLabel(item.submenu.getItemByName("Others"));
 				return true;
 			}
 			if(item.name == "Language"){
