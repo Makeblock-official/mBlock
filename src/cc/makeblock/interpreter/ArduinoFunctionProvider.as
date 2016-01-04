@@ -27,7 +27,7 @@ package cc.makeblock.interpreter
 		private var mbotTimer:int;
 		private var netExt:NetExtension = new NetExtension();
 		
-		override protected function onCallUnregisteredFunction(thread:Thread, name:String, argList:Array):void
+		override protected function onCallUnregisteredFunction(thread:Thread, name:String, argList:Array, retCount:int):void
 		{
 			var index:int = name.indexOf(".");
 			if(index < 0){
@@ -55,15 +55,13 @@ package cc.makeblock.interpreter
 				thread.interrupt();
 				return;
 			}
-			if(ext.useSerial){
-				if(!SerialDevice.sharedDevice().connected){
-					thread.interrupt();
-					return;
-				}
-				thread.suspend();
-				RemoteCallMgr.Instance.call(thread, opName, argList, ext);
-			}else{
+			if(!ext.useSerial){
 				thread.push(ext.getStateVar(opName));
+			}else if(SerialDevice.sharedDevice().connected){
+				thread.suspend();
+				RemoteCallMgr.Instance.call(thread, opName, argList, ext, retCount);
+			}else if(retCount > 0){
+				thread.push(0);
 			}
 		}
 	}

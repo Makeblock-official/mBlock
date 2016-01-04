@@ -19,6 +19,7 @@ package cc.makeblock.interpreter
 		
 		public function BlockInterpreter()
 		{
+			Thread.EXEC_TIME = 25;
 			realInterpreter = new Interpreter(new ArduinoFunctionProvider());
 			converter = new BlockJsonPrinter();
 		}
@@ -32,7 +33,11 @@ package cc.makeblock.interpreter
 			}
 			
 			blockList.push.apply(null, converter.printBlockList(block));
-//			trace(realInterpreter.compile(blockList).join("\n"));
+//			trace("begin==================");
+//			trace(JSON.stringify(blockList));
+//			var codeList:Array = realInterpreter.compile(blockList);
+//			trace(realInterpreter.castCodeListToString(codeList));
+//			trace("end==================");
 			var thread:Thread = realInterpreter.execute(blockList);
 			thread.userData = targetObj;
 			threadDict[thread] = block;

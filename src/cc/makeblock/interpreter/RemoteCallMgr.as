@@ -54,7 +54,7 @@ package cc.makeblock.interpreter
 			send();
 		}
 		
-		public function call(thread:Thread, method:String, param:Array, ext:ScratchExtension):void
+		public function call(thread:Thread, method:String, param:Array, ext:ScratchExtension, retCount:int):void
 		{
 			var needSend:Boolean = (0 == requestList.length);
 			requestList.push(arguments);
@@ -76,12 +76,14 @@ package cc.makeblock.interpreter
 		
 		private function onTimeout():void
 		{
-			while(requestList.length > 0){
-				var info:Array = requestList.pop();
-				var thread:Thread = info[0];
-				if(thread != null){
-					thread.interrupt();
-				}
+			if(requestList.length <= 0){
+				return;
+			}
+			var info:Array = requestList[0];
+			if(info[4] > 0){
+				onPacketRecv(0);
+			}else{
+				onPacketRecv();
 			}
 		}
 	}

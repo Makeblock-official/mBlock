@@ -601,13 +601,13 @@ public class ExtensionManager {
 		var msecsSinceLastResponse:uint = getTimer() - ext.lastPollResponseTime;
 		if(ext.useSerial){
 			if (!SerialDevice.sharedDevice().connected) {
-				indicator.setColorAndMsg(0xE00000, Translator.map('Disconnect'));
+				indicator.setColorAndMsg(0xE00000, Translator.map('Disconnected'));
 //				MBlock.app.topBarPart.setBluetoothTitle(false);
 			}
 			else if (ext.problem != '') indicator.setColorAndMsg(0xE0E000, ext.problem);
 			else indicator.setColorAndMsg(0x00C000, ext.success);
 		}else{
-			if (msecsSinceLastResponse > 500) indicator.setColorAndMsg(0xE00000, Translator.map('Disconnect'));
+			if (msecsSinceLastResponse > 500) indicator.setColorAndMsg(0xE00000, Translator.map('Disconnected'));
 			else if (ext.problem != '') indicator.setColorAndMsg(0xE0E000, ext.problem);
 			else indicator.setColorAndMsg(0x00C000, ext.success);
 		}
