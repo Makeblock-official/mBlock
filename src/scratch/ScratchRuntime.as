@@ -35,6 +35,7 @@ package scratch {
 	import flash.signals.Signal;
 	import flash.system.System;
 	import flash.text.TextField;
+	import flash.text.TextFieldType;
 	import flash.utils.ByteArray;
 	import flash.utils.setTimeout;
 	
@@ -620,25 +621,27 @@ package scratch {
 	
 		public function keyDown(evt:KeyboardEvent):void {
 			shiftIsDown = evt.shiftKey;
-			var ch:int = evt.charCode;
-			if (evt.charCode == 0) ch = mapArrowKey(evt.keyCode);
-			if ((65 <= ch) && (ch <= 90)) ch += 32; // map A-Z to a-z
-			if (!(evt.target is TextField || keyIsDown[ch])) {
+			var ch:int = mapArrowKey(evt.keyCode);
+			if(ch >= 128){
+				return;
+			}
+			var isDown:Boolean = keyIsDown[ch];
+			keyIsDown[ch] = true;
+			if (!((evt.target is TextField && evt.target["type"] == TextFieldType.INPUT) || isDown)) {
 				startKeyHats(ch);
 			}
-			if (ch < 128) keyIsDown[ch] = true;
 		}
 	
 		public function keyUp(evt:KeyboardEvent):void {
 			shiftIsDown = evt.shiftKey;
-			var ch:int = evt.charCode;
-			if (evt.charCode == 0) ch = mapArrowKey(evt.keyCode);
-			if ((65 <= ch) && (ch <= 90)) ch += 32; // map A-Z to a-z
-			if (ch < 128) {
-				if(keyIsDown[ch]==true){
-					endKeyHats(ch);
-				}
-				keyIsDown[ch] = false;
+			var ch:int = mapArrowKey(evt.keyCode);
+			if(ch >= 128){
+				return;
+			}
+			var isDown:Boolean = keyIsDown[ch];
+			keyIsDown[ch] = false;
+			if(isDown){
+				endKeyHats(ch);
 			}
 		}
 	
@@ -648,11 +651,17 @@ package scratch {
 	
 		private function mapArrowKey(keyCode:int):int {
 			// map key codes for arrow keys to ASCII, other key codes to zero
-			if (keyCode == 37) return 28;
-			if (keyCode == 38) return 30;
-			if (keyCode == 39) return 29;
-			if (keyCode == 40) return 31;
-			return 0;
+			switch(keyCode){
+				case 37:return 28;
+				case 38:return 30;
+				case 39:return 29;
+				case 40:return 31;
+			}
+			// map A-Z to a-z
+			if(65 <= keyCode && keyCode <= 90){
+				return keyCode + 32;
+			}
+			return keyCode;
 		}
 	
 		// -----------------------------
