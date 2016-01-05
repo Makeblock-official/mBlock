@@ -39,6 +39,8 @@ package scratch {
 	
 	import extensions.ScratchExtension;
 	
+	import interpreter.RobotHelper;
+	
 	import translation.Translator;
 	
 	import ui.ProcedureSpecEditor;
@@ -191,9 +193,9 @@ public class PaletteBuilder {
 		var varNames:Array = app.runtime.allVarNames().sort();
 		if (varNames.length > 0) {
 			for each (var n:String in varNames) {
-//				if(RobotHelper.isAutoVarName(n)){
-//					continue;
-//				}
+				if(RobotHelper.isAutoVarName(n)){
+					continue;
+				}
 				addVariableCheckbox(n, false);
 				addItem(new Block(n, 'r', catColor, Specs.GET_VAR), true);
 			}
