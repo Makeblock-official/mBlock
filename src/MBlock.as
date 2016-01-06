@@ -35,6 +35,7 @@ package {
 	import cc.makeblock.util.InvokeMgr;
 	
 	import extensions.BluetoothManager;
+	import extensions.DeviceManager;
 	import extensions.ExtensionManager;
 	import extensions.HIDManager;
 	import extensions.SerialManager;
@@ -78,7 +79,6 @@ package {
 	import uiwidgets.ScriptsPane;
 	
 	import util.ApplicationManager;
-	import util.ClickerManager;
 	import util.GestureHandler;
 	import util.LogManager;
 	import util.ProjectIO;
@@ -141,20 +141,12 @@ package {
 		private var ga:GATracker;
 		private var tabsPart:TabsPart;
 		private var _welcomeView:Loader;
-		private var _currentVer:String = "10.29.001";
+		private var _currentVer:String = "01.05.001";
 		public function MBlock(){
-			/*
-			if(File.applicationStorageDirectory.exists){
-				File.applicationStorageDirectory.deleteDirectory(true);
-			}
-			//*/
 			app = this;
 			addEventListener(Event.ADDED_TO_STAGE,initStage);
 			loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, __onError);
 			
-			if(!NativeApplication.nativeApplication.isSetAsDefaultApplication("sb2")){
-				NativeApplication.nativeApplication.setAsDefaultApplication("sb2");
-			}
 		}
 		static private var errorFlag:Boolean;
 		private function __onError(evt:UncaughtErrorEvent):void
@@ -174,7 +166,8 @@ package {
 		
 		private function initStage(evt:Event):void{
 			removeEventListener(Event.ADDED_TO_STAGE,initStage);
-			stage.nativeWindow.title += "(" + versionString + ")";
+			stage.nativeWindow.title += "(" + versionString.split(".").slice(0, 2).join(".") + ")";
+//			stage.nativeWindow.title += "(" + versionString + ")[测试版12.31]";
 			AsWingManager.initAsStandard(this);
 			UIManager.setLookAndFeel(new MyLookAndFeel());
 			AppTitleMgr.Instance.init(stage.nativeWindow);
@@ -232,10 +225,11 @@ package {
 			
 			fixLayout();
 			setTimeout(SocketManager.sharedManager, 100);
+			setTimeout(DeviceManager.sharedManager, 100);
 			if(!SharedObjectManager.sharedManager().getObject(versionString+".0."+_currentVer,false)){
 				//SharedObjectManager.sharedManager().clear();
 				SharedObjectManager.sharedManager().setObject(versionString+".0."+_currentVer,true);
-				extensionsPath.moveToTrash();
+				extensionsPath.deleteDirectory(true);
 				extensionManager.copyLocalFiles();
 				//SharedObjectManager.sharedManager().setObject("board","mbot_uno");
 			}
@@ -248,7 +242,7 @@ package {
 			MenuBuilder.BuildMenuList(XMLList(FileUtil.LoadFile("assets/context_menus.xml")));
 		}
 		private function initExtension():void{
-			ClickerManager.sharedManager().update();
+//			ClickerManager.sharedManager().update();
 			SerialManager.sharedManager().setMBlock(this);
 			HIDManager.sharedManager().setMBlock(this);
 		}

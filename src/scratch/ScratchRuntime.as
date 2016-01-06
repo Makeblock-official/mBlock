@@ -728,14 +728,14 @@ package scratch {
 		public function allVarNames():Array {
 			var result:Array = [], v:Variable;
 			for each (v in app.stageObj().variables) {
-				if(RobotHelper.isAutoVarName(v.name)){
+				if(v.name == null || RobotHelper.isAutoVarName(v.name)){
 					continue;
 				}
 				result.push(v.name);
 			}
 			if (!app.viewedObj().isStage) {
 				for each (v in app.viewedObj().variables) {
-					if(RobotHelper.isAutoVarName(v.name)){
+					if(v.name == null || RobotHelper.isAutoVarName(v.name)){
 						continue;
 					}
 					result.push(v.name);

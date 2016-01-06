@@ -364,6 +364,9 @@ public class ScratchObj extends Sprite {
 	public function defaultVarName():String {
 		for(var i:int=variables.length-1; i>=0; i--){
 			var varName:String = variables[i].name;
+			if(varName == null){
+				continue;
+			}
 			if(!RobotHelper.isAutoVarName(varName)){
 				return varName;
 			}
@@ -440,7 +443,12 @@ public class ScratchObj extends Sprite {
 
 	public function varNames():Array {
 		var varList:Array = [];
-		for each (var v:Variable in variables) varList.push(v.name);
+		for each (var v:Variable in variables) {
+			if(v.name == null){
+				continue;
+			}
+			varList.push(v.name);
+		}
 		return varList;
 	}
 
@@ -453,7 +461,7 @@ public class ScratchObj extends Sprite {
 	public function ownsVar(varName:String):Boolean {
 		// Return true if this object owns a variable of the given name.
 		for each (var v:Variable in variables) {
-			if (v.name == varName) return true;
+			if (v.name != null && v.name == varName) return true;
 		}
 		return false;
 	}
