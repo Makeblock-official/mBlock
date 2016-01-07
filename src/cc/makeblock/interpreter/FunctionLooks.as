@@ -85,7 +85,7 @@ package cc.makeblock.interpreter {
 	
 	static private function onThink(thread:Thread, argList:Array):void
 	{
-		if(!(thread.userData is ScratchSprite)){
+		if(thread.userData is ScratchStage){
 			return;
 		}
 		showBubble(thread.userData, argList[0], "think");
@@ -93,7 +93,7 @@ package cc.makeblock.interpreter {
 	
 	static private function onSay(thread:Thread, argList:Array):void
 	{
-		if(!(thread.userData is ScratchSprite)){
+		if(thread.userData is ScratchStage){
 			return;
 		}
 		showBubble(thread.userData, argList[0], "talk");
@@ -194,7 +194,7 @@ package cc.makeblock.interpreter {
 	}
 
 	private function showBubbleAndWait(thread:Thread, text:String, secs:Number, type:String):void {
-		var s:ScratchSprite = thread.userData;
+		var s:ScratchSprite = thread.userData as ScratchSprite;
 		if (s == null) return;
 		s.showBubble(text, type);
 		thread.suspend();
@@ -237,32 +237,32 @@ package cc.makeblock.interpreter {
 	}
 
 	private function primChangeSize(thread:Thread, argList:Array):void {
-		var s:ScratchSprite = thread.userData;
+		var s:ScratchSprite = thread.userData as ScratchSprite;
 		if (s == null) return;
 		var oldScale:Number = s.scaleX;
 		s.setSize(s.getSize() + Number(argList[0]));
 	}
 
 	private function primSetRotationStyle(thread:Thread, argList:Array):void {
-		var s:ScratchSprite = thread.userData;
+		var s:ScratchSprite = thread.userData as ScratchSprite;
 		var newStyle:String = argList[0];
 		if ((s == null) || (newStyle == null)) return;
 		s.setRotationStyle(newStyle);
 	}
 
 	private function primSetSize(thread:Thread, argList:Array):void {
-		var s:ScratchSprite = thread.userData;
+		var s:ScratchSprite = thread.userData as ScratchSprite;
 		if (s == null) return;
 		s.setSize(Number(argList[0]));
 	}
 
 	private function primSize(thread:Thread, argList:Array):void {
-		var s:ScratchSprite = thread.userData;
+		var s:ScratchSprite = thread.userData as ScratchSprite;
 		thread.push(s ? Math.round(s.getSize()) : 100);
 	}
 
 	private function primShow(thread:Thread, argList:Array):void {
-		var s:ScratchSprite = thread.userData;
+		var s:ScratchSprite = thread.userData as ScratchSprite;
 		if (s == null) return;
 		s.visible = true;
 		s.applyFilters();
@@ -270,7 +270,7 @@ package cc.makeblock.interpreter {
 	}
 
 	private function primHide(thread:Thread, argList:Array):void {
-		var s:ScratchSprite = thread.userData;
+		var s:ScratchSprite = thread.userData as ScratchSprite;
 		if ((s == null) || !s.visible) return;
 		s.visible = false;
 		s.applyFilters();
@@ -279,13 +279,13 @@ package cc.makeblock.interpreter {
 
 
 	private function primGoFront(thread:Thread, argList:Array):void {
-		var s:ScratchSprite = thread.userData;
+		var s:ScratchSprite = thread.userData as ScratchSprite;
 		if ((s == null) || (s.parent == null)) return;
 		s.parent.setChildIndex(s, s.parent.numChildren - 1);
 	}
 
 	private function primGoBack(thread:Thread, argList:Array):void {
-		var s:ScratchSprite = thread.userData;
+		var s:ScratchSprite = thread.userData as ScratchSprite;
 		if ((s == null) || (s.parent == null)) return;
 		var newIndex:int = s.parent.getChildIndex(s) - Number(argList[0]);
 		newIndex = Math.max(minSpriteLayer(), Math.min(newIndex, s.parent.numChildren - 1));

@@ -79,7 +79,7 @@ package cc.makeblock.interpreter {
 	// TODO: move to stage
 	static private var stageRect:Rectangle = new Rectangle(0, 0, 480, 360);
 	private function primTouching(thread:Thread, argList:Array):void {
-		var s:ScratchSprite = thread.userData;
+		var s:ScratchSprite = thread.userData as ScratchSprite;
 		if (s == null) {
 			thread.push(false);
 			return;
@@ -167,7 +167,7 @@ package cc.makeblock.interpreter {
 	private function primTouchingColor(thread:Thread, argList:Array):void {
 		// Note: Attempted to switch app.stage.quality to LOW to disable anti-aliasing, which
 		// can create false colors. Unfortunately, that caused serious performance issues.
-		var s:ScratchSprite = thread.userData;
+		var s:ScratchSprite = thread.userData as ScratchSprite;
 		if (s == null){
 			thread.push(false);
 			return;
@@ -198,7 +198,7 @@ package cc.makeblock.interpreter {
 	private function primColorSees(thread:Thread, argList:Array):void {
 		// Note: Attempted to switch app.stage.quality to LOW to disable anti-aliasing, which
 		// can create false colors. Unfortunately, that caused serious performance issues.
-		var s:ScratchSprite = thread.userData;
+		var s:ScratchSprite = thread.userData as ScratchSprite;
 		if (s == null){
 			thread.push(false);
 			return;
@@ -306,9 +306,13 @@ package cc.makeblock.interpreter {
 	}
 
 	private function primDistanceTo(thread:Thread, argList:Array):void {
-		var s:ScratchSprite = thread.userData;
+		var s:ScratchSprite = thread.userData as ScratchSprite;
+		if(s == null){
+			thread.push(0);
+			return;
+		}
 		var p:Point = mouseOrSpritePosition(argList[0]);
-		if ((s == null) || (p == null)) {
+		if (p == null){
 			thread.push(0);
 			return;
 		}

@@ -23,7 +23,6 @@
 // Scratch motion and pen primitives.
 
 package cc.makeblock.interpreter {
-	import com.greensock.TweenLite;
 	
 	import flash.display.Graphics;
 	import flash.geom.Point;
@@ -76,7 +75,7 @@ package cc.makeblock.interpreter {
 	}
 
 	private function primMove(thread:Thread, argList:Array):void {
-		var s:ScratchSprite = thread.userData;
+		var s:ScratchSprite = thread.userData as ScratchSprite;
 		if (s == null) return;
 		var radians:Number = (Math.PI * (90 - s.direction)) / 180;
 		var d:Number = Number(argList[0]);
@@ -84,22 +83,22 @@ package cc.makeblock.interpreter {
 	}
 
 	private function primTurnRight(thread:Thread, argList:Array):void {
-		var s:ScratchSprite = thread.userData;
+		var s:ScratchSprite = thread.userData as ScratchSprite;
 		if (s != null) s.setDirection(s.direction + Number(argList[0]));
 	}
 
 	private function primTurnLeft(thread:Thread, argList:Array):void {
-		var s:ScratchSprite = thread.userData;
+		var s:ScratchSprite = thread.userData as ScratchSprite;
 		if (s != null) s.setDirection(s.direction - Number(argList[0]));
 	}
 
 	private function primSetDirection(thread:Thread, argList:Array):void {
-		var s:ScratchSprite = thread.userData;
+		var s:ScratchSprite = thread.userData as ScratchSprite;
 		if (s != null) s.setDirection(Number(argList[0]));
 	}
 
 	private function primPointTowards(thread:Thread, argList:Array):void {
-		var s:ScratchSprite = thread.userData;
+		var s:ScratchSprite = thread.userData as ScratchSprite;
 		var p:Point = mouseOrSpritePosition(s,argList[0]);
 		if ((s == null) || (p == null)) return;
 		var dx:Number = p.x - s.scratchX;
@@ -109,19 +108,23 @@ package cc.makeblock.interpreter {
 	}
 
 	private function primGoTo(thread:Thread, argList:Array):void {
-		var s:ScratchSprite = thread.userData;
+		var s:ScratchSprite = thread.userData as ScratchSprite;
 		if (s != null) moveSpriteTo(s, Number(argList[0]), Number(argList[1]));
 	}
 
 	private function primGoToSpriteOrMouse(thread:Thread, argList:Array):void {
-		var s:ScratchSprite = thread.userData;
+		var s:ScratchSprite = thread.userData as ScratchSprite;
+		if(s == null){
+			return;
+		}
 		var p:Point = mouseOrSpritePosition(s,argList[0]);
-		if ((s == null) || (p == null)) return;
-		moveSpriteTo(s, p.x, p.y);
+		if (p != null){
+			moveSpriteTo(s, p.x, p.y);
+		}
 	}
 
 	private function primGlide(thread:Thread, argList:Array):void {
-		var s:ScratchSprite = thread.userData;
+		var s:ScratchSprite = thread.userData as ScratchSprite;
 		if (s == null) return;
 		var secs:Number = Number(argList[0]);
 		var destX:Number = Number(argList[1]);
@@ -173,44 +176,44 @@ package cc.makeblock.interpreter {
 	}
 
 	private function primChangeX(thread:Thread, argList:Array):void {
-		var s:ScratchSprite = thread.userData;
+		var s:ScratchSprite = thread.userData as ScratchSprite;
 		if (s != null) moveSpriteTo(s, s.scratchX + Number(argList[0]), s.scratchY);
 	}
 
 	private function primSetX(thread:Thread, argList:Array):void {
-		var s:ScratchSprite = thread.userData;
+		var s:ScratchSprite = thread.userData as ScratchSprite;
 		if (s != null) moveSpriteTo(s, Number(argList[0]), s.scratchY);
 	}
 
 	private function primChangeY(thread:Thread, argList:Array):void {
-		var s:ScratchSprite = thread.userData;
+		var s:ScratchSprite = thread.userData as ScratchSprite;
 		if (s != null) moveSpriteTo(s, s.scratchX, s.scratchY + Number(argList[0]));
 	}
 
 	private function primSetY(thread:Thread, argList:Array):void {
-		var s:ScratchSprite = thread.userData;
+		var s:ScratchSprite = thread.userData as ScratchSprite;
 		if (s != null) moveSpriteTo(s, s.scratchX, Number(argList[0]));
 	}
 
 	private function primBounceOffEdge(thread:Thread, argList:Array):void {
-		var s:ScratchSprite = thread.userData;
+		var s:ScratchSprite = thread.userData as ScratchSprite;
 		if (s == null) return;
 		if (!turnAwayFromEdge(s)) return;
 		ensureOnStageOnBounce(s);
 	}
 
 	private function primXPosition(thread:Thread, argList:Array):void {
-		var s:ScratchSprite = thread.userData;
+		var s:ScratchSprite = thread.userData as ScratchSprite;
 		thread.push( (s != null) ? snapToInteger(s.scratchX) : 0);
 	}
 
 	private function primYPosition(thread:Thread, argList:Array):void {
-		var s:ScratchSprite = thread.userData;
+		var s:ScratchSprite = thread.userData as ScratchSprite;
 		thread.push( (s != null) ? snapToInteger(s.scratchY) : 0);
 	}
 
 	private function primDirection(thread:Thread, argList:Array):void {
-		var s:ScratchSprite = thread.userData;
+		var s:ScratchSprite = thread.userData as ScratchSprite;
 		thread.push( (s != null) ? snapToInteger(s.direction) : 0);
 	}
 
@@ -226,58 +229,60 @@ package cc.makeblock.interpreter {
 	}
 
 	private function primPenDown(thread:Thread, argList:Array):void {
-		var s:ScratchSprite = thread.userData;
-		if (s != null) s.penIsDown = true;
-		stroke(s, s.scratchX, s.scratchY, s.scratchX + 0.2, s.scratchY + 0.2);
+		var s:ScratchSprite = thread.userData as ScratchSprite;
+		if (s != null){
+			s.penIsDown = true;
+			stroke(s, s.scratchX, s.scratchY, s.scratchX + 0.2, s.scratchY + 0.2);
+		}
 	}
 
 	private function primPenUp(thread:Thread, argList:Array):void {
-		var s:ScratchSprite = thread.userData;
+		var s:ScratchSprite = thread.userData as ScratchSprite;
 		if (s != null) s.penIsDown = false;
 	}
 
 	private function primSetPenColor(thread:Thread, argList:Array):void {
-		var s:ScratchSprite = thread.userData;
+		var s:ScratchSprite = thread.userData as ScratchSprite;
 		if (s != null) s.setPenColor(Number(argList[0]));
 	}
 
 	private function primSetPenHue(thread:Thread, argList:Array):void {
-		var s:ScratchSprite = thread.userData;
+		var s:ScratchSprite = thread.userData as ScratchSprite;
 		if (s != null) s.setPenHue(Number(argList[0]));
 	}
 
 	private function primChangePenHue(thread:Thread, argList:Array):void {
-		var s:ScratchSprite = thread.userData;
+		var s:ScratchSprite = thread.userData as ScratchSprite;
 		if (s != null) s.setPenHue(s.penHue + Number(argList[0]));
 	}
 
 	private function primSetPenShade(thread:Thread, argList:Array):void {
-		var s:ScratchSprite = thread.userData;
+		var s:ScratchSprite = thread.userData as ScratchSprite;
 		if (s != null) s.setPenShade(Number(argList[0]));
 	}
 
 	private function primChangePenShade(thread:Thread, argList:Array):void {
-		var s:ScratchSprite = thread.userData;
+		var s:ScratchSprite = thread.userData as ScratchSprite;
 		if (s != null) s.setPenShade(s.penShade + Number(argList[0]));
 	}
 
 	private function primSetPenSize(thread:Thread, argList:Array):void {
-		var s:ScratchSprite = thread.userData;
+		var s:ScratchSprite = thread.userData as ScratchSprite;
 		if (s != null) s.setPenSize(Math.max(1, Math.min(960, Math.round(Number(argList[0])))));
 	}
 
 	private function primChangePenSize(thread:Thread, argList:Array):void {
-		var s:ScratchSprite = thread.userData;
+		var s:ScratchSprite = thread.userData as ScratchSprite;
 		if (s != null) s.setPenSize(s.penWidth + Number(argList[0]));
 	}
 
 	private function primStamp(thread:Thread, argList:Array):void {
-		var s:ScratchSprite = thread.userData;
+		var s:ScratchSprite = thread.userData as ScratchSprite;
+		if (s == null) return;
 		doStamp(s, s.img.transform.colorTransform.alphaMultiplier);
 	}
 
 	private function doStamp(s:ScratchSprite, stampAlpha:Number):void {
-		if (s == null) return;
 		MBlock.app.stagePane.stampSprite(s, stampAlpha);
 	}
 
