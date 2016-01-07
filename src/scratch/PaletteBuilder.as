@@ -99,6 +99,21 @@ public class PaletteBuilder {
 		}
 		return category;
 	}
+	
+	static private function canShowInArduinoMode(spec:Array):Boolean
+	{
+		var categoryId:int = parseInt(spec[2]) % 100;
+		if(MBlock.app.stageIsArduino && categoryId == Specs.controlCategory){
+			switch(spec[3]){
+				case "stopScripts":
+				case "whenCloned":
+				case "createCloneOf":
+				case "deleteClone":
+					return false;
+			}
+		}
+		return true;
+	}
 
 	private function addBlocksForCategory(category:int, catColor:int):void {
 		var cmdCount:int;
@@ -106,6 +121,9 @@ public class PaletteBuilder {
 		category = modifyCategory(category);
 		for each (var spec:Array in Specs.commands) {
 			if ((spec.length > 3) && (spec[2] == category)) {
+				if(!canShowInArduinoMode(spec)){
+					continue;
+				}
 				var label:String = spec[0];
 				var blockColor:int = (app.interp.isImplemented(spec[3])) ? catColor : 0x505050;
 				var defaultArgs:Array = targetObj.defaultArgsFor(spec[3], spec.slice(4));
