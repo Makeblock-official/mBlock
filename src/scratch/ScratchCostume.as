@@ -135,6 +135,7 @@ public class ScratchCostume {
 		var m:Matrix = new Matrix();
 		m.scale(scale, scale);
 		result.draw(bm, m);
+		bm.dispose();
 		return result;
 	}
 

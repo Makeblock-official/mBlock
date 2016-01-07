@@ -39,9 +39,9 @@ package extensions
 		private var _dialog:DialogBox = new DialogBox();
 		private var _hexToDownload:String = ""
 			
-		private var _isMacOs:Boolean = ApplicationManager.sharedManager().system==ApplicationManager.MAC_OS;
-		private var _avrdude:String = "";
-		private var _avrdudeConfig:String = "";
+//		private var _isMacOs:Boolean = ApplicationManager.sharedManager().system==ApplicationManager.MAC_OS;
+//		private var _avrdude:String = "";
+//		private var _avrdudeConfig:String = "";
 		public static function sharedManager():SerialManager{
 			if(_instance==null){
 				_instance = new SerialManager;
@@ -53,8 +53,8 @@ package extensions
 		public function SerialManager()
 		{
 			_serial = new AIRSerial();
-			_avrdude = _isMacOs?"avrdude":"avrdude.exe";
-			_avrdudeConfig = _isMacOs?"avrdude_mac.conf":"avrdude.conf";
+//			_avrdude = _isMacOs?"avrdude":"avrdude.exe";
+//			_avrdudeConfig = _isMacOs?"avrdude_mac.conf":"avrdude.conf";
 			
 			_board = SharedObjectManager.sharedManager().getObject("board","uno");
 			_device = SharedObjectManager.sharedManager().getObject("device","uno");
@@ -281,12 +281,26 @@ package extensions
 			
 			
 		}
+		
+		static private function getAvrDude():File
+		{
+			if(ApplicationManager.sharedManager().system == ApplicationManager.MAC_OS){
+				return File.applicationDirectory.resolvePath("Arduino/Arduino.app/Contents/Java/hardware/tools/avr/bin/avrdude");
+			}
+			return File.applicationDirectory.resolvePath("Arduino/hardware/tools/avr/bin/avrdude.exe");
+		}
+		
+		static private function getAvrDudeConfig():File
+		{
+			if(ApplicationManager.sharedManager().system == ApplicationManager.MAC_OS){
+				return File.applicationDirectory.resolvePath("Arduino/Arduino.app/Contents/Java/hardware/tools/avr/etc/avrdude.conf");
+			}
+			return File.applicationDirectory.resolvePath("Arduino/hardware/tools/avr/etc/avrdude.conf");
+		}
+		
 		public function upgradeFirmware(hexfile:String=""):void{
 			MBlock.app.topBarPart.setDisconnectedTitle();
-			var file:File = File.applicationDirectory;
-			var path:File = file.resolvePath("tools");
-			var filePath:String = path.nativePath;//.split("\\").join("/")+"/";
-			file = path.resolvePath(_avrdude);//外部程序名
+			var file:File = getAvrDude();//外部程序名
 			if(!file.exists){
 				trace("upgrade fail!");
 				return;
@@ -294,13 +308,12 @@ package extensions
 			var tf:File;
 			var currentDevice:String = DeviceManager.sharedManager().currentDevice;
 			currentPort = SerialDevice.sharedDevice().port;
-			trace("avrdude:",file.nativePath,currentDevice,currentPort,"\n");
 //			if(NativeProcess.isSupported) {
 				var nativeProcessStartupInfo:NativeProcessStartupInfo =new NativeProcessStartupInfo();
 				nativeProcessStartupInfo.executable = file;
 				var v:Vector.<String> = new Vector.<String>();//外部应用程序需要的参数
 				v.push("-C");
-				v.push(filePath+"/"+_avrdudeConfig)
+				v.push(getAvrDudeConfig().nativePath)
 				v.push("-v");
 				v.push("-v");
 				v.push("-v");
