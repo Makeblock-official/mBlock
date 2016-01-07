@@ -88,6 +88,8 @@ package cc.makeblock.interpreter
 						value = ba.readUTFBytes(n);
 						buffer.splice(0, n + 7);
 						break;
+					default:
+						return;
 				}
 				if(index == 0x80){//button pressed
 					MBlock.app.runtime.mbotButtonPressed.notify(Boolean(value));

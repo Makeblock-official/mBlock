@@ -80,55 +80,43 @@ public class PaletteBuilder {
 
 //		var catName:String = Specs.categories[selectedCategory][1];
 		var catColor:int = Specs.blockColor(selectedCategory);
-		/*
-		if (app.viewedObj() && app.viewedObj().isStage) {
-			// The stage has different blocks for some categories:
-			var stageSpecific:Array = ['Control', 'Looks', 'Motion', 'Pen', 'Sensing'];
-			//if (stageSpecific.indexOf(catName) != -1) selectedCategory += 100;
-			if (catName == 'Motion') {
-				//addItem(makeLabel(Translator.map('Stage selected:')));
-				//nextY -= 6;
-				//addItem(makeLabel(Translator.map('No motion blocks')));
-				//return;
-			}
-		}
-		*/
 		addBlocksForCategory(selectedCategory, catColor);
 		updateCheckboxes();
+	}
+	
+	static private function modifyCategory(category):int
+	{
+		if(MBlock.app.viewedObj() is ScratchSprite){
+			return category;
+		}
+		switch(category){
+			case Specs.motionCategory:
+			case Specs.looksCategory:
+			case Specs.penCategory:
+			case Specs.controlCategory:
+			case Specs.sensingCategory:
+				return category + 100;
+		}
+		return category;
 	}
 
 	private function addBlocksForCategory(category:int, catColor:int):void {
 		var cmdCount:int;
 		var targetObj:ScratchObj = app.viewedObj();
+		category = modifyCategory(category);
 		for each (var spec:Array in Specs.commands) {
 			if ((spec.length > 3) && (spec[2] == category)) {
 				var label:String = spec[0];
-				
-				if(category == Specs.looksCategory && app.viewedObj() && app.viewedObj().isStage){
-					if(spec[3] == "lookLike:"){
-						continue;
-					}
-					if(spec[3] == "nextCostume"){
-						label = "next backdrop";
-					}
-				}
-				
 				var blockColor:int = (app.interp.isImplemented(spec[3])) ? catColor : 0x505050;
 				var defaultArgs:Array = targetObj.defaultArgsFor(spec[3], spec.slice(4));
 				
 				if(targetObj.isStage && spec[3] == 'whenClicked') label = 'when Stage clicked';
 				var block:Block = new Block(label, spec[1], blockColor, spec[3], defaultArgs);
 				var showCheckbox:Boolean = isCheckboxReporter(spec[3]);
-				if (showCheckbox) addReporterCheckbox(block);
-				if(!app.stageIsArduino){
-					addItem(block, showCheckbox);
-				}else{
-					if(spec[3] == 'stopScripts'||spec[3] == 'createCloneOf'||spec[3] == 'whenCloned'||spec[3] == 'deleteClone'){
-						
-					}else{
-						addItem(block, showCheckbox);
-					}
+				if (showCheckbox){
+					addReporterCheckbox(block);
 				}
+				addItem(block, showCheckbox);
 				cmdCount++;
 			} else if(spec.length < 3){
 				if (cmdCount > 0) {
@@ -330,12 +318,12 @@ public class PaletteBuilder {
 		app.palette.addChild(b);
 	}
 
+	static private const checkboxReporters: Array = [
+		'xpos', 'ypos', 'heading', 'costumeIndex', 'scale', 'volume', 'timeAndDate',
+		'backgroundIndex', 'sceneName', 'tempo', 'answer', 'timer', 'soundLevel', 'isLoud',
+		'sensor:', 'sensorPressed:', 'senseVideoMotion', 'xScroll', 'yScroll',
+		'getDistance', 'getTilt'];
 	protected function isCheckboxReporter(op:String):Boolean {
-		const checkboxReporters: Array = [
-			'xpos', 'ypos', 'heading', 'costumeIndex', 'scale', 'volume', 'timeAndDate',
-			'backgroundIndex', 'sceneName', 'tempo', 'answer', 'timer', 'soundLevel', 'isLoud',
-			'sensor:', 'sensorPressed:', 'senseVideoMotion', 'xScroll', 'yScroll',
-			'getDistance', 'getTilt'];
 		return checkboxReporters.indexOf(op) > -1;
 	}
 
