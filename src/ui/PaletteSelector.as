@@ -28,6 +28,9 @@ package ui {
 	import flash.display.Graphics;
 	import flash.display.Sprite;
 	
+	import scratch.ScratchSprite;
+	import scratch.ScratchStage;
+	
 	import translation.Translator;
 
 public class PaletteSelector extends Sprite {
@@ -64,15 +67,13 @@ public class PaletteSelector extends Sprite {
 		for (var i:int = 0; i < numChildren; i++) {
 			var item:PaletteSelectorItem = getChildAt(i) as PaletteSelectorItem;
 			item.setSelected(item.categoryID == id);
-			if(i<=3||i==5||i==7){
-				if(app.stageIsArduino){
-					item.mouseEnabled = false;
-					item.mouseChildren = false;
-					item.alpha = 0.4;
+			if(app.stageIsArduino){
+				item.setEnable(canUseInArduinoMode(item.categoryID));
+			}else{
+				if(item.categoryID == Specs.motionCategory){
+					item.setEnable(app.viewedObj() is ScratchSprite);
 				}else{
-					item.mouseEnabled = true;
-					item.mouseChildren = true;
-					item.alpha = 1.0;
+					item.setEnable(true);
 				}
 			}
 		}

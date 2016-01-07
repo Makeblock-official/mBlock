@@ -46,8 +46,11 @@ public class Specs {
 
 	public static const motionCategory:int = 1;
 	public static const looksCategory:int = 2;
+	public static const soundCategory:int = 3;
+	public static const penCategory:int = 4;
 	public static const eventsCategory:int = 5;
 	public static const controlCategory:int = 6;
+	public static const sensingCategory:int = 7;
 	public static const operatorsCategory:int = 8;
 	public static const dataCategory:int = 9;
 	public static const myBlocksCategory:int = 10;

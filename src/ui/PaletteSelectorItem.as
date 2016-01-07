@@ -24,9 +24,12 @@
 // It handles mouse over, out, and up events and changes its appearance when selected.
 
 package ui {
-	import flash.display.*;
+	import flash.display.Graphics;
+	import flash.display.Sprite;
 	import flash.events.MouseEvent;
-	import flash.text.*;
+	import flash.text.TextField;
+	import flash.text.TextFieldAutoSize;
+	import flash.text.TextFormat;
 
 public class PaletteSelectorItem extends Sprite {
 
@@ -87,5 +90,11 @@ public class PaletteSelectorItem extends Sprite {
 			PaletteSelector(parent).select(categoryID, event.shiftKey);
 		}
 	}
-
+	
+	public function setEnable(value:Boolean):void
+	{
+		mouseEnabled = value;
+		mouseChildren = value;
+		alpha = value ? 1.0 : 0.4;
+	}
 }}

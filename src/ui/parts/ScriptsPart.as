@@ -44,6 +44,7 @@ package ui.parts {
 	
 	import scratch.ScratchObj;
 	import scratch.ScratchSprite;
+	import scratch.ScratchStage;
 	
 	import translation.Translator;
 	
@@ -517,6 +518,11 @@ public class ScriptsPart extends UIPart {
 
 	public function updatePalette():void {
 		selector.updateTranslation();
+		if(!MBlock.app.stageIsArduino && MBlock.app.viewedObj() is ScratchStage){
+			if(selector.selectedCategory == Specs.motionCategory){
+				selector.selectedCategory = Specs.looksCategory;
+			}
+		}
 		selector.select(selector.selectedCategory);
 	}
 	public function updateTranslation():void{
