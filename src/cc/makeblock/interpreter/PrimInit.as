@@ -13,8 +13,6 @@ package cc.makeblock.interpreter
 	
 	import scratch.ScratchObj;
 	
-	import uiwidgets.StretchyBitmap;
-	
 	internal class PrimInit
 	{
 		static public function Init(provider:FunctionProvider):void

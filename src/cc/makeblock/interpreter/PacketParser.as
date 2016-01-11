@@ -89,6 +89,7 @@ package cc.makeblock.interpreter
 						buffer.splice(0, n + 7);
 						break;
 					default:
+						buffer.splice(0, 4);
 						return;
 				}
 				if(index == 0x80){//button pressed

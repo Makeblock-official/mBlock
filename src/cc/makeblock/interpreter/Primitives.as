@@ -76,10 +76,17 @@ package cc.makeblock.interpreter {
 		
 		private function onRandomInt(thread:Thread, argList:Array):void
 		{
-			var min:Number = argList[0];
-			var max:Number = argList[1];
-			var val:Number = min + (max - min) * Math.random();
-			thread.push(val);
+			var n1:Number = argList[0];
+			var n2:Number = argList[1];
+			var low:Number = (n1 <= n2) ? n1 : n2;
+			var hi:Number = (n1 <= n2) ? n2 : n1;
+			if (low == hi){
+				thread.push(low);
+			}else if(int(low) == low && int(hi) == hi){
+				thread.push(low + int(Math.random() * (hi + 1 - low)));
+			}else{
+				thread.push(low + Math.random() * (hi - low));
+			}
 		}
 		
 //		private function primRandom(thread:Thread, argList:Array):void {
