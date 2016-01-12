@@ -680,7 +680,7 @@ void updateVar(char * varName,double * var)
 				return codeBlock;
 			}
 			else if(blk[0]=="readVariable:")
-				code = parseVarShow(blk)
+				code = parseVarShow(blk);
 			else if(blk[0]=="wait:elapsed:from:"){
 				codeBlock.type = "string";
 				codeBlock.code = parseDelay(blk);
@@ -799,9 +799,9 @@ void updateVar(char * varName,double * var)
 				var o:CodeBlock = getCodeBlock(params[i+offset]);
 				
 				var v:*=o.type=="string"?(ext.values[o.code]==undefined?o.code:ext.values[o.code]):null;
-				if(str.indexOf("sendString")>-1){
-					v = o.code;
-				}
+//				if(str.indexOf("sendString")>-1){
+//					v = o.code;
+//				}
 				var s:CodeBlock = new CodeBlock();
 				if(ext==null||(v==null||v==undefined)){
 					
@@ -816,7 +816,11 @@ void updateVar(char * varName,double * var)
 					s.type = "string";
 				}
 				if(str.indexOf(".drawStr(")>-1){
-					if(i==3){
+					if(i==3 && s.type == "number" && s.code is String){
+						s.type = "string";
+					}
+				}else if(str.indexOf("ir.sendString(") == 0){
+					if(s.type == "number" && s.code is String){
 						s.type = "string";
 					}
 				}
