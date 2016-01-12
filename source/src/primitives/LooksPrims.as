@@ -28,7 +28,7 @@ package primitives {
 	import interpreter.*;
 	import scratch.*;
 
-public class LooksPrims {
+	internal class LooksPrims {
 
 	private var app:MBlock;
 	private var interp:Interpreter;
@@ -160,11 +160,9 @@ public class LooksPrims {
 			s.showBubble(text, type);
 			if (s.visible) interp.redraw();
 			interp.startTimer(secs);
-		} else {
-			if (interp.checkTimer()) {
+		} else if (interp.checkTimer()) {
 				text = interp.arg(b, 0);
 				if (s.bubble && (s.bubble.getText() == text)) s.hideBubble();
-			}
 		}
 	}
 
@@ -189,9 +187,9 @@ public class LooksPrims {
 	private function primChangeEffect(b:Block):void {
 		var s:ScratchObj = interp.targetObj();
 		if (s == null) return;
-		var filterName:String = interp.arg(b, 0);
 		var delta:Number = interp.numarg(b, 1);
 		if(delta == 0) return;
+		var filterName:String = interp.arg(b, 0);
 
 		var newValue:Number = s.filterPack.getFilterSetting(filterName) + delta;
 		s.filterPack.setFilter(filterName, newValue);
@@ -247,7 +245,7 @@ public class LooksPrims {
 		var s:ScratchSprite = interp.targetSprite();
 		if (s == null) return;
 		s.visible = true;
-		if(!app.isIn3D) s.applyFilters();
+		s.applyFilters();
 		s.updateBubble();
 		if (s.visible) interp.redraw();
 	}
@@ -256,7 +254,7 @@ public class LooksPrims {
 		var s:ScratchSprite = interp.targetSprite();
 		if ((s == null) || !s.visible) return;
 		s.visible = false;
-		if(!app.isIn3D) s.applyFilters();
+		s.applyFilters();
 		s.updateBubble();
 		interp.redraw();
 	}

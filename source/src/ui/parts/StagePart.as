@@ -25,14 +25,26 @@
 // since it is referred from many places.
 
 package ui.parts {
-	import flash.display.*;
-	import flash.events.*;
-	import flash.text.*;
-	import flash.media.*;
+	import flash.display.Bitmap;
+	import flash.display.Graphics;
+	import flash.display.Shape;
+	import flash.display.Sprite;
+	import flash.events.Event;
+	import flash.events.MouseEvent;
+	import flash.media.SoundMixer;
+	import flash.media.SoundTransform;
+	import flash.text.TextField;
+	import flash.text.TextFieldAutoSize;
+	import flash.text.TextFormat;
+	
 	import assets.Resources;
-	import scratch.*;
+	
+	import scratch.ScratchStage;
+	
 	import translation.Translator;
-	import uiwidgets.*;
+	
+	import uiwidgets.EditableLabel;
+	import uiwidgets.IconButton;
 
 public class StagePart extends UIPart {
 
@@ -47,7 +59,7 @@ public class StagePart extends UIPart {
 	private var outline:Shape;
 	protected var projectTitle:EditableLabel;
 	protected var projectInfo:TextField;
-	private var versionInfo:TextField;
+//	private var versionInfo:TextField;
 	private var turboIndicator:TextField;
 	private var runButton:IconButton;
 	private var stopButton:IconButton;
@@ -158,14 +170,14 @@ public class StagePart extends UIPart {
 		g.lineStyle(1, CSS.borderColor, 1, true);
 		g.drawRect(0, topBarHeight - 1, w - 1, h - topBarHeight);
 
-		versionInfo.visible = !fullscreenButton.isOn();
+//		versionInfo.visible = !fullscreenButton.isOn();
 	}
 
 	protected function fixLayout():void {
 		if (app.stagePane) app.stagePane.y = topBarHeight;
 
 		projectTitle.x = 50;
-		projectTitle.y = app.isOffline ? 8 : 2;
+		projectTitle.y = 8;
 		projectInfo.x = projectTitle.x + 3;
 		projectInfo.y = projectTitle.y + 18;
 
@@ -181,8 +193,8 @@ public class StagePart extends UIPart {
 		fullscreenButton.y = stopButton.y - 1;
 
 		// version info (only used on old website player)
-		versionInfo.x = fullscreenButton.x - 3;
-		versionInfo.y = 26;
+//		versionInfo.x = fullscreenButton.x - 3;
+//		versionInfo.y = 26;
 
 		projectTitle.setWidth(runButton.x - projectTitle.x - 15);
 
@@ -204,7 +216,7 @@ public class StagePart extends UIPart {
 	}
 
 	private function addTitleAndInfo():void {
-		var fmt:TextFormat = app.isOffline ? new TextFormat(CSS.font, 16, CSS.textColor) : CSS.projectTitleFormat;
+		var fmt:TextFormat = new TextFormat(CSS.font, 16, CSS.textColor);
 		projectTitle = getProjectTitle(fmt);
 		projectTitle.mouseEnabled = false;
 		projectTitle.mouseChildren = false;
@@ -213,19 +225,19 @@ public class StagePart extends UIPart {
 
 		addChild(projectInfo = makeLabel('', CSS.projectInfoFormat));
 
-		const versionFormat:TextFormat = new TextFormat(CSS.font, 9, 0x909090);
-		versionInfo = makeLabel(MBlock.versionString, versionFormat);
-		addChild(versionInfo);
+//		const versionFormat:TextFormat = new TextFormat(CSS.font, 9, 0x909090);
+//		versionInfo = makeLabel(MBlock.versionString, versionFormat);
+//		addChild(versionInfo);
 	}
 
 	protected function getProjectTitle(fmt:TextFormat):EditableLabel {
 		return new EditableLabel(null, fmt);
 	}
-
+/*
 	public function updateVersionInfo(newVersion:String):void {
 		versionInfo.text = newVersion;
 	}
-
+*/
 	private function addTurboIndicator():void {
 		turboIndicator = new TextField();
 		turboIndicator.defaultTextFormat = new TextFormat(CSS.font, 11, CSS.buttonLabelOverColor, true);
@@ -270,7 +282,7 @@ public class StagePart extends UIPart {
 		// Update the run/stop buttons.
 		// Note: To ensure that the user sees at least a flash of the
 		// on button, it stays on a minumum of two display cycles.
-		if (app.interp.threadCount() > 0) threadStarted();
+		if (app.interp.hasThreads()) threadStarted();
 		else { // nothing running
 			if (runButtonOnTicks > 2) {
 				runButton.turnOff();
@@ -329,9 +341,11 @@ public class StagePart extends UIPart {
 		if(fullscreenButton.parent!=null){
 			removeChild(fullscreenButton);
 		}
+		/*
 		if(versionInfo.parent!=null){
 			removeChild(versionInfo);
 		}
+		*/
 		if(projectTitle.parent!=null){
 			removeChild(projectTitle);
 		}
@@ -341,21 +355,25 @@ public class StagePart extends UIPart {
 			fullscreenButton.visible = true;
 			addChild(fullscreenButton);
 		}
+		/*
 		if(versionInfo.parent==null){
 			addChild(versionInfo);
 		}
+		*/
 		if(projectTitle.parent==null){
 			addChild(projectTitle);
 		}
 	}
 	private function addStageSizeButton():void {
-		function toggleStageSize(evt:*):void {
-			app.toggleSmallStage();
-		}
 		stageSizeButton = new Sprite();
-		stageSizeButton.addEventListener(MouseEvent.MOUSE_DOWN, toggleStageSize);
+		stageSizeButton.addEventListener(MouseEvent.MOUSE_DOWN, __toggleStageSize);
 		drawStageSizeButton();
 		addChild(stageSizeButton);
+	}
+	
+	private function __toggleStageSize(evt:MouseEvent):void
+	{
+		app.toggleSmallStage();
 	}
 
 	private function drawStageSizeButton():void {

@@ -24,25 +24,29 @@
 // containing the variables and methods common to both.
 
 package scratch {
-	import blocks.*;
+	import flash.display.Bitmap;
+	import flash.display.DisplayObject;
+	import flash.display.Sprite;
+	import flash.events.MouseEvent;
+	import flash.geom.ColorTransform;
+	import flash.utils.getTimer;
+	
+	import blocks.Block;
+	import blocks.BlockArg;
+	import blocks.BlockIO;
+	
+	import cc.makeblock.util.BlockUtil;
 	
 	import filters.FilterPack;
 	
-	import flash.display.*;
-	import flash.events.MouseEvent;
-import flash.geom.ColorTransform;
-import flash.utils.*;
+	import interpreter.RobotHelper;
+	import interpreter.Variable;
 	
-	import interpreter.*;
+	import translation.Translator;
 	
-	import scratch.ScratchComment;
-import scratch.ScratchSprite;
-
-import translation.Translator;
+	import util.JSON;
 	
-	import util.*;
-	
-	import watchers.*;
+	import watchers.ListWatcher;
 
 public class ScratchObj extends Sprite {
 
@@ -259,16 +263,16 @@ public class ScratchObj extends Sprite {
 	public function applyFilters(forDragging:Boolean = false):void {
 		img.filters = filterPack.buildFilters(forDragging);
 		clearCachedBitmap();
-		if(!MBlock.app.isIn3D || forDragging) {
+//		if(!MBlock.app.isIn3D || forDragging) {
 			var n:Number = Math.max(0, Math.min(filterPack.getFilterSetting('ghost'), 100));
 			cTrans.alphaMultiplier = 1.0 - (n / 100.0);
 			n = 255 * Math.max(-100, Math.min(filterPack.getFilterSetting('brightness'), 100)) / 100;
 			cTrans.redOffset = cTrans.greenOffset = cTrans.blueOffset = n;
 			img.transform.colorTransform = cTrans;
-		}
-		else {
-			updateEffects();
-		}
+//		}
+//		else {
+//			updateEffects();
+//		}
 	}
 
 	protected function updateEffects():void {
@@ -358,7 +362,16 @@ public class ScratchObj extends Sprite {
 	}
 
 	public function defaultVarName():String {
-		if (variables.length > 0) return variables[variables.length - 1].name; // local var
+		for(var i:int=variables.length-1; i>=0; i--){
+			var varName:String = variables[i].name;
+			if(varName == null){
+				continue;
+			}
+			if(!RobotHelper.isAutoVarName(varName)){
+				return varName;
+			}
+		}
+//		if (variables.length > 0) return variables[variables.length - 1].name; // local var
 		return isStage ? '' : MBlock.app.stagePane.defaultVarName(); // global var, if any
 	}
 
@@ -430,7 +443,12 @@ public class ScratchObj extends Sprite {
 
 	public function varNames():Array {
 		var varList:Array = [];
-		for each (var v:Variable in variables) varList.push(v.name);
+		for each (var v:Variable in variables) {
+			if(v.name == null){
+				continue;
+			}
+			varList.push(v.name);
+		}
 		return varList;
 	}
 
@@ -443,7 +461,7 @@ public class ScratchObj extends Sprite {
 	public function ownsVar(varName:String):Boolean {
 		// Return true if this object owns a variable of the given name.
 		for each (var v:Variable in variables) {
-			if (v.name == varName) return true;
+			if (v.name != null && v.name == varName) return true;
 		}
 		return false;
 	}
@@ -554,7 +572,28 @@ public class ScratchObj extends Sprite {
 			lastClickTime = now;
 		}
 	}
-
+	
+	public function onSpriteNameChanged(oldName:String, newName:String):void
+	{
+		function changeSpriteName(b:Block):void
+		{
+			switch(b.op){
+				case "gotoSpriteOrMouse:":
+				case "pointTowards:":
+					break;
+				default:
+					return;
+			}
+			var blockArg:BlockArg = b.args[0];
+			if(blockArg.argValue == oldName){
+				blockArg.setArgValue(newName);
+			}
+		}
+		for each (var b:Block in scripts) {
+			BlockUtil.ForEach(b, changeSpriteName);
+		}
+	}
+	
 	/* Translation */
 
 	public function updateScriptsAfterTranslation():void {

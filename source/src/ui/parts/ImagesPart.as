@@ -453,7 +453,7 @@ public class ImagesPart extends UIPart {
 	private function addAndSelectCostume(c:ScratchCostume):void {
 		var obj:ScratchObj = app.viewedObj();
 		if (!c.baseLayerData) c.prepareToSave();
-		if (!app.okayToAdd(c.baseLayerData.length)) return; // not enough room
+//		if (!app.okayToAdd(c.baseLayerData.length)) return; // not enough room
 		c.costumeName = obj.unusedCostumeName(c.costumeName);
 		obj.costumes.push(c);
 		obj.showCostume(obj.costumes.length - 1);

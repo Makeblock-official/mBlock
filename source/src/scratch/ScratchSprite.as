@@ -26,11 +26,11 @@
 package scratch {
 	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
+	import flash.display.NativeMenu;
 	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
-	import flash.filters.GlowFilter;
 	import flash.geom.ColorTransform;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
@@ -38,13 +38,13 @@ package scratch {
 	import flash.net.FileReference;
 	import flash.utils.ByteArray;
 	
+	import cc.makeblock.menu.MenuBuilder;
+	
 	import filters.FilterPack;
 	
 	import interpreter.Variable;
 	
 	import translation.Translator;
-	
-	import uiwidgets.Menu;
 	
 	import util.Color;
 	import util.JSON;
@@ -95,7 +95,7 @@ public class ScratchSprite extends ScratchObj {
 
 	private function initMedia():void {
 		var graySquare:BitmapData = new BitmapData(4, 4, true, 0x808080);
-		costumes.push(new ScratchCostume(Translator.map('costume1'), graySquare));
+		costumes.push(new ScratchCostume('costume1', graySquare));
 		sounds.push(new ScratchSound(Translator.map('pop'), new Pop()));
 		sounds[0].prepareToSave();
 	}
@@ -245,7 +245,7 @@ public class ScratchSprite extends ScratchObj {
 			if (('leftRight' == rotationStyle) && (isCostumeFlipped() == wasFlipped)) return;
 		}
 
-		if(!MBlock.app.isIn3D) updateImage();
+		updateImage();
 		adjustForRotationCenter();
 		if(wasFlipped != isCostumeFlipped())
 			updateRenderDetails(1);
@@ -351,7 +351,7 @@ public class ScratchSprite extends ScratchObj {
 //	private var testBM:Bitmap = new Bitmap();
 //	private var testSpr:Sprite = new Sprite();
 	public function bitmap(forColorTest:Boolean = false):BitmapData {
-		if (cachedBitmap != null && (!forColorTest || !MBlock.app.isIn3D))
+		if (cachedBitmap != null)
 			return cachedBitmap;
 
 		// compute cachedBitmap
@@ -359,8 +359,10 @@ public class ScratchSprite extends ScratchObj {
 		var m:Matrix = new Matrix();
 		m.rotate((Math.PI * rotation) / 180);
 		m.scale(scaleX, scaleY);
-		var b:Rectangle = (!MBlock.app.render3D || currentCostume().bitmap) ? img.getChildAt(0).getBounds(this) : getVisibleBounds(this);
+//		var b:Rectangle = (!MBlock.app.render3D || currentCostume().bitmap) ? img.getChildAt(0).getBounds(this) : getVisibleBounds(this);
+		var b:Rectangle = img.getChildAt(0).getBounds(this);
 		var r:Rectangle = transformedBounds(b, m);
+		/*
 		if(MBlock.app.isIn3D) {
 			var oldGhost:Number = filterPack.getFilterSetting('ghost');
 			filterPack.setFilter('ghost', 0);
@@ -398,6 +400,7 @@ public class ScratchSprite extends ScratchObj {
 			}
 		}
 		else {
+			*/
 			if ((r.width == 0) || (r.height == 0)) { // empty costume: use an invisible 1x1 bitmap
 				cachedBitmap = new BitmapData(1, 1, true, 0);
 				cachedBounds = cachedBitmap.rect;
@@ -410,7 +413,7 @@ public class ScratchSprite extends ScratchObj {
 			m.translate(-r.left, -r.top);
 			cachedBitmap.draw(this, m);
 			img.transform.colorTransform = oldTrans;
-		}
+//		}
 
 		cachedBounds = cachedBitmap.rect;
 
@@ -450,7 +453,9 @@ public class ScratchSprite extends ScratchObj {
 		if ('setSizeTo:' == op) return [Math.round(getSize() * 10) / 10];
 		if ((['startScene', 'startSceneAndWait', 'whenSceneStarts'].indexOf(op)) > -1) {
 			var stg:ScratchStage = parent as ScratchStage;
-			if (stg) return [stg.costumes[stg.costumes.length - 1].costumeName];
+			if (stg) {
+				return [stg.costumes[stg.costumes.length - 1].costumeName];
+			}
 		}
 		if ('senseVideoMotion' == op) return ['motion', 'this sprite'];
 		return super.defaultArgsFor(op, specDefaults);
@@ -461,8 +466,19 @@ public class ScratchSprite extends ScratchObj {
 	public function objToGrab(evt:MouseEvent):ScratchSprite { return this } // allow dragging
 
 	/* Menu */
+	private var ctxMenu:NativeMenu;
 
-	public function menu(evt:MouseEvent):Menu {
+	public function menu(evt:MouseEvent):NativeMenu {
+		if(null == ctxMenu){
+			ctxMenu = MenuBuilder.CreateMenu("ScratchSprite");
+			ctxMenu.addEventListener(Event.SELECT, __onSelect);
+		}else{
+			while(ctxMenu.numItems > 6){
+				ctxMenu.removeItemAt(6);
+			}
+		}
+		return ctxMenu;
+		/*
 		var m:Menu = new Menu();
 		m.addItem('info', showDetails);
 		m.addLine();
@@ -471,8 +487,35 @@ public class ScratchSprite extends ScratchObj {
 		m.addLine();
 		m.addItem('save to local file', saveToLocalFile);
 		return m;
+		*/
 	}
-
+	
+	private function __onSelect(evt:Event):void
+	{
+		switch(evt.target.name){
+			case "info":
+				showDetails();
+				break;
+			case "duplicate":
+				duplicateSprite();
+				break;
+			case "delete":
+				deleteSprite();
+				break;
+			case "save to local file":
+				saveToLocalFile();
+				break;
+			case "hide":
+				visible = false;
+				updateBubble();
+				break;
+			case "show":
+				visible = true;
+				updateBubble();
+				break;
+		}
+	}
+	
 	public function handleTool(tool:String, evt:MouseEvent):void {
 		if (tool == 'copy') duplicateSprite(true);
 		if (tool == 'cut') deleteSprite();
@@ -521,10 +564,10 @@ public class ScratchSprite extends ScratchObj {
 			hideBubble();
 
 			// Force redisplay (workaround for flash display update bug)
-			if(!MBlock.app.isIn3D) {
+//			if(!MBlock.app.isIn3D) {
 				parent.visible = false;
 				parent.visible = true;
-			}
+//			}
 
 			parent.removeChild(this);
 			if (app) {

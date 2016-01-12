@@ -21,10 +21,12 @@ package scratch {
 	import flash.display.Graphics;
 	import flash.display.Shape;
 	import flash.display.Sprite;
+	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
+	import flash.text.TextFieldType;
 	import flash.text.TextFormat;
 	
 	import blocks.Block;
@@ -250,14 +252,20 @@ public class ScratchComment extends Sprite {
 
 	private function addContents():void {
 		contents = new TextField();
-		contents.type = 'input';
+		contents.type = TextFieldType.INPUT;
 		contents.wordWrap = true;
 		contents.multiline = true;
 		contents.autoSize = TextFieldAutoSize.LEFT;
 		contents.defaultTextFormat = contentsFormat;
 		addChild(contents);
+		contents.addEventListener(Event.CHANGE, __onTextChange);
 	}
-
+	
+	private function __onTextChange(evt:Event):void
+	{
+		MBlock.app.setSaveNeeded();
+	}
+	
 	private function addExpandButton():void {
 		function toggleExpand(b:IconButton):void { setExpanded(!isOpen) }
 		expandButton = new IconButton(toggleExpand, expandIcon(true), expandIcon(false));

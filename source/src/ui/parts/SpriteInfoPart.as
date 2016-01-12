@@ -23,14 +23,27 @@
 // This part shows information about the currently selected object (the stage or a sprite).
 
 package ui.parts {
-	import flash.display.*;
-	import flash.events.*;
-	import flash.geom.*;
-	import flash.text.*;
-	import scratch.*;
+	import flash.display.Bitmap;
+	import flash.display.DisplayObject;
+	import flash.display.Graphics;
+	import flash.display.Shape;
+	import flash.display.Sprite;
+	import flash.events.MouseEvent;
+	import flash.geom.Point;
+	import flash.text.TextField;
+	import flash.text.TextFormat;
+	
+	import scratch.ScratchCostume;
+	import scratch.ScratchObj;
+	import scratch.ScratchSprite;
+	
 	import translation.Translator;
-	import uiwidgets.*;
+	
+	import uiwidgets.EditableLabel;
+	import uiwidgets.IconButton;
+	
 	import util.DragClient;
+	
 	import watchers.ListWatcher;
 
 public class SpriteInfoPart extends UIPart implements DragClient {
@@ -340,9 +353,14 @@ public class SpriteInfoPart extends UIPart implements DragClient {
 	}
 
 	private function nameChanged():void {
-		app.viewedObj().objName = spriteName.contents();
+		var oldName:String = app.viewedObj().objName;
+		var newName:String = spriteName.contents();
+		app.viewedObj().objName = newName;
 		for each (var lw:ListWatcher in app.viewedObj().lists) {
 			lw.updateTitle();
+		}
+		for each (var obj:ScratchObj in MBlock.app.stagePane.allObjects()) {
+			obj.onSpriteNameChanged(oldName, newName);
 		}
 		app.setSaveNeeded();
 	}

@@ -5,6 +5,20 @@ package cc.makeblock.menu
 
 	public class MenuBuilder
 	{
+		static private const menuDict:Object = {};
+		
+		static public function BuildMenuList(source:XMLList):void
+		{
+			for each(var menu:XML in source){
+				menuDict[menu.@name] = menu;
+			}
+		}
+		
+		static public function CreateMenu(name:String):NativeMenu
+		{
+			return BuildMenu(menuDict[name]);
+		}
+		
 		static public function BuildMenu(source:XML):NativeMenu
 		{
 			var result:NativeMenu = new NativeMenu();

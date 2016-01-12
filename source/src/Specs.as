@@ -27,8 +27,11 @@
 
 package {
 	import flash.display.Bitmap;
+	import flash.filesystem.File;
 	
 	import assets.Resources;
+	
+	import cc.makeblock.util.FileUtil;
 	
 
 public class Specs {
@@ -43,26 +46,29 @@ public class Specs {
 
 	public static const motionCategory:int = 1;
 	public static const looksCategory:int = 2;
+	public static const soundCategory:int = 3;
+	public static const penCategory:int = 4;
 	public static const eventsCategory:int = 5;
 	public static const controlCategory:int = 6;
+	public static const sensingCategory:int = 7;
 	public static const operatorsCategory:int = 8;
 	public static const dataCategory:int = 9;
 	public static const myBlocksCategory:int = 10;
 	public static const listCategory:int = 12;
 	public static const extensionsCategory:int = 20;
 
-	public static var variableColor:uint = 0xEE7D16; // Scratch 1.4: 0xF3761D
-	public static var listColor:uint = 0xCC5B22; // Scratch 1.4: 0xD94D11
-	public static var procedureColor:uint = 0x638DD9; // 0x531E99;
-	public static var parameterColor:uint = 0x5947B1;
-	public static var extensionsColor:uint = 0x0a8698;//0x75980a;//0x98980a//0x98510a;
+	public static const variableColor:uint = 0xEE7D16; // Scratch 1.4: 0xF3761D
+	public static const listColor:uint = 0xCC5B22; // Scratch 1.4: 0xD94D11
+	public static const procedureColor:uint = 0x638DD9; // 0x531E99;
+	public static const parameterColor:uint = 0x5947B1;
+	public static const extensionsColor:uint = 0x0a8698;//0x75980a;//0x98980a//0x98510a;
 //0x2980b9;//0x4B4A60; // 0x72228C; // 0x672D79;
 
 	private static const undefinedColor:int = 0xD42828;
 
-	public static const categories:Array = [
+	private static const categories:Array = [
 	 // id   category name	color
-		[0,  "undefined",	0xD42828],
+		/*[0,  "undefined",	0xD42828],
 		[1,  "Motion",		0x4a6cd4],
 		[2,  "Looks",		0x8a55d7],
 		[3,  "Sound",		0xbb42c3],
@@ -75,7 +81,7 @@ public class Specs {
 		[10, "Robots",	extensionsColor],
 		[11, "Parameter",	parameterColor],
 		[12, "List",		listColor],
-		[20, "Extension",	extensionsColor],
+		[20, "Extension",	extensionsColor],*/
 	];
 
 	public static function blockColor(categoryID:int):int {
@@ -111,8 +117,55 @@ public class Specs {
 		if (icon != null) icon.scaleX = icon.scaleY = 0.5;
 		return icon;
 	}
+	
+	static private function Init():void
+	{
+		var content:String = FileUtil.ReadString(File.applicationDirectory.resolvePath("assets/blockSpec.xml"));
+		var xml:XML = XML(content);
+		var item:XML;
+		for each(item in xml.category){
+			categories.push([item.@id.toString(), item.@name.toString(), parseInt(item.@color.toString())]);
+		}
+		var emptyItem:Array = ["--"];
+		for each(item in xml.command){
+			var data:Array;
+			if(item.hasOwnProperty("@category")){
+				data = [item.@spec.toString(), item.@type.toString(), item.@category.toString(), item.@opcode.toString()];
+				var argsStr:String = item.toString();
+				if(argsStr){
+					data.push.apply(null, JSON.parse(argsStr));
+				}
+			}else{
+				data = emptyItem;
+			}
+			commands.push(data);
+		}
+		/*
+		for each(var item:Array in commands){
+			var t:XML = <command/>;
+			if(item.length > 1){
+				t.@category = item[2];
+				t.@type = item[1];
+				t.@opcode = item[3];
+				t.@spec = item[0];
+				var args:Array = [];
+				for(var i:int=4; i<item.length; i++){
+					args.push(item[i]);
+				}
+				if(args.length > 0){
+					t.appendChild(JSON.stringify(args));
+//					t.@defaultArgs = JSON.stringify(args);
+				}
+			}
+			trace(t.toXMLString());
+		}
+		*/
+	}
+	
+	Init();
 
-	public static var commands:Array = [
+	public static const commands:Array = [];
+	/*
 		// block specification					type, cat, opcode			default args (optional)
 		// motion
 		["move %n steps",						" ", 1, "forward:",					10],
@@ -338,6 +391,7 @@ public class Specs {
 		["join %s %s",							"r", 8, "concatenate:with:",	"hello ", "world"],
 		["letter %n of %s",						"r", 8, "letter:of:",			1, "world"],
 		["length of %s",						"r", 8, "stringLength:",		"world"],
+		["cast %n to string",					"r", 8, "castDigitToString:",	1],
 		["-"],
 		["%n mod %n",							"r", 8, "%",					"", ""],
 		["round %n",							"r", 8, "rounded", 				""],
@@ -399,5 +453,5 @@ public class Specs {
 		["user id",								"r", 99, "getUserId"],
 
 	];
-
+//*/
 }}

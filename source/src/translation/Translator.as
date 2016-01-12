@@ -19,10 +19,14 @@
 
 package translation {
 	import flash.events.Event;
+	import flash.events.EventDispatcher;
+	import flash.events.IEventDispatcher;
 	import flash.net.FileReference;
 	import flash.net.FileReferenceList;
 	import flash.system.Capabilities;
 	import flash.utils.ByteArray;
+	import flash.utils.setTimeout;
+	
 	
 	import blocks.Block;
 	
@@ -33,45 +37,41 @@ package translation {
 
 public class Translator {
 
+	static private const langChangedSignal:IEventDispatcher = new EventDispatcher();
+	
+	static public function regChangeEvt(callback:Function, callOnReg:Boolean=true):void
+	{
+		langChangedSignal.addEventListener(Event.CHANGE, callback);
+		if(callOnReg){
+			callback(null);
+		}
+	}
+	
+	static public function unregChangeEvt(callback:Function):void
+	{
+		langChangedSignal.removeEventListener(Event.CHANGE, callback);
+	}
+	
 	public static var languages:Array = []; // contains pairs: [<language code>, <utf8 language name>]
 	public static var currentLang:String = 'en';
 
 	public static var rightToLeft:Boolean;
 	public static var rightToLeftMath:Boolean; // true only for Arabic
 
-	private static const font12:Array = ['fa', 'he','ja','ja_HIRA', 'zh_CN'];
-	private static const font13:Array = ['ar'];
+//	private static const font12:Array = ['fa', 'he','ja','ja_HIRA', 'zh_CN'];
+//	private static const font13:Array = ['ar'];
 
 	private static var dictionary:Object = new Object();
 	private static var isEnglish:Boolean = true;
 
 	public static function initializeLanguageList():void {
 		// Get a list of language names for the languages menu from the server.
-		function saveLanguageList(data:String):void {
-			if (!data) return;
-			for each (var line:String in data.split('\n')) {
-				var fields:Array = line.split(',');
-				if (fields.length >= 2) {
-					languages.push([trimWhitespace(fields[0]), trimWhitespace(fields[1])]);
-				}
-			}
-			setLanguage(SharedObjectManager.sharedManager().getObject("lang",Capabilities.language=="zh-CN"?'zh_CN':(Capabilities.language=="zh-TW"?'zh_TW':'en')));
-		}
-		languages = [['en', 'English']]; // English is always the first entry
-		MBlock.app.server.getLanguageList(saveLanguageList);
+		languages = MBlock.app.server.getLanguageList();
+		setLanguage(SharedObjectManager.sharedManager().getObject("lang",Capabilities.language=="zh-CN"?'zh_CN':(Capabilities.language=="zh-TW"?'zh_TW':'en')));
 	}
-
+	
 	public static function setLanguage(lang:String):void {
 	
-		function gotPOFile(data:ByteArray):void {
-			if (data) {
-				dictionary = parsePOData(data);
-				checkBlockTranslations();
-				setFontsFor(lang);
-				MBlock.app.extensionManager.parseAllTranslators();
-			}
-			MBlock.app.translationChanged();
-		}
 		if ('import translation file' == lang) { importTranslationFromFile(); return; }
 		else if ('set font size' == lang) { fontSizeMenu(); return; }
 		else{
@@ -80,8 +80,20 @@ public class Translator {
 		dictionary = new Object(); // default to English (empty dictionary) if there's no .po file
 		isEnglish = true;
 		setFontsFor(lang);
-		if ('en' == lang) MBlock.app.translationChanged(); // there is no .po file English
-		else MBlock.app.server.getPOFile(lang, gotPOFile);
+		if ('en' == lang){
+			MBlock.app.translationChanged(); // there is no .po file English
+		}else {
+			var data:Object = MBlock.app.server.getPOFile(lang);
+			if (data) {
+				dictionary = data;
+				checkBlockTranslations();
+				setFontsFor(lang);
+				MBlock.app.extensionManager.parseAllTranslators();
+			}
+			setTimeout(MBlock.app.translationChanged, 0);
+//			MBlock.app.translationChanged();
+		}
+		langChangedSignal.dispatchEvent(new Event(Event.CHANGE));
 
 		MBlock.app.server.setSelectedLang(lang);
 	}
@@ -120,7 +132,10 @@ public class Translator {
 		Block.setFonts(labelSize, argSize, false, vOffset);
 		MBlock.app.translationChanged();
 	}
-
+	static public function get currentFontSize():int {
+		return SharedObjectManager.sharedManager().getObject("labelSize",14);
+	}
+	
 	private static function fontSizeMenu():void {
 		var m:Menu = new Menu(setFontSize);
 		for (var i:int = 8; i < 25; i++) m.addItem(i.toString(), i);
@@ -154,13 +169,18 @@ public class Translator {
 		}
 		//Block.setFonts(28, 26, true, 0);
 	}
-
+	static private const placeHolder:RegExp = /%\w+(\.\w+)?/g;
 	public static function map(s:String):String {
-//return TranslatableStrings.has(s) ? s.toUpperCase() : s;
-//return (s.indexOf('%') > -1) ? s : s.toUpperCase(); // xxx testing only
-		var result:* = dictionary[s];
-//if (!isEnglish && (s.indexOf('%') == -1)) return s.toUpperCase(); // xxx for testing only; comment out before pushing!
+		
+		var result:String = dictionary[s];
 		if ((result == null) || (result.length == 0)) return s;
+//		var a:Array = s.match(placeHolder);
+//		var b:Array = result.match(placeHolder);
+//		if(!equals(a, b)){
+//			trace(JSON.stringify(a),"\n", JSON.stringify(b));
+//			trace(s,"\n", result);
+//			trace("-------------------------");
+//		}
 		return result;
 	}
 	public static function addEntry(key:String,value:String):void{

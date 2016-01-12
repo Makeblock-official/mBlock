@@ -81,20 +81,20 @@ public class SoundEditor extends Sprite {
 		addMicVolumeSlider();
 		updateIndicators();
 	}
-
+/*
 	public static function strings():Array {
 		var editor:SoundEditor = new SoundEditor(null, null);
 		editor.editMenu(Menu.dummyButton());
 		editor.effectsMenu(Menu.dummyButton());
 		return ['Edit', 'Effects', 'Microphone Volume:'];
 	}
-
+*/
 	public function updateTranslation():void {
 		if (editButton.parent) {
 			removeChild(editButton);
 			removeChild(effectsButton);
-			removeChild(micVolumeSlider);
-			removeChild(micVolumeLabel);
+//			removeChild(micVolumeSlider);
+//			removeChild(micVolumeLabel);
 		}
 		addEditAndEffectsButtons();
 		setWidthHeight(width, height);
@@ -152,12 +152,26 @@ public class SoundEditor extends Sprite {
 		addChild(effectsButton = UIPart.makeMenuButton('Effects', effectsMenu, true, CSS.textColor));
 		
 	}
+	
+	private function __onSetMicLevel(level:Number):void
+	{
+		if(null == microphone){
+			return;
+		}
+		microphone.gain = level;
+	}
 
 	private function addMicVolumeSlider():void {
-		function setMicLevel(level:Number):void { microphone.gain = level }
-		addChild(micVolumeLabel = Resources.makeLabel(Translator.map('Microphone volume:'), CSS.normalTextFormat, 22, 240));
-
-		micVolumeSlider = new Slider(130, 5, setMicLevel);
+		if(micVolumeLabel != null){
+			micVolumeLabel.text = Translator.map('Microphone volume:');
+			micVolumeSlider.x = micVolumeLabel.x + micVolumeLabel.textWidth + 15;
+			return;
+		}
+		
+		micVolumeLabel = Resources.makeLabel(Translator.map('Microphone volume:'), CSS.normalTextFormat, 22, 240)
+		addChild(micVolumeLabel);
+		
+		micVolumeSlider = new Slider(130, 5, __onSetMicLevel);
 		micVolumeSlider.min = 1;
 		micVolumeSlider.max = 100;
 		micVolumeSlider.value = 50;

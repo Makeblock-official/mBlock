@@ -20,6 +20,9 @@
 package scratch {
 	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
+	import flash.display.NativeMenu;
+	import flash.display.NativeMenuItem;
+	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
@@ -29,9 +32,16 @@ package scratch {
 	import blocks.Block;
 	import blocks.BlockArg;
 	
+	import cc.makeblock.mbot.uiwidgets.lightSetter.LightSetterFrame;
+	import cc.makeblock.menu.MenuUtil;
+	
 	import extensions.ArduinoManager;
 	
 	import filters.FilterPack;
+	
+	import interpreter.RobotHelper;
+	
+	import org.aswing.event.AWEvent;
 	
 	import sound.SoundBank;
 	
@@ -39,6 +49,7 @@ package scratch {
 	
 	import ui.ProcedureSpecEditor;
 	
+	import uiwidgets.CursorTool;
 	import uiwidgets.DialogBox;
 	import uiwidgets.Menu;
 	import uiwidgets.Piano;
@@ -68,6 +79,12 @@ public class BlockMenus implements DragClient {
 			if ((comparisonOps.indexOf(op)) > -1) { menuHandler.changeOpMenu(evt, comparisonOps); return; }
 			if (menuName == null) { menuHandler.genericBlockMenu(evt); return; }
 		}
+		
+		if (menuName == 'drawFace'){
+			menuHandler.drawFace(evt);
+			return;
+		}
+		
 		if (op.indexOf('.') > -1) {
 			menuHandler.extensionMenu(evt, menuName);
 			return;
@@ -97,9 +114,23 @@ public class BlockMenus implements DragClient {
 		if (menuName == 'sensor') menuHandler.sensorMenu(evt);
 		if (menuName == 'sound') menuHandler.soundMenu(evt);
 		if (menuName == 'spriteOnly') menuHandler.spriteMenu(evt, false, false, false, true);
-		if (menuName == 'spriteOrMouse') menuHandler.spriteMenu(evt, true, false, false, true);
+		var m:Menu;
+		if (menuName == 'spriteOrMouse') {
+			m = menuHandler.spriteMenu(evt, true, false, false, true);
+			m.addItem("random horizontal point", "rhp");
+			m.addItem("random vertical point", "rvp");
+			m.addItem("random stage point", "rsp");
+			menuHandler.showMenu(m);
+		}
 		if (menuName == 'spriteOrStage') menuHandler.spriteMenu(evt, false, false, true, true);
-		if (menuName == 'touching') menuHandler.spriteMenu(evt, true, true, false, false);
+		if (menuName == 'touching'){
+			m = menuHandler.spriteMenu(evt, true, true, false, false);
+			m.addItem("top edge");
+			m.addItem("right edge");
+			m.addItem("bottom edge");
+			m.addItem("left edge");
+			menuHandler.showMenu(m);
+		}
 		if (menuName == 'stageOrThis') menuHandler.stageOrThisSpriteMenu(evt);
 		if (menuName == 'stop') menuHandler.stopMenu(evt);
 		if (menuName == 'timeAndDate') menuHandler.timeAndDateMenu(evt);
@@ -108,7 +139,7 @@ public class BlockMenus implements DragClient {
 		if (menuName == 'videoMotionType') menuHandler.videoMotionTypeMenu(evt);
 		if (menuName == 'videoState') menuHandler.videoStateMenu(evt);
 	}
-
+	
 	public static function strings():Array {
 		// Exercises all the menus to cause their items to be recorded.
 		// Return a list of additional strings (e.g. from the key menu).
@@ -166,13 +197,13 @@ public class BlockMenus implements DragClient {
 		this.block = block;
 	}
 
+	static private function isGeneric(s:String):Boolean {
+		return ['duplicate', 'delete', 'add comment'].indexOf(s) > -1;
+	}
 	public static function shouldTranslateItemForMenu(item:String, menuName:String):Boolean {
 		// Return true if the given item from the given menu parameter slot should be
 		// translated. This mechanism prevents translating proper names such as sprite,
 		// costume, or variable names.
-		function isGeneric(s:String):Boolean {
-			return ['duplicate', 'delete', 'add comment'].indexOf(s) > -1;
-		}
 		switch (menuName) {
 		case 'attribute':
 			var attributes:Array = [
@@ -187,7 +218,7 @@ public class BlockMenus implements DragClient {
 			return false;
 		case 'list':
 			if (isGeneric(item)) return true;
-			return ['delete list','rename list'].indexOf(item) > -1;
+			return ['delete list'].indexOf(item) > -1;
 		case 'sound':
 			return ['record...'].indexOf(item) > -1;
 		case 'spriteOnly':
@@ -202,21 +233,34 @@ public class BlockMenus implements DragClient {
 		return true;
 	}
 
-	private function showMenu(m:Menu):void {
-		m.color = block.base.color;
-		m.itemHeight = 22;
-		if (blockArg) {
-			var p:Point = blockArg.localToGlobal(new Point(0, 0));
-			m.showOnStage(app.stage, p.x - 9, p.y + blockArg.height);
-		} else {
-			m.showOnStage(app.stage);
+	private function showMenu(m:*):void {
+		var p:Point;
+		if(m is Menu){
+			m.color = block.base.color;
+			m.itemHeight = 22;
+			if (blockArg) {
+				p = blockArg.localToGlobal(new Point(0, 0));
+				m.showOnStage(app.stage, p.x - 9, p.y + blockArg.height);
+			} else {
+				m.showOnStage(app.stage);
+			}
+		}else if(m is NativeMenu){
+			var ctxMenu:NativeMenu = m as NativeMenu;
+			MenuUtil.RemoveLastLines(ctxMenu);
+			MenuUtil.ChangeLang(ctxMenu);
+			if (blockArg) {
+				p = blockArg.localToGlobal(new Point(0, 0));
+				ctxMenu.display(app.stage, p.x - 9, p.y + blockArg.height);
+			} else {
+				ctxMenu.display(app.stage, app.stage.mouseX, app.stage.mouseY);
+			}
 		}
 	}
 
 	private function setBlockArg(selection:*):void {
 		if (blockArg != null) blockArg.setArgValue(selection);
 		MBlock.app.setSaveNeeded();
-		MBlock.app.runtime.checkForGraphicEffects();
+//		MBlock.app.runtime.checkForGraphicEffects();
 	}
 
 	private function attributeMenu(evt:MouseEvent):void {
@@ -248,9 +292,9 @@ public class BlockMenus implements DragClient {
 		showMenu(m);
 	}
 
-	private function booleanSensorMenu(evt:MouseEvent):void {
-		var sensorNames:Array = [
+	static private const sensorNames:Array = [
 			'button pressed', 'A connected', 'B connected', 'C connected', 'D connected'];
+	private function booleanSensorMenu(evt:MouseEvent):void {
 		var m:Menu = new Menu(setBlockArg, 'booleanSensor');
 		for each (var s:String in sensorNames) m.addItem(s);
 		showMenu(m);
@@ -309,9 +353,9 @@ public class BlockMenus implements DragClient {
 		showMenu(m);
 	}
 
+	static private const namedKeys:Array = ['up arrow', 'down arrow', 'right arrow', 'left arrow', 'space'];
 	private function keyMenu(evt:MouseEvent):void {
 		var ch:int;
-		var namedKeys:Array = ['up arrow', 'down arrow', 'right arrow', 'left arrow', 'space'];
 		var m:Menu = new Menu(setBlockArg, 'key');
 		for each (var s:String in namedKeys) m.addItem(s);
 		for (ch = 97; ch < 123; ch++) m.addItem(String.fromCharCode(ch)); // a-z
@@ -332,17 +376,17 @@ public class BlockMenus implements DragClient {
 		showMenu(m);
 	}
 
+	static private const mathOpMenu_ops:Array = ['abs', 'floor', 'ceiling', 'sqrt', 'sin', 'cos', 'tan', 'asin', 'acos', 'atan', 'ln', 'log', 'e ^', '10 ^'];
 	private function mathOpMenu(evt:MouseEvent):void {
-		var ops:Array = ['abs', 'floor', 'ceiling', 'sqrt', 'sin', 'cos', 'tan', 'asin', 'acos', 'atan', 'ln', 'log', 'e ^', '10 ^'];
 		var m:Menu = new Menu(setBlockArg, 'mathOp');
-		for each (var op:String in ops) m.addItem(op);
+		for each (var op:String in mathOpMenu_ops) m.addItem(op);
 		showMenu(m);
 	}
 
+	static private const motorDirectionMenu_ops:Array = ['this way', 'that way', 'reverse'];
 	private function motorDirectionMenu(evt:MouseEvent):void {
-		var ops:Array = ['this way', 'that way', 'reverse'];
 		var m:Menu = new Menu(setBlockArg, 'motorDirection');
-		for each (var s:String in ops) m.addItem(s);
+		for each (var s:String in motorDirectionMenu_ops) m.addItem(s);
 		showMenu(m);
 	}
 	private function notePicker(evt:MouseEvent):void {
@@ -353,8 +397,7 @@ public class BlockMenus implements DragClient {
 		var p:Point = blockArg.localToGlobal(new Point(blockArg.width, blockArg.height));
 		piano.showOnStage(app.stage, int(p.x - piano.width / 2), p.y);
 	}
-	private function noteMenu(evt:MouseEvent):void {
-		var notes:Array = [
+	static private const notes:Array = [
 			['Low C', 48],
 			['D', 50],
 			['E', 52],
@@ -371,6 +414,7 @@ public class BlockMenus implements DragClient {
 			['B', 71],
 			['High C', 72],
 		];
+	private function noteMenu(evt:MouseEvent):void {
 		if (!Menu.stringCollectionMode) {
 			for (var i:int = 0; i < notes.length; i++) {
 				notes[i][0] = '(' + notes[i][1] + ') ' + Translator.map(notes[i][0]); // show key number in menu
@@ -384,27 +428,27 @@ public class BlockMenus implements DragClient {
 		showMenu(m);
 	}
 
+	static private const rotationStyles:Array = ['left-right', "don't rotate", 'all around'];
 	private function rotationStyleMenu(evt:MouseEvent):void {
-		const rotationStyles:Array = ['left-right', "don't rotate", 'all around'];
 		var m:Menu = new Menu(setBlockArg, 'rotationStyle');
 		for each (var s:String in rotationStyles) m.addItem(s);
 		showMenu(m);
 	}
 
-	private function scrollAlignMenu(evt:MouseEvent):void {
-		const options:Array = [
+	static private const options:Array = [
 			'bottom-left', 'bottom-right', 'middle', 'top-left', 'top-right'];
+	private function scrollAlignMenu(evt:MouseEvent):void {
 		var m:Menu = new Menu(setBlockArg, 'scrollAlign');
 		for each (var s:String in options) m.addItem(s);
 		showMenu(m);
 	}
 
-	private function sensorMenu(evt:MouseEvent):void {
-		var sensorNames:Array = [
+	static private const sensorMenu_sensorNames:Array = [
 			'slider', 'light', 'sound',
 			'resistance-A', 'resistance-B', 'resistance-B', 'resistance-C', 'resistance-D'];
+	private function sensorMenu(evt:MouseEvent):void {
 		var m:Menu = new Menu(setBlockArg, 'sensor');
-		for each (var s:String in sensorNames) m.addItem(s);
+		for each (var s:String in sensorMenu_sensorNames) m.addItem(s);
 		showMenu(m);
 	}
 
@@ -417,18 +461,57 @@ public class BlockMenus implements DragClient {
 		showMenu(m);
 	}
 
-	private function spriteMenu(evt:MouseEvent, includeMouse:Boolean, includeEdge:Boolean, includeStage:Boolean, includeSelf:Boolean):void {
-		function setSpriteArg(s:*):void {
-			if (blockArg == null) return;
-			if (s == 'edge') blockArg.setArgValue('_edge_', Translator.map('edge'));
-			else if (s == 'mouse-pointer') blockArg.setArgValue('_mouse_', Translator.map('mouse-pointer'));
-			else if (s == 'myself') blockArg.setArgValue('_myself_', Translator.map('myself'));
-			else if (s == 'Stage') blockArg.setArgValue('_stage_', Translator.map('Stage'));
-			else blockArg.setArgValue(s);
-			MBlock.app.setSaveNeeded();
+	private function __setSpriteArg(s:*):void
+	{
+		if (blockArg == null){
+			return;
 		}
+		
+		switch(s)
+		{
+			case "edge":
+				blockArg.setArgValue('_edge_', Translator.map('edge'))
+				break;
+			case "mouse-pointer":
+				blockArg.setArgValue('_mouse_', Translator.map('mouse-pointer'));
+				break;
+			case "myself":
+				blockArg.setArgValue('_myself_', Translator.map('myself'));
+				break;
+			case "Stage":
+				blockArg.setArgValue('_stage_', Translator.map('Stage'));
+				break;
+			case "rhp":
+				blockArg.setArgValue('rhp', Translator.map('random horizontal point'));
+				break;
+			case "rvp":
+				blockArg.setArgValue('rvp', Translator.map('random vertical point'));
+				break;
+			case "rsp":
+				blockArg.setArgValue('rsp', Translator.map('random stage point'));
+				break;
+			case "top edge":
+			case "right edge":
+			case "bottom edge":
+			case "left edge":
+				blockArg.setArgValue(s, Translator.map(s));
+				break;
+			default:
+				blockArg.setArgValue(s);
+		}
+		/*
+		if (s == 'edge') blockArg.setArgValue('_edge_', Translator.map('edge'));
+		else if (s == 'mouse-pointer') blockArg.setArgValue('_mouse_', Translator.map('mouse-pointer'));
+		else if (s == 'myself') blockArg.setArgValue('_myself_', Translator.map('myself'));
+		else if (s == 'Stage') blockArg.setArgValue('_stage_', Translator.map('Stage'));
+		else blockArg.setArgValue(s);
+		*/
+		MBlock.app.setSaveNeeded();
+	}
+	
+	private function spriteMenu(evt:MouseEvent, includeMouse:Boolean, includeEdge:Boolean, includeStage:Boolean, includeSelf:Boolean):Menu {
 		var spriteNames:Array = [];
-		var m:Menu = new Menu(setSpriteArg, 'sprite');
+		var m:Menu = new Menu(__setSpriteArg, 'sprite');
 		if (includeMouse) m.addItem('mouse-pointer', 'mouse-pointer');
 		if (includeEdge) m.addItem('edge', 'edge');
 		m.addLine();
@@ -449,15 +532,16 @@ public class BlockMenus implements DragClient {
 			m.addItem(spriteName);
 		}
 		showMenu(m);
+		return m;
 	}
 
+	private function setStopType(selection:*):void {
+		blockArg.setArgValue(selection);
+		block.setTerminal((selection == 'all') || (selection == 'this script'));
+		block.type = block.isTerminal ? 'f' : ' ';
+		MBlock.app.setSaveNeeded();
+	}
 	private function stopMenu(evt:MouseEvent):void {
-		function setStopType(selection:*):void {
-			blockArg.setArgValue(selection);
-			block.setTerminal((selection == 'all') || (selection == 'this script'));
-			block.type = block.isTerminal ? 'f' : ' ';
-			MBlock.app.setSaveNeeded();
-		}
 		var m:Menu = new Menu(setStopType, 'stop');
 		m.addItem('all');
 		m.addItem('this script');
@@ -484,11 +568,11 @@ public class BlockMenus implements DragClient {
 		showMenu(m);
 	}
 
+	private function setTriggerType(s:String):void {
+		if ('video motion' == s) app.libraryPart.showVideoButton();
+		setBlockArg(s);
+	}
 	private function triggerSensorMenu(evt:MouseEvent):void {
-		function setTriggerType(s:String):void {
-			if ('video motion' == s) app.libraryPart.showVideoButton();
-			setBlockArg(s);
-		}
 		var m:Menu = new Menu(setTriggerType, 'triggerSensor');
 		m.addItem('loudness');
 		m.addItem('timer');
@@ -515,54 +599,143 @@ public class BlockMenus implements DragClient {
 
 	private function genericBlockMenu(evt:MouseEvent):void {
 		if (!block || block.isEmbeddedParameter()) return;
-		var m:Menu = new Menu(null, 'genericBlock');
+//		var m:Menu = new Menu(null, 'genericBlock');
+		var m:NativeMenu = new NativeMenu();
 		addGenericBlockItems(m);
 		showMenu(m);
 	}
 
-	private function addGenericBlockItems(m:Menu):void {
+	private function addGenericBlockItems(m:NativeMenu):void {
 		if (!block) return;
-		m.addLine();
+//		m.addLine();
+		MenuUtil.AddLine(m);
 		if (!isInPalette(block)) {
 			if (!block.isProcDef()) {
 				if(block.op.indexOf("runArduino")>-1){
 					ArduinoManager.sharedManager().mainX = block.x;
 					ArduinoManager.sharedManager().mainY = block.y;
-					if(!app.stageIsArduino)
-					m.addItem('upload to arduino',app.scriptsPart.showArduinoCode);
+					if(!app.stageIsArduino){
+						MenuUtil.AddItem(m, 'upload to arduino');
+//						m.addItem('upload to arduino',app.scriptsPart.showArduinoCode);
+					}
 				}
+				MenuUtil.AddItem(m, 'duplicate');
+				MenuUtil.AddItem(m, 'delete');
+				MenuUtil.AddLine(m);
+				/*
 				m.addItem('duplicate', duplicateStack);
 				m.addItem('delete', block.deleteStack);
 				m.addLine();
+				*/
 			}
-			m.addItem('add comment', block.addComment);
+//			m.addItem('add comment', block.addComment);
+			MenuUtil.AddItem(m, 'add comment');
 		}
 		//m.addItem('help', block.showHelp);
-		m.addLine();
+//		m.addLine();
+		MenuUtil.AddLine(m);
+		m.addEventListener(Event.SELECT, __onSelect);
 	}
-
-	private function duplicateStack():void {
-		block.duplicateStack(app.mouseX - startX, app.mouseY - startY);
+	
+	private function __onSelect(evt:Event):void
+	{
+		switch(evt.target.name)
+		{
+			case "upload to arduino":
+				app.scriptsPart.showArduinoCode();
+				break;
+			case "duplicate":
+				/*
+				if (block.isProcDef()) return; // don't duplicate procedure definition
+				var newStack:Block = BlockIO.stringToStack(BlockIO.stackToString(block), false);
+				newStack.x = block.x + 20;
+				newStack.y = block.y + 20;
+				block.parent.addChild(newStack);
+				*/
+//				app.gh.mouseUp(new MouseEvent(MouseEvent.MOUSE_UP, true, false, 0, 0, null));
+				var prevTool:String = CursorTool.tool;
+				CursorTool.tool = "copy";
+				block.duplicateStack(app.mouseX - startX, app.mouseY - startY);
+				CursorTool.tool = prevTool;
+//				if (objToGrabOnUp != null) {
+//					var prevTool:String = CursorTool.tool;
+//					CursorTool.tool = "copy";
+//					app.gh.grabOnMouseUp(objToGrabOnUp);
+//					CursorTool.tool = prevTool;
+//				}
+				break;
+			case "delete":
+				block.deleteSelf();
+				break;
+			case "add comment":
+				block.addComment();
+				break;
+			case "edit":
+				editProcSpec();
+				break;
+			case "delete variable":
+			case "delete list":
+				deleteVarOrList();
+				break;
+			case "rename variable":
+				renameVar(false);
+				break;
+			case "rename list":
+				renameVar(true);
+				break;
+			case 'show senders':
+				app.highlightSprites(app.runtime.allSendersOfBroadcast(block.args[0].argValue));
+				break;
+			case 'show receivers':
+				app.highlightSprites(app.runtime.allReceiversOfBroadcast(block.args[0].argValue));
+				break;
+			case 'clear senders/receivers':
+				app.highlightSprites([]);
+				break;
+			case "@@var":
+			case "@@list":
+				setBlockVarOrListName(evt.target.label);
+				break;
+			case "+":
+			case "-":
+			case "*":
+			case "/":
+			case "<":
+			case "=":
+			case ">":
+				block.changeOperator(evt.target.name);
+				break;
+		}
 	}
 
 	private function changeOpMenu(evt:MouseEvent, opList:Array):void {
+		/*
 		function opMenu(selection:*):void {
 			if (selection is Function) { selection(); return; }
 			block.changeOperator(selection);
 		}
+		*/
 		if (!block) return;
-		var m:Menu = new Menu(opMenu, 'changeOp');
+//		var m:Menu = new Menu(opMenu, 'changeOp');
+		var m:NativeMenu = new NativeMenu();
 		addGenericBlockItems(m);
-		if (!isInPalette(block)) for each (var op:String in opList) m.addItem(op);
+		if (!isInPalette(block)){
+			for each (var op:String in opList){
+//				m.addItem(op);
+				MenuUtil.AddItem(m, op);
+			}
+		}
 		showMenu(m);
 	}
 
 	// ***** Procedure menu (for procedure definition hats and call blocks) *****
 
 	private function procMenu(evt:MouseEvent):void {
-		var m:Menu = new Menu(null, 'proc');
+//		var m:Menu = new Menu(null, 'proc');
+		var m:NativeMenu = new NativeMenu();
 		addGenericBlockItems(m);
-		m.addItem('edit', editProcSpec);
+		MenuUtil.AddItem(m, 'edit');
+//		m.addItem('edit', editProcSpec);
 		showMenu(m);
 	}
 
@@ -610,42 +783,77 @@ public class BlockMenus implements DragClient {
 	// ***** Variable and List menus *****
 
 	private function listMenu(evt:MouseEvent):void {
-		var m:Menu = new Menu(varOrListSelection, 'list');
+//		var m:Menu = new Menu(varOrListSelection, 'list');
+		var m:NativeMenu = new NativeMenu();
+		m.addEventListener(Event.SELECT, __onSelect);
 		if (block.op == Specs.GET_LIST) {
-			if (isInPalette(block)) {
-				m.addItem('delete list', deleteVarOrList); // list reporter in palette
-				m.addItem('rename list', renameVar);
+			if (isInPalette(block)){
+				MenuUtil.AddItem(m, 'delete list');
+				MenuUtil.AddItem(m, 'rename list');
+//				m.addItem('delete list', deleteVarOrList); // list reporter in palette
 			}
 			addGenericBlockItems(m);
 		} else {
+			var t:NativeMenuItem;
 			var listName:String;
-			for each (listName in app.stageObj().listNames()) m.addItem(listName);
+			for each (listName in app.stageObj().listNames()){
+//				m.addItem(listName);
+				t = new NativeMenuItem(listName);
+				t.name = "@@list";
+				m.addItem(t);
+			}
 			if (!app.viewedObj().isStage) {
-				m.addLine();
-				for each (listName in app.viewedObj().listNames()) m.addItem(listName);
+//				m.addLine();
+				MenuUtil.AddLine(m);
+				for each (listName in app.viewedObj().listNames()){
+//					m.addItem(listName);
+					t = new NativeMenuItem(listName);
+					t.name = "@@list";
+					m.addItem(t);
+				}
 			}
 		}
 		showMenu(m);
 	}
 
 	private function varMenu(evt:MouseEvent):void {
-		var m:Menu = new Menu(varOrListSelection, 'var');
+//		var m:Menu = new Menu(varOrListSelection, 'var');
+		var m:NativeMenu = new NativeMenu();
+		m.addEventListener(Event.SELECT, __onSelect);
 		var isGetter:Boolean = (block.op == Specs.GET_VAR);
 		if (isGetter && isInPalette(block)) { // var reporter in palette
-			m.addItem('rename variable', renameVar);
-			m.addItem('delete variable', deleteVarOrList);
+//			m.addItem('rename variable', renameVar);
+//			m.addItem('delete variable', deleteVarOrList);
+			MenuUtil.AddItem(m, 'rename variable');
+			MenuUtil.AddItem(m, 'delete variable');
 			addGenericBlockItems(m);
 		} else {
 			if (isGetter) addGenericBlockItems(m);
 			var myName:String = blockVarOrListName();
 			var vName:String;
+			var t:NativeMenuItem;
 			for each (vName in app.stageObj().varNames()) {
-				if (!isGetter || (vName != myName)) m.addItem(vName);
+				if(RobotHelper.isAutoVarName(vName)){
+					continue;
+				}
+				if (!isGetter || (vName != myName)){
+					t = new NativeMenuItem(vName);
+					t.name = "@@var";
+					m.addItem(t);
+//					m.addItem(vName);
+				}
 			}
 			if (!app.viewedObj().isStage) {
-				m.addLine();
+				MenuUtil.AddLine(m);
 				for each (vName in app.viewedObj().varNames()) {
-					if (!isGetter || (vName != myName)) m.addItem(vName);
+					if(RobotHelper.isAutoVarName(vName)){
+						continue;
+					}
+					if (!isGetter || (vName != myName)){
+						t = new NativeMenuItem(vName);
+						t.name = "@@var";
+						m.addItem(t);
+					}
 				}
 			}
 		}
@@ -660,27 +868,37 @@ public class BlockMenus implements DragClient {
 		}
 		return false;
 	}
-
+/*
 	private function varOrListSelection(selection:*):void {
 		if (selection is Function) { selection(); return; }
 		setBlockVarOrListName(selection);
 	}
-
-	private function renameVar():void {
+*/
+	private function renameVar(isList:Boolean):void {
 		function doVarRename(dialog:DialogBox):void {
 			var newName:String = dialog.fields['New name'].text.replace(/^\s+|\s+$/g, '');
-			if (newName.length == 0 || app.viewedObj().lookupVar(newName)) return;
-			if (block.op != Specs.GET_VAR&&block.op != Specs.GET_LIST) return;
+			if(newName.length <= 0){
+				return;
+			}
+			if(app.viewedObj().lookupVar(newName) || app.viewedObj().lookupList(newName)) {
+				return;
+			}
+//			if (block.op != Specs.GET_VAR) return;
+			if (block.op != Specs.GET_VAR && block.op != Specs.GET_LIST){
+				return;
+			}
 			var oldName:String = blockVarOrListName();
 
 			if (oldName.charAt(0) == '\u2601') { // Retain the cloud symbol
 				newName = '\u2601 ' + newName;
 			}
-			if(block.op != Specs.GET_LIST){
-				app.runtime.renameVariable(oldName, newName, block);
-			}else{
+
+			if(isList){
 				app.runtime.renameList(oldName, newName, block);
+			}else{
+				app.runtime.renameVariable(oldName, newName, block);
 			}
+			
 			setBlockVarOrListName(newName);
 			app.updatePalette();
 		}
@@ -756,11 +974,11 @@ public class BlockMenus implements DragClient {
 
 	// ***** Broadcast menu *****
 
+	private function broadcastMenuSelection(selection:*):void {
+		if (selection is Function) selection();
+		else setBlockArg(selection);
+	}
 	private function broadcastMenu(evt:MouseEvent):void {
-		function broadcastMenuSelection(selection:*):void {
-			if (selection is Function) selection();
-			else setBlockArg(selection);
-		}
 		var msgNames:Array = app.runtime.collectBroadcasts();
 		if (msgNames.indexOf('message1') <= -1) msgNames.push('message1');
 		msgNames.sort();
@@ -772,12 +990,12 @@ public class BlockMenus implements DragClient {
 		showMenu(m);
 	}
 
+	private function changeBroadcast(dialog:DialogBox):void {
+		var newName:String = dialog.fields['Message Name'].text;
+		if (newName.length == 0) return;
+		setBlockArg(newName);
+	}
 	private function newBroadcast():void {
-		function changeBroadcast(dialog:DialogBox):void {
-			var newName:String = dialog.fields['Message Name'].text;
-			if (newName.length == 0) return;
-			setBlockArg(newName);
-		}
 		var d:DialogBox = new DialogBox(changeBroadcast);
 		d.addTitle('New Message');
 		d.addField('Message Name', 120);
@@ -786,6 +1004,7 @@ public class BlockMenus implements DragClient {
 	}
 
 	private function broadcastInfoMenu(evt:MouseEvent):void {
+		/*
 		function showBroadcasts(selection:*):void {
 			if (selection is Function) { selection(); return; }
 			var msg:String = block.args[0].argValue;
@@ -796,13 +1015,41 @@ public class BlockMenus implements DragClient {
 			app.highlightSprites(sprites);
 		}
 		var m:Menu = new Menu(showBroadcasts, 'broadcastInfo');
+		*/
+		var m:NativeMenu = new NativeMenu();
 		addGenericBlockItems(m);
 		if (!isInPalette(block)) {
-			m.addItem('show senders');
-			m.addItem('show receivers');
-			m.addItem('clear senders/receivers');
+			MenuUtil.AddItem(m, 'show senders');
+			MenuUtil.AddItem(m, 'show receivers');
+			MenuUtil.AddItem(m, 'clear senders/receivers');
 		}
 		showMenu(m);
 	}
-
+	
+	static private var faceFrame:LightSetterFrame;
+	
+	private function drawFace(evt:MouseEvent):void
+	{
+		if(null == faceFrame){
+			faceFrame = new LightSetterFrame();
+		}
+		faceFrame.init(blockArg.base.bmd);
+		faceFrame.addEventListener(AWEvent.HIDDEN, __onFrameClose);
+		faceFrame.addEventListener(Event.COMPLETE, __onFrameSelect);
+		faceFrame.show();
+	}
+	
+	private function __onFrameClose(evt:AWEvent):void
+	{
+		faceFrame.removeEventListener(AWEvent.HIDDEN, __onFrameClose);
+		faceFrame.removeEventListener(Event.COMPLETE, __onFrameSelect);
+	}
+	
+	private function __onFrameSelect(evt:Event):void
+	{
+		blockArg.argValue = faceFrame.getValue();
+		blockArg.base.bmd = faceFrame.getBitmapData();
+		blockArg.base.setColor(0);
+		blockArg.base.redraw();
+	}
 }}

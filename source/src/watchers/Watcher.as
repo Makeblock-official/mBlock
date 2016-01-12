@@ -24,19 +24,36 @@
 // Represents a variable display.
 
 package watchers {
-import blocks.BlockIO;
 
-import flash.display.*;
-	import flash.filters.BevelFilter;
+	import flash.display.Graphics;
+	import flash.display.Shape;
+	import flash.display.Sprite;
 	import flash.events.MouseEvent;
+	import flash.filters.BevelFilter;
 	import flash.geom.Point;
-	import flash.text.*;
-	import interpreter.*;
-	import scratch.*;
-	import uiwidgets.*;
-	import util.*;
+	import flash.text.TextField;
+	import flash.text.TextFormat;
+	
 	import blocks.Block;
+	
+	import cc.makeblock.util.StringChecker;
+	
+	import extensions.ScratchExtension;
+	
+	import interpreter.Variable;
+	
+	import scratch.ScratchObj;
+	import scratch.ScratchRuntime;
+	import scratch.ScratchSprite;
+	
 	import translation.Translator;
+	
+	import uiwidgets.DialogBox;
+	import uiwidgets.Menu;
+	import uiwidgets.ResizeableFrame;
+	
+	import util.DragClient;
+	import util.JSON;
 
 public class Watcher extends Sprite implements DragClient {
 
@@ -155,7 +172,7 @@ public class Watcher extends Sprite implements DragClient {
 		var newValue:* = getValue(runtime);
 		if (newValue != lastValue) {
 			showValue(newValue);
-			runtime.interp.redraw();
+//			runtime.interp.redraw();
 		}
 		lastValue = newValue;
 		updateLabel();
@@ -209,10 +226,11 @@ public class Watcher extends Sprite implements DragClient {
 		}
 		var app:MBlock = runtime.app;
 		if (cmd == "senseVideoMotion") {
-			var prim:Function = app.interp.getPrim(cmd);
-			if (prim == null) return 0;
+			if(!app.interp.isImplemented(cmd)){
+				return 0;
+			}
 			var block:Block = new Block('video %s on %s', 'r', 0, 'senseVideoMotion', [param, target.objName]);
-			return prim(block);
+			return app.interp.execBlock(cmd, block);
 		}
 		if (target is ScratchSprite) {
 			switch(cmd) {
@@ -238,7 +256,17 @@ public class Watcher extends Sprite implements DragClient {
 			case "xScroll": return app.stagePane.xScroll;
 			case "yScroll": return app.stagePane.yScroll;
 		}
-
+		var index:int = cmd.indexOf(".");
+		
+		if(index >= 0){
+			var extName:String = cmd.slice(0, index);
+			var opName:String = cmd.slice(index+1);
+			var ext:ScratchExtension = MBlock.app.extensionManager.extensionByName(extName);
+			if(ext != null && !ext.useSerial){
+				return ext.getStateVar(opName);
+			}
+		}
+/*
 		if(cmd.indexOf('.') > -1) {
 			var spec:Array = MBlock.app.extensionManager.specForCmd(cmd);
 			if(spec) {
@@ -246,7 +274,7 @@ public class Watcher extends Sprite implements DragClient {
 				return MBlock.app.interp.evalCmd(block);
 			}
 		}
-
+*/
 		return "unknown: " + cmd;
 	}
 

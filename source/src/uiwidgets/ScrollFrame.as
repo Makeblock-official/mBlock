@@ -33,9 +33,13 @@
 // Note: The client should call updateSize() after adding or removing contents.
 
 package uiwidgets {
-	import flash.display.*;
-	import flash.events.*;
+	import flash.display.Graphics;
+	import flash.display.Shape;
+	import flash.display.Sprite;
+	import flash.events.Event;
+	import flash.events.MouseEvent;
 	import flash.filters.GlowFilter;
+	
 	import util.DragClient;
 
 public class ScrollFrame extends Sprite implements DragClient {
@@ -61,7 +65,7 @@ public class ScrollFrame extends Sprite implements DragClient {
 	private var yHistory:Array;
 	private var xVelocity:Number = 0;
 	private var yVelocity:Number = 0;
-
+	
 	public function ScrollFrame(dragScrolling:Boolean = false) {
 		this.dragScrolling = dragScrolling;
 		if (dragScrolling) scrollbarThickness = 3;
@@ -73,8 +77,23 @@ public class ScrollFrame extends Sprite implements DragClient {
 		addEventListener(MouseEvent.MOUSE_DOWN, mouseDown);
 		enableScrollWheel('vertical');
 	}
+	
+	private var _prevWidth:int;
+	private var _prevHeight:int;
+	
+	public function showRightPart(w:int):void
+	{
+		drawShape(Shape(mask).graphics, _prevWidth+w, _prevHeight);
+	}
+	
+	public function hideRightPart():void
+	{
+		drawShape(Shape(mask).graphics, _prevWidth, _prevHeight);
+	}
 
 	public function setWidthHeight(w:int, h:int):void {
+		_prevWidth = w;
+		_prevHeight = h;
 		drawShape(Shape(mask).graphics, w, h);
 		if (shadowFrame) drawShape(shadowFrame.graphics, w, h);
 		if (contents) contents.updateSize();

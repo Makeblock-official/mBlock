@@ -34,7 +34,6 @@ package blocks {
 import flash.display.DisplayObject;
 import flash.display.DisplayObjectContainer;
 import flash.display.Sprite;
-import flash.events.Event;
 import flash.events.FocusEvent;
 import flash.events.MouseEvent;
 import flash.filters.GlowFilter;
@@ -53,16 +52,15 @@ import scratch.ScratchStage;
 
 import translation.Translator;
 
-import uiwidgets.DialogBox;
 import uiwidgets.ScriptsPane;
 
 import util.ReadStream;
 
 public class Block extends Sprite {
 
-	private const minCommandWidth:int = 36;
-	private const minHatWidth:int = 80;
-	private const minLoopWidth:int = 80;
+	static private const minCommandWidth:int = 36;
+	static private const minHatWidth:int = 80;
+	static private const minLoopWidth:int = 80;
 
 	public static var argTextFormat:TextFormat;
 	public static var blockLabelFormat:TextFormat;
@@ -72,7 +70,7 @@ public class Block extends Sprite {
 	private static var useEmbeddedFont:Boolean = false;
 
 	public static var MenuHandlerFunction:Function;	// optional function to handle block and blockArg menus
-
+	
 	public var spec:String;
 	public var type:String;
 	public var op:String = "";
@@ -103,7 +101,7 @@ public class Block extends Sprite {
 	private var suppressLayout:Boolean; // used to avoid extra layouts during block initialization
 	public var labelsAndArgs:Array = [];
 	private var argTypes:Array = [];
-	public var nextID:Array = [];
+//	public var nextID:Array = [];
 	private var elseLabel:TextField;
 
 	private var indentTop:int = 2, indentBottom:int = 3;
@@ -247,7 +245,7 @@ public class Block extends Sprite {
 		var b:Block = new Block(spec, "o", Specs.procedureColor, 'proc_declaration');
 		if (!parameterNames) parameterNames = [];
 		for (var i:int = 0; i < parameterNames.length; i++) {
-			var argType:String = (typeof(defaultArgValues[i]) == 'boolean') ? 'b' : 'r';
+			var argType:String = defaultArgValues[i] is Boolean ? 'b' : 'r';
 			var pBlock:Block = new Block(parameterNames[i], argType, Specs.parameterColor, Specs.GET_PARAM);
 			pBlock.parameterIndex = i;
 			b.setArg(i, pBlock);
@@ -289,10 +287,10 @@ public class Block extends Sprite {
 	}
 
 	private function addLabelsAndArgs(spec:String, c:int):void {
-		var specParts:Array = ReadStream.tokenize(spec), i:int;
+		var specParts:Array = ReadStream.tokenize(spec);
 		labelsAndArgs = [];
 		argTypes = [];
-		for (i = 0; i < specParts.length; i++) {
+		for (var i:int = 0; i < specParts.length; i++) {
 			var o:DisplayObject = argOrLabelFor(specParts[i], c);
 			labelsAndArgs.push(o);
 			var argType:String = 'icon';
@@ -321,14 +319,19 @@ public class Block extends Sprite {
 	public function hideRunFeedback():void {
 		if (filters && (filters.length > 0)) filters = [];
 	}
+	
+	static private var feedbackFilters:Array;
 
 	private function runFeedbackFilters():Array {
-		// filters for showing that a stack is running
-		var f:GlowFilter = new GlowFilter(0xfeffa0);
-		f.strength = 2;
-		f.blurX = f.blurY = 12;
-		f.quality = 3;
-		return [f];
+		if(null == feedbackFilters){
+			// filters for showing that a stack is running
+			var f:GlowFilter = new GlowFilter(0xfeffa0);
+			f.strength = 2;
+			f.blurX = f.blurY = 12;
+			f.quality = 3;
+			feedbackFilters = [f];
+		}
+		return feedbackFilters;
 	}
 
 	public function saveOriginalPosition():void {
@@ -352,6 +355,9 @@ public class Block extends Sprite {
 			if ('_mouse_' == v) argLabel = Translator.map('mouse-pointer');
 			if ('_myself_' == v) argLabel = Translator.map('myself');
 			if ('_stage_' == v) argLabel = Translator.map('Stage');
+			if ('rhp' == v) argLabel = Translator.map('random horizontal point');
+			if ('rvp' == v) argLabel = Translator.map('random vertical point');
+			if ('rsp' == v) argLabel = Translator.map('random stage point');
 			if (args[i] is BlockArg) args[i].setArgValue(v, argLabel);
 		}
 		defaultArgValues = defaults;
@@ -500,9 +506,8 @@ public class Block extends Sprite {
 	private function copyArgs(srcArgs:Array):void {
 		// called on a newly created block that is being duplicated to copy the
 		// argument values and/or expressions from the source block's arguments
-		var i:int;
 		collectArgs();
-		for (i = 0; i < srcArgs.length; i++) {
+		for (var i:int = 0; i < srcArgs.length; i++) {
 			var argToCopy:* = srcArgs[i];
 			if (argToCopy is BlockArg) {
 				var arg:BlockArg = argToCopy;
@@ -528,18 +533,21 @@ public class Block extends Sprite {
 				var a:BlockArg = new BlockArg(argToCopy.type, -1);
 				a.argValue = argToCopy.argValue;
 				args.push(a);
+				addChild(a);
 			}
 			if (argToCopy is Block) {
-				args.push(Block(argToCopy).duplicate(true));
+				var block:Block = argToCopy as Block;
+				block = block.duplicate(true);
+				args.push(block);
+				addChild(block);
 			}
 		}
-		for each (var arg:DisplayObject in args) addChild(arg); // fix for cloned proc bug xxx
+//		for each (var arg:DisplayObject in args) addChild(arg); // fix for cloned proc bug xxx
 	}
 
 	private function collectArgs():void {
-		var i:int;
 		args = [];
-		for (i = 0; i < labelsAndArgs.length; i++) {
+		for (var i:int = 0; i < labelsAndArgs.length; i++) {
 			var a:* = labelsAndArgs[i];
 			if ((a is Block) || (a is BlockArg)) args.push(a);
 		}
@@ -565,7 +573,7 @@ public class Block extends Sprite {
 				b.requestLoader.close();
 		}
 		topBlock().fixStackLayout();
-		MBlock.app.runtime.checkForGraphicEffects();
+//		MBlock.app.runtime.checkForGraphicEffects();
 	}
 
 	public function insertBlock(b:Block):void {
@@ -646,21 +654,27 @@ public class Block extends Sprite {
 
 	private function owningBlock():Block {
 		var b:Block = this;
+		/*
 		while (true) {
 			if (b.parent is Block) {
-				b = Block(b.parent);
+				b = b.parent as Block;
 				if (!b.isReporter) return b; // owning command block
 			} else {
 				return b; // top-level reporter block
 			}
 		}
-		return b; // never gets here
+		*/
+		while(b.parent is Block){
+			b = b.parent as Block;
+			if (!b.isReporter) break; // owning command block
+		}
+		return b; // top-level reporter block
 	}
 
 	public function topBlock():Block {
 		var result:DisplayObject = this;
 		while (result.parent is Block) result = result.parent;
-		return Block(result);
+		return result as Block;
 	}
 
 	public function bottomBlock():Block {
@@ -714,19 +728,22 @@ public class Block extends Sprite {
 		// Note: Unlike most menu() mehtods, this method invokes
 		// the menu itself rather than returning a menu to the caller.
 		if (MenuHandlerFunction == null) return;
-		if (isEmbeddedInProcHat()) MenuHandlerFunction(null, parent);
-		else MenuHandlerFunction(null, this);
+		var target:Object = isEmbeddedInProcHat() ? parent : this;
+		MenuHandlerFunction(null, target);
 	}
 
 	public function handleTool(tool:String, evt:MouseEvent):void {
-		if (isEmbeddedParameter()) return;
-		if (!isInPalette()) {
-			if ('copy' == tool) duplicateStack(10, 5);
-			if ('cut' == tool) deleteStack();
+		if (isEmbeddedParameter() || isInPalette()) return;
+		switch(tool){
+			case "copy":
+				duplicateStack(10, 5);
+				break;
+			case "cut":
+				deleteStack();
+				break;
 		}
-		//if (tool == 'help') showHelp();
 	}
-
+/*
 	public function showHelp():void {
 		var i:int = -1;
 		if((i = op.indexOf('.')) > -1) {
@@ -740,7 +757,7 @@ public class Block extends Sprite {
 			MBlock.app.showTip(op);
 		}
 	}
-
+*/
 	public function duplicateStack(deltaX:Number, deltaY:Number):void {
 		if (isProcDef()) return; // don't duplicate procedure definition
 		var forStage:Boolean = MBlock.app.viewedObj() && MBlock.app.viewedObj().isStage;
@@ -749,6 +766,67 @@ public class Block extends Sprite {
 		newStack.y = y + deltaY;
 		parent.addChild(newStack);
 		MBlock.app.gh.grabOnMouseUp(newStack);
+	}
+	
+	public function deleteSelf():void
+	{
+		if (op == 'proc_declaration') {
+			(parent as Block).deleteStack();
+		}
+		var app:MBlock = MBlock.app;
+		var top:Block = topBlock();
+		if (top == this && app.interp.isRunning(top, app.viewedObj())) {
+			app.interp.toggleThread(top, app.viewedObj());
+		}
+		var prevParent:DisplayObjectContainer = parent;
+		if (parent is Block) {
+			var selfPos:String = getSelfPos();
+			Block(parent).removeBlock(this);
+			appendBlockToPos(prevParent as Block, nextBlock, selfPos);
+		}else if (parent) {
+			parent.removeChild(this);
+			if(nextBlock != null){
+				prevParent.addChild(nextBlock);
+			}
+		}
+		nextBlock = null;
+		removeComments();
+		app.scriptsPane.saveScripts();
+		app.updatePalette();
+		deleteStack();
+	}
+	
+	private function getSelfPos():String
+	{
+		var parentBlock:Block = parent as Block;
+		if(parentBlock.nextBlock == this){
+			return "next";
+		}
+		if(parentBlock.subStack1 == this){
+			return "sub1";
+		}
+		if(parentBlock.subStack2 == this){
+			return "sub2";
+		}
+		return null;
+	}
+	
+	static private function appendBlockToPos(parent:Block, target:Block, pos:String):void
+	{
+		if(null == parent || null == target){
+			return;
+		}
+		switch(pos){
+			case "next":
+				parent.insertBlock(target);
+				break;
+			case "sub1":
+				parent.insertBlockSub1(target);
+				break;
+			case "sub2":
+				parent.insertBlockSub2(target);
+				break;
+		}
 	}
 
 	public function deleteStack():Boolean {
@@ -771,7 +849,7 @@ public class Block extends Sprite {
 		removeComments();
 		app.runtime.recordForUndelete(this, x, y, 0, app.viewedObj());
 		app.scriptsPane.saveScripts();
-		app.runtime.checkForGraphicEffects();
+//		app.runtime.checkForGraphicEffects();
 		app.updatePalette();
 		return true;
 //		if (isProcDef() || isEmbeddedInProcHat()) return true; // don't delete procedure definition this way for now
@@ -793,20 +871,19 @@ public class Block extends Sprite {
 	}
 	private function removeComments():void{
 		var comments:Array = attachedCommentsIn(MBlock.app.scriptsPane);
-		if (comments.length) {
-			for each (var c:ScratchComment in comments) {
-				c.parent.removeChild(c);
-			}
-			MBlock.app.scriptsPane.fixCommentLayout();
+		if (comments.length <= 0) {
+			return;
 		}
+		for each (var c:ScratchComment in comments) {
+			c.parent.removeChild(c);
+		}
+		MBlock.app.scriptsPane.fixCommentLayout();
 	}
 	private function attachedCommentsIn(scriptsPane:ScriptsPane):Array {
-		var allBlocks:Array = [];
-		allBlocksDo(function (b:Block):void {
-			allBlocks.push(b);
-		});
 		var result:Array = []
 		if (!scriptsPane) return result;
+		var allBlocks:Array = [];
+		allBlocksDo(allBlocks.push);
 		for (var i:int = 0; i < scriptsPane.numChildren; i++) {
 			var c:ScratchComment = scriptsPane.getChildAt(i) as ScratchComment;
 			if (c && c.blockRef && allBlocks.indexOf(c.blockRef) != -1) {
@@ -854,7 +931,87 @@ public class Block extends Sprite {
 		}
 		return false;
 	}
-
+	
+	private function focusChange(evt:FocusEvent):void {
+		evt.preventDefault();
+		if (evt.target.parent.parent != this) return; // make sure the target TextField is in this block, not a child block
+		if (args.length == 0) return;
+		var i:int, focusIndex:int = -1;
+		for (i = 0; i < args.length; i++) {
+			if (args[i] is BlockArg && stage.focus == args[i].field) focusIndex = i;
+		}
+		var target:Block = this;
+		var delta:int = evt.shiftKey ? -1 : 1;
+		i = focusIndex + delta;
+		for (;;) {
+			if (i >= target.args.length) {
+				var p:Block = target.parent as Block;
+				if (p) {
+					i = p.args.indexOf(target);
+					if (i != -1) {
+						i += delta;
+						target = p;
+						continue;
+					}
+				}
+				if (target.subStack1) {
+					target = target.subStack1;
+				} else if (target.subStack2) {
+					target = target.subStack2;
+				} else {
+					var t:Block = target;
+					target = t.nextBlock;
+					while (!target) {
+						var tp:Block = t.parent as Block;
+						var b:Block = t;
+						while (tp && tp.nextBlock == b) {
+							b = tp;
+							tp = tp.parent as Block;
+						}
+						if (!tp) return;
+						target = tp.subStack1 == b && tp.subStack2 ? tp.subStack2 : tp.nextBlock;
+						t = tp;
+					}
+				}
+				i = 0;
+			} else if (i < 0) {
+				p = target.parent as Block;
+				if (!p) return;
+				i = p.args.indexOf(target);
+				if (i != -1) {
+					i += delta;
+					target = p;
+					continue;
+				}
+				var nested:Block = p.nextBlock == target ? p.subStack2 || p.subStack1 : p.subStack2 == target ? p.subStack1 : null;
+				if (nested) {
+					for (;;) {
+						nested = nested.bottomBlock();
+						var n2:Block = nested.subStack1 || nested.subStack2;
+						if (!n2) break;
+						nested = n2;
+					}
+					target = nested;
+				} else {
+					target = p;
+				}
+				i = target.args.length - 1;
+			} else {
+				if (target.args[i] is Block) {
+					target = target.args[i];
+					i = evt.shiftKey ? target.args.length - 1 : 0;
+				} else {
+					var a:BlockArg = target.args[i] as BlockArg;
+					if (a && a.field && a.isEditable) {
+						a.startEditing();
+						return;
+					}
+					i += delta;
+				}
+			}
+		}
+	}
+/*
 	private function focusChange(evt:Event):void {
 		evt.preventDefault();
 		if (evt.target.parent.parent != this) return; // make sure the target TextField is in this block, not a child block
@@ -880,5 +1037,9 @@ public class Block extends Sprite {
 			if (i == (focusIndex + 1)) return;
 		}
 	}
-
+	*/
+	public function adjustArgIndex(index:int):int
+	{
+		return rightToLeft ? (args.length - index - 1) : index;
+	}
 }}

@@ -219,15 +219,15 @@ public class ProjectIO {
 		["run\\/encodermotor","runEncoderMotor"],
 		["run\\/sevseg","runSevseg"],
 		["run\\/led","runLed"],
-		["run\\/lightsensor","runLightsensor"],
+		["run\\/lightsensor","runLightSensor"],
 		["run\\/shutter","runShutter"],
 		["get\\/button_inner","getButtonOnBoard"],
 		["get\\/ultrasonic","getUltrasonic"],
 		["get\\/linefollower","getLinefollower"],
-		["get\\/lightsensor","getLightsensor"],
+		["get\\/lightsensor","getLightSensor"],
 		["get\\/joystick","getJoystick"],
 		["get\\/potentiometer","getPotentiometer"],
-		["get\\/soundsensor","getSoundsensor"],
+		["get\\/soundsensor","getSoundSensor"],
 		["get\\/infrared","getInfrared"],
 		["get\\/limitswitch","getLimitswitch"],
 		["get\\/pirmotion","getPirmotion"],
@@ -241,11 +241,23 @@ public class ProjectIO {
 		['["mBot.getButtonOnBoard"]', '["mBot.getButtonOnBoard", "pressed"]'],
 		["mBot.get\\/analog","mBot.getLightOnBoard"],
 		["mBot.getAnalog","mBot.getLightOnBoard"],
+		['["mBot.getLightOnBoard"]','["mBot.getLightSensor", "light sensor on board"]'],
+		['Communication.serial\\/received','Communication.whenReceived'],
+		['Communication.serial\\/read\\/available','Communication.isAvailable'],
+		['Communication.serial\\/read\\/equal','Communication.isEqual'],
+		['Communication.serial\\/read\\/line','Communication.readLine'],
+		['Communication.serial\\/write\\/line','Communication.writeLine'],
+		['Communication.serial\\/write\\/command','Communication.writeCommand'],
+		['Communication.serial\\/read\\/command','Communication.readCommand'],
+		['Communication.serial\\/clear','Communication.clearBuffer'],
+		['["mBot.runLed", "all",','["mBot.runLed", "led on board","all",']
 	];
 	private function fixForNewExtension(json:String):String{
+		trace(json);
 		for(var i:uint=0;i<fixList.length;i++){
 			json = json.split(fixList[i][0]).join(fixList[i][1]);
 		}
+		trace(json);
 		return json.split("arduino\\/main").join("runArduino");
 	}
 	private function integerName(s:String):String {
@@ -316,6 +328,7 @@ public class ProjectIO {
 
 	private function decodeImage(imageData:ByteArray, imageDict:Dictionary, doneFunction:Function):void {
 		function loadDone(e:Event):void {
+			loader.contentLoaderInfo.removeEventListener(Event.COMPLETE, loadDone);
 			imageDict[imageData] = e.target.content.bitmapData;
 			doneFunction();
 		}
@@ -397,28 +410,28 @@ public class ProjectIO {
 			c.baseLayerMD5 = id;
 			whenDone(c);
 		}
-		return app.server.getAsset(id, gotCostumeData);
+		gotCostumeData(app.server.getAsset(id));
+		return null;
 	}
 
 	public function fetchSound(id:String, sndName:String, whenDone:Function):void {
 		// Fetch a sound asset from the server and call whenDone with the resulting ScratchSound.
-		function gotSoundData(sndData:ByteArray):void {
-			if (!sndData) {
-				app.log('Sound not found on server: ' + id);
-				return;
-			}
-			var snd:ScratchSound;
-			try {
-				snd = new ScratchSound(sndName, sndData); // try reading data as WAV file
-			} catch (e:*) { }
-			if (snd && (snd.sampleCount > 0)) { // WAV data
-				snd.md5 = id;
-				whenDone(snd);
-			} else { // try to read data as an MP3 file
-				MP3Loader.convertToScratchSound(sndName, sndData, whenDone);
-			}
+		var sndData:ByteArray = app.server.getAsset(id);
+		if (!sndData) {
+			app.log('Sound not found on server: ' + id);
+			return;
 		}
-		app.server.getAsset(id, gotSoundData);
+		var snd:ScratchSound;
+		try {
+			snd = new ScratchSound(sndName, sndData); // try reading data as WAV file
+		} catch (e:*) { }
+		if (snd && (snd.sampleCount > 0)) { // WAV data
+			snd.md5 = id;
+			whenDone(snd);
+		} else { // try to read data as an MP3 file
+			MP3Loader.convertToScratchSound(sndName, sndData, whenDone);
+		}
+		
 	}
 
 	//----------------------------
@@ -427,12 +440,6 @@ public class ProjectIO {
 
 	public function fetchSprite(md5AndExt:String, whenDone:Function):void {
 		// Fetch a sprite with the md5 hash.
-		function jsonReceived(data:ByteArray):void {
-			if (!data) return;
-			spr.readJSON(util.JSON.parse(data.readUTFBytes(data.length)));
-			spr.instantiateFromJSON(app.stagePane);
-			fetchSpriteAssets([spr], assetsReceived);
-		}
 		function assetsReceived(assetDict:Object):void {
 			installAssets([spr], assetDict);
 			decodeAllImages([spr], done);
@@ -443,7 +450,11 @@ public class ProjectIO {
 			whenDone(spr);
 		}
 		var spr:ScratchSprite = new ScratchSprite();
-		app.server.getAsset(md5AndExt, jsonReceived);
+		var data:ByteArray = app.server.getAsset(md5AndExt);
+		if (!data) return;
+		spr.readJSON(util.JSON.parse(data.readUTFBytes(data.length)));
+		spr.instantiateFromJSON(app.stagePane);
+		fetchSpriteAssets([spr], assetsReceived);
 	}
 
 	private function fetchSpriteAssets(objList:Array, whenDone:Function):void {
@@ -500,8 +511,9 @@ public class ProjectIO {
 		}
 	}
 
-	public function fetchAsset(md5:String, whenDone:Function):URLLoader {
-		return app.server.getAsset(md5, function(data:*):void { whenDone(md5, data); });
+	public function fetchAsset(md5:String, whenDone:Function):void {
+		var data:ByteArray = app.server.getAsset(md5);
+		whenDone(md5, data);
 	}
 
 	//----------------------------
@@ -548,7 +560,7 @@ public class ProjectIO {
 				DialogBox.notify('', 'Sounds converted', app.stage, false, soundsConverted);
 			}
 		}
-		function soundsConverted(ignore:*):void { done() }
+		function soundsConverted(ignore:*):void { done(this) }
 		var soundsToConvert:Array = [];
 		for each (var obj:ScratchObj in scratchObj.allObjects()) {
 			for each (var snd:ScratchSound in obj.sounds) {
@@ -559,7 +571,7 @@ public class ProjectIO {
 		if (soundsToConvert.length > 0) {
 			app.addLoadProgressBox('Converting sounds...');
 			setTimeout(convertASound, 50);
-		} else done();
+		} else done(this);
 	}
 
 	private function recordImage(img:*, md5:String, recordedAssets:Object, uploading:Boolean):int {

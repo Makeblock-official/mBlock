@@ -33,7 +33,7 @@ package primitives {
 	
 	import watchers.ListWatcher;
 
-public class ListPrims {
+internal class ListPrims {
 
 	private var app:MBlock;
 	protected var interp:Interpreter;
@@ -75,7 +75,7 @@ public class ListPrims {
 			listAppend(list, v);
 		}
 		//避免在请求数据时添加空数据。
-		if (list.visible) list.updateWatcher(list.contents.length, false, interp);
+		if (list.visible) list.updateWatcher(list.contents.length, false);
 	}
 
 	protected function listAppend(list:ListWatcher, item:*):void {
@@ -89,14 +89,14 @@ public class ListPrims {
 		var len:int = list.contents.length;
 		if (which == 'all') {
 			listSet(list, []);
-			if (list.visible) list.updateWatcher(-1, false, interp);
+			if (list.visible) list.updateWatcher(-1, false);
 		}
 		var n:Number = (which == 'last') ? len : Number(which);
 		if (isNaN(n)) return;
 		var i:int = Math.round(n);
 		if ((i < 1) || (i > len)) return;
 		listDelete(list, i);
-		if (list.visible) list.updateWatcher(((i == len) ? i - 1 : i), false, interp);
+		if (list.visible) list.updateWatcher(((i == len) ? i - 1 : i), false);
 	}
 
 	protected function listSet(list:ListWatcher, newValue:Array):void {
@@ -114,12 +114,12 @@ public class ListPrims {
 		if (!list) return;
 		if (where == 'last') {
 			listAppend(list, val);
-			if (list.visible) list.updateWatcher(list.contents.length, false, interp);
+			if (list.visible) list.updateWatcher(list.contents.length, false);
 		} else {
 			var i:int = computeIndex(where, list.contents.length + 1);
 			if (i < 0) return;
 			listInsert(list, i, val);
-			if (list.visible) list.updateWatcher(i, false, interp);
+			if (list.visible) list.updateWatcher(i, false);
 		}
 	}
 
@@ -133,7 +133,7 @@ public class ListPrims {
 		var i:int = computeIndex(interp.arg(b, 0), list.contents.length);
 		if (i < 0) return;
 		listReplace(list, i, interp.arg(b, 2));
-		if (list.visible) list.updateWatcher(i, false, interp);
+		if (list.visible) list.updateWatcher(i, false);
 	}
 
 	protected function listReplace(list:ListWatcher, i:int, item:*):void {
@@ -145,7 +145,7 @@ public class ListPrims {
 		if (!list) return '';
 		var i:int = computeIndex(interp.arg(b, 0), list.contents.length);
 		if (i < 0) return '';
-		if (list.visible) list.updateWatcher(i, true, interp);
+		if (list.visible) list.updateWatcher(i, true);
 		return list.contents[i - 1];
 	}
 

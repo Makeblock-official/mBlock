@@ -26,32 +26,32 @@ package scratch {
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
-	import flash.external.ExternalInterface;
 	import flash.filesystem.File;
 	import flash.geom.Rectangle;
 	import flash.media.Microphone;
 	import flash.media.SoundTransform;
 	import flash.net.FileFilter;
 	import flash.net.FileReference;
-	import flash.net.FileReferenceList;
+	import flash.signals.Signal;
 	import flash.system.System;
 	import flash.text.TextField;
+	import flash.text.TextFieldType;
 	import flash.utils.ByteArray;
-	import flash.utils.getTimer;
 	import flash.utils.setTimeout;
 	
 	import blocks.Block;
 	import blocks.BlockArg;
 	
+	import cc.makeblock.interpreter.BlockInterpreter;
+	import cc.makeblock.interpreter.FunctionVideoMotion;
+	import cc.makeblock.util.FileUtil;
+	
 	import extensions.ConnectionManager;
 	import extensions.ParseManager;
-	import extensions.ScratchExtension;
-	import extensions.SerialManager;
 	
 	import interpreter.Interpreter;
+	import interpreter.RobotHelper;
 	import interpreter.Variable;
-	
-	import primitives.VideoMotionPrims;
 	
 	import sound.ScratchSoundPlayer;
 	
@@ -61,7 +61,6 @@ package scratch {
 	
 	import uiwidgets.DialogBox;
 	
-	import util.LogManager;
 	import util.ObjReader;
 	import util.OldProjectReader;
 	import util.ProjectIO;
@@ -74,7 +73,7 @@ package scratch {
 	
 		public var app:MBlock;
 		public var interp:Interpreter;
-		public var motionDetector:VideoMotionPrims;
+		public var motionDetector:FunctionVideoMotion;
 		public var keyIsDown:Array = new Array(128); // records key up/down state
 		public var shiftIsDown:Boolean;
 		public var lastAnswer:String = '';
@@ -86,20 +85,37 @@ package scratch {
 	
 		protected var projectToInstall:ScratchStage;
 		protected var saveAfterInstall:Boolean;
+		
+		public const mbotButtonPressed:Signal = new Signal(Boolean);
 	
 		public function ScratchRuntime(app:MBlock, interp:Interpreter) {
 			this.app = app;
 			this.interp = interp;
 			timerBase = interp.currentMSecs;
 			clearKeyDownArray();
+			mbotButtonPressed.add(__onMbotButtonPressed);
 		}
-	
+		
+		private function __onMbotButtonPressed(isPressed:Boolean):void
+		{
+			allStacksAndOwnersDo(function(stack:Block, target:ScratchObj):void{
+				if(stack.op != "mBot.whenButtonPressed"){
+					return;
+				}
+				if((stack.args[0].argValue == "pressed") == isPressed){
+					if(!BlockInterpreter.Instance.isRunning(stack, target)){
+						interp.toggleThread(stack, target);
+					}
+				}
+			});
+		}
+		
 		// -----------------------------
 		// Running and stopping
 		//------------------------------
 	
 		public function stepRuntime():void {
-			if (projectToInstall != null && app.isOffline) {
+			if (projectToInstall != null) {
 				installProject(projectToInstall);
 				if (saveAfterInstall) app.setSaveNeeded(true);
 				projectToInstall = null;
@@ -149,7 +165,10 @@ package scratch {
 	
 		public function clearRecording():void {
 			recording = false;
-			frames = [];
+			while(frames.length > 0){
+				var bmd:BitmapData = frames.pop();
+				bmd.dispose();
+			}
 			System.gc();
 			trace('mem: ' + System.totalMemory);
 		}
@@ -193,7 +212,7 @@ package scratch {
 	
 		public function startGreenFlags(firstTime:Boolean = false):void {
 			function startIfGreenFlag(stack:Block, target:ScratchObj):void {
-				if (stack.op == 'whenGreenFlag') {
+				if (stack.op == 'whenGreenFlag' && !BlockInterpreter.Instance.isRunning(stack, target)) {
 					interp.toggleThread(stack, target);
 				}
 			}
@@ -205,9 +224,8 @@ package scratch {
 			}
 			clearEdgeTriggeredHats();
 			timerReset();
-			setTimeout(function():void {
-				allStacksAndOwnersDo(startIfGreenFlag);
-			}, 0);
+//			allStacksAndOwnersDo(startIfGreenFlag);
+			setTimeout(allStacksAndOwnersDo, 100, startIfGreenFlag);
 		}
 	
 		public function startClickedHats(clickedObj:ScratchObj):void {
@@ -291,7 +309,7 @@ package scratch {
 			var extName:String = b.op.substr(0, i);
 			return !app.extensionManager.isInternal(extName);
 		}
-	
+	/*
 		public function hasGraphicEffects():Boolean {
 			var found:Boolean = false;
 			allStacksAndOwnersDo(function (stack:Block, target:ScratchObj):void {
@@ -304,11 +322,11 @@ package scratch {
 			});
 			return found;
 		}
-	
 		private function isGraphicEffectBlock(b:Block):Boolean {
 			return ('op' in b && (b.op == 'changeGraphicEffect:by:' || b.op == 'setGraphicEffect:to:') &&
 					('argValue' in b.args[0]) && b.args[0].argValue != 'ghost' && b.args[0].argValue != 'brightness');
 		}
+	*/
 	
 		// -----------------------------
 		// Edge-trigger sensor hats
@@ -326,12 +344,12 @@ package scratch {
 			}
 			var triggerCondition:Boolean = false;
 			if ('whenSensorGreaterThan' == hat.op) {
-				var sensorName:String = interp.arg(hat, 0);
-				var threshold:Number = interp.numarg(hat, 1);
+				var sensorName:String = hat.args[0];
+				var threshold:Number = Number(hat.args[1]);
 				triggerCondition = (
 						(('loudness' == sensorName) && (soundLevel() > threshold)) ||
-						(('timer' == sensorName) && (timer() > threshold)) ||
-						(('video motion' == sensorName) && (VideoMotionPrims.readMotionSensor('motion', target) > threshold)));
+						(('timer' == sensorName) && (timer() > threshold))/* ||
+						(('video motion' == sensorName) && (VideoMotionPrims.readMotionSensor('motion', target) > threshold))*/);
 //			} else if ('whenSensorConnected' == hat.op) {
 //				triggerCondition = getBooleanSensor(interp.arg(hat, 0));
 //			} else if('Communication.serial/received' == hat.op){
@@ -342,7 +360,7 @@ package scratch {
 				}catch(e){
 					triggerCondition = getBooleanBroadcastReceived(""+(hat.args[0] as Block).response);
 				}
-			} else if (true) {
+			}/* else if (true) {
 				var dotIndex:int = hat.op.indexOf('.');
 				if (dotIndex > -1) {
 					var extName:String = hat.op.substr(0, dotIndex);
@@ -354,12 +372,13 @@ package scratch {
 							finalArgs[i] = interp.arg(hat, i);
 						}
 						var ext:ScratchExtension = app.extensionManager.extensionByName(extName);
+						
 						if(ext.js.getValue(op,finalArgs,ext)==true){
 							triggerCondition = true;
 						}
 					}
 				}
-			}
+			}*/
 			if (triggerCondition) {
 				if (triggeredHats.indexOf(hat) == -1) { // not already trigged
 					// only start the stack if it is not already running
@@ -374,7 +393,7 @@ package scratch {
 		private function processEdgeTriggeredHats():void {
 			if (!edgeTriggersEnabled) return;
 			activeHats = [];
-			allStacksAndOwnersDo(startEdgeTriggeredHats);
+//			allStacksAndOwnersDo(startEdgeTriggeredHats);
 			triggeredHats = activeHats;
 		}
 	
@@ -383,13 +402,12 @@ package scratch {
 			stack.allBlocksDo(function(b:Block):void {
 				var op:String = b.op;
 				if (('senseVideoMotion' == op) ||
-					(('whenSensorGreaterThan' == op) && ('video motion' == interp.arg(b, 0)))) {
+					(('whenSensorGreaterThan' == op) && ('video motion' == b.args[0]))) {
 						app.libraryPart.showVideoButton();
 				}
 	
 				// Should we go 3D?
-				if(isGraphicEffectBlock(b))
-					app.go3D();
+//				trace(isGraphicEffectBlock(b))
 			});
 		}
 	
@@ -399,7 +417,7 @@ package scratch {
 	
 		public function installEmptyProject():void {
 			app.saveForRevert(null, true);
-			app.oldWebsiteURL = '';
+//			app.oldWebsiteURL = '';
 			installProject(new ScratchStage());
 			var io:ProjectIO = new ProjectIO(app);
 			//21d7c8705a0fdeea32affb616ee6c984
@@ -412,57 +430,43 @@ package scratch {
 	
 		public function selectProjectFile():void {
 			// Prompt user for a file name and load that file.
-			var fileName:String, data:ByteArray;
 			function fileSelected(event:Event):void {
-				if (fileList.fileList.length == 0) return;
-				var file:FileReference = FileReference(fileList.fileList[0]);
-				fileName = file.name;
-				file.addEventListener(Event.COMPLETE, fileLoadHandler);
-				file.load();
+				selectedProjectFile(file);
 			}
-			function fileLoadHandler(event:Event):void {
-				data = FileReference(event.target).data;
-				if (app.stagePane.isEmpty()) doInstall();
-				else DialogBox.confirm('Replace contents of the current project?', app.stage, doInstall);
-			}
-			function doInstall(ignore:* = null):void {
-				installProjectFromFile(fileName, data);
-			}
-			stopAll();
-			var fileList:FileReferenceList = new FileReferenceList();
-			fileList.addEventListener(Event.SELECT, fileSelected);
-			var filter1:FileFilter = new FileFilter('Scratch 2 Project', '*.sb2');
-			var filter2:FileFilter = new FileFilter('Scratch 1.4 Project', '*.sb');
-			try {
-				// Ignore the exception that happens when you call browse() with the file browser open
-				fileList.browse([filter1, filter2]);
-			} catch(e:*) {}
-		}
-		public function selectedProjectFile(filePath:String):void {
-			// Prompt user for a file name and load that file.
-			var fileName:String, data:ByteArray;
 			
-			function fileLoadHandler(event:Event):void {
-				data = FileReference(event.target).data;
-				if (app.stagePane.isEmpty()) doInstall();
-				else DialogBox.confirm('Replace contents of the current project?', app.stage, doInstall);
-			}
-			function doInstall(ignore:* = null):void {
-				installProjectFromFile(fileName, data);
-			}
 			stopAll();
-			var file:File = new File(filePath);
-			fileName = file.name;
-			file.addEventListener(Event.COMPLETE, fileLoadHandler);
-			file.load();
+			var file:File = new File();
+			file.addEventListener(Event.SELECT, fileSelected);
+			file.browseForOpen("choose file to open", fileFilters);
 		}
-		public function installProjectFromFile(fileName:String, data:ByteArray):void {
+		
+		static private const fileFilters:Array = [
+			new FileFilter('Scratch 2 Project', '*.sb2'),
+			new FileFilter('Scratch 1.4 Project', '*.sb')
+		];
+		
+		public function selectedProjectFile(file:File):void {
+			// Prompt user for a file name and load that file.
+			stopAll();
+			
+			function doInstall(ignore:* = null):void {
+				installProjectFromFile(file);
+			}
+			
+			if (app.stagePane.isEmpty()) {
+				doInstall();
+			}else {
+				DialogBox.confirm('Replace contents of the current project?', app.stage, doInstall);
+			}
+		}
+		
+		private function installProjectFromFile(file:File):void {
 			// Install a project from a file with the given name and contents.
 			stopAll();
-			app.oldWebsiteURL = '';
+//			app.oldWebsiteURL = '';
 			app.loadInProgress = true;
-			installProjectFromData(data);
-			app.setProjectName(fileName);
+			installProjectFromData(FileUtil.ReadBytes(file));
+			app.setProjectFile(file);
 			setTimeout(ConnectionManager.sharedManager().onReOpen,1000);
 		}
 	
@@ -512,11 +516,11 @@ package scratch {
 			if (app.stagePane != null) stopAll();
 			if (app.scriptsPane) app.scriptsPane.viewScriptsFor(null);
 	
-			if(app.isIn3D) app.render3D.setStage(project, project.penLayer);
+//			if(app.isIn3D) app.render3D.setStage(project, project.penLayer);
 	
 			for each (var obj:ScratchObj in project.allObjects()) {
 				obj.showCostume(obj.currentCostumeIndex);
-				if(MBlock.app.isIn3D) obj.updateCostume();
+//				if(MBlock.app.isIn3D) obj.updateCostume();
 				var spr:ScratchSprite = obj as ScratchSprite;
 				if (spr) spr.setDirection(spr.direction);
 			}
@@ -537,7 +541,7 @@ package scratch {
 			
 			app.extensionManager.step();
 			app.projectLoaded();
-			checkForGraphicEffects();
+//			checkForGraphicEffects();
 		}
 		private function whenDone(costumeOrSprite:*):void{
 			var spr:ScratchSprite;
@@ -566,10 +570,9 @@ package scratch {
 			}
 		}
 	
-		public function checkForGraphicEffects():void {
-			if(hasGraphicEffects()) app.go3D();
-			else app.go2D();
-		}
+//		public function checkForGraphicEffects():void {
+//			trace(hasGraphicEffects());
+//		}
 	
 		// -----------------------------
 		// Ask prompter
@@ -577,7 +580,7 @@ package scratch {
 	
 		public function showAskPrompt(question:String = ''):void {
 			var p:AskPrompter = new AskPrompter(question, app);
-			interp.askThread = interp.activeThread;
+//			interp.setAskThread();
 			p.x = 15;
 			p.y = ScratchObj.STAGEH - p.height - 5;
 			app.stagePane.addChild(p);
@@ -585,15 +588,17 @@ package scratch {
 		}
 	
 		public function hideAskPrompt(p:AskPrompter):void {
-			interp.askThread = null;
+//			interp.clearAskThread();
 			lastAnswer = p.answer();
 			p.parent.removeChild(p);
 			app.stage.focus = null;
+			askPromptHideSignal.notify();
 		}
 	
+		public const askPromptHideSignal:Signal = new Signal();
 		public function askPromptShowing():Boolean {
 			var uiLayer:Sprite = app.stagePane.getUILayer();
-			for (var i:int = 0; i < uiLayer.numChildren; i++) {
+			for (var i:int = uiLayer.numChildren-1; i >= 0; i--) {
 				if (uiLayer.getChildAt(i) is AskPrompter)
 					return true;
 			}
@@ -601,7 +606,7 @@ package scratch {
 		}
 	
 		public function clearAskPrompts():void {
-			interp.askThread = null;
+//			interp.clearAskThread();
 			var allPrompts:Array = [];
 			var uiLayer:Sprite = app.stagePane.getUILayer();
 			var c:DisplayObject;
@@ -617,32 +622,27 @@ package scratch {
 	
 		public function keyDown(evt:KeyboardEvent):void {
 			shiftIsDown = evt.shiftKey;
-			var ctrlIsDown:Boolean = evt.ctrlKey;
-			if(ctrlIsDown&&!shiftIsDown){
-				if(evt.charCode=="s".charCodeAt(0)){
-					MBlock.app.exportProjectToFile();
-				}else if(evt.charCode=="o".charCodeAt(0)){
-					MBlock.app.runtime.selectProjectFile();
-				}
+			var ch:int = mapArrowKey(evt.keyCode);
+			if(ch >= 128){
+				return;
 			}
-			var ch:int = evt.charCode;
-			if (evt.charCode == 0) ch = mapArrowKey(evt.keyCode);
-			if ((65 <= ch) && (ch <= 90)) ch += 32; // map A-Z to a-z
-			if (!(evt.target is TextField)) 
+			var isDown:Boolean = keyIsDown[ch];
+			keyIsDown[ch] = true;
+			if (!((evt.target is TextField && evt.target["type"] == TextFieldType.INPUT) || isDown)) {
 				startKeyHats(ch);
-			if (ch < 128) keyIsDown[ch] = true;
+			}
 		}
 	
 		public function keyUp(evt:KeyboardEvent):void {
 			shiftIsDown = evt.shiftKey;
-			var ch:int = evt.charCode;
-			if (evt.charCode == 0) ch = mapArrowKey(evt.keyCode);
-			if ((65 <= ch) && (ch <= 90)) ch += 32; // map A-Z to a-z
-			if (ch < 128) {
-				if(keyIsDown[ch]==true){
-					endKeyHats(ch);
-				}
-				keyIsDown[ch] = false;
+			var ch:int = mapArrowKey(evt.keyCode);
+			if(ch >= 128){
+				return;
+			}
+			var isDown:Boolean = keyIsDown[ch];
+			keyIsDown[ch] = false;
+			if(isDown){
+				endKeyHats(ch);
 			}
 		}
 	
@@ -652,11 +652,17 @@ package scratch {
 	
 		private function mapArrowKey(keyCode:int):int {
 			// map key codes for arrow keys to ASCII, other key codes to zero
-			if (keyCode == 37) return 28;
-			if (keyCode == 38) return 30;
-			if (keyCode == 39) return 29;
-			if (keyCode == 40) return 31;
-			return 0;
+			switch(keyCode){
+				case 37:return 28;
+				case 38:return 30;
+				case 39:return 29;
+				case 40:return 31;
+			}
+			// map A-Z to a-z
+			if(65 <= keyCode && keyCode <= 90){
+				return keyCode + 32;
+			}
+			return keyCode;
 		}
 	
 		// -----------------------------
@@ -677,17 +683,13 @@ package scratch {
 		}
 		
 		public function getBooleanSerialReceived():Boolean{
-			var b:Boolean =  ParseManager.sharedManager().lines.length>0;
-			//SerialManager.sharedManager().getFirstLine();
-			return b;
+			return ParseManager.sharedManager().lines.length > 0;
 		}
 		public function getBooleanBroadcastReceived(msg:String):Boolean{
-			var b:Boolean = false;
 			if(ParseManager.sharedManager().lines.length>0 && ParseManager.sharedManager().lines[0].indexOf(msg)>-1){
-				b = ParseManager.sharedManager().getFirstLine().indexOf(msg)>-1;
-			//SerialManager.sharedManager().getFirstLine();
+				return ParseManager.sharedManager().getFirstLine().indexOf(msg)>-1;
 			}
-			return b;
+			return false;
 		}
 		public function getTimeString(which:String):* {
 			// Return local time properties.
@@ -725,9 +727,19 @@ package scratch {
 	
 		public function allVarNames():Array {
 			var result:Array = [], v:Variable;
-			for each (v in app.stageObj().variables) result.push(v.name);
+			for each (v in app.stageObj().variables) {
+				if(v.name == null || RobotHelper.isAutoVarName(v.name)){
+					continue;
+				}
+				result.push(v.name);
+			}
 			if (!app.viewedObj().isStage) {
-				for each (v in app.viewedObj().variables) result.push(v.name);
+				for each (v in app.viewedObj().variables) {
+					if(v.name == null || RobotHelper.isAutoVarName(v.name)){
+						continue;
+					}
+					result.push(v.name);
+				}
 			}
 			return result;
 		}
@@ -830,12 +842,15 @@ package scratch {
 		public function clearRunFeedback():void {
 			if(app.editMode) {
 				for each (var stack:Block in allStacks()) {
-					stack.allBlocksDo(function(b:Block):void {
-						b.hideRunFeedback();
-					});
+					stack.allBlocksDo(__hideRunFeedback);
 				}
 			}
 			app.updatePalette();
+		}
+		
+		static private function __hideRunFeedback(b:Block):void
+		{
+			b.hideRunFeedback();
 		}
 	
 		public function allSendersOfBroadcast(msg:String):Array {
@@ -883,69 +898,80 @@ package scratch {
 			return false;
 		}
 	
+		static private const variableBlocks:Array = [Specs.SET_VAR, Specs.CHANGE_VAR, "showVariable:", "hideVariable:"];
 		public function allUsesOfVariable(varName:String, owner:ScratchObj):Array {
-			var variableBlocks:Array = [Specs.SET_VAR, Specs.CHANGE_VAR, "showVariable:", "hideVariable:"];
 			var result:Array = [];
 			var stacks:Array = owner.isStage ? allStacks() : owner.scripts;
+			function __iter(b:Block):void {
+				if (b.op == Specs.GET_VAR && b.spec == varName) result.push(b);
+				if (variableBlocks.indexOf(b.op) != -1 && b.args[0].argValue == varName) result.push(b);
+			}
 			for each (var stack:Block in stacks) {
 				// for each block in stack
-				stack.allBlocksDo(function (b:Block):void {
-					if (b.op == Specs.GET_VAR && b.spec == varName) result.push(b);
-					if (variableBlocks.indexOf(b.op) != -1 && b.args[0].argValue == varName) result.push(b);
-				});
+				stack.allBlocksDo(__iter);
 			}
 			return result;
 		}
-		public function allUsesOfList(listName:String, owner:ScratchObj):Array {
-			var listBlocks:Array = ["append:toList:","deleteLine:ofList:", "insert:at:ofList:",
+		static private const listBlocks:Array = ["append:toList:","deleteLine:ofList:", "insert:at:ofList:",
 				"setLine:ofList:to:", "getLine:ofList:",
 				"lineCountOfList:", "list:contains:", "showList:", "hideList:"];
+		
+		public function allUsesOfList(listName:String, owner:ScratchObj):Array {
 			var result:Array = [];
 			var stacks:Array = owner.isStage ? allStacks() : owner.scripts;
+			function __iter(b:Block):void {
+				if (b.op == Specs.GET_LIST && b.spec == listName) {
+					result.push(b);
+				}
+				if (listBlocks.indexOf(b.op) < 0){
+					return;
+				}
+				if(b.args[0] is BlockArg && b.args[0].argValue==listName){
+					result.push(b);
+				}
+				if(b.args[b.args.length-1].argValue == listName){
+					result.push(b);
+				}
+				if (b.args.length>1){
+					if(b.args[1].argValue==listName){
+						result.push(b);
+					}
+				}
+			}
 			for each (var stack:Block in stacks) {
 				// for each block in stack
-				stack.allBlocksDo(function (b:Block):void {
-					if (b.op == Specs.GET_LIST && b.spec == listName) result.push(b);
-					if (listBlocks.indexOf(b.op) != -1 )
-					{
-						if(b.args[0].argValue==listName){
-							result.push(b);
-						}
-						if(b.args[b.args.length-1].argValue == listName){
-							result.push(b);
-						}
- 						if (b.args.length>1){
-							if(b.args[1].argValue==listName){
-								result.push(b);
-							}
-						}
-					}
-				});
+				stack.allBlocksDo(__iter);
 			}
 			return result;
 		}
 		public function allCallsOf(callee:String, owner:ScratchObj):Array {
 			var result:Array = [];
+			function __iter(b:Block):void {
+				if (b.op == Specs.CALL && b.spec == callee) result.push(b);
+			}
 			for each (var stack:Block in owner.scripts) {
 				// for each block in stack
-				stack.allBlocksDo(function (b:Block):void {
-					if (b.op == Specs.CALL && b.spec == callee) result.push(b);
-				});
+				stack.allBlocksDo(__iter);
 			}
 			return result;
 		}
 	
 		public function updateCalls():void {
-			allStacksAndOwnersDo(function (b:Block, target:ScratchObj):void {
-				if (b.op == Specs.CALL) {
-					if (target.lookupProcedure(b.spec) == null) {
-						b.base.setColor(0xFF0000);
-						b.base.redraw();
-					}
-					else b.base.setColor(Specs.procedureColor);
-				}
-			});
+			allStacksAndOwnersDo(__updateCalls);
 			clearAllCaches();
+		}
+		
+		private function __updateCalls(b:Block, target:ScratchObj):void
+		{
+			if (b.op != Specs.CALL) {
+				return;
+			}
+			if (target.lookupProcedure(b.spec) == null) {
+				b.base.setColor(0xFF0000);
+				b.base.redraw();
+			}else{
+				b.base.setColor(Specs.procedureColor);
+			}
 		}
 	
 		public function allStacks():Array {
@@ -964,10 +990,14 @@ package scratch {
 			for (var i:int = stage.numChildren - 1; i >= 0; i--) {
 				var o:* = stage.getChildAt(i);
 				if (o is ScratchObj) {
-					for each (stack in ScratchObj(o).scripts) f(stack, o);
+					for each (stack in ScratchObj(o).scripts) {
+						f(stack, o);
+					}
 				}
 			}
-			for each (stack in stage.scripts) f(stack, stage);
+			for each (stack in stage.scripts) {
+				f(stack, stage);
+			}
 		}
 	
 		public function clearAllCaches():void {
@@ -1174,14 +1204,15 @@ package scratch {
 			return _isRequest;
 		}
 		public function enterRequest():void{
-			_isRequest = true;
-			setTimeout(function():void{
-				_requestCount = 0;
-				_isRequest = false;
-			},1);
-			var t:uint = getTimer();
+//			_isRequest = true;
+//			setTimeout(__onRequest, 1);
 		}
 		public function exitRequest():void{
+			_isRequest = false;
+		}
+		private function __onRequest():void
+		{
+			_requestCount = 0;
 			_isRequest = false;
 		}
 	}

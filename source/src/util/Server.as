@@ -28,26 +28,27 @@
 package util {
 import flash.display.BitmapData;
 import flash.display.Loader;
-import flash.events.ErrorEvent;
 import flash.events.Event;
-import flash.events.IOErrorEvent;
-import flash.events.SecurityErrorEvent;
 import flash.filesystem.File;
 import flash.geom.Matrix;
 import flash.net.URLLoader;
-import flash.net.URLLoaderDataFormat;
-import flash.net.URLRequest;
 import flash.utils.ByteArray;
 
-public class Server implements IServer {
+import cc.makeblock.util.CsvReader;
+import cc.makeblock.util.Excel;
+import cc.makeblock.util.FileUtil;
+
+
+public class Server {
 	// -----------------------------
 	// Asset API
 	//------------------------------
-	public function fetchAsset(url:String, whenDone:Function):URLLoader {
+	private function fetchAsset(url:String):ByteArray
+	{
 		// Make a GET or POST request to the given URL (do a POST if the data is not null).
 		// The whenDone() function is called when the request is done, either with the
 		// data returned by the server or with a null argument if the request failed.
-
+/*
 		function completeHandler(e:Event):void {
 			loader.removeEventListener(Event.COMPLETE, completeHandler);
 			loader.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, errorHandler);
@@ -68,41 +69,66 @@ public class Server implements IServer {
 		loader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, errorHandler);
 		loader.addEventListener(IOErrorEvent.IO_ERROR, errorHandler);
 		var request:URLRequest = new URLRequest(url);
-
+	*/	
+		
+		var file:File;
+		if(url.indexOf("://") > -1||url.indexOf("app-storage:/") > -1){
+			file = new File(url);
+		}else{
+			file = File.applicationDirectory.resolvePath(url);
+		}
+		if(file.exists){
+			return FileUtil.ReadBytes(file);
+		}
+		return null;
+		/*
 		try {
 			loader.load(request);
 		} catch(e:*){
 			// Local sandbox exception?
+			trace(e);
 			whenDone(null);
 		}
 		return loader;
+		*/
 	}
 
-	public function getAsset(md5:String, whenDone:Function):URLLoader {
+	public function getAsset(md5:String):ByteArray
+	{
+		var file:File = File.applicationDirectory.resolvePath("media/" + md5);
+		if(file.exists){
+			return FileUtil.ReadBytes(file);
+		}
+		file = File.applicationStorageDirectory.resolvePath("mBlock/media/" + md5);
+		if(file.exists){
+			return FileUtil.ReadBytes(file);
+		}
+		return null;
 //		if (BackpackPart.localAssets[md5] && BackpackPart.localAssets[md5].length > 0) {
 //			whenDone(BackpackPart.localAssets[md5]);
 //			return null;
 //		}
-		return fetchAsset('media/' + md5, whenDone);
+//		return fetchAsset('app-storage:/mBlock/media/' + md5);
 	}
 
-	public function getMediaLibrary(whenDone:Function):URLLoader {
-		return getAsset('mediaLibrary.json', whenDone);
+	public function getMediaLibrary():String
+	{
+		return fetchAsset('app-storage:/mBlock/media/mediaLibrary.json').toString();
 	}
 
 	public function getThumbnail(md5:String, w:int, h:int, whenDone:Function):URLLoader {
-		function gotAsset(data:ByteArray):void {
+		function imageLoaded(e:Event):void {
+			whenDone(makeThumbnail(e.target.content.bitmapData));
+		}
+		var ext:String = md5.slice(-3);
+		if (['gif', 'png', 'jpg'].indexOf(ext) > -1) {
+			var data:ByteArray = getAsset(md5);
 			if (data) {
 				var loader:Loader = new Loader();
 				loader.contentLoaderInfo.addEventListener(Event.COMPLETE, imageLoaded);
 				try { loader.loadBytes(data) } catch (e:*) {}
 			}
 		}
-		function imageLoaded(e:Event):void {
-			whenDone(makeThumbnail(e.target.content.bitmapData));
-		}
-		var ext:String = md5.slice(-3);
-		if (['gif', 'png', 'jpg'].indexOf(ext) > -1) getAsset(md5, gotAsset);
 		return null;
 	}
 
@@ -123,32 +149,57 @@ public class Server implements IServer {
 	// Translation Support
 	//------------------------------
 
-	public function getLanguageList(whenDone:Function):void {
-		var file:File = ApplicationManager.sharedManager().documents.resolvePath("mBlock/locale");
-		if(file.exists){
-			fetchAsset(file.url+'/lang_list.txt', whenDone);
-		}else{
-			fetchAsset('locale/lang_list.txt', whenDone);
+	public function getLanguageList():Array
+	{
+		var obj:Object = getLangObj();
+		var result:Array = []
+		for(var key:String in obj){
+			result.push([key, obj[key]["Language-Name"]]);
 		}
+		result.sortOn("0", Array.DESCENDING);
+		result.unshift(['en', 'English']);
+		return result;
 	}
 
-	public function getPOFile(lang:String, whenDone:Function):void {
+	public function getPOFile(lang:String):Object
+	{
+		var obj:Object = getLangObj();
+		return obj[lang];
+		/*
 		var file:File = ApplicationManager.sharedManager().documents.resolvePath("mBlock/locale");
+		var bytes:ByteArray;
 		if(file.exists){
-			fetchAsset(file.url+"/"+  lang +'.po', whenDone);
+			bytes = fetchAsset(file.url+"/"+  lang +'.po');
 		}else{
-			fetchAsset('locale/' + lang + '.po', whenDone);
+			bytes = fetchAsset('locale/' + lang + '.po');
 		}
+		return bytes;
+		*/
+	}
+	
+	static private function getLangObj():Object
+	{
+		var file:File = File.applicationStorageDirectory.resolvePath("mBlock/locale/locale.xlsx");
+		if(!file.exists){
+			file = File.applicationDirectory.resolvePath("locale/locale.xlsx");
+		}
+		var bytes:ByteArray = FileUtil.ReadBytes(file);
+		var list:Array = Excel.Parse(bytes);
+		return CsvReader.ReadDict(list[0]);
 	}
 
 	public function getSelectedLang(whenDone:Function):void {
 		// Get the language setting.
-		if (SharedObjectManager.sharedManager().available("lang")) whenDone(SharedObjectManager.sharedManager().getObject("lang"));
+		if (SharedObjectManager.sharedManager().available("lang")){
+			whenDone(SharedObjectManager.sharedManager().getObject("lang"));
+		}
 	}
 
 	public function setSelectedLang(lang:String):void {
 		// Record the language setting.
-		if (lang == '') lang = 'en';
+		if (!Boolean(lang)){
+			lang = 'en';
+		}
 		SharedObjectManager.sharedManager().setObject("lang", lang);
 	}
 }}

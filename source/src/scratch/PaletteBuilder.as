@@ -39,6 +39,8 @@ package scratch {
 	
 	import extensions.ScratchExtension;
 	
+	import interpreter.RobotHelper;
+	
 	import translation.Translator;
 	
 	import ui.ProcedureSpecEditor;
@@ -76,51 +78,84 @@ public class PaletteBuilder {
 		if (selectedCategory == Specs.dataCategory) return showDataCategory();
 		if (selectedCategory == Specs.myBlocksCategory) return showMyBlocksPalette(shiftKey);
 
-		var catName:String = Specs.categories[selectedCategory][1];
+//		var catName:String = Specs.categories[selectedCategory][1];
 		var catColor:int = Specs.blockColor(selectedCategory);
-		if (app.viewedObj() && app.viewedObj().isStage) {
-			// The stage has different blocks for some categories:
-			var stageSpecific:Array = ['Control', 'Looks', 'Motion', 'Pen', 'Sensing'];
-			//if (stageSpecific.indexOf(catName) != -1) selectedCategory += 100;
-			if (catName == 'Motion') {
-				//addItem(makeLabel(Translator.map('Stage selected:')));
-				//nextY -= 6;
-				//addItem(makeLabel(Translator.map('No motion blocks')));
-				//return;
-			}
-		}
 		addBlocksForCategory(selectedCategory, catColor);
 		updateCheckboxes();
+	}
+	
+	static private function modifyCategory(category):int
+	{
+		if(MBlock.app.viewedObj() is ScratchSprite){
+			return category;
+		}
+		switch(category){
+			case Specs.motionCategory:
+			case Specs.looksCategory:
+			case Specs.penCategory:
+			case Specs.controlCategory:
+			case Specs.sensingCategory:
+				return category + 100;
+		}
+		return category;
+	}
+	
+	static private function canShowInArduinoMode(spec:Array):Boolean
+	{
+		var categoryId:int = parseInt(spec[2]) % 100;
+		if(MBlock.app.stageIsArduino && categoryId == Specs.controlCategory){
+			switch(spec[3]){
+				case "stopScripts":
+				case "whenCloned":
+				case "createCloneOf":
+				case "deleteClone":
+					return false;
+			}
+		}
+		return true;
 	}
 
 	private function addBlocksForCategory(category:int, catColor:int):void {
 		var cmdCount:int;
 		var targetObj:ScratchObj = app.viewedObj();
+		category = modifyCategory(category);
 		for each (var spec:Array in Specs.commands) {
 			if ((spec.length > 3) && (spec[2] == category)) {
+				if(!canShowInArduinoMode(spec)){
+					continue;
+				}
+				var label:String = spec[0];
 				var blockColor:int = (app.interp.isImplemented(spec[3])) ? catColor : 0x505050;
 				var defaultArgs:Array = targetObj.defaultArgsFor(spec[3], spec.slice(4));
 				
-				var label:String = spec[0];
 				if(targetObj.isStage && spec[3] == 'whenClicked') label = 'when Stage clicked';
 				var block:Block = new Block(label, spec[1], blockColor, spec[3], defaultArgs);
 				var showCheckbox:Boolean = isCheckboxReporter(spec[3]);
-				if (showCheckbox) addReporterCheckbox(block);
-				if(!app.stageIsArduino){
-					addItem(block, showCheckbox);
-				}else{
-					if(spec[3] == 'stopScripts'||spec[3] == 'createCloneOf'||spec[3] == 'whenCloned'||spec[3] == 'deleteClone'){
-						
-					}else{
-						addItem(block, showCheckbox);
-					}
+				if (showCheckbox){
+					addReporterCheckbox(block);
 				}
+				addItem(block, showCheckbox);
 				cmdCount++;
-			} else {
-				if ((spec.length == 1) && (cmdCount > 0)) nextY += 10 * spec[0].length; // add some space
-				cmdCount = 0;
+			} else if(spec.length < 3){
+				if (cmdCount > 0) {
+					nextY += 10 * spec[0].length; // add some space
+					cmdCount = 0;
+				}
+				addLabelText(spec[1]);
 			}
 		}
+	}
+	
+	private function addLabelText(text:String):void
+	{
+		if(!Boolean(text)){
+			return;
+		}
+		var labelTxt:TextField = new TextField();
+		labelTxt.mouseEnabled = false;
+		labelTxt.autoSize = TextFieldAutoSize.LEFT;
+		labelTxt.text = text;
+		addItem(labelTxt);
 	}
 
 	protected function addItem(o:DisplayObject, hasCheckbox:Boolean = false):void {
@@ -164,6 +199,9 @@ public class PaletteBuilder {
 		var varNames:Array = app.runtime.allVarNames().sort();
 		if (varNames.length > 0) {
 			for each (var n:String in varNames) {
+				if(RobotHelper.isAutoVarName(n)){
+					continue;
+				}
 				addVariableCheckbox(n, false);
 				addItem(new Block(n, 'r', catColor, Specs.GET_VAR), true);
 			}
@@ -298,12 +336,12 @@ public class PaletteBuilder {
 		app.palette.addChild(b);
 	}
 
+	static private const checkboxReporters: Array = [
+		'xpos', 'ypos', 'heading', 'costumeIndex', 'scale', 'volume', 'timeAndDate',
+		'backgroundIndex', 'sceneName', 'tempo', 'answer', 'timer', 'soundLevel', 'isLoud',
+		'sensor:', 'sensorPressed:', 'senseVideoMotion', 'xScroll', 'yScroll',
+		'getDistance', 'getTilt'];
 	protected function isCheckboxReporter(op:String):Boolean {
-		const checkboxReporters: Array = [
-			'xpos', 'ypos', 'heading', 'costumeIndex', 'scale', 'volume', 'timeAndDate',
-			'backgroundIndex', 'sceneName', 'tempo', 'answer', 'timer', 'soundLevel', 'isLoud',
-			'sensor:', 'sensorPressed:', 'senseVideoMotion', 'xScroll', 'yScroll',
-			'getDistance', 'getTilt'];
 		return checkboxReporters.indexOf(op) > -1;
 	}
 
@@ -421,7 +459,8 @@ public class PaletteBuilder {
 				if (showCheckbox) addReporterCheckbox(block);
 				addItem(block, showCheckbox);
 			} else {
-				if (spec.length == 1) nextY += 10 * spec[0].length; // add some space
+				nextY += 10 * spec[0].length; // add some space
+				addLabelText(spec[1]);
 			}
 		}
 	}

@@ -36,10 +36,8 @@ package primitives {
 	import scratch.ScratchObj;
 	import scratch.ScratchSprite;
 	import scratch.ScratchStage;
-	
-	import translation.Translator;
 
-public class SensingPrims {
+	internal class SensingPrims {
 
 	private var app:MBlock;
 	private var interp:Interpreter;
@@ -98,16 +96,30 @@ public class SensingPrims {
 		if ('_mouse_' == arg) {
 			return mouseTouches(s);
 		}
+		
+		r = s.bounds();
+		switch(arg)
+		{
+			case "top edge":
+				return r.top < 0;
+			case "right edge":
+				return r.right > ScratchObj.STAGEW;
+			case "bottom edge":
+				return r.bottom > ScratchObj.STAGEH;
+			case "left edge":
+				return r.left < 0;
+		}
+		
 		if (!s.visible) return false;
 
 		var s2:ScratchSprite;
-		if(true || !app.isIn3D) {
+//		if(true || !app.isIn3D) {
 			var sBM:BitmapData = s.bitmap();
 			for each (s2 in app.stagePane.spritesAndClonesNamed(arg))
 				if (s2.visible && sBM.hitTest(s.bounds().topLeft, 1, s2.bitmap(), s2.bounds().topLeft, 1))
 					return true;
-		}
-		else {
+//		}
+//		else {
 			// TODO: Re-implement something like the method above for rotated bitmaps.
 //			var sBM:BitmapData = s.bitmap();
 //            var oBM:BitmapData = new BitmapData(sBM.width, sBM.height, true, 0);
@@ -120,7 +132,7 @@ public class SensingPrims {
 //				if (s2.visible && sBM.hitTest(s.bounds().topLeft, 1, oBM, s2.bounds().topLeft, 1))
 //					return true;
 //			}
-		}
+//		}
 
 		return false;
 	}

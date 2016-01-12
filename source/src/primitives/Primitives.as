@@ -35,7 +35,7 @@ package primitives {
 	
 	import translation.Translator;
 	
-	public class Primitives {
+	internal class Primitives {
 		
 		private const MaxCloneCount:int = 300;
 		
@@ -108,6 +108,7 @@ package primitives {
 				}
 				return ("" + r1 + r2).substr(0, 10240);
 			};
+			primTable["castDigitToString:"]	= castDigitToString;
 			primTable["letter:of:"]			= primLetterOf;
 			primTable["stringLength:"]		= function(b:*):* { return String(interp.arg(b, 0)).length };
 			
@@ -156,6 +157,10 @@ package primitives {
 			return (Math.random() * (hi - low)) + low;
 		}
 		
+		private function castDigitToString(b:Block):String {
+			var digit:int = interp.numarg(b, 0);
+			return digit.toString();
+		}
 		private function primLetterOf(b:Block):String {
 			var s:String = interp.arg(b, 1);
 			var i:int = interp.numarg(b, 0) - 1;
@@ -178,7 +183,7 @@ package primitives {
 				case "abs": return Math.abs(n);
 				case "floor": return Math.floor(n);
 				case "ceiling": return Math.ceil(n);
-				case "int": return n - (n % 1); // used during alpha, but removed from menu
+				case "int": return int(n); // used during alpha, but removed from menu
 				case "sqrt": return Math.sqrt(n);
 				case "sin": return Math.sin((Math.PI * n) / 180);
 				case "cos": return Math.cos((Math.PI * n) / 180);
@@ -194,7 +199,7 @@ package primitives {
 			return 0;
 		}
 		
-		private static var lcDict:Dictionary = new Dictionary();
+		private static const lcDict:Dictionary = new Dictionary();
 		public static function compare(a1:*, a2:*):int {
 			// This is static so it can be used by the list "contains" primitive.
 			var n1:Number = Interpreter.asNumber(a1);

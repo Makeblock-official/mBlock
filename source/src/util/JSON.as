@@ -255,7 +255,9 @@ public class JSON {
 		}
 	}
 
-	private function error(msg:String):* { throw new Error(msg + " [pos=" + src.pos()) + "]"; return null }
+	private function error(msg:String):* {
+		throw new Error(msg + " [pos=" + src.pos()) + "]"; return null
+	}
 
 	//----------------------------
 	// Object to JSON support

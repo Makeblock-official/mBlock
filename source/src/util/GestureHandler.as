@@ -50,15 +50,14 @@ package util {
 	import flash.display.Bitmap;
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
+	import flash.display.NativeMenu;
 	import flash.display.Sprite;
 	import flash.display.Stage;
 	import flash.events.MouseEvent;
-	import flash.external.ExternalInterface;
 	import flash.filters.DropShadowFilter;
 	import flash.filters.GlowFilter;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-	import flash.net.getClassByAlias;
 	import flash.text.TextField;
 	import flash.text.TextFieldType;
 	import flash.utils.getTimer;
@@ -66,6 +65,8 @@ package util {
 	import avmplus.getQualifiedClassName;
 	
 	import blocks.Block;
+	
+	import cc.makeblock.menu.MenuUtil;
 	
 	import scratch.ScratchComment;
 	import scratch.ScratchObj;
@@ -102,7 +103,6 @@ public class GestureHandler {
 	private var mouseTarget:*;
 	private var objToGrabOnUp:Sprite;
 	private var mouseDownEvent:MouseEvent;
-	private var inIE:Boolean;
 
 	private var bubble:TalkBubble;
 	private var bubbleStartX:Number;
@@ -110,10 +110,9 @@ public class GestureHandler {
 	private static var bubbleRange:Number = 25;
 	private static var bubbleMargin:Number = 5;
 
-	public function GestureHandler(app:MBlock, inIE:Boolean) {
+	public function GestureHandler(app:MBlock) {
 		this.app = app;
 		this.stage = app.stage;
-		this.inIE = inIE;
 	}
 
 	public function setDragClient(newClient:DragClient, evt:MouseEvent):void {
@@ -145,21 +144,34 @@ public class GestureHandler {
 			}
 		}
 	}
-
+/*
 	public function rightMouseClick(evt:MouseEvent):void {
 		// You only get this event in AIR.
-		rightMouseDown(evt.stageX, evt.stageY, false);
 	}
-
-	public function rightMouseDown(x:int, y:int, isChrome:Boolean):void {
+*/
+	public function onRightMouseDown(evt:MouseEvent):void {
+		rightMouseDown(evt.stageX, evt.stageY);
+	}
+	private function rightMouseDown(x:int, y:int):void {
 		// To avoid getting the Adobe menu on right-click, JavaScript captures
 		// right-button mouseDown events and calls this method.'
 		Menu.removeMenusFrom(stage);
 		var menuTarget:* = findTargetFor('menu', app, x, y);
 		if (!menuTarget) return;
-		try { var menu:Menu = menuTarget.menu(new MouseEvent('right click')) } catch (e:Error) {}
-		if (menu) menu.showOnStage(stage, x, y);
-		if (!isChrome) Menu.removeMenusFrom(stage); // hack: clear menuJustCreated because there's no rightMouseUp
+		
+		if(menuTarget.menu){
+			var menu:* = menuTarget.menu(new MouseEvent('right click'));
+			if(null == menu){
+				return;
+			}else if(menu is Menu){
+				menu.showOnStage(stage, x, y);
+			}else{
+				MenuUtil.ChangeLang(menu as NativeMenu);
+				(menu as NativeMenu).display(stage, x, y);
+			}
+		}
+		
+//		if (!isChrome) Menu.removeMenusFrom(stage); // hack: clear menuJustCreated because there's no rightMouseUp
 	}
 
 	private function findTargetFor(property:String, obj:*, x:int, y:int):DisplayObject {
@@ -176,9 +188,6 @@ public class GestureHandler {
 	}
 
 	public function mouseDown(evt:MouseEvent):void {
-		if(inIE && app.editMode && app.jsEnabled)
-			ExternalInterface.call('tip_bar_api.fixIE');
-
 		evt.updateAfterEvent(); // needed to avoid losing display updates with later version of Flash 11
 		hideBubble();
 		mouseIsDown = true;
@@ -201,7 +210,10 @@ public class GestureHandler {
 			dragClient.dragBegin(evt);
 			return;
 		}
-		if (DEBUG && evt.shiftKey) return showDebugFeedback(evt);
+		if (DEBUG && evt.shiftKey){
+			showDebugFeedback(evt);
+			return;
+		}
 
 		var t:* = evt.target;
 		if ((t is TextField) && (TextField(t).type == TextFieldType.INPUT)) return;
@@ -323,13 +335,13 @@ public class GestureHandler {
 		// Take sprite shape into account so you can click or grab a sprite
 		// through a hole in another sprite that is in front of it.
 		// Return the stage if no other object is found.
-		if(app.isIn3D) app.stagePane.visible = true;
+//		if(app.isIn3D) app.stagePane.visible = true;
 		var uiLayer:Sprite = app.stagePane.getUILayer();
 		for (var i:int = uiLayer.numChildren - 1; i > 0; i--) {
 			var o:DisplayObject = uiLayer.getChildAt(i) as DisplayObject;
 			if (o is Bitmap) break; // hit the paint layer of the stage; no more elments
 			if (o.visible && o.hitTestPoint(globalX, globalY, true)) {
-				if(app.isIn3D) app.stagePane.visible = false;
+//				if(app.isIn3D) app.stagePane.visible = false;
 				return o;
 			}
 		}
@@ -338,13 +350,13 @@ public class GestureHandler {
 				o = app.stagePane.getChildAt(i) as DisplayObject;
 				if (o is Bitmap) break; // hit the paint layer of the stage; no more elments
 				if (o.visible && o.hitTestPoint(globalX, globalY, true)) {
-					if(app.isIn3D) app.stagePane.visible = false;
+//					if(app.isIn3D) app.stagePane.visible = false;
 					return o;
 				}
 			}
 		}
 
-		if(app.isIn3D) app.stagePane.visible = false;
+//		if(app.isIn3D) app.stagePane.visible = false;
 		return app.stagePane;
 	}
 
@@ -447,13 +459,13 @@ public class GestureHandler {
 			app.scriptsPane.prepareToDragComment(c);
 		}  else {
 			var inStage:Boolean = (obj.parent == app.stagePane);
-			if (obj.parent != null) {
-				if(obj is ScratchSprite && app.isIn3D)
-					(obj as ScratchSprite).prepareToDrag();
+//			if (obj.parent != null) {
+//				if(obj is ScratchSprite && app.isIn3D)
+//					(obj as ScratchSprite).prepareToDrag();
 
 //				obj.parent.removeChild(obj);
 				//拖动时文字会消失
-			}
+//			}
 			if (inStage && (app.stagePane.scaleX != 1)) {
 				obj.scaleX = obj.scaleY = (obj.scaleX * app.stagePane.scaleX);
 			}
@@ -468,20 +480,22 @@ public class GestureHandler {
 			obj.y += evt.stageY - mouseDownEvent.stageY;
 		}
 		obj.startDrag();
-		if(obj is DisplayObject) obj.cacheAsBitmap = true;
+		if(obj is DisplayObject) {
+			obj.cacheAsBitmap = true;
+		}
 		carriedObj = obj;
 	}
 
 	private function dropHandled(droppedObj:*, evt:MouseEvent):Boolean {
 		// Search for an object to handle this drop and return true one is found.
 		// Note: Search from front to back, so the front-most object catches the dropped object.
-		if(app.isIn3D) app.stagePane.visible = true;
+//		if(app.isIn3D) app.stagePane.visible = true;
 		var possibleTargets:Array = stage.getObjectsUnderPoint(new Point(evt.stageX / app.scaleX, evt.stageY / app.scaleY));
-		if(app.isIn3D) {
-			app.stagePane.visible = false;
-			if(possibleTargets.length == 0 && app.stagePane.scrollRect.contains(app.stagePane.mouseX, app.stagePane.mouseY))
-				possibleTargets.push(app.stagePane);
-		}
+//		if(app.isIn3D) {
+//			app.stagePane.visible = false;
+//			if(possibleTargets.length == 0 && app.stagePane.scrollRect.contains(app.stagePane.mouseX, app.stagePane.mouseY))
+//				possibleTargets.push(app.stagePane);
+//		}
 		possibleTargets.reverse();
 		for each (var o:* in possibleTargets) {
 			while (o) { // see if some parent can handle the drop

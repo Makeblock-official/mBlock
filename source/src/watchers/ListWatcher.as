@@ -18,16 +18,33 @@
  */
 
 package watchers {
-	import flash.display.*;
-	import flash.events.*;
-	import flash.net.*;
-	import flash.text.*;
-	import flash.utils.*;
+	import flash.display.DisplayObject;
+	import flash.display.Graphics;
+	import flash.display.Shape;
+	import flash.display.Sprite;
+	import flash.events.Event;
+	import flash.events.FocusEvent;
+	import flash.events.KeyboardEvent;
+	import flash.events.MouseEvent;
+	import flash.net.FileReference;
+	import flash.net.FileReferenceList;
+	import flash.text.TextField;
+	import flash.text.TextFormat;
+	import flash.utils.getTimer;
+	
 	import interpreter.Interpreter;
+	
 	import scratch.ScratchObj;
+	
 	import translation.Translator;
+	
+	import uiwidgets.DialogBox;
+	import uiwidgets.IconButton;
+	import uiwidgets.Menu;
+	import uiwidgets.ResizeableFrame;
+	import uiwidgets.Scrollbar;
+	
 	import util.JSON;
-	import uiwidgets.*;
 
 public class ListWatcher extends Sprite {
 
@@ -165,11 +182,22 @@ public class ListWatcher extends Sprite {
 	// -----------------------------
 	// Visual feedback for list changes
 	//------------------------------
+	static private var blankReg:RegExp = /^\s+|\s+$/g;
 
 	private function removeTrailingEmptyLines(lines:Array):Array {
-		var i:int = lines.length - 1;
-		while ((i > 0) && (lines[i].length == 0)) i--;
-		return lines.slice(0, i + 1);
+		for(var i:int=0; i<lines.length; i++){
+			lines[i] = lines[i].replace(blankReg, "");
+		}
+		/*
+		i = lines.length - 1;
+		while(i >= 0){
+			if(lines[i].length <= 0){
+				lines.splice(i, 1);
+			}
+			--i;
+		}
+		*/
+		return lines;
 	}
 
 	private function importLines(lines:Array):void {
@@ -221,7 +249,7 @@ public class ListWatcher extends Sprite {
 	// Visual feedback for list changes
 	//------------------------------
 
-	public function updateWatcher(i:int, readOnly:Boolean, interp:Interpreter):void {
+	public function updateWatcher(i:int, readOnly:Boolean):void {
 		// Colled by list primitives. Reccord access to entry at i and if list contents has changed.
 		// readOnly should be true for read operations, false for operations that change the list.
 		// Note: To reduce the cost of list operations, this function merely records changes,
@@ -235,7 +263,7 @@ public class ListWatcher extends Sprite {
 		if ((i < 1) || (i > lastAccess.length)) return;
 		lastAccess[i - 1] = getTimer();
 		lastActiveIndex = i - 1;
-		interp.redraw();
+//		MBlock.app.interp.redraw();
 	}
 
 	public function prepareToShow():void {

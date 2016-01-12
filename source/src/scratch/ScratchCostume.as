@@ -38,19 +38,34 @@
 // converting to/from JPEG format.
 
 package scratch {
-	import flash.display.*;
-	import flash.geom.*;
+	import flash.debugger.enterDebugger;
+	import flash.display.Bitmap;
+	import flash.display.BitmapData;
+	import flash.display.DisplayObject;
+	import flash.display.Shape;
+	import flash.display.Sprite;
+	import flash.display.StageQuality;
+	import flash.geom.Matrix;
+	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	import flash.text.TextField;
-	import flash.utils.*;
-	import svgutils.*;
-	import util.*;
+	import flash.utils.ByteArray;
+	
 	import by.blooddy.crypto.MD5;
 	import by.blooddy.crypto.image.PNG24Encoder;
 	import by.blooddy.crypto.image.PNGFilter;
+	
+	import svgutils.SVGDisplayRender;
+	import svgutils.SVGElement;
+	import svgutils.SVGImporter;
+	
+	import translation.Translator;
+	
+	import util.JSON;
 
 public class ScratchCostume {
 
-	public var costumeName:String;
+	private var _costumeName:String;
 	public var bitmap:BitmapData; // composite bitmap (base layer + text layer)
 	public var bitmapResolution:int = 1; // used for double or higher resolution costumes
 	public var rotationCenterX:int;
@@ -87,7 +102,7 @@ public class ScratchCostume {
 	public var undoListIndex:int;
 
 	public function ScratchCostume(name:String, data:*, centerX:int = 99999, centerY:int = 99999) {
-		costumeName = name;
+		_costumeName = name;
 		rotationCenterX = centerX;
 		rotationCenterY = centerY;
 		if (data == null) {
@@ -103,6 +118,16 @@ public class ScratchCostume {
 		}
 	}
 
+	public function get costumeName():String
+	{
+		return Translator.map(_costumeName);
+	}
+
+	public function set costumeName(value:String):void
+	{
+		_costumeName = value;
+	}
+
 	public static function scaleForScratch(bm:BitmapData):BitmapData {
 		if ((bm.width <= 480) && (bm.height <= 360)) return bm;
 		var scale:Number = Math.min(480 / bm.width, 360 / bm.height);
@@ -110,6 +135,7 @@ public class ScratchCostume {
 		var m:Matrix = new Matrix();
 		m.scale(scale, scale);
 		result.draw(bm, m);
+		bm.dispose();
 		return result;
 	}
 

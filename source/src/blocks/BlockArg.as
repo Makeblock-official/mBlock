@@ -36,6 +36,7 @@
 // arguments, it should set base to a BlockShape to support drag feedback.
 
 package blocks {
+	import flash.display.BitmapData;
 	import flash.display.Graphics;
 	import flash.display.Shape;
 	import flash.display.Sprite;
@@ -46,6 +47,9 @@ package blocks {
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFieldType;
+	import flash.utils.setTimeout;
+	
+	import cc.makeblock.mbot.uiwidgets.lightSetter.LightSensor;
 	
 	import scratch.BlockMenus;
 	
@@ -55,6 +59,7 @@ package blocks {
 
 public class BlockArg extends Sprite {
 
+	static public const emotion:BitmapData = new BitmapData(16, 8, false, 0);
 	public static const epsilon:Number = 1 / 4294967296;
 
 	public var type:String;
@@ -104,7 +109,7 @@ public class BlockArg extends Sprite {
 			argValue = 0;
 		} else if (type == 's') {
 			base = new BlockShape(BlockShape.RectShape, c);
-		} else {
+		}else {
 			// custom type; subclass is responsible for adding
 			// the desired children, setting width and height,
 			// and optionally defining the base shape
@@ -114,13 +119,15 @@ public class BlockArg extends Sprite {
 		if (type == 'c') {
 			base.setWidthAndTopHeight(13, 13);
 			setArgValue(Color.random());
-		} else {
+		} else if(menuName == "drawFace"){
+			base.setWidthAndTopHeight(LightSensor.COUNT_W * LightSensor.BMP_ICON_SCALE, LightSensor.COUNT_H * LightSensor.BMP_ICON_SCALE, true);
+		}else {
 			base.setWidthAndTopHeight(30, Block.argTextFormat.size + 6); // 15 for normal arg font
 		}
 		base.filters = blockArgFilters();
 		addChild(base);
 
-		if ((type == 'd') || (type == 'm')) { // add a menu icon
+		if ((type == 'd') || (type == 'm' && menuName != "drawFace")) { // add a menu icon
 			menuIcon = new Shape();
 			var g:Graphics = menuIcon.graphics;
 			g.beginFill(0, 0.6); // darker version of base color
@@ -131,8 +138,12 @@ public class BlockArg extends Sprite {
 			menuIcon.y = 5;
 			addChild(menuIcon);
 		}
+		
+		if(menuName == "drawFace"){
+			base.bmd = defaultBmd;
+		}
 
-		if (editable || isNumber || (type == 'm')) { // add a string field
+		if (editable || isNumber || (type == 'm' && menuName != "drawFace")) { // add a string field
 			field = makeTextField();
 			if ((type == 'm') && !editable) field.textColor = 0xFFFFFF;
 			else base.setWidthAndTopHeight(30, Block.argTextFormat.size + 5); // 14 for normal arg font
@@ -145,10 +156,12 @@ public class BlockArg extends Sprite {
 			field.addEventListener(FocusEvent.FOCUS_OUT, stopEditing);
 			addChild(field);
 			textChanged(null);
-		} else {
+		}else {
 			base.redraw();
 		}
 	}
+	
+	static private const defaultBmd:BitmapData = new BitmapData(16, 8, false, 0xFFFFFF);
 
 	public function get isEditable():Boolean {
 		return _isEditable;
@@ -205,34 +218,46 @@ public class BlockArg extends Sprite {
 		field.type = TextFieldType.DYNAMIC;
 		field.selectable = false;
 	}
-
+	
+	// filters for BlockArg outlines
+	static private var _blockArgFilters:Array;
 	private function blockArgFilters():Array {
-		// filters for BlockArg outlines
-		var f:BevelFilter = new BevelFilter(1);
-		f.blurX = f.blurY = 2;
-		f.highlightAlpha = 0.3;
-		f.shadowAlpha = 0.6;
-		f.angle = 240;  // change light angle to show indentation
-		return [f];
+		if(null == _blockArgFilters){
+			var f:BevelFilter = new BevelFilter(1);
+			f.blurX = f.blurY = 2;
+			f.highlightAlpha = 0.3;
+			f.shadowAlpha = 0.6;
+			f.angle = 240;  // change light angle to show indentation
+			_blockArgFilters = [f];
+		}
+		return _blockArgFilters;
 	}
 
 	private function makeTextField():TextField {
 		var tf:TextField = new TextField();
-		var offsets:Array = argTextInsets(type);
-		tf.x = offsets[0];
-		tf.y = offsets[1];
+		offsetTextField(tf);
 		tf.autoSize = TextFieldAutoSize.LEFT;
-		Block.argTextFormat.bold = isNumber;
+		Block.argTextFormat.bold = false;
 		tf.defaultTextFormat = Block.argTextFormat;
 		tf.selectable = false;
 		tf.addEventListener(Event.CHANGE, textChanged);
 		return tf;
 	}
 
-	private function argTextInsets(type:String = ''):Array {
-		if (type == 'b') return [5, 0];
-		return isNumber ? [3, 0] : [2, -1];
+	private function offsetTextField(tf:TextField):void {
+		if("b" == type){
+			tf.x = 5;
+			tf.y = 0;
+		}else if(isNumber){
+			tf.x = 3;
+			tf.y = 0;
+		}else{
+			tf.x = 2;
+			tf.y = -1;
+		}
 	}
+	
+	static private var isShowingCode:Boolean;
 
 	private function textChanged(evt:*):void {
 		argValue = field.text;
@@ -264,6 +289,16 @@ public class BlockArg extends Sprite {
 		if (parent is Block) Block(parent).fixExpressionLayout();
 
 		if (evt && MBlock.app) MBlock.app.setSaveNeeded();
+		if(MBlock.app.stageIsArduino && !isShowingCode){
+			isShowingCode = true;
+			setTimeout(onShowArduinoCode, 0);
+		}
+	}
+	
+	private function onShowArduinoCode():void
+	{
+		MBlock.app.scriptsPart.showArduinoCode();
+		isShowingCode = false;
 	}
 
 	private function invokeMenu(evt:MouseEvent):void {

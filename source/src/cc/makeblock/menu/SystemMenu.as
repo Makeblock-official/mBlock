@@ -13,17 +13,31 @@ package cc.makeblock.menu
 	{
 		private const handlerDict:Object = {};
 		private var menu:NativeMenu;
+		protected var defaultMenuCount:int;
 		
 		public function SystemMenu(stage:Stage, path:String)
 		{
 			var source:String = FileUtil.LoadFile(path);
 			menu = MenuBuilder.BuildMenu(XML(source));
 			if(NativeApplication.supportsMenu){
-				NativeApplication.nativeApplication.menu = menu;
+				defaultMenuCount = 1;
+				onAddAppMenu(menu);
+				menu = NativeApplication.nativeApplication.menu;
 			}else if(NativeWindow.supportsMenu){
 				stage.nativeWindow.menu = menu;
 			}
 			menu.addEventListener(Event.SELECT, __onSelect);
+		}
+		
+		private function onAddAppMenu(menu:NativeMenu):void
+		{
+			var sysMenu:NativeMenu = NativeApplication.nativeApplication.menu;
+			while(sysMenu.numItems > defaultMenuCount){
+				sysMenu.removeItemAt(sysMenu.numItems-1);
+			}
+			while(menu.numItems > 0){
+				sysMenu.addItem(menu.removeItemAt(0));
+			}
 		}
 		
 		private function __onSelect(evt:Event):void
@@ -32,7 +46,7 @@ package cc.makeblock.menu
 			
 			var handler:Function = handlerDict[menuItem.name];
 			if(null != handler){
-				handler(menuItem);
+				execHandler(handler, menuItem);
 				return;
 			}
 			
@@ -44,9 +58,18 @@ package cc.makeblock.menu
 				}
 				handler = handlerDict[testItem.name];
 				if(null != handler){
-					handler(menuItem);
+					execHandler(handler, menuItem);
 					return;
 				}
+			}
+		}
+		
+		private function execHandler(handler:Function, menuItem:NativeMenuItem):void
+		{
+			if(handler.length > 0){
+				handler(menuItem);
+			}else{
+				handler();
 			}
 		}
 		

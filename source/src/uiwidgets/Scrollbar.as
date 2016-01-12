@@ -49,7 +49,7 @@ public class Scrollbar extends Sprite implements DragClient {
 		slider = new Shape();
 		addChild(base);
 		addChild(slider);
-		if (look3D) addFilters();
+//		if (look3D) addFilters();
 		alpha = 0.7;
 		setWidthHeight(w, h);
 		allowDragging(true);
@@ -98,11 +98,11 @@ public class Scrollbar extends Sprite implements DragClient {
 			slider.y = 0;
 		}
 		slider.graphics.clear();
-		slider.graphics.beginFill(sliderColor);
+		slider.graphics.beginFill(sliderColor, 0.3);
 		slider.graphics.drawRoundRect(0, 0, w, h, cornerRadius, cornerRadius);
 		slider.graphics.endFill();
 	}
-
+/*
 	private function addFilters():void {
 		var f:BevelFilter = new BevelFilter();
 		f.distance = 1;
@@ -118,7 +118,7 @@ public class Scrollbar extends Sprite implements DragClient {
 		f.shadowAlpha = 0.5;
 		slider.filters = [f];
 	}
-
+*/
 	public function allowDragging(flag:Boolean):void {
 		if (flag) addEventListener(MouseEvent.MOUSE_DOWN, mouseDown);
 		else removeEventListener(MouseEvent.MOUSE_DOWN, mouseDown);

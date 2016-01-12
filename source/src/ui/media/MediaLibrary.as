@@ -18,28 +18,52 @@
  */
 
 package ui.media {
-	import flash.display.*;
-	import flash.events.*;
-	import flash.net.*;
-	import flash.text.*;
-	import flash.ui.*;
-	import flash.utils.*;
+	import flash.display.BitmapData;
+	import flash.display.Graphics;
+	import flash.display.Loader;
+	import flash.display.Shape;
+	import flash.display.Sprite;
+	import flash.events.Event;
+	import flash.events.IOErrorEvent;
+	import flash.net.FileReference;
+	import flash.net.FileReferenceList;
+	import flash.text.TextField;
+	import flash.text.TextFormat;
+	import flash.ui.Mouse;
+	import flash.ui.MouseCursor;
+	import flash.utils.ByteArray;
+	import flash.utils.setTimeout;
+	
 	import assets.Resources;
+	
 	import extensions.ScratchExtension;
-	import scratch.*;
+	
+	import scratch.ScratchCostume;
+	import scratch.ScratchSound;
+	import scratch.ScratchSprite;
+	
 	import sound.mp3.MP3Loader;
+	
 	import translation.Translator;
-	import uiwidgets.*;
-	import util.*;
+	
+	import uiwidgets.Button;
+	import uiwidgets.DialogBox;
+	import uiwidgets.IconButton;
+	import uiwidgets.ScrollFrame;
+	import uiwidgets.ScrollFrameContents;
+	
+	import util.GIFDecoder;
+	import util.JSON;
+	import util.ProjectIO;
 
 public class MediaLibrary extends Sprite {
 
 	private const titleFormat:TextFormat = new TextFormat(CSS.font, 24, 0x444143);
 
 	private static const backdropCategories:Array = [
-		'All', 'Indoors', 'Outdoors', 'Other'];
+		'All', 'Indoors', 'Outdoors', 'Other', 'Favourite'];
 	private static const costumeCategories:Array = [
-		'All', 'Animals', 'Fantasy', 'People', 'Things', 'Transportation'];
+		'All', 'Animals', 'Fantasy', 'People', 'Things', 'Transportation', 'Favourite'];
 	private static const extensionCategories:Array = [
 		'All', 'Hardware'];
 	private static const soundCategories:Array = [
@@ -89,7 +113,7 @@ public class MediaLibrary extends Sprite {
 		addResultsFrame();
 		addButtons();
 	}
-
+/*
 	public static function strings():Array {
 		var result:Array = [
 			'Backdrop Library', 'Costume Library', 'Sprite Library', 'Sound Library',
@@ -110,7 +134,7 @@ public class MediaLibrary extends Sprite {
 
 		return result;
 	}
-
+*/
 	public function open():void {
 		app.closeTips();
 		app.mediaLibrary = this;
@@ -297,44 +321,38 @@ spriteFeaturesFilter.visible = false; // disable features filter for now
 	//------------------------------
 
 	private function viewLibrary():void {
-		function gotLibraryData(data:ByteArray):void {
-			if (!data) return; // failure
-			var s:String = data.readUTFBytes(data.length);
-			libraryCache = util.JSON.parse(stripComments(s)) as Array;
-			collectEntries();
-		}
-		function collectEntries():void {
-			allItems = [];
-			for each (var entry:Object in libraryCache) {
-				if (entry.type == assetType) {
-					if (entry.tags is Array) entry.category = entry.tags[0];
-					var info:Array = entry.info as Array;
-					if (info) {
-						if ((entry.type == 'backdrop') || (assetType == 'costume')) {
-							entry.width = info[0];
-							entry.height = info[1];
-						}
-						if (entry.type == 'sound') {
-							entry.seconds = info[0];
-						}
-						if (entry.type == 'sprite') {
-							entry.scriptCount = info[0];
-							entry.costumeCount = info[1];
-							entry.soundCount = info[2];
-						}
-					}
-					allItems.push(new MediaLibraryItem(entry));
-				}
-			}
-			showFilteredItems();
-			startLoadingThumbnails();
-		}
 		if ('extension' == assetType) {
 			addScratchExtensions();
 			return;
 		}
-		if (!libraryCache) app.server.getMediaLibrary(gotLibraryData);
-		else collectEntries();
+//		if (!libraryCache){
+			var s:String = app.server.getMediaLibrary();
+			libraryCache = util.JSON.parse(stripComments(s)) as Array;
+//		}
+		allItems = [];
+		for each (var entry:Object in libraryCache) {
+			if (entry.type == assetType) {
+				if (entry.tags is Array) entry.category = entry.tags[0];
+				var info:Array = entry.info as Array;
+				if (info) {
+					if ((entry.type == 'backdrop') || (assetType == 'costume')) {
+						entry.width = info[0];
+						entry.height = info[1];
+					}
+					if (entry.type == 'sound') {
+						entry.seconds = info[0];
+					}
+					if (entry.type == 'sprite') {
+						entry.scriptCount = info[0];
+						entry.costumeCount = info[1];
+						entry.soundCount = info[2];
+					}
+				}
+				allItems.push(new MediaLibraryItem(entry));
+			}
+		}
+		showFilteredItems();
+		startLoadingThumbnails();
 	}
 
 
@@ -355,7 +373,7 @@ spriteFeaturesFilter.visible = false; // disable features filter for now
 		startLoadingThumbnails();		
 	}
 
-	private function stripComments(s:String):String {
+	static public function stripComments(s:String):String {
 		// Remove full-line comments starting with '//'. The comment delimiter must be at the very start of the line.
 		var result:String = '';
 		for each (var line:String in s.split('\n')) {

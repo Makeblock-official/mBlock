@@ -3,6 +3,7 @@ package extensions
 	import flash.events.Event;
 	import flash.filesystem.File;
 	import flash.utils.ByteArray;
+	import flash.utils.getTimer;
 	import flash.utils.setTimeout;
 	
 	import translation.Translator;
@@ -138,6 +139,7 @@ package extensions
 				if(isConnected){
 					close();
 				}
+				trace("bt onOpen");
 				setTimeout(ConnectionManager.sharedManager().onOpen,200,port);
 			}
 		}
@@ -161,7 +163,7 @@ package extensions
 			dev.addr = devAddr;
 			dev.label = _currentBluetooth;
 			_history.push(dev);
-			SharedObjectManager.sharedManager().setObject("btHistory",_history);
+			SharedObjectManager.sharedManager().setLocalFile("btHistory",_history);
 		}
 		private function getBluetoothName(address:String):Object{
 			for(var i:uint=0;i<_history.length;i++){
@@ -174,7 +176,7 @@ package extensions
 			return {};
 		}
 		public function get history():Array{
-			_history = SharedObjectManager.sharedManager().getObject("btHistory",[]);
+			_history = SharedObjectManager.sharedManager().getLocalFile("btHistory",[]);
 			var temp:Array = [];
 			for(var i:uint=0;i<_history.length;i++){
 				var dev:Object = _history[i];
@@ -185,7 +187,7 @@ package extensions
 			return temp;
 		}
 		public function clearHistory():void{
-			SharedObjectManager.sharedManager().setObject("btHistory",[]);
+			SharedObjectManager.sharedManager().setLocalFile("btHistory",[]);
 		}
 		public function open(port:String):Boolean{
 			LogManager.sharedManager().log("bt open:"+port);
@@ -208,17 +210,29 @@ package extensions
 			_bt["connectByAddress"](btAddr);
 			_currentBluetooth = port;
 			var i:uint = 0;
+			function cancel():void{
+				removeDiscoverDialogbox(d);
+				d.cancel();
+			}
+			var d:DialogBox = new DialogBox();
+			d.addTitle(Translator.map('Connecting Bluetooth') + '...');
+			d.addButton('Close', cancel);
+			d.showOnStage(MBlock.app.stage);
+			addDiscoverDialogbox(d);
 			function checkName():void{
 				if(_bt.connected){
 					LogManager.sharedManager().log("bt opened:"+btAddr);
 					_isBusy = false;
 					addBluetoothHistory();
-					MBlock.app.topBarPart.setConnectedTitle(Translator.map("Serial Port")+" "+Translator.map("Connected"));
+					MBlock.app.topBarPart.setConnectedTitle("Bluetooth");
+					d.setTitle(Translator.map("Bluetooth Connected"));
 				}else{
 					LogManager.sharedManager().log("bt checking:"+btAddr);
-					if(i<10){
-						setTimeout(checkName,500);
+					if(i<40){
+						setTimeout(checkName,3000);
 					}else{
+						_isBusy = false;
+						d.setTitle(Translator.map("Connecting Timeout"));
 						ConnectionManager.sharedManager().onClose(_currentBluetooth);
 					}
 					i++;
@@ -300,8 +314,14 @@ package extensions
 				trace("no data");
 			}
 		}
+		private var _prevTime:Number = 0;
 		public function sendBytes(bytes:ByteArray):void{
-			_bt.writeBuffer(bytes);
+			
+			//var cTime:Number = getTimer();
+			//if(cTime-_prevTime>20){
+				//_prevTime = cTime; 
+				_bt.writeBuffer(bytes);
+			//}
 		}
 	}
 }

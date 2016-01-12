@@ -57,298 +57,362 @@
 
 package interpreter {
 	import flash.geom.Point;
-	import flash.net.getClassByAlias;
-	import flash.utils.Dictionary;
-	import flash.utils.getQualifiedClassName;
 	import flash.utils.getTimer;
-	import flash.utils.setTimeout;
+	
+	import blockly.runtime.Thread;
 	
 	import blocks.Block;
-	import blocks.BlockArg;
 	
-	import extensions.ConnectionManager;
-	import extensions.ParseManager;
-	import extensions.SerialManager;
-	
-	import primitives.Primitives;
+	import cc.makeblock.interpreter.BlockInterpreter;
+	import cc.makeblock.interpreter.RemoteCallMgr;
 	
 	import scratch.ScratchObj;
-	import scratch.ScratchSprite;
-	import scratch.ScratchStage;
 	
 	import sound.ScratchSoundPlayer;
 
 public class Interpreter {
 
-	public var activeThread:Thread;				// current thread
-	public var currentMSecs:int = getTimer();	// millisecond clock for the current step
-	public var turboMode:Boolean = false;
+//	public var _activeThread:Thread;				// current thread
+	private var _currentMSecs:int;	// millisecond clock for the current step
+	public var turboMode:Boolean;
 
 	private var app:MBlock;
-	private var primTable:Dictionary;		// maps opcodes to functions
-	private var threads:Array = [];			// all threads
-	private var yield:Boolean;				// set true to indicate that active thread should yield control
-	private var startTime:int;				// start time for stepThreads()
-	private var doRedraw:Boolean;
-	private var isWaiting:Boolean;
+//	private const primTable:Dictionary = new Dictionary();		// maps opcodes to functions
+//	private var threads:Array = [];			// all threads
+//	private var yield:Boolean;				// set true to indicate that active thread should yield control
+//	private var startTime:int;				// start time for stepThreads()
+//	private var doRedraw:Boolean;
+//	private var isWaiting:Boolean;
 
-	private const warpMSecs:int = 500;		// max time to run during warp
-	private var warpThread:Thread;			// thread that is in warp mode
-	private var warpBlock:Block;			// proc call block that entered warp mode
+//	static private const warpMSecs:int = 500;		// max time to run during warp
+//	internal var warpThread:Thread;			// thread that is in warp mode
+//	internal var warpBlock:Block;			// proc call block that entered warp mode
 
-	public var askThread:Thread;				// thread that opened the ask prompt
-
-	protected var debugFunc:Function;
+//	private var askThread:Thread;				// thread that opened the ask prompt
+	
+//	private var workTime:int;
 
 	public function Interpreter(app:MBlock) {
 		this.app = app;
-		initPrims();
+//		initPrims();
+		_currentMSecs = getTimer();
+		RemoteCallMgr.Instance.init();
+//		workTime = (0.75 * 1000) / app.stage.frameRate; // work for up to 75% of one frame time
 //		checkPrims();
 	}
+	
+//	public function get activeThread():Thread
+//	{
+//		return _activeThread;
+//	}
+//	
+//	public function setAskThread():void
+//	{
+//		askThread = activeThread;
+//	}
+//	
+//	public function clearAskThread():void
+//	{
+//		askThread = null;
+//	}
+//	
+	public function get currentMSecs():int
+	{
+		return _currentMSecs;
+	}
+//	
+//	internal function isTimeOut():Boolean
+//	{
+//		return currentMSecs - startTime > warpMSecs;
+//	}
+//	
+//	internal function setYielded():void
+//	{
+//		yield = true;
+//	}
 
-	public function targetObj():ScratchObj { return ScratchObj(activeThread.target) }
-	public function targetSprite():ScratchSprite { return activeThread.target as ScratchSprite }
+//	public function targetObj():ScratchObj { return activeThread.target as ScratchObj; }
+//	public function targetSprite():ScratchSprite { return activeThread.target as ScratchSprite; }
 
 	/* Threads */
 
-	public function doYield():void { isWaiting = true; yield = true }
-	public function redraw():void { if (!turboMode) doRedraw = true }
+//	public function doYield():void { isWaiting = true; yield = true }
+//	public function redraw():void { if (!turboMode) doRedraw = true }
 
-	public function yieldOneCycle():void {
-		// Yield control but proceed to the next block. Do nothing in warp mode.
-		// Used to ensure proper ordering of HTTP extension commands.
-		if (activeThread == warpThread) return;
-		if (activeThread.firstTime) {
-			redraw();
-			yield = true;
-			activeThread.firstTime = false;
-		}
+//	public function yieldOneCycle():void {
+//		// Yield control but proceed to the next block. Do nothing in warp mode.
+//		// Used to ensure proper ordering of HTTP extension commands.
+////		if (activeThread == warpThread) return;
+//		if (activeThread.firstTime && activeThread != warpThread) {
+//			redraw();
+//			yield = true;
+//			activeThread.firstTime = false;
+//		}
+//	}
+
+//	public function threadCount():int { return threads.length }
+	public function hasThreads():Boolean
+	{
+		return BlockInterpreter.Instance.hasTheadsRunning();
+	}
+	
+	static private const zeroPt:Point = new Point();
+	
+	public function runThread(b:Block, targetObj:ScratchObj):Thread
+	{
+		var thread:Thread = BlockInterpreter.Instance.execute(b, targetObj);
+		thread.finishSignal.add(function(isInterput:Boolean):void{
+			b.hideRunFeedback();
+			var p:Point = b.localToGlobal(zeroPt);
+			switch(b.type.toLowerCase()){
+				case "r":
+					MBlock.app.showBubble(thread.resultValue, p.x, p.y, b.width);
+					break;
+				case "b":
+					MBlock.app.showBubble(Boolean(thread.resultValue).toString(), p.x, p.y, b.width);
+					break;
+			}
+		}, true);
+		b.showRunFeedback();
+		app.threadStarted();
+		return thread;
 	}
 
-	public function threadCount():int { return threads.length }
-
-	public function toggleThread(b:Block, targetObj:*, startupDelay:int = 0):void {
-		
-		if (b.isReporter) {
-			// click on reporter shows value in log
-			try{
-				if(MBlock.app.runtime.isRequest){
-					return toggleThread(b,targetObj,startupDelay);
-				}
-			}catch(e:Error){
-				trace(e);
-			}
-			currentMSecs = getTimer();
-			var oldThread:Thread = activeThread;
-			activeThread = new Thread(b, targetObj);
-			var p:Point = b.localToGlobal(new Point(0, 0));
-			var s:String = String(evalCmd(b));
-			if(s!="null"){
-				app.showBubble(s, p.x, p.y, b.width);
-			}
-			activeThread = oldThread;
-			return;
-		}
-		var i:int, newThreads:Array = [], wasRunning:Boolean = false;
-		for (i = 0; i < threads.length; i++) {
-			if ((threads[i].topBlock == b) && (threads[i].target == targetObj)) {
-				wasRunning = true;
-			} else {
-				newThreads.push(threads[i]);
-			}
-		}
-		threads = newThreads;
-		if (wasRunning) {
+	public function toggleThread(b:Block, targetObj:ScratchObj, startupDelay:int = 0):Thread {
+//		if(b.isHat){
+//			return;
+//		}
+		if(BlockInterpreter.Instance.isRunning(b, targetObj)){
+			BlockInterpreter.Instance.stopThread(b, targetObj);
 			if(app.editMode) b.hideRunFeedback();
-			clearWarpBlock();
-		} else {
-			if (b.op == 'whenGreenFlag') {
-				//
-			}
-			b.showRunFeedback();
-			threads.push(new Thread(b, targetObj, startupDelay));
-			app.threadStarted();
+			return null;
 		}
+		return runThread(b, targetObj);
 	}
 
 	public function isRunning(b:Block, targetObj:ScratchObj):Boolean {
-		for each (var t:Thread in threads) {
-			if ((t.topBlock == b) && (t.target == targetObj)) return true;
-		}
-		return false;
+		return BlockInterpreter.Instance.isRunning(b, targetObj);
+//		for each (var t:Thread in threads) {
+//			if ((t.realBlock == b) && (t.target == targetObj)) return true;
+//		}
+//		return false;
 	}
 
 	public function startThreadForClone(b:Block, clone:*):void {
-		threads.push(new Thread(b, clone));
+//		var thread:Thread = new Thread(RobotHelper.Modify(b), clone);
+//		thread.realBlock = b;
+//		threads.push(thread);
+		toggleThread(b, clone);
 	}
 
 	public function stopThreadsFor(target:*, skipActiveThread:Boolean = false):void {
-		for (var i:int = 0; i < threads.length; i++) {
-			var t:Thread = threads[i];
-			if (skipActiveThread && (t == activeThread)) continue;
-			if (t.target == target) {
-				if (t.tmpObj is ScratchSoundPlayer) {
-					(t.tmpObj as ScratchSoundPlayer).stopPlaying();
-				}
-				t.stop();
-			}
-		}
-		if ((activeThread.target == target) && !skipActiveThread) yield = true;
+		BlockInterpreter.Instance.stopObjAllThreads(target);
+//		for each(var t:Thread in threads){
+//			if (skipActiveThread && (t == activeThread) || (t.target != target)) continue;
+////			if (t.target == target) {
+//				if (t.tmpObj is ScratchSoundPlayer) {
+//					(t.tmpObj as ScratchSoundPlayer).stopPlaying();
+//				}
+//				t.stop();
+////			}
+//		}
+//		if ((activeThread.target == target) && !skipActiveThread) yield = true;
 	}
 
-	public function restartThread(b:Block, targetObj:*):Thread {
-		// used by broadcast; stop any thread running on b, then start a new thread on b
-		var newThread:Thread = new Thread(b, targetObj);
-		var wasRunning:Boolean = false;
-		for (var i:int = 0; i < threads.length; i++) {
-			if ((threads[i].topBlock == b) && (threads[i].target == targetObj)) {
-				if (askThread == threads[i]) app.runtime.clearAskPrompts();
-				threads[i] = newThread;
-				wasRunning = true;
-			}
-		}
-		if (!wasRunning) {
-			threads.push(newThread);
-			if(app.editMode) b.showRunFeedback();
-			app.threadStarted();
-		}
-		return newThread;
+	public function restartThread(b:Block, targetObj:*):void {
+		BlockInterpreter.Instance.stopThread(b, targetObj);
+		runThread(b, targetObj);
 	}
 
 	public function stopAllThreads():void {
-		threads = [];
-		if (activeThread != null) activeThread.stop();
-		clearWarpBlock();
+//		threads.length = 0;
+		BlockInterpreter.Instance.stopAllThreads();
 		app.runtime.clearRunFeedback();
-		doRedraw = true;
 	}
+	
+//	private const deadThreads:Array = [];
 
 	public function stepThreads():void {
-		startTime = getTimer();
-		var workTime:int = (0.75 * 1000) / app.stage.frameRate; // work for up to 75% of one frame time
-		doRedraw = false;
-		currentMSecs = getTimer();
-		if (threads.length == 0) return;
-		while ((currentMSecs - startTime) < workTime) {
-			if (warpThread && (warpThread.block == null)) clearWarpBlock();
-			var threadStopped:Boolean = false;
-			var runnableCount:int = 0;
-			for each (activeThread in threads) {
-				isWaiting = false;
-				if(!app.runtime.isRequest){
-					stepActiveThread();
-				}
-				if (activeThread.block == null) threadStopped = true;
-				if (!isWaiting) runnableCount++;
+		_currentMSecs = getTimer();
+	}
+//		doRedraw = false;
+//		startTime = getTimer();
+//		_currentMSecs = startTime;
+//		while(0 < threads.length && (currentMSecs - startTime) < workTime)
+//		{
+//			if (warpThread && warpThread.isBlockNull()) {
+//				clearWarpBlock();
+//			}
+////			var threadStopped:Boolean = false;
+//			var hasRunnable:Boolean = false;
+//			for each (_activeThread in threads) {
+//				isWaiting = false;
+//				if (activeThread.isBlockNull()){
+////					threadStopped = true;
+//					deadThreads.push(activeThread);
+//					continue;
+//				}
+//				if(!app.runtime.isRequest){
+//					stepActiveThread();
+//				}
+//				if (!isWaiting) {
+//					hasRunnable = true;
+//				}
+//			}
+//			while(deadThreads.length > 0){
+//				var t:Thread = deadThreads.pop();
+//				var index:int = threads.indexOf(t);
+//				threads.splice(index, 1);
+//				if(app.editMode){
+//					t.onStoped();
+//				}
+//			}
+			/*
+			if (threads.length <= 0){
+				return;
 			}
 			if (threadStopped) {
 				var newThreads:Array = [];
 				for each (var t:Thread in threads) {
-					if (t.block != null) newThreads.push(t);
-					else if(app.editMode) t.topBlock.hideRunFeedback();
+					if (!t.isBlockNull()) {
+						newThreads.push(t);
+					}else if(app.editMode) {
+						t.onStoped();
+					}
 				}
 				threads = newThreads;
-				if (threads.length == 0) return;
-			}
-			currentMSecs = getTimer();
-			if (doRedraw || (runnableCount == 0)) return;
-		}
-	}
-
-	private function stepActiveThread():void {
-		if (activeThread.block == null||app.runtime.isRequest) return;
-		if (activeThread.startDelayCount > 0) { activeThread.startDelayCount--; doRedraw = true; return; }
-		if (!(activeThread.target.isStage || (activeThread.target.parent is ScratchStage))) {
-			// sprite is being dragged
-			if (app.editMode) {
-				// don't run scripts of a sprite that is being dragged in edit mode, but do update the screen
-				doRedraw = true;
-				return;
-			}
-		}
-		yield = false;
-		while (true) {
-			if (activeThread == warpThread) currentMSecs = getTimer();
-			evalCmd(activeThread.block);
-			if(app.runtime.isRequest){
-				break;
-			}
-			
-			if (yield) {
-				if (activeThread == warpThread) {
-					if ((currentMSecs - startTime) > warpMSecs) return;
-					yield = false;
-					continue;
-				} else return;
-			}
-
-			if (activeThread.block != null){
-				activeThread.block = activeThread.block.nextBlock;
-			}
-
-			while (activeThread.block == null) { // end of block sequence
-				
-				if (!activeThread.popState()) return; // end of script
-				if ((activeThread.block == warpBlock) && activeThread.firstTime) { // end of outer warp block
-					clearWarpBlock();
-					activeThread.block = activeThread.block.nextBlock;
-					continue;
-				}
-				if (activeThread.isLoop) {
-					if (activeThread == warpThread) {
-						if ((currentMSecs - startTime) > warpMSecs) return;
-					} else return;
-				} else {
-					if (activeThread.block.op == Specs.CALL) activeThread.firstTime = true; // in case set false by call
-					activeThread.block = activeThread.block.nextBlock;
+				if (threads.length <= 0){
+					return;
 				}
 			}
-		}
-	}
+			*/
+//			_currentMSecs = getTimer();
+//			if (doRedraw || !hasRunnable) {
+//				return;
+//			}
+//		}
+//	}
 
-	private function clearWarpBlock():void {
-		warpThread = null;
-		warpBlock = null;
-	}
-	import flash.utils.getDefinitionByName;
+//	private function stepActiveThread():void {
+////		if (activeThread.isBlockNull() || app.runtime.isRequest) {
+////			return;
+////		}
+//		if (activeThread.startDelayCount > 0) { 
+//			activeThread.startDelayCount--;
+//			doRedraw = true; 
+//			return; 
+//		}
+//		if (!(activeThread.target.isStage || (activeThread.target.parent is ScratchStage))) {
+//			// sprite is being dragged
+//			if (app.editMode) {
+//				// don't run scripts of a sprite that is being dragged in edit mode, but do update the screen
+//				doRedraw = true;
+//				return;
+//			}
+//		}
+//		yield = false;
+//		
+//		activeThread.checkRealBlockChanged();
+//		for (;;) {
+//			if (activeThread == warpThread){
+//				_currentMSecs = getTimer();
+//			}
+//			activeThread.evalCmd(this);
+//			if(app.runtime.isRequest){
+//				break;
+//			}
+//			
+//			if (yield) {
+//				if(activeThread != warpThread || isTimeOut()){
+//					return;
+//				}
+//				yield = false;
+//				continue;
+//			}
+//
+//			activeThread.nextBlock();
+//			while (activeThread.isBlockNull()) { // end of block sequence
+//				if(!activeThread.popState()) {
+//					return; // end of script
+//				}
+//				if(activeThread.isBlockEquals(warpBlock) && activeThread.firstTime) { // end of outer warp block
+//					clearWarpBlock();
+//					activeThread.nextBlock();
+//					continue;
+//				}
+//				if(!activeThread.isLoop){
+//					if(activeThread.isBlockOpEquals(Specs.CALL)) {
+//						activeThread.firstTime = true; // in case set false by call
+//					}
+//					activeThread.nextBlock();
+//				}else if(activeThread != warpThread || isTimeOut()){
+//					return;
+//				}
+//			}
+//		}
+//	}
+
+//	private function clearWarpBlock():void {
+//		warpThread = null;
+//		warpBlock = null;
+//	}
 	/* Evaluation */
 	
-	public function evalCmd(b:Block):* {
-	
-		if (!b) return 0; // arg() and friends can pass null if arg index is out of range
-		var op:String = b.op;
-		
-		if(op!=null){
-			if (op.indexOf('.') > -1) {
-				var oop:* = app.extensionManager.primExtensionOp;
-				if(oop==null){
-					return null;
-				}else{
-					b.opFunction = oop;
-				}
-			}
-			else {
-				b.opFunction = (primTable[op] == undefined) ? primNoop : primTable[op];
-			}
-		}
-		
+//	public function evalCmd(b:Block):* {
+//	
+//		if (!b) return 0; // arg() and friends can pass null if arg index is out of range
+//		var op:String = b.op;
+//		
+//		if(op != null){
+//			if(op.indexOf('.') >= 0) {
+//				b.opFunction = app.extensionManager.primExtensionOp;
+//			}else {
+//				b.opFunction = (null == primTable[op]) ? primNoop : primTable[op];
+//			}
+//		}
+		//*
+//		if(b.opFunction == app.extensionManager.primExtensionOp){
+////			if(!b.isRequester){
+////				var isFirstTime:Boolean = activeThread.firstTime;
+//				PrimInit.doWaitImpl(this, 0.02);
+//				if(!activeThread.firstTime){
+//					return;
+//				}
+////			}
+//		}
+		//*/
 		// TODO: Optimize this into a cached check if the args *could* block at all
-		if(b.args.length && checkBlockingArgs(b)) {
-			doYield();
-			return null;
-		}
-
-		// Debug code
-		if(debugFunc != null)
-			debugFunc(b);
-		return b.opFunction(b);
-	}
+//		if(b.args.length > 0 && checkBlockingArgs(b)) {
+//			doYield();
+//			return null;
+//		}
+//		
+//		var result:*;
+//		if(b.opFunction.length > 1){
+//			result = b.opFunction(b, this);
+//		}else{
+//			result = b.opFunction(b);
+//		}
+//		if(b.opFunction == app.extensionManager.primExtensionOp && b.isReporter && b.isRequester){
+//			PrimInit.doWaitImpl(this);
+//			return b.response;
+//		}
+//		return result;
+//	}
 
 	// Returns true if the thread needs to yield while data is requested
-	public function checkBlockingArgs(b:Block):Boolean {
+	private function checkBlockingArgs(b:Block):Boolean {
 		// Do any of the arguments request data?  If so, start any requests and yield.
-		var shouldYield:Boolean = false;
-		var args:Array = b.args;
+//		var shouldYield:Boolean = false;
+//		var args:Array = b.args;
+		for each(var item:* in b.args){
+			var barg:Block = item as Block;
+			if(barg != null && checkBlockingArgs(barg)){
+				return true;
+			}
+		}
+		return false;
+		/*
 		for(var i:uint=0; i<args.length; ++i) {
 			var barg:Block = args[i] as Block;
 			if(barg) {
@@ -362,25 +426,28 @@ public class Interpreter {
 			}
 		}
 		return shouldYield;
+		*/
 	}
-
+/*
 	public function arg(b:Block, i:int):* {
-		var args:Array = b.args;
-		if (b.rightToLeft) { i = args.length - i - 1; }
-		var result:* = (b.args[i] is BlockArg) ?
-			BlockArg(args[i]).argValue : evalCmd(Block(args[i]));
-		return result;
+//		var args:Array = b.args;
+//		if (b.rightToLeft) { i = args.length - i - 1; }
+		i = b.adjustArgIndex(i);
+		if(b.args[i] is BlockArg){
+			return (b.args[i] as BlockArg).argValue;
+		}
+		return evalCmd(b.args[i] as Block);
 	}
 
 	public function numarg(b:Block, i:int):* {
 		var args:Array = b.args;
-		if (b.rightToLeft) { i = args.length - i - 1; }
+//		if (b.rightToLeft) { i = args.length - i - 1; }
+		i = b.adjustArgIndex(i);
 		var r:* = "";
 		if(!(args[i] is BlockArg)){
 			r = evalCmd(Block(args[i]));
 		}
-		var n:Number = (args[i] is BlockArg) ?
-			Number(BlockArg(args[i]).argValue) : Number(r);
+		var n:Number = Number(arg(b, i));
 		if(isNaN(n)){
 			return arg(b,i);
 		}
@@ -389,23 +456,24 @@ public class Interpreter {
 		return n;
 	}
 
-	public function boolarg(b:Block, i:int):Boolean {
-		if (b.rightToLeft) { i = b.args.length - i - 1; }
-		var o:* = (b.args[i] is BlockArg) ? BlockArg(b.args[i]).argValue : evalCmd(Block(b.args[i]));
-		if (o is Boolean) return o;
+	public function boolarg(b:Block, i:int):Boolean
+	{
+		var o:* = arg(b, i);
+		if (o is Boolean) {
+			return o;
+		}
 		if (o is String) {
 			var s:String = o;
-			if ((s == '') || (s == '0') || (s.toLowerCase() == 'false')) return false
-			return true; // treat all other strings as true
+			return !((s == '') || (s == '0') || (s.toLowerCase() == 'false'));
 		}
 		return Boolean(o); // coerce Number and anything else
 	}
-
+*/
 	public static function asNumber(n:*):Number {
 		// Convert n to a number if possible. If n is a string, it must contain
 		// at least one digit to be treated as a number (otherwise a string
 		// containing only whitespace would be consider equal to zero.)
-		if (typeof(n) == 'string') {
+		if (n is String) {
 			var s:String = n as String;
 			var len:uint = s.length;
 			for (var i:int = 0; i < len; i++) {
@@ -417,52 +485,59 @@ public class Interpreter {
 		return Number(n);
 	}
 
-	private function startCmdList(b:Block, isLoop:Boolean = false, argList:Array = null):void {
-		if (b == null||app.runtime.isRequest) {
-			if (isLoop) yield = true;
-			return;
-		}
-		activeThread.isLoop = isLoop;
-		activeThread.pushStateForBlock(b);
-		if (argList) activeThread.args = argList;
-		evalCmd(activeThread.block);
-	}
+//	internal function startCmdList(b:Block, isLoop:Boolean = false, argList:Array = null):void {
+//		if (b == null||app.runtime.isRequest) {
+//			if (isLoop) yield = true;
+//			return;
+//		}
+//		activeThread.isLoop = isLoop;
+//		activeThread.pushStateForBlock(b);
+//		if (argList) activeThread.args = argList;
+//		activeThread.evalCmd(this);
+//	}
 
 	/* Timer */
 
-	public function startTimer(secs:Number):void {
-		var waitMSecs:int = 1000 * secs;
-		if (waitMSecs < 0) waitMSecs = 0;
-		activeThread.tmp = currentMSecs + waitMSecs; // end time in milliseconds
-		activeThread.firstTime = false;
-		doYield();
-	}
-
-	public function checkTimer():Boolean {
-		// check for timer expiration and clean up if expired. return true when expired
-		if (currentMSecs >= activeThread.tmp) {
-			// time expired
-			activeThread.tmp = 0;
-			activeThread.tmpObj = null;
-			activeThread.firstTime = true;
-			return true;
-		} else {
-			// time not yet expired
-			doYield();
-			return false;
-		}
-	}
+//	public function startTimer(secs:Number):void {
+//		var waitMSecs:int = 1000 * secs;
+//		if (waitMSecs < 0) waitMSecs = 0;
+//		activeThread.tmp = currentMSecs + waitMSecs; // end time in milliseconds
+//		activeThread.firstTime = false;
+//		doYield();
+//	}
+//
+//	public function checkTimer():Boolean {
+//		// check for timer expiration and clean up if expired. return true when expired
+//		if (currentMSecs >= activeThread.tmp) {
+//			// time expired
+//			activeThread.tmp = 0;
+//			activeThread.tmpObj = null;
+//			activeThread.firstTime = true;
+//			return true;
+//		} else {
+//			// time not yet expired
+//			doYield();
+//			return false;
+//		}
+//	}
 
 	/* Primitives */
 
 	public function isImplemented(op:String):Boolean {
-		return primTable[op] != undefined;
+		return true;
+//		return primTable[op] != undefined;
+	}
+	
+	public function execBlock(op:String, block:Block):*
+	{
+		return 0;
 	}
 
-	public function getPrim(op:String):Function { return primTable[op] }
+//	public function getPrim(op:String):Function { return primTable[op] }
 
 	private function initPrims():void {
-		primTable = new Dictionary();
+//		PrimInit.Init(primTable);
+		/*
 		// control
 		primTable["whenGreenFlag"]		= primNoop;
 		primTable["whenKeyPressed"]		= primNoop;
@@ -514,9 +589,10 @@ public class Interpreter {
 
 	protected function addOtherPrims(primTable:Dictionary):void {
 		// other primitives
-		new Primitives(app, this).addPrimsTo(primTable);
+*/
+//		new Primitives(app, this).addPrimsTo(primTable);
 	}
-
+/*
 	private function checkPrims():void {
 		var op:String;
 		var allOps:Array = ["CALL", "GET_VAR", "NOOP"];
@@ -531,9 +607,9 @@ public class Interpreter {
 			if (allOps.indexOf(op) < 0) trace("Not in specs: " + op);
 		}
 	}
-
-	public function primNoop(b:Block):void { }
-
+*/
+//	public function primNoop(b:Block):void { }
+/*
 	private function primForLoop(b:Block):void {
 		var list:Array = [];
 		var loopVar:Variable;
@@ -611,18 +687,17 @@ public class Interpreter {
 	// Broadcast and scene starting
 
 	public function broadcast(msg:String, waitFlag:Boolean):void {
-		var pair:Array;
 		ParseManager.sharedManager().parse("serial/line/"+msg);
 		if (activeThread.firstTime) {
 			var receivers:Array = [];
-			var newThreads:Array = [];
 			msg = msg.toLowerCase();
-			var findReceivers:Function = function (stack:Block, target:ScratchObj):void {
+			function findReceivers(stack:Block, target:ScratchObj):void {
 				try{
 					if ((stack.op == "whenIReceive") && (stack.args[0].argValue.toLowerCase() == msg)) {
 						receivers.push([stack, target]);
 					}
 				}catch(e:Error){
+					trace(e);
 					var b:Block = (stack.args[0] as Block);
 					if ((stack.op == "whenIReceive") && (evalCmd(b).toLowerCase() == msg)) {
 						receivers.push([stack, target]);
@@ -630,24 +705,35 @@ public class Interpreter {
 				}
 			}
 			app.runtime.allStacksAndOwnersDo(findReceivers);
-			// (re)start all receivers
-			for each (pair in receivers) newThreads.push(restartThread(pair[0], pair[1]));
-			if (!waitFlag) return;
-			activeThread.tmpObj = newThreads;
-			activeThread.firstTime = false;
+			startAllReceivers(receivers, waitFlag);
+			if(!waitFlag){
+				return;
+			}
 		}
-		var done:Boolean = true;
-		for each (var t:Thread in activeThread.tmpObj) { if (threads.indexOf(t) >= 0) done = false }
-		if (done) {
+		checkDone();
+	}
+
+	internal function checkDone():void
+	{
+		if (isDone()) {
 			activeThread.tmpObj = null;
 			activeThread.firstTime = true;
 		} else {
 			yield = true;
 		}
 	}
+	
+	private function isDone():Boolean
+	{
+		for each (var t:Thread in activeThread.tmpObj) { 
+			if (threads.indexOf(t) >= 0){ 
+				return false;
+			} 
+		}
+		return true;
+	}
 
 	public function startScene(sceneName:String, waitFlag:Boolean):void {
-		var pair:Array;
 		if (activeThread.firstTime) {
 			function findSceneHats(stack:Block, target:ScratchObj):void {
 				if ((stack.op == "whenSceneStarts") && (stack.args[0].argValue == sceneName)) {
@@ -658,25 +744,28 @@ public class Interpreter {
 			app.stagePane.showCostumeNamed(sceneName);
 			redraw();
 			app.runtime.allStacksAndOwnersDo(findSceneHats);
-			// (re)start all receivers
-			var newThreads:Array = [];
-			for each (pair in receivers) newThreads.push(restartThread(pair[0], pair[1]));
-			if (!waitFlag) return;
-			activeThread.tmpObj = newThreads;
-			activeThread.firstTime = false;
+			startAllReceivers(receivers, waitFlag);
+			if(!waitFlag){
+				return;
+			}
 		}
-		var done:Boolean = true;
-		for each (var t:Thread in activeThread.tmpObj) { if (threads.indexOf(t) >= 0) done = false }
-		if (done) {
-			activeThread.tmpObj = null;
-			activeThread.firstTime = true;
-		} else {
-			yield = true;
-		}
+		checkDone();
 	}
+	*/
+//	internal function startAllReceivers(receivers:Array, waitFlag:Boolean):void
+//	{
+//		var newThreads:Array = [];
+//		for each (var pair:Array in receivers){
+//			newThreads.push(restartThread(pair[0], pair[1]));
+//		}
+//		if(waitFlag){
+//			activeThread.tmpObj = newThreads;
+//			activeThread.firstTime = false;
+//		}
+//	}
 
 	// Procedure call/return
-
+/*
 	private function primCall(b:Block):void {
 		// Call a procedure. Handle recursive calls and "warp" procedures.
 		// The activeThread.firstTime flag is used to mark the first call
@@ -773,5 +862,5 @@ public class Interpreter {
 		if ((activeThread.args == null) || (b.parameterIndex >= activeThread.args.length)) return 0;
 		return activeThread.args[b.parameterIndex];
 	}
-
+*/
 }}

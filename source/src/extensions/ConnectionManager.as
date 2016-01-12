@@ -5,13 +5,11 @@ package extensions
 	import flash.filesystem.File;
 	import flash.net.URLRequest;
 	import flash.net.navigateToURL;
+	import flash.signals.Signal;
 	import flash.utils.ByteArray;
-	
-	import translation.Translator;
 	
 	import util.ApplicationManager;
 	import util.LogManager;
-	import util.SharedObjectManager;
 
 	public class ConnectionManager extends EventDispatcher
 	{
@@ -108,9 +106,9 @@ package extensions
 				MBlock.app.topBarPart.setDisconnectedTitle();
 			}else{
 				if(SerialManager.sharedManager().isConnected||HIDManager.sharedManager().isConnected||BluetoothManager.sharedManager().isConnected){
-					MBlock.app.topBarPart.setConnectedTitle(Translator.map("Serial Port")+" "+Translator.map("Connected"));
+					MBlock.app.topBarPart.setConnectedTitle("Serial Port");
 				}else{
-					MBlock.app.topBarPart.setConnectedTitle(Translator.map("Network")+" "+Translator.map("Connected"));
+					MBlock.app.topBarPart.setConnectedTitle("Network");
 				}
 			}
 			this.dispatchEvent(new Event(Event.CLOSE));
@@ -129,8 +127,10 @@ package extensions
 			}
 		}
 		private var _bytes:ByteArray;
+		
 		public function onReceived(bytes:ByteArray):void{
 			_bytes = bytes;
+			MBlock.app.scriptsPart.onSerialDataReceived(bytes);
 			this.dispatchEvent(new Event(Event.CHANGE));
 		}
 		public function sendBytes(bytes:ByteArray):void{
@@ -140,9 +140,9 @@ package extensions
 				BluetoothManager.sharedManager().sendBytes(bytes);
 			}else if(HIDManager.sharedManager().isConnected){
 				HIDManager.sharedManager().sendBytes(bytes);
-			}else if(SocketManager.sharedManager().isConnected){
-				SocketManager.sharedManager().sendBytes(bytes);
+				return;//clear later
 			}
+			bytes.clear();
 		}
 		public function readBytes():ByteArray{
 			if(_bytes){

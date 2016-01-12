@@ -1,22 +1,22 @@
 package extensions
 {
-	import flash.desktop.NativeApplication;
 	import flash.events.DatagramSocketDataEvent;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
-	import flash.events.IEventDispatcher;
 	import flash.events.IOErrorEvent;
 	import flash.events.ProgressEvent;
 	import flash.events.SecurityErrorEvent;
 	import flash.events.ServerSocketConnectEvent;
 	import flash.net.DatagramSocket;
 	import flash.net.InterfaceAddress;
-	import flash.net.NetworkInfo;
-	import flash.net.NetworkInterface;
 	import flash.net.ServerSocket;
 	import flash.net.Socket;
+	import flash.signals.Signal;
 	import flash.utils.ByteArray;
+	import flash.utils.getTimer;
 	import flash.utils.setTimeout;
+	
+	import cc.makeblock.util.getLocalAddress;
 	
 	import translation.Translator;
 	
@@ -35,10 +35,10 @@ package extensions
 		//The IP and port for this computer 
 		private var localIP:String = "0.0.0.0"; 
 		private var localPort:int = 55555; 
-		
+		private var _udpIp:String = "";
 		//The IP and port for the target computer 
-		private var broadCastIp:String = "192.168.1.255";
-		private var targetIP:String = "192.168.1.1"; 
+		private var broadCastIp:String;
+		private var targetIP:String = "192.168.1.1";
 		private var targetPort:int = 333; 
 		
 		private var _clientPort:int = 54321;
@@ -58,24 +58,12 @@ package extensions
 		
 		public function SocketManager()
 		{
-			//get lan ip, and construct broadcast ip
-			var networkInfo:NetworkInfo = NetworkInfo.networkInfo;
-			
-			var interfaces:Vector.<NetworkInterface> = networkInfo.findInterfaces();
-			var address:InterfaceAddress;
-			for each(var n:NetworkInterface in interfaces){
-				address = n.addresses[0];
-				broadCastIp = address.broadcast as String;
-				if(address.address.indexOf("169.254")==-1){
-					_currentIp = address.address ;
-				}
-				if(broadCastIp.indexOf("169.254")==-1&&broadCastIp!=""){
-					break;
-				}
-			}
+			var address:InterfaceAddress = getLocalAddress();
+			broadCastIp = address != null ? address.broadcast : "";
 			//Create the socket 
 			datagramSocket = new DatagramSocket(); 
 			datagramSocket.addEventListener( DatagramSocketDataEvent.DATA, dataReceived );
+			
 			//Bind the socket to the local network interface and port 
 			try{
 				datagramSocket.bind(_clientPort); 
@@ -85,7 +73,6 @@ package extensions
 				
 			}
 			
-			NativeApplication.nativeApplication.addEventListener(Event.EXITING,onExiting);
 			_server = new ServerSocket();
 			try{
 				_server.bind(_clientPort);
@@ -95,9 +82,9 @@ package extensions
 			}
 			_server.addEventListener(ServerSocketConnectEvent.CONNECT,onConnected);
 		}
-		private function onExiting(evt:Event):void{
-			close();
-		}
+//		private function onExiting(evt:Event):void{
+//			close();
+//		}
 		public function get list():Array{
 			this.probe();
 			return _list;
@@ -140,7 +127,16 @@ package extensions
 			}else{
 				if(host=="custom"){
 					function connectNow():void{
-						connect(dialog.fields["IP Address"].text+":"+dialog.fields["Port"].text);
+						if(dialog.fields["Port"].text=="1025"){
+							isConnected = true;
+							_udpIp = dialog.fields["IP Address"].text;
+						//datagramSocket.connect(dialog.fields["IP Address"].text,dialog.fields["Port"].text);
+							ConnectionManager.sharedManager().onOpen(dialog.fields["IP Address"].text+":"+dialog.fields["Port"].text);
+							update();
+							dispatchEvent(new Event(Event.CONNECT));
+						}else{
+							connect(dialog.fields["IP Address"].text+":"+dialog.fields["Port"].text);
+						}
 						dialog.cancel();
 					}
 					function cancelNow():void{
@@ -181,10 +177,12 @@ package extensions
 				if(temp.length>3){
 					temp = host.split(":");
 					if(_sockets.length==0){
-						var socket:Socket = new Socket()
-						configureListeners(socket);
-						socket.connect(temp[0], temp[1]);
-						_sockets.push(socket);
+						if(temp[1]!="1025"){
+							var socket:Socket = new Socket()
+							configureListeners(socket);
+							socket.connect(temp[0], temp[1]);
+							_sockets.push(socket);
+						}
 					}
 					LogManager.sharedManager().log("socket connecting:"+host);
 				}
@@ -211,7 +209,7 @@ package extensions
 					}
 				}
 			}
-			return false;
+			return isConnected;
 		}
 		private function onConnected(evt:ServerSocketConnectEvent):void{
 			trace("remote connected - "+evt.socket.remoteAddress+":"+evt.socket.remotePort);
@@ -224,7 +222,7 @@ package extensions
 		public function update():void{
 			if(connected()){
 				if(!SerialManager.sharedManager().isConnected&&!HIDManager.sharedManager().isConnected&&!BluetoothManager.sharedManager().isConnected){
-					MBlock.app.topBarPart.setConnectedTitle(Translator.map("Network")+" "+Translator.map("Connected"));
+					MBlock.app.topBarPart.setConnectedTitle("Network");
 				}
 			}
 		}
@@ -239,14 +237,22 @@ package extensions
 			return 0;
 		}
 		
+		private var _prevTime:Number = 0;
 		public function sendBytes(bytes:ByteArray):int{
 			for each(var socket:Socket in _sockets){
 				if(socket){
 					if(socket.connected){
-						socket.writeBytes(bytes);
-						socket.flush();
+						var cTime:Number = getTimer();
+						if(cTime-_prevTime>20){
+							_prevTime = cTime; 
+							socket.writeBytes(bytes);
+							socket.flush();
+						}
 					}
 				}
+			}
+			if(_udpIp!=""){
+				datagramSocket.send( bytes, 0, 0, _udpIp,1025);
 			}
 			return 0
 		}
@@ -290,12 +296,13 @@ package extensions
 		private function securityErrorHandler(event:SecurityErrorEvent):void {
 			trace("securityErrorHandler: " + event);
 		}
-		
+		public const dataRecvSignal:Signal = new Signal(ByteArray);
 		private function socketDataHandler(evt:ProgressEvent):void {
 			dispatchEvent(new Event(Event.CHANGE));
 			var bytes:ByteArray = new ByteArray();
 			var socket:Socket = evt.target as Socket;
 			socket.readBytes(bytes);
+			dataRecvSignal.notify(bytes);
 			ConnectionManager.sharedManager().onReceived(bytes);
 //			ParseManager.sharedManager().parseBuffer(bytes);
 			trace("socketDataHandler: " + evt);
@@ -304,6 +311,7 @@ package extensions
 		private function dataReceived( evt:DatagramSocketDataEvent ):void 
 		{
 			var srcName:String = evt.data.readUTFBytes( evt.data.bytesAvailable );
+			trace("udp", srcName);
 			//Read the data from the datagram
 			if(evt.srcAddress!=_currentIp){
 				//				trace("Received from " + evt.srcAddress + ":" + evt.srcPort + "> " + srcName );

@@ -25,9 +25,13 @@
 // is independent of the internal representation and is easy to convert to/from JSON.
 
 package blocks {
-	import scratch.*;
-	import util.*;
-	import translation.*;
+	import cc.makeblock.mbot.uiwidgets.lightSetter.LightSensor;
+	
+	import scratch.ScratchObj;
+	
+	import translation.Translator;
+	
+	import util.JSON;
 
 public class BlockIO {
 
@@ -55,7 +59,11 @@ public class BlockIO {
 		var topBlock:Block, lastBlock:Block;
 		for each (var cmd:Array in cmdList) {
 			var b:Block = null;
-			try { b = arrayToBlock(cmd, '', forStage) } catch (e:*) { b = new Block('undefined') }
+			try{
+				b = arrayToBlock(cmd, '', forStage);
+			}catch (e:*) {
+				b = new Block('undefined');
+			}
 			if (topBlock == null) topBlock = b;
 			if (lastBlock != null) lastBlock.insertBlock(b);
 			lastBlock = b;
@@ -110,10 +118,26 @@ public class BlockIO {
 			if(forStage && spec[3] == 'whenClicked') label = 'when Stage clicked';
 			b = new Block(label, spec[1], Specs.blockColor(spec[2]), spec[3]);
 		}
-
-		var args:Array = argsForCmd(cmd, b.rightToLeft);
-		var substacks:Array = substacksForCmd(cmd);
+		
+		var args:Array;
 		var hadSpriteRef:Boolean;
+		if(cmd[0] == "mBot.showDraw"){
+			args = cmd.slice(1,-1);
+			args.push(spec[4][3]);
+			b = new Block(label, spec[1], Specs.blockColor(spec[2]), spec[3], args);
+			for(i=0; i<args.length-1;i++){
+				if(args[i] is Array){
+					b.setArg(i, arrayToBlock(args[i], 'r'));
+				}
+			}
+			var blockArg:BlockArg = b.args[3];
+			blockArg.argValue = cmd[4] is Array ? cmd[4] : LightSensor.defaultValue;
+			blockArg.base.bmd = LightSensor.arrayToBmd(blockArg.argValue);
+			blockArg.base.setColor(0);
+			blockArg.base.redraw();
+		}else{
+			args = argsForCmd(cmd, b.rightToLeft);
+		var substacks:Array = substacksForCmd(cmd);
 		for (var i:int = 0; i < args.length; i++) {
 			var a:* = args[i];
 			if (a is ScratchObj) {
@@ -124,6 +148,8 @@ public class BlockIO {
 		}
 		if (substacks[0] && (b.base.canHaveSubstack1())) b.insertBlockSub1(substacks[0]);
 		if (substacks[1] && (b.base.canHaveSubstack2())) b.insertBlockSub2(substacks[1]);
+		}
+
 		// if hadSpriteRef is true, don't call fixMouseEdgeRefs() to avoid converting references
 		// to sprites named 'mouse' or 'edge' to '_mouse_' or '_edge_'.
 		if (!hadSpriteRef) fixMouseEdgeRefs(b);
@@ -296,20 +322,57 @@ public class BlockIO {
 		return (arg is Array) ? arrayToBlock(arg, 'r') : arg;
 	}
 
+	static private const refCmds:Array = [
+		'createCloneOf', 'distanceTo:', 'getAttribute:of:',
+		'gotoSpriteOrMouse:', 'pointTowards:', 'touching:'];
+	
 	private static function fixMouseEdgeRefs(b:Block):void {
-		var refCmds:Array = [
-			'createCloneOf', 'distanceTo:', 'getAttribute:of:',
-			'gotoSpriteOrMouse:', 'pointTowards:', 'touching:'];
 		if (refCmds.indexOf(b.op) < 0) return;
 		var arg:BlockArg;
-		if ((b.args.length == 1) && (b.args[0] is BlockArg)) arg = b.args[0];
-		if ((b.args.length == 2) && (b.args[1] is BlockArg)) arg = b.args[1];
-		if (arg) {
-			var oldVal:String = arg.argValue;
-			if (oldVal == 'edge' || oldVal == '_edge_') arg.setArgValue('_edge_', Translator.map('edge'));
-			if (oldVal == 'mouse' || oldVal == '_mouse_') arg.setArgValue('_mouse_', Translator.map('mouse-pointer'));
-			if (oldVal == '_myself_') arg.setArgValue('_myself_', Translator.map('myself'));
-			if (oldVal == '_stage_') arg.setArgValue('_stage_', Translator.map('Stage'));
+		switch(b.args.length){
+			case 1:
+				arg = b.args[0] as BlockArg;
+				break;
+			case 2:
+				arg = b.args[1] as BlockArg;
+				break;
+		}
+		if(null == arg){
+			return;
+		}
+//		if ((b.args.length == 1) && (b.args[0] is BlockArg)) arg = b.args[0];
+//		if ((b.args.length == 2) && (b.args[1] is BlockArg)) arg = b.args[1];
+//		if (arg != null) {
+//			var oldVal:String = arg.argValue;
+//			if (oldVal == 'edge' || oldVal == '_edge_') arg.setArgValue('_edge_', Translator.map('edge'));
+//			if (oldVal == 'mouse' || oldVal == '_mouse_') arg.setArgValue('_mouse_', Translator.map('mouse-pointer'));
+//			if (oldVal == '_myself_') arg.setArgValue('_myself_', Translator.map('myself'));
+//			if (oldVal == '_stage_') arg.setArgValue('_stage_', Translator.map('Stage'));
+//		}
+		switch(arg.argValue){
+			case "edge":
+			case "_edge_":
+				arg.setArgValue('_edge_', Translator.map('edge'));
+				break;
+			case "mouse":
+			case "_mouse_":
+				arg.setArgValue('_mouse_', Translator.map('mouse-pointer'));
+				break;
+			case "_myself_":
+				arg.setArgValue('_myself_', Translator.map('myself'));
+				break;
+			case "_stage_":
+				arg.setArgValue('_stage_', Translator.map('Stage'));
+				break;
+			case "rhp":
+				arg.setArgValue('rhp', Translator.map('random horizontal point'));
+				break;
+			case "rvp":
+				arg.setArgValue('rvp', Translator.map('random vertical point'));
+				break;
+			case "rsp":
+				arg.setArgValue('rsp', Translator.map('random stage point'));
+				break;
 		}
 	}
 

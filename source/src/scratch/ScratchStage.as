@@ -26,8 +26,11 @@ package scratch {
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
+	import flash.display.NativeMenu;
+	import flash.display.NativeMenuItem;
 	import flash.display.Shape;
 	import flash.display.Sprite;
+	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.external.ExternalInterface;
 	import flash.filters.GlowFilter;
@@ -154,7 +157,7 @@ public class ScratchStage extends ScratchObj {
 	}
 
 	private function initMedia():void {
-		costumes.push(ScratchCostume.emptyBitmapCostume(Translator.map('backdrop1'), true));
+		costumes.push(ScratchCostume.emptyBitmapCostume('backdrop1', true));
 		sounds.push(new ScratchSound(Translator.map('pop'), new Pop()));
 		sounds[0].prepareToSave();
 	}
@@ -234,13 +237,27 @@ public class ScratchStage extends ScratchObj {
 	}
 
 	/* Menu */
+	private var _menu:NativeMenu;
 
-	public function menu(evt:MouseEvent):Menu {
+	public function menu(evt:MouseEvent):NativeMenu {
+		if(null == _menu){
+			_menu = new NativeMenu();
+			_menu.addItem(new NativeMenuItem()).name = "save picture of stage";
+			_menu.addEventListener(Event.SELECT, __onSelected);
+		}
+		return _menu;
+		/*
 		var m:Menu = new Menu();
 		m.addItem('save picture of stage', saveScreenshot);
 		return m;
+		*/
 	}
-
+	
+	private function __onSelected(event:Event):void
+	{
+		saveScreenshot();
+	}
+	
 	private function saveScreenshot():void {
 		var bitmapData:BitmapData = new BitmapData(480, 360, true, 0x0);
 		bitmapData.draw(this);
@@ -287,14 +304,14 @@ public class ScratchStage extends ScratchObj {
 	public function scrollUp(n:Number):void { yScroll += n; updateImage() }
 
 	public function getUILayer():Sprite {
-		if(MBlock.app.isIn3D) return MBlock.app.render3D.getUIContainer();
+//		if(MBlock.app.isIn3D) return MBlock.app.render3D.getUIContainer();
 		return this;
 	}
 
 	override protected function updateImage():void {
 		super.updateImage();
-		if(MBlock.app.isIn3D)
-			MBlock.app.render3D.getUIContainer().transform.matrix = transform.matrix.clone();
+//		if(MBlock.app.isIn3D)
+//			MBlock.app.render3D.getUIContainer().transform.matrix = transform.matrix.clone();
 
 		return; // scrolling backround support is disabled; see note below
 
@@ -367,7 +384,7 @@ public class ScratchStage extends ScratchObj {
 			} else {
 				videoImage.bitmapData.draw(video);
 			}
-			if(MBlock.app.isIn3D) MBlock.app.render3D.updateRender(videoImage);
+//			if(MBlock.app.isIn3D) MBlock.app.render3D.updateRender(videoImage);
 		}
 		cachedBitmapIsCurrent = false;
 
@@ -394,21 +411,21 @@ public class ScratchStage extends ScratchObj {
 
 		var penBM:BitmapData = penLayer.bitmapData;
 		var m:Matrix = new Matrix();
-		if(MBlock.app.isIn3D) {
-			var bmd:BitmapData = getBitmapOfSprite(s, stampBounds);
-			if(!bmd) return;
-
-			// TODO: Optimize for garbage collection
-			var childCenter:Point = stampBounds.topLeft;
-			commitPenStrokes();
-			m.translate(childCenter.x * s.scaleX, childCenter.y * s.scaleY);
-			m.rotate((Math.PI * s.rotation) / 180);
-			m.translate(s.x, s.y);
-			penBM.draw(bmd, m, new ColorTransform(1, 1, 1, stampAlpha), null, null, (s.rotation % 90 != 0));
-			MBlock.app.render3D.updateRender(penLayer);
+//		if(MBlock.app.isIn3D) {
+//			var bmd:BitmapData = getBitmapOfSprite(s, stampBounds);
+//			if(!bmd) return;
+//
+//			// TODO: Optimize for garbage collection
+//			var childCenter:Point = stampBounds.topLeft;
+//			commitPenStrokes();
+//			m.translate(childCenter.x * s.scaleX, childCenter.y * s.scaleY);
+//			m.rotate((Math.PI * s.rotation) / 180);
+//			m.translate(s.x, s.y);
+//			penBM.draw(bmd, m, new ColorTransform(1, 1, 1, stampAlpha), null, null, (s.rotation % 90 != 0));
+//			MBlock.app.render3D.updateRender(penLayer);
 //			testBM.bitmapData = bmd;
-		}
-		else {
+//		}
+//		else {
 			var wasVisible:Boolean = s.visible;
 			s.visible = true;  // if this is done after commitPenStrokes, it doesn't work...
 			commitPenStrokes();
@@ -422,14 +439,15 @@ public class ScratchStage extends ScratchObj {
 			s.filterPack.setFilter('ghost', oldGhost);
 			s.applyFilters();
 			s.visible = wasVisible;
-		}
+//		}
 	}
 
 	public function getBitmapOfSprite(s:ScratchSprite, bounds:Rectangle, for_carry:Boolean = false):BitmapData {
 		var b:Rectangle = s.currentCostume().bitmap ? s.img.getChildAt(0).getBounds(s) : s.getVisibleBounds(s);
 		bounds.width = b.width; bounds.height = b.height; bounds.x = b.x; bounds.y = b.y;
-		if(!MBlock.app.render3D || s.width < 1 || s.height < 1) return null;
-
+//		if(!MBlock.app.render3D || s.width < 1 || s.height < 1) return null;
+		return null;
+/*
 		var ghost:Number = s.filterPack.getFilterSetting('ghost');
 		var oldBright:Number = s.filterPack.getFilterSetting('brightness');
 		s.filterPack.setFilter('ghost', 0);
@@ -439,6 +457,7 @@ public class ScratchStage extends ScratchObj {
 		s.filterPack.setFilter('brightness', oldBright);
 
 		return bmd;
+		*/
 	}
 
 	public function setVideoState(newState:String):void {
@@ -480,7 +499,7 @@ public class ScratchStage extends ScratchObj {
 		bm.fillRect(bm.rect, 0);
 		newPenStrokes.graphics.clear();
 		penActivity = false;
-		if(MBlock.app.isIn3D) MBlock.app.render3D.updateRender(penLayer);
+//		if(MBlock.app.isIn3D) MBlock.app.render3D.updateRender(penLayer);
 	}
 
 	public function commitPenStrokes():void {
@@ -488,7 +507,7 @@ public class ScratchStage extends ScratchObj {
 		penLayer.bitmapData.draw(newPenStrokes);
 		newPenStrokes.graphics.clear();
 		penActivity = false;
-		if(MBlock.app.isIn3D) MBlock.app.render3D.updateRender(penLayer);
+//		if(MBlock.app.isIn3D) MBlock.app.render3D.updateRender(penLayer);
 	}
 
 	private var cachedBM:BitmapData;
@@ -536,7 +555,7 @@ public class ScratchStage extends ScratchObj {
 	}
 
 	public function updateSpriteEffects(spr:DisplayObject, effects:Object):void {
-		if(MBlock.app.isIn3D) MBlock.app.render3D.updateFilters(spr, effects);
+//		if(MBlock.app.isIn3D) MBlock.app.render3D.updateFilters(spr, effects);
 	}
 
 	public function getBitmapWithoutSpriteFilteredByColor(s:ScratchSprite, c:int):BitmapData {
@@ -544,15 +563,16 @@ public class ScratchStage extends ScratchObj {
 
 		var bm1:BitmapData;
 		var mask:uint = 0x00F8F8F0; //0xF0F8F8F0;
+		/*
 		if(MBlock.app.isIn3D) {
 			var b:Rectangle = s.currentCostume().bitmap ? s.img.getChildAt(0).getBounds(s) : s.getVisibleBounds(s);
 			bm1 = MBlock.app.render3D.getOtherRenderedChildren(s, 1);
 			//mask = 0x80F8F8F0;
 		}
-		else {
+		else {*/
 			// OLD code here
 			bm1 = bitmapWithoutSprite(s);
-		}
+//		}
 
 		var bm2:BitmapData = new BitmapData(bm1.width, bm1.height, true, 0);
 		bm2.threshold(bm1, bm1.rect, bm1.rect.topLeft, '==', c, 0xFF000000, mask); // match only top five bits of each component
@@ -592,7 +612,7 @@ public class ScratchStage extends ScratchObj {
 	}
 
 	public function updateRender(dispObj:DisplayObject, renderID:String = null, renderOpts:Object = null):void {
-		if(MBlock.app.isIn3D) MBlock.app.render3D.updateRender(dispObj, renderID, renderOpts);
+//		if(MBlock.app.isIn3D) MBlock.app.render3D.updateRender(dispObj, renderID, renderOpts);
 	}
 
 	public function projectThumbnailPNG():ByteArray {
@@ -602,8 +622,9 @@ public class ScratchStage extends ScratchObj {
 		if (videoImage) videoImage.visible = false;
 
 		// Get a screenshot of the stage
-		if(MBlock.app.isIn3D) MBlock.app.render3D.getRender(bm);
-		else bm.draw(this);
+//		if(MBlock.app.isIn3D) MBlock.app.render3D.getRender(bm);
+//		else
+		bm.draw(this);
 
 		if (videoImage) videoImage.visible = true;
 		return PNG24Encoder.encode(bm);
@@ -620,29 +641,30 @@ public class ScratchStage extends ScratchObj {
 		penLayerMD5 = null;
 	}
 
+	static private const defaultMedia:Array = [
+		'bcb096d2b695d5623e814e1033620f2c.svg',
+		'510da64cf172d53750dffd23fbf73563.png',
+		'b82f959ab7fa28a70b06c8162b7fef83.svg',
+		'df0e59dcdea889efae55eb77902edc1c.svg',
+		'83a9787d4cb6f3b7632b4ddfebf74367.wav',
+		'f9a1c175dbe2e5dee472858dd30d16bb.svg',
+		'6e8bd9ae68fdb02b7e1e3df656a75635.svg',
+		'f88bf1935daea28f8ca098462a31dbb0.svg',
+		'6e8bd9ae68fdb02b7e1e3df656a75635.svg',
+		'739b5e2a2435f6e1ec2993791b423146.png',
+		'83c36d806dc92327b9e7049a565c6bff.wav',
+		'0aa976d536ad6667ce05f9f2174ceb3d.svg',	// new empty backdrop
+		'790f7842ea100f71b34e5b9a5bfbcaa1.svg', // even newer empty backdrop
+		'c969115cb6a3b75470f8897fbda5c9c9.svg',	// new empty costume
+		'09f6edf0b816a18abd6c79ef2bcf2fb3.svg',
+		'panda_b.svg',
+		'714e598d28e493cc50babc17f2c4895d.wav',
+		'739b5e2a2435f6e1ec2993791b423146.png',
+		'83a9787d4cb6f3b7632b4ddfebf74367.wav'
+	];
 	public function isEmpty():Boolean {
 		// Return true if this project has no scripts, no variables, no lists,
 		// at most one sprite, and only the default costumes and sound media.
-		var defaultMedia:Array = [
-			'510da64cf172d53750dffd23fbf73563.png',
-			'b82f959ab7fa28a70b06c8162b7fef83.svg',
-			'df0e59dcdea889efae55eb77902edc1c.svg',
-			'83a9787d4cb6f3b7632b4ddfebf74367.wav',
-			'f9a1c175dbe2e5dee472858dd30d16bb.svg',
-			'6e8bd9ae68fdb02b7e1e3df656a75635.svg',
-			'f88bf1935daea28f8ca098462a31dbb0.svg',
-			'6e8bd9ae68fdb02b7e1e3df656a75635.svg',
-			'739b5e2a2435f6e1ec2993791b423146.png',
-			'83c36d806dc92327b9e7049a565c6bff.wav',
-			'0aa976d536ad6667ce05f9f2174ceb3d.svg',	// new empty backdrop
-			'790f7842ea100f71b34e5b9a5bfbcaa1.svg', // even newer empty backdrop
-			'c969115cb6a3b75470f8897fbda5c9c9.svg',	// new empty costume
-			'09f6edf0b816a18abd6c79ef2bcf2fb3.svg',
-			'panda_b.svg',
-			'714e598d28e493cc50babc17f2c4895d.wav',
-			'739b5e2a2435f6e1ec2993791b423146.png',
-			'83a9787d4cb6f3b7632b4ddfebf74367.wav'
-		];
 		if (sprites().length > 1) return false;
 		if (scriptCount() > 0) return false;
 		for each (var obj:ScratchObj in allObjects()) {
@@ -676,11 +698,6 @@ public class ScratchStage extends ScratchObj {
 			if (extensionsToSave.length == 0) delete info.savedExtensions;
 			else info.savedExtensions = extensionsToSave;
 		}
-
-		delete info.userAgent;
-		var userAgent:String;
-		if (MBlock.app.jsEnabled) userAgent = ExternalInterface.call('window.navigator.userAgent.toString');
-		if (userAgent) info.userAgent = userAgent;
 	}
 
 	public function scriptCount():int {

@@ -16,12 +16,13 @@ package extensions
 	import flash.net.URLRequestMethod;
 	import flash.net.URLVariables;
 	import flash.net.navigateToURL;
+	import flash.system.Capabilities;
 	import flash.utils.getQualifiedClassName;
-	
-	import mx.utils.StringUtil;
 	
 	import blocks.Block;
 	import blocks.BlockIO;
+	
+	import cc.makeblock.mbot.util.StringUtil;
 	
 	import translation.Translator;
 	
@@ -67,7 +68,7 @@ package extensions
 		public var unknownBlocks:Array = [];
 		
 		// maintance of project and arduino path
-		private var arduinoPath:String = "";
+		private var arduinoPath:String;
 		private var avrPath:String = "";
 		private var arduinoLibPath:String = "";
 		private var projectPath:String = "";
@@ -222,7 +223,19 @@ void updateVar(char * varName,double * var)
 			addEventListener(EVENT_NATIVE_DONE, gotoNextNativeCmd)
 			addEventListener(EVENT_LIBCOMPILE_DONE,runToolChain,false)
 			addEventListener(EVENT_COMPILE_DONE,uploadHex,false);
-			arduinoPath = SharedObjectManager.sharedManager().getObject("arduinoPath","");
+		}
+		
+		public function clearTempFiles():void
+		{
+			/*
+			var workdir:File = File.applicationStorageDirectory.resolvePath("scratchTemp");
+			if(workdir.exists){
+				workdir.deleteDirectory(true);
+			}
+			//*/
+			if(File.applicationStorageDirectory.exists){
+				File.applicationStorageDirectory.deleteDirectory(true);
+			}
 		}
 		
 		public function setScratch(scratch:MBlock):void{
@@ -295,7 +308,7 @@ void updateVar(char * varName,double * var)
 			if(varList.indexOf(varName)==-1){
 				varList.push(varName);
 			}
-			var code:CodeObj = new CodeObj(StringUtil.substitute("{0}",varName));
+			var code:CodeObj = new CodeObj(StringUtil.substitute("{0}",castVarName(varName.toString())));
 			return code;
 		}
 		
@@ -315,9 +328,9 @@ void updateVar(char * varName,double * var)
 						varStringList.push(varName);
 					}
 				}
-				return (StringUtil.substitute("{0} = {1};\n",varName,varValue.type=="obj"?varValue.code.code:varValue.code))
+				return (StringUtil.substitute("{0} = {1};\n",castVarName(varName),varValue.type=="obj"?varValue.code.code:varValue.code))
 			}else{
-				return (StringUtil.substitute("{0} = {1};\n",varName,varValue is CodeObj?varValue.code:varValue));
+				return (StringUtil.substitute("{0} = {1};\n",castVarName(varName),varValue is CodeObj?varValue.code:varValue));
 			}
 		}
 		
@@ -373,7 +386,7 @@ void updateVar(char * varName,double * var)
 				funcName = "func "+funcName;
 			}
 			var ps:Array = funcName.split(" ");
-			var tmp:Array = [ps[0]];
+			var tmp:Array = [castVarName(ps[0], true)];
 			for(var i:uint=0;i<ps.length;i++){
 				if(i>0){
 					if(ps[i].indexOf("%")>-1){
@@ -392,16 +405,18 @@ void updateVar(char * varName,double * var)
 				}
 				if(cBlk.type=="obj"){
 					vars += cBlk.code.code;//(isNaN(Number(params[i]))?'"'+params[i]+'"':(params[i]==""?(ps[i-1]=="s"?'"s"':"false"):params[i]))+(i<params.length-1?", ":"");
+				}else if(cBlk.type == "string"){
+					vars += '"' + cBlk.code + '"';
 				}else{
-					
 					vars += cBlk.code;
+					
 				}
 			}
 			var callCode:String = StringUtil.substitute("{0}({1});\n",ps[0],vars);
 			return (callCode);
 		}
 		private function addFunction(blks:Array):void{
-			var funcName:String = blks[0][1];
+			var funcName:String = blks[0][1].split("&").join("_");
 			for each(var o:Object in funcList){ 
 				if(o.name==funcName){
 					return;
@@ -422,13 +437,13 @@ void updateVar(char * varName,double * var)
 			params = tmp;
 			var vars:String = "";
 			for(i = 1;i<params.length;i++){
-				vars += (params[i]=='n'?("double"):(params[i]=='s'?"String":(params[i]=='b'?"boolean":"")))+" "+blks[0][2][i-1].split(" ").join("_")+(i<params.length-1?", ":"");
+				vars += (params[i]=='n'?("double"):(params[i]=='s'?"String":(params[i]=='b'?"boolean":"")))+" "+castVarName(blks[0][2][i-1].split(" ").join("_"))+(i<params.length-1?", ":"");
 			}
-			var defFunc:String = "void "+params[0]+"("+vars+");\n";
+			var defFunc:String = "void "+castVarName(params[0], true)+"("+vars+");\n";
 			if(ccode_def.indexOf(defFunc)==-1){
 				ccode_def+=defFunc;
 			}
-			var funcCode:String = "void "+params[0]+"("+vars+")\n{\n";
+			var funcCode:String = "void "+castVarName(params[0], true)+"("+vars+")\n{\n";
 			for(i=0;i<blks.length;i++){
 				if(i>0){
 					
@@ -615,11 +630,11 @@ void updateVar(char * varName,double * var)
 			var c:String =  funcode.charAt(funcode.length-1)
 			if(ccode_pointer=="setup"){
 				if((ccode_setup.indexOf(funcode)==-1&&ccode_setup_fun.indexOf(funcode)==-1)||funcode.indexOf("delay")>-1||allowAdd){
-					if(funcode.indexOf("=")>-1&&funcode.indexOf("while")==-1){
-						ccode_setup_def=funcode+ccode_setup_def;
-					}else{
-						ccode_setup_fun+=funcode;
-					}
+//					if((funcode.indexOf(" = ")>-1&&funcode.indexOf("drawTemp")==-1&&funcode.indexOf("lastTime = ")==-1)&&funcode.indexOf("while")==-1&&funcode.indexOf("for")==-1){
+//						ccode_setup_def = funcode + ccode_setup_def;
+//					}else{
+						ccode_setup_fun += funcode;
+//					}
 				}
 			}
 			else if(ccode_pointer=="loop"){
@@ -644,6 +659,10 @@ void updateVar(char * varName,double * var)
 				codeBlock.type = "string";
 				codeBlock.code = "";
 				return codeBlock;
+			}else if(blk.length==16){
+				codeBlock.type = "array";
+				codeBlock.code = blk;
+				return codeBlock;
 			}
 			if(mathOp.indexOf(blk[0])>=0){
 				codeBlock.type = "obj";
@@ -661,7 +680,7 @@ void updateVar(char * varName,double * var)
 				return codeBlock;
 			}
 			else if(blk[0]=="readVariable:")
-				code = parseVarShow(blk)
+				code = parseVarShow(blk);
 			else if(blk[0]=="wait:elapsed:from:"){
 				codeBlock.type = "string";
 				codeBlock.code = parseDelay(blk);
@@ -718,6 +737,10 @@ void updateVar(char * varName,double * var)
 				codeBlock.type = "obj";
 				codeBlock.code = new CodeObj(StringUtil.substitute("{1}.charAt({0}-1)",getCodeBlock(blk[1]).code,(s2.type=="obj")?"String("+s2.code.code+")":"String(\""+s2.code+"\")"));
 				return codeBlock;
+			}else if(blk[0]=="castDigitToString:"){
+				codeBlock.type = "obj";
+				codeBlock.code = new CodeObj(StringUtil.substitute('String({0})',getCodeBlock(blk[1]).code));
+				return codeBlock;
 			}else if(blk[0]=="stringLength:"){
 				s1 = getCodeBlock(blk[1]);
 				codeBlock.type = "obj";
@@ -725,7 +748,7 @@ void updateVar(char * varName,double * var)
 				return codeBlock;
 			}else if(blk[0]=="changeVar:by:"){
 				codeBlock.type = "string";
-				codeBlock.code = StringUtil.substitute("{0} += {1};\n",getCodeBlock(blk[1]).code,getCodeBlock(blk[2]).code);
+				codeBlock.code = StringUtil.substitute("{0} += {1};\n",getCodeBlock(castVarName(blk[1])).code,getCodeBlock(blk[2]).code);
 				return codeBlock;
 			}
 				//			else if(blk[0].indexOf("Makeblock")>=0||blk[0].indexOf("Arduino")>=0||blk[0].indexOf("Communication")>=0){
@@ -755,7 +778,7 @@ void updateVar(char * varName,double * var)
 				var b:Block = BlockIO.arrayToStack([blk]);
 				if(b.op=="getParam"){
 					codeBlock.type = "number";
-					codeBlock.code = b.spec.split(" ").join("_");
+					codeBlock.code = castVarName(b.spec.split(" ").join("_"));
 					return codeBlock;
 				}
 				if(b.op=="procDef"){
@@ -773,16 +796,33 @@ void updateVar(char * varName,double * var)
 		}
 		private function substitute(str:String,params:Array,ext:ScratchExtension=null,offset:uint = 1):String{
 			for(var i:uint=0;i<params.length-offset;i++){
-				
 				var o:CodeBlock = getCodeBlock(params[i+offset]);
+				
 				var v:*=o.type=="string"?(ext.values[o.code]==undefined?o.code:ext.values[o.code]):null;
+//				if(str.indexOf("sendString")>-1){
+//					v = o.code;
+//				}
 				var s:CodeBlock = new CodeBlock();
 				if(ext==null||(v==null||v==undefined)){
+					
 					s = getCodeBlock(params[i+offset]);
 					s.type = (s.type=="obj"&&s.code.type!="code")?"string":"number";
+					
 				}else{
 					s.type = isNaN(Number(v))?"string":"number";
 					s.code = v;
+				}
+				if((s.code==""||s.code==" ")&&s.code!=0&&s.type == "number"){
+					s.type = "string";
+				}
+				if(str.indexOf(".drawStr(")>-1){
+					if(i==3 && s.type == "number" && s.code is String){
+						s.type = "string";
+					}
+				}else if(str.indexOf("ir.sendString(") == 0){
+					if(s.type == "number" && s.code is String){
+						s.type = "string";
+					}
 				}
 				str = str.split("{"+i+"}").join(( s.type == "string")?('"'+s.code+'"'):(( s.type == "number")?s.code:s.code.code));
 			}
@@ -919,32 +959,14 @@ void updateVar(char * varName,double * var)
 			unknownBlocks = [];
 			// params for compiler
 			requiredCpp=[];
+			var buildSuccess:Boolean = false;
 			var objs:Object = util.JSON.parse(code);
 			var childs:Array = objs.children.reverse();
 			for(var i:int=0;i<childs.length;i++){
-				var child:Object = childs[i]
-				if("scripts" in child){
-					for(var j:uint=0;j<child.scripts.length;j++){
-						var scr:Object = child.scripts[j][2];
-						if(scr[0][0].indexOf("runArduino")==-1){
-							if(scr[0][0]=="procDef"){
-								addFunction(scr as Array);
-								parseModules(scr);
-								buildCodes();
-							}
-							continue;
-						}//选中的Arduino主代码
-						
-						if(!parseCodeBlocks(scr)){
-							continue;
-						}
-						buildCodes();
-						if(_scratch!=null){
-							_scratch.dispatchEvent(new RobotEvent(RobotEvent.CCODE_GOT,retcode));
-						}
-						//break; // only the first entrance is parsed
-					}
-				}
+				buildSuccess = parseScripts(childs[i].scripts);
+			}
+			if(!buildSuccess){
+				parseScripts(objs.scripts);
 			}
 			ccode_func+=buildFunctions();
 			retcode = codeTemplate.replace("//setup",ccode_setup).replace("//loop", ccode_loop).replace("//define", ccode_def).replace("//include", ccode_inc).replace("//function",ccode_func);
@@ -956,6 +978,35 @@ void updateVar(char * varName,double * var)
 			if(!NativeProcess.isSupported) return "";
 			return (retcode);
 			//			buildAll(retcode, requiredCpp);
+		}
+		private function parseScripts(scripts:Object):Boolean
+		{
+			if(null == scripts){
+				return false;
+			}
+			var result:Boolean = false;
+			for(var j:uint=0;j<scripts.length;j++){
+				var scr:Object = scripts[j][2];
+				if(scr[0][0].indexOf("runArduino")==-1){
+					if(scr[0][0]=="procDef"){
+						addFunction(scr as Array);
+						parseModules(scr);
+						buildCodes();
+					}
+					continue;
+				}//选中的Arduino主代码
+				
+				if(!parseCodeBlocks(scr)){
+					continue;
+				}
+				buildCodes();
+				if(_scratch!=null){
+					_scratch.dispatchEvent(new RobotEvent(RobotEvent.CCODE_GOT,""));
+				}
+				result = true;
+				//break; // only the first entrance is parsed
+			}
+			return result;
 		}
 		private function buildCodes():void{
 			buildInclude();			
@@ -981,12 +1032,24 @@ void updateVar(char * varName,double * var)
 			}
 			return modInitCode;
 		}
+		static private const varNamePattern:RegExp = /^[_A-Za-z][_A-Za-z0-9]*$/;
+		static private function castVarName(name:String, isFunction:Boolean=false):String
+		{
+			if(varNamePattern.test(name)){
+				return name;
+			}
+			var newName:String = isFunction ? "__func_" : "__var_";
+			for(var i:int=0; i<name.length; ++i){
+				newName += "_" + name.charCodeAt(i).toString();
+			}
+			return newName;
+		}
 		
 		private function buildDefine():String{
 			var modDefineCode:String = ""
 			for(var i:int=0;i<varList.length;i++){
-				var v:Object = varList[i]
-				var code:* = StringUtil.substitute("double {0};\n" ,v)
+				var v:String = varList[i];
+				var code:* = StringUtil.substitute("double {0};\n" ,castVarName(v))
 				if(ccode_def.indexOf(code)==-1){
 					ccode_def+=code;
 				}
@@ -1049,6 +1112,8 @@ void updateVar(char * varName,double * var)
 			return funcCodes;
 		}
 		private function getRequiredCpp():Array{
+			return [];
+			/*
 			var modMapCpp:Object={"motor":"MeDCMotor","ultrasonic":"MeUltrasonic","servo":"MeServo","temperature":"MeTemperature","led":"MeRGBLed","gyro":"MeGyro","infrared":"MeInfraredReceiver","sevseg":"Me7SegmentDisplay"}
 			var cppList:Array=[];
 			return cppList;
@@ -1063,6 +1128,7 @@ void updateVar(char * varName,double * var)
 			//			if(cppList.length>0 || moduleList.length>0)
 			//cppList.push("MePort")
 			return cppList
+			*/
 		}
 		
 		public function uploadCode(code:String):void{
@@ -1144,25 +1210,24 @@ void updateVar(char * varName,double * var)
 			if(!workdir.exists){
 				workdir.createDirectory(); 
 			}
-			var srcdir:File = ApplicationManager.sharedManager().documents.resolvePath("mBlock/libraries/"+_extSrcPath+"/src");
 			//			var srcdir:File = File.applicationDirectory.resolvePath("compiler"); 
 			if(!workdir.exists){
 				return;
 			}
 			// copy firmware directory
-			//			srcdir = srcdir.resolvePath("firmware");
-			workdir = workdir.resolvePath(projectDocumentName); 
-			//srcdir.copyTo(workdir,true); 
+			workdir = workdir.resolvePath(projectDocumentName);
+//			var srcdir:File = ApplicationManager.sharedManager().documents.resolvePath("mBlock/libraries/"+_extSrcPath+"/src");
+//			if(srcdir.exists && srcdir.getDirectoryListing().length > 0){
+//				srcdir.copyTo(workdir,true);
+//			}
+			//*
 			for each(var path:String in srcDocuments){
-				srcdir = new File(path);
-				if(srcdir.exists){
-					if(srcdir.isDirectory){
-						if(srcdir.getDirectoryListing().length>0){
-							copyCompileFiles(srcdir.getDirectoryListing(),workdir);
-						}
-					}
+				var srcdir:File = new File(path);
+				if(srcdir.exists && srcdir.isDirectory){
+					copyCompileFiles(srcdir.getDirectoryListing(),workdir);
 				}
 			}
+			//*/
 			var projCpp:File = File.applicationStorageDirectory.resolvePath("scratchTemp/"+projectDocumentName+"/"+projectDocumentName+".ino")
 			LogManager.sharedManager().log("projCpp:"+projCpp.nativePath);
 			var outStream:FileStream = new FileStream();
@@ -1192,22 +1257,30 @@ void updateVar(char * varName,double * var)
 		}
 		
 		private var compileErr:Boolean = false;
-		private function copyCompileFiles(files:Array,workdir:File):void{
-			var dstFile:File;
-			var cppList:Array = requiredCpp;
-			for (var i:uint = 0; i < files.length; i++)  
-			{ 
-				if(files[i].extension=="cpp" || files[i].extension=="c" || files[i].extension=="h"){
-					dstFile = workdir.resolvePath(files[i].name);
-					var n:String = files[i].name.split("."+files[i].extension).join("");;
-					if(cppList.indexOf(n)==-1)cppList.push(n);
-					files[i].copyTo(dstFile,true);
+		//*
+		private function copyCompileFiles(files:Array, workdir:File):void
+		{
+			for(var i:int = 0; i < files.length; ++i){
+				var file:File = files[i];
+				switch(file.extension){
+					case "cpp":
+					case "c":{
+						var fileName:String = file.name.split(".")[0];
+						if(requiredCpp.indexOf(fileName) < 0){
+							requiredCpp.push(fileName);
+						}
+					}
+						//fall through
+					case "h":
+						file.copyTo(workdir.resolvePath(file.name), true);
+						break;
 				}
 			}
 		}
+		//*/
 		public function get projectDocumentName():String{
 			var now:Date = new Date;
-			var pName:String = MBlock.app.projectName().split(" ").join("");
+			var pName:String = MBlock.app.projectName().split(" ").join("").split("(").join("").split(")").join("");
 			for(var i:uint=0;i<pName.length;i++){
 				if(pName.charCodeAt(i)>100){
 					pName = pName.split(pName.charAt(i)).join("_");
@@ -1224,6 +1297,7 @@ void updateVar(char * varName,double * var)
 			if(isUploading){
 				return "uploading";
 			}
+			/*
 			if(arduinoInstallPath==""){
 				var dialog:DialogBox = new DialogBox();
 				dialog.addTitle("Message");
@@ -1237,7 +1311,6 @@ void updateVar(char * varName,double * var)
 					function onPathSelected(evt:Event):void{
 						var f:File = evt.target as File;
 						arduinoPath = ApplicationManager.sharedManager().system==ApplicationManager.WINDOWS?f.url:(f.url+"/Arduino.app/Contents/Resources/Java");
-						SharedObjectManager.sharedManager().setObject("arduinoPath",arduinoPath);
 					}
 					fileRef.browseForDirectory(Translator.map("Arduino IDE"));
 					fileRef.addEventListener(Event.SELECT,onPathSelected);
@@ -1253,34 +1326,32 @@ void updateVar(char * varName,double * var)
 				dialog.showOnStage(MBlock.app.stage);
 				return "Arduino IDE not found.";
 			}
+			*/
 			_currentDevice = DeviceManager.sharedManager().currentDevice;
-			var cppList:Array =  requiredCpp;
 			// get building direcotry ready
 			var workdir:File = File.applicationStorageDirectory.resolvePath("scratchTemp")
 			if(!workdir.exists){
 				workdir.createDirectory(); 
 			} 
 			
-			var srcdir:File = ApplicationManager.sharedManager().documents.resolvePath("mBlock/libraries/"+_extSrcPath+"/src");
-			//			var srcdir:File = File.applicationDirectory.resolvePath("compiler"); 
 			if(!workdir.exists){
 				return "workdir not exists";
 			}
 			nativeWorkList = []
 			// copy firmware directory
-			srcdir = srcdir.resolvePath("firmware");
 			workdir = workdir.resolvePath(projectDocumentName);
-			//srcdir.copyTo(workdir,true); 
+//			var srcdir:File = ApplicationManager.sharedManager().documents.resolvePath("mBlock/libraries/"+_extSrcPath+"/src");
+//			if(srcdir.exists && srcdir.getDirectoryListing().length > 0){
+//				srcdir.copyTo(workdir,true);
+//			}
+			//*
 			for each(var path:String in srcDocuments){
-				srcdir = new File(path);
-				if(srcdir.exists){
-					if(srcdir.isDirectory){
-						if(srcdir.getDirectoryListing().length>0){
-							copyCompileFiles(srcdir.getDirectoryListing(),workdir);
-						}
-					}
+				var srcdir:File = new File(path);
+				if(srcdir.exists && srcdir.isDirectory){
+					copyCompileFiles(srcdir.getDirectoryListing(), workdir);
 				}
 			}
+			//*/
 			var projCpp:File = File.applicationStorageDirectory.resolvePath("scratchTemp/"+projectDocumentName+"/"+projectDocumentName+".ino")
 			var outStream:FileStream = new FileStream();
 			outStream.open(projCpp, FileMode.WRITE);
@@ -1315,20 +1386,11 @@ void updateVar(char * varName,double * var)
 			*/
 			// prebuild arduino lib
 			buildArduinoLib(workdir);
-			// copy files
-			var dstFile:File;
-			for (var i:uint = 0; i < files.length; i++)  
-			{ 
-				if(files[i].extension=="cpp" || files[i].extension=="c" || files[i].extension=="h"){
-					dstFile = workdir.resolvePath(files[i].name);
-					var n:String = files[i].name.split("."+files[i].extension).join("");;
-					if(cppList.indexOf(n)==-1)cppList.push(n);
-					files[i].copyTo(dstFile,true);
-				}
-			}
+			copyCompileFiles(files, workdir);
+			
 			// copy project.ino to ./build/project.ino.cpp
 			// combine aux ino and main ino into 1 cpp file
-			dstFile = workdir.resolvePath(projectDocumentName+".ino.cpp")
+			var dstFile:File = workdir.resolvePath(projectDocumentName+".ino.cpp")
 			outStream = new FileStream();
 			outStream.open(dstFile, FileMode.WRITE);
 			outStream.writeUTFBytes(ccode);
@@ -1342,12 +1404,13 @@ void updateVar(char * varName,double * var)
 			dispatchEvent(new Event(EVENT_NATIVE_DONE));
 			tc_projCpp = projCpp
 			tc_workdir = workdir
-			tc_cppList = cppList;
+			tc_cppList = requiredCpp;
 			return ""
 		}
 		
 		
 		public function openArduinoIDE(ccode:String):String{
+			/*
 			if(arduinoInstallPath==""){
 				var dialog:DialogBox = new DialogBox();
 				dialog.addTitle("Message");
@@ -1360,7 +1423,6 @@ void updateVar(char * varName,double * var)
 					function onPathSelected(evt:Event):void{
 						var f:File = evt.target as File;
 						arduinoPath = f.url;
-						SharedObjectManager.sharedManager().setObject("arduinoPath",arduinoPath);
 					}
 					fileRef.browseForDirectory(Translator.map("Arduino IDE"));
 					fileRef.addEventListener(Event.SELECT,onPathSelected);
@@ -1376,15 +1438,16 @@ void updateVar(char * varName,double * var)
 				dialog.showOnStage(MBlock.app.stage);
 				return "Arduino IDE not found.";
 			}
+			*/
 			prepareProjectDir(ccode)
-			var file:File = new File(); 
+			var file:File;
 			if(ApplicationManager.sharedManager().system==ApplicationManager.WINDOWS){
-				file.url = arduinoInstallPath+"/arduino.exe";
+				file = new File(arduinoInstallPath+"/arduino.exe");
 			}else{
-				file.url = new File(arduinoInstallPath+"/../../MacOS/JavaApplicationStub").url;
-				if(!file.exists){
-					file.url = new File(arduinoInstallPath+"/../MacOS/Arduino").url; 
-				}
+//				file = new File(arduinoInstallPath+"/../../MacOS/JavaApplicationStub");
+//				if(!file.exists){
+					file = new File(arduinoInstallPath+"/../MacOS/Arduino");
+//				}
 			}
 			
 			var processArgs:Vector.<String> = new Vector.<String>(); 
@@ -1405,7 +1468,7 @@ void updateVar(char * varName,double * var)
 			var cpp:File = tc_projCpp
 			var dir:File = tc_workdir
 			var cppList:Array = tc_cppList
-			archOutputFiles(cpp,dir,cppList)
+			archOutputFiles(cpp,dir)
 			compileCpp(projectDocumentName+".ino",dir);
 			var elf:Array=[projectDocumentName+".ino.o"]
 			for(var i:int=0;i<cppList.length;i++){
@@ -1430,16 +1493,14 @@ void updateVar(char * varName,double * var)
 			arduinoCppList = []
 			arduinoCList = []
 			// enum arduino core
-			var file:File = new File();
-			file.url = new File(arduinoInstallPath+"/hardware/arduino/avr").url;
+			var file:File = new File(arduinoInstallPath+"/hardware/arduino/avr");
 			if(file.exists){
 				avrPath = "/hardware/arduino/avr" // v1.5
 			}else{
 				avrPath = "/hardware/arduino" // v1.0
 			}
 			
-			file.url = new File(arduinoInstallPath+avrPath+"/cores/arduino").url;
-			listArduinoLib(file)
+			listArduinoLib(new File(arduinoInstallPath+avrPath+"/cores/arduino"));
 			// enum arduino libs
 			file.url = new File(arduinoInstallPath+avrPath+"/libraries").url;
 			if(file.exists){
@@ -1448,17 +1509,27 @@ void updateVar(char * varName,double * var)
 				arduinoLibPath = "/libraries";
 			}
 			
-			file.url = new File(arduinoInstallPath+arduinoLibPath+"/Wire").url;
-			listArduinoLib(file)
-			file.url = new File(arduinoInstallPath+"/libraries/Servo").url; // servo still in root library
-			listArduinoLib(file)
-			file.url = new File(arduinoInstallPath+arduinoLibPath+"/SoftwareSerial").url;
-			listArduinoLib(file)
+			listArduinoLib(new File(arduinoInstallPath+arduinoLibPath+"/Wire"))
+			var servoFile:File = new File(arduinoInstallPath+"/libraries/Servo/src/avr");
+			//support 1.6.5
+			if(servoFile.exists){
+				listArduinoLib(new File(arduinoInstallPath+"/libraries/Servo/src/avr"));
+			}else{
+				listArduinoLib(new File(arduinoInstallPath+"/libraries/Servo"));
+			}
 			
-			//
+			listArduinoLib(new File(arduinoInstallPath+arduinoLibPath+"/SoftwareSerial"));
+			
+			if(_currentDevice=="uno" || _currentDevice=="leonardo"){
+				listArduinoLib(new File(arduinoInstallPath+"/libraries/makeblock"));
+			}
+			
 			for (var i:uint = 0; i < arduinoCppList.length; i++)  
 			{ 
 				compileCpp(arduinoCppList[i],buildDir)
+			}
+			if(servoFile.exists){
+				compileS(buildDir);
 			}
 			for (i = 0; i < arduinoCList.length; i++)  
 			{ 
@@ -1481,95 +1552,17 @@ void updateVar(char * varName,double * var)
 		}
 		
 		public function get arduinoInstallPath():String{
-			if(arduinoPath.length>0){
-				var ttf:File = new File(); 
-				ttf.url = new File(arduinoPath+(ApplicationManager.sharedManager().system==ApplicationManager.WINDOWS?"/hardware/tools/avr/bin/avr-ar.exe":"/hardware/tools/avr/bin/avr-ar")).url;
-				if(ttf.exists){
-					return arduinoPath;
+			if(null == arduinoPath){
+				if(Capabilities.os.indexOf("Windows") == 0){
+					arduinoPath = File.applicationDirectory.resolvePath("Arduino").nativePath;
 				}else{
-					SharedObjectManager.sharedManager().setObject("arduinoPath","");
-					arduinoPath = "";
-					//return "";
-				}
-			}
-			var tf:File = new File(); 
-			if(ApplicationManager.sharedManager().system==ApplicationManager.MAC_OS){
-				tf.url = new File("/Applications/Arduino.app/Contents/Java/hardware/tools/avr/bin/avr-ar").url;
-				if(tf.exists){
-					arduinoPath ="/Applications/Arduino.app/Contents/Java";
-					SharedObjectManager.sharedManager().setObject("arduinoPath",arduinoPath);
-					return arduinoPath;
-				}else{
-					tf.url = new File("/Applications/Arduino.app/Contents/Resources/Java/hardware/tools/avr/bin/avr-ar").url;
-					if(tf.exists){
-						arduinoPath ="/Applications/Arduino.app/Contents/Resources/Java";
-						SharedObjectManager.sharedManager().setObject("arduinoPath",arduinoPath);
-						return arduinoPath;
-					}
-				}
-				return "";
-			}
-			var file:File = File.applicationDirectory.resolvePath("arduino");
-			if(file.exists){
-				tf.url = file.url+"/hardware/tools/avr/bin/avr-ar.exe"
-				if(tf.exists){
-					arduinoPath = "file:///"+file.nativePath.split("%20").join("\ ").split("\\").join("/");
-					SharedObjectManager.sharedManager().setObject("arduinoPath",arduinoPath);
-					return arduinoPath;
-				}
-			}
-			var files:Array = File.getRootDirectories();
-			for each(file in files){
-				if(file.isDirectory){
-					var tmp:Array = file.getDirectoryListing();
-					for each(var f:File in tmp){
-						if(f.url.toLocaleLowerCase().indexOf("arduino")>-1){
-							tf.url = f.url+"/hardware/tools/avr/bin/avr-ar.exe"
-							if(tf.exists){
-								arduinoPath =(f.url.split("%20").join("\ "));
-								SharedObjectManager.sharedManager().setObject("arduinoPath",arduinoPath);
-								return arduinoPath;
-							}
-						}
-					}
-					var subFile:File = new File(file.nativePath+"Program Files");
-					if(subFile.exists){
-						if(subFile.isDirectory){
-							tmp = subFile.getDirectoryListing();
-							for each(f in tmp){
-								if(f.url.toLocaleLowerCase().indexOf("arduino")>-1){
-									tf.url = f.url+"/hardware/tools/avr/bin/avr-ar.exe"
-									if(tf.exists){
-										arduinoPath = (f.url.split("%20").join("\ "));
-										SharedObjectManager.sharedManager().setObject("arduinoPath",arduinoPath);
-										return arduinoPath;
-									}
-								}
-							}
-						}
-					}
-					subFile = new File(file.nativePath+"Program Files (x86)");
-					if(subFile.exists){
-						if(subFile.isDirectory){
-							tmp = subFile.getDirectoryListing();
-							for each(f in tmp){
-								if(f.url.toLocaleLowerCase().indexOf("arduino")>-1){
-									tf.url = f.url+"/hardware/tools/avr/bin/avr-ar.exe"
-									if(tf.exists){
-										arduinoPath = (f.url.split("%20").join("\ "));
-										SharedObjectManager.sharedManager().setObject("arduinoPath",arduinoPath);
-										return arduinoPath;
-									}
-								}
-							}
-						}
-					}
+					arduinoPath = File.applicationDirectory.resolvePath("Arduino/Arduino.app/Contents/Java").nativePath;
 				}
 			}
 			return arduinoPath;
 		}
 		
-		private function archOutputFiles(cpp:File,dir:File,cppList:Array):void{
+		private function archOutputFiles(cpp:File,dir:File):void{
 			var file:File = new File(arduinoInstallPath+"/hardware/tools/avr/bin/avr-ar"+(ApplicationManager.sharedManager().system==ApplicationManager.WINDOWS?".exe":"")); 
 			
 			var cmd:Array = ["rcs","core.a","file.o"]
@@ -1602,19 +1595,19 @@ void updateVar(char * varName,double * var)
 			var path:String = arduinoInstallPath;
 			path=path.split("file:///").join("");//.split("/").join("\\");
 			var cmd:String = "";
-			trace("currentDevice:",_currentDevice);
+//			trace("currentDevice:",_currentDevice);
 			if(_currentDevice=="uno"){
-				cmd = " -c -g -Os -w -fno-exceptions -ffunction-sections -fdata-sections -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=156 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/standard -I"+path+"/libraries/Servo/src -I"+path+"/libraries/Servo -I"+path+arduinoLibPath+"/Wire -I"+path+arduinoLibPath+"/Wire/utility -I"+path+arduinoLibPath+"/SoftwareSerial"
+				cmd = " -c -g -Os -w -fno-exceptions -ffunction-sections -fdata-sections -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=10605 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/standard -I"+path+"/libraries/Servo/src -I"+path+"/libraries/Servo -I"+path+arduinoLibPath+"/Wire -I"+path+arduinoLibPath+"/Wire/utility -I"+path+arduinoLibPath+"/SoftwareSerial -I" + path+"/libraries/makeblock/src"
 			}else if(_currentDevice=="leonardo"){
-				cmd = " -c -g -Os -w -fno-exceptions -ffunction-sections -fdata-sections -MMD -mmcu=atmega32u4 -DF_CPU=16000000L -DARDUINO=156 -DARDUINO_AVR_LEONARDO -DARDUINO_ARCH_AVR -DUSB_VID=0x2a03 -DUSB_PID=0x8036 -DUSB_MANUFACTURER= -DUSB_PRODUCT=\"Arduino Leonardo\" -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/leonardo -I"+path+"/libraries/Servo/src -I"+path+"/libraries/Servo -I"+path+arduinoLibPath+"/Wire -I"+path+arduinoLibPath+"/Wire/utility -I"+path+arduinoLibPath+"/SoftwareSerial"
+				cmd = " -c -g -Os -w -fno-exceptions -ffunction-sections -fdata-sections -MMD -mmcu=atmega32u4 -DF_CPU=16000000L -DARDUINO=10605 -DARDUINO_AVR_LEONARDO -DARDUINO_ARCH_AVR -DUSB_VID=0x2341 -DUSB_PID=0x8036 -DUSB_MANUFACTURER=\"Unknown\" -DUSB_PRODUCT=\"Arduino Leonardo\" -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/leonardo -I"+path+"/libraries/Servo/src -I"+path+"/libraries/Servo -I"+path+arduinoLibPath+"/Wire -I"+path+arduinoLibPath+"/Wire/utility -I"+path+arduinoLibPath+"/SoftwareSerial -I" + path+"/libraries/makeblock/src"
 			}else if(_currentDevice=="mega1280"){
-				cmd = " -c -g -Os -w -fno-exceptions -ffunction-sections -fdata-sections -mmcu=atmega1280 -DF_CPU=16000000L -MMD -DUSB_VID=null -DUSB_PID=null -DARDUINO=1062 -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/mega -I"+path+"/libraries/Servo/src -I"+path+"/libraries/Servo -I"+path+arduinoLibPath+"/Wire -I"+path+arduinoLibPath+"/Wire/utility -I"+path+arduinoLibPath+"/SoftwareSerial"
+				cmd = " -c -g -Os -w -fno-exceptions -ffunction-sections -fdata-sections -MMD -mmcu=atmega1280 -DF_CPU=16000000L -DARDUINO=10605 -DARDUINO_AVR_MEGA -DARDUINO_ARCH_AVR -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/mega -I"+path+"/libraries/Servo/src -I"+path+"/libraries/Servo -I"+path+arduinoLibPath+"/Wire -I"+path+arduinoLibPath+"/Wire/utility -I"+path+arduinoLibPath+"/SoftwareSerial"
 			}else if(_currentDevice=="mega2560"){
-				cmd = " -c -g -Os -w -fno-exceptions -ffunction-sections -fdata-sections -mmcu=atmega2560 -DF_CPU=16000000L -MMD -DUSB_VID=null -DUSB_PID=null -DARDUINO=1062 -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/mega -I"+path+"/libraries/Servo/src -I"+path+"/libraries/Servo -I"+path+arduinoLibPath+"/Wire -I"+path+arduinoLibPath+"/Wire/utility -I"+path+arduinoLibPath+"/SoftwareSerial"
+				cmd = " -c -g -Os -w -fno-exceptions -ffunction-sections -fdata-sections -MMD -mmcu=atmega2560 -DF_CPU=16000000L -DARDUINO=10605 -DARDUINO_AVR_MEGA2560 -DARDUINO_ARCH_AVR -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/mega -I"+path+"/libraries/Servo/src -I"+path+"/libraries/Servo -I"+path+arduinoLibPath+"/Wire -I"+path+arduinoLibPath+"/Wire/utility -I"+path+arduinoLibPath+"/SoftwareSerial"
 			}else if(_currentDevice=="nano328"){
-				cmd = " -c -g -Os -w -fno-exceptions -ffunction-sections -fdata-sections -mmcu=atmega328p -DF_CPU=16000000L -MMD -DUSB_VID=null -DUSB_PID=null -DARDUINO=1062 -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/eightanaloginputs -I"+path+"/libraries/Servo/src -I"+path+"/libraries/Servo -I"+path+arduinoLibPath+"/Wire -I"+path+arduinoLibPath+"/Wire/utility -I"+path+arduinoLibPath+"/SoftwareSerial"
+				cmd = " -c -g -Os -w -fno-exceptions -ffunction-sections -fdata-sections -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=10605 -DARDUINO_AVR_NANO -DARDUINO_ARCH_AVR -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/eightanaloginputs -I"+path+"/libraries/Servo/src -I"+path+"/libraries/Servo -I"+path+arduinoLibPath+"/Wire -I"+path+arduinoLibPath+"/Wire/utility -I"+path+arduinoLibPath+"/SoftwareSerial"
 			}else if(_currentDevice=="nano168"){
-				cmd = " -c -g -Os -w -fno-exceptions -ffunction-sections -fdata-sections -mmcu=atmega168 -DF_CPU=16000000L -MMD -DUSB_VID=null -DUSB_PID=null -DARDUINO=1062 -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/eightanaloginputs -I"+path+"/libraries/Servo/src -I"+path+"/libraries/Servo -I"+path+arduinoLibPath+"/Wire -I"+path+arduinoLibPath+"/Wire/utility -I"+path+arduinoLibPath+"/SoftwareSerial"
+				cmd = " -c -g -Os -w -fno-exceptions -ffunction-sections -fdata-sections -MMD -mmcu=atmega168 -DF_CPU=16000000L -DARDUINO=10605 -DARDUINO_AVR_NANO -DARDUINO_ARCH_AVR -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/eightanaloginputs -I"+path+"/libraries/Servo/src -I"+path+"/libraries/Servo -I"+path+arduinoLibPath+"/Wire -I"+path+arduinoLibPath+"/Wire/utility -I"+path+arduinoLibPath+"/SoftwareSerial"
 			}
 			var arg:Array = cmd.split(" -")
 			var processArgs:Vector.<String> = new Vector.<String>(); 
@@ -1647,17 +1640,17 @@ void updateVar(char * varName,double * var)
 			//				cmd = " -c -g -Os -w -ffunction-sections -fdata-sections -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=156 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/standard -I"+path+arduinoLibPath+"/Wire -I"+path+"/libraries/Servo/src -I"+path+"/libraries/Servo -I"+path+arduinoLibPath+"/SoftwareSerial -I"+path+arduinoLibPath+"/Wire/utility"
 			var cmd:String = "";
 			if(_currentDevice=="uno"){
-				cmd = " -c -g -Os -w -ffunction-sections -fdata-sections -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=156 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/standard -I"+path+"/libraries/Servo/src -I"+path+"/libraries/Servo -I"+path+arduinoLibPath+"/Wire -I"+path+arduinoLibPath+"/Wire/utility -I"+path+arduinoLibPath+"/SoftwareSerial"
+				cmd = " -c -g -Os -w -ffunction-sections -fdata-sections -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=10605 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/standard -I"+path+"/libraries/Servo/src -I"+path+"/libraries/Servo -I"+path+arduinoLibPath+"/Wire -I"+path+arduinoLibPath+"/Wire/utility -I"+path+arduinoLibPath+"/SoftwareSerial -I" + path+"/libraries/makeblock/src"
 			}else if(_currentDevice=="leonardo"){
-				cmd = " -c -g -Os -w -ffunction-sections -fdata-sections -MMD -mmcu=atmega32u4 -DF_CPU=16000000L -DARDUINO=156 -DARDUINO_AVR_LEONARDO -DARDUINO_ARCH_AVR -DUSB_VID=0x2a03 -DUSB_PID=0x8036 -DUSB_MANUFACTURER= -DUSB_PRODUCT=\"Arduino Leonardo\" -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/leonardo -I"+path+"/libraries/Servo/src -I"+path+"/libraries/Servo -I"+path+arduinoLibPath+"/Wire -I"+path+arduinoLibPath+"/Wire/utility -I"+path+arduinoLibPath+"/SoftwareSerial"
+				cmd = " -c -g -Os -w -ffunction-sections -fdata-sections -MMD -mmcu=atmega32u4 -DF_CPU=16000000L -DARDUINO=10605 -DARDUINO_AVR_LEONARDO -DARDUINO_ARCH_AVR -DUSB_VID=0x2a03 -DUSB_PID=0x8036 -DUSB_MANUFACTURER= -DUSB_PRODUCT=\"Arduino Leonardo\" -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/leonardo -I"+path+"/libraries/Servo/src -I"+path+"/libraries/Servo -I"+path+arduinoLibPath+"/Wire -I"+path+arduinoLibPath+"/Wire/utility -I"+path+arduinoLibPath+"/SoftwareSerial -I" + path+"/libraries/makeblock/src"
 			}else if(_currentDevice=="mega1280"){
-				cmd = " -c -g -Os -w -ffunction-sections -fdata-sections -mmcu=atmega2560 -DF_CPU=16000000L -MMD -DUSB_VID=null -DUSB_PID=null -DARDUINO=1062 -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/mega -I"+path+"/libraries/Servo/src -I"+path+"/libraries/Servo -I"+path+arduinoLibPath+"/Wire -I"+path+arduinoLibPath+"/Wire/utility -I"+path+arduinoLibPath+"/SoftwareSerial"
+				cmd = " -c -g -Os -w -ffunction-sections -fdata-sections -MMD -mmcu=atmega1280 -DF_CPU=16000000L -DARDUINO=10605 -DARDUINO_AVR_MEGA -DARDUINO_ARCH_AVR -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/mega -I"+path+"/libraries/Servo/src -I"+path+"/libraries/Servo -I"+path+arduinoLibPath+"/Wire -I"+path+arduinoLibPath+"/Wire/utility -I"+path+arduinoLibPath+"/SoftwareSerial"
 			}else if(_currentDevice=="mega2560"){
-				cmd = " -c -g -Os -w -ffunction-sections -fdata-sections -mmcu=atmega2560 -DF_CPU=16000000L -MMD -DUSB_VID=null -DUSB_PID=null -DARDUINO=1062 -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/mega -I"+path+"/libraries/Servo/src -I"+path+"/libraries/Servo -I"+path+arduinoLibPath+"/Wire -I"+path+arduinoLibPath+"/Wire/utility -I"+path+arduinoLibPath+"/SoftwareSerial"
+				cmd = " -c -g -Os -w -ffunction-sections -fdata-sections -MMD -mmcu=atmega2560 -DF_CPU=16000000L -DARDUINO=10605 -DARDUINO_AVR_MEGA2560 -DARDUINO_ARCH_AVR -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/mega -I"+path+"/libraries/Servo/src -I"+path+"/libraries/Servo -I"+path+arduinoLibPath+"/Wire -I"+path+arduinoLibPath+"/Wire/utility -I"+path+arduinoLibPath+"/SoftwareSerial"
 			}else if(_currentDevice=="nano328"){
-				cmd = " -c -g -Os -w -ffunction-sections -fdata-sections -mmcu=atmega328p -DF_CPU=16000000L -MMD -DUSB_VID=null -DUSB_PID=null -DARDUINO=1062 -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/eightanaloginputs -I"+path+"/libraries/Servo/src -I"+path+"/libraries/Servo -I"+path+arduinoLibPath+"/Wire -I"+path+arduinoLibPath+"/Wire/utility -I"+path+arduinoLibPath+"/SoftwareSerial"
+				cmd = " -c -g -Os -w -ffunction-sections -fdata-sections -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=10605 -DARDUINO_AVR_NANO -DARDUINO_ARCH_AVR -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/eightanaloginputs -I"+path+"/libraries/Servo/src -I"+path+"/libraries/Servo -I"+path+arduinoLibPath+"/Wire -I"+path+arduinoLibPath+"/Wire/utility -I"+path+arduinoLibPath+"/SoftwareSerial"
 			}else if(_currentDevice=="nano168"){
-				cmd = " -c -g -Os -w -ffunction-sections -fdata-sections -mmcu=atmega168 -DF_CPU=16000000L -MMD -DUSB_VID=null -DUSB_PID=null -DARDUINO=1062 -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/eightanaloginputs -I"+path+"/libraries/Servo/src -I"+path+"/libraries/Servo -I"+path+arduinoLibPath+"/Wire -I"+path+arduinoLibPath+"/Wire/utility -I"+path+arduinoLibPath+"/SoftwareSerial"
+				cmd = " -c -g -Os -w -ffunction-sections -fdata-sections -MMD -mmcu=atmega168 -DF_CPU=16000000L -DARDUINO=10605 -DARDUINO_AVR_NANO -DARDUINO_ARCH_AVR -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/eightanaloginputs -I"+path+"/libraries/Servo/src -I"+path+"/libraries/Servo -I"+path+arduinoLibPath+"/Wire -I"+path+arduinoLibPath+"/Wire/utility -I"+path+arduinoLibPath+"/SoftwareSerial"
 			}
 			
 			var arg:Array = cmd.split(" -")
@@ -1675,10 +1668,50 @@ void updateVar(char * varName,double * var)
 			cpp = tmp[tmp.length-1]
 			processArgs.push(cpp+".o")
 			nativeProcessStartupInfo.arguments = processArgs;
-			nativeWorkList.push(nativeProcessStartupInfo)
+			nativeWorkList.push(nativeProcessStartupInfo);
 			
 		}
-		
+		private function compileS(dir:File):void{
+			var nativeProcessStartupInfo:NativeProcessStartupInfo =new NativeProcessStartupInfo();
+			var file:File = new File(arduinoInstallPath+"/hardware/tools/avr/bin/avr-gcc"+(ApplicationManager.sharedManager().system==ApplicationManager.WINDOWS?".exe":"")); 
+			nativeProcessStartupInfo.executable = file
+			nativeProcessStartupInfo.workingDirectory = dir;
+			var path:String = arduinoInstallPath;
+			path=path.split("file:///").join("");//.split("/").join("/");
+			//			var cmd:String = " -c -g -Os -w -ffunction-sections -fdata-sections -MMD -mmcu=atmega32u4 -DF_CPU=16000000L -DARDUINO=156 -DARDUINO_AVR_LEONARDO -DARDUINO_ARCH_AVR -DUSB_VID=0x2341 -DUSB_PID=0x8036 -DUSB_MANUFACTURER= -DUSB_PRODUCT=\"Arduino Leonardo\" -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/leonardo -I"+path+arduinoLibPath+"/Wire -I"+path+"/libraries/Servo/src -I"+path+"/libraries/Servo -I"+path+arduinoLibPath+"/SoftwareSerial -I"+path+arduinoLibPath+"/Wire/utility"
+			//			if(boardType!="leonardo")
+			//				cmd = " -c -g -Os -w -ffunction-sections -fdata-sections -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=156 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/standard -I"+path+arduinoLibPath+"/Wire -I"+path+"/libraries/Servo/src -I"+path+"/libraries/Servo -I"+path+arduinoLibPath+"/SoftwareSerial -I"+path+arduinoLibPath+"/Wire/utility"
+			var cmd:String = "";
+			if(_currentDevice=="uno"){
+				cmd = " -c -g -x -assembler-with-cpp -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=10605 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/standard -"+path+avrPath+"/cores/arduino/wiring_pulse.S";
+			}else if(_currentDevice=="leonardo"){
+				cmd = " -c -g -x -assembler-with-cpp -mmcu=atmega32u4 -DF_CPU=16000000L -DARDUINO=10605 -DARDUINO_AVR_LEONARDO -DARDUINO_ARCH_AVR -DUSB_VID=0x2a03 -DUSB_PID=0x8036 -DUSB_MANUFACTURER= -DUSB_PRODUCT=\"Arduino Leonardo\" -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/leonardo -"+path+avrPath+"/cores/arduino/wiring_pulse.S"
+			}else if(_currentDevice=="mega1280"){
+				cmd = " -c -g -x -assembler-with-cpp -mmcu=atmega1280 -DF_CPU=16000000L -DARDUINO=10605 -MMD -DUSB_VID=null -DUSB_PID=null -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/standard -"+path+avrPath+"/cores/arduino/wiring_pulse.S";
+			}else if(_currentDevice=="mega2560"){
+				cmd = " -c -g -x -assembler-with-cpp -mmcu=atmega2560 -DF_CPU=16000000L -DARDUINO=10605 -DARDUINO_AVR_MEGA2560 -DARDUINO_ARCH_AVR -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/standard -"+path+avrPath+"/cores/arduino/wiring_pulse.S";
+			}else if(_currentDevice=="nano328"){
+				cmd = " -c -g -x -assembler-with-cpp -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=10605 -MMD -DUSB_VID=null -DUSB_PID=null -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/standard -"+path+avrPath+"/cores/arduino/wiring_pulse.S";
+			}else if(_currentDevice=="nano168"){
+				cmd = " -c -g -x -assembler-with-cpp -mmcu=atmega168 -DF_CPU=16000000L -DARDUINO=10605 -MMD -DUSB_VID=null -DUSB_PID=null -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/standard -"+path+avrPath+"/cores/arduino/wiring_pulse.S";
+			}
+			
+			var arg:Array = cmd.split(" -")
+			var processArgs:Vector.<String> = new Vector.<String>(); 
+			for(var i:int=0;i<arg.length;i++){
+				if(arg[i].length>0){
+					if(arg[i].indexOf("assembler")>-1||arg[i].indexOf("arduino/wiring_pulse.S")>-1){
+						processArgs.push(arg[i]);
+					}else{
+						processArgs.push("-"+arg[i]);
+					}
+				}
+			}
+			processArgs.push("-o");
+			processArgs.push("./wiring_pulse.S.o");
+			nativeProcessStartupInfo.arguments = processArgs;
+			nativeWorkList.push(nativeProcessStartupInfo);
+		}
 		private function compileElf(token:String,dir:File,elf:Array):void
 		{
 			var cmd:String = ""
@@ -1719,7 +1752,7 @@ void updateVar(char * varName,double * var)
 					processArgs.push(arg[i])
 			}
 			nativeProcessStartupInfo.arguments = processArgs;
-			nativeWorkList.push(nativeProcessStartupInfo)
+			nativeWorkList.push(nativeProcessStartupInfo);
 			//process.start(nativeProcessStartupInfo); 
 		}
 		
@@ -1783,9 +1816,11 @@ void updateVar(char * varName,double * var)
 		private function onOutputData(event:ProgressEvent):void 
 		{ 
 			isUploading = true;
+			/*
 			var output:String = process.standardOutput.readUTFBytes(process.standardOutput.bytesAvailable)
 			var date:Date = new Date;
 			MBlock.app.scriptsPart.appendMessage(""+(date.month+1)+"-"+date.date+" "+date.hours+":"+date.minutes+": Got: "+output); 
+			*/
 		}
 		
 		private function onErrorData(event:ProgressEvent):void
@@ -1793,8 +1828,11 @@ void updateVar(char * varName,double * var)
 			isUploading = true;
 			compileErr = true
 			var errOut:String = process.standardError.readUTFBytes(process.standardError.bytesAvailable);
-			var date:Date = new Date;
-			MBlock.app.scriptsPart.appendMessage(""+(date.month+1)+"-"+date.date+" "+date.hours+":"+date.minutes+": ####Error####\n"+errOut)
+			if(null == errorText){
+				errorText = errOut;
+			}else{
+				errorText += errOut;
+			}
 		}
 		
 		private function onExit(event:NativeProcessExitEvent):void
@@ -1804,9 +1842,15 @@ void updateVar(char * varName,double * var)
 			
 			MBlock.app.scriptsPart.appendMessage(""+(date.month+1)+"-"+date.date+" "+date.hours+":"+date.minutes+": Process exited with "+event.exitCode);
 			numOfSuccess++;
-			if(compileErr == false)
+			if(event.exitCode > 0){
+				MBlock.app.scriptsPart.appendMsgWithTimestamp(errorText, true);
+				errorText = null;
+			}
+			if(compileErr == false){
 				dispatchEvent(new Event(EVENT_NATIVE_DONE));
+			}
 		}
 		
+		private var errorText:String;
 	}
 }

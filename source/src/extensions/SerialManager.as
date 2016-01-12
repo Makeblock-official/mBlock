@@ -4,14 +4,16 @@ package extensions
 	import flash.desktop.NativeProcessStartupInfo;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
-	import flash.events.IOErrorEvent;
 	import flash.events.NativeProcessExitEvent;
 	import flash.events.ProgressEvent;
 	import flash.events.TimerEvent;
 	import flash.filesystem.File;
 	import flash.utils.ByteArray;
 	import flash.utils.Timer;
+	import flash.utils.getTimer;
 	import flash.utils.setTimeout;
+	
+	import cc.makeblock.util.UploadSizeInfo;
 	
 	import translation.Translator;
 	
@@ -37,9 +39,9 @@ package extensions
 		private var _dialog:DialogBox = new DialogBox();
 		private var _hexToDownload:String = ""
 			
-		private var _isMacOs:Boolean = ApplicationManager.sharedManager().system==ApplicationManager.MAC_OS;
-		private var _avrdude:String = "";
-		private var _avrdudeConfig:String = "";
+//		private var _isMacOs:Boolean = ApplicationManager.sharedManager().system==ApplicationManager.MAC_OS;
+//		private var _avrdude:String = "";
+//		private var _avrdudeConfig:String = "";
 		public static function sharedManager():SerialManager{
 			if(_instance==null){
 				_instance = new SerialManager;
@@ -51,11 +53,21 @@ package extensions
 		public function SerialManager()
 		{
 			_serial = new AIRSerial();
-			_avrdude = _isMacOs?"avrdude":"avrdude.exe";
-			_avrdudeConfig = _isMacOs?"avrdude_mac.conf":"avrdude.conf";
+//			_avrdude = _isMacOs?"avrdude":"avrdude.exe";
+//			_avrdudeConfig = _isMacOs?"avrdude_mac.conf":"avrdude.conf";
 			
 			_board = SharedObjectManager.sharedManager().getObject("board","uno");
 			_device = SharedObjectManager.sharedManager().getObject("device","uno");
+			var timer:Timer = new Timer(4000);
+			timer.addEventListener(TimerEvent.TIMER,onTimerCheck);
+			timer.start();
+		}
+		private function onTimerCheck(evt:TimerEvent):void{
+			if(_serial.isConnected){
+				if(this.list.indexOf(_selectPort)==-1){
+					this.close();
+				}
+			}
 		}
 		public function setMBlock(mBlock:MBlock):void{
 			_mBlock = mBlock;
@@ -111,14 +123,14 @@ package extensions
 				MBlock.app.topBarPart.setDisconnectedTitle();
 				return;
 			}else{
-				MBlock.app.topBarPart.setConnectedTitle(Translator.map("Serial Port")+" "+Translator.map("Connected"));
+				MBlock.app.topBarPart.setConnectedTitle("Serial Port");
 			}
 		}
-		public function sendBytes(bytes:ByteArray):int{
+		
+		public function sendBytes(bytes:ByteArray):void{
 			if(_serial.isConnected){
-				return _serial.writeBytes(bytes);
+				_serial.writeBytes(bytes);
 			}
-			return 0;
 		}
 		public function sendString(msg:String):int{
 			return _serial.writeString(msg);
@@ -152,7 +164,7 @@ package extensions
 			_selectPort = port;
 			if(r==0){
 				ArduinoManager.sharedManager().isUploading = false;
-				MBlock.app.topBarPart.setConnectedTitle(Translator.map("Serial Port")+" "+Translator.map("Connected"));
+				MBlock.app.topBarPart.setConnectedTitle("Serial Port");
 			}
 			return r == 0;
 		}
@@ -198,7 +210,7 @@ package extensions
 							timer.addEventListener(TimerEvent.TIMER_COMPLETE,onCLoseDialog);
 							timer.start();
 						}
-					},100);
+					},500);
 				},100);
 				if(ApplicationManager.sharedManager().system==ApplicationManager.MAC_OS){
 					setTimeout(upgradeFirmware,2000);
@@ -211,8 +223,27 @@ package extensions
 		}
 		public function openSource():void{
 			MBlock.app.track("/OpenSerial/ViewSource");
-			var file:File = new File(ApplicationManager.sharedManager().documents.nativePath+"/mBlock/firmware/"+(DeviceManager.sharedManager().currentBoard.indexOf("mbot")>-1?"mbot_firmware":"mblock_firmware"));
-			file.openWithDefaultApplication();
+			var file:File = ApplicationManager.sharedManager().documents.resolvePath("mBlock/firmware/" + getFirmwareName());
+			if(file.exists && file.isDirectory){
+				file.openWithDefaultApplication();
+			}
+		}
+		static private function getFirmwareName():String
+		{
+			var boardName:String = DeviceManager.sharedManager().currentBoard;
+			if(boardName == "mbot_uno"){
+				return "mbot_firmware";
+			}
+			if(boardName.indexOf("me/orion_uno")>-1){
+				return "orion_firmware";
+			}
+			if(boardName.indexOf("me/baseboard")>-1){
+				return "baseboard_firmware";
+			}
+			if(boardName.indexOf("me/uno_shield")>-1){
+				return "shield_firmware";
+			}
+			return "orion_firmware";
 		}
 		public function disconnect():void{
 			currentPort = "";
@@ -250,12 +281,26 @@ package extensions
 			
 			
 		}
+		
+		static private function getAvrDude():File
+		{
+			if(ApplicationManager.sharedManager().system == ApplicationManager.MAC_OS){
+				return File.applicationDirectory.resolvePath("Arduino/Arduino.app/Contents/Java/hardware/tools/avr/bin/avrdude");
+			}
+			return File.applicationDirectory.resolvePath("Arduino/hardware/tools/avr/bin/avrdude.exe");
+		}
+		
+		static private function getAvrDudeConfig():File
+		{
+			if(ApplicationManager.sharedManager().system == ApplicationManager.MAC_OS){
+				return File.applicationDirectory.resolvePath("Arduino/Arduino.app/Contents/Java/hardware/tools/avr/etc/avrdude.conf");
+			}
+			return File.applicationDirectory.resolvePath("Arduino/hardware/tools/avr/etc/avrdude.conf");
+		}
+		
 		public function upgradeFirmware(hexfile:String=""):void{
 			MBlock.app.topBarPart.setDisconnectedTitle();
-			var file:File = File.applicationDirectory;
-			var path:File = file.resolvePath("tools");
-			var filePath:String = path.nativePath;//.split("\\").join("/")+"/";
-			file = path.resolvePath(_avrdude);//外部程序名
+			var file:File = getAvrDude();//外部程序名
 			if(!file.exists){
 				trace("upgrade fail!");
 				return;
@@ -263,13 +308,12 @@ package extensions
 			var tf:File;
 			var currentDevice:String = DeviceManager.sharedManager().currentDevice;
 			currentPort = SerialDevice.sharedDevice().port;
-			trace("avrdude:",file.nativePath,currentDevice,currentPort,"\n");
-			if(NativeProcess.isSupported) {
+//			if(NativeProcess.isSupported) {
 				var nativeProcessStartupInfo:NativeProcessStartupInfo =new NativeProcessStartupInfo();
 				nativeProcessStartupInfo.executable = file;
 				var v:Vector.<String> = new Vector.<String>();//外部应用程序需要的参数
 				v.push("-C");
-				v.push(filePath+"/"+_avrdudeConfig)
+				v.push(getAvrDudeConfig().nativePath)
 				v.push("-v");
 				v.push("-v");
 				v.push("-v");
@@ -282,9 +326,9 @@ package extensions
 					v.push("-D");
 					v.push("-U");
 					if(_hexToDownload.length==0){
-						var hexFile:String = (ApplicationManager.sharedManager().documents.nativePath+"/mBlock/tools/hex/leonardo.hex");//.split("\\").join("/");
-						tf = new File(hexFile);
-						v.push("flash:w:"+hexFile+":i");
+						var hexFile_baseboard:String = getHexFilePath();
+						tf = new File(hexFile_baseboard);
+						v.push("flash:w:"+hexFile_baseboard+":i");
 					}else{
 						tf = new File(_hexToDownload);
 						v.push("flash:w:"+_hexToDownload+":i");
@@ -298,15 +342,9 @@ package extensions
 					v.push("-V");
 					v.push("-U");
 					if(_hexToDownload.length==0){
-						if(DeviceManager.sharedManager().currentBoard.indexOf("mbot")>-1){
-							var hexFile_mbot:String = (ApplicationManager.sharedManager().documents.nativePath+"/mBlock/tools/hex/mbot.hex");//.split("\\").join("/");
-							v.push("flash:w:"+hexFile_mbot+":i");
-							tf = new File(hexFile_mbot);
-						}else{
-							var hexFile_uno:String = (ApplicationManager.sharedManager().documents.nativePath+"/mBlock/tools/hex/uno.hex");//.split("\\").join("/");
-							v.push("flash:w:"+hexFile_uno+":i");
-							tf = new File(hexFile_uno);
-						}
+						var hexFile_uno:String = getHexFilePath();
+						v.push("flash:w:"+hexFile_uno+":i");
+						tf = new File(hexFile_uno);
 					}else{
 						v.push("flash:w:"+_hexToDownload+":i");
 						tf = new File(_hexToDownload);
@@ -372,66 +410,93 @@ package extensions
 						v.push("flash:w:"+_hexToDownload+":i");
 					}
 				}
-				if(tf!=null){
-					if(tf.exists){
-						_upgradeBytesTotal = tf.size;
-						trace("total:",_upgradeBytesTotal);
-					}
+				if(tf!=null && tf.exists){
+					_upgradeBytesTotal = tf.size;
+					trace("total:",_upgradeBytesTotal);
+				}else{
+					_upgradeBytesTotal = 0;
 				}
 				nativeProcessStartupInfo.arguments = v;
 				process = new NativeProcess();
-				process.addEventListener(ProgressEvent.STANDARD_OUTPUT_DATA,onStandardOutputData);
+//				process.addEventListener(ProgressEvent.STANDARD_OUTPUT_DATA,onStandardOutputData);
 				process.addEventListener(ProgressEvent.STANDARD_ERROR_DATA, onErrorData);
 				process.addEventListener(NativeProcessExitEvent.EXIT, onExit);
-				process.addEventListener(IOErrorEvent.STANDARD_OUTPUT_IO_ERROR, onIOError);
-				process.addEventListener(IOErrorEvent.STANDARD_ERROR_IO_ERROR, onIOError);
+//				process.addEventListener(IOErrorEvent.STANDARD_OUTPUT_IO_ERROR, onIOError);
+//				process.addEventListener(IOErrorEvent.STANDARD_ERROR_IO_ERROR, onIOError);
 				process.start(nativeProcessStartupInfo);
+				sizeInfo.reset();
 				ArduinoManager.sharedManager().isUploading = true;
-			}else{
-				trace("no support");
-			}
+//			}else{
+//				trace("no support");
+//			}
 			
 		}
+		
+		private function getHexFilePath():String
+		{
+			var board:String = DeviceManager.sharedManager().currentBoard;
+			var fileName:String;
+			if(board.indexOf("_uno") > 0){
+				if(board.indexOf("mbot") >= 0){
+					fileName = "mbot";
+				}else if(board.indexOf("shield") >= 0){
+					fileName = "shield";
+				}else{
+					fileName = "uno";
+				}
+			}else if(board.indexOf("_leonardo") > 0){
+				if(board.indexOf("baseboard") >= 0){
+					fileName = "baseboard";
+				}else{
+					fileName = "leonardo";
+				}
+			}else{
+				throw new Error(board);
+			}
+			return ApplicationManager.sharedManager().documents.nativePath + "/mBlock/tools/hex/" + fileName + ".hex";
+		}
+		/*
 		private function onStandardOutputData(event:ProgressEvent):void {
 //			_upgradeBytesLoaded+=process.standardOutput.bytesAvailable;
 			
 //			_dialog.setText(Translator.map('Executing')+" ... "+_upgradeBytesLoaded+"%");
 			LogManager.sharedManager().log(process.standardOutput.readUTFBytes(process.standardOutput.bytesAvailable ));
 		}
-		public function onErrorData(event:ProgressEvent):void
+		*/
+		private var errorText:String;
+		private var sizeInfo:UploadSizeInfo = new UploadSizeInfo();
+		private function onErrorData(event:ProgressEvent):void
 		{
 			var msg:String = process.standardError.readUTFBytes(process.standardError.bytesAvailable);
-			var arr:Array = msg.split(DeviceManager.sharedManager().currentDevice.indexOf("leonardo")>-1?"Send: B [42] . [00] . [":(DeviceManager.sharedManager().currentDevice.indexOf("nano")>-1?"Send: t [74] . [00] . [":"Send: d [64] . [00] . ["));
-			if(msg.indexOf("writing flash (")>0){
-				_upgradeBytesTotal = Math.max(3000,Number(msg.split("writing flash (")[1].split(" bytes)")[0]));
-				
-			}
-//			trace("total:",_upgradeBytesLoaded,_upgradeBytesTotal);
-			_upgradeBytesLoaded+=arr.length>1?Number("0x"+arr[1].split("]")[0]):0;
-			var progress:Number = Math.min(100,Math.floor(_upgradeBytesLoaded/_upgradeBytesTotal*105));
-			if(progress>=100){
-//				setTimeout(_dialog.cancel,2000); 
-				_dialog.setText(Translator.map('Upload Finish')+" ... "+100+"%");
-//				setTimeout(connect,2000,_selectPort);
+			if(null == errorText){
+				errorText = msg;
 			}else{
-				_dialog.setText(Translator.map('Uploading')+" ... "+Math.min(100,isNaN(progress)?100:progress)+"%");
+				errorText += msg;
 			}
-			LogManager.sharedManager().log(msg); 
+			_dialog.setText(Translator.map('Uploading') + " ... " + sizeInfo.update(msg) + "%");
 		}
 		
-		public function onExit(event:NativeProcessExitEvent):void
+		private function onExit(event:NativeProcessExitEvent):void
 		{
 			ArduinoManager.sharedManager().isUploading = false;
 			LogManager.sharedManager().log("Process exited with "+event.exitCode);
-			_dialog.setText(Translator.map('Upload Finish')+" ... "+100+"%");
+			if(event.exitCode > 0){
+				_dialog.setText(Translator.map('Upload Failed'));
+				LogManager.sharedManager().log(errorText);
+				MBlock.app.scriptsPart.appendMsgWithTimestamp(errorText, true);
+			}else{
+				_dialog.setText(Translator.map('Upload Finish'));
+			}
 			setTimeout(open,2000,_selectPort);
+			errorText = null;
 			//setTimeout(_dialog.cancel,2000);
 		}
-		
+		/*
 		public function onIOError(event:IOErrorEvent):void
 		{
 			LogManager.sharedManager().log(event.toString());
 		}
+		*/
 		public function executeUpgrade():void {
 			if(!_isInitUpgrade){
 				_isInitUpgrade = true;
@@ -443,7 +508,7 @@ package extensions
 				_dialog.setButton(('Close'));
 			}
 			_upgradeBytesLoaded = 0;
-			_dialog.setText(Translator.map('Executing')+" ... 0%");
+			_dialog.setText(Translator.map('Executing'));
 			_dialog.showOnStage(_mBlock.stage);
 		}
 	}

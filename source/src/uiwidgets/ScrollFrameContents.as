@@ -49,7 +49,7 @@ public class ScrollFrameContents extends Sprite {
 		// Draw myself using the texture bitmap, if available, or a solid gray color if not.
 		graphics.clear();
 		if (texture) graphics.beginBitmapFill(texture)
-		else graphics.beginFill(color);
+		else graphics.beginFill(color, 0);
 		graphics.drawRect(0, 0, w, h);
 		graphics.endFill();
 	}

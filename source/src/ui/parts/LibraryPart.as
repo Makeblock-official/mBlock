@@ -412,7 +412,7 @@ public class LibraryPart extends UIPart {
 		var c:ScratchCostume = costumeOrList as ScratchCostume;
 		if (c) {
 			if (!c.baseLayerData) c.prepareToSave();
-			if (!app.okayToAdd(c.baseLayerData.length)) return; // not enough room
+//			if (!app.okayToAdd(c.baseLayerData.length)) return; // not enough room
 			c.costumeName = app.stagePane.unusedCostumeName(c.costumeName);
 			app.stagePane.costumes.push(c);
 			app.stagePane.showCostumeNamed(c.costumeName);
@@ -421,7 +421,7 @@ public class LibraryPart extends UIPart {
 		if (list) {
 			for each (c in list) {
 				if (!c.baseLayerData) c.prepareToSave();
-				if (!app.okayToAdd(c.baseLayerData.length)) return; // not enough room
+//				if (!app.okayToAdd(c.baseLayerData.length)) return; // not enough room
 				app.stagePane.costumes.push(c);
 			}
 			app.stagePane.showCostumeNamed(list[0].costumeName);
