@@ -33,6 +33,8 @@ package cc.makeblock.interpreter {
 	import scratch.ScratchObj;
 	import scratch.ScratchSprite;
 	import scratch.ScratchStage;
+	
+	import translation.Translator;
 
 	internal class FunctionLooks {
 
@@ -207,7 +209,7 @@ package cc.makeblock.interpreter {
 			return;
 		}
 		thread.resume();
-		if (s.bubble && (s.bubble.getText() == text)) s.hideBubble();
+		if (s.bubble && (s.bubble.getText() == Translator.map(text))) s.hideBubble();
 	}
 
 	private function primChangeEffect(thread:Thread, argList:Array):void {
