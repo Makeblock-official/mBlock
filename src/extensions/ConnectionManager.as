@@ -140,7 +140,6 @@ package extensions
 				BluetoothManager.sharedManager().sendBytes(bytes);
 			}else if(HIDManager.sharedManager().isConnected){
 				HIDManager.sharedManager().sendBytes(bytes);
-				return;//clear later
 			}
 			bytes.clear();
 		}

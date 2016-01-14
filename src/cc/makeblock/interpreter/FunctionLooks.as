@@ -186,8 +186,6 @@ package cc.makeblock.interpreter {
 			threadList.push(MBlock.app.interp.toggleThread(item[0], item[1]));
 		}
 		return threadList;
-//		startAllReceivers(receivers, waitFlag);
-		//todo
 	}
 
 	private function backdropNameAt(i:int):String {
