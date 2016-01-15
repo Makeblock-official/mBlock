@@ -541,6 +541,9 @@ public class ListWatcher extends Sprite {
 	}
 
 	private function createTextField(s:String, format:TextFormat):TextField {
+		if(s == null){
+			s = "";
+		}
 		var tf:TextField = new TextField();
 		tf.type = 'dynamic'; // not editable
 		tf.selectable = false;
