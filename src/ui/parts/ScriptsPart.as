@@ -40,6 +40,8 @@ package ui.parts {
 	import cc.makeblock.util.HexUtil;
 	
 	import extensions.ArduinoManager;
+	import extensions.ConnectionManager;
+	import extensions.SerialDevice;
 	import extensions.SerialManager;
 	
 	import scratch.ScratchObj;
@@ -284,7 +286,7 @@ public class ScriptsPart extends UIPart {
 		*/
 	}
 	private function onSendSerial(evt:MouseEvent):void{
-		if(!SerialManager.sharedManager().isConnected){
+		if(!SerialDevice.sharedDevice().connected){
 			return;
 		}
 		var str:String = sendTextPane.textField.text;
@@ -294,14 +296,12 @@ public class ScriptsPart extends UIPart {
 		var bytes:ByteArray;
 		if(isByteInputMode){
 			bytes = HexUtil.stringToBytes(str);
-			SerialManager.sharedManager().sendBytes(bytes);
 		}else{
 			bytes = new ByteArray();
-			bytes.writeUTFBytes(str);
-			SerialManager.sharedManager().sendString(str+"\n");
+			bytes.writeUTFBytes(str + "\n");
 		}
 		onSerialSend(bytes);
-		bytes.clear();
+		ConnectionManager.sharedManager().sendBytes(bytes);
 //		var date:Date = new Date;
 //		messageTextPane.append(""+(date.month+1)+"-"+date.date+" "+date.hours+":"+date.minutes+":"+(date.seconds+date.milliseconds/1000)+" > "+sendTextPane.textField.text+"\n");
 		
