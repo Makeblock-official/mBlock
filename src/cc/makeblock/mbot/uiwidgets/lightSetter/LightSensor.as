@@ -290,7 +290,7 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 		
 		static private function getValueAt(bytes:ByteArray, px:int, py:int):Boolean
 		{
-			return 0 != (bytes[px] & (1 << py));
+			return 0 != (bytes[px] & (1 << (7 - py)));
 		}
 		
 		public function setValueAll(value:Boolean):void
