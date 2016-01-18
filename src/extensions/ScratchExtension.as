@@ -91,7 +91,7 @@ public class ScratchExtension {
 		}else if(StringChecker.IsNumber(value)){
 			return parseFloat(value);
 		}
-		return value;
+		return value || "";
 	}
 	
 	public function set showBlocks(v:Boolean):void{

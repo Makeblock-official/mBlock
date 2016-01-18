@@ -19,6 +19,7 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 	
 	import util.ApplicationManager;
 	import util.JSON;
+	import util.SharedObjectManager;
 
 	public class ExtensionUtil
 	{
@@ -49,6 +50,12 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 		{
 			if(file.extension == "json"){
 				var fileName:String = file.name.slice(0, file.name.lastIndexOf("."));
+				try{
+					var json:Object = util.JSON.parse(FileUtil.ReadString(file));
+					SharedObjectManager.sharedManager().setObject(json.extensionName+"_selected",true);
+				}catch(e:Error){
+					return;
+				}
 				file.copyTo(libPath.resolvePath(fileName + "/" + file.name), true);
 				MBlock.app.extensionManager.importExtension();
 				return;
@@ -97,6 +104,7 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 					delExt(extensionName);
 				}
 				copyFileToDocuments(fzip);
+				SharedObjectManager.sharedManager().setObject(extensionName+"_selected",true);
 				MBlock.app.extensionManager.importExtension();
 			}else{
 				showErrorAlert();
