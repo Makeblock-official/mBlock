@@ -353,7 +353,7 @@ public class BlockMenus implements DragClient {
 		showMenu(m);
 	}
 
-	static private const namedKeys:Array = ['up arrow', 'down arrow', 'right arrow', 'left arrow', 'space'];
+	static private const namedKeys:Array = ['up arrow', 'down arrow', 'right arrow', 'left arrow', 'space', 'any'];
 	private function keyMenu(evt:MouseEvent):void {
 		var ch:int;
 		var m:Menu = new Menu(setBlockArg, 'key');

@@ -247,7 +247,11 @@ package scratch {
 			if (32 == ch) keyName = 'space';
 			if (keyName == null) return;
 			var startMatchingKeyHats:Function = function (stack:Block, target:ScratchObj):void {
-				if ((stack.op == 'whenKeyPressed') && (Translator.map(stack.args[0].argValue) == Translator.map(keyName))) {
+				if(stack.op != 'whenKeyPressed'){
+					return;
+				}
+				var blockKeyName:String = Translator.map(stack.args[0].argValue);
+				if (blockKeyName == Translator.map("any") || blockKeyName == Translator.map(keyName)) {
 					// only start the stack if it is not already running
 					if (!interp.isRunning(stack, target)) interp.toggleThread(stack, target);
 				}
@@ -265,7 +269,11 @@ package scratch {
 			if (32 == ch) keyName = 'space';
 			if (keyName == null) return;
 			var startMatchingKeyHats:Function = function (stack:Block, target:ScratchObj):void {
-				if ((stack.op == 'whenKeyReleased') && (Translator.map(stack.args[0].argValue) == Translator.map(keyName))) {
+				if(stack.op != 'whenKeyReleased'){
+					return;
+				}
+				var blockKeyName:String = Translator.map(stack.args[0].argValue);
+				if (blockKeyName == Translator.map("any") || blockKeyName == Translator.map(keyName)) {
 					// only start the stack if it is not already running
 					if (!interp.isRunning(stack, target)) interp.toggleThread(stack, target);
 				}

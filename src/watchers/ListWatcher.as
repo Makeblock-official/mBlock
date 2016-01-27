@@ -29,6 +29,7 @@ package watchers {
 	import flash.net.FileReference;
 	import flash.net.FileReferenceList;
 	import flash.text.TextField;
+	import flash.text.TextFieldType;
 	import flash.text.TextFormat;
 	import flash.utils.getTimer;
 	
@@ -545,7 +546,7 @@ public class ListWatcher extends Sprite {
 			s = "";
 		}
 		var tf:TextField = new TextField();
-		tf.type = 'dynamic'; // not editable
+		tf.type = TextFieldType.DYNAMIC;
 		tf.selectable = false;
 		tf.defaultTextFormat = format;
 		tf.text = s;
