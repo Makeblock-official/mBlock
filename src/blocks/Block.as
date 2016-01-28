@@ -770,10 +770,17 @@ public class Block extends Sprite {
 	
 	public function deleteSelf():void
 	{
+		var app:MBlock = MBlock.app;
+		if(op == "procDef"){
+			parent.removeChild(this);
+			removeComments();
+			app.scriptsPane.saveScripts();
+			app.updatePalette();
+			return;
+		}
 		if (op == 'proc_declaration') {
 			(parent as Block).deleteStack();
 		}
-		var app:MBlock = MBlock.app;
 		var top:Block = topBlock();
 		if (top == this && app.interp.isRunning(top, app.viewedObj())) {
 			app.interp.toggleThread(top, app.viewedObj());

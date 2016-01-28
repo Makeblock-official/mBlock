@@ -816,8 +816,13 @@ void updateVar(char * varName,double * var)
 					s.type = "string";
 				}
 				if(str.indexOf(".drawStr(")>-1){
-					if(i==3 && s.type == "number" && s.code is String){
-						s.type = "string";
+					if(i==3 && s.type == "number"){
+						if(s.code is String){
+							s.type = "string";
+						}else if(s.code is CodeObj){
+							str = str.split("{"+i+"}").join("String("+s.code.code+").c_str()");
+							continue;
+						}
 					}
 				}else if(str.indexOf("ir.sendString(") == 0){
 					if(s.type == "number" && s.code is String){

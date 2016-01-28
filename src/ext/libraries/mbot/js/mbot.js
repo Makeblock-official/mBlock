@@ -182,24 +182,41 @@
 	ext.runIR = function(message){
 		runPackage(13,string2array(message));
 	};
+	ext.showNumber = function(port,message){
+		if(typeof port=="string"){
+			port = ports[port];
+		}
+		runPackage(41,port,4,float2array(message));
+	};
 	ext.showCharacters = function(port,x,y,message){
 		if(typeof port=="string"){
 			port = ports[port];
 		}
-		message = message.toString();
-		runPackage(41,port,1,6,3,short2array(x),short2array(7-y),message.length,string2array(message));
+		var index = Math.max(0, Math.floor(x / -6));
+		message = message.toString().substr(index, 4);
+		if(index > 0){
+			x += index * 6;
+		}
+		if(x >  16) x = 16;
+		if(y >  8) y = 8;
+		if(y < -8) y = -8;
+		runPackage(41,port,1,x,7-y,message.length,string2array(message));
 	}
 	ext.showTime = function(port,hour,point,min){
 		if(typeof port=="string"){
 			port = ports[port];
 		}
-		runPackage(41,port,3,6,point==":"?1:0,short2array(hour),short2array(min));
+		runPackage(41,port,3,point==":"?1:0,hour,min);
 	}
 	ext.showDraw = function(port,x,y,bytes){
 		if(typeof port=="string"){
 			port = ports[port];
 		}
-		runPackage(41,port,2,6,bytes.length,short2array(x),short2array(y),bytes.length,bytes);
+		if(x >  16) x = 16;
+		if(x < -16) x = -16;
+		if(y >  8) y = 8;
+		if(y < -8) y = -8;
+		runPackage(41,port,2,x,y,bytes);
 	}
 	ext.resetTimer = function(){
 		startTimer = (new Date().getTime())/1000.0;
@@ -382,18 +399,6 @@
 			}
 		}
 		bytes[2] = bytes.length-3;
-		device.send(bytes);
-	}
-  function runPackageForFace(){
-		var bytes = [0xff, 0x55, 0, 0, 2];
-		for(var i=0;i<arguments.length;i++){
-			if(arguments[i].constructor == "[class Array]"){
-				bytes = bytes.concat(arguments[i]);
-			}else{
-				bytes.push(arguments[i]);
-			}
-		}
-		bytes[2] = bytes.length+13;
 		device.send(bytes);
 	}
 	
