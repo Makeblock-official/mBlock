@@ -216,7 +216,7 @@
 		if(x < -16) x = -16;
 		if(y >  8) y = 8;
 		if(y < -8) y = -8;
-		runPackage(41,port,2,x,y,bytes);
+		runPackage(41,port,2,x,-y,bytes);
 	}
 	ext.resetTimer = function(){
 		startTimer = (new Date().getTime())/1000.0;
