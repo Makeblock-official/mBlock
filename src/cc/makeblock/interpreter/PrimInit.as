@@ -23,10 +23,16 @@ package cc.makeblock.interpreter
 			provider.register("stopAll", stopAll);
 			provider.register("stopScripts", stopScripts);
 			provider.register("suspendUntilNextFrame", onSuspendUntilNextFrame);
+			provider.register("getUserName", onGetUserName);
 			
 			provider.register(Specs.GET_VAR, doGetVar);
 			provider.register(Specs.SET_VAR, doSetVar);
 			provider.register(Specs.CHANGE_VAR, increaseVar);
+		}
+		
+		static private function onGetUserName(thread:Thread, argList:Array):void
+		{
+			thread.push("Player1");
 		}
 		
 		static private function onSuspendUntilNextFrame(thread:Thread, argList:Array):void
