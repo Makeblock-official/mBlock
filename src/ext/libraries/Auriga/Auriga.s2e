@@ -1,10 +1,13 @@
-{	"extensionName": "BaseBoard",
+﻿{	"extensionName": "Auriga",
 	"extensionPort": 0,
-	"sort":4,
+	"sort":2,
 	"firmware":"1.2.103",
-	"javascriptURL":"js/orion.js",
+	"javascriptURL":"js/Auriga.js",
 	"blockSpecs": [
-		["h","BaseBoard Program","runArduino",{"src":"orion","inc":"#include <MeBaseBoard.h>\n","def":"","setup":"","loop":""}],
+		["h","Auriga Program","runArduino",{"src":"orion","inc":"#include <MeAuriga.h>\n","def":"","setup":"","loop":""}],
+		
+		["w", "%m.direction at speed %d.motorvalue","runBot", "run forward", 0,
+		{"encode":"{d0}{s1}","setup":"","inc":"","def":"MBotDCMotor motor(0);\n","work":"motor.move({0},{1});\n","loop":""}],
 		
 		["w", "set motor%d.motorPort speed %d.motorvalue","runMotor", "M1", 0,
 		{"encode":"{d0}{s1}","setup":"","inc":"","def":"MeDCMotor motor_{0}({0});\n","work":"motor_{0}.run({1});\n","loop":""}],
@@ -15,23 +18,43 @@
 		["w", "set stepper motor%d.exMotorPort speed %d.stepperSpeed distance %n","runStepperMotor", "Port1", 3000, 1000,
 		{"encode":"{d0}{s1}{s2}","setup":"","inc":"","def":"MeStepper stepper_{0}({0});\n","work":"stepper_{0}.move({2});\nstepper_{0}.setMaxSpeed({1});\nstepper_{0}.setSpeed({1});\n","loop":"stepper_{0}.runSpeedToPosition();\n"}],
 		
+		["w", "set encoder motor%d.exMotorPort %d.slot speed %d.encoderSpeed distance %n","runEncoderMotor", "Port1", "Slot1", 100, 1000,
+		{"encode":"{d0}{s1}{s2}","setup":"encoder_{0}_{1}.begin();\nencoder_{0}_{1}.runSpeed(0);\n","inc":"","def":"MeEncoderMotor encoder_{0}_{1}(0x09,{1});\n","work":"encoder_{0}_{1}.move({3},{2});\n","loop":""}],
+		
 		["w", "set 7-segments display%d.bluePorts number %n","runSevseg", "Port3", 100,
 		{"encode":"{d0}{f1}","setup":"","inc":"","def":"Me7SegmentDisplay seg7_{0}({0});\n","work":"seg7_{0}.display({1});\n","loop":""}],
 		
 		["w", "set led %d.lport %d.index red%d.value green%d.value blue%d.value","runLed", "Port3","all",0,0,0,
-		{"encode":"{d0}{d1}{d2}{d3}{d4}","setup":"","inc":"","def":"MeRGBLed rgbled_{0}({0}, 32);\n","work":"rgbled_{0}.setColor({1},{2},{3},{4});\nrgbled_{0}.show();\n","loop":""}],
+		{"encode":"{d0}{d1}{d2}{d3}{d4}","setup":"","inc":"","def":"MeRGBLed rgbled_{0}({0}, 32);\n","work":"if(rgbled_{0}.getPort()==0){\nrgbled_{0}.setpin(44);\n}\nrgbled_{0}.setColor({1},{2},{3},{4});\nrgbled_{0}.show();\n","loop":""}],
 		
 		["w", "set led strip %d.normalPort %d.slot %d.index2 red%d.value green%d.value blue%d.value","runLedStrip", "Port3","Slot2","all",0,0,0,
 		{"encode":"{d0}{d1}{d2}{d3}{d4}","setup":"","inc":"","def":"MeRGBLed rgbled_{0}_{1}({0}, {1}, 32);\n","work":"rgbled_{0}_{1}.setColor({2},{3},{4},{5});\nrgbled_{0}_{1}.show();\n","loop":""}],
 		
-		["w", "set light sensor %d.blackPorts led as %d.switch","runLightsensor", "Port3", "On",
+		["w", "play tone on note %d.note beat %d.beats","runBuzzer", "C4", "Half",
+		{"encode":"{s0}","setup":"","inc":"","def":"MeBuzzer buzzer;\n","work":"buzzer.tone({0}, {1});\n","loop":""}],
+		
+		["w", "stop tone","stopBuzzer",0,
+		{"encode":"{s0}","setup":"","inc":"","def":"MeBuzzer buzzer;\n","work":"buzzer.noTone();\n","loop":""}],
+		
+		["w", "show face %d.normalPort number:%n","showNumber", "Port1", 0,
+		{"encode":"{s0}","setup":"ledMtx_{0}.setColorIndex(1);\nledMtx_{0}.setBrightness(6);\n","inc":"","def":"MeLEDMatrix ledMtx_{0}({0});\n","work":"ledMtx_{0}.drawStr({1},2);\n","loop":""}],
+	
+		["w", "show face %d.normalPort x:%n y:%n characters:%s","showCharacters", "Port1", 0,0,"Hi",
+		{"encode":"{s0}","setup":"ledMtx_{0}.setColorIndex(1);\nledMtx_{0}.setBrightness(6);\n","inc":"","def":"MeLEDMatrix ledMtx_{0}({0});\n","work":"ledMtx_{0}.drawStr({1},7-{2},{3});\n","loop":""}],
+		
+		["w", "show time %d.normalPort hour:%n %m.points min:%n","showTime", "Port1", 10,":",20,
+		{"encode":"{s0}","setup":"ledMtx_{0}.setColorIndex(1);\nledMtx_{0}.setBrightness(6);\n","inc":"","def":"MeLEDMatrix ledMtx_{0}({0});\n","work":"ledMtx_{0}.showClock({1},{3},strcmp({2},\":\")==0);\n","loop":""}],
+		
+		["w", "show drawing %d.normalPort x:%n y:%n draw:%m.drawFace","showDraw", "Port1", 0,0,"        ",
+		{"encode":"{s0}","setup":"ledMtx_{0}.setColorIndex(1);\nledMtx_{0}.setBrightness(6);\n","inc":"","def":"MeLEDMatrix ledMtx_{0}({0});\nunsigned char drawBuffer[16];\nunsigned char *drawTemp;\n","work":"drawTemp = new unsigned char[16]{{3}};\nmemcpy(drawBuffer,drawTemp,16);\nfree(drawTemp);\nledMtx_{0}.drawBitmap({1},{2},16,drawBuffer);\n","loop":""}],
+		
+		["w", "set light sensor %d.blackPorts led as %d.switch","runLightsensor", "Port6", "On",
 		{"encode":"{d0}{d1}","setup":"","inc":"","def":"MePort lightsensor_{0}({0});\n","work":"lightsensor_{0}.dWrite1({1});\n","loop":""}],
 		
 		["w", "set camera shutter %d.normalPort as %d.shutter","runShutter","Port6", "Press",
 		{"encode":"{d0}{d1}","setup":"","inc":"","def":"MePort shutter_{0}({0});\n","work":"shutter_{0}.dWrite1({1});\n","loop":""}],
 		
 		["-"],
-		
 		["R", "ultrasonic sensor %d.whitePorts distance","getUltrasonic","Port3",
 		{"encode":"{d0}","setup":"","inc":"","def":"MeUltrasonicSensor ultrasonic_{0}({0});\n","work":"ultrasonic_{0}.distanceCm()","loop":""}],
 		
@@ -47,7 +70,7 @@
 		["R", "potentiometer %d.blackPorts","getPotentiometer","Port6",
 		{"encode":"{d0}","setup":"","inc":"","def":"MePort potentiometer_{0}({0});\n","work":"potentiometer_{0}.aRead2()","loop":""}],
 		
-		["R", "sound sensor %d.blackPorts","getSoundsensor","Port6",
+		["R", "sound sensor %d.soundPort","getSoundsensor","sound on board",
 		{"encode":"{d0}","setup":"","inc":"","def":"MePort soundsensor_{0}({0});\n","work":"soundsensor_{0}.aRead2()","loop":""}],
 		
 		["R", "infrared receiver %d.bluePorts","getInfrared","Port6",
@@ -62,25 +85,32 @@
 		["R", "temperature %d.normalPort%d.slot °C","getTemperature","Port3","Slot1",
 		{"encode":"{d0}{d1}","setup":"","inc":"","def":"MeTemperature temperature_{0}_{1}({0},{1});\n","work":"temperature_{0}_{1}.temperature()","loop":""}],
 		
+		["R", "temperature on board °C","getTemperatureOnBoard",
+		{"encode":"{d0}{d1}","setup":"","inc":"","def":"MeTemperature temperature_{0}_{1}({0},{1});\n","work":"temperature_{0}_{1}.temperature()","loop":""}],
+		
 		["R", "3-axis gyro %d.GyroAxis angle","getGyro","X-Axis",
 		{"encode":"{d0}","setup":"gyro.begin();\n","inc":"","def":"MeGyro gyro;\n","work":"gyro.getAngle({0})","loop":"gyro.update();\n"}],
 		
 		["R", "humiture sensor %d.normalPort %d.humiture", "getHumiture", "Port3", "humidity", {"encode":"", "setup":"", "inc":"", "def":"MeHumiture humiture_{0}({0});\n", "work":"humiture_{0}.getValue({1})", "loop":"humiture_{0}.update();\n"}],
-		["R", "flame sensor %d.blackPorts", "getFlame", "Port3", {"encode":"", "setup":"", "inc":"", "def":"MeFlameSensor flameSensor_{0}({0});\n", "work":"flameSensor_{0}.readAnalog()", "loop":""}],
-		["R", "gas sensor %d.blackPorts", "getGas", "Port3", {"encode":"", "setup":"", "inc":"", "def":"MeGasSensor gasSensor_{0}({0});\n", "work":"gasSensor_{0}.readAnalog()", "loop":""}]
-		],
+		["R", "flame sensor %d.blackPorts", "getFlame", "Port6", {"encode":"", "setup":"", "inc":"", "def":"MeFlameSensor flameSensor_{0}({0});\n", "work":"flameSensor_{0}.readAnalog()", "loop":""}],
+		["R", "gas sensor %d.blackPorts", "getGas", "Port6", {"encode":"", "setup":"", "inc":"", "def":"MeGasSensor gasSensor_{0}({0});\n", "work":"gasSensor_{0}.readAnalog()", "loop":""}],
+		["B", "touch sensor %d.normalPort","getTouchSensor","Port3",{"encode":"{d0}","setup":"","inc":"","def":"MeTouchSensor touchSensor_{0}({0});\n","work":"touchSensor_{0}.touched()","loop":""}],
+		["B", "button %d.blackPorts %m.button_key pressed","getButton","Port6","key1",{"encode":"{d0}","setup":"","inc":"","def":"Me4Button buttonSensor_{0}({0});\n","work":"(buttonSensor_{0}.pressed()=={1})","loop":""}]
+		
+        ],
     "menus": {
-		"yellowPorts":["Port3","Port4","Port5","Port6","Port7","Port8"],
-    	"bluePorts":["Port3","Port4","Port5","Port6","Port7","Port8"],
-    	"grayPorts":["Port4"],
-    	"whitePorts":["Port3","Port4","Port6","Port7","Port8"],
-    	"blackPorts":["Port3","Port6","Port7","Port8"],
-    	"laport":["Port3","Port6","Port7","Port8"],
-		"normalPort":["Port3","Port4","Port5","Port6","Port7","Port8"],
-		"lport":["Port3","Port4","Port5","Port6","Port7","Port8"],
-		"motorPort":["M1","M2","Port1","Port2"],
-		"exMotorPort":["Port1","Port2"],
-		"servoPort":["Port1","Port2","Port3","Port4","Port5","Port6","Port7","Port8"],
+    	"yellowPorts":["Port6","Port7","Port8","Port9","Port10"],
+    	"bluePorts":["Port6","Port7","Port8","Port9","Port10"],
+    	"grayPorts":["Port5"],
+    	"whitePorts":["Port6","Port7","Port8","Port9","Port10"],
+    	"blackPorts":["Port6","Port7","Port8","Port9","Port10"],
+    	"laport":["on board 1","on board 2","Port6","Port7","Port8","Port9","Port10"],
+    	"soundPort":["sound on board","Port6","Port7","Port8","Port9","Port10"],
+		"normalPort":["Port6","Port7","Port8","Port9","Port10"],
+		"lport":["led on board","Port6","Port7","Port8","Port9","Port10"],
+		"motorPort":["M1","M2","Port1","Port2","Port3","Port4"],
+		"exMotorPort":["Port1","Port2","Port3","Port4"],
+		"servoPort":["Port1","Port2","Port3","Port4","Port5","Port6","Port7","Port8","Port9","Port10"],
 		"address":["Port1","Port2","Port3","Port4","Port5","Port6","Port7","Port8"],
 		"slot":["Slot1","Slot2"],
 		"device":["Ultrasonic","Line Finder","Light Sensor","Sound Sensor","Joystick","Button","Potentiometer"],
@@ -94,7 +124,10 @@
 		"shutter":["Press","Release","Focus On","Focus Off"],
 		"index":["all",1,2,3,4],
 		"index2":["all",1,15,30],
+		"note":["C2","D2","E2","F2","G2","A2","B2","C3","D3","E3","F3","G3","A3","B3","C4","D4","E4","F4","G4","A4","B4","C5","D5","E5","F5","G5","A5","B5","C6","D6","E6","F6","G6","A6","B6","C7","D7","E7","F7","G7","A7","B7","C8","D8"],
+		"beats":["Half","Quater","Eighth","Whole","Double","Zero"],
 		"servovalue":[0,45,90,135,180],
+		"direction":["run forward","run backward","turn right","turn left"],
 		"motorvalue":[255,100,50,0,-50,-100,-255],
 		"value":[0,20,60,150,255],
 		"encodeType":["time","turns"],
@@ -105,6 +138,23 @@
 		"humiture":["humidity","temperature"]
         },
 		"values":{
+		"run forward":1,
+		"run backward":2,
+		"turn left":3,
+		"turn right":4,
+		"Half":500,"Quater":250,"Eighth":125,"Whole":1000,"Double":2000,"Zero":0,
+		"B0":31,"C1":33,"D1":37,"E1":41,"F1":44,"G1":49,"A1":55,"B1":62,
+			"C2":65,"D2":73,"E2":82,"F2":87,"G2":98,"A2":110,"B2":123,
+			"C3":131,"D3":147,"E3":165,"F3":175,"G3":196,"A3":220,"B3":247,
+			"C4":262,"D4":294,"E4":330,"F4":349,"G4":392,"A4":440,"B4":494,
+			"C5":523,"D5":587,"E5":659,"F5":698,"G5":784,"A5":880,"B5":988,
+			"C6":1047,"D6":1175,"E6":1319,"F6":1397,"G6":1568,"A6":1760,"B6":1976,
+			"C7":2093,"D7":2349,"E7":2637,"F7":2794,"G7":3136,"A7":3520,"B7":3951,
+			"C8":4186,"D8":4699,
+		"led on board":0,
+		"on board 1":12,
+		"on board 2":11,
+		"sound on board":14,
 		"all":0,
 		"On":1,
 		"Off":0,

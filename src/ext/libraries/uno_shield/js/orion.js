@@ -92,6 +92,9 @@
 		if(typeof slot=="string"){
 			slot = slots[slot];
 		}
+		if(angle > 180){
+			angle = 180;
+		}
         runPackage(11,port,slot,angle);
     };
 	ext.runStepperMotor = function(port, speed, distance){
@@ -107,7 +110,7 @@
 		if(typeof slot=="string"){
 			slot = slots[slot];
 		}
-		runPackage(12,0x8,slot,short2array(speed),int2array(distance));
+		runPackage(12,0x8,slot,short2array(speed),float2array(distance));
 	};
 	ext.runSevseg = function(port,display){
 		if(typeof port=="string"){

@@ -121,13 +121,15 @@
 		}
         runPackage(10,port,short2array(speed));
     };
-    var runServoDict = {};
     ext.runServo = function(port,slot,angle) {
 		if(typeof port=="string"){
 			port = ports[port];
 		}
 		if(typeof slot=="string"){
 			slot = slots[slot];
+		}
+		if(angle > 180){
+			angle = 180;
 		}
         runPackage(11,port,slot,angle);
     };

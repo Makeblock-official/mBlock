@@ -367,6 +367,9 @@ package cc.makeblock.mbot.ui.parts
 				case "PicoBoard":
 					result = board.indexOf("picoboard") >= 0;
 					break;
+				case "Auriga":
+					result = board.indexOf("auriga") >= 0;
+					break;
 			}
 			return result;
 		}
