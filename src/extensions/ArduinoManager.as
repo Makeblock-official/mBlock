@@ -133,7 +133,7 @@ package extensions
 		
 		private var codeTemplate:String = ( <![CDATA[#include <Arduino.h>
 #include <Wire.h>
-#include <Servo.h>
+//#include <Servo.h>
 #include <SoftwareSerial.h>
 
 //include
@@ -1135,7 +1135,7 @@ void updateVar(char * varName,double * var)
 			return cppList
 			*/
 		}
-		
+		/*
 		public function uploadCode(code:String):void{
 			var url:String = "http://192.168.1.251:8080/";
 			var request:URLRequest = new URLRequest(url);
@@ -1158,7 +1158,7 @@ void updateVar(char * varName,double * var)
 			}
 			
 		}
-		
+		*/
 		private function saveHexFile(token:String,hexString:String):void{
 			var f:File = new File();
 			f.addEventListener(Event.COMPLETE, _onRfComplete);
@@ -1283,7 +1283,7 @@ void updateVar(char * varName,double * var)
 			}
 		}
 		//*/
-		public function get projectDocumentName():String{
+		private function get projectDocumentName():String{
 			var now:Date = new Date;
 			var pName:String = MBlock.app.projectName().split(" ").join("").split("(").join("").split(")").join("");
 			for(var i:uint=0;i<pName.length;i++){
@@ -1371,7 +1371,10 @@ void updateVar(char * varName,double * var)
 				outStream.close()
 				ccode = ccode.replace("void setup(){",serialParserInoFile+"\nvoid setup(){"); // too tricky here?
 			}
-			
+			SerialManager.sharedManager().disconnect();
+			UploaderEx.Instance.upload(projCpp.nativePath);
+			isUploading = true;
+			return "";
 			// get MeModule source list
 			var files:Array = workdir.getDirectoryListing()
 			projectPath = workdir.nativePath
@@ -1395,11 +1398,13 @@ void updateVar(char * varName,double * var)
 			
 			// copy project.ino to ./build/project.ino.cpp
 			// combine aux ino and main ino into 1 cpp file
+//			var dstFile:File = workdir.resolvePath(projectDocumentName+".ino.cpp")
 			var dstFile:File = workdir.resolvePath(projectDocumentName+".ino.cpp")
 			outStream = new FileStream();
 			outStream.open(dstFile, FileMode.WRITE);
 			outStream.writeUTFBytes(ccode);
 			outStream.close();
+//			trace(dstFile.nativePath);
 			// start building arduino libs
 			nativeDoneEvent = EVENT_LIBCOMPILE_DONE
 			numOfProcess = nativeWorkList.length
@@ -1556,7 +1561,7 @@ void updateVar(char * varName,double * var)
 			}
 		}
 		
-		public function get arduinoInstallPath():String{
+		private function get arduinoInstallPath():String{
 			if(null == arduinoPath){
 				if(Capabilities.os.indexOf("Windows") == 0){
 					arduinoPath = File.applicationDirectory.resolvePath("Arduino").nativePath;

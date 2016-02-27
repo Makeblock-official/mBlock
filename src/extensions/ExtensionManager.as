@@ -216,6 +216,7 @@ public class ExtensionManager {
 			case "UNO Shield":
 			case "BaseBoard":
 			case "PicoBoard":
+			case "Auriga":
 				return true;
 		}
 		return false;

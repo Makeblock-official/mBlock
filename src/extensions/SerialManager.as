@@ -372,7 +372,7 @@ package extensions
 					v.push("-D");
 					v.push("-U");
 					if(_hexToDownload.length==0){
-						var hexFile_mega2560:String = (ApplicationManager.sharedManager().documents.nativePath+"/mBlock/tools/hex/mega2560.hex");//.split("\\").join("/");
+						var hexFile_mega2560:String = getHexFilePath();//.split("\\").join("/");
 						tf = new File(hexFile_mega2560);
 						v.push("flash:w:"+hexFile_mega2560+":i");
 					}else{
@@ -449,6 +449,12 @@ package extensions
 					fileName = "baseboard";
 				}else{
 					fileName = "leonardo";
+				}
+			}else if(board.indexOf("_mega2560") > 0){
+				if(board.indexOf("auriga") >= 0){
+					fileName = "auriga";
+				}else{
+					fileName = "mega2560";
 				}
 			}else{
 				throw new Error(board);

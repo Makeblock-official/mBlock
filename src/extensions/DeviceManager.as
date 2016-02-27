@@ -48,6 +48,8 @@ package extensions
 					MBlock.app.extensionManager.singleSelectExtension("BaseBoard");
 				}else if(_board.indexOf("me/uno_shield")>-1){
 					MBlock.app.extensionManager.singleSelectExtension("UNO Shield");
+				}else if(_board.indexOf("me/auriga") >= 0){
+					MBlock.app.extensionManager.singleSelectExtension("Auriga");
 				}else{
 					MBlock.app.extensionManager.singleSelectExtension("PicoBoard");
 				}
@@ -71,11 +73,13 @@ package extensions
 				_name = "PicoBoard";
 			}else if(_board.indexOf("shield") > -1){
 				_name = "UNO Shield";
+			}else if(_board.indexOf("auriga") >= 0){
+				_name = "Me Auriga";
 			}
 			return _name;
 		}
 		public function get currentBoard():String{
-			LogManager.sharedManager().log("currentBoard:"+_board);
+//			LogManager.sharedManager().log("currentBoard:"+_board);
 			return _board;
 		}
 		public function get currentDevice():String{

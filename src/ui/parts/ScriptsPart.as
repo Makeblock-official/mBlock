@@ -248,7 +248,10 @@ public class ScriptsPart extends UIPart {
 		}
 	}
 	public function appendMessage(msg:String):void{
-		messageTextPane.textField.appendText(msg+"\n");
+		appendRawMessage(msg+"\n");
+	}
+	public function appendRawMessage(msg:String):void{
+		messageTextPane.textField.appendText(msg);
 		messageTextPane.textField.scrollV = messageTextPane.textField.maxScrollV-1;
 	}
 	
@@ -315,7 +318,6 @@ public class ScriptsPart extends UIPart {
 			if(ArduinoManager.sharedManager().isUploading==false){
 				messageTextPane.clear();
 				if(showArduinoCode()){
-					messageTextPane.append(ArduinoManager.sharedManager().arduinoInstallPath);
 					messageTextPane.append(ArduinoManager.sharedManager().buildAll(arduinoTextPane.textField.text));
 				}
 			}

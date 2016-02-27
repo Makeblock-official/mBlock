@@ -66,7 +66,7 @@ package extensions
 			
 			//Bind the socket to the local network interface and port 
 			try{
-				datagramSocket.bind(_clientPort); 
+				datagramSocket.bind(_clientPort);
 				//Listen for incoming datagrams 
 				datagramSocket.receive();
 			}catch(e:*){
@@ -311,7 +311,6 @@ package extensions
 		private function dataReceived( evt:DatagramSocketDataEvent ):void 
 		{
 			var srcName:String = evt.data.readUTFBytes( evt.data.bytesAvailable );
-			trace("udp", srcName);
 			//Read the data from the datagram
 			if(evt.srcAddress!=_currentIp){
 				//				trace("Received from " + evt.srcAddress + ":" + evt.srcPort + "> " + srcName );
