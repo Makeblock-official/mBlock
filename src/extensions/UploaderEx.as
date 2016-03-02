@@ -32,7 +32,7 @@ package extensions
 			argList.push("--upload");
 			argList.push("--board", getBoardInfo());
 			argList.push("--port", SerialDevice.sharedDevice().port);
-			argList.push("--verbose", "--preserve-temp-files");
+//			argList.push("--verbose", "--preserve-temp-files");
 			argList.push(filePath);
 			trace("compile",argList.join(" "));
 			info.arguments = argList;
@@ -65,20 +65,28 @@ package extensions
 		private function __onExit(event:NativeProcessExitEvent):void
 		{
 			ArduinoManager.sharedManager().isUploading = false;
-			MBlock.app.scriptsPart.appendMessage("exit code:" + event.exitCode);
+			var msg:String;
+			if(event.exitCode == 0){
+				msg = "Success";
+			}else if(event.exitCode == 1){
+				msg = "Build failed or upload failed";
+			}else{
+				return;
+			}
+			MBlock.app.scriptsPart.appendMessage(msg);
 		}
 		
 		private function __onData(event:ProgressEvent):void
 		{
 			var process:NativeProcess = event.target as NativeProcess;
-			var info:String = process.standardOutput.readUTFBytes(process.standardOutput.bytesAvailable);
+			var info:String = process.standardOutput.readMultiByte(process.standardOutput.bytesAvailable, "gb2312");
 			MBlock.app.scriptsPart.appendRawMessage(info);
 		}
 		
 		private function __onErrorData(event:ProgressEvent):void
 		{
 			var process:NativeProcess = event.target as NativeProcess;
-			var info:String = process.standardError.readUTFBytes(process.standardError.bytesAvailable);
+			var info:String = process.standardError.readMultiByte(process.standardError.bytesAvailable, "gb2312");
 			MBlock.app.scriptsPart.appendRawMessage(info);
 		}
 	}

@@ -76,7 +76,7 @@
 		
 		["R", "potentiometer %d.blackPorts","getPotentiometer","Port3",
 		{"encode":"{d0}","setup":"","inc":"","def":"MePort potentiometer_{0}({0});\n","work":"potentiometer_{0}.aRead2()","loop":""}],
-		["R", "sound sensor %d.blackPorts","getSoundSensor","Port3",
+		["R", "sound sensor %d.soundPort","getSoundSensor","Port3",
 		{"encode":"{d0}","setup":"","inc":"","def":"MePort soundsensor_{0}({0});\n","work":"soundsensor_{0}.aRead2()","loop":""}],
 		["B", "limit switch %d.normalPort %d.slot","getLimitswitch","Port1","Slot1",
 		{"encode":"{d0}{d1}","setup":"","inc":"","def":"MePort sw_{0}_{1}({0});\n","work":"sw_{0}_{1}.dpRead{1}()","loop":""}],
@@ -126,6 +126,7 @@
     	"grayPorts":[],
     	"whitePorts":["Port1","Port2","Port3","Port4"],
     	"blackPorts":["Port3","Port4"],
+    	"soundPort":["Port3","Port4"],
 		"motorPort":["M1","M2"],
 		"normalPort":["Port1","Port2","Port3","Port4"],
 		"servoPort":["Port1","Port2","Port3","Port4"],

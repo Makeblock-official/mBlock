@@ -6,7 +6,7 @@
 
     // Sensor states:
     var ports = {
-    	'led on board':0,
+    	'on board':0,
     	"on board 1":12,
 		"on board 2":11,
 		"sound on board":14,
@@ -34,6 +34,10 @@
 	var switchStatus = {
 		On:1,
 		Off:0
+	};
+	var gyroType = {
+		"gyro on board":1,
+		"gyro external":0
 	};
 	var shutterStatus = {
 		Press:0,
@@ -152,7 +156,11 @@
 		if(typeof slot=="string"){
 			slot = slots[slot];
 		}
-		runPackage(12,0x8,slot,short2array(speed),float2array(distance));
+		if(port == 0){
+			runPackage(61,0,slot,short2array(speed));
+		}else{
+			runPackage(12,0x8,slot,short2array(speed),float2array(distance));
+		}
 	};
 	ext.runSevseg = function(port,display){
 		if(typeof port=="string"){
@@ -305,12 +313,15 @@
     ext.getTemperatureOnBoard = function(nextID,port,slot) {
 		getPackage(nextID,27,13);
     };
-	ext.getGyro = function(nextID,ax) {
+	ext.getGyro = function(nextID,deviceType,ax) {
 		var deviceId = 6;
+		if(typeof deviceType=="string"){
+			deviceType = gyroType[deviceType];
+		}
 		if(typeof ax=="string"){
 			ax = axis[ax];
 		}
-		getPackage(nextID,deviceId,0,ax);
+		getPackage(nextID,deviceId,deviceType,ax);
     };
     ext.getHumiture = function(nextID,port,valueType){
     	var deviceId = 23;
