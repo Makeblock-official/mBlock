@@ -88,6 +88,18 @@ package cc.makeblock.interpreter
 						value = ba.readUTFBytes(n);
 						buffer.splice(0, n + 7);
 						break;
+					case 6:
+						if(buffer.length < 10){
+							return;
+						}
+						ba.writeByte(buffer[4]);
+						ba.writeByte(buffer[5]);
+						ba.writeByte(buffer[6]);
+						ba.writeByte(buffer[7]);
+						ba.position = 0;
+						value = ba.readInt();
+						buffer.splice(0, 10);
+						break;
 					default:
 						buffer.splice(0, 4);
 						return;

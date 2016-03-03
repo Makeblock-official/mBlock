@@ -20,6 +20,9 @@
 		
 		["w", "set encoder motor%d.exMotorPort %d.slot speed %d.encoderSpeed distance %n","runEncoderMotor", "on board", "Slot1", 100, 1000,
 		{"encode":"{d0}{s1}{s2}","setup":"encoder_{0}_{1}.begin();\nencoder_{0}_{1}.runSpeed(0);\n","inc":"","def":"MeEncoderMotor encoder_{0}_{1}(0x09,{1});\n","work":"encoder_{0}_{1}.move({3},{2});\n","loop":""}],
+
+		["R", "encoder motor %d.exMotorPort %d.slot %d.encoderValue", "getEncoderValue","on board", "Slot1", "speed",
+		{"encode":"{d0}","setup":"","inc":"","def":"MePort lightsensor_{0}({0});\n","work":"lightsensor_{0}.aRead2()","loop":""}],
 		
 		["w", "set 7-segments display%d.bluePorts number %n","runSevseg", "Port6", 100,
 		{"encode":"{d0}{f1}","setup":"","inc":"","def":"Me7SegmentDisplay seg7_{0}({0});\n","work":"seg7_{0}.display({1});\n","loop":""}],
@@ -116,6 +119,7 @@
 		"slot":["Slot1","Slot2"],
 		"device":["Ultrasonic","Line Finder","Light Sensor","Sound Sensor","Joystick","Button","Potentiometer"],
 		"exdevice":["LimitSwitch","Temperature"],
+		"encoderValue":["speed", "position"],
 		"mode":["Input","Output"],
 		"type":["Digital","Analog"],
 		"Axis":["X-Axis","Y-Axis"],
@@ -159,6 +163,8 @@
 		"on board 1":12,
 		"on board 2":11,
 		"sound on board":14,
+		"speed":2,
+		"position":1,
 		"all":0,
 		"On":1,
 		"Off":0,

@@ -58,7 +58,11 @@
 		'X-Axis':1,
 		'Y-Axis':2,
 		'Z-Axis':3
-	}
+	};
+	var encoderValTypes = {
+		"speed":2,
+		"position":1
+	};
     var inputs = {
         slider: 0,
         light: 0,
@@ -101,6 +105,19 @@
 			port = ports[port];
 		}
 		getPackage(0,deviceId,port);
+    };
+    ext.getEncoderValue = function(port,slot,valType){
+    	var deviceId = 0x3d;
+    	if(typeof port=="string"){
+			port = ports[port];
+		}
+		if(typeof slot=="string"){
+			slot = slots[slot];
+		}
+		if(typeof valType == "string"){
+			valType = encoderValTypes[valType];
+		}
+    	getPackage(0,deviceId,port,slot,valType);
     };
     ext.getButton = function(port, key){
     	var deviceId = 22;

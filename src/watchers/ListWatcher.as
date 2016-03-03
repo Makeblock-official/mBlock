@@ -556,6 +556,9 @@ public class ListWatcher extends Sprite {
 	}
 
 	public function updateTitle():void {
+		if(listName == null){
+			listName = "";
+		}
 		title.text = ((target == null) || (target.isStage)) ? listName : target.objName + ' ' + listName;
 		title.width = title.textWidth + 5;
 		title.x = Math.floor((frame.w - title.width) / 2);
