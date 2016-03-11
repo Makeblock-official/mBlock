@@ -121,7 +121,7 @@ public class BlockIO {
 		
 		var args:Array;
 		var hadSpriteRef:Boolean;
-		if(cmd[0] == "mBot.showDraw"){
+		if(cmd[0].indexOf(".showDraw") > 0){
 			args = cmd.slice(1,-1);
 			args.push(spec[4][3]);
 			b = new Block(label, spec[1], Specs.blockColor(spec[2]), spec[3], args);

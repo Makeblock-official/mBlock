@@ -32,7 +32,7 @@ package cc.makeblock.interpreter
 			var index:int = name.indexOf(".");
 			if(index < 0){
 				if(name.indexOf("when") < 0){
-					super.onCallUnregisteredFunction(thread, name, argList);
+					super.onCallUnregisteredFunction(thread, name, argList, retCount);
 				}
 				return;
 			}

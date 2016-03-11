@@ -583,12 +583,16 @@ return true; // xxx disable this check for now; it was causing confusion at Scra
 	private function computeColumnWidths(columns:Array):Array {
 		var widths:Array = [];
 		for each (var c:Array in columns) {
-			c.sort(function (b1:Block, b2:Block):int {return b1.y - b2.y }); // sort by increasing y
+			c.sort(__sortColumnWidths); // sort by increasing y
 			var w:int = 0;
 			for each (var b:Block in c) w = Math.max(w, b.width);
 			widths.push(w);
 		}
 		return widths;
 	}
-
+	
+	static private function __sortColumnWidths(b1:Block, b2:Block):int
+	{
+		return b1.y - b2.y;
+	}
 }}

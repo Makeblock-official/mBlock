@@ -6,6 +6,7 @@ package extensions
 	import flash.utils.ByteArray;
 	import flash.utils.Endian;
 	
+	import cc.makeblock.interpreter.RemoteCallMgr;
 	import cc.makeblock.util.FileUtil;
 	
 	import util.LogManager;
@@ -129,6 +130,11 @@ package extensions
 			ConnectionManager.sharedManager().addEventListener(Event.CLOSE,onClosed);
 		}
 		private function responseValue(extId:uint,value:*):void{
+			if(arguments.length >= 2){
+				RemoteCallMgr.Instance.onPacketRecv(value);
+			}else{
+				RemoteCallMgr.Instance.onPacketRecv();
+			}
 			MBlock.app.extensionManager.reporterCompleted(_name,extId,value);
 		}
 		

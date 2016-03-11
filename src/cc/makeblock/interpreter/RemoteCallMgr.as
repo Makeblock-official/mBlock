@@ -37,7 +37,7 @@ package cc.makeblock.interpreter
 			}
 		}
 		
-		private function onPacketRecv(value:Object=null):void
+		public function onPacketRecv(value:Object=null):void
 		{
 			if(requestList.length <= 0){
 				return;
