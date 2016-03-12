@@ -106,18 +106,15 @@
 		}
 		getPackage(0,deviceId,port);
     };
-    ext.getEncoderValue = function(port,slot,valType){
+    ext.getEncoderValue = function(slot,valType){
     	var deviceId = 0x3d;
-    	if(typeof port=="string"){
-			port = ports[port];
-		}
 		if(typeof slot=="string"){
 			slot = slots[slot];
 		}
 		if(typeof valType == "string"){
 			valType = encoderValTypes[valType];
 		}
-    	getPackage(0,deviceId,port,slot,valType);
+    	getPackage(0,deviceId,0,slot,valType);
     };
     ext.getButton = function(port, key){
     	var deviceId = 22;
@@ -165,6 +162,9 @@
 			port = ports[port];
 		}
 		runPackage(40,port,short2array(speed),int2array(distance));
+	};
+	ext.runEncoderMotorOnBoard = function(slot, speed){
+		ext.runEncoderMotor(0, slot, speed, 0);
 	};
 	ext.runEncoderMotor = function(port, slot, speed, distance){
 		if(typeof port=="string"){
@@ -330,15 +330,19 @@
     ext.getTemperatureOnBoard = function(nextID,port,slot) {
 		getPackage(nextID,27,13);
     };
-	ext.getGyro = function(nextID,deviceType,ax) {
-		var deviceId = 6;
-		if(typeof deviceType=="string"){
-			deviceType = gyroType[deviceType];
-		}
+    ext.getGyroExternal = function(nextID,ax) {
+    	var deviceId = 6;
 		if(typeof ax=="string"){
 			ax = axis[ax];
 		}
-		getPackage(nextID,deviceId,deviceType,ax);
+		getPackage(nextID,deviceId,0,ax);
+    };
+    ext.getGyroOnBoard = function(nextID,ax) {
+    	var deviceId = 6;
+		if(typeof ax=="string"){
+			ax = axis[ax];
+		}
+		getPackage(nextID,deviceId,1,ax);
     };
     ext.getHumiture = function(nextID,port,valueType){
     	var deviceId = 23;
