@@ -220,9 +220,9 @@ void updateVar(char * varName,double * var)
 		
 		public function ArduinoManager()
 		{
-			addEventListener(EVENT_NATIVE_DONE, gotoNextNativeCmd)
-			addEventListener(EVENT_LIBCOMPILE_DONE,runToolChain,false)
-			addEventListener(EVENT_COMPILE_DONE,uploadHex,false);
+//			addEventListener(EVENT_NATIVE_DONE, gotoNextNativeCmd)
+//			addEventListener(EVENT_LIBCOMPILE_DONE,runToolChain,false)
+//			addEventListener(EVENT_COMPILE_DONE,uploadHex,false);
 		}
 		
 		public function clearTempFiles():void
@@ -1035,6 +1035,14 @@ void updateVar(char * varName,double * var)
 					}
 				}
 			}
+			/*
+			if(DeviceManager.sharedManager().currentName == "Me Auriga"){
+				ccode_inc += <![CDATA[
+  attachInterrupt(Encoder_1.GetIntNum(), isr_process_encoder1, RISING);
+  attachInterrupt(Encoder_2.GetIntNum(), isr_process_encoder2, RISING);
+]]>.toString();
+			}
+			//*/
 			return modInitCode;
 		}
 		static private const varNamePattern:RegExp = /^[_A-Za-z][_A-Za-z0-9]*$/;
@@ -1065,8 +1073,11 @@ void updateVar(char * varName,double * var)
 				code = code is CodeObj?code.code:code;
 				if(code!=""){
 					var array:Array = code.split("\n");
-					for(var j:uint=0;j<array.length-1;j++){
-						if(ccode_def.indexOf(array[j])==-1){
+					for(var j:int=0;j<array.length;j++){
+						if(!Boolean(array[j])){
+							continue;
+						}
+						if(array[j].indexOf("#") == 0 || ccode_def.indexOf(array[j]) < 0){
 							ccode_def+=array[j]+"\n";
 						}
 					}
@@ -1083,8 +1094,66 @@ void updateVar(char * varName,double * var)
 				code = code is CodeObj?code.code:code;
 				if(code!=""){
 					if(ccode_inc.indexOf(code)==-1)
-						ccode_inc+=code+"";
+						ccode_inc += code;
 				}
+			}
+			if(DeviceManager.sharedManager().currentName == "Me Auriga"){
+				ccode_inc += <![CDATA[
+MeEncoderOnBoard Encoder_1(SLOT1);
+MeEncoderOnBoard Encoder_2(SLOT2);
+
+void isr_process_encoder1(void)
+{
+  if(digitalRead(Encoder_1.GetPortB()) == 0)
+  {
+    Encoder_1.PulsePosMinus();
+  }
+  else
+  {
+    Encoder_1.PulsePosPlus();
+  }
+}
+
+void isr_process_encoder2(void)
+{
+  if(digitalRead(Encoder_2.GetPortB()) == 0)
+  {
+    Encoder_2.PulsePosMinus();
+  }
+  else
+  {
+    Encoder_2.PulsePosPlus();
+  }
+}
+
+void move(int direction, int speed)
+{
+  int leftSpeed = 0;
+  int rightSpeed = 0;
+  if(direction == 1)
+  {
+    leftSpeed = -speed;
+    rightSpeed = speed;
+  }
+  else if(direction == 2)
+  {
+    leftSpeed = speed;
+    rightSpeed = -speed;
+  }
+  else if(direction == 3)
+  {
+    leftSpeed = speed;
+    rightSpeed = speed;
+  }
+  else if(direction == 4)
+  {
+    leftSpeed = -speed;
+    rightSpeed = -speed;
+  }
+  Encoder_1.setMotorPwm(leftSpeed);
+  Encoder_2.setMotorPwm(rightSpeed);
+}
+]]>.toString();
 			}
 			return modIncudeCode;
 		}
@@ -1252,7 +1321,7 @@ void updateVar(char * varName,double * var)
 			LogManager.sharedManager().log("projectPath:"+projectPath);
 		}
 		
-		
+		/*
 		public function uploadHex(evt:*):void{
 			//			if(SerialManager.sharedManager().device=="mbot"){
 			//				ArduinoUploader.sharedManager().start(projectPath+"\\build\\"+projectDocumentName+".ino.hex");
@@ -1260,7 +1329,7 @@ void updateVar(char * varName,double * var)
 			SerialManager.sharedManager().upgrade(projectPath+"/build/"+projectDocumentName+".ino.hex");
 			//			}
 		}
-		
+		*/
 		private var compileErr:Boolean = false;
 		//*
 		private function copyCompileFiles(files:Array, workdir:File):void
@@ -1375,47 +1444,47 @@ void updateVar(char * varName,double * var)
 			UploaderEx.Instance.upload(projCpp.nativePath);
 			isUploading = true;
 			return "";
-			// get MeModule source list
-			var files:Array = workdir.getDirectoryListing()
-			projectPath = workdir.nativePath
-			// get build dir ready
-			workdir = workdir.resolvePath("build")
-			workdir.createDirectory()
-			// yzj, don't use pre-build object any more, build from arduino libs
-			/*
-			// prepare build directory
-			if(boardType=="leonardo")
-			srcdir = srcdir.resolvePath("../gcc_template")
-			else
-			srcdir = srcdir.resolvePath("../gcc_template_uno")
-			workdir = workdir.resolvePath("build")
-			//workdir.deleteDirectory(true)
-			srcdir.copyTo(workdir,true)
-			*/
-			// prebuild arduino lib
-			buildArduinoLib(workdir);
-			copyCompileFiles(files, workdir);
-			
-			// copy project.ino to ./build/project.ino.cpp
-			// combine aux ino and main ino into 1 cpp file
+//			// get MeModule source list
+//			var files:Array = workdir.getDirectoryListing()
+//			projectPath = workdir.nativePath
+//			// get build dir ready
+//			workdir = workdir.resolvePath("build")
+//			workdir.createDirectory()
+//			// yzj, don't use pre-build object any more, build from arduino libs
+//			/*
+//			// prepare build directory
+//			if(boardType=="leonardo")
+//			srcdir = srcdir.resolvePath("../gcc_template")
+//			else
+//			srcdir = srcdir.resolvePath("../gcc_template_uno")
+//			workdir = workdir.resolvePath("build")
+//			//workdir.deleteDirectory(true)
+//			srcdir.copyTo(workdir,true)
+//			*/
+//			// prebuild arduino lib
+//			buildArduinoLib(workdir);
+//			copyCompileFiles(files, workdir);
+//			
+//			// copy project.ino to ./build/project.ino.cpp
+//			// combine aux ino and main ino into 1 cpp file
+////			var dstFile:File = workdir.resolvePath(projectDocumentName+".ino.cpp")
 //			var dstFile:File = workdir.resolvePath(projectDocumentName+".ino.cpp")
-			var dstFile:File = workdir.resolvePath(projectDocumentName+".ino.cpp")
-			outStream = new FileStream();
-			outStream.open(dstFile, FileMode.WRITE);
-			outStream.writeUTFBytes(ccode);
-			outStream.close();
-//			trace(dstFile.nativePath);
-			// start building arduino libs
-			nativeDoneEvent = EVENT_LIBCOMPILE_DONE
-			numOfProcess = nativeWorkList.length
-			numOfSuccess = 0
-			compileErr = false;
-			isUploading = true;
-			dispatchEvent(new Event(EVENT_NATIVE_DONE));
-			tc_projCpp = projCpp
-			tc_workdir = workdir
-			tc_cppList = requiredCpp;
-			return ""
+//			outStream = new FileStream();
+//			outStream.open(dstFile, FileMode.WRITE);
+//			outStream.writeUTFBytes(ccode);
+//			outStream.close();
+////			trace(dstFile.nativePath);
+//			// start building arduino libs
+//			nativeDoneEvent = EVENT_LIBCOMPILE_DONE
+//			numOfProcess = nativeWorkList.length
+//			numOfSuccess = 0
+//			compileErr = false;
+//			isUploading = true;
+//			dispatchEvent(new Event(EVENT_NATIVE_DONE));
+//			tc_projCpp = projCpp
+//			tc_workdir = workdir
+//			tc_cppList = requiredCpp;
+//			return ""
 		}
 		
 		
@@ -1460,7 +1529,7 @@ void updateVar(char * varName,double * var)
 //				}
 			}
 			
-			var processArgs:Vector.<String> = new Vector.<String>(); 
+			var processArgs:Vector.<String> = new Vector.<String>();
 			//trace(contents[i].name, contents[i].size);
 			var nativeProcessStartupInfo:NativeProcessStartupInfo =new NativeProcessStartupInfo();
 			nativeProcessStartupInfo.executable = file;
@@ -1473,7 +1542,7 @@ void updateVar(char * varName,double * var)
 			process.start(nativeProcessStartupInfo);
 			return ""
 		}
-		
+		/*
 		private function runToolChain(evt:*):String{
 			var cpp:File = tc_projCpp
 			var dir:File = tc_workdir
@@ -1560,7 +1629,7 @@ void updateVar(char * varName,double * var)
 				}
 			}
 		}
-		
+		//*/
 		private function get arduinoInstallPath():String{
 			if(null == arduinoPath){
 				if(Capabilities.os.indexOf("Windows") == 0){
@@ -1571,7 +1640,7 @@ void updateVar(char * varName,double * var)
 			}
 			return arduinoPath;
 		}
-		
+		/*
 		private function archOutputFiles(cpp:File,dir:File):void{
 			var file:File = new File(arduinoInstallPath+"/hardware/tools/avr/bin/avr-ar"+(ApplicationManager.sharedManager().system==ApplicationManager.WINDOWS?".exe":"")); 
 			
@@ -1821,9 +1890,9 @@ void updateVar(char * varName,double * var)
 					dispatchEvent(new Event(nativeDoneEvent))
 			}
 		}
+		//*/
 		
-		
-		private function onOutputData(event:ProgressEvent):void 
+		private function onOutputData(event:ProgressEvent):void
 		{ 
 			isUploading = true;
 			/*

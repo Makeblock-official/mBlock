@@ -243,6 +243,9 @@ package extensions
 			if(boardName.indexOf("me/uno_shield")>-1){
 				return "shield_firmware";
 			}
+			if(boardName.indexOf("me/auriga") >= 0){
+				return "Firmware_for_Auriga";
+			}
 			return "orion_firmware";
 		}
 		public function disconnect():void{
@@ -516,6 +519,11 @@ package extensions
 			_upgradeBytesLoaded = 0;
 			_dialog.setText(Translator.map('Executing'));
 			_dialog.showOnStage(_mBlock.stage);
+		}
+		
+		public function reopen():void
+		{
+			open(_selectPort);
 		}
 	}
 }

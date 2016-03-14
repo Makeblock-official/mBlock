@@ -1,18 +1,16 @@
 /*************************************************************************
-* File Name          : Mbot_Firmware.ino
-* Author             : Ander
-* Updated            : Ander
-* Version            : V1.20101
-* Date               : 12/29/2014
+* File Name          : mbot_firmware.ino
+* Author             : Ander, Mark Yan
+* Updated            : Ander, Mark Yan
+* Version            : V06.01.104
+* Date               : 03/14/2016
 * Description        : Firmware for Makeblock Electronic modules with Scratch.  
 * License            : CC-BY-SA 3.0
-* Copyright (C) 2013 - 2014 Maker Works Technology Co., Ltd. All right reserved.
+* Copyright (C) 2013 - 2016 Maker Works Technology Co., Ltd. All right reserved.
 * http://www.makeblock.cc/
 **************************************************************************/
-#include <Servo.h>
 #include <Wire.h>
 #include <MeMCore.h>
-#define ME_PORT_DEFINED
 
 Servo servos[8];  
 MeDCMotor dc;
@@ -64,7 +62,7 @@ const int analogs[12] PROGMEM = {A0,A1,A2,A3,A4,A5,A6,A7,A8,A9,A10,A11};
 #else
 const int analogs[8] PROGMEM = {A0,A1,A2,A3,A4,A5,A6,A7};
 #endif
-String mVersion = "06.01.030";
+String mVersion = "06.01.104";
 boolean isAvailable = false;
 
 int len = 52;
@@ -74,6 +72,7 @@ byte dataLen;
 byte modulesLen=0;
 boolean isStart = false;
 char serialRead;
+uint8_t command_index = 0;
 #define VERSION 0
 #define ULTRASONIC_SENSOR 1
 #define TEMPERATURE_SENSOR 2
@@ -108,7 +107,7 @@ char serialRead;
 #define BUTTON_INNER 35
 #define LEDMATRIX 41
 #define TIMER 50
-#define TOUCH_SENSOR         51
+#define TOUCH_SENSOR 51
 
 #define GET 1
 #define RUN 2
@@ -122,18 +121,18 @@ uint8_t keyPressed = KEY_NULL;
 
 void readButtonInner(uint8_t pin, int8_t s)
 {
-      pin = pgm_read_byte(&analogs[pin]);
-      pinMode(pin,INPUT);
-      boolean currentPressed = !(analogRead(pin)>10);
+  pin = pgm_read_byte(&analogs[pin]);
+  pinMode(pin,INPUT);
+  boolean currentPressed = !(analogRead(pin)>10);
       
-      if(buttonPressed == currentPressed){
-        return;
-      }
-      buttonPressed = currentPressed;
-      writeHead();
-      writeSerial(0x80);
-      sendByte(currentPressed);
-      writeEnd();
+  if(buttonPressed == currentPressed){
+    return;
+  }
+  buttonPressed = currentPressed;
+  writeHead();
+  writeSerial(0x80);
+  sendByte(currentPressed);
+  writeEnd();
 }
 
 void setup(){
@@ -153,6 +152,8 @@ void setup(){
   gyro.begin();
   Serial.print("Version: ");
   Serial.println(mVersion);
+  ledMx.setBrightness(6);
+  ledMx.setColorIndex(1);
 }
 int irDelay = 0;
 int irIndex = 0;
@@ -259,12 +260,15 @@ ff 55 len idx action device port slot data a
 void parseData(){
   isStart = false;
   int idx = readBuffer(3);
+  command_index = (uint8_t)idx;
   int action = readBuffer(4);
   int device = readBuffer(5);
   switch(action){
     case GET:{
-        writeHead();
-        writeSerial(idx);
+        if(device != ULTRASONIC_SENSOR){
+          writeHead();
+          writeSerial(idx);
+        }
         readSensor(device);
         writeEnd();
      }
@@ -429,36 +433,23 @@ void runModule(int device){
      }
      int action = readBuffer(7);
      if(action==1){
-            int brightness = readBuffer(8);
-            int color = readBuffer(9);
-            int px = readShort(10);
-            int py = readShort(12);
-            int len = readBuffer(14);
-            char *s = readString(15,len);
-            ledMx.clearScreen();
-            ledMx.setColorIndex(color);
-            ledMx.setBrightness(brightness);
+            int px = buffer[8];
+            int py = buffer[9];
+            int len = readBuffer(10);
+            char *s = readString(11,len);
             ledMx.drawStr(px,py,s);
-         }else if(action==2){
-           int brightness = readBuffer(8);
-            int dw = readBuffer(9);
-            int px = readShort(10);
-            int py = readShort(12);
-            int len = readBuffer(14);
-            uint8_t *ss = readUint8(15,len);
-            ledMx.clearScreen();
-            ledMx.setColorIndex(1);
-            ledMx.setBrightness(brightness);
-            ledMx.drawBitmap(px,py,dw,ss);
-         }else if(action==3){
-            int brightness = readBuffer(8);
-            int point = readBuffer(9);
-            int hours = readShort(10);
-            int minutes = readShort(12);
-            ledMx.clearScreen();
-            ledMx.setColorIndex(1);
-            ledMx.setBrightness(brightness);
+      }else if(action==2){
+            int px = readBuffer(8);
+            int py = readBuffer(9);
+            uint8_t *ss = readUint8(10,16);
+            ledMx.drawBitmap(px,py,16,ss);
+      }else if(action==3){
+            int point = readBuffer(8);
+            int hours = readBuffer(9);
+            int minutes = readBuffer(10);
             ledMx.showClock(hours,minutes,point);
+     }else if(action == 4){
+            ledMx.showNum(readFloat(8),3);
      }
    }
    break;
@@ -557,6 +548,9 @@ void readSensor(int device){
        us.reset(port);
      }
      value = (float)us.distanceCm(50000);
+     delayMicroseconds(100);
+     writeHead();
+     writeSerial(command_index);
      sendFloat(value);
    }
    break;
@@ -726,21 +720,21 @@ void readSensor(int device){
      sendFloat(currentTime);
    }
    break;
-    case TOUCH_SENSOR:
-    {
+   case TOUCH_SENSOR:
+   {
      if(touchSensor.getPort() != port){
-        touchSensor.reset(port);
-      }
-      sendByte(touchSensor.touched());
-    }
-    break;
-    case BUTTON:
-    {
-      if(buttonSensor.getPort() != port){
-        buttonSensor.reset(port);
-      }
-      sendByte(keyPressed == readBuffer(7));
-    }
-    break;
+       touchSensor.reset(port);
+     }
+     sendByte(touchSensor.touched());
+   }
+   break;
+   case BUTTON:
+   {
+     if(buttonSensor.getPort() != port){
+       buttonSensor.reset(port);
+     }
+     sendByte(keyPressed == readBuffer(7));
+   }
+   break;
   }
 }

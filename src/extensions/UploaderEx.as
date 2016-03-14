@@ -74,6 +74,7 @@ package extensions
 				return;
 			}
 			MBlock.app.scriptsPart.appendMessage(msg);
+			SerialManager.sharedManager().reopen();
 		}
 		
 		private function __onData(event:ProgressEvent):void

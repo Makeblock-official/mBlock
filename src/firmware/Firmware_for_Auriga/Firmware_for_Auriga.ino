@@ -2,8 +2,8 @@
 * File Name          : Firmware_for_Auriga.ino
 * Author             : myan
 * Updated            : myan
-* Version            : V09.01.106
-* Date               : 03/09/2016
+* Version            : V09.01.108
+* Date               : 03/14/2016
 * Description        : Firmware for Makeblock Electronic modules with Scratch.  
 * License            : CC-BY-SA 3.0
 * Copyright (C) 2013 - 2016 Maker Works Technology Co., Ltd. All right reserved.
@@ -107,6 +107,7 @@ int16_t move_status = MOVE_STOP;
 #define BUZZER_PORT                          45
 #define RGBLED_PORT                          44
 
+uint8_t command_index = 0;
 uint8_t auriga_mode = BLUETOOTH_MODE;
 uint8_t index = 0;
 uint8_t dataLen;
@@ -141,7 +142,7 @@ boolean rightflag;
 boolean start_flag = false;
 boolean move_flag = false;
 
-String mVersion = "09.01.106";
+String mVersion = "09.01.107";
 
 //////////////////////////////////////////////////////////////////////////////////////
 float RELAX_ANGLE = -1;                    //自然平衡角度,根据车子自己的重心与传感器安装位置调整
@@ -487,12 +488,16 @@ void parseData(void)
   int idx = readBuffer(3);
   int action = readBuffer(4);
   int device = readBuffer(5);
+  command_index = (uint8_t)idx;
   switch(action)
   {
     case GET:
       {
-        writeHead();
-        writeSerial(idx);
+        if(device != ULTRASONIC_SENSOR)
+        {
+          writeHead();
+          writeSerial(idx);
+        }
         readSensor(device);
         writeEnd();
       }
@@ -817,6 +822,10 @@ void runModule(int device)
           int minutes = readBuffer(10);
           ledMx.showClock(hours,minutes,point);
         }
+        else if(action == 4)
+        {
+          ledMx.showNum(readFloat(8),3);
+        }
       }
       break;
     case LIGHT_SENSOR:
@@ -982,7 +991,10 @@ void readSensor(int device)
           delete us;
           us = new MeUltrasonicSensor(port);
         }
-        value = us->distanceCm();
+        value = (float)us->distanceCm(50000);
+        delayMicroseconds(100);
+        writeHead();
+        writeSerial(command_index);
         sendFloat(value);
       }
       break;

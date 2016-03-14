@@ -1,9 +1,11 @@
 package cc.makeblock.util
 {
+	import extensions.DeviceManager;
+
 	public class UploadSizeInfo
 	{
 		static private const begin:RegExp = /writing flash \((\d+) bytes\):/;
-		static private const regExp:RegExp = /\[\w+\]/g;
+		static private const regExp:RegExp = /\[\w{2}\]/g;
 		
 		private var bytesTotal:int;
 		private var bytesLoad:int;
@@ -51,9 +53,7 @@ package cc.makeblock.util
 				switch(buffer.substr(i, 5)){
 					case "Send:":
 						index = buffer.indexOf("\n", i);
-						if(index > 0 && buffer.charAt(i+6) == "d"){
-							bytesLoad += buffer.slice(i+7, index).match(regExp).length - 5;
-						}
+						onSend(index, i);
 						break;
 					case "Recv:":
 						index = buffer.indexOf("\n", i);
@@ -69,6 +69,24 @@ package cc.makeblock.util
 			}
 			if(index > 0){
 				buffer = buffer.slice(index);
+			}
+		}
+		
+		private function onSend(index:int, i:int):void
+		{
+			var boardName:String = DeviceManager.sharedManager().currentDevice;
+			if(boardName == "uno"){
+				if(index > 0 && buffer.charAt(i+6) == "d"){
+					bytesLoad += buffer.slice(i+7, index).match(regExp).length - 5;
+				}
+			}else if(boardName == "mega2560"){
+				if(index > 0 && buffer.slice(9,11) == "1b"){
+					bytesLoad += Math.max(0, buffer.slice(i+7, index).match(regExp).length - 15);
+				}
+			}else if(boardName == "leonardo"){
+				if(index > 0 && buffer.charAt(i+6) == "B"){
+					bytesLoad += buffer.slice(i+7, index).match(regExp).length - 5;
+				}
 			}
 		}
 	}
