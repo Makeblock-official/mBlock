@@ -1,6 +1,6 @@
 package cc.makeblock.mbot.uiwidgets.extensionMgr
 {
-	import flash.filesystem.File;
+	import flash.net.FileReference;
 	import flash.utils.ByteArray;
 	
 	import cc.makeblock.mbot.util.PathUtil;
@@ -17,7 +17,6 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 	
 	import uiwidgets.DialogBox;
 	
-	import util.ApplicationManager;
 	import util.JSON;
 	import util.SharedObjectManager;
 
@@ -46,8 +45,10 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 			panel.show();
 		}
 		
-		static public function OnAddExtension(file:File):void
+		static public function OnAddExtension(file:FileReference):void
 		{
+			trace(ExtensionUtil, "OnAddExtension");
+			/*
 			if(file.extension == "json"){
 				var fileName:String = file.name.slice(0, file.name.lastIndexOf("."));
 				try{
@@ -71,6 +72,7 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 				return;
 			}
 			onParseSuccess(fzip);
+			*/
 		}
 		
 		static public function OnDelExtension(extName:String, callback:Function):void
@@ -156,6 +158,7 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 		
 		static private function copyFileToDocuments(fzip:FZip):void
 		{
+			/*
 			var dir:File = libPath;
 			
 			var n:int = fzip.getFileCount();
@@ -168,6 +171,7 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 				var path:String = extensionName + "/" + file.filename.slice(extensionDir.length);
 				FileUtil.WriteBytes(dir.resolvePath(path), file.content);
 			}
+			*/
 		}
 		
 		static private function isExtNameExist(extName:String):Boolean
@@ -177,17 +181,20 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 		
 		static private function delExt(extName:String):Boolean
 		{
+			/*
 			var file:File = libPath.resolvePath(extName);
 			if(file.exists){
 				file.moveToTrash();
 				return true;
 			}
+			*/
 			return false;
 		}
-		
+		/*
 		static private function get libPath():File
 		{
 			return ApplicationManager.sharedManager().documents.resolvePath("mBlock/libraries");
 		}
+		*/
 	}
 }

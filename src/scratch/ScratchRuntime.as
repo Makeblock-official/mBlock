@@ -26,7 +26,6 @@ package scratch {
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
-	import flash.filesystem.File;
 	import flash.geom.Rectangle;
 	import flash.media.Microphone;
 	import flash.media.SoundTransform;
@@ -44,7 +43,6 @@ package scratch {
 	
 	import cc.makeblock.interpreter.BlockInterpreter;
 	import cc.makeblock.interpreter.FunctionVideoMotion;
-	import cc.makeblock.util.FileUtil;
 	
 	import extensions.ConnectionManager;
 	import extensions.ParseManager;
@@ -443,9 +441,9 @@ package scratch {
 			}
 			
 			stopAll();
-			var file:File = new File();
+			var file:FileReference = new FileReference();
 			file.addEventListener(Event.SELECT, fileSelected);
-			file.browseForOpen("choose file to open", fileFilters);
+			file.browse(fileFilters);
 		}
 		
 		static private const fileFilters:Array = [
@@ -453,7 +451,7 @@ package scratch {
 			new FileFilter('Scratch 1.4 Project', '*.sb')
 		];
 		
-		public function selectedProjectFile(file:File):void {
+		public function selectedProjectFile(file:FileReference):void {
 			// Prompt user for a file name and load that file.
 			stopAll();
 			
@@ -468,12 +466,13 @@ package scratch {
 			}
 		}
 		
-		private function installProjectFromFile(file:File):void {
+		private function installProjectFromFile(file:FileReference):void {
 			// Install a project from a file with the given name and contents.
 			stopAll();
 //			app.oldWebsiteURL = '';
 			app.loadInProgress = true;
-			installProjectFromData(FileUtil.ReadBytes(file));
+			installProjectFromData(file.data);
+			trace(this, "installProjectFromFile");
 			app.setProjectFile(file);
 			setTimeout(ConnectionManager.sharedManager().onReOpen,1000);
 		}

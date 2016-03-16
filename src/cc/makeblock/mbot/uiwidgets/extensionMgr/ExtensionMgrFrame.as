@@ -1,12 +1,10 @@
 package cc.makeblock.mbot.uiwidgets.extensionMgr
 {
 	import flash.events.Event;
-	import flash.filesystem.File;
 	import flash.net.FileFilter;
-	import flash.utils.getDefinitionByName;
+	import flash.net.FileReference;
 	
 	import cc.makeblock.mbot.uiwidgets.MyFrame;
-	import cc.makeblock.mbot.uiwidgets.extensionMgr.DefaultListCell;
 	import cc.makeblock.mbot.util.PopupUtil;
 	
 	import org.aswing.ASColor;
@@ -15,13 +13,11 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 	import org.aswing.BorderLayout;
 	import org.aswing.CenterLayout;
 	import org.aswing.DefaultListTextCellFactory;
-	import org.aswing.Insets;
 	import org.aswing.JButton;
 	import org.aswing.JList;
 	import org.aswing.JPanel;
 	import org.aswing.SoftBoxLayout;
 	import org.aswing.SolidBackground;
-	import org.aswing.border.EmptyBorder;
 	import org.aswing.event.AWEvent;
 	import org.aswing.geom.IntDimension;
 	
@@ -72,12 +68,12 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 		
 		private function __onAddExtension(evt:AWEvent):void
 		{
-			var file:File = new File();
+			var file:FileReference = new FileReference();
 			file.addEventListener(Event.SELECT, function(evt:Event):void{
 				ExtensionUtil.OnAddExtension(file);
 				updateList();
 			});
-			file.browseForOpen("please select file", [new FileFilter("json file", "*.json"), new FileFilter("zip file", "*.zip")]);
+			file.browse([new FileFilter("json file", "*.json"), new FileFilter("zip file", "*.zip")]);
 		}
 		
 		private function __onRemoveExtension(evt:AWEvent):void

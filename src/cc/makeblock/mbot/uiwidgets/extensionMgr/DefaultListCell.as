@@ -1,8 +1,5 @@
 package cc.makeblock.mbot.uiwidgets.extensionMgr
 {
-	
-	import flash.filesystem.File;
-	
 	import org.aswing.ASColor;
 	import org.aswing.AbstractListCell;
 	import org.aswing.BorderLayout;
@@ -19,8 +16,6 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 	import org.aswing.geom.IntPoint;
 	
 	import translation.Translator;
-	
-	import util.ApplicationManager;
 	
 	/**
 	 * Default list cell, render item value.toString() text.
@@ -78,12 +73,7 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 			if(extName == "communication"){
 				extName = "serial";
 			}
-			var file:File = ApplicationManager.sharedManager().documents.resolvePath("mBlock/libraries");
-			for each(var item:File in file.getDirectoryListing()){
-				if(item.name.toLowerCase() == extName){
-					item.openWithDefaultApplication();
-				}
-			}
+			trace(this, "__onViewSource");
 		}
 		
 		protected function getJLabel():JLabel{

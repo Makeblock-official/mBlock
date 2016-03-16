@@ -141,11 +141,12 @@ public class MediaLibraryItem extends Sprite {
 
 		// if not in the thumbnail cache, fetch/compute it
 		if (fileType(md5) == 'svg'){
-			var data:ByteArray = MBlock.app.server.getAsset(md5);
-			if (data) {
-				importer = new SVGImporter(XML(data));
-				importer.loadAllImages(svgImagesLoaded);
-			}
+			MBlock.app.server.getAsset(md5, function(data:ByteArray):void{
+				if (data) {
+					importer = new SVGImporter(XML(data));
+					importer.loadAllImages(svgImagesLoaded);
+				}
+			});
 		}
 		else{
 			MBlock.app.server.getThumbnail(md5, thumbnailWidth, thumbnailHeight, setThumbnail);
@@ -161,26 +162,33 @@ public class MediaLibraryItem extends Sprite {
 		var data:String;
 		if (spriteCache[spriteMD5]) {
 			data = spriteCache[spriteMD5];
+			onOk();
 		}else {
-			data = MBlock.app.server.getAsset(spriteMD5).toString();
+			MBlock.app.server.getAsset(spriteMD5, function(result:ByteArray):void{
+				data = result.toString();
+				onOk();
+			});
 		}
-		if (!data) return; // fetch failed
-		var sprObj:Object = util.JSON.parse(data);
-		spriteCache[spriteMD5] = data;
-		dbObj.scriptCount = (sprObj.scripts is Array) ? sprObj.scripts.length : 0;
-		dbObj.costumeCount = (sprObj.costumes is Array) ? sprObj.costumes.length : 0;
-		dbObj.soundCount = (sprObj.sounds is Array) ? sprObj.sounds.length : 0;
-		if (dbObj.scriptCount > 0) setInfo(Translator.map('Scripts:') + ' ' + dbObj.scriptCount);
-		else if (dbObj.costumeCount > 1) setInfo(Translator.map('Costumes:') + ' ' + dbObj.costumeCount);
-		else setInfo('');
-		if ((sprObj.costumes is Array) && (sprObj.currentCostumeIndex is Number)) {
-			var cList:Array = sprObj.costumes;
-			var cObj:Object = cList[Math.round(sprObj.currentCostumeIndex) % cList.length];
-			var md5:String = cObj ? cObj.baseLayerMD5 : null;
-			if (md5) setImageThumbnail(md5, done, spriteMD5);
-		} else {
-			done();
+		function onOk():void{
+			if (!data) return; // fetch failed
+			var sprObj:Object = util.JSON.parse(data);
+			spriteCache[spriteMD5] = data;
+			dbObj.scriptCount = (sprObj.scripts is Array) ? sprObj.scripts.length : 0;
+			dbObj.costumeCount = (sprObj.costumes is Array) ? sprObj.costumes.length : 0;
+			dbObj.soundCount = (sprObj.sounds is Array) ? sprObj.sounds.length : 0;
+			if (dbObj.scriptCount > 0) setInfo(Translator.map('Scripts:') + ' ' + dbObj.scriptCount);
+			else if (dbObj.costumeCount > 1) setInfo(Translator.map('Costumes:') + ' ' + dbObj.costumeCount);
+			else setInfo('');
+			if ((sprObj.costumes is Array) && (sprObj.currentCostumeIndex is Number)) {
+				var cList:Array = sprObj.costumes;
+				var cObj:Object = cList[Math.round(sprObj.currentCostumeIndex) % cList.length];
+				var md5:String = cObj ? cObj.baseLayerMD5 : null;
+				if (md5) setImageThumbnail(md5, done, spriteMD5);
+			} else {
+				done();
+			}
 		}
+		
 	}
 
 	private function setThumbnailBM(bm:BitmapData):void {
@@ -333,10 +341,10 @@ public class MediaLibraryItem extends Sprite {
 
 	private function downloadAndPlay():void {
 		// Download and play a library sound.
-		var wavData:ByteArray = MBlock.app.server.getAsset(dbObj.md5);
-		if (!wavData) return;
-		sndData = wavData;
-		startPlayingSound();
+		MBlock.app.server.getAsset(dbObj.md5, function(wavData:ByteArray):void{
+			if (!wavData) return;
+			sndData = wavData;
+			startPlayingSound();
+		});
 	}
-
 }}

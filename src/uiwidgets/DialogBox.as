@@ -215,14 +215,14 @@ private function getCheckMark(b:Boolean):Sprite{
 	public function showOnStage(stage:Stage, center:Boolean = true):void {
 		fixLayout();
 		if (center) {
-			x = (stage.nativeWindow.width - width) / 2;
-			y = (stage.nativeWindow.height - height) / 2;
+			x = (stage.stageWidth - width) / 2;
+			y = (stage.stageHeight - height) / 2;
 		} else {
 			x = stage.mouseX + 10;
 			y = stage.mouseY + 10;
 		}
-		x = Math.max(0, Math.min(x, stage.nativeWindow.width - width));
-		y = Math.max(0, Math.min(y, stage.nativeWindow.height - height));
+		x = Math.max(0, Math.min(x, stage.stageWidth - width));
+		y = Math.max(0, Math.min(y, stage.stageHeight - height));
 		stage.addChild(this);
 		if (labelsAndFields.length > 0) {
 			// note: doesn't work when testing from FlexBuilder; works when deployed

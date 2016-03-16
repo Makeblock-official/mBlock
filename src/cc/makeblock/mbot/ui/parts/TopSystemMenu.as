@@ -1,7 +1,5 @@
 package cc.makeblock.mbot.ui.parts
 {
-	import flash.display.NativeMenu;
-	import flash.display.NativeMenuItem;
 	import flash.display.Stage;
 	import flash.events.Event;
 	import flash.net.URLRequest;
@@ -9,35 +7,21 @@ package cc.makeblock.mbot.ui.parts
 	
 	import cc.makeblock.mbot.uiwidgets.DynamicCompiler;
 	import cc.makeblock.mbot.uiwidgets.errorreport.ErrorReportFrame;
-	import cc.makeblock.mbot.uiwidgets.extensionMgr.ExtensionUtil;
 	import cc.makeblock.media.MediaManager;
-	import cc.makeblock.menu.MenuUtil;
-	import cc.makeblock.menu.SystemMenu;
-	import cc.makeblock.updater.AppUpdater;
 	
-	import extensions.ArduinoManager;
-	import extensions.BluetoothManager;
 	import extensions.ConnectionManager;
 	import extensions.DeviceManager;
-	import extensions.ExtensionManager;
-	import extensions.HIDManager;
-	import extensions.SerialDevice;
-	import extensions.SerialManager;
-	import extensions.SocketManager;
 	
 	import org.aswing.AsWingUtils;
 	
 	import translation.Translator;
 	
-	import util.ApplicationManager;
-	import util.SharedObjectManager;
-	
-	public class TopSystemMenu extends SystemMenu
+	public class TopSystemMenu// extends SystemMenu
 	{
 		public function TopSystemMenu(stage:Stage, path:String)
 		{
-			super(stage, path);
-			
+//			super(stage, path);
+			/*
 			if(!ApplicationManager.sharedManager().isCatVersion){
 				var helpMenu:NativeMenu = getNativeMenu().getItemByName("Help").submenu;
 				helpMenu.removeItemAt(2);
@@ -60,15 +44,17 @@ package cc.makeblock.mbot.ui.parts
 			register("Manage Extensions", ExtensionUtil.OnManagerExtension);
 			register("Restore Extensions", ExtensionUtil.OnLoadExtension);
 			register("Clear Cache", ArduinoManager.sharedManager().clearTempFiles);
+			*/
 		}
 		
 		public function changeLang():void
 		{
-			MenuUtil.ForEach(getNativeMenu(), changeLangImpl);
+//			MenuUtil.ForEach(getNativeMenu(), changeLangImpl);
 		}
 		
-		private function changeLangImpl(item:NativeMenuItem):*
+		private function changeLangImpl(item:Object):*
 		{
+			/*
 			var index:int = getNativeMenu().getItemIndex(item);
 			if(0 <= index && index < defaultMenuCount){
 				return true;
@@ -92,8 +78,9 @@ package cc.makeblock.mbot.ui.parts
 				setItemLabel(item);
 				return true;
 			}
+			*/
 		}
-		
+		/*
 		private function setItemLabel(item:NativeMenuItem):void
 		{
 			var newLabel:String = Translator.map(item.name);
@@ -101,8 +88,8 @@ package cc.makeblock.mbot.ui.parts
 				item.label = newLabel;
 			}
 		}
-		
-		private function __onFile(item:NativeMenuItem):void
+		*/
+		private function __onFile(item:Object):void
 		{
 			switch(item.name)
 			{
@@ -133,7 +120,7 @@ package cc.makeblock.mbot.ui.parts
 			}
 		}
 		
-		private function __onEdit(item:NativeMenuItem):void
+		private function __onEdit(item:Object):void
 		{
 			switch(item.name){
 				case "Undelete":
@@ -155,7 +142,7 @@ package cc.makeblock.mbot.ui.parts
 			MBlock.app.track("/OpenEdit");
 		}
 		
-		private function __onConnect(menuItem:NativeMenuItem):void
+		private function __onConnect(menuItem:Object):void
 		{
 			var key:String;
 			if(menuItem.data){
@@ -174,6 +161,7 @@ package cc.makeblock.mbot.ui.parts
 		
 		private function __onShowLanguage(evt:Event):void
 		{
+			/*
 			var languageMenu:NativeMenu = evt.target as NativeMenu;
 			if(languageMenu.numItems <= 2){
 				for each (var entry:Array in Translator.languages) {
@@ -198,30 +186,36 @@ package cc.makeblock.mbot.ui.parts
 			}catch(e:Error){
 				
 			}
+			*/
 		}
 		
 		private function __onLanguageSelect(evt:Event):void
 		{
+			/*
 			var item:NativeMenuItem = evt.target as NativeMenuItem;
 			if(item.name == "setFontSize"){
 				Translator.setFontSize(int(item.label));
 			}else{
 				Translator.setLanguage(item.name);
 			}
+			*/
 		}
 		
 		private function __onInitFielMenu(evt:Event):void
 		{
+			/*
 			var menu:NativeMenu = evt.target as NativeMenu;
 			
 			MenuUtil.setEnable(menu.getItemByName("Undo Revert"), MBlock.app.canUndoRevert());
 			MenuUtil.setEnable(menu.getItemByName("Revert"), MBlock.app.canRevert());
 			
 			MBlock.app.track("/OpenFile");
+			*/
 		}
 		
 		private function __onInitEditMenu(evt:Event):void
 		{
+			/*
 			var menu:NativeMenu = evt.target as NativeMenu;
 			MenuUtil.setEnable(menu.getItemByName("Undelete"), MBlock.app.runtime.canUndelete());
 			MenuUtil.setChecked(menu.getItemByName("Hide stage layout"), MBlock.app.stageIsHided);
@@ -229,10 +223,12 @@ package cc.makeblock.mbot.ui.parts
 			MenuUtil.setChecked(menu.getItemByName("Turbo mode"), MBlock.app.interp.turboMode);
 			MenuUtil.setChecked(menu.getItemByName("Arduino mode"), MBlock.app.stageIsArduino);
 			MBlock.app.track("/OpenEdit");
+			*/
 		}
 		
 		private function __onShowConnect(evt:Event):void
 		{
+			/*
 			SocketManager.sharedManager().probe();
 			HIDManager.sharedManager();
 			
@@ -296,27 +292,31 @@ package cc.makeblock.mbot.ui.parts
 			MenuUtil.FindItem(getNativeMenu(), "Upgrade Firmware").enabled = canReset;
 			canReset = DeviceManager.sharedManager().currentName!="PicoBoard";
 			MenuUtil.FindItem(getNativeMenu(), "View Source").enabled = canReset;
+			*/
 		}
 		
-		private function __onSelectBoard(menuItem:NativeMenuItem):void
+		private function __onSelectBoard(menuItem:Object):void
 		{
 			DeviceManager.sharedManager().onSelectBoard(menuItem.name);
 		}
 		
 		private function __onShowBoards(evt:Event):void
 		{
+			/*
 			var menu:NativeMenu = evt.target as NativeMenu;
 			for each(var item:NativeMenuItem in menu.items){
 				if(item.enabled){
 					MenuUtil.setChecked(item, DeviceManager.sharedManager().checkCurrentBoard(item.name));
 				}
 			}
+			*/
 		}
 		
 		private var initExtMenuItemCount:int = -1;
 		
 		private function __onInitExtMenu(evt:Event):void
 		{
+			/*
 			var menuItem:NativeMenu = evt.target as NativeMenu;
 //			menuItem.removeEventListener(evt.type, __onInitExtMenu);
 //			menuItem.addEventListener(evt.type, __onShowExtMenu);
@@ -344,6 +344,7 @@ package cc.makeblock.mbot.ui.parts
 				subMenuItem.checked = MBlock.app.extensionManager.checkExtensionSelected(extName);
 				register(extName, __onExtensions);
 			}
+			*/
 		}
 		
 		static private function canShowExt(extName:String):Boolean
@@ -385,12 +386,12 @@ package cc.makeblock.mbot.ui.parts
 			}
 		}
 		*/
-		private function __onExtensions(menuItem:NativeMenuItem):void
+		private function __onExtensions(menuItem:Object):void
 		{
 			MBlock.app.extensionManager.onSelectExtension(menuItem.name);
 		}
 		
-		private function __onHelp(menuItem:NativeMenuItem):void
+		private function __onHelp(menuItem:Object):void
 		{
 			var path:String = menuItem.data.@url;
 			if("Forum" == menuItem.name){
@@ -414,7 +415,6 @@ package cc.makeblock.mbot.ui.parts
 			
 			switch(menuItem.data.@key.toString()){
 				case "check_app_update":
-					AppUpdater.getInstance().start(true);
 					break;
 				case "upload_bug":
 					ErrorReportFrame.OpenSendWindow("");

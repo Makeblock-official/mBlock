@@ -1,8 +1,7 @@
 package extensions
 {
 	import flash.events.Event;
-	import flash.filesystem.File;
-	import flash.html.HTMLLoader;
+	import flash.external.ExternalInterface;
 	import flash.utils.ByteArray;
 	import flash.utils.Endian;
 	
@@ -10,17 +9,16 @@ package extensions
 	import cc.makeblock.util.FileUtil;
 	
 	import util.LogManager;
+	import util.Server;
 	
 	public class JavaScriptEngine
 	{
-		private const _htmlLoader:HTMLLoader = new HTMLLoader();
 		private var _ext:Object;
 		private var _name:String = "";
 //		public var port:String = "";
 		public function JavaScriptEngine(name:String="")
 		{
 			_name = name;
-			_htmlLoader.placeLoadStringContentInApplicationSandbox = true;
 		}
 		private function register(name:String,descriptor:Object,ext:Object,param:Object):void{
 			_ext = ext;
@@ -42,6 +40,7 @@ package extensions
 			return "Disconnected";
 		}
 		public function call(method:String,param:Array,ext:ScratchExtension):void{
+			trace(this, "call");
 			if(!connected){
 				return;
 			}
@@ -102,6 +101,9 @@ package extensions
 			}
 		}
 		public function loadJS(path:String):void{
+			if(!ExternalInterface.available){
+				return;
+			}
 			var html:String = "var ScratchExtensions = {};" +
 				"ScratchExtensions.register = function(name,desc,ext,param){" +
 				"	try{			" +
@@ -110,7 +112,11 @@ package extensions
 				"		setTimeout(ScratchExtensions.register,10,name,desc,ext,param);	" +
 				"	}	" +
 				"};";
+			Server.fetchAsset(path, function(result:ByteArray):void{
+				trace(result.toString());
+			});
 //			html += FileUtil.ReadString(File.applicationDirectory.resolvePath("js/AIRAliases.js"));
+			/*
 			html += FileUtil.ReadString(new File(path));
 			_htmlLoader.window.eval(html);
 			_htmlLoader.window.callRegister = register;
@@ -125,6 +131,7 @@ package extensions
 			_htmlLoader.window.responseValue = responseValue;
 			_htmlLoader.window.trace = trace;
 			_htmlLoader.window.air = {"trace":trace};
+			*/
 			ConnectionManager.sharedManager().addEventListener(Event.CONNECT,onConnected);
 			ConnectionManager.sharedManager().addEventListener(Event.REMOVED,onRemoved);
 			ConnectionManager.sharedManager().addEventListener(Event.CLOSE,onClosed);

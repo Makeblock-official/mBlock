@@ -1,8 +1,5 @@
 package util
 {
-	import flash.filesystem.File;
-	import flash.filesystem.FileMode;
-	import flash.filesystem.FileStream;
 	import flash.net.SharedObject;
 
 	public class SharedObjectManager
@@ -34,22 +31,6 @@ package util
 				return false;
 			}
 			return true;
-		}
-		public function setLocalFile(key:String,value:*):void{
-			var file:File = ApplicationManager.sharedManager().documents.resolvePath("mBlock/store/"+key+".txt");
-			var stream:FileStream = new FileStream();
-			stream.open(file,FileMode.WRITE);
-			stream.writeObject(value);
-			stream.close();
-		}
-		public function getLocalFile(key:String,def:*=""):*{
-			var file:File = ApplicationManager.sharedManager().documents.resolvePath("mBlock/store/"+key+".txt");
-			if(file.exists){
-				var stream:FileStream = new FileStream();
-				stream.open(file,FileMode.READ);
-				return stream.readObject();
-			}
-			return def;
 		}
 		public function clear():void{
 			_so.clear();

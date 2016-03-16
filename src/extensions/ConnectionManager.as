@@ -2,10 +2,8 @@ package extensions
 {
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
-	import flash.filesystem.File;
 	import flash.net.URLRequest;
 	import flash.net.navigateToURL;
-	import flash.signals.Signal;
 	import flash.utils.ByteArray;
 	
 	import util.ApplicationManager;
@@ -27,11 +25,11 @@ package extensions
 		public function onConnect(name:String):void{
 			switch(name){
 				case "discover_bt":{
-					BluetoothManager.sharedManager().discover();
+//					BluetoothManager.sharedManager().discover();
 					break;
 				}
 				case "clear_bt":{
-					BluetoothManager.sharedManager().clearHistory();
+//					BluetoothManager.sharedManager().clearHistory();
 					break;
 				}
 				case "netframework":{
@@ -47,11 +45,11 @@ package extensions
 					break;
 				}
 				case "reset_program":{
-					SerialManager.sharedManager().upgrade(ApplicationManager.sharedManager().documents.resolvePath("mBlock/tools/hex/mbot_reset.hex").nativePath);
+//					SerialManager.sharedManager().upgrade(ApplicationManager.sharedManager().documents.resolvePath("mBlock/tools/hex/mbot_reset.hex").nativePath);
 					break;
 				}
 				case "connect_network":{
-					SocketManager.sharedManager().probe("custom");
+//					SocketManager.sharedManager().probe("custom");
 					break;
 				}
 				case "driver":{
@@ -59,29 +57,29 @@ package extensions
 					if(ApplicationManager.sharedManager().system==ApplicationManager.MAC_OS){
 						navigateToURL(new URLRequest("https://github.com/Makeblock-official/Makeblock-USB-Driver"));
 					}else{
-						var fileDriver:File = new File(File.applicationDirectory.nativePath+"/drivers/Driver_for_Windows.exe");
-						fileDriver.openWithDefaultApplication();
+//						var fileDriver:File = new File(File.applicationDirectory.nativePath+"/drivers/Driver_for_Windows.exe");
+//						fileDriver.openWithDefaultApplication();
 					}
 					break;
 				}
 				case "connect_hid":{
-					if(!HIDManager.sharedManager().isConnected){
-						HIDManager.sharedManager().onOpen();
-					}else{
-						HIDManager.sharedManager().onClose();
-					}
+//					if(!HIDManager.sharedManager().isConnected){
+//						HIDManager.sharedManager().onOpen();
+//					}else{
+//						HIDManager.sharedManager().onClose();
+//					}
 					break;
 				}
 				default:{
 					if(name.indexOf("serial_")>-1){
 						SerialManager.sharedManager().connect(name.split("serial_").join(""));
 					}
-					if(name.indexOf("bt_")>-1){
-						BluetoothManager.sharedManager().connect(name.split("bt_").join(""));
-					}
-					if(name.indexOf("net_")>-1){
-						SocketManager.sharedManager().probe(name.split("net_")[1]);
-					}
+//					if(name.indexOf("bt_")>-1){
+//						BluetoothManager.sharedManager().connect(name.split("bt_").join(""));
+//					}
+//					if(name.indexOf("net_")>-1){
+//						SocketManager.sharedManager().probe(name.split("net_")[1]);
+//					}
 				}
 			}
 		}
@@ -90,12 +88,6 @@ package extensions
 			if(port){
 				if(port.indexOf("COM")>-1||port.indexOf("/dev/tty.")>-1){
 					return SerialManager.sharedManager().open(port,baud);
-				}else if(port.indexOf(" (")>-1){
-					return BluetoothManager.sharedManager().open(port);
-				}else if(port.indexOf("HID")>-1){
-					return HIDManager.sharedManager().open();
-				}else{
-					return SocketManager.sharedManager().open(port);
 				}
 			}
 			return false;
@@ -105,7 +97,7 @@ package extensions
 			if(!SerialDevice.sharedDevice().connected){
 				MBlock.app.topBarPart.setDisconnectedTitle();
 			}else{
-				if(SerialManager.sharedManager().isConnected||HIDManager.sharedManager().isConnected||BluetoothManager.sharedManager().isConnected){
+				if(SerialManager.sharedManager().isConnected){
 					MBlock.app.topBarPart.setConnectedTitle("Serial Port");
 				}else{
 					MBlock.app.topBarPart.setConnectedTitle("Network");
@@ -136,11 +128,8 @@ package extensions
 		public function sendBytes(bytes:ByteArray):void{
 			if(SerialManager.sharedManager().isConnected){
 				SerialManager.sharedManager().sendBytes(bytes);
-			}else if(BluetoothManager.sharedManager().isConnected){
-				BluetoothManager.sharedManager().sendBytes(bytes);
-			}else if(HIDManager.sharedManager().isConnected){
-				HIDManager.sharedManager().sendBytes(bytes);
 			}
+			trace(this, "data send!!!");
 			bytes.clear();
 		}
 		public function readBytes():ByteArray{

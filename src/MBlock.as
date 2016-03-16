@@ -1,7 +1,6 @@
 package {
 	import com.google.analytics.GATracker;
 	
-	import flash.desktop.NativeApplication;
 	import flash.display.DisplayObject;
 	import flash.display.Loader;
 	import flash.display.Sprite;
@@ -13,8 +12,8 @@ package {
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
 	import flash.events.UncaughtErrorEvent;
-	import flash.filesystem.File;
 	import flash.geom.Point;
+	import flash.net.FileReference;
 	import flash.net.URLRequest;
 	import flash.system.System;
 	import flash.ui.Keyboard;
@@ -28,18 +27,11 @@ package {
 	import cc.makeblock.mbot.uiwidgets.errorreport.ErrorReportFrame;
 	import cc.makeblock.mbot.util.AppTitleMgr;
 	import cc.makeblock.mbot.util.PopupUtil;
-	import cc.makeblock.menu.MenuBuilder;
-	import cc.makeblock.updater.AppUpdater;
-	import cc.makeblock.util.FileUtil;
 	import cc.makeblock.util.FlashSprite;
-	import cc.makeblock.util.InvokeMgr;
 	
-	import extensions.BluetoothManager;
 	import extensions.DeviceManager;
 	import extensions.ExtensionManager;
-	import extensions.HIDManager;
 	import extensions.SerialManager;
-	import extensions.SocketManager;
 	
 	import interpreter.Interpreter;
 	
@@ -87,13 +79,11 @@ package {
 	
 	import watchers.ListWatcher;
 
-	[SWF(frameRate="30")]
+	[SWF(frameRate="30", width="1280", height="768")]
 	public class MBlock extends Sprite {
 		// Version
-		private static var vxml:XML = NativeApplication.nativeApplication.applicationDescriptor; 
-		private static var xmlns:Namespace = new Namespace(vxml.namespace());
 	
-		public static const versionString:String = 'v'+vxml.xmlns::versionNumber;
+		public static const versionString:String = 'v3.2.2';
 		public static var app:MBlock; // static reference to the app, used for debugging
 	
 		// Display modes
@@ -113,7 +103,6 @@ package {
 		public const server:Server = new Server();
 		public var gh:GestureHandler;
 		
-		private var projectFile:File;
 		public var projectID:String = '';
 		public var loadInProgress:Boolean;
 	
@@ -143,6 +132,8 @@ package {
 		private var _welcomeView:Loader;
 		private var _currentVer:String = "03.14.001";
 		public function MBlock(){
+			SharedObjectManager.sharedManager().setObject("board","uno");
+			SharedObjectManager.sharedManager().setObject("device","uno");
 			app = this;
 			addEventListener(Event.ADDED_TO_STAGE,initStage);
 			loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, __onError);
@@ -166,16 +157,10 @@ package {
 		
 		private function initStage(evt:Event):void{
 			removeEventListener(Event.ADDED_TO_STAGE,initStage);
-			stage.nativeWindow.title += "(" + versionString + ")";
 			AsWingManager.initAsStandard(this);
 			UIManager.setLookAndFeel(new MyLookAndFeel());
-			AppTitleMgr.Instance.init(stage.nativeWindow);
-			ApplicationManager.sharedManager().isCatVersion = NativeApplication.nativeApplication.applicationDescriptor.toString().indexOf("猫友")>-1;
 			ga = new GATracker(this,"UA-54268669-1","AS3",false);
 			track("/app/launch");
-			new InvokeMgr();
-			stage.nativeWindow.addEventListener(Event.CLOSING,onExiting);
-			AppUpdater.getInstance().start();
 			stage.align = StageAlign.TOP_LEFT;
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			
@@ -196,12 +181,6 @@ package {
 			initRuntime();
 //			try{
 				extensionManager = new ExtensionManager(this);
-				var extensionsPath:File = ApplicationManager.sharedManager().documents.resolvePath("mBlock");
-				if(!extensionsPath.exists){
-					SharedObjectManager.sharedManager().clear();
-					SharedObjectManager.sharedManager().setObject(versionString+".0."+_currentVer,true);
-					extensionManager.copyLocalFiles();
-				}
 		//		extensionManager.importExtension();
 				addParts();
 				systemMenu = new TopSystemMenu(stage, "assets/menu.xml");
@@ -223,27 +202,17 @@ package {
 			else runtime.installEmptyProject();
 			
 			fixLayout();
-			setTimeout(SocketManager.sharedManager, 100);
 			setTimeout(DeviceManager.sharedManager, 100);
-			if(!SharedObjectManager.sharedManager().getObject(versionString+".0."+_currentVer,false)){
-				//SharedObjectManager.sharedManager().clear();
-				SharedObjectManager.sharedManager().setObject(versionString+".0."+_currentVer,true);
-				extensionsPath.deleteDirectory(true);
-				extensionManager.copyLocalFiles();
-				//SharedObjectManager.sharedManager().setObject("board","mbot_uno");
-			}
 			//VersionManager.sharedManager().start(); //在线更新资源文件
 			if(SharedObjectManager.sharedManager().getObject("first-launch",true)){
 				SharedObjectManager.sharedManager().setObject("first-launch",false);
 				openWelcome();
 			}
 			initExtension();
-			MenuBuilder.BuildMenuList(XMLList(FileUtil.LoadFile("assets/context_menus.xml")));
 		}
 		private function initExtension():void{
 //			ClickerManager.sharedManager().update();
 			SerialManager.sharedManager().setMBlock(this);
-			HIDManager.sharedManager().setMBlock(this);
 		}
 		private function openWelcome():void{
 			openSwf("welcome.swf");
@@ -309,13 +278,11 @@ package {
 				saveProjectAndThen(quitApp);
 			}
 			MBlock.app.gh.mouseUp(new MouseEvent(MouseEvent.MOUSE_UP));
-			SerialManager.sharedManager().disconnect();
-			HIDManager.sharedManager().disconnect();
 		}
 		
 		public function quitApp():void
 		{
-			NativeApplication.nativeApplication.exit();
+			trace(this, "quitApp");
 			track("/app/exit");
 			LogManager.sharedManager().save();
 		}
@@ -366,17 +333,17 @@ package {
 			if (isShowing(scriptsPart)) scriptsPart.updatePalette();
 			if (clearCaches) runtime.clearAllCaches();
 		}
-		
-		public function setProjectFile(file:File):void
+		//*
+		public function setProjectFile(file:Object):void
 		{
 			if(file != null){
-				setProjectName(file.name);
+				setProjectName("file name");
 			}else{
 				setProjectName('Untitled');
 			}
-			projectFile = file;
+//			projectFile = file;
 		}
-	
+	//*/
 		private function setProjectName(s:String):void {
 			if (s.slice(-3) == '.sb') s = s.slice(0, -3);
 			if (s.slice(-4) == '.sb2') s = s.slice(0, -4);
@@ -409,9 +376,11 @@ package {
 				setPresentationMode(false);
 				stagePart.exitPresentationMode();
 			}
+			/*
 			if(evt.ctrlKey && evt.keyCode == Keyboard.P){
 				FileUtil.PrintScreen();
 			}
+			*/
 		}
 	
 		private function setSmallStageMode(flag:Boolean):void {
@@ -672,10 +641,6 @@ package {
 			systemMenu.changeLang();
 		}
 		
-		public function openBluetooth(b:*):void{
-			BluetoothManager.sharedManager().discover();
-		}
-		
 		private function clearProject():void
 		{
 			startNewProject('', '');
@@ -734,6 +699,8 @@ package {
 			});
 		}
 		
+		private var projectFile:Object;
+		
 		public function saveFile():void
 		{
 			if(null == projectFile){
@@ -749,9 +716,10 @@ package {
 		
 		private function __onSqueakSoundsConverted(projIO:ProjectIO):void
 		{
+			trace(this, "__onSqueakSoundsConverted");
 			saveNeeded = false;
 			scriptsPane.saveScripts(false);
-			FileUtil.WriteBytes(projectFile, projIO.encodeProjectAsZipFile(stagePane));
+//			FileUtil.WriteBytes(projectFile, projIO.encodeProjectAsZipFile(stagePane));
 		}
 		
 		private var isPanelShowing:Boolean;
@@ -760,24 +728,23 @@ package {
 			function squeakSoundsConverted(projIO:ProjectIO):void {
 				scriptsPane.saveScripts(false);
 //				var zipData:ByteArray = projIO.encodeProjectAsZipFile(stagePane);
-				var file:File;
+				var file:FileReference;
 				if(projectFile != null){
 					file = projectFile.clone();
 				}else{
 					var defaultName:String = (projectName().length > 1) ? projectName() + '.sb2' : 'project.sb2';
 					var path:String = fixFileName(defaultName);
-					file = File.desktopDirectory.resolvePath(path);
 				}
 				file.addEventListener(Event.SELECT, fileSaved);
-				file.browseForSave("please choose file location");
 //				file.save(zipData, path);
 			}
 			function fileSaved(e:Event):void {
-				var file:File = e.target as File;
-				FileUtil.WriteBytes(file, projIO.encodeProjectAsZipFile(stagePane));
+//				var file:File = e.target as File;
+//				FileUtil.WriteBytes(file, projIO.encodeProjectAsZipFile(stagePane));
+				trace(this, "fileSaved");
 				
 				saveNeeded = false;
-				setProjectFile(file);
+//				setProjectFile(file);
 				if(postSaveAction!=null){
 					postSaveAction();
 				}

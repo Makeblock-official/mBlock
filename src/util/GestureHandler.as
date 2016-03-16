@@ -50,7 +50,6 @@ package util {
 	import flash.display.Bitmap;
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
-	import flash.display.NativeMenu;
 	import flash.display.Sprite;
 	import flash.display.Stage;
 	import flash.events.MouseEvent;
@@ -62,11 +61,7 @@ package util {
 	import flash.text.TextFieldType;
 	import flash.utils.getTimer;
 	
-	import avmplus.getQualifiedClassName;
-	
 	import blocks.Block;
-	
-	import cc.makeblock.menu.MenuUtil;
 	
 	import scratch.ScratchComment;
 	import scratch.ScratchObj;
@@ -163,11 +158,8 @@ public class GestureHandler {
 			var menu:* = menuTarget.menu(new MouseEvent('right click'));
 			if(null == menu){
 				return;
-			}else if(menu is Menu){
-				menu.showOnStage(stage, x, y);
 			}else{
-				MenuUtil.ChangeLang(menu as NativeMenu);
-				(menu as NativeMenu).display(stage, x, y);
+				menu.showOnStage(stage, x, y);
 			}
 		}
 		

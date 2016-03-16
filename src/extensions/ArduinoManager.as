@@ -1,21 +1,8 @@
 package extensions
 {
-	import flash.desktop.NativeProcess;
-	import flash.desktop.NativeProcessStartupInfo;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
-	import flash.events.IOErrorEvent;
-	import flash.events.NativeProcessExitEvent;
 	import flash.events.ProgressEvent;
-	import flash.filesystem.File;
-	import flash.filesystem.FileMode;
-	import flash.filesystem.FileStream;
-	import flash.net.URLLoader;
-	import flash.net.URLLoaderDataFormat;
-	import flash.net.URLRequest;
-	import flash.net.URLRequestMethod;
-	import flash.net.URLVariables;
-	import flash.net.navigateToURL;
 	import flash.system.Capabilities;
 	import flash.utils.getQualifiedClassName;
 	
@@ -24,14 +11,9 @@ package extensions
 	
 	import cc.makeblock.mbot.util.StringUtil;
 	
-	import translation.Translator;
-	
-	import uiwidgets.DialogBox;
-	
 	import util.ApplicationManager;
 	import util.JSON;
 	import util.LogManager;
-	import util.SharedObjectManager;
 	
 	public class ArduinoManager extends EventDispatcher
 	{
@@ -47,7 +29,6 @@ package extensions
 		public var hexPath:String;
 		public var isUploading:Boolean = false;
 		
-		private var process:NativeProcess;
 		public var hasUnknownCode:Boolean = false;
 		private var ccode_setup:String = "";
 		private var ccode_setup_fun:String = "";
@@ -233,9 +214,7 @@ void updateVar(char * varName,double * var)
 				workdir.deleteDirectory(true);
 			}
 			//*/
-			if(File.applicationStorageDirectory.exists){
-				File.applicationStorageDirectory.deleteDirectory(true);
-			}
+			trace(this, "clearTempFiles");
 		}
 		
 		public function setScratch(scratch:MBlock):void{
@@ -980,7 +959,6 @@ void updateVar(char * varName,double * var)
 			retcode = fixVars(retcode);
 			requiredCpp = getRequiredCpp()
 			// now go into compile process
-			if(!NativeProcess.isSupported) return "";
 			return (retcode);
 			//			buildAll(retcode, requiredCpp);
 		}
@@ -1229,9 +1207,10 @@ void move(int direction, int speed)
 		}
 		*/
 		private function saveHexFile(token:String,hexString:String):void{
-			var f:File = new File();
-			f.addEventListener(Event.COMPLETE, _onRfComplete);
-			f.save(hexString,token+".hex");
+			trace(this, "saveHexFile");
+//			var f:File = new File();
+//			f.addEventListener(Event.COMPLETE, _onRfComplete);
+//			f.save(hexString,token+".hex");
 		}
 		
 		private function _onRfComplete(e:Event):void{
@@ -1280,45 +1259,7 @@ void move(int direction, int speed)
 			
 			var cppList:Array =  requiredCpp;
 			// get building direcotry ready
-			var workdir:File = File.applicationStorageDirectory.resolvePath("scratchTemp");
-			if(!workdir.exists){
-				workdir.createDirectory(); 
-			}
-			//			var srcdir:File = File.applicationDirectory.resolvePath("compiler"); 
-			if(!workdir.exists){
-				return;
-			}
-			// copy firmware directory
-			workdir = workdir.resolvePath(projectDocumentName);
-//			var srcdir:File = ApplicationManager.sharedManager().documents.resolvePath("mBlock/libraries/"+_extSrcPath+"/src");
-//			if(srcdir.exists && srcdir.getDirectoryListing().length > 0){
-//				srcdir.copyTo(workdir,true);
-//			}
-			//*
-			for each(var path:String in srcDocuments){
-				var srcdir:File = new File(path);
-				if(srcdir.exists && srcdir.isDirectory){
-					copyCompileFiles(srcdir.getDirectoryListing(),workdir);
-				}
-			}
-			//*/
-			var projCpp:File = File.applicationStorageDirectory.resolvePath("scratchTemp/"+projectDocumentName+"/"+projectDocumentName+".ino")
-			LogManager.sharedManager().log("projCpp:"+projCpp.nativePath);
-			var outStream:FileStream = new FileStream();
-			outStream.open(projCpp, FileMode.WRITE);
-			outStream.writeUTFBytes(ccode)
-			outStream.close()
-			if(ccode.indexOf("updateVar")>-1){
-				// aux ino file for serial variable parser
-				projCpp = File.applicationStorageDirectory.resolvePath("scratchTemp/"+projectDocumentName+"/MeComm.ino")
-				outStream = new FileStream();
-				outStream.open(projCpp, FileMode.WRITE);
-				outStream.writeUTFBytes(serialParserInoFile)
-				outStream.close()
-			}
-			
-			projectPath = workdir.nativePath;
-			LogManager.sharedManager().log("projectPath:"+projectPath);
+			trace(this, "prepareProjectDir");
 		}
 		
 		/*
@@ -1330,27 +1271,6 @@ void move(int direction, int speed)
 			//			}
 		}
 		*/
-		private var compileErr:Boolean = false;
-		//*
-		private function copyCompileFiles(files:Array, workdir:File):void
-		{
-			for(var i:int = 0; i < files.length; ++i){
-				var file:File = files[i];
-				switch(file.extension){
-					case "cpp":
-					case "c":{
-						var fileName:String = file.name.split(".")[0];
-						if(requiredCpp.indexOf(fileName) < 0){
-							requiredCpp.push(fileName);
-						}
-					}
-						//fall through
-					case "h":
-						file.copyTo(workdir.resolvePath(file.name), true);
-						break;
-				}
-			}
-		}
 		//*/
 		private function get projectDocumentName():String{
 			var now:Date = new Date;
@@ -1368,568 +1288,12 @@ void move(int direction, int speed)
 		}
 		public function buildAll(ccode:String):String
 		{
-			if(isUploading){
-				return "uploading";
-			}
-			/*
-			if(arduinoInstallPath==""){
-				var dialog:DialogBox = new DialogBox();
-				dialog.addTitle("Message");
-				dialog.addText("Arduino IDE not found,\nClick 'Set Path' to find the install path of Arduino,\nor Click 'Download' to install the Arduino IDE.");
-				function onCancel():void{
-					dialog.cancel();
-				}
-				
-				function onSetPath():void{
-					var fileRef:File = new File();
-					function onPathSelected(evt:Event):void{
-						var f:File = evt.target as File;
-						arduinoPath = ApplicationManager.sharedManager().system==ApplicationManager.WINDOWS?f.url:(f.url+"/Arduino.app/Contents/Resources/Java");
-					}
-					fileRef.browseForDirectory(Translator.map("Arduino IDE"));
-					fileRef.addEventListener(Event.SELECT,onPathSelected);
-					dialog.cancel();
-				}
-				function onDownload():void{
-					flash.net.navigateToURL(new URLRequest("http://learn.makeblock.cc/learning-arduino/"));
-					dialog.cancel();
-				}
-				dialog.addButton("Cancel",onCancel);
-				dialog.addButton("Set Path",onSetPath);
-				dialog.addButton("Download",onDownload);
-				dialog.showOnStage(MBlock.app.stage);
-				return "Arduino IDE not found.";
-			}
-			*/
-			_currentDevice = DeviceManager.sharedManager().currentDevice;
-			// get building direcotry ready
-			var workdir:File = File.applicationStorageDirectory.resolvePath("scratchTemp")
-			if(!workdir.exists){
-				workdir.createDirectory(); 
-			} 
-			
-			if(!workdir.exists){
-				return "workdir not exists";
-			}
-			nativeWorkList = []
-			// copy firmware directory
-			workdir = workdir.resolvePath(projectDocumentName);
-//			var srcdir:File = ApplicationManager.sharedManager().documents.resolvePath("mBlock/libraries/"+_extSrcPath+"/src");
-//			if(srcdir.exists && srcdir.getDirectoryListing().length > 0){
-//				srcdir.copyTo(workdir,true);
-//			}
-			//*
-			for each(var path:String in srcDocuments){
-				var srcdir:File = new File(path);
-				if(srcdir.exists && srcdir.isDirectory){
-					copyCompileFiles(srcdir.getDirectoryListing(), workdir);
-				}
-			}
-			//*/
-			var projCpp:File = File.applicationStorageDirectory.resolvePath("scratchTemp/"+projectDocumentName+"/"+projectDocumentName+".ino")
-			var outStream:FileStream = new FileStream();
-			outStream.open(projCpp, FileMode.WRITE);
-			outStream.writeUTFBytes(ccode)
-			outStream.close()
-			if(ccode.indexOf("updateVar")>-1){
-				// aux ino file for serial variable parser
-				projCpp = File.applicationStorageDirectory.resolvePath("scratchTemp/"+projectDocumentName+"/MeComm.ino")
-				outStream = new FileStream();
-				outStream.open(projCpp, FileMode.WRITE);
-				outStream.writeUTFBytes(serialParserInoFile)
-				outStream.close()
-				ccode = ccode.replace("void setup(){",serialParserInoFile+"\nvoid setup(){"); // too tricky here?
-			}
-			SerialManager.sharedManager().disconnect();
-			UploaderEx.Instance.upload(projCpp.nativePath);
-			isUploading = true;
-			return "";
-//			// get MeModule source list
-//			var files:Array = workdir.getDirectoryListing()
-//			projectPath = workdir.nativePath
-//			// get build dir ready
-//			workdir = workdir.resolvePath("build")
-//			workdir.createDirectory()
-//			// yzj, don't use pre-build object any more, build from arduino libs
-//			/*
-//			// prepare build directory
-//			if(boardType=="leonardo")
-//			srcdir = srcdir.resolvePath("../gcc_template")
-//			else
-//			srcdir = srcdir.resolvePath("../gcc_template_uno")
-//			workdir = workdir.resolvePath("build")
-//			//workdir.deleteDirectory(true)
-//			srcdir.copyTo(workdir,true)
-//			*/
-//			// prebuild arduino lib
-//			buildArduinoLib(workdir);
-//			copyCompileFiles(files, workdir);
-//			
-//			// copy project.ino to ./build/project.ino.cpp
-//			// combine aux ino and main ino into 1 cpp file
-////			var dstFile:File = workdir.resolvePath(projectDocumentName+".ino.cpp")
-//			var dstFile:File = workdir.resolvePath(projectDocumentName+".ino.cpp")
-//			outStream = new FileStream();
-//			outStream.open(dstFile, FileMode.WRITE);
-//			outStream.writeUTFBytes(ccode);
-//			outStream.close();
-////			trace(dstFile.nativePath);
-//			// start building arduino libs
-//			nativeDoneEvent = EVENT_LIBCOMPILE_DONE
-//			numOfProcess = nativeWorkList.length
-//			numOfSuccess = 0
-//			compileErr = false;
-//			isUploading = true;
-//			dispatchEvent(new Event(EVENT_NATIVE_DONE));
-//			tc_projCpp = projCpp
-//			tc_workdir = workdir
-//			tc_cppList = requiredCpp;
-//			return ""
+			return ""
 		}
 		
 		
 		public function openArduinoIDE(ccode:String):String{
-			/*
-			if(arduinoInstallPath==""){
-				var dialog:DialogBox = new DialogBox();
-				dialog.addTitle("Message");
-				dialog.addText("Arduino IDE not found,\nClick 'Set Path' to find the install path of Arduino,\nor Click 'Download' to install the Arduino IDE.");
-				function onCancel():void{
-					dialog.cancel();
-				}
-				function onSetPath():void{
-					var fileRef:File = new File();
-					function onPathSelected(evt:Event):void{
-						var f:File = evt.target as File;
-						arduinoPath = f.url;
-					}
-					fileRef.browseForDirectory(Translator.map("Arduino IDE"));
-					fileRef.addEventListener(Event.SELECT,onPathSelected);
-					dialog.cancel();
-				}
-				function onDownload():void{
-					flash.net.navigateToURL(new URLRequest("http://learn.makeblock.cc/learning-arduino/"));
-					dialog.cancel();
-				}
-				dialog.addButton("Cancel",onCancel);
-				dialog.addButton("Set Path",onSetPath);
-				dialog.addButton("Download",onDownload);
-				dialog.showOnStage(MBlock.app.stage);
-				return "Arduino IDE not found.";
-			}
-			*/
-			prepareProjectDir(ccode)
-			var file:File;
-			if(ApplicationManager.sharedManager().system==ApplicationManager.WINDOWS){
-				file = new File(arduinoInstallPath+"/arduino.exe");
-			}else{
-//				file = new File(arduinoInstallPath+"/../../MacOS/JavaApplicationStub");
-//				if(!file.exists){
-					file = new File(arduinoInstallPath+"/../MacOS/Arduino");
-//				}
-			}
-			
-			var processArgs:Vector.<String> = new Vector.<String>();
-			//trace(contents[i].name, contents[i].size);
-			var nativeProcessStartupInfo:NativeProcessStartupInfo =new NativeProcessStartupInfo();
-			nativeProcessStartupInfo.executable = file;
-			processArgs.push(projectPath+"/"+projectDocumentName+".ino")
-			nativeProcessStartupInfo.arguments = processArgs;
-			process = new NativeProcess();
-			process.addEventListener(ProgressEvent.STANDARD_OUTPUT_DATA, function(e:ProgressEvent):void{}); 
-			process.addEventListener(ProgressEvent.STANDARD_ERROR_DATA, function(e:ProgressEvent):void{});
-			process.addEventListener(NativeProcessExitEvent.EXIT, function(e:NativeProcessExitEvent):void{});
-			process.start(nativeProcessStartupInfo);
 			return ""
 		}
-		/*
-		private function runToolChain(evt:*):String{
-			var cpp:File = tc_projCpp
-			var dir:File = tc_workdir
-			var cppList:Array = tc_cppList
-			archOutputFiles(cpp,dir)
-			compileCpp(projectDocumentName+".ino",dir);
-			var elf:Array=[projectDocumentName+".ino.o"]
-			for(var i:int=0;i<cppList.length;i++){
-				var moduleCpp:String = cppList[i]
-				compileCpp(moduleCpp,dir)
-				elf.push(moduleCpp+".o")
-			}
-			compileElf(projectDocumentName+".ino",dir,elf);
-			generateHex(projectDocumentName+".ino",dir);
-			
-			nativeDoneEvent = EVENT_COMPILE_DONE
-			numOfProcess = nativeWorkList.length
-			numOfSuccess = 0
-			compileErr = false
-			dispatchEvent(new Event(EVENT_NATIVE_DONE));
-			return ""
-		}
-		
-		private var arduinoCppList:Array;
-		private var arduinoCList:Array;
-		private function buildArduinoLib(buildDir:File):void{
-			arduinoCppList = []
-			arduinoCList = []
-			// enum arduino core
-			var file:File = new File(arduinoInstallPath+"/hardware/arduino/avr");
-			if(file.exists){
-				avrPath = "/hardware/arduino/avr" // v1.5
-			}else{
-				avrPath = "/hardware/arduino" // v1.0
-			}
-			
-			listArduinoLib(new File(arduinoInstallPath+avrPath+"/cores/arduino"));
-			// enum arduino libs
-			file.url = new File(arduinoInstallPath+avrPath+"/libraries").url;
-			if(file.exists){
-				arduinoLibPath = avrPath+"/libraries";
-			}else{
-				arduinoLibPath = "/libraries";
-			}
-			
-			listArduinoLib(new File(arduinoInstallPath+arduinoLibPath+"/Wire"))
-			var servoFile:File = new File(arduinoInstallPath+"/libraries/Servo/src/avr");
-			//support 1.6.5
-			if(servoFile.exists){
-				listArduinoLib(new File(arduinoInstallPath+"/libraries/Servo/src/avr"));
-			}else{
-				listArduinoLib(new File(arduinoInstallPath+"/libraries/Servo"));
-			}
-			
-			listArduinoLib(new File(arduinoInstallPath+arduinoLibPath+"/SoftwareSerial"));
-			
-			if(_currentDevice=="uno" || _currentDevice=="leonardo"){
-				listArduinoLib(new File(arduinoInstallPath+"/libraries/makeblock"));
-			}
-			
-			for (var i:uint = 0; i < arduinoCppList.length; i++)  
-			{ 
-				compileCpp(arduinoCppList[i],buildDir)
-			}
-			if(servoFile.exists){
-				compileS(buildDir);
-			}
-			for (i = 0; i < arduinoCList.length; i++)  
-			{ 
-				compileC(arduinoCList[i],buildDir)
-			}
-		}
-		
-		private function listArduinoLib(dir:File):void{
-			var files:Array = dir.getDirectoryListing()
-			for (var i:uint = 0; i < files.length; i++)  
-			{ 
-				if(files[i].extension=="cpp")
-					arduinoCppList.push(dir.nativePath+"/"+files[i].name)
-				if(files[i].extension=="c")
-					arduinoCList.push(dir.nativePath+"/"+files[i].name)
-				if(files[i].isDirectory){
-					listArduinoLib(files[i])
-				}
-			}
-		}
-		//*/
-		private function get arduinoInstallPath():String{
-			if(null == arduinoPath){
-				if(Capabilities.os.indexOf("Windows") == 0){
-					arduinoPath = File.applicationDirectory.resolvePath("Arduino").nativePath;
-				}else{
-					arduinoPath = File.applicationDirectory.resolvePath("Arduino/Arduino.app/Contents/Java").nativePath;
-				}
-			}
-			return arduinoPath;
-		}
-		/*
-		private function archOutputFiles(cpp:File,dir:File):void{
-			var file:File = new File(arduinoInstallPath+"/hardware/tools/avr/bin/avr-ar"+(ApplicationManager.sharedManager().system==ApplicationManager.WINDOWS?".exe":"")); 
-			
-			var cmd:Array = ["rcs","core.a","file.o"]
-			var contents:Array = dir.getDirectoryListing();
-			for (var i:uint = 0; i < contents.length; i++)  
-			{ 
-				if(contents[i].name.indexOf(".o")>=0){
-					var processArgs:Vector.<String> = new Vector.<String>(); 
-					//trace(contents[i].name, contents[i].size);
-					var nativeProcessStartupInfo:NativeProcessStartupInfo =new NativeProcessStartupInfo();
-					nativeProcessStartupInfo.executable = file;
-					nativeProcessStartupInfo.workingDirectory = dir
-					processArgs.push(cmd[0])
-					processArgs.push(cmd[1])
-					processArgs.push(contents[i].name)
-					nativeProcessStartupInfo.arguments = processArgs;
-					nativeWorkList.push(nativeProcessStartupInfo)
-					//process.start(nativeProcessStartupInfo);
-				}
-			}
-		}
-		
-		private function compileCpp(cpp:String,dir:File):void{
-			var nativeProcessStartupInfo:NativeProcessStartupInfo =new NativeProcessStartupInfo();
-			var file:File = new File(arduinoInstallPath+"/hardware/tools/avr/bin/avr-g++"+(ApplicationManager.sharedManager().system==ApplicationManager.WINDOWS?".exe":"")); 
-			//			file.url = arduinoInstallPath+"/hardware/tools/avr/bin/avr-g++.exe";// todo: read the arduino path from setup profile
-			nativeProcessStartupInfo.executable = file
-			nativeProcessStartupInfo.workingDirectory = dir
-			// todo: leonardo and use global arduino path
-			var path:String = arduinoInstallPath;
-			path=path.split("file:///").join("");//.split("/").join("\\");
-			var cmd:String = "";
-//			trace("currentDevice:",_currentDevice);
-			if(_currentDevice=="uno"){
-				cmd = " -c -g -Os -w -fno-exceptions -ffunction-sections -fdata-sections -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=10605 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/standard -I"+path+"/libraries/Servo/src -I"+path+"/libraries/Servo -I"+path+arduinoLibPath+"/Wire -I"+path+arduinoLibPath+"/Wire/utility -I"+path+arduinoLibPath+"/SoftwareSerial -I" + path+"/libraries/makeblock/src"
-			}else if(_currentDevice=="leonardo"){
-				cmd = " -c -g -Os -w -fno-exceptions -ffunction-sections -fdata-sections -MMD -mmcu=atmega32u4 -DF_CPU=16000000L -DARDUINO=10605 -DARDUINO_AVR_LEONARDO -DARDUINO_ARCH_AVR -DUSB_VID=0x2341 -DUSB_PID=0x8036 -DUSB_MANUFACTURER=\"Unknown\" -DUSB_PRODUCT=\"Arduino Leonardo\" -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/leonardo -I"+path+"/libraries/Servo/src -I"+path+"/libraries/Servo -I"+path+arduinoLibPath+"/Wire -I"+path+arduinoLibPath+"/Wire/utility -I"+path+arduinoLibPath+"/SoftwareSerial -I" + path+"/libraries/makeblock/src"
-			}else if(_currentDevice=="mega1280"){
-				cmd = " -c -g -Os -w -fno-exceptions -ffunction-sections -fdata-sections -MMD -mmcu=atmega1280 -DF_CPU=16000000L -DARDUINO=10605 -DARDUINO_AVR_MEGA -DARDUINO_ARCH_AVR -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/mega -I"+path+"/libraries/Servo/src -I"+path+"/libraries/Servo -I"+path+arduinoLibPath+"/Wire -I"+path+arduinoLibPath+"/Wire/utility -I"+path+arduinoLibPath+"/SoftwareSerial"
-			}else if(_currentDevice=="mega2560"){
-				cmd = " -c -g -Os -w -fno-exceptions -ffunction-sections -fdata-sections -MMD -mmcu=atmega2560 -DF_CPU=16000000L -DARDUINO=10605 -DARDUINO_AVR_MEGA2560 -DARDUINO_ARCH_AVR -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/mega -I"+path+"/libraries/Servo/src -I"+path+"/libraries/Servo -I"+path+arduinoLibPath+"/Wire -I"+path+arduinoLibPath+"/Wire/utility -I"+path+arduinoLibPath+"/SoftwareSerial"
-			}else if(_currentDevice=="nano328"){
-				cmd = " -c -g -Os -w -fno-exceptions -ffunction-sections -fdata-sections -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=10605 -DARDUINO_AVR_NANO -DARDUINO_ARCH_AVR -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/eightanaloginputs -I"+path+"/libraries/Servo/src -I"+path+"/libraries/Servo -I"+path+arduinoLibPath+"/Wire -I"+path+arduinoLibPath+"/Wire/utility -I"+path+arduinoLibPath+"/SoftwareSerial"
-			}else if(_currentDevice=="nano168"){
-				cmd = " -c -g -Os -w -fno-exceptions -ffunction-sections -fdata-sections -MMD -mmcu=atmega168 -DF_CPU=16000000L -DARDUINO=10605 -DARDUINO_AVR_NANO -DARDUINO_ARCH_AVR -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/eightanaloginputs -I"+path+"/libraries/Servo/src -I"+path+"/libraries/Servo -I"+path+arduinoLibPath+"/Wire -I"+path+arduinoLibPath+"/Wire/utility -I"+path+arduinoLibPath+"/SoftwareSerial"
-			}
-			var arg:Array = cmd.split(" -")
-			var processArgs:Vector.<String> = new Vector.<String>(); 
-			for(var i:int=0;i<arg.length;i++){
-				if(arg[i].length>0)
-					processArgs.push("-"+arg[i])
-			}
-			if(cpp.indexOf(".cpp")!=-1)
-				processArgs.push(cpp)
-			else
-				processArgs.push(cpp+".cpp")
-			processArgs.push("-o")	
-			var tmp:Array = cpp.split("/")
-			cpp = tmp[tmp.length-1]
-			processArgs.push(cpp+".o")
-			nativeProcessStartupInfo.arguments = processArgs;
-			nativeWorkList.push(nativeProcessStartupInfo)
-			//process.start(nativeProcessStartupInfo); 
-		}
-		
-		private function compileC(cpp:String, dir:File):void{
-			var nativeProcessStartupInfo:NativeProcessStartupInfo =new NativeProcessStartupInfo();
-			var file:File = new File(arduinoInstallPath+"/hardware/tools/avr/bin/avr-gcc"+(ApplicationManager.sharedManager().system==ApplicationManager.WINDOWS?".exe":"")); 
-			nativeProcessStartupInfo.executable = file
-			nativeProcessStartupInfo.workingDirectory = dir;
-			var path:String = arduinoInstallPath;
-			path=path.split("file:///").join("");//.split("/").join("/");
-			//			var cmd:String = " -c -g -Os -w -ffunction-sections -fdata-sections -MMD -mmcu=atmega32u4 -DF_CPU=16000000L -DARDUINO=156 -DARDUINO_AVR_LEONARDO -DARDUINO_ARCH_AVR -DUSB_VID=0x2341 -DUSB_PID=0x8036 -DUSB_MANUFACTURER= -DUSB_PRODUCT=\"Arduino Leonardo\" -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/leonardo -I"+path+arduinoLibPath+"/Wire -I"+path+"/libraries/Servo/src -I"+path+"/libraries/Servo -I"+path+arduinoLibPath+"/SoftwareSerial -I"+path+arduinoLibPath+"/Wire/utility"
-			//			if(boardType!="leonardo")
-			//				cmd = " -c -g -Os -w -ffunction-sections -fdata-sections -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=156 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/standard -I"+path+arduinoLibPath+"/Wire -I"+path+"/libraries/Servo/src -I"+path+"/libraries/Servo -I"+path+arduinoLibPath+"/SoftwareSerial -I"+path+arduinoLibPath+"/Wire/utility"
-			var cmd:String = "";
-			if(_currentDevice=="uno"){
-				cmd = " -c -g -Os -w -ffunction-sections -fdata-sections -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=10605 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/standard -I"+path+"/libraries/Servo/src -I"+path+"/libraries/Servo -I"+path+arduinoLibPath+"/Wire -I"+path+arduinoLibPath+"/Wire/utility -I"+path+arduinoLibPath+"/SoftwareSerial -I" + path+"/libraries/makeblock/src"
-			}else if(_currentDevice=="leonardo"){
-				cmd = " -c -g -Os -w -ffunction-sections -fdata-sections -MMD -mmcu=atmega32u4 -DF_CPU=16000000L -DARDUINO=10605 -DARDUINO_AVR_LEONARDO -DARDUINO_ARCH_AVR -DUSB_VID=0x2a03 -DUSB_PID=0x8036 -DUSB_MANUFACTURER= -DUSB_PRODUCT=\"Arduino Leonardo\" -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/leonardo -I"+path+"/libraries/Servo/src -I"+path+"/libraries/Servo -I"+path+arduinoLibPath+"/Wire -I"+path+arduinoLibPath+"/Wire/utility -I"+path+arduinoLibPath+"/SoftwareSerial -I" + path+"/libraries/makeblock/src"
-			}else if(_currentDevice=="mega1280"){
-				cmd = " -c -g -Os -w -ffunction-sections -fdata-sections -MMD -mmcu=atmega1280 -DF_CPU=16000000L -DARDUINO=10605 -DARDUINO_AVR_MEGA -DARDUINO_ARCH_AVR -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/mega -I"+path+"/libraries/Servo/src -I"+path+"/libraries/Servo -I"+path+arduinoLibPath+"/Wire -I"+path+arduinoLibPath+"/Wire/utility -I"+path+arduinoLibPath+"/SoftwareSerial"
-			}else if(_currentDevice=="mega2560"){
-				cmd = " -c -g -Os -w -ffunction-sections -fdata-sections -MMD -mmcu=atmega2560 -DF_CPU=16000000L -DARDUINO=10605 -DARDUINO_AVR_MEGA2560 -DARDUINO_ARCH_AVR -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/mega -I"+path+"/libraries/Servo/src -I"+path+"/libraries/Servo -I"+path+arduinoLibPath+"/Wire -I"+path+arduinoLibPath+"/Wire/utility -I"+path+arduinoLibPath+"/SoftwareSerial"
-			}else if(_currentDevice=="nano328"){
-				cmd = " -c -g -Os -w -ffunction-sections -fdata-sections -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=10605 -DARDUINO_AVR_NANO -DARDUINO_ARCH_AVR -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/eightanaloginputs -I"+path+"/libraries/Servo/src -I"+path+"/libraries/Servo -I"+path+arduinoLibPath+"/Wire -I"+path+arduinoLibPath+"/Wire/utility -I"+path+arduinoLibPath+"/SoftwareSerial"
-			}else if(_currentDevice=="nano168"){
-				cmd = " -c -g -Os -w -ffunction-sections -fdata-sections -MMD -mmcu=atmega168 -DF_CPU=16000000L -DARDUINO=10605 -DARDUINO_AVR_NANO -DARDUINO_ARCH_AVR -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/eightanaloginputs -I"+path+"/libraries/Servo/src -I"+path+"/libraries/Servo -I"+path+arduinoLibPath+"/Wire -I"+path+arduinoLibPath+"/Wire/utility -I"+path+arduinoLibPath+"/SoftwareSerial"
-			}
-			
-			var arg:Array = cmd.split(" -")
-			var processArgs:Vector.<String> = new Vector.<String>(); 
-			for(var i:int=0;i<arg.length;i++){
-				if(arg[i].length>0)
-					processArgs.push("-"+arg[i])
-			}
-			if(cpp.indexOf(".c")!=-1)
-				processArgs.push(cpp)
-			else
-				processArgs.push(cpp+".c")
-			processArgs.push("-o")	
-			var tmp:Array = cpp.split("/")
-			cpp = tmp[tmp.length-1]
-			processArgs.push(cpp+".o")
-			nativeProcessStartupInfo.arguments = processArgs;
-			nativeWorkList.push(nativeProcessStartupInfo);
-			
-		}
-		private function compileS(dir:File):void{
-			var nativeProcessStartupInfo:NativeProcessStartupInfo =new NativeProcessStartupInfo();
-			var file:File = new File(arduinoInstallPath+"/hardware/tools/avr/bin/avr-gcc"+(ApplicationManager.sharedManager().system==ApplicationManager.WINDOWS?".exe":"")); 
-			nativeProcessStartupInfo.executable = file
-			nativeProcessStartupInfo.workingDirectory = dir;
-			var path:String = arduinoInstallPath;
-			path=path.split("file:///").join("");//.split("/").join("/");
-			//			var cmd:String = " -c -g -Os -w -ffunction-sections -fdata-sections -MMD -mmcu=atmega32u4 -DF_CPU=16000000L -DARDUINO=156 -DARDUINO_AVR_LEONARDO -DARDUINO_ARCH_AVR -DUSB_VID=0x2341 -DUSB_PID=0x8036 -DUSB_MANUFACTURER= -DUSB_PRODUCT=\"Arduino Leonardo\" -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/leonardo -I"+path+arduinoLibPath+"/Wire -I"+path+"/libraries/Servo/src -I"+path+"/libraries/Servo -I"+path+arduinoLibPath+"/SoftwareSerial -I"+path+arduinoLibPath+"/Wire/utility"
-			//			if(boardType!="leonardo")
-			//				cmd = " -c -g -Os -w -ffunction-sections -fdata-sections -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=156 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/standard -I"+path+arduinoLibPath+"/Wire -I"+path+"/libraries/Servo/src -I"+path+"/libraries/Servo -I"+path+arduinoLibPath+"/SoftwareSerial -I"+path+arduinoLibPath+"/Wire/utility"
-			var cmd:String = "";
-			if(_currentDevice=="uno"){
-				cmd = " -c -g -x -assembler-with-cpp -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=10605 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/standard -"+path+avrPath+"/cores/arduino/wiring_pulse.S";
-			}else if(_currentDevice=="leonardo"){
-				cmd = " -c -g -x -assembler-with-cpp -mmcu=atmega32u4 -DF_CPU=16000000L -DARDUINO=10605 -DARDUINO_AVR_LEONARDO -DARDUINO_ARCH_AVR -DUSB_VID=0x2a03 -DUSB_PID=0x8036 -DUSB_MANUFACTURER= -DUSB_PRODUCT=\"Arduino Leonardo\" -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/leonardo -"+path+avrPath+"/cores/arduino/wiring_pulse.S"
-			}else if(_currentDevice=="mega1280"){
-				cmd = " -c -g -x -assembler-with-cpp -mmcu=atmega1280 -DF_CPU=16000000L -DARDUINO=10605 -MMD -DUSB_VID=null -DUSB_PID=null -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/standard -"+path+avrPath+"/cores/arduino/wiring_pulse.S";
-			}else if(_currentDevice=="mega2560"){
-				cmd = " -c -g -x -assembler-with-cpp -mmcu=atmega2560 -DF_CPU=16000000L -DARDUINO=10605 -DARDUINO_AVR_MEGA2560 -DARDUINO_ARCH_AVR -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/standard -"+path+avrPath+"/cores/arduino/wiring_pulse.S";
-			}else if(_currentDevice=="nano328"){
-				cmd = " -c -g -x -assembler-with-cpp -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=10605 -MMD -DUSB_VID=null -DUSB_PID=null -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/standard -"+path+avrPath+"/cores/arduino/wiring_pulse.S";
-			}else if(_currentDevice=="nano168"){
-				cmd = " -c -g -x -assembler-with-cpp -mmcu=atmega168 -DF_CPU=16000000L -DARDUINO=10605 -MMD -DUSB_VID=null -DUSB_PID=null -I"+path+avrPath+"/cores/arduino -I"+path+avrPath+"/variants/standard -"+path+avrPath+"/cores/arduino/wiring_pulse.S";
-			}
-			
-			var arg:Array = cmd.split(" -")
-			var processArgs:Vector.<String> = new Vector.<String>(); 
-			for(var i:int=0;i<arg.length;i++){
-				if(arg[i].length>0){
-					if(arg[i].indexOf("assembler")>-1||arg[i].indexOf("arduino/wiring_pulse.S")>-1){
-						processArgs.push(arg[i]);
-					}else{
-						processArgs.push("-"+arg[i]);
-					}
-				}
-			}
-			processArgs.push("-o");
-			processArgs.push("./wiring_pulse.S.o");
-			nativeProcessStartupInfo.arguments = processArgs;
-			nativeWorkList.push(nativeProcessStartupInfo);
-		}
-		private function compileElf(token:String,dir:File,elf:Array):void
-		{
-			var cmd:String = ""
-			if(_currentDevice=="uno"){
-				cmd = " -Os -Wl,--gc-sections -mmcu=atmega328p -o token.elf elflist core.a -L./ -lm "
-			}else if(_currentDevice=="leonardo"){
-				cmd = " -Os -Wl,--gc-sections -mmcu=atmega32u4 -o token.elf elflist core.a -L./ -lm ";
-			}else if(_currentDevice=="mega1280"){
-				cmd = " -Os -Wl,--gc-sections,--relax -mmcu=atmega1280 -o token.elf elflist core.a -L./ -lm ";
-			}else if(_currentDevice=="mega2560"){
-				cmd = " -Os -Wl,--gc-sections,--relax -mmcu=atmega2560 -o token.elf elflist core.a -L./ -lm ";
-			}else if(_currentDevice=="nano328"){
-				cmd = " -Os -Wl,--gc-sections,--relax -mmcu=atmega328p -o token.elf elflist core.a -L./ -lm ";
-			}else if(_currentDevice=="nano168"){
-				cmd = " -Os -Wl,--gc-sections,--relax -mmcu=atmega168 -o token.elf elflist core.a -L./ -lm ";
-			}
-			if(elf.indexOf("MeServo.o")!=-1){
-				elf.push("./Servo.cpp.o")
-			}
-			if(elf.indexOf("MeGyro.o")!=-1){
-				elf.push("./Wire.cpp.o")
-				elf.push("./twi.c.o")
-			}
-			if(elf.indexOf("MeInfraredReceiver.o")!=-1){
-				elf.push("./SoftwareSerial.cpp.o")
-			}
-			var elflist:String = elf.join(" ")
-			cmd = cmd.replace("token", token).replace("elflist", elflist)
-			
-			var nativeProcessStartupInfo:NativeProcessStartupInfo =new NativeProcessStartupInfo();
-			var file:File = new File(arduinoInstallPath+"/hardware/tools/avr/bin/avr-gcc"+(ApplicationManager.sharedManager().system==ApplicationManager.WINDOWS?".exe":"")); 
-			nativeProcessStartupInfo.executable = file
-			nativeProcessStartupInfo.workingDirectory = dir
-			var arg:Array = cmd.split(" ")
-			var processArgs:Vector.<String> = new Vector.<String>(); 
-			for(var i:int=0;i<arg.length;i++){
-				if(arg[i].length>0)
-					processArgs.push(arg[i])
-			}
-			nativeProcessStartupInfo.arguments = processArgs;
-			nativeWorkList.push(nativeProcessStartupInfo);
-			//process.start(nativeProcessStartupInfo); 
-		}
-		
-		private function generateHex(cpp:String,dir:File):void{
-			var nativeProcessStartupInfo:NativeProcessStartupInfo;
-			var file:File = new File(arduinoInstallPath+"/hardware/tools/avr/bin/avr-objcopy"+(ApplicationManager.sharedManager().system==ApplicationManager.WINDOWS?".exe":"")); 
-			
-			// step 1
-			var cmd:String = " -O ihex -j .eeprom --set-section-flags=.eeprom=alloc,load --no-change-warnings --change-section-lma .eeprom=0";
-			var processArgs:Vector.<String> = new Vector.<String>(); 
-			nativeProcessStartupInfo=new NativeProcessStartupInfo()
-			nativeProcessStartupInfo.executable = file
-			nativeProcessStartupInfo.workingDirectory = dir
-			var arg:Array = cmd.split(" ")
-			for(var i:int=0;i<arg.length;i++){
-				if(arg[i].length>0)
-					processArgs.push(arg[i])
-			}
-			processArgs.push(cpp+".elf")
-			processArgs.push(cpp+".eep")
-			nativeProcessStartupInfo.arguments = processArgs;
-			nativeWorkList.push(nativeProcessStartupInfo)
-			// step 2
-			cmd = " -O ihex -R .eeprom"
-			var processArgs2:Vector.<String> = new Vector.<String>(); 
-			nativeProcessStartupInfo=new NativeProcessStartupInfo()
-			nativeProcessStartupInfo.executable = file
-			nativeProcessStartupInfo.workingDirectory = dir;
-			var arg2:Array = cmd.split(" ")
-			for(i=0;i<arg2.length;i++){
-				if(arg2[i].length>0)
-					processArgs2.push(arg2[i])
-			}
-			processArgs2.push(cpp+".elf")
-			processArgs2.push(cpp+".hex")
-			nativeProcessStartupInfo.arguments = processArgs2;
-			nativeWorkList.push(nativeProcessStartupInfo)
-			
-		}
-		
-		
-		private function gotoNextNativeCmd(event:Event):void{
-			isUploading = true;
-			process = new NativeProcess();
-			process.addEventListener(ProgressEvent.STANDARD_OUTPUT_DATA, onOutputData); 
-			process.addEventListener(ProgressEvent.STANDARD_ERROR_DATA, onErrorData);
-			process.addEventListener(NativeProcessExitEvent.EXIT, onExit);
-			if(nativeWorkList.length>0 && compileErr==false){
-				var nativeProcessStartupInfo:NativeProcessStartupInfo = nativeWorkList.shift()
-				MBlock.app.scriptsPart.appendMessage(nativeProcessStartupInfo.executable.nativePath)
-				MBlock.app.scriptsPart.appendMessage(nativeProcessStartupInfo.arguments.toString())
-				process.start(nativeProcessStartupInfo); 
-			}else if(nativeWorkList.length==0){
-				// todo: is there a better way to check success of make??
-				if(numOfSuccess==numOfProcess)
-					dispatchEvent(new Event(nativeDoneEvent))
-			}
-		}
-		//*/
-		
-		private function onOutputData(event:ProgressEvent):void
-		{ 
-			isUploading = true;
-			/*
-			var output:String = process.standardOutput.readUTFBytes(process.standardOutput.bytesAvailable)
-			var date:Date = new Date;
-			MBlock.app.scriptsPart.appendMessage(""+(date.month+1)+"-"+date.date+" "+date.hours+":"+date.minutes+": Got: "+output); 
-			*/
-		}
-		
-		private function onErrorData(event:ProgressEvent):void
-		{
-			isUploading = true;
-			compileErr = true
-			var errOut:String = process.standardError.readUTFBytes(process.standardError.bytesAvailable);
-			if(null == errorText){
-				errorText = errOut;
-			}else{
-				errorText += errOut;
-			}
-		}
-		
-		private function onExit(event:NativeProcessExitEvent):void
-		{
-			isUploading = false;
-			var date:Date = new Date;
-			
-			MBlock.app.scriptsPart.appendMessage(""+(date.month+1)+"-"+date.date+" "+date.hours+":"+date.minutes+": Process exited with "+event.exitCode);
-			numOfSuccess++;
-			if(event.exitCode > 0){
-				MBlock.app.scriptsPart.appendMsgWithTimestamp(errorText, true);
-				errorText = null;
-			}
-			if(compileErr == false){
-				dispatchEvent(new Event(EVENT_NATIVE_DONE));
-			}
-		}
-		
-		private var errorText:String;
 	}
 }

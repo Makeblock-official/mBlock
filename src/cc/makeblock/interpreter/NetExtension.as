@@ -6,8 +6,6 @@ package cc.makeblock.interpreter
 	
 	import blocks.Block;
 	
-	import extensions.SocketManager;
-	
 	import scratch.ScratchObj;
 
 	internal class NetExtension
@@ -18,7 +16,7 @@ package cc.makeblock.interpreter
 		public function NetExtension()
 		{
 			parser = new PacketParser(onRecvValue);
-			SocketManager.sharedManager().dataRecvSignal.add(__onRecvData);
+//			SocketManager.sharedManager().dataRecvSignal.add(__onRecvData);
 		}
 		
 		private function onRecvValue(value:String):void
@@ -85,6 +83,7 @@ package cc.makeblock.interpreter
 		
 		private function sendMsg(msg:String):void
 		{
+			/*
 			if(!SocketManager.sharedManager().isConnected){
 				return;
 			}
@@ -101,6 +100,7 @@ package cc.makeblock.interpreter
 			bytes.writeByte(0xD);
 			bytes.writeByte(0xA);
 			SocketManager.sharedManager().sendBytes(bytes);
+			*/
 		}
 	}
 }
