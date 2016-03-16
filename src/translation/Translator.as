@@ -27,6 +27,7 @@ package translation {
 	import flash.utils.ByteArray;
 	import flash.utils.setTimeout;
 	
+	
 	import blocks.Block;
 	
 	import uiwidgets.Menu;
@@ -168,13 +169,18 @@ public class Translator {
 		}
 		//Block.setFonts(28, 26, true, 0);
 	}
-
+	static private const placeHolder:RegExp = /%\w+(\.\w+)?/g;
 	public static function map(s:String):String {
-//return TranslatableStrings.has(s) ? s.toUpperCase() : s;
-//return (s.indexOf('%') > -1) ? s : s.toUpperCase(); // xxx testing only
-		var result:* = dictionary[s];
-//if (!isEnglish && (s.indexOf('%') == -1)) return s.toUpperCase(); // xxx for testing only; comment out before pushing!
+		
+		var result:String = dictionary[s];
 		if ((result == null) || (result.length == 0)) return s;
+//		var a:Array = s.match(placeHolder);
+//		var b:Array = result.match(placeHolder);
+//		if(!equals(a, b)){
+//			trace(JSON.stringify(a),"\n", JSON.stringify(b));
+//			trace(s,"\n", result);
+//			trace("-------------------------");
+//		}
 		return result;
 	}
 	public static function addEntry(key:String,value:String):void{

@@ -141,7 +141,7 @@ package {
 		private var ga:GATracker;
 		private var tabsPart:TabsPart;
 		private var _welcomeView:Loader;
-		private var _currentVer:String = "01.05.001";
+		private var _currentVer:String = "03.14.001";
 		public function MBlock(){
 			app = this;
 			addEventListener(Event.ADDED_TO_STAGE,initStage);
@@ -166,8 +166,7 @@ package {
 		
 		private function initStage(evt:Event):void{
 			removeEventListener(Event.ADDED_TO_STAGE,initStage);
-			stage.nativeWindow.title += "(" + versionString.split(".").slice(0, 2).join(".") + ")";
-//			stage.nativeWindow.title += "(" + versionString + ")[测试版12.31]";
+			stage.nativeWindow.title += "(" + versionString + ")";
 			AsWingManager.initAsStandard(this);
 			UIManager.setLookAndFeel(new MyLookAndFeel());
 			AppTitleMgr.Instance.init(stage.nativeWindow);
