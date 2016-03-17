@@ -54,12 +54,12 @@ package extensions
 				}
 				case "driver":{
 					MBlock.app.track("/OpenSerial/InstallDriver");
-					if(ApplicationManager.sharedManager().system==ApplicationManager.MAC_OS){
-						navigateToURL(new URLRequest("https://github.com/Makeblock-official/Makeblock-USB-Driver"));
-					}else{
+//					if(ApplicationManager.sharedManager().system==ApplicationManager.MAC_OS){
+//						navigateToURL(new URLRequest("https://github.com/Makeblock-official/Makeblock-USB-Driver"));
+//					}else{
 //						var fileDriver:File = new File(File.applicationDirectory.nativePath+"/drivers/Driver_for_Windows.exe");
 //						fileDriver.openWithDefaultApplication();
-					}
+//					}
 					break;
 				}
 				case "connect_hid":{
