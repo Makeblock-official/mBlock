@@ -18,8 +18,8 @@
         Port6: 6,
         Port7: 7,
         Port8: 8,
-		M1:9,
-		M2:10
+        Port9: 9,
+        Port10: 10
     };
     var button_keys = {
 		"key1":1,

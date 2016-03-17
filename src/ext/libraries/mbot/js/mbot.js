@@ -394,7 +394,7 @@
 	function runPackage(){
 		var bytes = [0xff, 0x55, 0, 0, 2];
 		for(var i=0;i<arguments.length;i++){
-			if(arguments[i].constructor == "[class Array]"){
+			if(isArray(arguments[i])){
 				bytes = bytes.concat(arguments[i]);
 			}else{
 				bytes.push(arguments[i]);

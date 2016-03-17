@@ -6,10 +6,9 @@ package extensions
 	import flash.utils.Endian;
 	
 	import cc.makeblock.interpreter.RemoteCallMgr;
-	import cc.makeblock.util.FileUtil;
 	
+	import util.JsUtil;
 	import util.LogManager;
-	import util.Server;
 	
 	public class JavaScriptEngine
 	{
@@ -40,6 +39,7 @@ package extensions
 			return "Disconnected";
 		}
 		public function call(method:String,param:Array,ext:ScratchExtension):void{
+			JsUtil.Call("callJs", ["mBot", method, param]);
 			trace(this, "call");
 			if(!connected){
 				return;
@@ -101,20 +101,10 @@ package extensions
 			}
 		}
 		public function loadJS(path:String):void{
-			if(!ExternalInterface.available){
-				return;
-			}
-			var html:String = "var ScratchExtensions = {};" +
-				"ScratchExtensions.register = function(name,desc,ext,param){" +
-				"	try{			" +
-				"		callRegister(name,desc,ext,param);		" +
-				"	}catch(err){			" +
-				"		setTimeout(ScratchExtensions.register,10,name,desc,ext,param);	" +
-				"	}	" +
-				"};";
-			Server.fetchAsset(path, function(result:ByteArray):void{
-				trace(result.toString());
-			});
+			trace(this, "loadJS", path);
+//			var jsData:String = ExtensionManager.fileDict[path].toString();
+//			JsUtil.Eval(jsData);
+//			return;
 //			html += FileUtil.ReadString(File.applicationDirectory.resolvePath("js/AIRAliases.js"));
 			/*
 			html += FileUtil.ReadString(new File(path));
