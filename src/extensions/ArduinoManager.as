@@ -1097,7 +1097,7 @@ void updateVar(char * varName,double * var)
 						ccode_inc += code;
 				}
 			}
-			if(DeviceManager.sharedManager().currentName == "Me Auriga"){
+			if(DeviceManager.sharedManager().currentName == "Me Auriga" && ccode_inc.indexOf("void isr_process_encoder1(void)") < 0){
 				ccode_inc += <![CDATA[
 MeEncoderOnBoard Encoder_1(SLOT1);
 MeEncoderOnBoard Encoder_2(SLOT2);
