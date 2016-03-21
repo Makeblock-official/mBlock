@@ -94,10 +94,6 @@
 		<item name="Forum" label="论坛" key="forum" url="http://forum.makeblock.cc/c/makeblock-products/mblock#scratch" />
 		<item name="Report a Bug" label="建议反馈" key="report" url="http://mblock.cc/report-a-bug" />
 		<item isSeparator="true" />
-		<item name="License" label="许可" key="license" url="http://mblock.cc/license" />
-		<item name="Acknowledgements" label="鸣谢" key="acknowledgements" url="http://mblock.cc/acknowledgements" />
-		<item name="About" label="关于" key="about" url="http://mblock.cc/about" />
-		<item isSeparator="true" />
 		<item name="Check Software Update" label="检查应用更新" key="check_app_update" />
 		<item name="Upload Bug" label="报告错误" key="upload_bug" />
 	</subMenu>

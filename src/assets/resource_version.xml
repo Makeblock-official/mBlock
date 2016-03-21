@@ -7,5 +7,5 @@
     <resource version="1.0.16" name="mbot" path="libraries">http://download.makeblock.cc/mblock/resources/libraries/mbot.zip</resource>
     <resource version="1.0.5" name="picoboard" path="libraries">http://download.makeblock.cc/mblock/resources/libraries/picoboard.zip</resource>
     <resource version="1.0.7" name="serial" path="libraries">http://download.makeblock.cc/mblock/resources/libraries/serial.zip</resource>
-    <resource version="1.0.9" name="locale" path="">http://download.makeblock.cc/mblock/resources/locale/locale.zip</resource>
+    <resource version="1.0.10" name="locale" path="">http://download.makeblock.cc/mblock/resources/locale/locale.zip</resource>
 </resources>
