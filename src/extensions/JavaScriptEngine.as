@@ -40,7 +40,6 @@ package extensions
 		}
 		public function call(method:String,param:Array,ext:ScratchExtension):void{
 			JsUtil.Call("callJs", ["mBot", method, param]);
-			trace(this, "call");
 			if(!connected){
 				return;
 			}

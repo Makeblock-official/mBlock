@@ -52,41 +52,56 @@ function float2array(val){
 	return castDataView2Array(dataView);
 }
 
+var encoder = new TextEncoder('utf-8');
+var decoder = new TextDecoder('utf-8');
+
 function string2array(val){
-	var encoder = new TextEncoder('utf-8');
-    return encoder.encode(buf).buffer;
+	var buffer = encoder.encode(val);//uint8 array
+	var n = buffer.length;
+	var result = new Array(n);
+	for(var i=0; i<n; ++i)
+		result[i] = buffer[i];
+    return result;
 }
 
 function array2string(bytes){
-	var buffer = new ArrayBuffer(bytes.length);
-	for(var i=0; i<bytes.length; ++i)
-		buffer[i] = bytes[i];
-	var dataView = new DataView(buffer);
-    var decoder = new TextDecoder('utf-8');
+	var dataView = castArray2DataView(bytes);
     return decoder.decode(dataView);
 }
 
+function responseValue(index, value){
+	var flash = swfobject.getObjectById("MBlock");
+	if(arguments.length > 0){
+		flash.responseValue(value);
+	}else{
+		flash.responseValue();
+	}
+}
+
 var ScratchExtensions = {};
-ScratchExtensions.buffer = new ArrayBuffer(8);
 var globalExt = null;
+var dataCallback;
 
 var device = {};
 device.send = function(bytes){
-	console.log("send", bytes);
-	var flash = swfobject.getObjectById("MBlock");
-	flash.responseValue(100);
-}
-device.open = function(){
+	socket.send(new Uint8Array(bytes).buffer);
+};
+device.open = function(info, callback){
 	console.log("device open");
-}
+	callback(device);
+};
+device.set_receive_handler = function(name, callback){
+	console.log("set_receive_handler", name);
+	dataCallback = callback;
+};
 
 function callJs(extName, method, args){
 	console.log(extName, method, args);
-	var callback = globalExt[method];
-	if(args.length < callback.length){
+	var handler = globalExt[method];
+	if(args.length < handler.length){
 		args.unshift(0);
 	}
-	callback.apply(globalExt, args);
+	handler.apply(globalExt, args);
 }
 
 ScratchExtensions.register = function(name,desc,ext,param){
@@ -94,3 +109,19 @@ ScratchExtensions.register = function(name,desc,ext,param){
 	globalExt = ext;
 	ext._deviceConnected(device);
 }
+
+var socket = new WebSocket('ws://127.0.0.1:8081/chat');
+socket.onopen = function(){
+	console.log("web socket open!");
+};
+socket.onclose = function(event){
+	console.log('web socket closed');
+};
+socket.onmessage = function(evt){
+	var fileReader = new FileReader();
+	fileReader.onload = function(){
+		var bytes = castDataView2Array(new DataView(fileReader.result));
+		dataCallback(bytes);
+	};
+	fileReader.readAsArrayBuffer(evt.data);
+};

@@ -470,6 +470,8 @@
 							position+=4;
 						}
 							break;
+						default:
+							responseValue();
 					}
 					if(type<=5){
 						if(values[extId]!=undefined){

@@ -1,6 +1,8 @@
 package util
 {
 	import flash.external.ExternalInterface;
+	
+	import cc.makeblock.interpreter.RemoteCallMgr;
 
 	public class JsUtil
 	{
@@ -11,7 +13,11 @@ package util
 				return;
 			ExternalInterface.marshallExceptions = true;
 			ExternalInterface.addCallback("responseValue", function():void{
-				trace("js call me:", arguments);
+				if(arguments.length > 0){
+					RemoteCallMgr.Instance.onPacketRecv(arguments[0]);
+				}else{
+					RemoteCallMgr.Instance.onPacketRecv();
+				}
 			});
 		}
 		
