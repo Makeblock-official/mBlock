@@ -188,6 +188,9 @@
 	ext.runLed = function(port,ledIndex,red,green,blue){
 		ext.runLedStrip(port, 2, ledIndex, red,green,blue);
 	};
+	ext.runLedOnBoard = function(ledIndex,red,green,blue){
+		ext.runLedStrip(0, 2, ledIndex, red,green,blue);
+	};
 	ext.runLedStrip = function(port,slot,ledIndex,red,green,blue){
 		if(typeof port=="string"){
 			port = ports[port];
