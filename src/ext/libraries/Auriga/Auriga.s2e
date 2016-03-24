@@ -4,7 +4,7 @@
 	"firmware":"1.2.103",
 	"javascriptURL":"js/Auriga.js",
 	"blockSpecs": [
-		["h","Auriga Program","runArduino",{"src":"orion","inc":"#include <MeAuriga.h>\n","def":"","setup":"","loop":""}],
+		["h","Auriga Program %d.aurigaMode","runArduino", "bluetooth mode",{"src":"orion","inc":"#include <MeAuriga.h>\n","def":"","setup":"","loop":""}],
 		
 		["w", "%m.direction at speed %d.motorvalue","runBot", "run forward", 0,
 		{"encode":"{d0}{s1}","setup":"attachInterrupt(Encoder_1.GetIntNum(), isr_process_encoder1, RISING);\nattachInterrupt(Encoder_2.GetIntNum(), isr_process_encoder2, RISING);\n","inc":"","def":"","work":"move({0},{1});\n","loop":"Encoder_1.Update_speed();\nEncoder_2.Update_speed();\n"}],
@@ -151,9 +151,15 @@
 		"stepperSpeed":[100,500,1000,1500,3000],
 		"encoderSpeed":[0,50,100,150,300],
 		"button_key":["key1","key2","key3","key4"],
-		"humiture":["humidity","temperature"]
+		"humiture":["humidity","temperature"],
+		"aurigaMode":["bluetooth mode", "ultrasonic mode", "balance mode", "IR mode", "line follower mode"]
         },
 		"values":{
+		"bluetooth mode":0,
+		"ultrasonic mode":1,
+		"balance mode":2,
+		"IR mode":3,
+		"line follower mode":4,
 		"gyro on board":1,
 		"gyro external":0,
 		"run forward":1,

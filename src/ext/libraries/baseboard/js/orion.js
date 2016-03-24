@@ -59,6 +59,7 @@
     	device.send([0xff, 0x55, 2, 0, 4]);
     };
 	ext.runArduino = function(){
+		responseValue();
 	};
 	ext.getTouchSensor = function(port){
     	var deviceId = 51;

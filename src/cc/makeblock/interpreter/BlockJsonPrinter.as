@@ -100,9 +100,6 @@ package cc.makeblock.interpreter
 		
 		public function printBlock(block:Block, result:Array):void
 		{
-			if(block.isHat){
-				return;
-			}
 			switch(block.op){
 				case "doForever":
 					result.push(SyntaxTreeFactory.NewWhile(SyntaxTreeFactory.NewNumber(1), addFrameSuspend(block)));

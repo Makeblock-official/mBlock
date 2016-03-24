@@ -45,11 +45,17 @@ package extensions
 			if(!connected){
 				return;
 			}
+			var handler:Function = _ext[method];
+			if(null == handler){
+				trace(method + " not provide!");
+				responseValue();
+				return;
+			}
 			try{
-				if(_ext[method].length > param.length){
-					_ext[method].apply(null, [0].concat(param));
+				if(handler.length > param.length){
+					handler.apply(null, [0].concat(param));
 				}else{
-					_ext[method].apply(null, param);
+					handler.apply(null, param);
 				}
 			}catch(error:Error) {
 				trace(error.getStackTrace());
@@ -129,13 +135,13 @@ package extensions
 			ConnectionManager.sharedManager().addEventListener(Event.REMOVED,onRemoved);
 			ConnectionManager.sharedManager().addEventListener(Event.CLOSE,onClosed);
 		}
-		private function responseValue(extId:uint,value:*):void{
-			if(arguments.length >= 2){
-				RemoteCallMgr.Instance.onPacketRecv(value);
+		private function responseValue(...args):void{
+			if(args.length >= 2){
+				RemoteCallMgr.Instance.onPacketRecv(args[1]);
 			}else{
 				RemoteCallMgr.Instance.onPacketRecv();
 			}
-			MBlock.app.extensionManager.reporterCompleted(_name,extId,value);
+			MBlock.app.extensionManager.reporterCompleted(_name,args[0],args[1]);
 		}
 		
 		static private function readFloat(bytes:Array):Number{
