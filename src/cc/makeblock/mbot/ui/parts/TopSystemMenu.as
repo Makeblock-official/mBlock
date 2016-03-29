@@ -4,6 +4,7 @@ package cc.makeblock.mbot.ui.parts
 	import flash.display.NativeMenuItem;
 	import flash.display.Stage;
 	import flash.events.Event;
+	import flash.filesystem.File;
 	import flash.net.URLRequest;
 	import flash.net.navigateToURL;
 	
@@ -60,6 +61,29 @@ package cc.makeblock.mbot.ui.parts
 			register("Manage Extensions", ExtensionUtil.OnManagerExtension);
 			register("Restore Extensions", ExtensionUtil.OnLoadExtension);
 			register("Clear Cache", ArduinoManager.sharedManager().clearTempFiles);
+			register("Reset Default Program", __onResetDefaultProgram);
+		}
+		
+		private function __onResetDefaultProgram(item:NativeMenuItem):void
+		{
+			var filePath:String;
+			switch(item.name){
+				case "mBot":
+					filePath = "mBlock/tools/hex/mbot_reset.hex";
+					break;
+				case "Starter IR":
+					filePath = "mBlock/tools/hex/Starter_IR.hex";
+					break;
+				case "Starter Bluetooth":
+					filePath = "mBlock/tools/hex/Starter_Bluetooth.hex";
+					break;
+				default:
+					return;
+			}
+			var file:File = ApplicationManager.sharedManager().documents.resolvePath(filePath);
+			if(file.exists){
+				SerialManager.sharedManager().upgrade(file.nativePath);
+			}
 		}
 		
 		public function changeLang():void
@@ -290,7 +314,7 @@ package cc.makeblock.mbot.ui.parts
 				item.checked = SocketManager.sharedManager().connected(ips[0]);
 			}
 			netWorkMenuItem.submenu = subMenu;
-			var canReset:Boolean = SerialManager.sharedManager().isConnected && DeviceManager.sharedManager().currentName=="mBot";
+			var canReset:Boolean = SerialManager.sharedManager().isConnected;
 			MenuUtil.FindItem(getNativeMenu(), "Reset Default Program").enabled = canReset;
 			canReset = SerialManager.sharedManager().isConnected && DeviceManager.sharedManager().currentName!="PicoBoard";
 			MenuUtil.FindItem(getNativeMenu(), "Upgrade Firmware").enabled = canReset;

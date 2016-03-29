@@ -568,7 +568,7 @@ void updateVar(char * varName,double * var)
 			modDict.code = buildCode(mname,mtype,mport,mslot,mvalue)
 			return modDict;
 		}
-		
+		/*
 		private function getModule(mod:Object):Object{
 			var mdescript:Array = mod[0].split('/')
 			var mtype:String = mdescript[0].split('.')[1]
@@ -618,7 +618,7 @@ void updateVar(char * varName,double * var)
 			moduleList.push(buildModule(mname,mport,mslot,mtype,moduleList.length,mvalue))
 			return moduleList[moduleList.length-1]
 		}
-		
+		*/
 		private function appendFun(funcode:*):void{
 			//			if (c!="\n" && c!="}")
 			//funcode+=";\n"
@@ -870,13 +870,13 @@ void updateVar(char * varName,double * var)
 			var isArduinoCode:Boolean = false;
 			for(var i:int;i<blks.length;i++){
 				var b:Object = blks[i];
-				if(b[0].indexOf("runArduino")>-1){
+				var op:String = b[0];
+				if(op.indexOf("runArduino")>-1){
 					ccode_pointer="setup";
 					isArduinoCode = true;
 					
-					var objs:Array = MBlock.app.extensionManager.specForCmd(blks[0]);
-					var n:String = blks[0];
-					var ext:ScratchExtension = MBlock.app.extensionManager.extensionByName(n.split(".")[0]);
+					var objs:Array = MBlock.app.extensionManager.specForCmd(op);
+					var ext:ScratchExtension = MBlock.app.extensionManager.extensionByName(op.split(".")[0]);
 					if(ext!=null){
 						if(srcDocuments.indexOf(ext.srcPath)==-1){
 							srcDocuments.push(ext.srcPath);
@@ -890,7 +890,7 @@ void updateVar(char * varName,double * var)
 							moduleList.push(codeObj);
 						}
 					}
-				}else if(b[0]=="doForever"){
+				}else if(op=="doForever"){
 					ccode_pointer="loop";
 					parseLoop(b[1]);
 				}else{

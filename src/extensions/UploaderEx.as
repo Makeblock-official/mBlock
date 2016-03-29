@@ -6,6 +6,10 @@ package extensions
 	import flash.events.ProgressEvent;
 	import flash.filesystem.File;
 	
+	import translation.Translator;
+	
+	import uiwidgets.DialogBox;
+	
 	import util.ApplicationManager;
 
 	public class UploaderEx
@@ -20,12 +24,19 @@ package extensions
 			return File.applicationDirectory.resolvePath("Arduino/arduino_debug.exe");
 		}
 		
+		private var _dialog:DialogBox = new DialogBox();
+		
 		public function UploaderEx()
 		{
+			_dialog.addTitle(Translator.map('Start Uploading'));
+			_dialog.addButton(Translator.map('Close'), _dialog.cancel);
 		}
 		
 		public function upload(filePath:String):void
 		{
+			_dialog.setText(Translator.map('Executing'));
+			_dialog.showOnStage(MBlock.app.stage);
+			
 			var info:NativeProcessStartupInfo = new NativeProcessStartupInfo();
 			info.executable = getArduino();
 			var argList:Vector.<String> = new Vector.<String>();
@@ -67,8 +78,10 @@ package extensions
 			ArduinoManager.sharedManager().isUploading = false;
 			var msg:String;
 			if(event.exitCode == 0){
+				_dialog.setText(Translator.map('Upload Finish'));
 				msg = "Success";
 			}else if(event.exitCode == 1){
+				_dialog.setText(Translator.map('Upload Failed'));
 				msg = "Build failed or upload failed";
 			}else{
 				return;

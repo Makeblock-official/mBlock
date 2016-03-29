@@ -37,7 +37,11 @@
 		<item isSeparator="true" />
 		<item name="Firmware" label="固件" enabled="false" />
 		<item name="Upgrade Firmware" label="安装固件" action="upgrade_firmware" />
-		<item name="Reset Default Program" label="恢复出厂程序" action="reset_program" />
+		<subMenu name="Reset Default Program" label="恢复出厂程序">
+			<item name="mBot" label="mbot" />
+			<item name="Starter IR" label="Starter IR" />
+			<item name="Starter Bluetooth" label="Starter Bluetooth" />
+		</subMenu>
 		<item name="View Source" label="查看源码" action="view_source" />
 		<item name="Install Arduino Driver" label="安装Arduino驱动" action="driver" />
 	</subMenu>
