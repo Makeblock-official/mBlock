@@ -59,7 +59,7 @@
     };
 	
 	ext.runArduino = function(){
-		
+		responseValue();
 	};
 	ext.runDigital = function(pin,level) {
         runPackage(30,pin,typeof level=="string"?levels[level]:new Number(level));

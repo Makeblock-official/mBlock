@@ -4,7 +4,7 @@
 	"firmware":"1.2.103",
 	"javascriptURL":"js/Auriga.js",
 	"blockSpecs": [
-		["h","Auriga Program","runArduino",{"src":"orion","inc":"#include <MeAuriga.h>\n","def":"","setup":"","loop":""}],
+		["h","Auriga Program %d.aurigaMode","runArduino", "bluetooth mode",{"src":"orion","inc":"#include <MeAuriga.h>\n","def":"","setup":"","loop":""}],
 		
 		["w", "%m.direction at speed %d.motorvalue","runBot", "run forward", 0,
 		{"encode":"{d0}{s1}","setup":"attachInterrupt(Encoder_1.GetIntNum(), isr_process_encoder1, RISING);\nattachInterrupt(Encoder_2.GetIntNum(), isr_process_encoder2, RISING);\n","inc":"","def":"","work":"move({0},{1});\n","loop":"Encoder_1.Update_speed();\nEncoder_2.Update_speed();\n"}],
@@ -30,20 +30,23 @@
 		["w", "set 7-segments display%d.bluePorts number %n","runSevseg", "Port6", 100,
 		{"encode":"{d0}{f1}","setup":"","inc":"","def":"Me7SegmentDisplay seg7_{0}({0});\n","work":"seg7_{0}.display({1});\n","loop":""}],
 		
-		["w", "set led %d.lport %d.index red%d.value green%d.value blue%d.value","runLed", "on board","all",0,0,0,
-		{"encode":"{d0}{d1}{d2}{d3}{d4}","setup":"","inc":"","def":"MeRGBLed rgbled_{0}({0}, 32);\n","work":"if(rgbled_{0}.getPort()==0){\nrgbled_{0}.setpin(44);\n}\nrgbled_{0}.setColor({1},{2},{3},{4});\nrgbled_{0}.show();\n","loop":""}],
+		["w", "set led on board %d.index3 red%d.value green%d.value blue%d.value","runLedOnBoard","all",0,0,0,
+		{"encode":"{d0}{d1}{d2}{d3}{d4}","setup":"rgbled_0.setpin(44);\n","inc":"","def":"MeRGBLed rgbled_0(0, 32);\n","work":"rgbled_0.setColor({0},{1},{2},{3});\nrgbled_0.show();\n","loop":""}],
+		
+		["w", "set led %d.lport %d.index red%d.value green%d.value blue%d.value","runLed", "Port6","all",0,0,0,
+		{"encode":"{d0}{d1}{d2}{d3}{d4}","setup":"","inc":"","def":"MeRGBLed rgbled_{0}({0}, 32);\n","work":"rgbled_{0}.setColor({1},{2},{3},{4});\nrgbled_{0}.show();\n","loop":""}],
 		
 		["w", "set led strip %d.normalPort %d.slot %d.index2 red%d.value green%d.value blue%d.value","runLedStrip", "Port6","Slot2","all",0,0,0,
 		{"encode":"{d0}{d1}{d2}{d3}{d4}","setup":"","inc":"","def":"MeRGBLed rgbled_{0}_{1}({0}, {1}, 32);\n","work":"rgbled_{0}_{1}.setColor({2},{3},{4},{5});\nrgbled_{0}_{1}.show();\n","loop":""}],
 		
 		["w", "play tone on note %d.note beat %d.beats","runBuzzer", "C4", "Half",
-		{"encode":"{s0}","setup":"","inc":"","def":"MeBuzzer buzzer;\n","work":"buzzer.tone({0}, {1});\n","loop":""}],
+		{"encode":"{s0}","setup":"buzzer.setpin(45);\n","inc":"","def":"MeBuzzer buzzer;\n","work":"buzzer.tone({0}, {1});\n","loop":""}],
 		
 		["w", "stop tone","stopBuzzer",0,
 		{"encode":"{s0}","setup":"","inc":"","def":"MeBuzzer buzzer;\n","work":"buzzer.noTone();\n","loop":""}],
 		
 		["w", "show face %d.normalPort number:%n","showNumber", "Port6", 0,
-		{"encode":"{s0}","setup":"ledMtx_{0}.setColorIndex(1);\nledMtx_{0}.setBrightness(6);\n","inc":"","def":"MeLEDMatrix ledMtx_{0}({0});\n","work":"ledMtx_{0}.drawStr({1},2);\n","loop":""}],
+		{"encode":"{s0}","setup":"ledMtx_{0}.setColorIndex(1);\nledMtx_{0}.setBrightness(6);\n","inc":"","def":"MeLEDMatrix ledMtx_{0}({0});\n","work":"ledMtx_{0}.showNum({1},2);\n","loop":""}],
 	
 		["w", "show face %d.normalPort x:%n y:%n characters:%s","showCharacters", "Port6", 0,0,"Hi",
 		{"encode":"{s0}","setup":"ledMtx_{0}.setColorIndex(1);\nledMtx_{0}.setBrightness(6);\n","inc":"","def":"MeLEDMatrix ledMtx_{0}({0});\n","work":"ledMtx_{0}.drawStr({1},7-{2},{3});\n","loop":""}],
@@ -92,7 +95,7 @@
 		{"encode":"{d0}{d1}","setup":"","inc":"","def":"MeTemperature temperature_{0}_{1}({0},{1});\n","work":"temperature_{0}_{1}.temperature()","loop":""}],
 		
 		["R", "temperature on board °C","getTemperatureOnBoard",
-		{"encode":"{d0}{d1}","setup":"","inc":"","def":"MeTemperature temperature_{0}_{1}({0},{1});\n","work":"temperature_{0}_{1}.temperature()","loop":""}],
+		{"encode":"{d0}{d1}","setup":"","inc":"","def":"MeTemperature temperature_0_2(0, 2);\n","work":"temperature_0_2.temperature()","loop":""}],
 		
 		["R", "3-axis gyro external %d.GyroAxis angle","getGyroExternal", "X-Axis",
 		{"encode":"{d0}","setup":"gyro_1.begin();\n","inc":"","def":"MeGyro gyro_1();\n","work":"gyro_1.getAngle({0})","loop":"gyro_1.update();\n"}],
@@ -116,7 +119,7 @@
     	"laport":["on board 1","on board 2","Port6","Port7","Port8","Port9","Port10"],
     	"soundPort":["sound on board","Port6","Port7","Port8","Port9","Port10"],
 		"normalPort":["Port6","Port7","Port8","Port9","Port10"],
-		"lport":["on board","Port6","Port7","Port8","Port9","Port10"],
+		"lport":["Port6","Port7","Port8","Port9","Port10"],
 		"motorPort":["Port1","Port2","Port3","Port4"],
 		"stepMotorPort":["Port1","Port2","Port3","Port4"],
 		"exMotorPort":["Port1","Port2","Port3","Port4"],
@@ -134,7 +137,8 @@
 		"digital":["LOW","HIGH"],
 		"switch":["Off","On"],
 		"shutter":["Press","Release","Focus On","Focus Off"],
-		"index":["all",1,2,3,4,5,6,7,8,9,10,11,12],
+		"index3":["all",1,2,3,4,5,6,7,8,9,10,11,12],
+		"index":["all",1,2,3,4],
 		"index2":["all",1,15,30],
 		"note":["C2","D2","E2","F2","G2","A2","B2","C3","D3","E3","F3","G3","A3","B3","C4","D4","E4","F4","G4","A4","B4","C5","D5","E5","F5","G5","A5","B5","C6","D6","E6","F6","G6","A6","B6","C7","D7","E7","F7","G7","A7","B7","C8","D8"],
 		"beats":["Half","Quater","Eighth","Whole","Double","Zero"],
@@ -147,9 +151,15 @@
 		"stepperSpeed":[100,500,1000,1500,3000],
 		"encoderSpeed":[0,50,100,150,300],
 		"button_key":["key1","key2","key3","key4"],
-		"humiture":["humidity","temperature"]
+		"humiture":["humidity","temperature"],
+		"aurigaMode":["bluetooth mode", "ultrasonic mode", "balance mode", "IR mode", "line follower mode"]
         },
 		"values":{
+		"bluetooth mode":0,
+		"ultrasonic mode":1,
+		"balance mode":2,
+		"IR mode":3,
+		"line follower mode":4,
 		"gyro on board":1,
 		"gyro external":0,
 		"run forward":1,
@@ -190,8 +200,8 @@
 		"Port6":6,
 		"Port7":7,
 		"Port8":8,
-		"M1":9,
-		"M2":10,
+		"Port9":9,
+		"Port10":10,
 		"X-Axis":1,
 		"Y-Axis":2,
 		"Z-Axis":3,

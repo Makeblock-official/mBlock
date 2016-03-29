@@ -91,7 +91,9 @@
     ext.resetAll = function(){
     	device.send([0xff, 0x55, 2, 0, 4]);
     };
-	ext.runArduino = function(){};
+	ext.runArduino = function(){
+		responseValue();
+	};
 	
 	ext.runBot = function(direction,speed) {
 		var leftSpeed = 0;

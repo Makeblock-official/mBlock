@@ -59,6 +59,7 @@
     	device.send([0xff, 0x55, 2, 0, 4]);
     };
 	ext.runArduino = function(){
+		responseValue();
 	};
 	ext.getTouchSensor = function(port){
     	var deviceId = 51;
@@ -309,10 +310,7 @@
 		bytes[2] = bytes.length-3;
 		device.send(bytes);
 	}
-	var getPackDict = [];
-	function resetPackDict(nextID){
-		getPackDict[nextID] = false;
-	}
+	
 	function getPackage(){
 		var nextID = arguments[0];
 
