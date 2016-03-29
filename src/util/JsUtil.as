@@ -13,10 +13,16 @@ package util
 				return;
 			ExternalInterface.marshallExceptions = true;
 			ExternalInterface.addCallback("responseValue", function():void{
-				if(arguments.length > 0){
-					RemoteCallMgr.Instance.onPacketRecv(arguments[0]);
-				}else{
+				if(arguments.length < 2){
 					RemoteCallMgr.Instance.onPacketRecv();
+					return;
+				}
+				switch(arguments[0]){
+					case 0x80:
+						MBlock.app.runtime.mbotButtonPressed.notify(Boolean(arguments[1]));
+						break;
+					default:
+						RemoteCallMgr.Instance.onPacketRecv(arguments[1]);
 				}
 			});
 		}

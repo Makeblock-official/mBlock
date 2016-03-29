@@ -24,6 +24,12 @@ function parseShort(bytes){
 	return castArray2DataView(bytes).getInt16(0, true);
 }
 
+function parseInt32(bytes){
+	if(bytes.length < 4)
+		return 0;
+	return castArray2DataView(bytes).getInt32(0, true);
+}
+
 function parseFloat(bytes){
 	if(bytes.length < 4)
 		return 0;
@@ -72,7 +78,7 @@ function array2string(bytes){
 function responseValue(index, value){
 	var flash = swfobject.getObjectById("MBlock");
 	if(arguments.length > 0){
-		flash.responseValue(value);
+		flash.responseValue(index, value);
 	}else{
 		flash.responseValue();
 	}

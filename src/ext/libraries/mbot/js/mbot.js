@@ -94,7 +94,9 @@
 	ext.runArduino = function(){
 		responseValue();
 	};
-	
+	ext.whenButtonPressed = function(){
+		responseValue();
+	};
 	ext.runBot = function(direction,speed) {
 		var leftSpeed = 0;
 		var rightSpeed = 0;
@@ -472,6 +474,11 @@
 							position+=4;
 						}
 							break;
+						case 6:{
+							value = readInt(_rxBuf,position);
+							position+=4;
+						}
+							break;
 						default:
 							responseValue();
 					}
@@ -495,6 +502,10 @@
 	function readShort(arr,position){
 		var s= [arr[position],arr[position+1]];
 		return parseShort(s);
+	}
+	function readInt(arr,position){
+		var f= [arr[position],arr[position+1],arr[position+2],arr[position+3]];
+		return parseInt32(f);
 	}
 	function readDouble(arr,position){
 		return readFloat(arr,position);

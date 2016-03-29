@@ -6,7 +6,6 @@ package cc.makeblock.interpreter
 	import blockly.runtime.Thread;
 	
 	import extensions.ScratchExtension;
-	import extensions.SerialDevice;
 
 	public class RemoteCallMgr
 	{
@@ -15,21 +14,12 @@ package cc.makeblock.interpreter
 		private const requestList:Array = [];
 		private var timerId:uint;
 		
-		private var reader:PacketParser;
-		
 		public function RemoteCallMgr()
 		{
-			reader = new PacketParser(onPacketRecv);
 		}
 		
 		public function init():void
 		{
-			SerialDevice.sharedDevice().dataRecvSignal.add(__onSerialRecv);
-		}
-		
-		private function __onSerialRecv(bytes:Array):void
-		{
-			reader.append(bytes);
 		}
 		
 		public function onPacketRecv(value:Object=null):void

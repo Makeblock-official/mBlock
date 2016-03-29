@@ -25,7 +25,6 @@ package cc.makeblock.interpreter
 		}
 		
 		private var mbotTimer:int;
-		private var netExt:NetExtension = new NetExtension();
 		
 		override protected function onCallUnregisteredFunction(thread:Thread, name:String, argList:Array, retCount:int):void
 		{
@@ -38,10 +37,6 @@ package cc.makeblock.interpreter
 			}
 			var extName:String = name.slice(0, index);
 			var opName:String = name.slice(index+1);
-			if(extName == "Communication"){
-				netExt.exec(thread, opName, argList);
-				return;
-			}
 			switch(opName){
 				case "getTimer":
 					thread.push(0.001 * (getTimer()-mbotTimer));
