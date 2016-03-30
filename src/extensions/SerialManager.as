@@ -158,12 +158,11 @@ package extensions
 			if(_serial.isConnected){
 				_serial.close();
 			}
-			_serial.removeEventListener(Event.CHANGE,onChanged);
 			_serial.addEventListener(Event.CHANGE,onChanged);
 			var r:uint = _serial.open(port,baud);
 			_selectPort = port;
+			ArduinoManager.sharedManager().isUploading = false;
 			if(r==0){
-				ArduinoManager.sharedManager().isUploading = false;
 				MBlock.app.topBarPart.setConnectedTitle("Serial Port");
 			}
 			return r == 0;

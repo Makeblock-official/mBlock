@@ -34,7 +34,7 @@ package extensions
 		
 		public function upload(filePath:String):void
 		{
-			_dialog.setText(Translator.map('Executing'));
+			_dialog.setText(Translator.map('Uploading'));
 			_dialog.showOnStage(MBlock.app.stage);
 			
 			var info:NativeProcessStartupInfo = new NativeProcessStartupInfo();
