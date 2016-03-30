@@ -432,16 +432,21 @@ package scratch {
 		public function installNewProject():void {
 			installEmptyProject();
 		}
-	
+		private var file:FileReference = new FileReference();
 		public function selectProjectFile():void {
 			// Prompt user for a file name and load that file.
 			function fileSelected(event:Event):void {
+				file.load();
+			}
+			
+			function fileLoaded(event:Event):void{
 				selectedProjectFile(file);
 			}
 			
 			stopAll();
-			var file:FileReference = new FileReference();
+//			var file:FileReference = new FileReference();
 			file.addEventListener(Event.SELECT, fileSelected);
+			file.addEventListener(Event.COMPLETE, fileLoaded);
 			file.browse(fileFilters);
 		}
 		

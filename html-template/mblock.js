@@ -84,6 +84,14 @@ function responseValue(index, value){
 	}
 }
 
+function setProjectRobotName(name){
+	console.log("set project name", name);
+}
+
+function readyToRun(){
+	return true;
+}
+
 var ScratchExtensions = {};
 var globalExt = null;
 var dataCallback;

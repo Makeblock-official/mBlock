@@ -72,6 +72,7 @@ package {
 	
 	import util.ApplicationManager;
 	import util.GestureHandler;
+	import util.JsUtil;
 	import util.LogManager;
 	import util.ProjectIO;
 	import util.Server;
@@ -348,6 +349,7 @@ package {
 			if (s.slice(-3) == '.sb') s = s.slice(0, -3);
 			if (s.slice(-4) == '.sb2') s = s.slice(0, -4);
 			stagePart.setProjectName(s);
+			JsUtil.setProjectRobotName(s);
 		}
 	
 		protected var wasEditing:Boolean;
@@ -829,10 +831,10 @@ package {
 	
 		private var _saveNeeded:Boolean;
 		
-		private function get saveNeeded():Boolean{
+		public function get saveNeeded():Boolean{
 			return _saveNeeded;
 		}
-		private function set saveNeeded(value:Boolean):void{
+		public function set saveNeeded(value:Boolean):void{
 			if(_saveNeeded == value){
 				return;
 			}
