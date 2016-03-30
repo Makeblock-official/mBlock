@@ -44,7 +44,6 @@ package scratch {
 	import cc.makeblock.interpreter.BlockInterpreter;
 	import cc.makeblock.interpreter.FunctionVideoMotion;
 	
-	import extensions.ConnectionManager;
 	import extensions.ParseManager;
 	
 	import interpreter.Interpreter;
@@ -474,7 +473,7 @@ package scratch {
 			installProjectFromData(file.data);
 			trace(this, "installProjectFromFile");
 			app.setProjectFile(file);
-			setTimeout(ConnectionManager.sharedManager().onReOpen,1000);
+//			setTimeout(ConnectionManager.sharedManager().onReOpen,1000);
 		}
 	
 		public function installProjectFromData(data:ByteArray, saveForRevert:Boolean = true):void {

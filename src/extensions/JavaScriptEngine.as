@@ -40,24 +40,6 @@ package extensions
 		}
 		public function call(method:String,param:Array,ext:ScratchExtension):void{
 			JsUtil.Call("callJs", ["mBot", method, param]);
-			if(!connected){
-				return;
-			}
-			var handler:Function = _ext[method];
-			if(null == handler){
-				trace(method + " not provide!");
-				responseValue();
-				return;
-			}
-			try{
-				if(handler.length > param.length){
-					handler.apply(null, [0].concat(param));
-				}else{
-					handler.apply(null, param);
-				}
-			}catch(error:Error) {
-				trace(error.getStackTrace());
-			}
 		}
 		/*
 		public function requestValue(method:String,param:Array,ext:ScratchExtension, nextID:int):void
@@ -75,7 +57,7 @@ package extensions
 			}
 			return _ext[method].apply(null, param);
 		}
-		*/
+		
 		public function closeDevice():void{
 			if(_ext){
 				_ext._shutdown();
@@ -105,6 +87,7 @@ package extensions
 				_ext = null;
 			}
 		}
+		*/
 		public function loadJS(path:String):void{
 			trace(this, "loadJS", path);
 //			var jsData:String = ExtensionManager.fileDict[path].toString();
@@ -126,11 +109,14 @@ package extensions
 			_htmlLoader.window.responseValue = responseValue;
 			_htmlLoader.window.trace = trace;
 			_htmlLoader.window.air = {"trace":trace};
-			*/
+			
 			ConnectionManager.sharedManager().addEventListener(Event.CONNECT,onConnected);
 			ConnectionManager.sharedManager().addEventListener(Event.REMOVED,onRemoved);
 			ConnectionManager.sharedManager().addEventListener(Event.CLOSE,onClosed);
+			*/
+			
 		}
+		/*
 		private function responseValue(...args):void{
 			if(args.length >= 2){
 				RemoteCallMgr.Instance.onPacketRecv(args[1]);
@@ -196,5 +182,6 @@ package extensions
 		}
 		static private const tempBytes:ByteArray = new ByteArray();
 		tempBytes.endian = Endian.LITTLE_ENDIAN;
+		*/
 	}
 }
