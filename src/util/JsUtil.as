@@ -12,19 +12,7 @@ package util
 			if(!ExternalInterface.available)
 				return;
 			ExternalInterface.marshallExceptions = true;
-			ExternalInterface.addCallback("responseValue", function():void{
-				if(arguments.length < 2){
-					RemoteCallMgr.Instance.onPacketRecv();
-					return;
-				}
-				switch(arguments[0]){
-					case 0x80:
-						MBlock.app.runtime.mbotButtonPressed.notify(Boolean(arguments[1]));
-						break;
-					default:
-						RemoteCallMgr.Instance.onPacketRecv(arguments[1]);
-				}
-			});
+			ExternalInterface.addCallback("responseValue", __responseValue);
 		}
 		
 		static public function Call(method:String, args:Array):void
@@ -40,6 +28,21 @@ package util
 		static public function Eval(code:String):void
 		{
 			Call("eval", [code]);
+		}
+		
+		static private function __responseValue(...args):void
+		{
+			if(args.length < 2){
+				RemoteCallMgr.Instance.onPacketRecv();
+				return;
+			}
+			switch(args[0]){
+				case 0x80:
+					MBlock.app.runtime.mbotButtonPressed.notify(Boolean(args[1]));
+					break;
+				default:
+					RemoteCallMgr.Instance.onPacketRecv(args[1]);
+			}
 		}
 	}
 }
