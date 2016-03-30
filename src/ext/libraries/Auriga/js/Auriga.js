@@ -102,11 +102,11 @@
 			leftSpeed = speed;
 			rightSpeed = -speed;
 		}else if(direction=="turn left"){
-			leftSpeed = speed;
-			rightSpeed = speed;
-		}else if(direction=="turn right"){
 			leftSpeed = -speed;
 			rightSpeed = -speed;
+		}else if(direction=="turn right"){
+			leftSpeed = speed;
+			rightSpeed = speed;
 		}
         runPackage(5,short2array(leftSpeed),short2array(rightSpeed));
     };
