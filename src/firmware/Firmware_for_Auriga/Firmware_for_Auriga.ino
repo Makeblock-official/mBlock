@@ -2,8 +2,8 @@
 * File Name          : Firmware_for_Auriga.ino
 * Author             : myan
 * Updated            : myan
-* Version            : V09.01.110
-* Date               : 03/21/2016
+* Version            : V09.01.001
+* Date               : 03/24/2016
 * Description        : Firmware for Makeblock Electronic modules with Scratch.  
 * License            : CC-BY-SA 3.0
 * Copyright (C) 2013 - 2016 Maker Works Technology Co., Ltd. All right reserved.
@@ -134,6 +134,7 @@ double  LastCompAngleY, LastCompAngleX, LastGyroXangle;
 double  last_turn_setpoint_filter = 0.0;
 double  last_speed_setpoint_filter = 0.0;
 double  last_speed_error_filter = 0.0;
+double  speed_Integral_average = 0.0;
 double  angle_speed = 0.0;
 
 float angleServo = 90.0;
@@ -152,7 +153,7 @@ boolean rightflag;
 boolean start_flag = false;
 boolean move_flag = false;
 
-String mVersion = "09.01.110";
+String mVersion = "09.01.001";
 
 //////////////////////////////////////////////////////////////////////////////////////
 float RELAX_ANGLE = -1;                    //自然平衡角度,根据车子自己的重心与传感器安装位置调整
@@ -888,7 +889,7 @@ void runModule(int device)
            int joy_x = readShort(7);
            int joy_y = readShort(9);
            double joy_x_temp = -(double)joy_x * 0.18;//0.3
-           double joy_y_temp = (double)joy_y * 0.25;//0.2
+           double joy_y_temp = (double)joy_y * 0.25; //0.2
            PID_speed.Setpoint = joy_y_temp;
            PID_turn.Setpoint = joy_x_temp;
            if(abs(PID_speed.Setpoint) > 1)
@@ -1322,7 +1323,7 @@ void PID_speed_compute(void)
   {
     move_flag = false;
     last_speed_setpoint_filter = 0;
-    PID_speed.Integral = 0;
+    PID_speed.Integral = speed_Integral_average;
   }
 
   double error = speed_now - last_speed_setpoint_filter;
@@ -1331,7 +1332,7 @@ void PID_speed_compute(void)
   if(move_flag == true) 
   { 
     PID_speed.Integral = constrain(PID_speed.Integral , -1500, 1500);
-    PID_speed.Output = PID_speed.P * speed_now + PID_speed.I * PID_speed.Integral;
+    PID_speed.Output = PID_speed.P * error + PID_speed.I * PID_speed.Integral;
     PID_speed.Output = constrain(PID_speed.Output , -15.0, 15.0);
   }
   else
@@ -1339,6 +1340,7 @@ void PID_speed_compute(void)
     PID_speed.Integral = constrain(PID_speed.Integral , -1500, 1500);
     PID_speed.Output = PID_speed.P * speed_now + PID_speed.I * PID_speed.Integral;
     PID_speed.Output = constrain(PID_speed.Output , -15.0, 15.0);
+    speed_Integral_average = 0.8 * speed_Integral_average + 0.2 * PID_speed.Integral;
   }
   
   PID_angle.Setpoint =  RELAX_ANGLE -  PID_speed.Output;
@@ -1752,6 +1754,125 @@ boolean read_serial()
     return result;
   }
 }
+
+void init_form_power(void)
+{
+  uint8_t R_Bright = 0;
+  for(int i = 0;i < 40;i++)
+  {
+    led.setColor(0,R_Bright,R_Bright,R_Bright);
+    led.show();
+    R_Bright += 1;
+    delay(12);
+    wdt_reset();
+  }
+
+  R_Bright = 40;
+  for(int i = 0;i < 40;i++)
+  {
+    led.setColor(0,R_Bright,R_Bright,R_Bright);
+    led.show();
+    R_Bright -= 1;
+    delay(12);
+    wdt_reset();
+  }
+
+  buzzer.tone(988, 125);   //NOTE_B5
+  led.setColor(0,20,0,0);
+  led.show();
+  delay(200);
+  wdt_reset();
+
+  led.setColor(0,20,5,0);
+  led.show();
+  delay(200);
+
+  led.setColor(0,15,15,0);
+  led.show();
+  delay(200);
+
+  led.setColor(0,0,20,0);
+  led.show();
+  delay(200);
+  wdt_reset();
+
+  led.setColor(0,0,0,20);
+  led.show();
+  delay(200);
+
+  led.setColor(0,10,0,20);
+  led.show();
+  delay(200);
+
+  led.setColor(0,20,0,20);
+  led.show();
+  delay(200);
+  wdt_reset();
+
+  led.setColor(0,0,0,0);
+  buzzer.tone(1976, 125);  //NOTE_B6
+  led.setColor(12,20,10,20);
+  led.setColor(1,20,10,20);
+  led.setColor(2,20,10,20);
+  led.show();
+  delay(375);
+  wdt_reset();
+  buzzer.tone(1976, 125);  //NOTE_B6
+  led.setColor(3,20,20,0);
+  led.setColor(4,20,20,0);
+  led.setColor(5,20,20,0);
+  led.show();
+  delay(375);
+  wdt_reset();
+  buzzer.tone(1976, 125);  //NOTE_B69
+  led.setColor(6,0,10,20);
+  led.setColor(7,0,10,20);
+  led.setColor(8,0,10,20);
+  led.show();
+  delay(500);
+  wdt_reset();
+  buzzer.tone(1976, 125);  //NOTE_B69
+  led.setColor(9,10,0,0);
+  led.setColor(10,10,0,0);
+  led.setColor(11,10,0,0);
+  led.show();
+  delay(500);
+  wdt_reset();
+
+  led.setColor(0,0,0,0);
+  for(int i=0;i<4;i++)
+  {
+    led.setColor(12,20,10,20);
+    led.setColor(1,20,10,20);
+    led.setColor(2,20,10,20);
+    
+    led.setColor(3,20,20,0);
+    led.setColor(4,20,20,0);
+    led.setColor(5,20,20,0);
+
+    led.setColor(6,0,10,20);
+    led.setColor(7,0,10,20);
+    led.setColor(8,0,10,20);
+
+    led.setColor(9,10,0,0);
+    led.setColor(10,10,0,0);
+    led.setColor(11,10,0,0);
+    led.show();
+    delay(2);
+    buzzer.tone(2349, 250);  //NOTE_D7
+    led.setColor(0,0,0,0);
+    led.show();
+    delay(100);
+    wdt_reset();
+  }
+
+  buzzer.tone(262, 250);   //NOTE_D5
+  buzzer.tone(294, 250);   //NOTE_E5
+  buzzer.tone(330, 250);   //NOTE_C5
+  led.setColor(0,0,0,0);
+  led.show();
+}
+
 void setup()
 {
   delay(5);
@@ -1760,25 +1881,20 @@ void setup()
   PID_speed_left.Setpoint = 0;
   PID_speed_right.Setpoint = 0;
   led.setpin(RGBLED_PORT);
-  delay(1);
-  led.setColor(0,0,0);
-  led.show();
-  delay(5);
-// enable the watchdog
+  buzzer.setpin(BUZZER_PORT);
+
+  // enable the watchdog
   wdt_enable(WDTO_2S);
   delay(5);
   gyro_ext.begin();
-  delay(5);
+  delay(10);
   wdt_reset();
   gyro.begin();
-  delay(100);
+  delay(10);
   wdt_reset();
+  init_form_power();
   Serial.begin(115200);
-  delay(500);
-  buzzer.tone(BUZZER_PORT, 500, 100);
-  delay(100);
-  buzzer.noTone(BUZZER_PORT);
-  delay(500);
+  delay(10);
   wdt_reset();
 
   //Set Pwm 8KHz
