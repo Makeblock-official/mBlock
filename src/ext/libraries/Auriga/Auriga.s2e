@@ -95,7 +95,7 @@
 		{"encode":"{d0}{d1}","setup":"","inc":"","def":"MeTemperature temperature_{0}_{1}({0},{1});\n","work":"temperature_{0}_{1}.temperature()","loop":""}],
 		
 		["R", "temperature on board °C","getTemperatureOnBoard",
-		{"encode":"{d0}{d1}","setup":"","inc":"","def":"MeTemperature temperature_0_2(0, 2);\n","work":"temperature_0_2.temperature()","loop":""}],
+		{"encode":"{d0}{d1}","setup":"","inc":"","def":"MeOnBoardTemp temperature_onboard(PORT_13);\n","work":"temperature_onboard.readValue()","loop":""}],
 		
 		["R", "3-axis gyro external %d.GyroAxis angle","getGyroExternal", "X-Axis",
 		{"encode":"{d0}","setup":"gyro_1.begin();\n","inc":"","def":"MeGyro gyro_1;\n","work":"gyro_1.getAngle({0})","loop":"gyro_1.update();\n"}],
