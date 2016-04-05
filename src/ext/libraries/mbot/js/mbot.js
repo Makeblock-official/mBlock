@@ -159,9 +159,6 @@
 	};
 	
 	ext.runLed = function(port,ledIndex,red,green,blue){
-		if(typeof ledIndex == "string"){
-			ledIndex = (ledIndex == "LED left") ? 2 : 1;
-		}
 		ext.runLedStrip(port, 2, ledIndex, red,green,blue);
 	};
 	ext.runLedStrip = function(port,slot,ledIndex,red,green,blue){
