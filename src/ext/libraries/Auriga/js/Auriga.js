@@ -18,8 +18,8 @@
         Port6: 6,
         Port7: 7,
         Port8: 8,
-        Port9: 9,
-        Port10: 10
+		Port9:9,
+		Port10:10
     };
     var button_keys = {
 		"key1":1,
@@ -73,13 +73,24 @@
         'resistance-C': 0,
         'resistance-D': 0
     };
+    var augigaMode = {
+    	"bluetooth mode":0,
+		"ultrasonic mode":1,
+		"balance mode":2,
+		"IR mode":3,
+		"line follower mode":4
+    };
 	var values = {};
 	var indexs = [];
 	var versionIndex = 0xFA;
     ext.resetAll = function(){
     	device.send([0xff, 0x55, 2, 0, 4]);
     };
-	ext.runArduino = function(){
+	ext.runArduino = function(mode){
+		if(typeof mode == "string"){
+			mode = augigaMode[mode];
+		}
+		runPackage(0x3c, 0x11, mode);
 	};
 	ext.runBot = function(direction,speed) {
 		var leftSpeed = 0;
@@ -187,6 +198,9 @@
 	};
 	ext.runLed = function(port,ledIndex,red,green,blue){
 		ext.runLedStrip(port, 2, ledIndex, red,green,blue);
+	};
+	ext.runLedOnBoard = function(ledIndex,red,green,blue){
+		ext.runLedStrip(0, 2, ledIndex, red,green,blue);
 	};
 	ext.runLedStrip = function(port,slot,ledIndex,red,green,blue){
 		if(typeof port=="string"){
@@ -392,10 +406,7 @@
 		bytes[2] = bytes.length-3;
 		device.send(bytes);
 	}
-	var getPackDict = [];
-	function resetPackDict(nextID){
-		getPackDict[nextID] = false;
-	}
+	
 	function getPackage(){
 		var nextID = arguments[0];
 
