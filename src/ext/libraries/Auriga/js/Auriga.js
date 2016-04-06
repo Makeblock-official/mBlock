@@ -90,7 +90,7 @@
 		if(typeof mode == "string"){
 			mode = augigaMode[mode];
 		}
-		runPackage(0x3c, 11, mode);
+		runPackage(0x3c, 0x11, mode);
 	};
 	ext.runBot = function(direction,speed) {
 		var leftSpeed = 0;
