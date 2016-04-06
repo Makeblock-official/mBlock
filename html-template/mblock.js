@@ -75,6 +75,11 @@ function array2string(bytes){
     return decoder.decode(dataView);
 }
 
+function callFlash(method, args){
+	var flash = swfobject.getObjectById("MBlock");
+	flash[method].apply(flash, args);
+}
+
 function responseValue(index, value){
 	var flash = swfobject.getObjectById("MBlock");
 	if(arguments.length > 0){

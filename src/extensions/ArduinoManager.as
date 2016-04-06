@@ -55,6 +55,7 @@ package extensions
 		private var projectPath:String = "";
 		private var _currentDevice:String;
 		private var _extSrcPath:String = "";
+		/*
 		private var leoPortMap:Array=[[null,null],["11","A8"],["13","A11"],["10","9"],["1","0"],["MISO","SCK"],["A0","A1"],["A2","A3"],["A4","A5"],["6","7"],["5","4"]]
 		private var portEnum:Object = {"Port1":1,"Port2":2,"Port3":3,"Port4":4,"Port5":5,"Port6":6,"Port7":7,"Port8":8,"M1":9,"M2":10}
 		private var portPortEnum:Object={"Port1":"PORT_1","Port2":"PORT_2","Port3":"PORT_3","Port4":"PORT_4","Port5":"PORT_5","Port6":"PORT_6","Port7":"PORT_7","Port8":"PORT_8","M1":"M1","M2":"M2"}
@@ -68,6 +69,7 @@ package extensions
 			"C6":1047,"D6":1175,"E6":1319,"F6":1397,"G6":1568,"A6":1760,"B6":1976,
 			"C7":2093,"D7":2349,"E7":2637,"F7":2794,"G7":3136,"A7":3520,"B7":3951,
 			"C8":4186,"D8":4699,"Half":500,"Quater":250,"Eighth":125,"Whole":1000,"Double":2000,"Zero":0};
+		*/
 		private var EVENT_NATIVE_DONE:String = "EVENT_NATIVE_DONE"
 		private var EVENT_LIBCOMPILE_DONE:String = "EVENT_LIBCOMPILE_DONE"
 		private var EVENT_COMPILE_DONE:String = "EVENT_COMPILE_DONE"
@@ -220,7 +222,7 @@ void updateVar(char * varName,double * var)
 		public function setScratch(scratch:MBlock):void{
 			_scratch = scratch;
 		}
-		
+		/*
 		private function portMapPin(port:String,slot:String):String{
 			var pin:String = leoPortMap[portEnum[port]][slotEnum[slot]]
 			return pin
@@ -233,7 +235,7 @@ void updateVar(char * varName,double * var)
 		private function slotMapSlot(slot:String):String{
 			return slotSlotEnum[slot]
 		}
-		
+		*/
 		private function parseMath(blk:Object):CodeObj{
 			var op:Object= blk[0]
 			var mp1:CodeBlock=getCodeBlock(blk[1]);

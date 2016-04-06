@@ -5,6 +5,9 @@ package util
 	import flash.net.URLLoader;
 	import flash.net.URLLoaderDataFormat;
 	import flash.net.URLRequest;
+	import flash.utils.ByteArray;
+	
+	import by.blooddy.crypto.Base64;
 	
 	import cc.makeblock.interpreter.RemoteCallMgr;
 
@@ -68,9 +71,11 @@ package util
 			}
 		}
 		
-		static private function __importProject():void
+		static private function __importProject(projectData:String):void
 		{
-			MBlock.app.runtime.selectProjectFile();
+			var fileData:ByteArray = Base64.decode(projectData);
+			MBlock.app.runtime.installProjectFromData(fileData);
+//			MBlock.app.runtime.selectProjectFile();
 		}
 		
 		static private function __openProject(url:String):void
@@ -89,16 +94,29 @@ package util
 			MBlock.app.createNewProject();
 		}
 		
-		static private function __exportProject():String
+		static private function __exportProject(token:String):void
 		{
+			function squeakSoundsConverted(projIO:ProjectIO):void {
+				var zipData:ByteArray = projIO.encodeProjectAsZipFile(MBlock.app.stagePane);
+				var base64Str:String = Base64.encode(zipData);
+				Call("exportProject", [token, base64Str]);
+			}
+			var projIO:ProjectIO = new ProjectIO(MBlock.app);
+			projIO.convertSqueakSounds(MBlock.app.stagePane, squeakSoundsConverted);
 			trace("__exportProject");
-			return "base64";
 		}
 		
 		static private function __saveLocalCopy():void
 		{
 			trace("__saveLocalCopy");
-			MBlock.app.exportProjectToFile();
+//			MBlock.app.exportProjectToFile();
+			function squeakSoundsConverted(projIO:ProjectIO):void {
+				var zipData:ByteArray = projIO.encodeProjectAsZipFile(MBlock.app.stagePane);
+				var base64Str:String = Base64.encode(zipData);
+				Call("saveLocalCopy", [base64Str]);
+			}
+			var projIO:ProjectIO = new ProjectIO(MBlock.app);
+			projIO.convertSqueakSounds(MBlock.app.stagePane, squeakSoundsConverted);
 		}
 		
 		static private function __hasChanged():Boolean
