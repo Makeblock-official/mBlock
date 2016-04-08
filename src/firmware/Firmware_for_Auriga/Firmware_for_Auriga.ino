@@ -32,7 +32,7 @@ MeGyro gyro_ext(0,0x68);  //外接陀螺仪
 MeGyro gyro(1,0x69);      //板载陀螺仪
 MeCompass Compass;
 MeJoystick joystick;
-MeStepper steppers[2];
+MeStepper steppers[4];
 MeBuzzer buzzer;
 MeHumiture humiture;
 MeFlameSensor FlameSensor;
@@ -686,6 +686,20 @@ void runModule(int device)
           steppers[1].moveTo(distance);
           steppers[1].setMaxSpeed(maxSpeed);
           steppers[1].setSpeed(maxSpeed);
+        }
+        else if(port == PORT_3)
+        {
+         steppers[2] = MeStepper(PORT_3);
+         steppers[2].moveTo(distance);
+         steppers[2].setMaxSpeed(maxSpeed);
+         steppers[2].setSpeed(maxSpeed);
+        }
+        else if(port == PORT_4)
+        {
+         steppers[3] = MeStepper(PORT_4);
+         steppers[3].moveTo(distance);
+         steppers[3].setMaxSpeed(maxSpeed);
+         steppers[3].setSpeed(maxSpeed);
         }
       } 
       break;
@@ -1935,6 +1949,8 @@ void loop()
   }
   steppers[0].runSpeedToPosition();
   steppers[1].runSpeedToPosition();
+  steppers[2].runSpeedToPosition();
+  steppers[3].runSpeedToPosition();
   get_power();
   Encoder_1.Update_speed();
   Encoder_2.Update_speed();
