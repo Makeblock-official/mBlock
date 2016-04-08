@@ -67,8 +67,8 @@ package cc.makeblock.interpreter
 						
 					case 'clearPenTrails':
 						
-					case "setVar:to:":
-					case "changeVar:by:":
+//					case "setVar:to:":
+//					case "changeVar:by:":
 						return true;
 					case "doIfElse":
 						if( needAddFrameSuspend(block.subStack1) || needAddFrameSuspend(block.subStack2)){
