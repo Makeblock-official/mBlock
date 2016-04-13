@@ -10,6 +10,8 @@ package util
 	import by.blooddy.crypto.Base64;
 	
 	import cc.makeblock.interpreter.RemoteCallMgr;
+	
+	import extensions.DeviceManager;
 
 	public class JsUtil
 	{
@@ -132,12 +134,26 @@ package util
 		
 		static private function __setRobotName(value:String):void
 		{
+			switch(value.toLowerCase()){
+				case "mbot":
+					DeviceManager.sharedManager().onSelectBoard("mbot_uno");
+					break;
+				case "mbot ranger":
+					DeviceManager.sharedManager().onSelectBoard("me/auriga");
+					break;
+			}
 			trace("__setRobotName", value);
 		}
 		
 		static private function __getRobotName():String
 		{
 			trace("__getRobotName");
+			switch(DeviceManager.sharedManager().currentName){
+				case "mBot":
+					return "mBot";
+				case "Me Auriga":
+					return "Me Auriga";
+			}
 			return "TestRobotName";
 		}
 	}

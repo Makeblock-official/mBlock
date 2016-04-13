@@ -180,8 +180,10 @@ public class ProjectIO {
 		if(jsonObj['info']){
 			if(jsonObj['info']['boardVersion']){
 				DeviceManager.sharedManager().onSelectBoard(jsonObj['info']['boardVersion']);
+				JsUtil.setProjectRobotName(jsonObj['info']['boardVersion']);
 			}else{
 				DeviceManager.sharedManager().onSelectBoard("mbot_uno");
+				JsUtil.setProjectRobotName("mbot");
 			}
 		}
 		if (jsonObj['children']) { // project JSON

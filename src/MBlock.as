@@ -272,7 +272,7 @@ package {
 		public function getPaletteBuilder():PaletteBuilder {
 			return new PaletteBuilder(this);
 		}
-		
+		/*
 		private function onExiting(evt:Event):void{
 			if(saveNeeded){
 				evt.preventDefault();
@@ -280,7 +280,7 @@ package {
 			}
 			MBlock.app.gh.mouseUp(new MouseEvent(MouseEvent.MOUSE_UP));
 		}
-		
+		*/
 		public function quitApp():void
 		{
 			trace(this, "quitApp");
@@ -651,22 +651,12 @@ package {
 		}
 	
 		public function createNewProject(ignore:* = null):void {
-			saveProjectAndThen(clearProject);
+//			saveProjectAndThen(clearProject);
+			clearProject();
 		}
-	
+	/*
 		public function saveProjectAndThen(postSaveAction:Function = null):void {
 			// Give the user a chance to save their project, if needed, then call postSaveAction.
-			/*
-			function doNothing():void {}
-			function cancel():void { d.cancel(); }
-			function proceedWithoutSaving():void { d.cancel(); postSaveAction() }
-			function save():void {
-				d.cancel();
-				exportProjectToFile(false,postSaveAction); // if this succeeds, saveNeeded will become false
-				if (!saveNeeded) postSaveAction();
-			}
-			if (postSaveAction == null) postSaveAction = doNothing;
-			*/
 			if(isPanelShowing){
 				return;
 			}
@@ -676,14 +666,6 @@ package {
 				}
 				return;
 			}
-			/*
-			var d:DialogBox = new DialogBox();
-			d.addTitle(Translator.map('Save project') + '?');
-			d.addButton('Save', save);
-			d.addButton('Don\'t save', proceedWithoutSaving);
-			d.addButton('Cancel', cancel);
-			d.showOnStage(stage);
-			*/
 			isPanelShowing = true;
 			PopupUtil.showQuitAlert(function(value:int):void{
 				switch(value){
@@ -699,7 +681,7 @@ package {
 				isPanelShowing = false;
 			});
 		}
-		
+		*/
 		private var projectFile:Object;
 		
 		public function saveFile():void
@@ -723,7 +705,7 @@ package {
 //			FileUtil.WriteBytes(projectFile, projIO.encodeProjectAsZipFile(stagePane));
 		}
 		
-		private var isPanelShowing:Boolean;
+//		private var isPanelShowing:Boolean;
 	
 		public function exportProjectToFile(postSaveAction:Function=null):void {
 			function squeakSoundsConverted(projIO:ProjectIO):void {
