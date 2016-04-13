@@ -133,7 +133,6 @@ package extensions
 		
 		private var codeTemplate:String = ( <![CDATA[#include <Arduino.h>
 #include <Wire.h>
-//#include <Servo.h>
 #include <SoftwareSerial.h>
 
 //include
