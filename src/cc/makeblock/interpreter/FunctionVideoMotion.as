@@ -30,7 +30,6 @@ package cc.makeblock.interpreter {
 	import blockly.runtime.FunctionProvider;
 	import blockly.runtime.Thread;
 	
-	
 	import scratch.ScratchObj;
 	import scratch.ScratchSprite;
 
@@ -73,7 +72,7 @@ public class FunctionVideoMotion {
 	private function primVideoMotion(thread:Thread, argList:Array):void {
 		var motionType:String = argList[0];
 		var obj:ScratchObj = MBlock.app.stagePane.objNamed(String(argList[1]));
-		if ('this sprite' == argList[1]) obj = thread.userData;
+		if ('this sprite' == argList[1]) obj = ThreadUserData.getScratchObj(thread);
 		thread.push( getMotionOn(motionType, obj));
 	}
 

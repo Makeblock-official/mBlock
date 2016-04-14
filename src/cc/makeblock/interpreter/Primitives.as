@@ -173,7 +173,7 @@ package cc.makeblock.interpreter {
 		private function primCreateCloneOf(thread:Thread, argList:Array):void {
 			var objName:String = argList[0];
 			var proto:ScratchSprite = MBlock.app.stagePane.spriteNamed(objName);
-			if ('_myself_' == objName) proto = thread.userData as ScratchSprite;
+			if ('_myself_' == objName) proto = ThreadUserData.getScratchSprite(thread);
 			if (!proto) return;
 			if (MBlock.app.runtime.cloneCount > MaxCloneCount) return;
 			var clone:ScratchSprite = new ScratchSprite();
@@ -190,7 +190,7 @@ package cc.makeblock.interpreter {
 		}
 		
 		private function primDeleteClone(thread:Thread, argList:Array):void {
-			var clone:ScratchSprite = thread.userData as ScratchSprite;
+			var clone:ScratchSprite = ThreadUserData.getScratchSprite(thread);
 			if ((clone == null) || (!clone.isClone) || (clone.parent == null)) return;
 			if (clone.bubble && clone.bubble.parent) clone.bubble.parent.removeChild(clone.bubble);
 			clone.parent.removeChild(clone);

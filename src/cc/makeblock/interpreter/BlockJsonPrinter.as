@@ -36,7 +36,7 @@ package cc.makeblock.interpreter
 			}
 			return result;
 		}
-		
+		/*
 		private function needAddFrameSuspend(block:Block):Boolean
 		{
 			var testBlock:Block = block;
@@ -85,16 +85,18 @@ package cc.makeblock.interpreter
 			}
 			return false;
 		}
-		
+		*/
 		private function addFrameSuspend(block:Block):Array
 		{
 			var result:Array = printBlockList(block.subStack1);
 			if(null == result){
 				return null;
 			}
+			/*
 			if(needAddFrameSuspend(block.subStack1)){
 				result.push(SyntaxTreeFactory.NewStatement("suspendUntilNextFrame", []));
 			}
+			//*/
 			return result;
 		}
 		

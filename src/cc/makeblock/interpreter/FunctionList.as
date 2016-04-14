@@ -50,7 +50,7 @@ internal class FunctionList {
 
 	private function primContents(thread:Thread, argList:Array):void
 	{
-		var list:ListWatcher = thread.userData.lookupOrCreateList(argList[0]);
+		var list:ListWatcher = ThreadUserData.getScratchObj(thread).lookupOrCreateList(argList[0]);
 		if(null == list){
 			thread.push("");
 			return;
@@ -66,7 +66,7 @@ internal class FunctionList {
 	}
 
 	private function primAppend(thread:Thread, argList:Array):void {
-		var list:ListWatcher = listarg(thread.userData, argList, 1);
+		var list:ListWatcher = listarg(ThreadUserData.getScratchObj(thread), argList, 1);
 		if (!list) return;
 		var v:* = argList[0];
 		if(v!=null){
@@ -82,7 +82,7 @@ internal class FunctionList {
 
 	private function primDelete(thread:Thread, argList:Array):void {
 		var which:* = argList[0];
-		var list:ListWatcher = listarg(thread.userData, argList, 1);
+		var list:ListWatcher = listarg(ThreadUserData.getScratchObj(thread), argList, 1);
 		if (!list) return;
 		var len:int = list.contents.length;
 		if (which == 'all') {
@@ -108,7 +108,7 @@ internal class FunctionList {
 	private function primInsert(thread:Thread, argList:Array):void {
 		var val:* = argList[0];
 		var where:* = argList[1];
-		var list:ListWatcher = listarg(thread.userData, argList, 2);
+		var list:ListWatcher = listarg(ThreadUserData.getScratchObj(thread), argList, 2);
 		if (!list) return;
 		if (where == 'last') {
 			listAppend(list, val);
@@ -126,7 +126,7 @@ internal class FunctionList {
 	}
 
 	private function primReplace(thread:Thread, argList:Array):void {
-		var list:ListWatcher = listarg(thread.userData, argList, 1);
+		var list:ListWatcher = listarg(ThreadUserData.getScratchObj(thread), argList, 1);
 		if (!list) return;
 		var i:int = computeIndex(argList[0], list.contents.length);
 		if (i < 0) return;
@@ -139,7 +139,7 @@ internal class FunctionList {
 	}
 
 	private function primGetItem(thread:Thread, argList:Array):void {
-		var list:ListWatcher = listarg(thread.userData, argList, 1);
+		var list:ListWatcher = listarg(ThreadUserData.getScratchObj(thread), argList, 1);
 		if (!list) {
 			thread.push("");
 			return;
@@ -154,12 +154,12 @@ internal class FunctionList {
 	}
 
 	private function primLength(thread:Thread, argList:Array):void {
-		var list:ListWatcher = listarg(thread.userData, argList, 0);
+		var list:ListWatcher = listarg(ThreadUserData.getScratchObj(thread), argList, 0);
 		thread.push(list ? list.contents.length : 0);
 	}
 
 	private function primContains(thread:Thread, argList:Array):void {
-		var list:ListWatcher = listarg(thread.userData, argList, 0);
+		var list:ListWatcher = listarg(ThreadUserData.getScratchObj(thread), argList, 0);
 		if (!list) {
 			thread.push(false);
 			return
