@@ -1,7 +1,5 @@
 package cc.makeblock.interpreter
 {
-	import flash.utils.Dictionary;
-	
 	import blockly.runtime.Interpreter;
 	import blockly.runtime.Thread;
 	
@@ -15,7 +13,6 @@ package cc.makeblock.interpreter
 		
 		private var converter:BlockJsonPrinter;
 		private var realInterpreter:Interpreter;
-		private const threadDict:Object = new Dictionary(true);
 		
 		public function BlockInterpreter()
 		{
@@ -39,8 +36,7 @@ package cc.makeblock.interpreter
 //			trace(realInterpreter.castCodeListToString(codeList));
 //			trace("end==================");
 			var thread:Thread = realInterpreter.execute(blockList);
-			thread.userData = targetObj;
-			threadDict[thread] = block;
+			thread.userData = new ThreadUserData(targetObj, block);
 			return thread;
 		}
 		
@@ -67,7 +63,8 @@ package cc.makeblock.interpreter
 		{
 			var list:Vector.<Thread> = realInterpreter.getCopyOfThreadList();
 			for each(var t:Thread in list){
-				if(threadDict[t] == block && t.userData == targetObj){
+				var userData:ThreadUserData = t.userData;
+				if(userData.block == block && userData.target == targetObj){
 					return true;
 				}
 			}
@@ -77,9 +74,9 @@ package cc.makeblock.interpreter
 		{
 			var list:Vector.<Thread> = realInterpreter.getCopyOfThreadList();
 			for each(var t:Thread in list){
-				if(threadDict[t] == block && t.userData == targetObj){
+				var userData:ThreadUserData = t.userData;
+				if(userData.block == block && userData.target == targetObj){
 					t.interrupt();
-					delete threadDict[t];
 				}
 			}
 		}
@@ -92,7 +89,7 @@ package cc.makeblock.interpreter
 			var threadList:Vector.<Thread> = realInterpreter.getCopyOfThreadList();
 			for(var i:int=threadList.length-1; i>=0; --i){
 				var thread:Thread = threadList[i];
-				if(thread.userData === obj){
+				if(ThreadUserData.getScratchObj(thread) === obj){
 					thread.interrupt();
 				}
 			}
@@ -100,13 +97,11 @@ package cc.makeblock.interpreter
 		
 		public function stopObjOtherThreads(t:Thread):void
 		{
-			if(null == t.userData){
-				return;
-			}
+			var target:ScratchObj = ThreadUserData.getScratchObj(t);
 			var threadList:Vector.<Thread> = realInterpreter.getCopyOfThreadList();
 			for(var i:int=threadList.length-1; i>=0; --i){
 				var thread:Thread = threadList[i];
-				if(t != thread && thread.userData === t.userData){
+				if(t != thread && ThreadUserData.getScratchObj(thread) === target){
 					thread.interrupt();
 				}
 			}

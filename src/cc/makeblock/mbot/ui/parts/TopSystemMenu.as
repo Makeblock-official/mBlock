@@ -77,12 +77,18 @@ package cc.makeblock.mbot.ui.parts
 				case "Starter Bluetooth":
 					filePath = "mBlock/tools/hex/Starter_Bluetooth.hex";
 					break;
+				case "mBot Ranger":
+					filePath = "mBlock/tools/hex/auriga.hex";
+					break;
 				default:
+					MBlock.app.scriptsPart.appendMessage("Unknow board: " + item.name);
 					return;
 			}
 			var file:File = ApplicationManager.sharedManager().documents.resolvePath(filePath);
 			if(file.exists){
 				SerialManager.sharedManager().upgrade(file.nativePath);
+			}else{
+				MBlock.app.scriptsPart.appendMessage("File not exist: " + file.nativePath);
 			}
 		}
 		

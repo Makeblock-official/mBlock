@@ -21,6 +21,8 @@ package {
 	import flash.utils.ByteArray;
 	import flash.utils.setTimeout;
 	
+	import blockly.runtime.Thread;
+	
 	import blocks.Block;
 	
 	import cc.makeblock.mbot.lookandfeel.MyLookAndFeel;
@@ -815,6 +817,7 @@ package {
 		}
 	
 		public function toggleTurboMode():void {
+			Thread.REDRAW_FLAG = interp.turboMode;
 			interp.turboMode = !interp.turboMode;
 			stagePart.refresh();
 		}

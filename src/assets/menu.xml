@@ -41,6 +41,7 @@
 			<item name="mBot" label="mbot" />
 			<item name="Starter IR" label="Starter IR" />
 			<item name="Starter Bluetooth" label="Starter Bluetooth" />
+			<item name="mBot Ranger" label="mBot Ranger" />
 		</subMenu>
 		<item name="View Source" label="查看源码" action="view_source" />
 		<item name="Install Arduino Driver" label="安装Arduino驱动" action="driver" />

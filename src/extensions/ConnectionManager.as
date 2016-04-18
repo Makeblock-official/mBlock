@@ -5,7 +5,6 @@ package extensions
 	import flash.filesystem.File;
 	import flash.net.URLRequest;
 	import flash.net.navigateToURL;
-	import flash.signals.Signal;
 	import flash.utils.ByteArray;
 	
 	import util.ApplicationManager;
@@ -56,12 +55,13 @@ package extensions
 				}
 				case "driver":{
 					MBlock.app.track("/OpenSerial/InstallDriver");
+					var fileDriver:File;
 					if(ApplicationManager.sharedManager().system==ApplicationManager.MAC_OS){
 //						navigateToURL(new URLRequest("https://github.com/Makeblock-official/Makeblock-USB-Driver"));
-						var fileDriver:File = new File(File.applicationDirectory.nativePath+"/drivers/Arduino Driver.pkg");
+						fileDriver = new File(File.applicationDirectory.nativePath+"/drivers/Arduino Driver.pkg");
 						fileDriver.openWithDefaultApplication();
 					}else{
-						var fileDriver:File = new File(File.applicationDirectory.nativePath+"/drivers/Driver_for_Windows.exe");
+						fileDriver = new File(File.applicationDirectory.nativePath+"/drivers/Driver_for_Windows.exe");
 						fileDriver.openWithDefaultApplication();
 					}
 					break;
