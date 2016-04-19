@@ -45,8 +45,12 @@ package cc.makeblock.interpreter
 			var info:Array = requestList.shift();
 			var thread:Thread = info[0];
 			if(thread != null){
-				if(arguments.length > 0){
-					thread.push(value);
+				if(info[4] > 0){
+					if(arguments.length > 0){
+						thread.push(value);
+					}else{
+						thread.push(0);
+					}
 				}
 				thread.resume();
 			}
