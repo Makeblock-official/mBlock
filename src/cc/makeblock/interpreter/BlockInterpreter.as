@@ -9,6 +9,8 @@ package cc.makeblock.interpreter
 	
 	import scratch.ScratchObj;
 	
+	import util.JsUtil;
+	
 	public class BlockInterpreter
 	{
 		static public const Instance:BlockInterpreter = new BlockInterpreter();
@@ -26,6 +28,10 @@ package cc.makeblock.interpreter
 		
 		public function execute(block:Block, targetObj:ScratchObj):Thread
 		{
+			if(!JsUtil.readyToRun()){
+				return new Thread([]);
+			}
+			
 			var funcList:Array = targetObj.procedureDefinitions();
 			var blockList:Array = [];
 			for each(var funcBlock:Block in funcList){

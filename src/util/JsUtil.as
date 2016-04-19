@@ -153,7 +153,7 @@ package util
 				case "mBot":
 					return "mBot";
 				case "Me Auriga":
-					return "Me Auriga";
+					return "mBot Ranger";
 			}
 			return "TestRobotName";
 		}
