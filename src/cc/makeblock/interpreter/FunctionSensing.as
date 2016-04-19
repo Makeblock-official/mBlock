@@ -79,7 +79,7 @@ package cc.makeblock.interpreter {
 	// TODO: move to stage
 	static private var stageRect:Rectangle = new Rectangle(0, 0, 480, 360);
 	private function primTouching(thread:Thread, argList:Array):void {
-		var s:ScratchSprite = thread.userData as ScratchSprite;
+		var s:ScratchSprite = ThreadUserData.getScratchSprite(thread);
 		if (s == null) {
 			thread.push(false);
 			return;
@@ -167,7 +167,7 @@ package cc.makeblock.interpreter {
 	private function primTouchingColor(thread:Thread, argList:Array):void {
 		// Note: Attempted to switch app.stage.quality to LOW to disable anti-aliasing, which
 		// can create false colors. Unfortunately, that caused serious performance issues.
-		var s:ScratchSprite = thread.userData as ScratchSprite;
+		var s:ScratchSprite = ThreadUserData.getScratchSprite(thread);
 		if (s == null){
 			thread.push(false);
 			return;
@@ -198,7 +198,7 @@ package cc.makeblock.interpreter {
 	private function primColorSees(thread:Thread, argList:Array):void {
 		// Note: Attempted to switch app.stage.quality to LOW to disable anti-aliasing, which
 		// can create false colors. Unfortunately, that caused serious performance issues.
-		var s:ScratchSprite = thread.userData as ScratchSprite;
+		var s:ScratchSprite = ThreadUserData.getScratchSprite(thread);
 		if (s == null){
 			thread.push(false);
 			return;
@@ -270,7 +270,7 @@ package cc.makeblock.interpreter {
 	}
 	
 	private function primAskImpl(thread:Thread, argList:Array):void {
-		var obj:ScratchObj = thread.userData;
+		var obj:ScratchObj = ThreadUserData.getScratchObj(thread);
 //		if (interp.activeThread.firstTime) {
 			var question:String = argList[0];
 			if ((obj is ScratchSprite) && (obj.visible)) {
@@ -306,7 +306,7 @@ package cc.makeblock.interpreter {
 	}
 
 	private function primDistanceTo(thread:Thread, argList:Array):void {
-		var s:ScratchSprite = thread.userData as ScratchSprite;
+		var s:ScratchSprite = ThreadUserData.getScratchSprite(thread);
 		if(s == null){
 			thread.push(0);
 			return;
@@ -361,22 +361,22 @@ package cc.makeblock.interpreter {
 	}
 
 	private function primShowWatcher(thread:Thread, argList:Array):void {
-		var obj:ScratchObj = thread.userData;
+		var obj:ScratchObj = ThreadUserData.getScratchObj(thread);
 		if (obj) MBlock.app.runtime.showVarOrListFor(argList[0], false, obj);
 	}
 
 	private function primHideWatcher(thread:Thread, argList:Array):void {
-		var obj:ScratchObj = thread.userData;
+		var obj:ScratchObj = ThreadUserData.getScratchObj(thread);
 		if (obj) MBlock.app.runtime.hideVarOrListFor(argList[0], false, obj);
 	}
 
 	private function primShowListWatcher(thread:Thread, argList:Array):void {
-		var obj:ScratchObj = thread.userData;
+		var obj:ScratchObj = ThreadUserData.getScratchObj(thread);
 		if (obj) MBlock.app.runtime.showVarOrListFor(argList[0], true, obj);
 	}
 
 	private function primHideListWatcher(thread:Thread, argList:Array):void {
-		var obj:ScratchObj = thread.userData;
+		var obj:ScratchObj = ThreadUserData.getScratchObj(thread);
 		if (obj) MBlock.app.runtime.hideVarOrListFor(argList[0], true, obj);
 	}
 

@@ -52,10 +52,11 @@ package cc.makeblock.interpreter {
 		provider.register('nextBackground', primNextCostume); // used by Scratch 1.4 and earlier (doesn't start scene hats)
 		provider.register('backgroundIndex', primSceneIndex);
 		provider.register('sceneName', primSceneName);
-		provider.register('nextScene', function(thread:Thread, argList:Array):void { startScene('next backdrop') });
-		provider.register('startScene', function(thread:Thread, argList:Array):void { startScene(argList[0]) });
+		provider.register('nextScene', function(thread:Thread, argList:Array):void { startScene('next backdrop');thread.requestRedraw(); });
+		provider.register('startScene', function(thread:Thread, argList:Array):void { startScene(argList[0]);thread.requestRedraw(); });
 		provider.register('startSceneAndWait', function(thread:Thread, argList:Array):void { 
 			var threadList:Array = startScene(argList[0]); 
+			thread.requestRedraw();
 			thread.suspend();
 			thread.suspendUpdater = [PrimInit.checkSubThreadFinish, threadList];
 		});
@@ -87,21 +88,21 @@ package cc.makeblock.interpreter {
 	
 	static private function onThink(thread:Thread, argList:Array):void
 	{
-		if(thread.userData is ScratchStage){
+		if(ThreadUserData.getScratchObj(thread) is ScratchStage){
 			return;
 		}
-		showBubble(thread.userData, argList[0], "think");
+		showBubble(thread, argList[0], "think");
 	}
 	
 	static private function onSay(thread:Thread, argList:Array):void
 	{
-		if(thread.userData is ScratchStage){
+		if(ThreadUserData.getScratchObj(thread) is ScratchStage){
 			return;
 		}
-		showBubble(thread.userData, argList[0], "talk");
+		showBubble(thread, argList[0], "talk");
 	}
 	
-	static private function showBubble(s:ScratchSprite, value:Object, type:String):void
+	static private function showBubble(thread:Thread, value:Object, type:String):void
 	{
 		var text:String;
 		if(typeof value == "number" && value != int(value)){
@@ -111,19 +112,22 @@ package cc.makeblock.interpreter {
 		}else{
 			text = value as String;
 		}
+		var s:ScratchSprite = ThreadUserData.getScratchSprite(thread);
 		if(null == s || null == text){
 			return;
 		}
 		s.showBubble(text, type);
+		if(s.visible) thread.requestRedraw();
 	}
 
 	private function primNextCostume(thread:Thread, argList:Array):void {
-		var s:ScratchObj = thread.userData;
+		var s:ScratchObj = ThreadUserData.getScratchObj(thread);
 		if (s != null) s.showCostume(s.currentCostumeIndex + 1);
+		if(s.visible) thread.requestRedraw();
 	}
 
 	private function primShowCostume(thread:Thread, argList:Array):void {
-		var s:ScratchObj = thread.userData;
+		var s:ScratchObj = ThreadUserData.getScratchObj(thread);
 		if (s == null) return;
 		var arg:* = argList[0];
 		if (typeof(arg) == 'number') {
@@ -142,15 +146,16 @@ package cc.makeblock.interpreter {
 				else return; // arg did not match a costume name nor is it a valid number
 			}
 		}
+		if(s.visible) thread.requestRedraw();
 	}
 
 	private function primCostumeIndex(thread:Thread, argList:Array):void {
-		var s:ScratchObj = thread.userData;
+		var s:ScratchObj = ThreadUserData.getScratchObj(thread);
 		thread.push( (s == null) ? 1 : s.costumeNumber());
 	}
 
 	private function primCostumeName(thread:Thread, argList:Array):void {
-		var s:ScratchObj = thread.userData;
+		var s:ScratchObj = ThreadUserData.getScratchObj(thread);
 		thread.push( (s == null) ? '' : s.currentCostume().costumeName);
 	}
 
@@ -194,9 +199,10 @@ package cc.makeblock.interpreter {
 	}
 
 	private function showBubbleAndWait(thread:Thread, text:String, secs:Number, type:String):void {
-		var s:ScratchSprite = thread.userData as ScratchSprite;
+		var s:ScratchSprite = ThreadUserData.getScratchSprite(thread);
 		if (s == null) return;
 		s.showBubble(text, type);
+		if(s.visible) thread.requestRedraw();
 		thread.suspend();
 		thread.suspendUpdater = [__CheckTimeOut, s, text, secs * 1000];
 	}
@@ -211,7 +217,7 @@ package cc.makeblock.interpreter {
 	}
 
 	private function primChangeEffect(thread:Thread, argList:Array):void {
-		var s:ScratchObj = thread.userData;
+		var s:ScratchObj = ThreadUserData.getScratchObj(thread);
 		if (s == null) return;
 		var delta:Number = argList[1];
 		if(delta == 0) return;
@@ -220,78 +226,88 @@ package cc.makeblock.interpreter {
 		var newValue:Number = s.filterPack.getFilterSetting(filterName) + delta;
 		s.filterPack.setFilter(filterName, newValue);
 		s.applyFilters();
+		if (s.visible || s == MBlock.app.stagePane) thread.requestRedraw();
 	}
 
 	private function primSetEffect(thread:Thread, argList:Array):void {
-		var s:ScratchObj = thread.userData;
+		var s:ScratchObj = ThreadUserData.getScratchObj(thread);
 		if (s == null) return;
 		var filterName:String = argList[0];
 		var newValue:Number = argList[1]
 		if(s.filterPack.setFilter(filterName, newValue))
 			s.applyFilters();
+		if (s.visible || s == MBlock.app.stagePane) thread.requestRedraw();
 	}
 
 	private function primClearEffects(thread:Thread, argList:Array):void {
-		var s:ScratchObj = thread.userData;
+		var s:ScratchObj = ThreadUserData.getScratchObj(thread);
 		s.clearFilters();
+		s.applyFilters();
+		if (s.visible || s == MBlock.app.stagePane) thread.requestRedraw();
 	}
 
 	private function primChangeSize(thread:Thread, argList:Array):void {
-		var s:ScratchSprite = thread.userData as ScratchSprite;
+		var s:ScratchSprite = ThreadUserData.getScratchSprite(thread);
 		if (s == null) return;
 		var oldScale:Number = s.scaleX;
 		s.setSize(s.getSize() + Number(argList[0]));
+		if (s.visible && (s.scaleX != oldScale)) thread.requestRedraw();
 	}
 
 	private function primSetRotationStyle(thread:Thread, argList:Array):void {
-		var s:ScratchSprite = thread.userData as ScratchSprite;
+		var s:ScratchSprite = ThreadUserData.getScratchSprite(thread);
 		var newStyle:String = argList[0];
 		if ((s == null) || (newStyle == null)) return;
 		s.setRotationStyle(newStyle);
 	}
 
 	private function primSetSize(thread:Thread, argList:Array):void {
-		var s:ScratchSprite = thread.userData as ScratchSprite;
+		var s:ScratchSprite = ThreadUserData.getScratchSprite(thread);
 		if (s == null) return;
 		s.setSize(Number(argList[0]));
+		if(s.visible)thread.requestRedraw();
 	}
 
 	private function primSize(thread:Thread, argList:Array):void {
-		var s:ScratchSprite = thread.userData as ScratchSprite;
+		var s:ScratchSprite = ThreadUserData.getScratchSprite(thread);
 		thread.push(s ? Math.round(s.getSize()) : 100);
 	}
 
 	private function primShow(thread:Thread, argList:Array):void {
-		var s:ScratchSprite = thread.userData as ScratchSprite;
+		var s:ScratchSprite = ThreadUserData.getScratchSprite(thread);
 		if (s == null) return;
 		s.visible = true;
 		s.applyFilters();
 		s.updateBubble();
+		if(s.visible)thread.requestRedraw();
 	}
 
 	private function primHide(thread:Thread, argList:Array):void {
-		var s:ScratchSprite = thread.userData as ScratchSprite;
+		var s:ScratchSprite = ThreadUserData.getScratchSprite(thread);
 		if ((s == null) || !s.visible) return;
 		s.visible = false;
 		s.applyFilters();
 		s.updateBubble();
+		thread.requestRedraw();
 	}
 
 
 	private function primGoFront(thread:Thread, argList:Array):void {
-		var s:ScratchSprite = thread.userData as ScratchSprite;
+		var s:ScratchSprite = ThreadUserData.getScratchSprite(thread);
 		if ((s == null) || (s.parent == null)) return;
 		s.parent.setChildIndex(s, s.parent.numChildren - 1);
+		if(s.visible)thread.requestRedraw();
 	}
 
 	private function primGoBack(thread:Thread, argList:Array):void {
-		var s:ScratchSprite = thread.userData as ScratchSprite;
+		var s:ScratchSprite = ThreadUserData.getScratchSprite(thread);
 		if ((s == null) || (s.parent == null)) return;
 		var newIndex:int = s.parent.getChildIndex(s) - Number(argList[0]);
 		newIndex = Math.max(minSpriteLayer(), Math.min(newIndex, s.parent.numChildren - 1));
 
 		if (newIndex > 0 && newIndex < s.parent.numChildren) {
 			s.parent.setChildIndex(s, newIndex);
+			if(s.visible)thread.requestRedraw();
 		}
 	}
 

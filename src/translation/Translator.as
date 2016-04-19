@@ -27,7 +27,6 @@ package translation {
 	import flash.utils.ByteArray;
 	import flash.utils.setTimeout;
 	
-	
 	import blocks.Block;
 	
 	import uiwidgets.Menu;
@@ -314,6 +313,9 @@ public class Translator {
 	private static function checkBlockSpec(spec:String):void {
 		var translatedSpec:String = map(spec);
 		if (translatedSpec == spec) return; // not translated
+		if(currentLang == "hebrew"){
+			translatedSpec = adjustRightToLeftLang(translatedSpec);
+		}
 		var origArgs:Array = extractArgs(spec);
 		if (!argsMatch(extractArgs(spec), extractArgs(translatedSpec))) {
 			MBlock.app.log('Block argument mismatch:');
@@ -321,6 +323,32 @@ public class Translator {
 			MBlock.app.log('    ' + translatedSpec);
 			delete dictionary[spec]; // remove broken entry from dictionary
 		}
+	}
+	
+	static private const r2l_pattern:RegExp = /(\w+)(?:\.(\w+))?\s*(%|@)/g;
+	static private function adjustRightToLeftLang(input:String):String
+	{
+		var newInput:String = input;
+		for(;;){
+			var result:Array = r2l_pattern.exec(input);
+			if(result == null)
+				break;
+			var a:String = result[1];
+			var b:String = result[2];
+			var symbol:String = result[3];
+			var destStr:String;
+			if(!Boolean(b)){
+				destStr = symbol + a;
+			}else if(a.length == 1){
+				destStr = symbol + a + "." + b;
+			}else if(b.length == 1){
+				destStr = symbol + b + "." + a;
+			}else{
+				continue;
+			}
+			newInput = newInput.replace(result[0], destStr);
+		}
+		return newInput;
 	}
 
 	private static function argsMatch(args1:Array, args2:Array):Boolean {

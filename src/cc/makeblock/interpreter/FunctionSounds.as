@@ -1,10 +1,10 @@
 package cc.makeblock.interpreter
 {
 	import flash.events.Event;
-	import flash.utils.setTimeout;
 	
 	import blockly.runtime.FunctionProvider;
 	import blockly.runtime.Thread;
+	import blockly.util.FunctionProviderHelper;
 	
 	import scratch.ScratchObj;
 	import scratch.ScratchSound;
@@ -41,11 +41,13 @@ package cc.makeblock.interpreter
 		static private function changeTempoBy(thread:Thread, argList:Array):void
 		{
 			MBlock.app.stagePane.setTempo(MBlock.app.stagePane.tempoBPM + argList[0]);
+			thread.requestRedraw();
 		}
 		
 		static private function setTempoTo(thread:Thread, argList:Array):void
 		{
 			MBlock.app.stagePane.setTempo(argList[0]);
+			thread.requestRedraw();
 		}
 		
 		static private function getTempo(thread:Thread, argList:Array):void
@@ -55,31 +57,33 @@ package cc.makeblock.interpreter
 		
 		static private function changeVolumeBy(thread:Thread, argList:Array):void
 		{
-			var obj:ScratchObj = thread.userData;
+			var obj:ScratchObj = ThreadUserData.getScratchObj(thread);
 			if(null == obj){
 				return;
 			}
 			obj.setVolume(obj.volume + argList[0]);
+			thread.requestRedraw();
 		}
 		
 		static private function setVolumeTo(thread:Thread, argList:Array):void
 		{
-			var obj:ScratchObj = thread.userData;
+			var obj:ScratchObj = ThreadUserData.getScratchObj(thread);
 			if(null == obj){
 				return;
 			}
 			obj.setVolume(argList[0]);
+			thread.requestRedraw();
 		}
 		
 		static private function getVolume(thread:Thread, argList:Array):void
 		{
-			var obj:ScratchObj = thread.userData;
+			var obj:ScratchObj = ThreadUserData.getScratchObj(thread);
 			thread.push(obj ? obj.volume : 0);
 		}
 		
 		static private function setInstrumentImpl(thread:Thread, argList:Array, isMidi:Boolean):void
 		{
-			var obj:ScratchObj = thread.userData;
+			var obj:ScratchObj = ThreadUserData.getScratchObj(thread);
 			if(null == obj){
 				return;
 			}
@@ -104,20 +108,19 @@ package cc.makeblock.interpreter
 		
 		static private function playNote(thread:Thread, argList:Array):void
 		{
-			var obj:ScratchObj = thread.userData;
+			var obj:ScratchObj = ThreadUserData.getScratchObj(thread);
 			if(null == obj){
 				return;
 			}
 			var key:Number = argList[0];
 			var secs:Number = beatsToSeconds(argList[1]);
 			_playNote(obj.instrument, key, secs, obj); // always play entire drum sample
-			thread.suspend();
-			setTimeout(thread.resume, secs * 1000);
+			FunctionProviderHelper.onSleep(thread, [secs]);
 		}
 		
 		static private function playSound(thread:Thread, argList:Array):void
 		{
-			var obj:ScratchObj = thread.userData;
+			var obj:ScratchObj = ThreadUserData.getScratchObj(thread);
 			var snd:ScratchSound = obj.findSound(argList[0]);
 			if (snd == null) return;
 			_playSound(snd, obj);
@@ -125,7 +128,7 @@ package cc.makeblock.interpreter
 		
 		static private function doPlaySoundAndWait(thread:Thread, argList:Array):void
 		{
-			var obj:ScratchObj = thread.userData;
+			var obj:ScratchObj = ThreadUserData.getScratchObj(thread);
 			var snd:ScratchSound = obj.findSound(argList[0]);
 			if (snd == null) return;
 			thread.suspend();
@@ -148,26 +151,24 @@ package cc.makeblock.interpreter
 		}
 		static private function playDrumRest(thread:Thread, argList:Array):void
 		{
-			var obj:ScratchObj = thread.userData;
+			var obj:ScratchObj = ThreadUserData.getScratchObj(thread);
 			if(null == obj){
 				return;
 			}
 			var secs:Number = beatsToSeconds(argList[0]);
-			thread.suspend();
-			setTimeout(thread.resume, secs * 1000);
+			FunctionProviderHelper.onSleep(thread, [secs]);
 		}
 		
 		static private function playDrumImpl(thread:Thread, argList:Array, isMidi:Boolean):void
 		{
-			var obj:ScratchObj = thread.userData;
+			var obj:ScratchObj = ThreadUserData.getScratchObj(thread);
 			if(null == obj){
 				return;
 			}
 			var drum:int = Math.round(argList[0]);
 			var secs:Number = beatsToSeconds(argList[1]);
 			_playDrum(drum, isMidi, 10, obj); // always play entire drum sample
-			thread.suspend();
-			setTimeout(thread.resume, secs * 1000);
+			FunctionProviderHelper.onSleep(thread, [secs]);
 		}
 		
 		static private function _playSound(s:ScratchSound, client:ScratchObj, callback:Function=null):ScratchSoundPlayer

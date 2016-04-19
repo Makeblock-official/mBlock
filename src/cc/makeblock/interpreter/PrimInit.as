@@ -237,7 +237,7 @@ package cc.makeblock.interpreter
 		
 		static private function doGetVar(thread:Thread, argList:Array):void
 		{
-			var target:ScratchObj = thread.userData;
+			var target:ScratchObj = ThreadUserData.getScratchObj(thread);
 			var v:Variable = target.varCache[argList[0]];
 			if(v != null){
 				// XXX: Do we need a get() for persistent variables here ?
@@ -250,7 +250,7 @@ package cc.makeblock.interpreter
 		
 		static private function doSetVar(thread:Thread, argList:Array):void
 		{
-			var target:ScratchObj = thread.userData;
+			var target:ScratchObj = ThreadUserData.getScratchObj(thread);
 			var v:Variable = target.varCache[argList[0]];
 			if (!v) {
 				v = target.varCache[argList[0]] = target.lookupOrCreateVar(argList[0]);
@@ -263,7 +263,7 @@ package cc.makeblock.interpreter
 		
 		static private function increaseVar(thread:Thread, argList:Array):void
 		{
-			var target:ScratchObj = thread.userData;
+			var target:ScratchObj = ThreadUserData.getScratchObj(thread);
 			var v:Variable = target.varCache[argList[0]];
 			if (!v) {
 				v = target.varCache[argList[0]] = target.lookupOrCreateVar(argList[0]);
