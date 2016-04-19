@@ -1098,6 +1098,8 @@ void updateVar(char * varName,double * var)
 			}
 			if(DeviceManager.sharedManager().currentName == "Me Auriga" && ccode_inc.indexOf("void isr_process_encoder1(void)") < 0){
 				ccode_inc += <![CDATA[
+#include <MeAuriga.h>
+
 MeEncoderOnBoard Encoder_1(SLOT1);
 MeEncoderOnBoard Encoder_2(SLOT2);
 
@@ -1141,13 +1143,13 @@ void move(int direction, int speed)
   }
   else if(direction == 3)
   {
-    leftSpeed = speed;
-    rightSpeed = speed;
+    leftSpeed = -speed;
+    rightSpeed = -speed;
   }
   else if(direction == 4)
   {
-    leftSpeed = -speed;
-    rightSpeed = -speed;
+    leftSpeed = speed;
+    rightSpeed = speed;
   }
   Encoder_1.setMotorPwm(leftSpeed);
   Encoder_2.setMotorPwm(rightSpeed);
