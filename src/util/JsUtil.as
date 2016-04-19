@@ -31,6 +31,7 @@ package util
 			ExternalInterface.addCallback("onReadyToRun", __onReadyToRun);
 			ExternalInterface.addCallback("setRobotName", __setRobotName);
 			ExternalInterface.addCallback("getRobotName", __getRobotName);
+			ExternalInterface.addCallback("setUnmodified", __setUnmodified);
 		}
 		
 		static public function Call(method:String, args:Array):*
@@ -155,6 +156,11 @@ package util
 					return "Me Auriga";
 			}
 			return "TestRobotName";
+		}
+		
+		static private function __setUnmodified():void
+		{
+			MBlock.app.saveNeeded = false;
 		}
 	}
 }
