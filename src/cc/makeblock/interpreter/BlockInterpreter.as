@@ -16,6 +16,8 @@ package cc.makeblock.interpreter
 		private var converter:BlockJsonPrinter;
 		private var realInterpreter:Interpreter;
 		
+		private var waitList:Array = [];
+		
 		public function BlockInterpreter()
 		{
 			Thread.EXEC_TIME = 25;
@@ -23,10 +25,24 @@ package cc.makeblock.interpreter
 			converter = new BlockJsonPrinter();
 		}
 		
-		public function execute(block:Block, targetObj:ScratchObj):Thread
+		public function onReadyToRun():void
 		{
 			if(!JsUtil.readyToRun()){
-				return new Thread([]);
+				return;
+			}
+			while(waitList.length > 0){
+				execute.apply(null, waitList.shift());
+			}
+		}
+		
+		public function execute(block:Block, targetObj:ScratchObj):Thread
+		{
+			var thread:Thread;
+			if(!JsUtil.readyToRun()){
+				waitList.push(arguments);
+				thread = realInterpreter.executeAssembly([]);
+				thread.userData = new ThreadUserData(targetObj, block);
+				return thread;
 			}
 			
 			var funcList:Array = targetObj.procedureDefinitions();
@@ -41,7 +57,7 @@ package cc.makeblock.interpreter
 //			var codeList:Array = realInterpreter.compile(blockList);
 //			trace(realInterpreter.castCodeListToString(codeList));
 //			trace("end==================");
-			var thread:Thread = realInterpreter.execute(blockList);
+			thread = realInterpreter.execute(blockList);
 			thread.userData = new ThreadUserData(targetObj, block);
 			return thread;
 		}

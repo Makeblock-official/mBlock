@@ -9,6 +9,7 @@ package util
 	
 	import by.blooddy.crypto.Base64;
 	
+	import cc.makeblock.interpreter.BlockInterpreter;
 	import cc.makeblock.interpreter.RemoteCallMgr;
 	
 	import extensions.DeviceManager;
@@ -131,6 +132,7 @@ package util
 		static private function __onReadyToRun():void
 		{
 			trace("__onReadyToRun");
+			BlockInterpreter.Instance.onReadyToRun();
 		}
 		
 		static private function __setRobotName(value:String):void
