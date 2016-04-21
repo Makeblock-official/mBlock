@@ -251,8 +251,9 @@ public class ScriptsPart extends UIPart {
 		appendRawMessage(msg+"\n");
 	}
 	public function appendRawMessage(msg:String):void{
-		messageTextPane.textField.appendText(msg);
-		messageTextPane.textField.scrollV = messageTextPane.textField.maxScrollV-1;
+		var tf:TextField = messageTextPane.textField;
+		tf.appendText(msg);
+		tf.scrollV = tf.maxScrollV - (tf.bottomScrollV - tf.scrollV);
 	}
 	
 	public function onSerialSend(bytes:ByteArray):void
