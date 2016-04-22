@@ -110,14 +110,14 @@ package util
 			trace("__exportProject");
 		}
 		
-		static private function __saveLocalCopy():void
+		static private function __saveLocalCopy(key:Object):void
 		{
 			trace("__saveLocalCopy");
 //			MBlock.app.exportProjectToFile();
 			function squeakSoundsConverted(projIO:ProjectIO):void {
 				var zipData:ByteArray = projIO.encodeProjectAsZipFile(MBlock.app.stagePane);
 				var base64Str:String = Base64.encode(zipData);
-				Call("saveLocalCopy", [base64Str]);
+				Call("saveLocalCopy", [key, base64Str]);
 			}
 			var projIO:ProjectIO = new ProjectIO(MBlock.app);
 			projIO.convertSqueakSounds(MBlock.app.stagePane, squeakSoundsConverted);
