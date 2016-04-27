@@ -67,7 +67,7 @@
 		["R", "ultrasonic sensor %d.whitePorts distance","getUltrasonic","Port10",
 		{"encode":"{d0}","setup":"","inc":"","def":"MeUltrasonicSensor ultrasonic_{0}({0});\n","work":"ultrasonic_{0}.distanceCm()","loop":""}],
 		
-		["R", "line follower %d.normalPort","getLinefollower","Port9",
+		["R", "line follower %d.bluePorts","getLinefollower","Port9",
 		{"encode":"{d0}","setup":"","inc":"","def":"MePort linefollower_{0}({0});\n","work":"linefollower_{0}.dRead1()*2+linefollower_{0}.dRead2()","loop":""}],
 		
 		["R", "light sensor %d.laport","getLightsensor","on board 1",
