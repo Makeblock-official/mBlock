@@ -29,8 +29,10 @@ package ui.parts {
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.html.HTMLLoader;
+	import flash.net.URLRequest;
+	import flash.system.ApplicationDomain;
 	import flash.text.TextField;
-	import flash.text.TextFieldType;
 	import flash.text.TextFormat;
 	import flash.utils.ByteArray;
 	import flash.utils.getTimer;
@@ -58,25 +60,21 @@ package ui.parts {
 	import uiwidgets.IndicatorLight;
 	import uiwidgets.ScriptsPane;
 	import uiwidgets.ScrollFrame;
-	import uiwidgets.TextPane;
 	import uiwidgets.ZoomWidget;
 	
 	import util.JSON;
 
 public class ScriptsPart extends UIPart {
-
+	private var htmlLoader:HTMLLoader;
+	
 	private var shape:Shape;
 	public var selector:PaletteSelector;
 	private var spriteWatermark:Bitmap;
 	private var paletteFrame:ScrollFrame;
 	private var scriptsFrame:ScrollFrame;
 	private var arduinoFrame:ScrollFrame;
-	private var arduinoTextPane:TextPane;
-	private var messageTextPane:TextPane;
-	private var lineNumText:TextField;
 	private var zoomWidget:ZoomWidget;
 
-	private var lineNumWidth:uint = 20;
 	private const readoutLabelFormat:TextFormat = new TextFormat(CSS.font, 12, CSS.textColor, true);
 	private const readoutFormat:TextFormat = new TextFormat(CSS.font, 12, CSS.textColor);
 
@@ -90,14 +88,16 @@ public class ScriptsPart extends UIPart {
 	private var backBt:Button = new Button(Translator.map("Back"));
 	private var uploadBt:Button = new Button(Translator.map("Upload to Arduino"));
 	private var openBt:Button = new Button(Translator.map("Open with Arduino IDE"));
-	private var sendBt:Button = new Button(Translator.map("Send"));
-	private var sendTextPane:TextPane;
+//	private var sendBt:Button = new Button(Translator.map("Send"));
+//	private var sendTextPane:TextPane;
+//	
+//	private var isByteDisplayMode:Boolean = true;
+//	private var displayModeBtn:Button = new Button(Translator.map("binary mode"));
 	
-	private var isByteDisplayMode:Boolean = true;
-	private var displayModeBtn:Button = new Button(Translator.map("binary mode"));
+//	private var isByteInputMode:Boolean = false;
+//	private var inputModeBtn:Button = new Button(Translator.map("char mode"));
 	
-	private var isByteInputMode:Boolean = false;
-	private var inputModeBtn:Button = new Button(Translator.map("char mode"));
+	private var arduinoCodeText:String = "";
 	
 	public function ScriptsPart(app:MBlock) {
 		this.app = app;
@@ -127,20 +127,10 @@ public class ScriptsPart extends UIPart {
 		arduinoFrame = new ScrollFrame(false);
 		arduinoFrame.visible = false;
 		
-		arduinoTextPane = new TextPane();
 //		arduinoTextPane.type = TextFieldType.INPUT;
 		var ft:TextFormat = new TextFormat("Arial",14,0x00325a);
 		ft.blockIndent = 5;
-		arduinoTextPane.textField.defaultTextFormat = ft;
-		arduinoTextPane.textField.background = true;
-		arduinoTextPane.textField.backgroundColor = 0xfcfcfc;
-		arduinoTextPane.textField.type = TextFieldType.DYNAMIC;
-		
-		messageTextPane = new TextPane;
-		messageTextPane.textField.defaultTextFormat = ft;
-		messageTextPane.textField.background = true;
-		messageTextPane.textField.backgroundColor = 0xc8c8c8;
-		
+		/*
 		sendTextPane = new TextPane();
 		sendTextPane.textField.defaultTextFormat = ft;
 		sendTextPane.textField.background = true;
@@ -148,11 +138,7 @@ public class ScriptsPart extends UIPart {
 		sendTextPane.textField.type = TextFieldType.INPUT;
 		sendTextPane.textField.multiline = false;
 		sendTextPane.scrollbar.visible = false;
-		
-		lineNumText = new TextField;
-		lineNumText.defaultTextFormat = new TextFormat("Arial",14,0x8a8a8a);
-		lineNumText.selectable = false;
-		arduinoTextPane.textField.addEventListener(Event.SCROLL,onScroll);
+		*/
 		backBt.x = 10;
 		backBt.y = 10;
 		backBt.addEventListener(MouseEvent.CLICK,onHideArduino);
@@ -165,23 +151,28 @@ public class ScriptsPart extends UIPart {
 		openBt.y = 10;
 		openBt.addEventListener(MouseEvent.CLICK,onOpenArduinoIDE);
 		
-		sendBt.addEventListener(MouseEvent.CLICK,onSendSerial);
-		displayModeBtn.addEventListener(MouseEvent.CLICK,onDisplayModeChange);
-		inputModeBtn.addEventListener(MouseEvent.CLICK,onInputModeChange);
+//		sendBt.addEventListener(MouseEvent.CLICK,onSendSerial);
+//		displayModeBtn.addEventListener(MouseEvent.CLICK,onDisplayModeChange);
+//		inputModeBtn.addEventListener(MouseEvent.CLICK,onInputModeChange);
 		
 		arduinoFrame.addChild(openBt);
-		arduinoFrame.addChild(arduinoTextPane);
-		arduinoFrame.addChild(messageTextPane);
-		arduinoFrame.addChild(lineNumText);
-		arduinoFrame.addChild(sendTextPane);
-		arduinoFrame.addChild(sendBt);
-		arduinoFrame.addChild(displayModeBtn);
-		arduinoFrame.addChild(inputModeBtn);
+//		arduinoFrame.addChild(sendTextPane);
+//		arduinoFrame.addChild(sendBt);
+//		arduinoFrame.addChild(displayModeBtn);
+//		arduinoFrame.addChild(inputModeBtn);
 		addChild(arduinoFrame);
 		
 		paletteFrame.addEventListener(MouseEvent.ROLL_OVER, __onMouseOver);
 		paletteFrame.addEventListener(MouseEvent.ROLL_OUT, __onMouseOut);
 		paletteIndex = getChildIndex(paletteFrame);
+		
+		htmlLoader = new HTMLLoader();
+		htmlLoader.placeLoadStringContentInApplicationSandbox = true;
+		htmlLoader.runtimeApplicationDomain = ApplicationDomain.currentDomain;
+		htmlLoader.window.trace = trace;
+		htmlLoader.window.onSendSerial = onSendSerial;
+		htmlLoader.load(new URLRequest("assets/html/index.html"));
+		addChild(htmlLoader);
 	}
 	
 	private var paletteIndex:int;
@@ -211,17 +202,17 @@ public class ScriptsPart extends UIPart {
 		paletteFrame.hideRightPart();
 		setChildIndex(paletteFrame, paletteIndex);
 	}
-	
+	/*
 	private function onInputModeChange(evt:MouseEvent):void
 	{
 		var str:String = sendTextPane.textField.text;
-		isByteInputMode = !isByteInputMode;
+//		isByteInputMode = !isByteInputMode;
 		if(isByteInputMode){
 			sendTextPane.textField.restrict = "0-9 a-fA-F";
-			inputModeBtn.setLabel(Translator.map("binary mode"));
+//			inputModeBtn.setLabel(Translator.map("binary mode"));
 		}else{
 			sendTextPane.textField.restrict = null;
-			inputModeBtn.setLabel(Translator.map("char mode"));
+//			inputModeBtn.setLabel(Translator.map("char mode"));
 		}
 		if(str.length <= 0){
 			return;
@@ -247,21 +238,17 @@ public class ScriptsPart extends UIPart {
 			displayModeBtn.setLabel(Translator.map("char mode"));
 		}
 	}
+	*/
 	public function appendMessage(msg:String):void{
 		appendRawMessage(msg+"\n");
 	}
 	public function appendRawMessage(msg:String):void{
-		var tf:TextField = messageTextPane.textField;
-		tf.appendText(msg);
-		tf.scrollV = tf.maxScrollV - (tf.bottomScrollV - tf.scrollV);
+		htmlLoader.window.appendInfo(msg);
 	}
 	
 	public function onSerialSend(bytes:ByteArray):void
 	{
-		if(!MBlock.app.stageIsArduino){
-			return;
-		}
-		if(isByteDisplayMode){
+		if(htmlLoader.window.isRecvBinaryMode()){
 			appendMsgWithTimestamp(HexUtil.bytesToString(bytes), true);
 		}else{
 			bytes.position = 0;
@@ -272,13 +259,35 @@ public class ScriptsPart extends UIPart {
 	
 	public function appendMsgWithTimestamp(msg:String, isOut:Boolean):void
 	{
-		var date:Date = new Date();
 		var sendType:String = isOut ? " > " : " < ";
-		msg = (date.month+1) + "-" + date.date + " " + date.hours + ":" + date.minutes + ":" + date.seconds + "." +date.milliseconds + sendType + msg;
-		appendMessage(msg);
+		appendMessage(formatTime() + sendType + msg);
 	}
+	
+	static private function formatTime():String
+	{
+		var date:Date = new Date();
+		return formatStr(date.hours.toString()  , 2) + ":"
+			 + formatStr(date.minutes.toString(), 2) + ":"
+			 + formatStr(date.seconds.toString(), 2) + "."
+			 + formatStr(date.milliseconds.toString(), 3);
+	}
+	
+	static private function formatStr(str:String, len:int):String
+	{
+		while(str.length < len){
+			str = "0" + str;
+		}
+		return str;
+	}
+	
 	public function onSerialDataReceived(bytes:ByteArray):void{
-		appendMsgWithTimestamp(HexUtil.bytesToString(bytes), false);
+		if(htmlLoader.window.isRecvBinaryMode()){
+			appendMsgWithTimestamp(HexUtil.bytesToString(bytes), false);
+		}else{
+			bytes.position = 0;
+			var str:String = bytes.readUTFBytes(bytes.length);
+			appendMsgWithTimestamp(str, false);
+		}
 		/*
 		return;
 		var date:Date = new Date;
@@ -289,11 +298,10 @@ public class ScriptsPart extends UIPart {
 		appendMessage(""+(date.month+1)+"-"+date.date+" "+date.hours+":"+date.minutes+":"+(date.seconds+date.milliseconds/1000)+" < "+SerialManager.sharedManager().asciiString.split("\r\n").join("")+"\n");
 		*/
 	}
-	private function onSendSerial(evt:MouseEvent):void{
+	private function onSendSerial(str:String):void{
 		if(!SerialDevice.sharedDevice().connected){
 			return;
 		}
-		var str:String = sendTextPane.textField.text;
 		if(str.length <= 0){
 			return;
 		}
@@ -317,9 +325,9 @@ public class ScriptsPart extends UIPart {
 	private function onCompileArduino(evt:MouseEvent):void{
 		if(SerialManager.sharedManager().isConnected){
 			if(ArduinoManager.sharedManager().isUploading==false){
-				messageTextPane.clear();
+				htmlLoader.window.clearInfo();
 				if(showArduinoCode()){
-					messageTextPane.append(ArduinoManager.sharedManager().buildAll(arduinoTextPane.textField.text));
+					htmlLoader.window.appendInfo(ArduinoManager.sharedManager().buildAll(arduinoCodeText));
 				}
 			}
 		}else{
@@ -338,11 +346,8 @@ public class ScriptsPart extends UIPart {
 	}
 	private function onOpenArduinoIDE(evt:MouseEvent):void{
 		if(showArduinoCode()){
-			ArduinoManager.sharedManager().openArduinoIDE(arduinoTextPane.textField.text);
+			ArduinoManager.sharedManager().openArduinoIDE(arduinoCodeText);
 		}
-	}
-	private function onScroll(evt:Event):void{
-		lineNumText.scrollV = arduinoTextPane.textField.scrollV;
 	}
 	
 	static private const classNameList:Array = [
@@ -382,26 +387,20 @@ public class ScriptsPart extends UIPart {
 		for(var i:uint=0;i<5;i++){
 			formatCode = formatCode.split("\r\n\r\n").join("\r\n").split("\r\n\t\r\n").join("\r\n");
 		}
+		/*
 		var codes:Array = formatCode.split("\n");
-		arduinoTextPane.setText(formatCode);
 		var fontGreen:TextFormat = new TextFormat("Arial",14,0x006633);
 		var fontYellow:TextFormat = new TextFormat("Arial",14,0x999900);
 		var fontOrange:TextFormat = new TextFormat("Arial",14,0x996600);
 		var fontRed:TextFormat = new TextFormat("Arial",14,0x990000);
 		var fontBlue:TextFormat = new TextFormat("Arial",14,0x000099);
-		formatKeyword(arduinoTextPane.textField,"String ",fontRed,0,1);
-		formatKeyword(arduinoTextPane.textField,"int ",fontRed,0,1);
-		formatKeyword(arduinoTextPane.textField,"char ",fontRed,0,1);
-		formatKeyword(arduinoTextPane.textField,"double ",fontRed,0,1); 
-		formatKeyword(arduinoTextPane.textField,"boolean ",fontRed,0,1);
-		formatKeyword(arduinoTextPane.textField,"false",fontRed,0,0);
-		formatKeyword(arduinoTextPane.textField,"true",fontRed,0,0);
-		formatKeyword(arduinoTextPane.textField,"void ",fontOrange,0,1);
-		formatKeyword(arduinoTextPane.textField,"for(",fontOrange,0,1);
-		formatKeyword(arduinoTextPane.textField,"if(",fontOrange,0,1);
-		formatKeyword(arduinoTextPane.textField,"else{",fontOrange,0,1);
-		formatKeyword(arduinoTextPane.textField,"while(",fontOrange,0,1);
-		formatKeyword(arduinoTextPane.textField,"#include ",fontRed,0,1);
+		*/
+		arduinoCodeText = formatCode;
+		/*
+		formatKeyword(/(setup|loop)(?=\(\))/g, fontOrange);
+		formatKeyword(/for|if|else|while/g, fontOrange);
+		formatKeyword(/(?=^|\s)(void|String|int|char|double|boolean|true|false|#include)(?= )/gm, fontRed);
+		formatKeyword(/(PORT|SLOT)_\d/g, fontOrange);
 		
 		formatKeyword(arduinoTextPane.textField," setup()",fontRed,1,2);
 		formatKeyword(arduinoTextPane.textField," loop()",fontRed,1,2);
@@ -429,18 +428,6 @@ public class ScriptsPart extends UIPart {
 		formatKeyword(arduinoTextPane.textField,".dWrite2(",fontOrange,1,1);
 		formatKeyword(arduinoTextPane.textField,".dRead1(",fontOrange,1,1);
 		formatKeyword(arduinoTextPane.textField,".dRead2(",fontOrange,1,1);
-		formatKeyword(arduinoTextPane.textField,"(M1)",fontOrange,1,1);
-		formatKeyword(arduinoTextPane.textField,"(M2)",fontOrange,1,1);
-		formatKeyword(arduinoTextPane.textField,"SLOT_1",fontOrange,0,0);
-		formatKeyword(arduinoTextPane.textField,"SLOT_2",fontOrange,0,0);
-		formatKeyword(arduinoTextPane.textField,"PORT_1",fontOrange,0,0);
-		formatKeyword(arduinoTextPane.textField,"PORT_2",fontOrange,0,0);
-		formatKeyword(arduinoTextPane.textField,"PORT_3",fontOrange,0,0);
-		formatKeyword(arduinoTextPane.textField,"PORT_4",fontOrange,0,0);
-		formatKeyword(arduinoTextPane.textField,"PORT_5",fontOrange,0,0);
-		formatKeyword(arduinoTextPane.textField,"PORT_6",fontOrange,0,0);
-		formatKeyword(arduinoTextPane.textField,"PORT_7",fontOrange,0,0);
-		formatKeyword(arduinoTextPane.textField,"PORT_8",fontOrange,0,0);
 		formatKeyword(arduinoTextPane.textField,"delay(",fontRed,0,1);
 		formatKeyword(arduinoTextPane.textField,"OUTPUT)",fontOrange,0,1);
 		formatKeyword(arduinoTextPane.textField,"INPUT)",fontOrange,0,1);
@@ -460,22 +447,11 @@ public class ScriptsPart extends UIPart {
 		for each(var clsName:String in classNameList){
 			formatKeyword(arduinoTextPane.textField, clsName, fontGreen, 0, 0);
 		}
+		*/
 		
+		htmlLoader.window.setCode(arduinoCodeText);
 		
-		lineNumText.text = "";
-		var preS:String = "";
-		var t:Number = arduinoTextPane.textField.numLines;
-		var tt:uint = 0;
-		while(t>1){
-			t/=10;
-			preS+="0";
-			tt++;
-		}
-		lineNumWidth = tt*10;
 		fixlayout();
-		for(i = 0;i<arduinoTextPane.textField.numLines;i++){
-			lineNumText.appendText((preS+(i+1)).substr(-tt,tt)+".\n");
-		}
 		if(ArduinoManager.sharedManager().hasUnknownCode){
 			if(!isDialogBoxShowing){
 				isDialogBoxShowing = true;
@@ -501,22 +477,14 @@ public class ScriptsPart extends UIPart {
 		}else{
 			arduinoFrame.visible = true;
 		}
+		htmlLoader.visible = arduinoFrame.visible;
 		return true;
 	}
 	static private var isDialogBoxShowing:Boolean;
-	private function formatKeyword(txt:TextField,word:String,format:TextFormat,subStart:uint=0,subEnd:uint=0):void
-	{
-		var index:int = 0;
-		var msg:String = txt.text;
-		for(;;){
-			index = msg.indexOf(word, index);
-			if(index < 0){
-				break;
-			}
-			txt.setTextFormat(format, index + subStart, index + word.length - subEnd);
-			index += word.length;
-		}
-	}
+//	private function formatKeyword(pattern:RegExp,format:TextFormat,subStart:uint=0,subEnd:uint=0):void
+//	{
+//		arduinoCodeText = arduinoCodeText.replace(pattern, '<font color="#' + format.color.toString(16) + '">$&</font>');
+//	}
 	public function resetCategory():void { selector.select(Specs.motionCategory) }
 
 	public function updatePalette():void {
@@ -532,9 +500,16 @@ public class ScriptsPart extends UIPart {
 		backBt.setLabel(Translator.map("Back"));
 		uploadBt.setLabel(Translator.map("Upload to Arduino"));
 		openBt.setLabel(Translator.map("Edit with Arduino IDE"));
-		sendBt.setLabel(Translator.map("Send"));
-		displayModeBtn.setLabel(Translator.map(isByteDisplayMode ? "binary mode" :  "char mode"));
-		inputModeBtn.setLabel(Translator.map(isByteInputMode ? "binary mode" :  "char mode"));
+		if(htmlLoader.loaded){
+			htmlLoader.window.updateTranslation();
+		}
+//		sendBt.setLabel(Translator.map("Send"));
+//		displayModeBtn.setLabel(Translator.map(isByteDisplayMode ? "binary mode" :  "char mode"));
+//		inputModeBtn.setLabel(Translator.map(isByteInputMode ? "binary mode" :  "char mode"));
+	}
+	private function get isByteInputMode():Boolean
+	{
+		return htmlLoader.window.isSendBinaryMode();
 	}
 	public function updateSpriteWatermark():void {
 		var target:ScratchObj = app.viewedObj();
@@ -597,31 +572,31 @@ public class ScriptsPart extends UIPart {
 		var arduinoHeight:uint = h - 10;
 		arduinoFrame.visible = app.stageIsArduino;
 		scriptsFrame.setWidthHeight(w - scriptsFrame.x - 15-arduinoWidth, h - scriptsFrame.y - 5);//代码区
-		arduinoFrame.x = scriptsFrame.x+ (w - scriptsFrame.x - 15-arduinoWidth)+10;
+		arduinoFrame.x = scriptsFrame.x+ (w - scriptsFrame.x - 15-arduinoWidth)+8;
 		arduinoFrame.y = scriptsFrame.y;
 		arduinoFrame.setWidthHeight(arduinoWidth, arduinoHeight);
-		lineNumText.x = 4;
-		lineNumText.y = 45;
-		lineNumText.width = lineNumWidth;
-		lineNumText.height = arduinoHeight-255;
-		arduinoTextPane.setWidthHeight(arduinoWidth-lineNumWidth-lineNumText.x-5,arduinoHeight-255);
-		arduinoTextPane.x = lineNumText.x+lineNumText.width+5;
-		arduinoTextPane.y = 45;
-		messageTextPane.x = lineNumText.x;
-		messageTextPane.y = arduinoHeight-200;
-		messageTextPane.setWidthHeight(arduinoWidth-messageTextPane.x,155);
+		htmlLoader.visible = arduinoFrame.visible;
+		htmlLoader.x = arduinoFrame.x;
+		htmlLoader.y = arduinoFrame.y + 40;
+		htmlLoader.width = arduinoWidth;
+		htmlLoader.height = arduinoHeight - 40;
+//		arduinoTextPane.setWidthHeight(arduinoWidth-lineNumWidth-lineNumText.x-5,arduinoHeight-255);
+//		arduinoTextPane.x = lineNumText.x+lineNumText.width+5;
+//		arduinoTextPane.y = 45;
+//		messageTextPane.x = 4;
+//		messageTextPane.y = arduinoHeight-200;
+//		messageTextPane.setWidthHeight(arduinoWidth-messageTextPane.x,155);
 		openBt.x = arduinoWidth - openBt.width - 10;
-		sendTextPane.x = 8 + displayModeBtn.width;
-		sendTextPane.y = arduinoHeight - 33;
-		sendTextPane.setWidthHeight(arduinoWidth-sendBt.width-sendTextPane.x-10,20);
-		sendBt.x = arduinoWidth - sendBt.width - 10;
-		sendBt.y = arduinoHeight - 35;
-		displayModeBtn.x = messageTextPane.x + messageTextPane.width - displayModeBtn.width;
-		displayModeBtn.y = messageTextPane.y;
-		inputModeBtn.x = lineNumText.x;
-		inputModeBtn.y = sendBt.y;
-		arduinoTextPane.updateScrollbar(null);
-		messageTextPane.updateScrollbar(null);
+//		sendTextPane.x = 8 + 200;
+//		sendTextPane.y = arduinoHeight - 33;
+//		sendTextPane.setWidthHeight(arduinoWidth-sendBt.width-sendTextPane.x-10,20);
+//		sendBt.x = arduinoWidth - sendBt.width - 10;
+//		sendBt.y = arduinoHeight - 35;
+//		displayModeBtn.x = htmlLoader.width - displayModeBtn.width;
+//		displayModeBtn.y = htmlLoader.height - 200;
+//		inputModeBtn.x = 4;
+//		inputModeBtn.y = sendBt.y;
+//		messageTextPane.updateScrollbar(null);
 		spriteWatermark.x = w - arduinoWidth - 60;
 		spriteWatermark.y = scriptsFrame.y + 10;
 		xyDisplay.x = spriteWatermark.x + 1;

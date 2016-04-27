@@ -72,7 +72,7 @@ package extensions
 		private var avrPath:String = "";
 		private var arduinoLibPath:String = "";
 		private var projectPath:String = "";
-		private var _currentDevice:String;
+//		private var _currentDevice:String;
 		private var _extSrcPath:String = "";
 		private var leoPortMap:Array=[[null,null],["11","A8"],["13","A11"],["10","9"],["1","0"],["MISO","SCK"],["A0","A1"],["A2","A3"],["A4","A5"],["6","7"],["5","4"]]
 		private var portEnum:Object = {"Port1":1,"Port2":2,"Port3":3,"Port4":4,"Port5":5,"Port6":6,"Port7":7,"Port8":8,"M1":9,"M2":10}
@@ -1277,7 +1277,7 @@ void move(int direction, int speed)
 		private var numOfSuccess:uint = 0;
 		private var _projectDocumentName:String = "";
 		private function prepareProjectDir(ccode:String):void{
-			_currentDevice = DeviceManager.sharedManager().currentDevice;
+//			_currentDevice = DeviceManager.sharedManager().currentDevice;
 			
 			var cppList:Array =  requiredCpp;
 			// get building direcotry ready
@@ -1402,7 +1402,7 @@ void move(int direction, int speed)
 				return "Arduino IDE not found.";
 			}
 			*/
-			_currentDevice = DeviceManager.sharedManager().currentDevice;
+//			_currentDevice = DeviceManager.sharedManager().currentDevice;
 			// get building direcotry ready
 			var workdir:File = File.applicationStorageDirectory.resolvePath("scratchTemp")
 			if(!workdir.exists){

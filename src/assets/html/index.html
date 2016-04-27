@@ -1,0 +1,163 @@
+<html>
+<head>
+<style type="text/css">
+body {
+	font-size:14px;
+}
+#top_view {
+	overflow:auto;
+	position:absolute;
+	width:100%;
+	top:0px;
+	bottom:290px;
+}
+#bottom_view {
+	background-color:#c8c8c8;
+	position:absolute;
+	width:100%;
+	height:290px;
+	bottom:0px;
+}
+</style>
+<script type="text/javascript">
+function _replace(input, index){
+	switch(input){
+		case "<": return "&lt;";
+		case ">": return "&gt;";
+		case "&": return "&amp;";
+	}
+	return null;
+}
+function escapeHtmlChar(input){
+	return input.replace(/[<>&]/g, _replace);
+}
+function renderColor(code){
+	code = replaceColor(code, /(setup|loop)(?=\(\))/g, 0x996600);
+	code = replaceColor(code, /for|if|else|while/g, 0x996600);
+	code = replaceColor(code, /(?=^|\s)(void|String|int|char|double|boolean|true|false|#include)(?= )/gm, 0x990000);
+	code = replaceColor(code, /(PORT|SLOT)_\d/g, 0x996600);
+	return code;
+}
+function replaceColor(code, pattern, color){
+	return code.replace(pattern, '<font color="#' + color.toString(16) + '">$&</font>');
+}
+function setCode(code){
+	code = escapeHtmlChar(code);
+	code = renderColor(code.replace(/^\s+|\s+$/g, ""));
+	document.getElementById("code_view").innerHTML = "<pre>" + code + "</pre>";
+	var lineList = code.split("\n");
+	var lineCount = lineList.length;
+	var lineText = "";
+	for(var i=0; i<lineCount; ++i){
+		lineText += (i + 1) + "\n";
+	}
+	document.getElementById("line_number").innerHTML = "<pre>" + lineText + "</pre>";
+}
+var contentText = "";
+function appendInfo(info){
+	contentText += info;
+	var div = document.getElementById("content");
+	div.innerHTML = "<pre>" + escapeHtmlChar(contentText) + "</pre>";
+	div.scrollTop = div.scrollHeight;
+}
+function clearInfo(){
+	contentText = "";
+	document.getElementById("content").innerHTML = "";
+}
+function isSendBinaryMode(){
+	return document.getElementById("send_binary").checked;
+}
+function isRecvBinaryMode(){
+	return document.getElementById("recv_binary").checked;
+}
+function onSendEncodeTypeChange(){
+	var ByteArray = runtime.flash.utils.ByteArray;
+	var HexUtil = runtime.cc.makeblock.util.HexUtil;
+	var text = input_data.value;
+	
+	if(text.length <= 0){
+		return;
+	}
+	if(isSendBinaryMode()){
+		var ba = new ByteArray();
+		ba.writeUTFBytes(text);
+		input_data.value = HexUtil.bytesToString(ba);
+	}else{
+		var ba = HexUtil.stringToBytes(text);
+		input_data.value = ba.readUTFBytes(ba.length);
+	}
+}
+function checkInput(){
+	if(!isSendBinaryMode()){
+		return;
+	}
+	var oldStr = input_data.value;
+	var newStr = oldStr.replace(/[^\s0-9a-fA-F]|/g, "");
+	if(newStr != oldStr){
+		input_data.value = newStr;
+	}
+}
+function updateTranslation(){
+	var Translator = runtime.translation.Translator;
+	var list = document.getElementsByTagName("input");
+	for(var i=0; i<list.length; ++i){
+		var element = list[i];
+		if(element.type == "button"){
+			element.value = Translator.map(element.name);
+		}
+	}
+	var list = document.getElementsByTagName("label");
+	for(var i=0; i<list.length; ++i){
+		var element = list[i];
+		element.innerText = Translator.map(element.getAttribute("name"));
+	}
+	var list = document.getElementsByTagName("legend");
+	for(var i=0; i<list.length; ++i){
+		var element = list[i];
+		element.innerText = Translator.map(element.getAttribute("name"));
+	}
+}
+</script>
+</head>
+<body onload="updateTranslation()">
+<div id="top_view">
+	<table>
+		<tr>
+			<td vAlign="top" align="right">
+				<div id="line_number" style="background:#ecf0f5;"></div>
+			</td>
+			<td vAlign="top">
+				<div id="code_view"></div>
+			</td>
+		</tr>
+	</table>
+</div>
+<div id="bottom_view">
+	<div id="content" style="overflow:auto;height:200px;"></div>
+	<table style="width:100%;font-size:12px;">
+		<tr><td>
+		<fieldset><legend name="send encode mode">send encode mode</legend>
+			<input type="radio" name="send" id="send_binary" onchange="onSendEncodeTypeChange()" />
+			<label for="send_binary" name="binary mode">binary</label>
+			<input type="radio" name="send" id="send_text" checked="checked" onchange="onSendEncodeTypeChange()" />
+			<label for="send_text" name="char mode">text</label>
+		</fieldset>
+		</td><td>
+		<fieldset><legend name="recv encode mode">recv encode mode</legend>
+			<input type="radio" name="recv" id="recv_binary" checked="checked" />
+			<label for="recv_binary" name="binary mode">binary</label>
+			<input type="radio" name="recv" id="recv_text" />
+			<label for="recv_text" name="char mode">text</label>
+		</fieldset>
+		</td></tr>
+	</table>
+	<table style="width:100%;font-size:14px;">
+		<tr><td width="100%">
+		<input style="width:100%;" type="text" id="input_data" onkeyup="checkInput()" />
+		</td><td>
+		<input type="button" name="Send" value="Send" onclick="onSendSerial(input_data.value);" />
+		</td></tr>
+	</table>
+</div>
+</body>
+</html>

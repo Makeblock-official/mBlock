@@ -6,10 +6,6 @@ package extensions
 	import flash.events.ProgressEvent;
 	import flash.filesystem.File;
 	
-	import cc.makeblock.mbot.util.StringUtil;
-	
-	import org.aswing.util.StringUtils;
-	
 	import translation.Translator;
 	
 	import uiwidgets.DialogBox;
@@ -47,9 +43,11 @@ package extensions
 			argList.push("--upload");
 			argList.push("--board", getBoardInfo());
 			argList.push("--port", SerialDevice.sharedDevice().port);
-//			argList.push("--verbose", "--preserve-temp-files");
+			argList.push("--verbose", "--preserve-temp-files");
 			argList.push(filePath);
-			trace("compile",argList.join(" "));
+			
+			MBlock.app.scriptsPart.appendMessage(getArduino().nativePath + " " + argList.join(" "));
+			
 			info.arguments = argList;
 			var process:NativeProcess = new NativeProcess();
 			process.addEventListener(ProgressEvent.STANDARD_OUTPUT_DATA, __onData);
@@ -80,15 +78,11 @@ package extensions
 		private function __onExit(event:NativeProcessExitEvent):void
 		{
 			ArduinoManager.sharedManager().isUploading = false;
-			var msg:String;
 			if(event.exitCode == 0){
 				_dialog.setText(Translator.map('Upload Finish'));
-				msg = "\nSuccess";
 			}else{
 				_dialog.setText(Translator.map('Upload Failed'));
-				msg = "\nBuild failed or upload failed";
 			}
-			MBlock.app.scriptsPart.appendMessage(msg);
 			SerialManager.sharedManager().reopen();
 		}
 		
@@ -103,7 +97,6 @@ package extensions
 		{
 			var process:NativeProcess = event.target as NativeProcess;
 			var info:String = process.standardError.readMultiByte(process.standardError.bytesAvailable, "gb2312");
-			info = StringUtils.trim(info);
 			MBlock.app.scriptsPart.appendRawMessage(info);
 		}
 	}

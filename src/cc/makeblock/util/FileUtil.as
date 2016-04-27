@@ -20,10 +20,18 @@ package cc.makeblock.util
 		
 		static public function ReadBytes(file:File):ByteArray
 		{
+			if(!file.exists){
+				return new ByteArray();
+			}
 			var result:ByteArray = new ByteArray();
-			fs.open(file, FileMode.READ);
-			fs.readBytes(result);
-			fs.close();
+			try{
+				fs.open(file, FileMode.READ);
+				fs.readBytes(result);
+			}catch(error:Error){
+				trace(error);
+			}finally{
+				fs.close();
+			}
 			return result;
 		}
 		

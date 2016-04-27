@@ -420,7 +420,7 @@ package extensions
 				}
 				nativeProcessStartupInfo.arguments = v;
 				process = new NativeProcess();
-//				process.addEventListener(ProgressEvent.STANDARD_OUTPUT_DATA,onStandardOutputData);
+				process.addEventListener(ProgressEvent.STANDARD_OUTPUT_DATA,onStandardOutputData);
 				process.addEventListener(ProgressEvent.STANDARD_ERROR_DATA, onErrorData);
 				process.addEventListener(NativeProcessExitEvent.EXIT, onExit);
 //				process.addEventListener(IOErrorEvent.STANDARD_OUTPUT_IO_ERROR, onIOError);
@@ -473,6 +473,11 @@ package extensions
 		*/
 		private var errorText:String;
 		private var sizeInfo:UploadSizeInfo = new UploadSizeInfo();
+		private function onStandardOutputData(event:ProgressEvent):void
+		{
+			var msg:String = process.standardError.readUTFBytes(process.standardError.bytesAvailable);
+			MBlock.app.scriptsPart.appendRawMessage(msg);
+		}
 		private function onErrorData(event:ProgressEvent):void
 		{
 			var msg:String = process.standardError.readUTFBytes(process.standardError.bytesAvailable);
@@ -481,6 +486,7 @@ package extensions
 			}else{
 				errorText += msg;
 			}
+			MBlock.app.scriptsPart.appendRawMessage(msg);
 			_dialog.setText(Translator.map('Uploading') + " ... " + sizeInfo.update(msg) + "%");
 		}
 		
