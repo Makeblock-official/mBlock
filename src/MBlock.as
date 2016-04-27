@@ -347,7 +347,7 @@ package {
 //			projectFile = file;
 		}
 	//*/
-		private function setProjectName(s:String):void {
+		public function setProjectName(s:String):void {
 			if (s.slice(-3) == '.sb') s = s.slice(0, -3);
 			if (s.slice(-4) == '.sb2') s = s.slice(0, -4);
 			stagePart.setProjectName(s);

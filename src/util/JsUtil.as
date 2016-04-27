@@ -33,6 +33,7 @@ package util
 			ExternalInterface.addCallback("setRobotName", __setRobotName);
 			ExternalInterface.addCallback("getRobotName", __getRobotName);
 			ExternalInterface.addCallback("setUnmodified", __setUnmodified);
+			ExternalInterface.addCallback("setProjectTitle", __setProjectTitle);
 		}
 		
 		static public function Call(method:String, args:Array):*
@@ -163,6 +164,11 @@ package util
 		static private function __setUnmodified():void
 		{
 			MBlock.app.saveNeeded = false;
+		}
+		
+		static private function __setProjectTitle(title:String):void
+		{
+			MBlock.app.setProjectName(title);
 		}
 	}
 }
