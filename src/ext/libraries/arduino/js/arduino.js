@@ -118,8 +118,8 @@
 	}
 	function getPackage(){
 		var nextID = arguments[0];
-		var argList = Array.prototype.slice.call(arguments, 1);
-		sendPackage(argList, 1);
+		Array.prototype.shift.call(arguments);
+		sendPackage(arguments, 1);
 	}
 
     var inputArray = [];

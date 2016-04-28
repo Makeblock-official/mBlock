@@ -393,30 +393,27 @@
 		}
 		responseValue(nextID,(new Date().getTime())/1000.0-startTimer);
 	}
-	function runPackage(){
-		var bytes = [0xff, 0x55, 0, 0, 2];
-		for(var i=0;i<arguments.length;i++){
-			if(arguments[i].constructor == "[class Array]"){
-				bytes = bytes.concat(arguments[i]);
+	function sendPackage(argList, type){
+		var bytes = [0xff, 0x55, 0, 0, type];
+		for(var i=0;i<argList.length;++i){
+			var val = argList[i];
+			if(val.constructor == "[class Array]"){
+				bytes = bytes.concat(val);
 			}else{
-				bytes.push(arguments[i]);
+				bytes.push(val);
 			}
 		}
-		bytes[2] = bytes.length-3;
+		bytes[2] = bytes.length - 3;
 		device.send(bytes);
 	}
 	
+	function runPackage(){
+		sendPackage(arguments, 2);
+	}
 	function getPackage(){
 		var nextID = arguments[0];
-		
-		var bytes = [0xff, 0x55];
-		bytes.push(arguments.length+1);
-		bytes.push(0);
-		bytes.push(1);
-		for(var i=1;i<arguments.length;i++){
-			bytes.push(arguments[i]);
-		}
-		device.send(bytes);
+		Array.prototype.shift.call(arguments);
+		sendPackage(arguments, 1);
 	}
 
     var inputArray = [];
