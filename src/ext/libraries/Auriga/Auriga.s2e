@@ -21,7 +21,7 @@
 		["w", "set encoder motor%d.exMotorPort %d.slot speed %d.encoderSpeed distance %n","runEncoderMotor", "Port1", "Slot1", 100, 1000,
 		{"encode":"{d0}{s1}{s2}","setup":"encoder_{0}_{1}.begin();\nencoder_{0}_{1}.runSpeed(0);\n","inc":"","def":"MeEncoderMotor encoder_{0}_{1}(0x09,{1});\n","work":"encoder_{0}_{1}.move({3},{2});\n","loop":""}],
 		
-		["w", "set encoder motor on board %d.slot speed %d.encoderSpeed","runEncoderMotorOnBoard", "Slot1", 100,
+		["w", "set encoder motor on board %d.slot speed %d.motorvalue","runEncoderMotorOnBoard", "Slot1", 100,
 		{"encode":"{d0}{s1}{s2}","setup":"attachInterrupt(Encoder_{0}.GetIntNum(), isr_process_encoder{0}, RISING);\n","inc":"","def":"","work":"Encoder_{0}.setMotorPwm({1});\n","loop":"Encoder_{0}.Update_speed();\n"}],
 
 		["R", "encoder motor on board %d.slot %d.encoderValue", "getEncoderValue","Slot1", "speed",
