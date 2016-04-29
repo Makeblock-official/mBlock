@@ -42,8 +42,11 @@ function replaceColor(code, pattern, color){
 	return code.replace(pattern, '<font color="#' + color.toString(16) + '">$&</font>');
 }
 function setCode(code){
+	code = code.replace(/^\s+|\s+$/g, "");
+	code = code.replace(/(\t+|\x20+)\n/g, "");
+	code = code.replace(/\n{3,}/g, "\n\n");
 	code = escapeHtmlChar(code);
-	code = renderColor(code.replace(/^\s+|\s+$/g, ""));
+	code = renderColor(code);
 	document.getElementById("code_view").innerHTML = "<pre>" + code + "</pre>";
 	var lineList = code.split("\n");
 	var lineCount = lineList.length;

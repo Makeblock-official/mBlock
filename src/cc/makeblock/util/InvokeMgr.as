@@ -29,7 +29,11 @@ package cc.makeblock.util
 		
 		private function __onDragDrop(evt:NativeDragEvent):void
 		{
-			var file:File = evt.clipboard.getData(ClipboardFormats.FILE_LIST_FORMAT)[0];
+			var fileList:Object = evt.clipboard.getData(ClipboardFormats.FILE_LIST_FORMAT);
+			if(fileList == null){
+				return;
+			}
+			var file:File = fileList[0];
 			if(file.extension != "sb2"){
 				return;
 			}
