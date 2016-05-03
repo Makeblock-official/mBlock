@@ -11,7 +11,7 @@ package extensions
 	import flash.net.InterfaceAddress;
 	import flash.net.ServerSocket;
 	import flash.net.Socket;
-	import flash.signals.Signal;
+	import blockly.signals.Signal;
 	import flash.utils.ByteArray;
 	import flash.utils.getTimer;
 	import flash.utils.setTimeout;

@@ -1,7 +1,7 @@
 package extensions
 {
 	import flash.events.Event;
-	import flash.signals.Signal;
+	import blockly.signals.Signal;
 	import flash.utils.ByteArray;
 
 	public class SerialDevice

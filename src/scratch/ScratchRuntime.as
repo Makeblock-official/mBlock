@@ -32,7 +32,7 @@ package scratch {
 	import flash.media.SoundTransform;
 	import flash.net.FileFilter;
 	import flash.net.FileReference;
-	import flash.signals.Signal;
+	import blockly.signals.Signal;
 	import flash.system.System;
 	import flash.text.TextField;
 	import flash.text.TextFieldType;
