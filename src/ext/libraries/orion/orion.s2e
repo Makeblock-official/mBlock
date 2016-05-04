@@ -87,7 +87,7 @@
 		"motorPort":["M1","M2","Port1","Port2"],
 		"exMotorPort":["Port1","Port2"],
 		"stepMotorPort":["Port1","Port2"],
-		"servoPort":["Port1","Port2","Port3","Port4","Port5","Port6","Port7","Port8"],
+		"servoPort":["Port3","Port4","Port6","Port7","Port8"],
 		"address":["Port1","Port2","Port3","Port4","Port5","Port6","Port7","Port8"],
 		"slot":["Slot1","Slot2"],
 		"device":["Ultrasonic","Line Finder","Light Sensor","Sound Sensor","Joystick","Button","Potentiometer"],
