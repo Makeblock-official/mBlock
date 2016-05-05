@@ -236,7 +236,7 @@ package interpreter
 		
 		static private const beatsDict:Object = {
 			"Half":500,
-			"Quater":250,
+			"Quarter":250,
 			"Eighth":125,
 			"Whole":1000,
 			"Double":2000,

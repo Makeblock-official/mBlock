@@ -86,7 +86,7 @@ package extensions
 			"C5":523,"D5":587,"E5":659,"F5":698,"G5":784,"A5":880,"B5":988,
 			"C6":1047,"D6":1175,"E6":1319,"F6":1397,"G6":1568,"A6":1760,"B6":1976,
 			"C7":2093,"D7":2349,"E7":2637,"F7":2794,"G7":3136,"A7":3520,"B7":3951,
-			"C8":4186,"D8":4699,"Half":500,"Quater":250,"Eighth":125,"Whole":1000,"Double":2000,"Zero":0};
+			"C8":4186,"D8":4699,"Half":500,"Quarter":250,"Eighth":125,"Whole":1000,"Double":2000,"Zero":0};
 		private var EVENT_NATIVE_DONE:String = "EVENT_NATIVE_DONE"
 		private var EVENT_LIBCOMPILE_DONE:String = "EVENT_LIBCOMPILE_DONE"
 		private var EVENT_COMPILE_DONE:String = "EVENT_COMPILE_DONE"

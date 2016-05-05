@@ -42,7 +42,7 @@
 		"pwmvalue":["0","50","100","150","255"],
 		"digital":["HIGH","LOW"],
 		"notes":["C2","D2","E2","F2","G2","A2","B2","C3","D3","E3","F3","G3","A3","B3","C4","D4","E4","F4","G4","A4","B4","C5","D5","E5","F5","G5","A5","B5","C6","D6","E6","F6","G6","A6","B6","C7","D7","E7","F7","G7","A7","B7","C8","D8"],
-		"beats":["Half","Quater","Eighth","Whole","Double","Zero"]
+		"beats":["Half","Quarter","Eighth","Whole","Double","Zero"]
 	},
 	"values":{
 		"run":2,
@@ -62,7 +62,7 @@
 			"C6":1047,"D6":1175,"E6":1319,"F6":1397,"G6":1568,"A6":1760,"B6":1976,
 			"C7":2093,"D7":2349,"E7":2637,"F7":2794,"G7":3136,"A7":3520,"B7":3951,
 			"C8":4186,"D8":4699,
-		"Half":500,"Quater":250,"Eighth":125,"Whole":1000,"Double":2000,"Zero":0
+		"Half":500,"Quarter":250,"Eighth":125,"Whole":1000,"Double":2000,"Zero":0
 	},
 	"translators":{
 	}
