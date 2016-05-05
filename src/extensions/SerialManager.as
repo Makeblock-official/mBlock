@@ -414,7 +414,7 @@ package extensions
 				}
 				if(tf!=null && tf.exists){
 					_upgradeBytesTotal = tf.size;
-					trace("total:",_upgradeBytesTotal);
+//					trace("total:",_upgradeBytesTotal);
 				}else{
 					_upgradeBytesTotal = 0;
 				}
@@ -427,6 +427,7 @@ package extensions
 //				process.addEventListener(IOErrorEvent.STANDARD_ERROR_IO_ERROR, onIOError);
 				process.start(nativeProcessStartupInfo);
 				sizeInfo.reset();
+				MBlock.app.scriptsPart.clearInfo();
 				ArduinoManager.sharedManager().isUploading = true;
 //			}else{
 //				trace("no support");

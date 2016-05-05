@@ -11,10 +11,11 @@ package extensions
 	import flash.net.InterfaceAddress;
 	import flash.net.ServerSocket;
 	import flash.net.Socket;
-	import blockly.signals.Signal;
 	import flash.utils.ByteArray;
 	import flash.utils.getTimer;
 	import flash.utils.setTimeout;
+	
+	import blockly.signals.Signal;
 	
 	import cc.makeblock.util.getLocalAddress;
 	
@@ -180,8 +181,12 @@ package extensions
 						if(temp[1]!="1025"){
 							var socket:Socket = new Socket()
 							configureListeners(socket);
-							socket.connect(temp[0], temp[1]);
-							_sockets.push(socket);
+							try{
+								socket.connect(temp[0], temp[1]);
+								_sockets.push(socket);
+							}catch(e:Error){
+								trace(e);
+							}
 						}
 					}
 					LogManager.sharedManager().log("socket connecting:"+host);
@@ -191,8 +196,13 @@ package extensions
 		}
 		private function disconnect():void{
 			for each(var socket:Socket in _sockets){
-				if(socket.connected)
-					socket.close();
+				if(socket.connected){
+					try{
+						socket.close();
+					}catch(e:Error){
+						trace(e);
+					}
+				}
 			}
 			_sockets = [];
 			isConnected = false;
@@ -252,7 +262,11 @@ package extensions
 				}
 			}
 			if(_udpIp!=""){
-				datagramSocket.send( bytes, 0, 0, _udpIp,1025);
+				try{
+					datagramSocket.send( bytes, 0, 0, _udpIp,1025);
+				}catch(e:Error){
+					trace(e);
+				}
 			}
 			return 0
 		}
@@ -323,7 +337,11 @@ package extensions
 						var data:ByteArray = new ByteArray();
 						data.writeUTFBytes(MBlock.app.projectName());
 						//Send the datagram message
-						datagramSocket.send( data, 0, data.length, evt.srcAddress, evt.srcPort);
+						try{
+							datagramSocket.send( data, 0, data.length, evt.srcAddress, evt.srcPort);
+						}catch(e:Error){
+							trace(e);
+						}
 					}
 				}
 			}
