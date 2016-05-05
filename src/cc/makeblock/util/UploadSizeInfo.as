@@ -53,7 +53,9 @@ package cc.makeblock.util
 				switch(buffer.substr(i, 5)){
 					case "Send:":
 						index = buffer.indexOf("\n", i);
-						onSend(index, i);
+						if(index > 0){
+							onSend(index, i);
+						}
 						break;
 					case "Recv:":
 						index = buffer.indexOf("\n", i);
@@ -76,15 +78,19 @@ package cc.makeblock.util
 		{
 			var boardName:String = DeviceManager.sharedManager().currentDevice;
 			if(boardName == "uno"){
-				if(index > 0 && buffer.charAt(i+6) == "d"){
+				if(buffer.charAt(i+6) == "d"){
 					bytesLoad += buffer.slice(i+7, index).match(regExp).length - 5;
 				}
 			}else if(boardName == "mega2560"){
-				if(index > 0 && buffer.slice(9,11) == "1b"){
-					bytesLoad += Math.max(0, buffer.slice(i+7, index).match(regExp).length - 15);
+				var cmd:String = buffer.slice(i+44, i+46);
+				if(cmd == "13" || cmd == "14"){
+					bytesLoad += 128;
+					if(bytesLoad > bytesTotal){
+						bytesLoad = bytesTotal;
+					}
 				}
 			}else if(boardName == "leonardo"){
-				if(index > 0 && buffer.charAt(i+6) == "B"){
+				if(buffer.charAt(i+6) == "B"){
 					bytesLoad += buffer.slice(i+7, index).match(regExp).length - 5;
 				}
 			}

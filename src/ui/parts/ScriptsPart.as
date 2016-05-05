@@ -245,6 +245,10 @@ public class ScriptsPart extends UIPart {
 	public function appendRawMessage(msg:String):void{
 		htmlLoader.window.appendInfo(msg);
 	}
+	public function clearInfo():void
+	{
+		htmlLoader.window.clearInfo();
+	}
 	
 	public function onSerialSend(bytes:ByteArray):void
 	{

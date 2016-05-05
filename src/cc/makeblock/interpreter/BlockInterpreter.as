@@ -33,7 +33,7 @@ package cc.makeblock.interpreter
 //			trace("begin==================");
 //			trace(JSON.stringify(blockList));
 //			var codeList:Array = realInterpreter.compile(blockList);
-//			trace(realInterpreter.castCodeListToString(codeList));
+//			trace(codeList.join("\n"));
 //			trace("end==================");
 			var thread:Thread = realInterpreter.execute(blockList);
 			thread.userData = new ThreadUserData(targetObj, block);
