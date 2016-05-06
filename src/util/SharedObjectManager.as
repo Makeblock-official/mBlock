@@ -27,7 +27,11 @@ package util
 		}
 		public function setObject(key:String,value:*):void{
 			_so.data[key] = value;
-			_so.flush(2048);
+			try{
+				_so.flush(2048);
+			}catch(e:Error){
+				trace(e.toString());
+			}
 		}
 		public function available(key:String):Boolean{
 			if(_so.data[key]==undefined){

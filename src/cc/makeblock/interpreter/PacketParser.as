@@ -101,8 +101,8 @@ package cc.makeblock.interpreter
 						buffer.splice(0, 10);
 						break;
 					default:
+						value = 0;
 						buffer.splice(0, 4);
-						return;
 				}
 				if(index == 0x80){//button pressed
 					MBlock.app.runtime.mbotButtonPressed.notify(Boolean(value));
