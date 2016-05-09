@@ -129,7 +129,7 @@ package {
 		public var scriptsPart:ScriptsPart;
 		public var imagesPart:ImagesPart;
 		protected var soundsPart:SoundsPart;
-		protected var stagePart:StagePart;
+		public var stagePart:StagePart;
 		private var ga:GATracker;
 		private var tabsPart:TabsPart;
 		private var _welcomeView:Loader;

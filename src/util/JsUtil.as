@@ -1,5 +1,8 @@
 package util
 {
+	import flash.display.BitmapData;
+	import flash.display.PNGEncoderOptions;
+	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.external.ExternalInterface;
 	import flash.net.URLLoader;
@@ -34,6 +37,8 @@ package util
 			ExternalInterface.addCallback("getRobotName", __getRobotName);
 			ExternalInterface.addCallback("setUnmodified", __setUnmodified);
 			ExternalInterface.addCallback("setProjectTitle", __setProjectTitle);
+			ExternalInterface.addCallback("getStageSnapshot", __getStageSnapshot);
+			ExternalInterface.addCallback("showFullscreen", __showFullscreen);
 		}
 		
 		static public function Call(method:String, args:Array):*
@@ -169,6 +174,26 @@ package util
 		static private function __setProjectTitle(title:String):void
 		{
 			MBlock.app.setProjectName(title);
+		}
+		
+		static private function __getStageSnapshot():String
+		{
+			var view:Sprite = MBlock.app.stagePart;
+			var bmd:BitmapData = new BitmapData(
+				view.width-4, view.height-20,false
+			);
+			bmd.draw(view, null, null, null, null, false);
+			var jpeg:ByteArray = bmd.encode(bmd.rect, new PNGEncoderOptions());
+			var result:String = Base64.encode(jpeg);
+			bmd.dispose();
+			jpeg.clear();
+			return result;
+		}
+		
+		static private function __showFullscreen():void
+		{
+			MBlock.app.setPresentationMode(true);
+			MBlock.app.stagePart.switchPresentationMode(true);
 		}
 	}
 }

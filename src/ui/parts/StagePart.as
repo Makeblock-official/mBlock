@@ -136,10 +136,14 @@ public class StagePart extends UIPart {
 	public function setProjectName(s:String):void { projectTitle.setContents(s) }
 	public function isInPresentationMode():Boolean { return fullscreenButton.visible && fullscreenButton.isOn() }
 
-	public function exitPresentationMode():void {
-		fullscreenButton.setOn(false);
+	public function switchPresentationMode(flag:Boolean):void {
+		fullscreenButton.setOn(flag);
 		drawOutline();
 		refresh();
+	}
+	
+	public function exitPresentationMode():void {
+		switchPresentationMode(false);
 	}
 
 	public function refresh():void {
