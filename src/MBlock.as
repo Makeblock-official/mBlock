@@ -172,7 +172,7 @@ package {
 			AsWingManager.initAsStandard(this);
 			UIManager.setLookAndFeel(new MyLookAndFeel());
 			AppTitleMgr.Instance.init(stage.nativeWindow);
-			ApplicationManager.sharedManager().isCatVersion = NativeApplication.nativeApplication.applicationDescriptor.toString().indexOf("猫友")>-1;
+//			ApplicationManager.sharedManager().isCatVersion = NativeApplication.nativeApplication.applicationDescriptor.toString().indexOf("猫友")>-1;
 			ga = new GATracker(this,"UA-54268669-1","AS3",false);
 			track("/app/launch");
 			new InvokeMgr();

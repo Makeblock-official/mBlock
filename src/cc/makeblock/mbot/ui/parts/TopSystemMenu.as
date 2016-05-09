@@ -39,13 +39,6 @@ package cc.makeblock.mbot.ui.parts
 		{
 			super(stage, path);
 			
-			if(!ApplicationManager.sharedManager().isCatVersion){
-				var helpMenu:NativeMenu = getNativeMenu().getItemByName("Help").submenu;
-				helpMenu.removeItemAt(2);
-				helpMenu.removeItemAt(1);
-				helpMenu.removeItemAt(0);
-			}
-			
 			getNativeMenu().getItemByName("File").submenu.addEventListener(Event.DISPLAYING, __onInitFielMenu);
 			getNativeMenu().getItemByName("Edit").submenu.addEventListener(Event.DISPLAYING, __onInitEditMenu);
 			getNativeMenu().getItemByName("Extensions").submenu.addEventListener(Event.DISPLAYING, __onInitExtMenu);
@@ -423,11 +416,19 @@ package cc.makeblock.mbot.ui.parts
 		private function __onHelp(menuItem:NativeMenuItem):void
 		{
 			var path:String = menuItem.data.@url;
-			if("Forum" == menuItem.name){
-				path = Translator.map(path);
-			}
+//			if("Forum" == menuItem.name){
+//				path = Translator.map(path);
+//			}
 			if(path){
 				navigateToURL(new URLRequest(path),"_blank");
+			}else{
+				path = menuItem.data.@url_en;
+				if(path){
+					if(Translator.currentLang == "zh_CN" || Translator.currentLang == "zh_TW"){
+						path = menuItem.data.@url_cn;
+					}
+					navigateToURL(new URLRequest(path),"_blank");
+				}
 			}
 			
 			switch(menuItem.name)

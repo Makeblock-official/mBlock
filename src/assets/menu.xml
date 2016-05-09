@@ -93,13 +93,14 @@
 		</subMenu>
 	</subMenu>
 	<subMenu name="Help" label="帮助">
-		<item name="Share Your Project" label="分享" key="forum" url="http://www.maoyouhui.org/forum.php?gid=57&mblock" />
-		<item name="FAQ" label="问答" key="forum" url="http://www.maoyouhui.org/forum.php?mod=forumdisplay&fid=62&mblock" />
+		<item name="Exploring Robotic World" url="http://www.makeblock.com/?utm_source=software&utm_medium=mblock&utm_campaign=mblocktomakeblock" />
+		<item name="Getting Creative Inspiration" url="http://openlab.makeblock.com/?utm_source=software&utm_medium=mblock&utm_campaign=mblocktoopenlab" />
 		<item isSeparator="true" />
-		<item name="Forum" label="论坛" key="forum" url="http://forum.makeblock.cc/c/makeblock-products/mblock#scratch" />
-		<item name="Report a Bug" label="建议反馈" key="report" url="http://mblock.cc/report-a-bug" />
+		<item name="Getting Started Rapidly" url="http://learn.makeblock.com/getting-started-programming-with-mblock?utm_source=software&utm_medium=mblock&utm_campaign=mblocktorumeng" />
+		<item name="Finding Answers Online" url_cn="http://bbs.makeblock.cc/forum-39-1.html?utm_source=software&utm_medium=mblock&utm_campaign=mblocktobbs" url_en="http://forum.makeblock.cc/c/makeblock-products/mblock?utm_source=software&utm_medium=mblock&utm_campaign=mblocktoforum#scratch" />
+		<item name="Learn More Tutorials" url="http://learn.makeblock.com/?utm_source=software&utm_medium=mblock&utm_campaign=mblocktolearn" />
 		<item isSeparator="true" />
-		<item name="Check Software Update" label="检查应用更新" key="check_app_update" />
-		<item name="Upload Bug" label="报告错误" key="upload_bug" />
+		<item name="Check For Update" label="检查应用更新" key="check_app_update" />
+		<item name="Feedback" label="报告错误" key="upload_bug" />
 	</subMenu>
 </menu>
