@@ -4,7 +4,7 @@
 	"firmware":"1.2.103",
 	"javascriptURL":"js/Auriga.js",
 	"blockSpecs": [
-		["h","Auriga Program %d.aurigaMode","runArduino", "bluetooth mode",{"src":"orion","inc":"#include <MeAuriga.h>\n","def":"","setup":"","loop":""}],
+		["h","Auriga Program","runArduino",{"src":"orion","inc":"#include <MeAuriga.h>\n","def":"","setup":"","loop":""}],
 		
 		["w", "%m.direction at speed %d.motorvalue","runBot", "run forward", 0,
 		{"encode":"{d0}{s1}","setup":"attachInterrupt(Encoder_1.GetIntNum(), isr_process_encoder1, RISING);\nattachInterrupt(Encoder_2.GetIntNum(), isr_process_encoder2, RISING);\n","inc":"","def":"","work":"move({0},{1});\n","loop":"Encoder_1.Update_speed();\nEncoder_2.Update_speed();\n"}],
@@ -23,9 +23,6 @@
 		
 		["w", "set encoder motor on board %d.slot speed %d.motorvalue","runEncoderMotorOnBoard", "Slot1", 100,
 		{"encode":"{d0}{s1}{s2}","setup":"attachInterrupt(Encoder_{0}.GetIntNum(), isr_process_encoder{0}, RISING);\n","inc":"","def":"","work":"Encoder_{0}.setMotorPwm({1});\n","loop":"Encoder_{0}.Update_speed();\n"}],
-
-		["R", "encoder motor on board %d.slot %d.encoderValue", "getEncoderValue","Slot1", "speed",
-		{"encode":"{d0}","setup":"","inc":"","def":"","work":"Encoder_{0}.GetCurrentSpeed()","loop":""}],
 		
 		["w", "set 7-segments display%d.bluePorts number %n","runSevseg", "Port6", 100,
 		{"encode":"{d0}{f1}","setup":"","inc":"","def":"Me7SegmentDisplay seg7_{0}({0});\n","work":"seg7_{0}.display({1});\n","loop":""}],
@@ -64,6 +61,10 @@
 		{"encode":"{d0}{d1}","setup":"","inc":"","def":"MePort shutter_{0}({0});\n","work":"shutter_{0}.dWrite1({1});\n","loop":""}],
 		
 		["-"],
+		
+		["R", "encoder motor on board %d.slot %d.encoderValue", "getEncoderValue","Slot1", "speed",
+		{"encode":"{d0}","setup":"","inc":"","def":"","work":"Encoder_{0}.GetCurrentSpeed()","loop":""}],
+		
 		["R", "ultrasonic sensor %d.whitePorts distance","getUltrasonic","Port10",
 		{"encode":"{d0}","setup":"","inc":"","def":"MeUltrasonicSensor ultrasonic_{0}({0});\n","work":"ultrasonic_{0}.distanceCm()","loop":""}],
 		

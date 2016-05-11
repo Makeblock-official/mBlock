@@ -224,6 +224,7 @@
 	}
 	ext.resetTimer = function(){
 		startTimer = (new Date().getTime())/1000.0;
+		responseValue();
 	};
 	/*
 	ext.getLightOnBoard = function(nextID){

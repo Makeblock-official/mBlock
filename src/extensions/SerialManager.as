@@ -428,6 +428,7 @@ package extensions
 				process.start(nativeProcessStartupInfo);
 				sizeInfo.reset();
 				MBlock.app.scriptsPart.clearInfo();
+				MBlock.app.scriptsPart.appendMessage(nativeProcessStartupInfo.executable.nativePath + " " + v.join(" "));
 				ArduinoManager.sharedManager().isUploading = true;
 //			}else{
 //				trace("no support");

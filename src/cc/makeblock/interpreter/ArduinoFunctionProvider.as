@@ -42,14 +42,6 @@ package cc.makeblock.interpreter
 				netExt.exec(thread, opName, argList);
 				return;
 			}
-			switch(opName){
-				case "getTimer":
-					thread.push(0.001 * (getTimer()-mbotTimer));
-					return;
-				case "resetTimer":
-					mbotTimer = getTimer();
-					return;
-			}
 			var ext:ScratchExtension = MBlock.app.extensionManager.extensionByName(extName);
 			if(null == ext){
 				thread.interrupt();

@@ -75,6 +75,7 @@
 	};
 	ext.resetTimer = function(){
 		startTimer = new Date().getTime();
+		responseValue();
 	};
 	ext.getDigital = function(nextID,pin){
 		var deviceId = 30;

@@ -35,7 +35,6 @@
 			<item name="Custom Connect" label="自定义连接" action="connect_network" />
 		</subMenu>
 		<item isSeparator="true" />
-		<item name="Firmware" label="固件" enabled="false" />
 		<item name="Upgrade Firmware" label="安装固件" action="upgrade_firmware" />
 		<subMenu name="Reset Default Program" label="恢复出厂程序">
 			<item name="mBot" label="mbot" />

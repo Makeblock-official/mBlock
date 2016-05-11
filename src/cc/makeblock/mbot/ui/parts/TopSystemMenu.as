@@ -22,6 +22,7 @@ package cc.makeblock.mbot.ui.parts
 	import extensions.DeviceManager;
 	import extensions.ExtensionManager;
 	import extensions.HIDManager;
+	import extensions.ScratchExtension;
 	import extensions.SerialDevice;
 	import extensions.SerialManager;
 	import extensions.SocketManager;
@@ -41,9 +42,9 @@ package cc.makeblock.mbot.ui.parts
 			
 			getNativeMenu().getItemByName("File").submenu.addEventListener(Event.DISPLAYING, __onInitFielMenu);
 			getNativeMenu().getItemByName("Edit").submenu.addEventListener(Event.DISPLAYING, __onInitEditMenu);
-			getNativeMenu().getItemByName("Extensions").submenu.addEventListener(Event.DISPLAYING, __onInitExtMenu);
-			getNativeMenu().getItemByName("Boards").submenu.addEventListener(Event.DISPLAYING, __onShowBoards);
 			getNativeMenu().getItemByName("Connect").submenu.addEventListener(Event.DISPLAYING, __onShowConnect);
+			getNativeMenu().getItemByName("Boards").submenu.addEventListener(Event.DISPLAYING, __onShowBoards);
+			getNativeMenu().getItemByName("Extensions").submenu.addEventListener(Event.DISPLAYING, __onInitExtMenu);
 			getNativeMenu().getItemByName("Language").submenu.addEventListener(Event.DISPLAYING, __onShowLanguage);
 			
 			register("File", __onFile);
@@ -59,6 +60,7 @@ package cc.makeblock.mbot.ui.parts
 		
 		private function __onResetDefaultProgram(item:NativeMenuItem):void
 		{
+			var ext:ScratchExtension;
 			var filePath:String;
 			switch(item.name){
 				case "mBot":
@@ -73,6 +75,26 @@ package cc.makeblock.mbot.ui.parts
 				case "mBot Ranger":
 					filePath = "mBlock/tools/hex/auriga.hex";
 					break;
+				case "bluetooth mode":
+					ext = MBlock.app.extensionManager.extensionByName("Auriga");
+					if(ext != null)
+						ext.js.call("switchMode", [0], null);
+					return;
+				case "ultrasonic mode":
+					ext = MBlock.app.extensionManager.extensionByName("Auriga");
+					if(ext != null)
+						ext.js.call("switchMode", [1], null);
+					return;
+				case "line follower mode":
+					ext = MBlock.app.extensionManager.extensionByName("Auriga");
+					if(ext != null)
+						ext.js.call("switchMode", [4], null);
+					return;
+				case "balance mode":
+					ext = MBlock.app.extensionManager.extensionByName("Auriga");
+					if(ext != null)
+						ext.js.call("switchMode", [2], null);
+					return;
 				default:
 					MBlock.app.scriptsPart.appendMessage("Unknow board: " + item.name);
 					return;
@@ -313,13 +335,43 @@ package cc.makeblock.mbot.ui.parts
 				item.checked = SocketManager.sharedManager().connected(ips[0]);
 			}
 			netWorkMenuItem.submenu = subMenu;
+			var defaultProgramMenu:NativeMenuItem = MenuUtil.FindItem(getNativeMenu(), "Reset Default Program");
 			var canReset:Boolean = SerialManager.sharedManager().isConnected;
-			MenuUtil.FindItem(getNativeMenu(), "Reset Default Program").enabled = canReset;
+			defaultProgramMenu.enabled = canReset;
 			canReset = SerialManager.sharedManager().isConnected && DeviceManager.sharedManager().currentName!="PicoBoard";
 			MenuUtil.FindItem(getNativeMenu(), "Upgrade Firmware").enabled = canReset;
 			canReset = DeviceManager.sharedManager().currentName!="PicoBoard";
 			MenuUtil.FindItem(getNativeMenu(), "View Source").enabled = canReset;
+			
+			if(canReset){
+				defaultProgramMenu.submenu.removeAllItems();
+				switch(DeviceManager.sharedManager().currentName){
+					case "mBot":
+						defaultProgramMenu.submenu.addItem(new NativeMenuItem("mBot")).name = "mBot";
+						break;
+					case "Me Auriga":
+						defaultProgramMenu.submenu.addItem(new NativeMenuItem("mBot Ranger")).name = "mBot Ranger";
+						tempItem = defaultProgramMenu.submenu.addItem(new NativeMenuItem("", true));
+						tempItem.name = "";
+						tempItem = defaultProgramMenu.submenu.addItem(new NativeMenuItem(""));
+						tempItem.name = "Set mBot Ranger Mode";
+						tempItem.label = Translator.map(tempItem.name);
+						tempItem.enabled = false;
+						for each(var modeName:String in rangerModeList){
+							tempItem = defaultProgramMenu.submenu.addItem(new NativeMenuItem(""));
+							tempItem.name = modeName;
+							tempItem.label = Translator.map(modeName);
+						}
+						break;
+					case "Me Orion":
+						defaultProgramMenu.submenu.addItem(new NativeMenuItem("Starter IR")).name = "Starter IR";
+						defaultProgramMenu.submenu.addItem(new NativeMenuItem("Starter Bluetooth")).name = "Starter Bluetooth";
+						break;
+				}
+			}
 		}
+		
+		static private const rangerModeList:Array = ["bluetooth mode","ultrasonic mode","line follower mode","balance mode"];
 		
 		private function __onSelectBoard(menuItem:NativeMenuItem):void
 		{

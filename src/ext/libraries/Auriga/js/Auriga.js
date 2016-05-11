@@ -86,7 +86,10 @@
     ext.resetAll = function(){
     	device.send([0xff, 0x55, 2, 0, 4]);
     };
-	ext.runArduino = function(mode){
+    ext.runArduino = function(){
+		responseValue();
+	};
+	ext.switchMode = function(mode){
 		if(typeof mode == "string"){
 			mode = augigaMode[mode];
 		}
