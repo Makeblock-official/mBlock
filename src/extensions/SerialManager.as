@@ -13,6 +13,7 @@ package extensions
 	import flash.utils.getTimer;
 	import flash.utils.setTimeout;
 	
+	import cc.makeblock.mbot.util.AppTitleMgr;
 	import cc.makeblock.util.UploadSizeInfo;
 	
 	import translation.Translator;
@@ -192,7 +193,7 @@ package extensions
 			MBlock.app.track("/OpenSerial/Upgrade");
 			executeUpgrade();
 			_hexToDownload = hexFile;
-			MBlock.app.topBarPart.setDisconnectedTitle();
+			MBlock.app.topBarPart.setConnectedTitle(AppTitleMgr.Uploading);
 			ArduinoManager.sharedManager().isUploading = false;
 			if(DeviceManager.sharedManager().currentDevice.indexOf("leonardo")>-1){
 				_serial.close();
@@ -301,12 +302,12 @@ package extensions
 		}
 		
 		public function upgradeFirmware(hexfile:String=""):void{
-			MBlock.app.topBarPart.setDisconnectedTitle();
 			var file:File = getAvrDude();//外部程序名
 			if(!file.exists){
 				trace("upgrade fail!");
 				return;
 			}
+			MBlock.app.topBarPart.setConnectedTitle(AppTitleMgr.Uploading);
 			var tf:File;
 			var currentDevice:String = DeviceManager.sharedManager().currentDevice;
 			currentPort = SerialDevice.sharedDevice().port;

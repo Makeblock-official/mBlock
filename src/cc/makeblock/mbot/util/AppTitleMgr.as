@@ -7,6 +7,7 @@ package cc.makeblock.mbot.util
 
 	public class AppTitleMgr
 	{
+		static public const Uploading:String = "Uploading";
 		static public const Instance:AppTitleMgr = new AppTitleMgr();
 		
 		private var window:NativeWindow;
@@ -56,7 +57,11 @@ package cc.makeblock.mbot.util
 			
 			var str:String = strList[1];
 			if(Boolean(str)){
-				str = Translator.map(str) + " " + Translator.map("Connected");
+				if(str == Uploading){
+					str = Translator.map(str);
+				}else{
+					str = Translator.map(str) + " " + Translator.map("Connected");
+				}
 			}else{
 				str = Translator.map("Disconnected");
 			}
