@@ -4,18 +4,11 @@ package extensions
 	import flash.desktop.NativeProcessStartupInfo;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
-	import flash.events.IOErrorEvent;
 	import flash.events.NativeProcessExitEvent;
 	import flash.events.ProgressEvent;
 	import flash.filesystem.File;
 	import flash.filesystem.FileMode;
 	import flash.filesystem.FileStream;
-	import flash.net.URLLoader;
-	import flash.net.URLLoaderDataFormat;
-	import flash.net.URLRequest;
-	import flash.net.URLRequestMethod;
-	import flash.net.URLVariables;
-	import flash.net.navigateToURL;
 	import flash.system.Capabilities;
 	import flash.utils.getQualifiedClassName;
 	
@@ -24,14 +17,9 @@ package extensions
 	
 	import cc.makeblock.mbot.util.StringUtil;
 	
-	import translation.Translator;
-	
-	import uiwidgets.DialogBox;
-	
 	import util.ApplicationManager;
 	import util.JSON;
 	import util.LogManager;
-	import util.SharedObjectManager;
 	
 	public class ArduinoManager extends EventDispatcher
 	{
@@ -51,7 +39,7 @@ package extensions
 		public var hasUnknownCode:Boolean = false;
 		private var ccode_setup:String = "";
 		private var ccode_setup_fun:String = "";
-		private var ccode_setup_def:String = "";
+//		private var ccode_setup_def:String = "";
 		private var ccode_loop:String = ""
 		private var ccode_def:String = ""
 		private var ccode_inc:String = ""
@@ -944,10 +932,9 @@ void updateVar(char * varName,double * var)
 		private var requiredCpp:Array=[];
 		public function jsonToCpp(code:String):String{
 			// reset code buffers 
-			var retcode:String
 			ccode_setup=""
 			ccode_setup_fun = "";
-			ccode_setup_def = "";
+//			ccode_setup_def = "";
 			ccode_loop=""
 			ccode_inc=""
 			ccode_def=""
@@ -973,7 +960,7 @@ void updateVar(char * varName,double * var)
 				parseScripts(objs.scripts);
 			}
 			ccode_func+=buildFunctions();
-			retcode = codeTemplate.replace("//setup",ccode_setup).replace("//loop", ccode_loop).replace("//define", ccode_def).replace("//include", ccode_inc).replace("//function",ccode_func);
+			var retcode:String = codeTemplate.replace("//setup",ccode_setup).replace("//loop", ccode_loop).replace("//define", ccode_def).replace("//include", ccode_inc).replace("//function",ccode_func);
 			retcode = buildSerialParser(retcode);
 			retcode = fixTabs(retcode);
 			retcode = fixVars(retcode);
@@ -991,12 +978,15 @@ void updateVar(char * varName,double * var)
 			var result:Boolean = false;
 			for(var j:uint=0;j<scripts.length;j++){
 				var scr:Object = scripts[j][2];
-				if(scr[0][0].indexOf("runArduino")==-1){
-					if(scr[0][0]=="procDef"){
-						addFunction(scr as Array);
-						parseModules(scr);
-						buildCodes();
-					}
+				if(scr[0][0]=="procDef"){
+					addFunction(scr as Array);
+					parseModules(scr);
+					buildCodes();
+				}
+			}
+			for(j=0;j<scripts.length;j++){
+				scr = scripts[j][2];
+				if(scr[0][0].indexOf("runArduino") < 0){
 					continue;
 				}//选中的Arduino主代码
 				
@@ -1004,11 +994,12 @@ void updateVar(char * varName,double * var)
 					continue;
 				}
 				buildCodes();
-				if(_scratch!=null){
-					_scratch.dispatchEvent(new RobotEvent(RobotEvent.CCODE_GOT,""));
-				}
+
 				result = true;
 				//break; // only the first entrance is parsed
+			}
+			if(_scratch!=null){
+				_scratch.dispatchEvent(new RobotEvent(RobotEvent.CCODE_GOT,""));
 			}
 			return result;
 		}
@@ -1016,7 +1007,7 @@ void updateVar(char * varName,double * var)
 			buildInclude();			
 			buildDefine();
 			buildSetup();
-			ccode_setup+=ccode_setup_def;
+//			ccode_setup+=ccode_setup_def;
 			//buildSetup();
 			ccode_setup+=ccode_setup_fun;
 			ccode_setup_fun = "";
