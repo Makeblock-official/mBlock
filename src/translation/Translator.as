@@ -29,6 +29,8 @@ package translation {
 	
 	import blocks.Block;
 	
+	import org.aswing.util.StringUtils;
+	
 	import uiwidgets.Menu;
 	
 	import util.ReadStream;
@@ -307,13 +309,17 @@ public class Translator {
 	}
 
 	private static function checkBlockTranslations():void {
-		for each (var entry:Array in Specs.commands) checkBlockSpec(entry[0]);
+		for(var key:String in dictionary){
+			checkBlockSpec(key);
+		}
+//		for each (var entry:Array in Specs.commands) checkBlockSpec(entry[0]);
 	}
 
 	private static function checkBlockSpec(spec:String):void {
-		var translatedSpec:String = map(spec);
+		var translatedSpec:String = StringUtils.trim(map(spec));
 		if (translatedSpec == spec) return; // not translated
 		if(currentLang == "hebrew"){
+			var oldSpec:String = translatedSpec;
 			translatedSpec = adjustRightToLeftLang(translatedSpec);
 		}
 		var origArgs:Array = extractArgs(spec);
@@ -322,10 +328,14 @@ public class Translator {
 			MBlock.app.log('    ' + spec);
 			MBlock.app.log('    ' + translatedSpec);
 			delete dictionary[spec]; // remove broken entry from dictionary
+		}else{
+			if(translatedSpec != oldSpec){
+				dictionary[spec] = translatedSpec;
+			}
 		}
 	}
 	
-	static private const r2l_pattern:RegExp = /(\w+)(?:\.(\w+))?\s*(%|@)/g;
+	static private const r2l_pattern:RegExp = /(\w+)(?:\.(\w+))?(%|@)/g;
 	static private function adjustRightToLeftLang(input:String):String
 	{
 		var newInput:String = input;
@@ -359,13 +369,10 @@ public class Translator {
 		return true;
 	}
 
+	static private const symbalPattern:RegExp = /[%@]\w(\.\w+)?/g;
 	private static function extractArgs(spec:String):Array {
-		var result:Array = [];
-		var tokens:Array = ReadStream.tokenize(spec);
-		for each (var s:String in tokens) {
-			if ((s.length > 1) && ((s.charAt(0) == '%') || (s.charAt(0) == '@'))) result.push(s);
-		}
-		return result;
+		
+		return spec.match(symbalPattern);
 	}
 
 }}
