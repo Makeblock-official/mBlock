@@ -354,7 +354,7 @@ package {
 		}
 	
 		protected var wasEditing:Boolean;
-		public function setPresentationMode(enterPresentation:Boolean):void {
+		public function setPresentationMode(enterPresentation:Boolean, fullscreenFlag:Boolean=true):void {
 			if (enterPresentation) {
 				wasEditing = editMode;
 				if (wasEditing) {
@@ -363,10 +363,10 @@ package {
 			} else if (wasEditing){
 				setEditMode(true);
 			}
-			
-			track(enterPresentation?"enterFullscreen":"enterNormal");
-			stage.displayState = enterPresentation ? StageDisplayState.FULL_SCREEN_INTERACTIVE : StageDisplayState.NORMAL;
-			
+			if(fullscreenFlag){
+				track(enterPresentation?"enterFullscreen":"enterNormal");
+				stage.displayState = enterPresentation ? StageDisplayState.FULL_SCREEN_INTERACTIVE : StageDisplayState.NORMAL;
+			}
 			for each (var o:ScratchObj in stagePane.allObjects()) o.applyFilters();
 	
 			if (lp) fixLoadProgressLayout();

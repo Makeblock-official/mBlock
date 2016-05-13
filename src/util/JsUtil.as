@@ -39,6 +39,8 @@ package util
 			ExternalInterface.addCallback("setProjectTitle", __setProjectTitle);
 			ExternalInterface.addCallback("getStageSnapshot", __getStageSnapshot);
 			ExternalInterface.addCallback("showFullscreen", __showFullscreen);
+			ExternalInterface.addCallback("playCode", __playCode);
+			ExternalInterface.addCallback("stopCode", __stopCode);
 		}
 		
 		static public function Call(method:String, args:Array):*
@@ -192,8 +194,19 @@ package util
 		
 		static private function __showFullscreen():void
 		{
-			MBlock.app.setPresentationMode(true);
+			MBlock.app.setPresentationMode(true, false);
 			MBlock.app.stagePart.switchPresentationMode(true);
+			MBlock.app.stagePart.hideTopBar();
+		}
+		
+		static private function __playCode():void
+		{
+			MBlock.app.runtime.startGreenFlags();
+		}
+		
+		static private function __stopCode():void
+		{
+			MBlock.app.runtime.stopAll();
 		}
 	}
 }
