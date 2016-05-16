@@ -69,7 +69,7 @@
 		{"encode":"{d0}","setup":"","inc":"","def":"MeUltrasonicSensor ultrasonic_{0}({0});\n","work":"ultrasonic_{0}.distanceCm()","loop":""}],
 		
 		["R", "line follower %d.bluePorts","getLinefollower","Port2",
-		{"encode":"{d0}","setup":"","inc":"","def":"MePort linefollower_{0}({0});\n","work":"linefollower_{0}.dRead1()*2+linefollower_{0}.dRead2()","loop":""}],
+		{"encode":"{d0}","setup":"","inc":"","def":"MeLineFollower linefollower_{0}({0});\n","work":"linefollower_{0}.readSensors()","loop":""}],
 		
 		["R", "joystick %d.blackPorts %d.Axis","getJoystick","Port3","X-Axis",
 		{"encode":"{d0}{d1}","setup":"","inc":"","def":"MeJoystick joystick_{0}({0});\n","work":"joystick_{0}.read({1})","loop":""}],

@@ -39,7 +39,7 @@
 		{"encode":"{d0}","setup":"","inc":"","def":"MeUltrasonicSensor ultrasonic_{0}({0});\n","work":"ultrasonic_{0}.distanceCm()","loop":""}],
 		
 		["R", "line follower %d.bluePorts","getLinefollower","Port3",
-		{"encode":"{d0}","setup":"","inc":"","def":"MePort linefollower_{0}({0});\n","work":"linefollower_{0}.dRead1()*2+linefollower_{0}.dRead2()","loop":""}],
+		{"encode":"{d0}","setup":"","inc":"","def":"MeLineFollower linefollower_{0}({0});\n","work":"linefollower_{0}.readSensors()","loop":""}],
 		
 		["R", "light sensor %d.laport","getLightsensor","Port7",
 		{"encode":"{d0}","setup":"","inc":"","def":"MePort lightsensor_{0}({0});\n","work":"lightsensor_{0}.aRead2()","loop":""}],
