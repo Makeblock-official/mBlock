@@ -169,6 +169,10 @@
 		if(typeof slot=="string"){
 			slot = slots[slot];
 		}
+		if(port == 7 && ledIndex > 2){
+			interruptThread("mCore not support led index greater than 2");
+			return;
+		}
 		runPackage(8,port,slot,ledIndex,red,green,blue);
 	};
 	ext.runLightSensor = function(port,status){

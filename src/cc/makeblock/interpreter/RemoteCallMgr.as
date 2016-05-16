@@ -28,6 +28,18 @@ package cc.makeblock.interpreter
 			SerialDevice.sharedDevice().dataRecvSignal.add(__onSerialRecv);
 		}
 		
+		public function interruptThread():void
+		{
+			if(requestList.length <= 0){
+				return;
+			}
+			var info:Array = requestList.shift();
+			var thread:Thread = info[0];
+			thread.interrupt();
+			clearTimeout(timerId);
+			send();
+		}
+		
 		private function __onSerialRecv(bytes:Array):void
 		{
 			if(SocketManager.sharedManager().isConnected){

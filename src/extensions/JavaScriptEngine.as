@@ -9,6 +9,8 @@ package extensions
 	import cc.makeblock.interpreter.RemoteCallMgr;
 	import cc.makeblock.util.FileUtil;
 	
+	import org.aswing.JOptionPane;
+	
 	import util.LogManager;
 	
 	public class JavaScriptEngine
@@ -130,6 +132,7 @@ package extensions
 			_htmlLoader.window.array2string = array2string;
 			_htmlLoader.window.responseValue = responseValue;
 			_htmlLoader.window.trace = trace;
+			_htmlLoader.window.interruptThread = interruptThread;
 			_htmlLoader.window.air = {"trace":trace};
 			ConnectionManager.sharedManager().addEventListener(Event.CONNECT,onConnected);
 			ConnectionManager.sharedManager().addEventListener(Event.REMOVED,onRemoved);
@@ -142,6 +145,12 @@ package extensions
 				RemoteCallMgr.Instance.onPacketRecv();
 			}
 			MBlock.app.extensionManager.reporterCompleted(_name,args[0],args[1]);
+		}
+		
+		static private function interruptThread(msg:String):void
+		{
+			RemoteCallMgr.Instance.interruptThread();
+			JOptionPane.showMessageDialog("", msg);
 		}
 		
 		static private function readFloat(bytes:Array):Number{
