@@ -54,6 +54,13 @@
         'resistance-C': 0,
         'resistance-D': 0
     };
+    function checkPortAndSlot(port, slot, sensor){
+    	if((port == 4 || port == 6) && slot == 1){
+			interruptThread(sensor + " not support Slot1 on Port" + port);
+			return true;
+		}
+		return false;
+    }
 	var values = {};
 	var indexs = [];
 	var versionIndex = 0xFA;
@@ -96,6 +103,9 @@
 		if(angle > 180){
 			angle = 180;
 		}
+		if(checkPortAndSlot(port, slot, "Servo")){
+			return;
+		}
         runPackage(11,port,slot,angle);
     };
 	ext.runStepperMotor = function(port, speed, distance){
@@ -128,6 +138,9 @@
 		}
 		if(typeof slot=="string"){
 			slot = slots[slot];
+		}
+		if(checkPortAndSlot(port, slot, "Led strip")){
+			return;
 		}
 		runPackage(8,port,slot,ledIndex=="all"?0:ledIndex,red,green,blue);
 	};
@@ -235,6 +248,9 @@
 		if(typeof slot=="string"){
 			slot = slots[slot];
 		}
+		if(checkPortAndSlot(port, slot, "Limit switch")){
+			return;
+		}
 		getPackage(nextID,deviceId,port,slot);
     };
 	ext.getPirmotion = function(nextID,port) {
@@ -251,6 +267,9 @@
 		}
 		if(typeof slot=="string"){
 			slot = slots[slot];
+		}
+		if(checkPortAndSlot(port, slot, "Temperature")){
+			return;
 		}
 		getPackage(nextID,deviceId,port,slot);
     };
