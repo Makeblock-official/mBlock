@@ -4,7 +4,7 @@
 	"firmware":"1.2.103",
 	"javascriptURL":"js/Auriga.js",
 	"blockSpecs": [
-		["h","Auriga Program","runArduino",{"src":"orion","inc":"#include <MeAuriga.h>\n","def":"","setup":"","loop":""}],
+		["h","Auriga Program","runArduino",{"src":"orion","inc":"#include <MeAuriga.h>\n","def":"","setup":"//Set Pwm 8KHz\nTCCR1A = _BV(WGM10);\nTCCR1B = _BV(CS11) | _BV(WGM12);\nTCCR2A = _BV(WGM21) | _BV(WGM20);\nTCCR2B = _BV(CS21);\n\n","loop":""}],
 		
 		["w", "%m.direction at speed %d.motorvalue","runBot", "run forward", 0,
 		{"encode":"{d0}{s1}","setup":"attachInterrupt(Encoder_1.GetIntNum(), isr_process_encoder1, RISING);\nattachInterrupt(Encoder_2.GetIntNum(), isr_process_encoder2, RISING);\n","inc":"","def":"","work":"move({0},{1});\n","loop":"Encoder_1.Update_speed();\nEncoder_2.Update_speed();\n"}],
