@@ -40,10 +40,10 @@
 		"gyro external":0
 	};
 	var shutterStatus = {
-		Press:0,
-		Release:1,
-		'Focus On':2,
-		'Focus Off':3,
+		Press:1,
+		Release:0,
+		'Focus On':3,
+		'Focus Off':2
 	};
 	var tones ={"B0":31,"C1":33,"D1":37,"E1":41,"F1":44,"G1":49,"A1":55,"B1":62,
 			"C2":65,"D2":73,"E2":82,"F2":87,"G2":98,"A2":110,"B2":123,

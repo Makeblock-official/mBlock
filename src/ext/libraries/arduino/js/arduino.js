@@ -29,12 +29,6 @@
 		HIGH:1,
 		LOW:0
 	};
-	var shutterStatus = {
-		Press:0,
-		Release:1,
-		'Focus On':2,
-		'Focus Off':3,
-	};
 	var axis = {
 		'X-Axis':1,
 		'Y-Axis':2,

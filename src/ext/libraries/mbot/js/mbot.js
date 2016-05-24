@@ -28,10 +28,10 @@
 		Off:0
 	};
 	var shutterStatus = {
-		Press:0,
-		Release:1,
-		'Focus On':2,
-		'Focus Off':3,
+		Press:1,
+		Release:0,
+		'Focus On':3,
+		'Focus Off':2
 	};
 	var button_keys = {
 		"key1":1,
