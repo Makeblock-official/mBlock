@@ -185,7 +185,10 @@
 		runPackage(3,port,status);
 	};
 	ext.runShutter = function(port,status){
-		runPackage(20,shutterStatus[status]);
+		if(typeof port=="string"){
+			port = ports[port];
+		}
+		runPackage(20,port,shutterStatus[status]);
 	};
 	ext.runIR = function(message){
 		runPackage(13,string2array(message));
