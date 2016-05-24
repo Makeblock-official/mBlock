@@ -67,6 +67,7 @@ function clearInfo(){
 	contentText = "";
 	document.getElementById("content").innerHTML = "";
 }
+
 function isSendBinaryMode(){
 	return document.getElementById("send_binary").checked;
 }
@@ -147,9 +148,9 @@ function updateTranslation(){
 		</fieldset>
 		</td><td>
 		<fieldset><legend name="recv encode mode">recv encode mode</legend>
-			<input type="radio" name="recv" id="recv_binary" checked="checked" />
+			<input type="radio" name="recv" id="recv_binary" checked="checked" onchange="onRecvModeChanged()" />
 			<label for="recv_binary" name="binary mode">binary</label>
-			<input type="radio" name="recv" id="recv_text" />
+			<input type="radio" name="recv" id="recv_text" onchange="onRecvModeChanged()" />
 			<label for="recv_text" name="char mode">text</label>
 		</fieldset>
 		</td></tr>

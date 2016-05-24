@@ -171,12 +171,19 @@ public class ScriptsPart extends UIPart {
 		htmlLoader.runtimeApplicationDomain = ApplicationDomain.currentDomain;
 		htmlLoader.window.trace = trace;
 		htmlLoader.window.onSendSerial = onSendSerial;
+		htmlLoader.window.onRecvModeChanged = onRecvModeChanged;
 		htmlLoader.load(new URLRequest("assets/html/index.html"));
 		addChild(htmlLoader);
 	}
 	
 	private var paletteIndex:int;
 	private var maskWidth:int;
+	private var _isRecvBinaryMode:Boolean = true;
+	
+	private function onRecvModeChanged():void
+	{
+		_isRecvBinaryMode = htmlLoader.window.isRecvBinaryMode();
+	}
 	
 	private function __onMouseOver(event:MouseEvent):void
 	{
@@ -252,7 +259,7 @@ public class ScriptsPart extends UIPart {
 	
 	public function onSerialSend(bytes:ByteArray):void
 	{
-		if(htmlLoader.window.isRecvBinaryMode()){
+		if(_isRecvBinaryMode){
 			appendMsgWithTimestamp(HexUtil.bytesToString(bytes), true);
 		}else{
 			bytes.position = 0;

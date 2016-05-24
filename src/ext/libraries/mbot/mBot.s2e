@@ -58,9 +58,9 @@
 		["R", "light sensor %d.laport","getLightSensor","light sensor on board",
 		{"encode":"{d0}","setup":"","inc":"","def":"MeLightSensor lightsensor_{0}({0});\n","work":"lightsensor_{0}.read()","loop":""}],
 		
-		["h", "when button %m.button_state","whenButtonPressed","pressed"],
+		["h", "when on board button %m.button_state","whenButtonPressed","pressed"],
 
-		["B", "button %m.button_state","getButtonOnBoard","pressed",
+		["B", "on board button %m.button_state","getButtonOnBoard","pressed",
 		{"encode":"{n7}{d0}","setup":"pinMode(A7,INPUT);\n","inc":"","def":"","work":"({0}^(analogRead(A7)>10?0:1))","loop":""}],
 		
 		["-"],
