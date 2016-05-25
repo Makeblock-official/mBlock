@@ -28,7 +28,7 @@
 		{"encode":"{d0}{d1}{d2}{d3}{d4}","setup":"","inc":"","def":"MeRGBLed rgbled_{0}_{1}({0}, {1}, 32);\n","work":"rgbled_{0}_{1}.setColor({2},{3},{4},{5});\nrgbled_{0}_{1}.show();\n","loop":""}],
 		
 		["w", "set light sensor %d.blackPorts led as %d.switch","runLightsensor", "Port7", "On",
-		{"encode":"{d0}{d1}","setup":"","inc":"","def":"MePort lightsensor_{0}({0});\n","work":"lightsensor_{0}.dWrite1({1});\n","loop":""}],
+		{"encode":"{d0}{d1}","setup":"","inc":"","def":"MeLightSensor lightsensor_{0}({0});\n","work":"lightsensor_{0}.dWrite1({1});\n","loop":""}],
 		
 		["w", "set camera shutter %d.normalPort as %d.shutter","runShutter","Port6", "Press",
 		{"encode":"{d0}{d1}","setup":"","inc":"","def":"MeShutter shutter_{0}({0});\n","work":"shutter_{0}.setState({1});\n","loop":""}],
@@ -48,19 +48,19 @@
 		{"encode":"{d0}{d1}","setup":"","inc":"","def":"MeJoystick joystick_{0}({0});\n","work":"joystick_{0}.read({1})","loop":""}],
 		
 		["R", "potentiometer %d.blackPorts","getPotentiometer","Port7",
-		{"encode":"{d0}","setup":"","inc":"","def":"MePort potentiometer_{0}({0});\n","work":"potentiometer_{0}.aRead2()","loop":""}],
+		{"encode":"{d0}","setup":"","inc":"","def":"MePotentiometer potentiometer_{0}({0});\n","work":"potentiometer_{0}.read()","loop":""}],
 		
 		["R", "sound sensor %d.soundPort","getSoundsensor","Port7",
-		{"encode":"{d0}","setup":"","inc":"","def":"MePort soundsensor_{0}({0});\n","work":"soundsensor_{0}.aRead2()","loop":""}],
+		{"encode":"{d0}","setup":"","inc":"","def":"MeSoundSensor soundsensor_{0}({0});\n","work":"soundsensor_{0}.strength()","loop":""}],
 		
 		["R", "infrared receiver %d.bluePorts","getInfrared","Port3",
 		{"encode":"{d0}","setup":"ir_{0}.begin();\n","inc":"","def":"MeInfraredReceiver ir_{0}({0});\n","work":"ir_{0}.getCode()","loop":"ir_{0}.loop();\n"}],
 		
 		["B", "limit switch %d.normalPort %d.slot","getLimitswitch","Port6","Slot1",
-		{"encode":"{d0}{d1}","setup":"","inc":"","def":"MePort sw_{0}_{1}({0});\n","work":"sw_{0}_{1}.dpRead{1}()","loop":""}],
+		{"encode":"{d0}{d1}","setup":"","inc":"","def":"MeLimitSwitch sw_{0}_{1}({0},{1});\n","work":"sw_{0}_{1}.touched()","loop":""}],
 		
 		["R", "pir motion sensor %d.bluePorts","getPirmotion","Port3",
-		{"encode":"{d0}","setup":"","inc":"","def":"MePort pir_{0}({0});\n","work":"pir_{0}.dRead2()","loop":""}],
+		{"encode":"{d0}","setup":"","inc":"","def":"MePIRMotionSensor pir_{0}({0});\n","work":"pir_{0}.isHumanDetected()","loop":""}],
 		
 		["R", "temperature %d.normalPort%d.slot °C","getTemperature","Port3","Slot1",
 		{"encode":"{d0}{d1}","setup":"","inc":"","def":"MeTemperature temperature_{0}_{1}({0},{1});\n","work":"temperature_{0}_{1}.temperature()","loop":""}],

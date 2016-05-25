@@ -49,7 +49,7 @@
 		
 		
 		["w", "set light sensor %d.blackPorts led as %d.switch","runLightSensor", "Port3", "On",
-		{"encode":"{d0}{d1}","setup":"","inc":"","def":"MePort lightsensor_{0}({0});\n","work":"lightsensor_{0}.dWrite1({1});\n","loop":""}],
+		{"encode":"{d0}{d1}","setup":"","inc":"","def":"MeLightSensor lightsensor_{0}({0});\n","work":"lightsensor_{0}.dWrite1({1});\n","loop":""}],
 		
 		["w", "set camera shutter %d.normalPort as %d.shutter","runShutter","Port1", "Press",
 		{"encode":"{d0}{d1}","setup":"","inc":"","def":"MeShutter shutter_{0}({0});\n","work":"shutter_{0}.setState({1});\n","loop":""}],
@@ -75,17 +75,17 @@
 		{"encode":"{d0}{d1}","setup":"","inc":"","def":"MeJoystick joystick_{0}({0});\n","work":"joystick_{0}.read({1})","loop":""}],
 		
 		["R", "potentiometer %d.blackPorts","getPotentiometer","Port3",
-		{"encode":"{d0}","setup":"","inc":"","def":"MePort potentiometer_{0}({0});\n","work":"potentiometer_{0}.aRead2()","loop":""}],
+		{"encode":"{d0}","setup":"","inc":"","def":"MePotentiometer potentiometer_{0}({0});\n","work":"potentiometer_{0}.read()","loop":""}],
 		["R", "sound sensor %d.soundPort","getSoundSensor","Port3",
-		{"encode":"{d0}","setup":"","inc":"","def":"MePort soundsensor_{0}({0});\n","work":"soundsensor_{0}.aRead2()","loop":""}],
+		{"encode":"{d0}","setup":"","inc":"","def":"MeSoundSensor soundsensor_{0}({0});\n","work":"soundsensor_{0}.strength()","loop":""}],
 		["B", "limit switch %d.normalPort %d.slot","getLimitswitch","Port1","Slot1",
-		{"encode":"{d0}{d1}","setup":"","inc":"","def":"MePort sw_{0}_{1}({0});\n","work":"sw_{0}_{1}.dpRead{1}()","loop":""}],
+		{"encode":"{d0}{d1}","setup":"","inc":"","def":"MeLimitSwitch sw_{0}_{1}({0},{1});\n","work":"sw_{0}_{1}.touched()","loop":""}],
 		
 		["R", "temperature %d.normalPort%d.slot °C","getTemperature","Port3","Slot1",
 		{"encode":"{d0}{d1}","setup":"","inc":"","def":"MeTemperature temperature_{0}_{1}({0},{1});\n","work":"temperature_{0}_{1}.temperature()","loop":""}],
 		
 		["R", "pir motion sensor %d.bluePorts","getPirmotion","Port2",
-		{"encode":"{d0}","setup":"","inc":"","def":"MePort pir_{0}({0});\n","work":"pir_{0}.dRead2()","loop":""}],
+		{"encode":"{d0}","setup":"","inc":"","def":"MePIRMotionSensor pir_{0}({0});\n","work":"pir_{0}.isHumanDetected()","loop":""}],
 		
 		["R", "3-axis gyro %d.GyroAxis angle","getGyro","X-Axis",
 		{"encode":"{d0}","setup":"gyro.begin();\n","inc":"","def":"MeGyro gyro;\n","work":"gyro.getAngle({0})","loop":"gyro.update();\n"}],
