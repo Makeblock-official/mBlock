@@ -707,7 +707,8 @@ void updateVar(char * varName,double * var)
 				return codeBlock;
 			}else if(blk[0]=="randomFrom:to:"){
 				codeBlock.type = "number";
-				codeBlock.code = StringUtil.substitute("random({0},{1})",getCodeBlock(blk[1]).code,getCodeBlock(blk[2]).code);
+				//as same as scratch, include max value
+				codeBlock.code = StringUtil.substitute("random({0},({1})+1)",getCodeBlock(blk[1]).code,getCodeBlock(blk[2]).code);
 				return codeBlock;
 			}else if(blk[0]=="computeFunction:of:"){
 				codeBlock.type = "number";
