@@ -30,7 +30,7 @@
 		["w", "set light sensor %d.blackPorts led as %d.switch","runLightsensor", "Port7", "On",
 		{"encode":"{d0}{d1}","setup":"","inc":"","def":"MeLightSensor lightsensor_{0}({0});\n","work":"lightsensor_{0}.dWrite1({1});\n","loop":""}],
 		
-		["w", "set camera shutter %d.normalPort as %d.shutter","runShutter","Port6", "Press",
+		["w", "set camera shutter %d.bluePorts as %d.shutter","runShutter","Port3", "Press",
 		{"encode":"{d0}{d1}","setup":"","inc":"","def":"MeShutter shutter_{0}({0});\n","work":"shutter_{0}.setState({1});\n","loop":""}],
 		
 		["-"],
