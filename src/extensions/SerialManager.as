@@ -458,6 +458,8 @@ package extensions
 			}else if(board.indexOf("_mega2560") > 0){
 				if(board.indexOf("auriga") >= 0){
 					fileName = "auriga";
+				}else if(board.indexOf("mega_pi") >= 0){
+					fileName = "mega_pi";
 				}else{
 					fileName = "mega2560";
 				}

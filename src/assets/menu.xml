@@ -58,6 +58,7 @@
 		<item name="me/uno_shield_uno" label="Me UNO Shield" />
 		<item name="mbot_uno" label="mBot" />
 		<item name="me/auriga_mega2560" label="Auriga" />
+		<item name="me/mega_pi_mega2560" label="Mega Pi" />
 		<item isSeparator="true" />
 		<item name="Others" label="Others" enabled="false" />
 		<item name="picoboard_unknown" label="PicoBoard" />

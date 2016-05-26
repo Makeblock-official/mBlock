@@ -50,6 +50,8 @@ package extensions
 					MBlock.app.extensionManager.singleSelectExtension("UNO Shield");
 				}else if(_board.indexOf("me/auriga") >= 0){
 					MBlock.app.extensionManager.singleSelectExtension("Auriga");
+				}else if(_board.indexOf("me/mega_pi") >= 0){
+					MBlock.app.extensionManager.singleSelectExtension("MegaPi");
 				}else{
 					MBlock.app.extensionManager.singleSelectExtension("PicoBoard");
 				}

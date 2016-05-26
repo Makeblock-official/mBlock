@@ -1,46 +1,37 @@
-﻿{	"extensionName": "Auriga",
+﻿{	"extensionName": "MegaPi",
 	"extensionPort": 0,
 	"sort":2,
 	"firmware":"1.2.103",
-	"javascriptURL":"js/Auriga.js",
+	"javascriptURL":"js/MegaPi.js",
 	"blockSpecs": [
-		["h","Auriga Program","runArduino",{"src":"orion","inc":"#include <MeAuriga.h>\n","def":"","setup":"//Set Pwm 8KHz\nTCCR1A = _BV(WGM10);\nTCCR1B = _BV(CS11) | _BV(WGM12);\nTCCR2A = _BV(WGM21) | _BV(WGM20);\nTCCR2B = _BV(CS21);\n\n","loop":""}],
+		["h","MegaPi Program","runArduino",{"src":"orion","inc":"#include <MeMegaPi.h>\n","def":"","setup":"//Set Pwm 8KHz\nTCCR1A = _BV(WGM10);\nTCCR1B = _BV(CS11) | _BV(WGM12);\nTCCR2A = _BV(WGM21) | _BV(WGM20);\nTCCR2B = _BV(CS21);\n\n","loop":""}],
 		
 		["w", "%m.direction at speed %d.motorvalue","runBot", "run forward", 0,
 		{"encode":"{d0}{s1}","setup":"attachInterrupt(Encoder_1.GetIntNum(), isr_process_encoder1, RISING);\nattachInterrupt(Encoder_2.GetIntNum(), isr_process_encoder2, RISING);\n","inc":"","def":"","work":"move({0},{1});\n","loop":"Encoder_1.Update_speed();\nEncoder_2.Update_speed();\n"}],
 		
-		["w", "set motor%d.motorPort speed %d.motorvalue","runMotor", "Port1", 0,
+		["w", "set motor %d.motorPort %d.slot2 speed %d.motorvalue","runMotor", "Port1", "SlotA", 0,
 		{"encode":"{d0}{s1}","setup":"","inc":"","def":"MeDCMotor motor_{0}({0});\n","work":"motor_{0}.run({1});\n","loop":""}],
 		
 		["w", "set servo %d.servoPort %d.slot angle %d.servovalue","runServo", "Port6","Slot1", 90,
 		{"encode":"{d0}{d1}{d2}","setup":"servo_{0}_{1}.attach(port_{0}.pin{1}());\n","inc":"","def":"Servo servo_{0}_{1};\nMePort port_{0}({0});\n","work":"servo_{0}_{1}.write({2});\n","loop":""}],
 		
+		["w", "set servo on board %d.servoSlot angle %d.servovalue","runServo", "A6", 90,
+		{"encode":"{d0}{d1}{d2}","setup":"servo_{0}_{1}.attach(port_{0}.pin{1}());\n","inc":"","def":"Servo servo_{0}_{1};\nMePort port_{0}({0});\n","work":"servo_{0}_{1}.write({2});\n","loop":""}],
+		
 		["w", "set stepper motor%d.exMotorPort speed %d.stepperSpeed distance %n","runStepperMotor", "Port1", 3000, 1000,
 		{"encode":"{d0}{s1}{s2}","setup":"","inc":"","def":"MeStepper stepper_{0}({0});\n","work":"stepper_{0}.move({2});\nstepper_{0}.setMaxSpeed({1});\nstepper_{0}.setSpeed({1});\n","loop":"stepper_{0}.runSpeedToPosition();\n"}],
 		
-		["w", "set encoder motor%d.exMotorPort %d.slot speed %d.encoderSpeed distance %n","runEncoderMotor", "Port1", "Slot1", 100, 1000,
+		["w", "set encoder motor%d.exMotorPort speed %d.motorvalue","runEncoderMotor", "Port1", 100,
 		{"encode":"{d0}{s1}{s2}","setup":"encoder_{0}_{1}.begin();\nencoder_{0}_{1}.runSpeed(0);\n","inc":"","def":"MeEncoderMotor encoder_{0}_{1}(0x09,{1});\n","work":"encoder_{0}_{1}.move({3},{2});\n","loop":""}],
-		
-		["w", "set encoder motor on board %d.slot speed %d.motorvalue","runEncoderMotorOnBoard", "Slot1", 100,
-		{"encode":"{d0}{s1}{s2}","setup":"attachInterrupt(Encoder_{0}.GetIntNum(), isr_process_encoder{0}, RISING);\n","inc":"","def":"","work":"Encoder_{0}.setMotorPwm({1});\n","loop":"Encoder_{0}.Update_speed();\n"}],
 		
 		["w", "set 7-segments display%d.bluePorts number %n","runSevseg", "Port6", 100,
 		{"encode":"{d0}{f1}","setup":"","inc":"","def":"Me7SegmentDisplay seg7_{0}({0});\n","work":"seg7_{0}.display({1});\n","loop":""}],
-		
-		["w", "set led on board %d.index3 red%d.value green%d.value blue%d.value","runLedOnBoard","all",0,0,0,
-		{"encode":"{d0}{d1}{d2}{d3}{d4}","setup":"rgbled_0.setpin(44);\n","inc":"","def":"MeRGBLed rgbled_0(0, 12);\n","work":"rgbled_0.setColor({0},{1},{2},{3});\nrgbled_0.show();\n","loop":""}],
 		
 		["w", "set led %d.lport %d.index red%d.value green%d.value blue%d.value","runLed", "Port6","all",0,0,0,
 		{"encode":"{d0}{d1}{d2}{d3}{d4}","setup":"","inc":"","def":"MeRGBLed rgbled_{0}({0}, 4);\n","work":"rgbled_{0}.setColor({1},{2},{3},{4});\nrgbled_{0}.show();\n","loop":""}],
 		
 		["w", "set led strip %d.normalPort %d.slot %d.index2 red%d.value green%d.value blue%d.value","runLedStrip", "Port6","Slot2","all",0,0,0,
 		{"encode":"{d0}{d1}{d2}{d3}{d4}","setup":"","inc":"","def":"MeRGBLed rgbled_{0}_{1}({0}, {1}, 32);\n","work":"rgbled_{0}_{1}.setColor({2},{3},{4},{5});\nrgbled_{0}_{1}.show();\n","loop":""}],
-		
-		["w", "play tone on note %d.note beat %d.beats","runBuzzer", "C4", "Half",
-		{"encode":"{s0}","setup":"buzzer.setpin(45);\n","inc":"","def":"MeBuzzer buzzer;\n","work":"buzzer.tone({0}, {1});\n","loop":""}],
-		
-		["w", "stop tone","stopBuzzer",0,
-		{"encode":"{s0}","setup":"","inc":"","def":"MeBuzzer buzzer;\n","work":"buzzer.noTone();\n","loop":""}],
 		
 		["w", "show face %d.normalPort number:%n","showNumber", "Port6", 0,
 		{"encode":"{s0}","setup":"ledMtx_{0}.setColorIndex(1);\nledMtx_{0}.setBrightness(6);\n","inc":"","def":"MeLEDMatrix ledMtx_{0}({0});\n","work":"ledMtx_{0}.showNum({1},2);\n","loop":""}],
@@ -62,16 +53,16 @@
 		
 		["-"],
 		
-		["R", "encoder motor on board %d.slot %d.encoderValue", "getEncoderValue","Slot1", "speed",
+		["R", "encoder motor %d.motorPort %d.encoderValue", "getEncoderValue","Port1", "speed",
 		{"encode":"{d0}","setup":"","inc":"","def":"","work":"Encoder_{0}.GetCurrentSpeed()","loop":""}],
 		
-		["R", "ultrasonic sensor %d.whitePorts distance","getUltrasonic","Port10",
+		["R", "ultrasonic sensor %d.whitePorts distance","getUltrasonic","Port6",
 		{"encode":"{d0}","setup":"","inc":"","def":"MeUltrasonicSensor ultrasonic_{0}({0});\n","work":"ultrasonic_{0}.distanceCm()","loop":""}],
 		
-		["R", "line follower %d.bluePorts","getLinefollower","Port9",
+		["R", "line follower %d.bluePorts","getLinefollower","Port6",
 		{"encode":"{d0}","setup":"","inc":"","def":"MeLineFollower linefollower_{0}({0});\n","work":"linefollower_{0}.readSensors()","loop":""}],
 		
-		["R", "light sensor %d.laport","getLightsensor","on board 1",
+		["R", "light sensor %d.laport","getLightsensor","Port6",
 		{"encode":"{d0}","setup":"","inc":"","def":"MeLightSensor lightsensor_{0}({0});\n","work":"lightsensor_{0}.read()","loop":""}],
 		
 		["R", "joystick %d.blackPorts %d.Axis","getJoystick","Port6","X-Axis",
@@ -80,7 +71,7 @@
 		["R", "potentiometer %d.blackPorts","getPotentiometer","Port6",
 		{"encode":"{d0}","setup":"","inc":"","def":"MePotentiometer potentiometer_{0}({0});\n","work":"potentiometer_{0}.read()","loop":""}],
 		
-		["R", "sound sensor %d.soundPort","getSoundsensor","sound on board",
+		["R", "sound sensor %d.soundPort","getSoundsensor","Port6",
 		{"encode":"{d0}","setup":"","inc":"","def":"MeSoundSensor soundsensor_{0}({0});\n","work":"soundsensor_{0}.strength()","loop":""}],
 		
 		["R", "infrared receiver %d.bluePorts","getInfrared","Port6",
@@ -95,14 +86,8 @@
 		["R", "temperature %d.normalPort%d.slot °C","getTemperature","Port6","Slot1",
 		{"encode":"{d0}{d1}","setup":"","inc":"","def":"MeTemperature temperature_{0}_{1}({0},{1});\n","work":"temperature_{0}_{1}.temperature()","loop":""}],
 		
-		["R", "temperature on board °C","getTemperatureOnBoard",
-		{"encode":"{d0}{d1}","setup":"","inc":"","def":"MeOnBoardTemp temperature_onboard(PORT_13);\n","work":"temperature_onboard.readValue()","loop":""}],
-		
-		["R", "3-axis gyro external %d.GyroAxis angle","getGyroExternal", "X-Axis",
+		["R", "3-axis gyro %d.GyroAxis angle","getGyroExternal", "X-Axis",
 		{"encode":"{d0}","setup":"gyro_1.begin();\n","inc":"","def":"MeGyro gyro_1;\n","work":"gyro_1.getAngle({0})","loop":"gyro_1.update();\n"}],
-		
-		["R", "3-axis gyro on board %d.GyroAxis angle","getGyroOnBoard", "X-Axis",
-		{"encode":"{d0}","setup":"gyro_0.begin();\n","inc":"","def":"MeGyro gyro_0(0, 0x69);\n","work":"gyro_0.getAngle({0})","loop":"gyro_0.update();\n"}],
 		
 		["R", "humiture sensor %d.normalPort %d.humiture", "getHumiture", "Port6", "humidity", {"encode":"", "setup":"", "inc":"", "def":"MeHumiture humiture_{0}({0});\n", "work":"humiture_{0}.getValue({1})", "loop":"humiture_{0}.update();\n"}],
 		["R", "flame sensor %d.blackPorts", "getFlame", "Port6", {"encode":"", "setup":"", "inc":"", "def":"MeFlameSensor flameSensor_{0}({0});\n", "work":"flameSensor_{0}.readAnalog()", "loop":""}],
@@ -113,21 +98,23 @@
 		
         ],
     "menus": {
-    	"yellowPorts":["Port6","Port7","Port8","Port9","Port10"],
-    	"bluePorts":["Port6","Port7","Port8","Port9","Port10"],
+    	"yellowPorts":["Port6","Port7","Port8"],
+    	"bluePorts":["Port6","Port7","Port8"],
     	"grayPorts":["Port5"],
-    	"whitePorts":["Port6","Port7","Port8","Port9","Port10"],
-    	"blackPorts":["Port6","Port7","Port8","Port9","Port10"],
-    	"laport":["on board 1","on board 2","Port6","Port7","Port8","Port9","Port10"],
-    	"soundPort":["sound on board","Port6","Port7","Port8","Port9","Port10"],
-		"normalPort":["Port6","Port7","Port8","Port9","Port10"],
-		"lport":["Port6","Port7","Port8","Port9","Port10"],
+    	"whitePorts":["Port6","Port7","Port8"],
+    	"blackPorts":["Port6","Port7","Port8"],
+    	"laport":["Port6","Port7","Port8"],
+    	"soundPort":["Port6","Port7","Port8"],
+		"normalPort":["Port6","Port7","Port8"],
+		"lport":["Port6","Port7","Port8"],
 		"motorPort":["Port1","Port2","Port3","Port4"],
 		"stepMotorPort":["Port1","Port2","Port3","Port4"],
 		"exMotorPort":["Port1","Port2","Port3","Port4"],
-		"servoPort":["Port6","Port7","Port8","Port9","Port10"],
+		"servoPort":["Port6","Port7","Port8"],
+		"servoSlot":["A6","A7","A8","A9","A10","A11","A12","A13","A14","A15"],
 		"address":["Port1","Port2","Port3","Port4","Port5","Port6","Port7","Port8"],
 		"slot":["Slot1","Slot2"],
+		"slot2":["SlotA","SlotB"],
 		"device":["Ultrasonic","Line Finder","Light Sensor","Sound Sensor","Joystick","Button","Potentiometer"],
 		"exdevice":["LimitSwitch","Temperature"],
 		"encoderValue":["speed", "position"],
@@ -139,7 +126,6 @@
 		"digital":["LOW","HIGH"],
 		"switch":["Off","On"],
 		"shutter":["Press","Release","Focus On","Focus Off"],
-		"index3":["all",1,2,3,4,5,6,7,8,9,10,11,12],
 		"index":["all",1,2,3,4],
 		"index2":["all",1,15,30],
 		"note":["C2","D2","E2","F2","G2","A2","B2","C3","D3","E3","F3","G3","A3","B3","C4","D4","E4","F4","G4","A4","B4","C5","D5","E5","F5","G5","A5","B5","C6","D6","E6","F6","G6","A6","B6","C7","D7","E7","F7","G7","A7","B7","C8","D8"],
@@ -194,6 +180,8 @@
 		"Focus Off":2,
 		"Slot1":1,
 		"Slot2":2,
+		"SlotA":1,
+		"SlotB":2,
 		"Port1":1,
 		"Port2":2,
 		"Port3":3,
