@@ -75,6 +75,9 @@ package cc.makeblock.mbot.ui.parts
 				case "mBot Ranger":
 					filePath = "mBlock/tools/hex/auriga.hex";
 					break;
+				case "Mega Pi":
+					filePath = "mBlock/tools/hex/mega_pi.hex";
+					break;
 				case "bluetooth mode":
 					ext = MBlock.app.extensionManager.extensionByName("Auriga");
 					if(ext != null)
@@ -366,6 +369,9 @@ package cc.makeblock.mbot.ui.parts
 					case "Me Orion":
 						defaultProgramMenu.submenu.addItem(new NativeMenuItem("Starter IR")).name = "Starter IR";
 						defaultProgramMenu.submenu.addItem(new NativeMenuItem("Starter Bluetooth")).name = "Starter Bluetooth";
+						break;
+					case "Mega Pi":
+						defaultProgramMenu.submenu.addItem(new NativeMenuItem("Mega Pi")).name = "Mega Pi";
 						break;
 				}
 			}

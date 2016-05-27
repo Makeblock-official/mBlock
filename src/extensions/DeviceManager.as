@@ -77,6 +77,8 @@ package extensions
 				_name = "UNO Shield";
 			}else if(_board.indexOf("auriga") >= 0){
 				_name = "Me Auriga";
+			}else if(_board.indexOf("mega_pi") >= 0){
+				_name = "Mega Pi";
 			}
 			return _name;
 		}
