@@ -14,8 +14,26 @@
         Port6: 6,
         Port7: 7,
         Port8: 8,
-		Port9:9,
-		Port10:10
+		Port1A:1,
+		Port1B:9,
+		Port2A:2,
+		Port2B:10,
+		Port3A:3,
+		Port3B:11,
+		Port4A:4,
+		Port4B:12
+    };
+    var servoSlot = {
+    	"A6" :60,
+    	"A7" :61,
+    	"A8" :62,
+    	"A9" :63,
+    	"A10":64,
+    	"A11":65,
+    	"A12":66,
+    	"A13":67,
+    	"A14":68,
+    	"A15":69
     };
     var button_keys = {
 		"key1":1,
@@ -25,9 +43,7 @@
 	};
 	var slots = {
 		Slot1:1,
-		Slot2:2,
-		SlotA:1,
-		SlotB:2
+		Slot2:2
 	};
 	var switchStatus = {
 		On:1,
@@ -39,15 +55,6 @@
 		'Focus On':3,
 		'Focus Off':2
 	};
-	var tones ={"B0":31,"C1":33,"D1":37,"E1":41,"F1":44,"G1":49,"A1":55,"B1":62,
-			"C2":65,"D2":73,"E2":82,"F2":87,"G2":98,"A2":110,"B2":123,
-			"C3":131,"D3":147,"E3":165,"F3":175,"G3":196,"A3":220,"B3":247,
-			"C4":262,"D4":294,"E4":330,"F4":349,"G4":392,"A4":440,"B4":494,
-			"C5":523,"D5":587,"E5":659,"F5":698,"G5":784,"A5":880,"B5":988,
-			"C6":1047,"D6":1175,"E6":1319,"F6":1397,"G6":1568,"A6":1760,"B6":1976,
-			"C7":2093,"D7":2349,"E7":2637,"F7":2794,"G7":3136,"A7":3520,"B7":3951,
-	"C8":4186,"D8":4699};
-	var beats = {"Half":500,"Quarter":250,"Eighth":125,"Whole":1000,"Double":2000,"Zero":0};
 	var axis = {
 		'X-Axis':1,
 		'Y-Axis':2,
@@ -75,8 +82,6 @@
 		"line follower mode":4
     };
 	var values = {};
-	var indexs = [];
-	var versionIndex = 0xFA;
     ext.resetAll = function(){
     	device.send([0xff, 0x55, 2, 0, 4]);
     };
@@ -114,15 +119,15 @@
 		}
 		getPackage(0,deviceId,port);
     };
-    ext.getEncoderValue = function(slot,valType){
+    ext.getEncoderValue = function(port,valType){
     	var deviceId = 0x3d;
-		if(typeof slot=="string"){
-			slot = slots[slot];
+		if(typeof port=="string"){
+			port = ports[port];
 		}
 		if(typeof valType == "string"){
 			valType = encoderValTypes[valType];
 		}
-    	getPackage(0,deviceId,0,slot,valType);
+    	getPackage(0,deviceId,0,port,valType);
     };
     ext.getButton = function(port, key){
     	var deviceId = 22;
@@ -140,19 +145,12 @@
 		}
         runPackage(10,port,short2array(speed));
     };
-    ext.runBuzzer = function(tone, beat){
-		if(typeof tone == "string"){
-			tone = tones[tone];
+    ext.runServoByPin = function(pin,angle){
+    	if(typeof pin=="string"){
+			pin = servoSlot[pin];
 		}
-		if(typeof beat == "string"){
-			beat = parseInt(beat) || beats[beat];
-		}
-		runPackage(34,0x2d,short2array(tone), short2array(beat));
-	};
-	
-	ext.stopBuzzer = function(){
-		runPackage(34,short2array(0));
-	};
+    	runPackage(33,pin,angle);
+    };
     ext.runServo = function(port,slot,angle) {
 		if(typeof port=="string"){
 			port = ports[port];
@@ -171,21 +169,11 @@
 		}
 		runPackage(40,port,short2array(speed),int2array(distance));
 	};
-	ext.runEncoderMotorOnBoard = function(slot, speed){
-		ext.runEncoderMotor(0, slot, speed, 0);
-	};
-	ext.runEncoderMotor = function(port, slot, speed, distance){
+	ext.runEncoderMotor = function(port, speed){
 		if(typeof port=="string"){
 			port = ports[port];
 		}
-		if(typeof slot=="string"){
-			slot = slots[slot];
-		}
-		if(port == 0){
-			runPackage(61,0,slot,short2array(speed));
-		}else{
-			runPackage(12,0x8,slot,short2array(speed),float2array(distance));
-		}
+		runPackage(61,0,port,short2array(speed));
 	};
 	ext.runSevseg = function(port,display){
 		if(typeof port=="string"){
