@@ -28,21 +28,21 @@
 		{"encode":"{d0}{d1}{d2}{d3}{d4}","setup":"","inc":"","def":"MeRGBLed rgbled_{0}_{1}({0}, {1}, 32);\n","work":"rgbled_{0}_{1}.setColor({2},{3},{4},{5});\nrgbled_{0}_{1}.show();\n","loop":""}],
 		
 		["w", "set light sensor %d.blackPorts led as %d.switch","runLightsensor", "Port7", "On",
-		{"encode":"{d0}{d1}","setup":"","inc":"","def":"MePort lightsensor_{0}({0});\n","work":"lightsensor_{0}.dWrite1({1});\n","loop":""}],
+		{"encode":"{d0}{d1}","setup":"","inc":"","def":"MeLightSensor lightsensor_{0}({0});\n","work":"lightsensor_{0}.dWrite1({1});\n","loop":""}],
 		
-		["w", "set camera shutter %d.normalPort as %d.shutter","runShutter","Port6", "Press",
-		{"encode":"{d0}{d1}","setup":"","inc":"","def":"MePort shutter_{0}({0});\n","work":"shutter_{0}.dWrite1({1});\n","loop":""}],
+		["w", "set camera shutter %d.bluePorts as %d.shutter","runShutter","Port3", "Press",
+		{"encode":"{d0}{d1}","setup":"","inc":"","def":"MeShutter shutter_{0}({0});\n","work":"shutter_{0}.setState({1});\n","loop":""}],
 		
 		["-"],
 		
 		["R", "ultrasonic sensor %d.whitePorts distance","getUltrasonic","Port3",
 		{"encode":"{d0}","setup":"","inc":"","def":"MeUltrasonicSensor ultrasonic_{0}({0});\n","work":"ultrasonic_{0}.distanceCm()","loop":""}],
 		
-		["R", "line follower %d.normalPort","getLinefollower","Port3",
-		{"encode":"{d0}","setup":"","inc":"","def":"MePort linefollower_{0}({0});\n","work":"linefollower_{0}.dRead1()*2+linefollower_{0}.dRead2()","loop":""}],
+		["R", "line follower %d.bluePorts","getLinefollower","Port3",
+		{"encode":"{d0}","setup":"","inc":"","def":"MeLineFollower linefollower_{0}({0});\n","work":"linefollower_{0}.readSensors()","loop":""}],
 		
 		["R", "light sensor %d.laport","getLightsensor","Port7",
-		{"encode":"{d0}","setup":"","inc":"","def":"MePort lightsensor_{0}({0});\n","work":"lightsensor_{0}.aRead2()","loop":""}],
+		{"encode":"{d0}","setup":"","inc":"","def":"MeLightSensor lightsensor_{0}({0});\n","work":"lightsensor_{0}.read()","loop":""}],
 		
 		["R", "joystick %d.blackPorts %d.Axis","getJoystick","Port7","X-Axis",
 		{"encode":"{d0}{d1}","setup":"","inc":"","def":"MeJoystick joystick_{0}({0});\n","work":"joystick_{0}.read({1})","loop":""}],
@@ -52,9 +52,6 @@
 		
 		["R", "sound sensor %d.soundPort","getSoundsensor","Port7",
 		{"encode":"{d0}","setup":"","inc":"","def":"MePort soundsensor_{0}({0});\n","work":"soundsensor_{0}.aRead2()","loop":""}],
-		
-		["R", "infrared receiver %d.bluePorts","getInfrared","Port3",
-		{"encode":"{d0}","setup":"ir_{0}.begin();\n","inc":"","def":"MeInfraredReceiver ir_{0}({0});\n","work":"ir_{0}.getCode()","loop":"ir_{0}.loop();\n"}],
 		
 		["B", "limit switch %d.normalPort %d.slot","getLimitswitch","Port6","Slot1",
 		{"encode":"{d0}{d1}","setup":"","inc":"","def":"MePort sw_{0}_{1}({0});\n","work":"sw_{0}_{1}.dpRead{1}()","loop":""}],
@@ -71,7 +68,7 @@
 		["R", "humiture sensor %d.normalPort %d.humiture", "getHumiture", "Port3", "humidity", {"encode":"", "setup":"", "inc":"", "def":"MeHumiture humiture_{0}({0});\n", "work":"humiture_{0}.getValue({1})", "loop":"humiture_{0}.update();\n"}],
 		["R", "flame sensor %d.blackPorts", "getFlame", "Port7", {"encode":"", "setup":"", "inc":"", "def":"MeFlameSensor flameSensor_{0}({0});\n", "work":"flameSensor_{0}.readAnalog()", "loop":""}],
 		["R", "gas sensor %d.blackPorts", "getGas", "Port7", {"encode":"", "setup":"", "inc":"", "def":"MeGasSensor gasSensor_{0}({0});\n", "work":"gasSensor_{0}.readAnalog()", "loop":""}],
-		["B", "touch sensor %d.normalPort","getTouchSensor","Port3",{"encode":"{d0}","setup":"","inc":"","def":"MeTouchSensor touchSensor_{0}({0});\n","work":"touchSensor_{0}.touched()","loop":""}],
+		["B", "touch sensor %d.bluePorts","getTouchSensor","Port3",{"encode":"{d0}","setup":"","inc":"","def":"MeTouchSensor touchSensor_{0}({0});\n","work":"touchSensor_{0}.touched()","loop":""}],
 		["B", "button %d.blackPorts %m.button_key pressed","getButton","Port7","key1",{"encode":"{d0}","setup":"","inc":"","def":"Me4Button buttonSensor_{0}({0});\n","work":"(buttonSensor_{0}.pressed()=={1})","loop":""}]
 		
         ],
@@ -83,12 +80,12 @@
     	"blackPorts":["Port7","Port8"],
     	"soundPort":["Port7","Port8"],
     	"laport":["Port7","Port8"],
-		"normalPort":["Port3","Port4","Port5","Port6","Port7","Port8"],
-		"lport":["Port3","Port4","Port5","Port6","Port7","Port8"],
+		"normalPort":["Port3","Port4","Port6","Port7","Port8"],
+		"lport":["Port3","Port4","Port6","Port7","Port8"],
 		"motorPort":["Port1","Port2","Port9","Port10"],
 		"exMotorPort":["Port1","Port2","Port9","Port10"],
 		"stepMotorPort":["Port1","Port2","Port9","Port10"],
-		"servoPort":["Port1","Port2","Port3","Port4","Port5","Port6","Port7","Port8","Port9","Port10"],
+		"servoPort":["Port3","Port4","Port6","Port7","Port8"],
 		"address":["Port1","Port2","Port3","Port4","Port5","Port6","Port7","Port8","Port9","Port10"],
 		"slot":["Slot1","Slot2"],
 		"device":["Ultrasonic","Line Finder","Light Sensor","Sound Sensor","Joystick","Button","Potentiometer"],
@@ -118,10 +115,10 @@
 		"Off":0,
 		"LOW":0,
 		"HIGH":1,
-		"Press":0,
-		"Release":1,
-		"Focus On":2,
-		"Focus Off":3,
+		"Press":1,
+		"Release":0,
+		"Focus On":3,
+		"Focus Off":2,
 		"Slot1":1,
 		"Slot2":2,
 		"Port1":1,

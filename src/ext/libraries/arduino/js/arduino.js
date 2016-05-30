@@ -29,12 +29,6 @@
 		HIGH:1,
 		LOW:0
 	};
-	var shutterStatus = {
-		Press:0,
-		Release:1,
-		'Focus On':2,
-		'Focus Off':3,
-	};
 	var axis = {
 		'X-Axis':1,
 		'Y-Axis':2,
@@ -48,7 +42,7 @@
 			"C6":1047,"D6":1175,"E6":1319,"F6":1397,"G6":1568,"A6":1760,"B6":1976,
 			"C7":2093,"D7":2349,"E7":2637,"F7":2794,"G7":3136,"A7":3520,"B7":3951,
 	"C8":4186,"D8":4699};
-	var beats = {"Half":500,"Quater":250,"Eighth":125,"Whole":1000,"Double":2000,"Zero":0};
+	var beats = {"Half":500,"Quarter":250,"Eighth":125,"Whole":1000,"Double":2000,"Zero":0};
 	var values = {};
 	var indexs = [];
 	
@@ -75,6 +69,7 @@
 	};
 	ext.resetTimer = function(){
 		startTimer = new Date().getTime();
+		responseValue();
 	};
 	ext.getDigital = function(nextID,pin){
 		var deviceId = 30;
@@ -98,35 +93,28 @@
 		}
 		responseValue(nextID,new Date().getTime()-startTimer);
 	}
-	
-	function runPackage(){
-		var bytes = [];
-		bytes.push(0xff);
-		bytes.push(0x55);
-		bytes.push(0);
-		bytes.push(0);
-		bytes.push(2);
-		for(var i=0;i<arguments.length;i++){
-			if(arguments[i].constructor == "[class Array]"){
-				bytes = bytes.concat(arguments[i]);
+
+	function sendPackage(argList, type){
+		var bytes = [0xff, 0x55, 0, 0, type];
+		for(var i=0;i<argList.length;++i){
+			var val = argList[i];
+			if(val.constructor == "[class Array]"){
+				bytes = bytes.concat(val);
 			}else{
-				bytes.push(arguments[i]);
+				bytes.push(val);
 			}
 		}
-		bytes[2] = bytes.length-3;
+		bytes[2] = bytes.length - 3;
 		device.send(bytes);
+	}
+	
+	function runPackage(){
+		sendPackage(arguments, 2);
 	}
 	function getPackage(){
 		var nextID = arguments[0];
-
-		var bytes = [0xff, 0x55];
-		bytes.push(arguments.length+1);
-		bytes.push(0);
-		bytes.push(1);
-		for(var i=1;i<arguments.length;i++){
-			bytes.push(arguments[i]);
-		}
-		device.send(bytes);
+		Array.prototype.shift.call(arguments);
+		sendPackage(arguments, 1);
 	}
 
     var inputArray = [];

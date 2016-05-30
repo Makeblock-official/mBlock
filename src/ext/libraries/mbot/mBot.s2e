@@ -49,18 +49,18 @@
 		
 		
 		["w", "set light sensor %d.blackPorts led as %d.switch","runLightSensor", "Port3", "On",
-		{"encode":"{d0}{d1}","setup":"","inc":"","def":"MePort lightsensor_{0}({0});\n","work":"lightsensor_{0}.dWrite1({1});\n","loop":""}],
+		{"encode":"{d0}{d1}","setup":"","inc":"","def":"MeLightSensor lightsensor_{0}({0});\n","work":"lightsensor_{0}.dWrite1({1});\n","loop":""}],
 		
-		["w", "set camera shutter %d.normalPort as %d.shutter","runShutter","Port1", "Press",
-		{"encode":"{d0}{d1}","setup":"","inc":"","def":"MePort shutter_{0}({0});\n","work":"shutter_{0}.dWrite1({1});\n","loop":""}],
+		["w", "set camera shutter %d.bluePorts as %d.shutter","runShutter","Port1", "Press",
+		{"encode":"{d0}{d1}","setup":"","inc":"","def":"MeShutter shutter_{0}({0});\n","work":"shutter_{0}.setState({1});\n","loop":""}],
 		
 		["-"],
 		["R", "light sensor %d.laport","getLightSensor","light sensor on board",
-		{"encode":"{d0}","setup":"","inc":"","def":"MePort lightsensor_{0}({0});\n","work":"lightsensor_{0}.aRead2()","loop":""}],
+		{"encode":"{d0}","setup":"","inc":"","def":"MeLightSensor lightsensor_{0}({0});\n","work":"lightsensor_{0}.read()","loop":""}],
 		
-		["h", "when button %m.button_state","whenButtonPressed","pressed"],
+		["h", "when on board button %m.button_state","whenButtonPressed","pressed"],
 
-		["B", "button %m.button_state","getButtonOnBoard","pressed",
+		["B", "on board button %m.button_state","getButtonOnBoard","pressed",
 		{"encode":"{n7}{d0}","setup":"pinMode(A7,INPUT);\n","inc":"","def":"","work":"({0}^(analogRead(A7)>10?0:1))","loop":""}],
 		
 		["-"],
@@ -68,8 +68,8 @@
 		["R", "ultrasonic sensor %d.whitePorts distance","getUltrasonic","Port3",
 		{"encode":"{d0}","setup":"","inc":"","def":"MeUltrasonicSensor ultrasonic_{0}({0});\n","work":"ultrasonic_{0}.distanceCm()","loop":""}],
 		
-		["R", "line follower %d.normalPort","getLinefollower","Port2",
-		{"encode":"{d0}","setup":"","inc":"","def":"MePort linefollower_{0}({0});\n","work":"linefollower_{0}.dRead1()*2+linefollower_{0}.dRead2()","loop":""}],
+		["R", "line follower %d.bluePorts","getLinefollower","Port2",
+		{"encode":"{d0}","setup":"","inc":"","def":"MeLineFollower linefollower_{0}({0});\n","work":"linefollower_{0}.readSensors()","loop":""}],
 		
 		["R", "joystick %d.blackPorts %d.Axis","getJoystick","Port3","X-Axis",
 		{"encode":"{d0}{d1}","setup":"","inc":"","def":"MeJoystick joystick_{0}({0});\n","work":"joystick_{0}.read({1})","loop":""}],
@@ -93,8 +93,8 @@
 		["R", "humiture sensor %d.normalPort %d.humiture", "getHumiture", "Port1", "humidity", {"encode":"", "setup":"", "inc":"", "def":"MeHumiture humiture_{0}({0});\n", "work":"humiture_{0}.getValue({1})", "loop":"humiture_{0}.update();\n"}],
 		["R", "flame sensor %d.blackPorts", "getFlame", "Port3", {"encode":"", "setup":"", "inc":"", "def":"MeFlameSensor flameSensor_{0}({0});\n", "work":"flameSensor_{0}.readAnalog()", "loop":""}],
 		["R", "gas sensor %d.blackPorts", "getGas", "Port3", {"encode":"", "setup":"", "inc":"", "def":"MeGasSensor gasSensor_{0}({0});\n", "work":"gasSensor_{0}.readAnalog()", "loop":""}],
-		["R", "compass sensor %d.normalPort", "gatCompass", "Port1",{"encode":"", "setup":"compass_{0}.begin();\n", "inc":"", "def":"MeCompass compass_{0}({0});\n", "work":"compass_{0}.getAngle()", "loop":""}],
-		["B", "touch sensor %d.normalPort","getTouchSensor","Port1",
+		["R", "compass sensor %d.whitePorts", "gatCompass", "Port1",{"encode":"", "setup":"compass_{0}.begin();\n", "inc":"", "def":"MeCompass compass_{0}({0});\n", "work":"compass_{0}.getAngle()", "loop":""}],
+		["B", "touch sensor %d.bluePorts","getTouchSensor","Port1",
 		{"encode":"{d0}","setup":"","inc":"","def":"MeTouchSensor touchSensor_{0}({0});\n","work":"touchSensor_{0}.touched()","loop":""}],
 		["B", "button %d.blackPorts %m.button_key pressed","getButton","Port3","key1",
 		{"encode":"{d0}","setup":"","inc":"","def":"Me4Button buttonSensor_{0}({0});\n","work":"(buttonSensor_{0}.pressed()=={1})","loop":""}],
@@ -141,7 +141,7 @@
 		"direction":["run forward","run backward","turn right","turn left"],
 		"points":[":"," "],
 		"note":["C2","D2","E2","F2","G2","A2","B2","C3","D3","E3","F3","G3","A3","B3","C4","D4","E4","F4","G4","A4","B4","C5","D5","E5","F5","G5","A5","B5","C6","D6","E6","F6","G6","A6","B6","C7","D7","E7","F7","G7","A7","B7","C8","D8"],
-		"beats":["Half","Quater","Eighth","Whole","Double","Zero"],
+		"beats":["Half","Quarter","Eighth","Whole","Double","Zero"],
 		"servovalue":[0,45,90,135,180],
 		"motorvalue":[255,100,50,0,-50,-100,-255],
 		"value":[0,20,60,150,255],
@@ -154,7 +154,7 @@
 		"humiture":["humidity","temperature"]
 	},
 	"values":{
-		"Half":500,"Quater":250,"Eighth":125,"Whole":1000,"Double":2000,"Zero":0,
+		"Half":500,"Quarter":250,"Eighth":125,"Whole":1000,"Double":2000,"Zero":0,
 		"servovalue":[0,45,90,135,180],
 		"all":0,
 		"run":2,
@@ -197,10 +197,10 @@
 		"Off":0,
 		"LOW":0,
 		"HIGH":1,
-		"Press":0,
-		"Release":1,
-		"Focus On":2,
-		"Focus Off":3,
+		"Press":1,
+		"Release":0,
+		"Focus On":3,
+		"Focus Off":2,
 		"led on board":7,
 		"light sensor on board":6,
 		"M1":9,

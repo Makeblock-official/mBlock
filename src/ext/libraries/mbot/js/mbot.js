@@ -28,10 +28,10 @@
 		Off:0
 	};
 	var shutterStatus = {
-		Press:0,
-		Release:1,
-		'Focus On':2,
-		'Focus Off':3,
+		Press:1,
+		Release:0,
+		'Focus On':3,
+		'Focus Off':2
 	};
 	var button_keys = {
 		"key1":1,
@@ -47,7 +47,7 @@
 			"C6":1047,"D6":1175,"E6":1319,"F6":1397,"G6":1568,"A6":1760,"B6":1976,
 			"C7":2093,"D7":2349,"E7":2637,"F7":2794,"G7":3136,"A7":3520,"B7":3951,
 	"C8":4186,"D8":4699};
-	var beats = {"Half":500,"Quater":250,"Eighth":125,"Whole":1000,"Double":2000,"Zero":0};
+	var beats = {"Half":500,"Quarter":250,"Eighth":125,"Whole":1000,"Double":2000,"Zero":0};
 	var ircodes = {	"A":69,
 		"B":70,
 		"C":71,
@@ -94,9 +94,7 @@
 	ext.runArduino = function(){
 		responseValue();
 	};
-	ext.whenButtonPressed = function(){
-		responseValue();
-	};
+	
 	ext.runBot = function(direction,speed) {
 		var leftSpeed = 0;
 		var rightSpeed = 0;
@@ -171,6 +169,10 @@
 		if(typeof slot=="string"){
 			slot = slots[slot];
 		}
+		if(port == 7 && ledIndex > 2){
+			interruptThread("mCore not support led index greater than 2");
+			return;
+		}
 		runPackage(8,port,slot,ledIndex,red,green,blue);
 	};
 	ext.runLightSensor = function(port,status){
@@ -183,7 +185,10 @@
 		runPackage(3,port,status);
 	};
 	ext.runShutter = function(port,status){
-		runPackage(20,shutterStatus[status]);
+		if(typeof port=="string"){
+			port = ports[port];
+		}
+		runPackage(20,port,shutterStatus[status]);
 	};
 	ext.runIR = function(message){
 		runPackage(13,string2array(message));
@@ -226,6 +231,7 @@
 	}
 	ext.resetTimer = function(){
 		startTimer = (new Date().getTime())/1000.0;
+		responseValue();
 	};
 	/*
 	ext.getLightOnBoard = function(nextID){
@@ -395,30 +401,27 @@
 		}
 		responseValue(nextID,(new Date().getTime())/1000.0-startTimer);
 	}
-	function runPackage(){
-		var bytes = [0xff, 0x55, 0, 0, 2];
-		for(var i=0;i<arguments.length;i++){
-			if(isArray(arguments[i])){
-				bytes = bytes.concat(arguments[i]);
+	function sendPackage(argList, type){
+		var bytes = [0xff, 0x55, 0, 0, type];
+		for(var i=0;i<argList.length;++i){
+			var val = argList[i];
+			if(val.constructor == "[class Array]"){
+				bytes = bytes.concat(val);
 			}else{
-				bytes.push(arguments[i]);
+				bytes.push(val);
 			}
 		}
-		bytes[2] = bytes.length-3;
+		bytes[2] = bytes.length - 3;
 		device.send(bytes);
 	}
 	
+	function runPackage(){
+		sendPackage(arguments, 2);
+	}
 	function getPackage(){
 		var nextID = arguments[0];
-		
-		var bytes = [0xff, 0x55];
-		bytes.push(arguments.length+1);
-		bytes.push(0);
-		bytes.push(1);
-		for(var i=1;i<arguments.length;i++){
-			bytes.push(arguments[i]);
-		}
-		device.send(bytes);
+		Array.prototype.shift.call(arguments);
+		sendPackage(arguments, 1);
 	}
 
     var inputArray = [];
@@ -474,13 +477,6 @@
 							position+=4;
 						}
 							break;
-						case 6:{
-							value = readInt(_rxBuf,position);
-							position+=4;
-						}
-							break;
-						default:
-							responseValue();
 					}
 					if(type<=5){
 						if(values[extId]!=undefined){
@@ -502,10 +498,6 @@
 	function readShort(arr,position){
 		var s= [arr[position],arr[position+1]];
 		return parseShort(s);
-	}
-	function readInt(arr,position){
-		var f= [arr[position],arr[position+1],arr[position+2],arr[position+3]];
-		return parseInt32(f);
 	}
 	function readDouble(arr,position){
 		return readFloat(arr,position);
