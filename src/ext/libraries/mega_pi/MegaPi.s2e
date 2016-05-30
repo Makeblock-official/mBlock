@@ -10,7 +10,7 @@
 		{"encode":"{d0}{s1}","setup":"attachInterrupt(Encoder_1.GetIntNum(), isr_process_encoder1, RISING);\nattachInterrupt(Encoder_2.GetIntNum(), isr_process_encoder2, RISING);\n","inc":"","def":"","work":"move({0},{1});\n","loop":"Encoder_1.Update_speed();\nEncoder_2.Update_speed();\n"}],
 		
 		["w", "set motor%d.motorPort speed %d.motorvalue","runMotor", "Port1A", 0,
-		{"encode":"{d0}{s1}","setup":"","inc":"","def":"MeDCMotor motor_{0}({0});\n","work":"motor_{0}.run({1});\n","loop":""}],
+		{"encode":"{d0}{s1}","setup":"","inc":"","def":"MeMegaPiDCMotor motor_{0}({0});\n","work":"motor_{0}.run({1});\n","loop":""}],
 		
 		["w", "set servo %d.servoPort %d.slot angle %d.servovalue","runServo", "Port6","Slot1", 90,
 		{"encode":"{d0}{d1}{d2}","setup":"servo_{0}_{1}.attach(port_{0}.pin{1}());\n","inc":"","def":"Servo servo_{0}_{1};\nMePort port_{0}({0});\n","work":"servo_{0}_{1}.write({2});\n","loop":""}],
@@ -19,7 +19,7 @@
 		{"encode":"{d0}{d1}{d2}","setup":"servo_{0}.attach({0});\n","inc":"","def":"Servo servo_{0};\n","work":"servo_{0}.write({1});\n","loop":""}],
 		
 		["w", "set stepper motor%d.exMotorPort speed %d.stepperSpeed distance %n","runStepperMotor", "Port1", 3000, 1000,
-		{"encode":"{d0}{s1}{s2}","setup":"","inc":"","def":"MeStepper stepper_{0}({0});\n","work":"stepper_{0}.move({2});\nstepper_{0}.setMaxSpeed({1});\nstepper_{0}.setSpeed({1});\n","loop":"stepper_{0}.runSpeedToPosition();\n"}],
+		{"encode":"{d0}{s1}{s2}","setup":"stepper_{0}.setMicroStep(16);\nstepper_{0}.enableOutputs();\n","inc":"","def":"MeStepperOnBoard stepper_{0}({0});\n","work":"stepper_{0}.move({2});\nstepper_{0}.setMaxSpeed({1});\nstepper_{0}.setSpeed({1});\n","loop":"stepper_{0}.runSpeedToPosition();\n"}],
 		
 		["w", "set encoder motor%d.exMotorPort speed %d.motorvalue","runEncoderMotor", "Port1", 100,
 		{"encode":"{d0}{s1}{s2}","setup":"encoder_{0}_{1}.begin();\nencoder_{0}_{1}.runSpeed(0);\n","inc":"","def":"MeEncoderMotor encoder_{0}_{1}(0x09,{1});\n","work":"encoder_{0}_{1}.move({3},{2});\n","loop":""}],
