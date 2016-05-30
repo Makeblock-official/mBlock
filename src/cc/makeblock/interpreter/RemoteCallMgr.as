@@ -59,7 +59,7 @@ package cc.makeblock.interpreter
 			}
 			var info:Array = requestList[0];
 			var ext:ScratchExtension = info[3];
-			ext.js.call(info[1], info[2], null);
+			ext.js.call(info[1], info[2], ext);
 			timerId = setTimeout(onTimeout, 5000);
 		}
 		

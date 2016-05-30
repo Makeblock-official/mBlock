@@ -39,7 +39,7 @@ package extensions
 			return "Disconnected";
 		}
 		public function call(method:String,param:Array,ext:ScratchExtension):void{
-			JsUtil.Call("callJs", ["mBot", method, param]);
+			JsUtil.Call("callJs", [ext.name, method, param]);
 		}
 		/*
 		public function requestValue(method:String,param:Array,ext:ScratchExtension, nextID:int):void
