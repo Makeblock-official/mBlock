@@ -1147,6 +1147,91 @@ void move(int direction, int speed)
   Encoder_2.setMotorPwm(rightSpeed);
 }
 ]]>.toString();
+			}else if(DeviceManager.sharedManager().currentName == "Mega Pi" && ccode_inc.indexOf("void isr_process_encoder1(void)") < 0){
+				ccode_inc += <![CDATA[
+#include <MeMegaPi.h>
+
+MeEncoderOnBoard Encoder_1(SLOT1);
+MeEncoderOnBoard Encoder_2(SLOT2);
+MeEncoderOnBoard Encoder_3(SLOT3);
+MeEncoderOnBoard Encoder_4(SLOT4);
+
+void isr_process_encoder1(void)
+{
+  if(digitalRead(Encoder_1.GetPortB()) == 0)
+  {
+	Encoder_1.PulsePosMinus();
+  }
+  else
+  {
+	Encoder_1.PulsePosPlus();
+  }
+}
+
+void isr_process_encoder2(void)
+{
+  if(digitalRead(Encoder_2.GetPortB()) == 0)
+  {
+	Encoder_2.PulsePosMinus();
+  }
+  else
+  {
+	Encoder_2.PulsePosPlus();
+  }
+}
+
+void isr_process_encoder3(void)
+{
+  if(digitalRead(Encoder_3.GetPortB()) == 0)
+  {
+	Encoder_3.PulsePosMinus();
+  }
+  else
+  {
+	Encoder_3.PulsePosPlus();
+  }
+}
+
+void isr_process_encoder4(void)
+{
+  if(digitalRead(Encoder_4.GetPortB()) == 0)
+  {
+	Encoder_4.PulsePosMinus();
+  }
+  else
+  {
+	Encoder_4.PulsePosPlus();
+  }
+}
+
+void move(int direction, int speed)
+{
+  int leftSpeed = 0;
+  int rightSpeed = 0;
+  if(direction == 1)
+  {
+	leftSpeed = -speed;
+	rightSpeed = speed;
+  }
+  else if(direction == 2)
+  {
+	leftSpeed = speed;
+	rightSpeed = -speed;
+  }
+  else if(direction == 3)
+  {
+	leftSpeed = -speed;
+	rightSpeed = -speed;
+  }
+  else if(direction == 4)
+  {
+	leftSpeed = speed;
+	rightSpeed = speed;
+  }
+  Encoder_1.setMotorPwm(leftSpeed);
+  Encoder_2.setMotorPwm(rightSpeed);
+}
+]]>.toString();
 			}
 			return modIncudeCode;
 		}
