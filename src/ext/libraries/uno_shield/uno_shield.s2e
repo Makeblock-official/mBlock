@@ -3,6 +3,7 @@
 	"sort":5,
 	"firmware":"1.2.103",
 	"javascriptURL":"js/orion.js",
+	"isMakeBlockBoard":true,
 	"blockSpecs": [
 		["h","UNO Shield Program","runArduino",{"src":"orion","inc":"#include <MeShield.h>\n","def":"","setup":"","loop":""}],
 		

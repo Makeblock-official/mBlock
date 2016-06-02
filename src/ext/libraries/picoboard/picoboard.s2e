@@ -3,6 +3,7 @@
 	"sort":6,
 	"firmware":"1.2.103",
 	"javascriptURL":"js/picoExtension.js",
+	"isMakeBlockBoard":true,
 	"blockSpecs": [
             ["h", "when %m.booleanSensor",         "whenSensorConnected", "button pressed"],
             ["h", "when %m.sensor %m.lessMore %n", "whenSensorPass",      "slider", ">", 50],

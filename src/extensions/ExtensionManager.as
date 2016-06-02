@@ -163,7 +163,7 @@ public class ExtensionManager {
 		if(name=="_import_"){
 			return;
 		}
-		if(isMekeBlockExt(name)){
+		if(isMakeBlockExt(name)){
 			return;
 		}
 		var ext:Object = findExtensionByName(name);
@@ -208,18 +208,10 @@ public class ExtensionManager {
 		}
 		return false;
 	}
-	static public function isMekeBlockExt(extName:String):Boolean
+	static public function isMakeBlockExt(extName:String):Boolean
 	{
-		switch(extName){
-			case "Makeblock":
-			case "mBot":
-			case "UNO Shield":
-			case "BaseBoard":
-			case "PicoBoard":
-			case "Auriga":
-				return true;
-		}
-		return false;
+		var ext:Object = MBlock.app.extensionManager.findExtensionByName(extName);
+		return ext != null && ext.isMakeBlockBoard;
 	}
 	public function singleSelectExtension(name:String):void{
 		var ext:Object = findExtensionByName(name);
@@ -228,7 +220,7 @@ public class ExtensionManager {
 		}
 		for each(var tempExt:Object in _extensionList){
 			var extName:String = tempExt.extensionName;
-			if(!isMekeBlockExt(extName)){
+			if(!isMakeBlockExt(extName)){
 				continue;
 			}
 			if(checkExtensionSelected(extName)){

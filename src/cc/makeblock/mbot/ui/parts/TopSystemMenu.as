@@ -421,7 +421,7 @@ package cc.makeblock.mbot.ui.parts
 				}
 				var subMenuItem:NativeMenuItem = menuItem.addItem(new NativeMenuItem(Translator.map(extName)));
 				subMenuItem.name = extName;
-				subMenuItem.label = ExtensionManager.isMekeBlockExt(extName) ? "Makeblock" : extName;
+				subMenuItem.label = ExtensionManager.isMakeBlockExt(extName) ? "Makeblock" : extName;
 				subMenuItem.checked = MBlock.app.extensionManager.checkExtensionSelected(extName);
 				register(extName, __onExtensions);
 			}

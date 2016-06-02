@@ -3,6 +3,7 @@
 	"sort":2,
 	"firmware":"1.2.103",
 	"javascriptURL":"js/orion.js",
+	"isMakeBlockBoard":true,
 	"blockSpecs": [
 		["h","Orion Program","runArduino",{"src":"orion","inc":"#include <MeOrion.h>\n","def":"","setup":"","loop":""}],
 		
