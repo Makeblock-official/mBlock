@@ -442,8 +442,8 @@ package cc.makeblock.mbot.ui.parts
 				case "UNO Shield":
 					result = board.indexOf("shield") >= 0;
 					break;
-				case "BaseBoard":
-					result = board.indexOf("baseboard") >= 0;
+				case "MegaPi":
+					result = board.indexOf("mega_pi") >= 0;
 					break;
 				case "PicoBoard":
 					result = board.indexOf("picoboard") >= 0;
