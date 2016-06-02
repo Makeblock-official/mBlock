@@ -2,7 +2,6 @@ package {
 	import com.google.analytics.GATracker;
 	
 	import flash.display.DisplayObject;
-	import flash.display.Loader;
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
 	import flash.display.StageDisplayState;
@@ -14,7 +13,6 @@ package {
 	import flash.events.UncaughtErrorEvent;
 	import flash.geom.Point;
 	import flash.net.FileReference;
-	import flash.net.URLRequest;
 	import flash.system.System;
 	import flash.ui.Keyboard;
 	import flash.utils.ByteArray;
@@ -28,7 +26,6 @@ package {
 	import cc.makeblock.mbot.ui.parts.TopSystemMenu;
 	import cc.makeblock.mbot.uiwidgets.errorreport.ErrorReportFrame;
 	import cc.makeblock.mbot.util.AppTitleMgr;
-	import cc.makeblock.mbot.util.PopupUtil;
 	import cc.makeblock.util.FlashSprite;
 	
 	import extensions.DeviceManager;
@@ -38,7 +35,6 @@ package {
 	import interpreter.Interpreter;
 	
 	import org.aswing.AsWingManager;
-	import org.aswing.JOptionPane;
 	import org.aswing.UIManager;
 	
 	import scratch.BlockMenus;
@@ -74,7 +70,6 @@ package {
 	
 	import util.ApplicationManager;
 	import util.GestureHandler;
-	import util.JsUtil;
 	import util.LogManager;
 	import util.ProjectIO;
 	import util.Server;
@@ -132,7 +127,6 @@ package {
 		public var stagePart:StagePart;
 		private var ga:GATracker;
 		private var tabsPart:TabsPart;
-		private var _welcomeView:Loader;
 		private var _currentVer:String = "03.14.001";
 		public function MBlock(){
 			SharedObjectManager.sharedManager().setObject("board","uno");
@@ -207,34 +201,11 @@ package {
 			fixLayout();
 			setTimeout(DeviceManager.sharedManager, 100);
 			//VersionManager.sharedManager().start(); //在线更新资源文件
-			if(SharedObjectManager.sharedManager().getObject("first-launch",true)){
-				SharedObjectManager.sharedManager().setObject("first-launch",false);
-				openWelcome();
-			}
 			initExtension();
 		}
 		private function initExtension():void{
 //			ClickerManager.sharedManager().update();
 			SerialManager.sharedManager().setMBlock(this);
-		}
-		private function openWelcome():void{
-			openSwf("welcome.swf");
-		}
-		public function openOrion():void{
-			openSwf("orion_buzzer.swf");
-		}
-		private function openSwf(path:String):void
-		{
-			_welcomeView = new Loader();
-			_welcomeView.load(new URLRequest(path));
-			_welcomeView.contentLoaderInfo.addEventListener(Event.COMPLETE,onWelcomeLoaded);
-		}
-		private function onWelcomeLoaded(evt:Event):void{
-			var w:uint = stage.stageWidth;
-			var h:uint = stage.stageHeight;
-			_welcomeView.x = (w-550)/2;
-			_welcomeView.y = (h-400)/2+30;
-			setTimeout(addChild, 500, _welcomeView);
 		}
 		
 		public function track(msg:String):void{
@@ -549,10 +520,6 @@ package {
 			h = Math.ceil(h / scaleY);
 	
 			updateLayout(w, h);
-			if(_welcomeView){
-				_welcomeView.x = (w-550)/2;
-				_welcomeView.y = (h-400)/2+30;
-			}
 		}
 	
 		protected function updateLayout(w:int, h:int):void {
