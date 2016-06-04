@@ -23,7 +23,6 @@ package {
 	import blocks.Block;
 	
 	import cc.makeblock.mbot.lookandfeel.MyLookAndFeel;
-	import cc.makeblock.mbot.ui.parts.TopSystemMenu;
 	import cc.makeblock.mbot.uiwidgets.errorreport.ErrorReportFrame;
 	import cc.makeblock.mbot.util.AppTitleMgr;
 	import cc.makeblock.util.FlashSprite;
@@ -70,6 +69,7 @@ package {
 	
 	import util.ApplicationManager;
 	import util.GestureHandler;
+	import util.JsUtil;
 	import util.LogManager;
 	import util.ProjectIO;
 	import util.Server;
@@ -91,8 +91,6 @@ package {
 		public var stageIsContracted:Boolean; // true when the stage is half size to give more space on small screens
 		public var stageIsHided:Boolean;
 		public var stageIsArduino:Boolean;
-	
-		private var systemMenu:TopSystemMenu;
 		
 		// Runtime
 		public var runtime:ScratchRuntime;
@@ -134,7 +132,7 @@ package {
 			app = this;
 			addEventListener(Event.ADDED_TO_STAGE,initStage);
 			loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, __onError);
-			
+			JsUtil.Init(stage);
 		}
 		static private var errorFlag:Boolean;
 		private function __onError(evt:UncaughtErrorEvent):void
@@ -180,7 +178,6 @@ package {
 				extensionManager = new ExtensionManager(this);
 		//		extensionManager.importExtension();
 				addParts();
-				systemMenu = new TopSystemMenu(stage, "assets/menu.xml");
 				Translator.initializeLanguageList();
 //				playerBG = new Shape(); // create, but don't add
 				stage.addEventListener(MouseEvent.MOUSE_DOWN, gh.mouseDown);
@@ -607,8 +604,6 @@ package {
 			imagesPart.updateTranslation();
 			soundsPart.updateTranslation();
 			scriptsPart.updateTranslation();
-			
-			systemMenu.changeLang();
 		}
 		
 		private function clearProject():void

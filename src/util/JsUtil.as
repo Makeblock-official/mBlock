@@ -3,6 +3,7 @@ package util
 	import flash.display.BitmapData;
 	import flash.display.PNGEncoderOptions;
 	import flash.display.Sprite;
+	import flash.display.Stage;
 	import flash.events.Event;
 	import flash.external.ExternalInterface;
 	import flash.net.URLLoader;
@@ -19,9 +20,12 @@ package util
 
 	public class JsUtil
 	{
-		Init();
-		static private function Init():void
+		static public function Init(stage:Stage):void
 		{
+			var projectUrl:String = stage.loaderInfo.parameters["url"];
+			if(projectUrl != null){
+				
+			}
 			if(!ExternalInterface.available)
 				return;
 			ExternalInterface.marshallExceptions = true;

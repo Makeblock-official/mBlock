@@ -30,7 +30,7 @@ function parseInt32(bytes){
 	return castArray2DataView(bytes).getInt32(0, true);
 }
 
-function parseFloat(bytes){
+function parseFloat32(bytes){
 	if(bytes.length < 4)
 		return 0;
 	return castArray2DataView(bytes).getFloat32(0, true);

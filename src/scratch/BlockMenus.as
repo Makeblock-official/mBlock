@@ -30,6 +30,7 @@ package scratch {
 	
 	import blocks.Block;
 	import blocks.BlockArg;
+	import blocks.BlockIO;
 	
 	import cc.makeblock.mbot.uiwidgets.lightSetter.LightSetterFrame;
 	
@@ -598,11 +599,8 @@ public class BlockMenus implements DragClient {
 				if(block.op.indexOf("runArduino")>-1){
 					ArduinoManager.sharedManager().mainX = block.x;
 					ArduinoManager.sharedManager().mainY = block.y;
-					if(!app.stageIsArduino){
-						m.addItem('upload to arduino',app.scriptsPart.showArduinoCode);
-					}
 				}
-//				m.addItem('duplicate', duplicateStack);
+				m.addItem('duplicate', duplicateStack);
 				m.addItem('delete', block.deleteStack);
 				m.addLine();
 			}
@@ -610,6 +608,23 @@ public class BlockMenus implements DragClient {
 		}
 		//m.addItem('help', block.showHelp);
 		m.addLine();
+	}
+	
+	private function duplicateStack():void
+	{
+		//*
+		if (block.isProcDef()) return; // don't duplicate procedure definition
+		var newStack:Block = BlockIO.stringToStack(BlockIO.stackToString(block), false);
+		newStack.x = block.x + 20;
+		newStack.y = block.y + 20;
+		block.parent.addChild(newStack);
+		//*/
+		//app.gh.mouseUp(new MouseEvent(MouseEvent.MOUSE_UP, true, false, 0, 0, null));
+//		var prevTool:String = CursorTool.tool;
+//		CursorTool.tool = "copy";
+//		block.duplicateStack(app.mouseX - startX, app.mouseY - startY);
+//		CursorTool.tool = prevTool;
+	
 	}
 	
 	private function __onSelect(evt:Event):void

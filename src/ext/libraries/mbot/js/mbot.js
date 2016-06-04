@@ -405,11 +405,7 @@
 		var bytes = [0xff, 0x55, 0, 0, type];
 		for(var i=0;i<argList.length;++i){
 			var val = argList[i];
-			if(val.constructor == "[class Array]"){
-				bytes = bytes.concat(val);
-			}else{
-				bytes.push(val);
-			}
+			bytes = bytes.concat(val);
 		}
 		bytes[2] = bytes.length - 3;
 		device.send(bytes);
@@ -477,6 +473,8 @@
 							position+=4;
 						}
 							break;
+						default:
+							responseValue();
 					}
 					if(type<=5){
 						if(values[extId]!=undefined){
@@ -493,7 +491,7 @@
     }
 	function readFloat(arr,position){
 		var f= [arr[position],arr[position+1],arr[position+2],arr[position+3]];
-		return parseFloat(f);
+		return parseFloat32(f);
 	}
 	function readShort(arr,position){
 		var s= [arr[position],arr[position+1]];
