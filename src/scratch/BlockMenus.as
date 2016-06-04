@@ -612,19 +612,10 @@ public class BlockMenus implements DragClient {
 	
 	private function duplicateStack():void
 	{
-		//*
-		if (block.isProcDef()) return; // don't duplicate procedure definition
-		var newStack:Block = BlockIO.stringToStack(BlockIO.stackToString(block), false);
-		newStack.x = block.x + 20;
-		newStack.y = block.y + 20;
-		block.parent.addChild(newStack);
-		//*/
-		//app.gh.mouseUp(new MouseEvent(MouseEvent.MOUSE_UP, true, false, 0, 0, null));
-//		var prevTool:String = CursorTool.tool;
-//		CursorTool.tool = "copy";
-//		block.duplicateStack(app.mouseX - startX, app.mouseY - startY);
-//		CursorTool.tool = prevTool;
-	
+		var prevTool:String = CursorTool.tool;
+		CursorTool.tool = "copy";
+		block.duplicateStack(app.mouseX - startX, app.mouseY - startY);
+		CursorTool.tool = prevTool;
 	}
 	
 	private function __onSelect(evt:Event):void

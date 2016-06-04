@@ -11,7 +11,7 @@ package extensions
 		private var _name:String = "";
 		public function DeviceManager()
 		{
-			onSelectBoard(SharedObjectManager.sharedManager().getObject("board","mbot_uno"));
+			onSelectBoard("mbot_uno");
 		}
 		public static function sharedManager():DeviceManager{
 			if(_instance==null){
@@ -30,8 +30,6 @@ package extensions
 				return;
 			}
 			this.board = value;
-			var oldBoard:String = SharedObjectManager.sharedManager().getObject("board");
-			SharedObjectManager.sharedManager().setObject("board",_board);
 			if(_board=="picoboard_unknown"){
 				MBlock.app.extensionManager.singleSelectExtension("PicoBoard");
 			}else{

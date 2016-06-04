@@ -77,7 +77,7 @@ function array2string(bytes){
 
 function callFlash(method, args){
 	var flash = swfobject.getObjectById("MBlock");
-	flash[method].apply(flash, args);
+	return flash[method].apply(flash, args);
 }
 
 function responseValue(index, value){
