@@ -481,7 +481,7 @@ package scratch {
 //			setTimeout(ConnectionManager.sharedManager().onReOpen,1000);
 		}
 	
-		public function installProjectFromData(data:ByteArray, saveForRevert:Boolean = true):void {
+		public function installProjectFromData(data:ByteArray, saveForRevert:Boolean = true, callback:Function=null):void {
 			var newProject:ScratchStage;
 			stopAll();
 			data.position = 0;
@@ -509,7 +509,7 @@ package scratch {
 			}
 			if (saveForRevert) app.saveForRevert(data, false);
 			app.extensionManager.clearImportedExtensions();
-			decodeImagesAndInstall(newProject);
+			decodeImagesAndInstall(newProject, callback);
 		}
 	
 		public function projectLoadFailed(ignore:* = null):void {
@@ -518,8 +518,13 @@ package scratch {
 			app.loadProjectFailed();
 		}
 	
-		public function decodeImagesAndInstall(newProject:ScratchStage):void {
-			function imagesDecoded():void { projectToInstall = newProject } // stepRuntime() will finish installation
+		public function decodeImagesAndInstall(newProject:ScratchStage, callback:Function=null):void {
+			function imagesDecoded():void {
+				projectToInstall = newProject;
+				if(callback != null){
+					callback();
+				}
+			} // stepRuntime() will finish installation
 			new ProjectIO(app).decodeAllImages(newProject.allObjects(), imagesDecoded);
 		}
 	

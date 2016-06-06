@@ -5,11 +5,13 @@ package util
 	import flash.display.Sprite;
 	import flash.display.Stage;
 	import flash.events.Event;
+	import flash.events.IOErrorEvent;
 	import flash.external.ExternalInterface;
 	import flash.net.URLLoader;
 	import flash.net.URLLoaderDataFormat;
 	import flash.net.URLRequest;
 	import flash.utils.ByteArray;
+	import flash.utils.setTimeout;
 	
 	import by.blooddy.crypto.Base64;
 	
@@ -22,9 +24,20 @@ package util
 	{
 		static public function Init(stage:Stage):void
 		{
+//			stage.addEventListener(MouseEvent.CLICK, function(e){
+//				__getStageSnapshot();
+//			});
 			var projectUrl:String = stage.loaderInfo.parameters["url"];
+			projectUrl = "__proj.sb2"
+			MBlock.app.setEditMode(true);
 			if(projectUrl != null){
-				
+				__openProject(projectUrl, function():void{
+					MBlock.app.fixLayout();
+					setTimeout(__showFullscreen, 0);
+				});
+			}else{
+				MBlock.app.runtime.installNewProject();
+				MBlock.app.fixLayout();
 			}
 			if(!ExternalInterface.available)
 				return;
@@ -94,12 +107,15 @@ package util
 //			MBlock.app.runtime.selectProjectFile();
 		}
 		
-		static private function __openProject(url:String):void
+		static private function __openProject(url:String, callback:Function=null):void
 		{
 			var loader:URLLoader = new URLLoader();
 			loader.dataFormat = URLLoaderDataFormat.BINARY;
 			loader.addEventListener(Event.COMPLETE, function(evt:Event):void{
-				MBlock.app.runtime.installProjectFromData(loader.data);
+				MBlock.app.runtime.installProjectFromData(loader.data, true, callback);
+			});
+			loader.addEventListener(IOErrorEvent.IO_ERROR, function(evt:IOErrorEvent):void{
+				trace(evt);
 			});
 			loader.load(new URLRequest(url));
 		}
@@ -162,14 +178,13 @@ package util
 		
 		static private function __getRobotName():String
 		{
-			trace("__getRobotName");
 			switch(DeviceManager.sharedManager().currentName){
 				case "mBot":
 					return "mBot";
 				case "Me Auriga":
 					return "mBot Ranger";
 			}
-			return "TestRobotName";
+			return "";
 		}
 		
 		static private function __setUnmodified():void

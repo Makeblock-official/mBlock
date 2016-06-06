@@ -132,7 +132,6 @@ package {
 			app = this;
 			addEventListener(Event.ADDED_TO_STAGE,initStage);
 			loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, __onError);
-			JsUtil.Init(stage);
 		}
 		static private var errorFlag:Boolean;
 		private function __onError(evt:UncaughtErrorEvent):void
@@ -190,18 +189,11 @@ package {
 				stage.addEventListener(KeyboardEvent.KEY_DOWN, keyDown); // to handle escape key
 				stage.addEventListener(Event.ENTER_FRAME, step);
 				stage.addEventListener(Event.RESIZE, onResize);
-				setEditMode(true);
 			// install project before calling fixLayout()
-			if (editMode) runtime.installNewProject();
-			else runtime.installEmptyProject();
+				JsUtil.Init(stage);
 			
-			fixLayout();
 			setTimeout(DeviceManager.sharedManager, 100);
 			//VersionManager.sharedManager().start(); //在线更新资源文件
-			initExtension();
-		}
-		private function initExtension():void{
-//			ClickerManager.sharedManager().update();
 			SerialManager.sharedManager().setMBlock(this);
 		}
 		
@@ -377,6 +369,9 @@ package {
 		}
 	
 		protected function step(e:Event):void {
+			if(scriptsPart == null){
+				return;
+			}
 			// Step the runtime system and all UI components.
 			gh.step();
 			runtime.stepRuntime();
@@ -476,7 +471,7 @@ package {
 		// UI Modes and Resizing
 		//------------------------------
 	
-		private function setEditMode(newMode:Boolean):void {
+		public function setEditMode(newMode:Boolean):void {
 			Menu.removeMenusFrom(stage);
 			editMode = newMode;
 			if (editMode) {
@@ -509,7 +504,7 @@ package {
 			
 		}
 	
-		private function fixLayout():void {
+		public function fixLayout():void {
 			var w:int = stage.stageWidth;
 			var h:int = stage.stageHeight - 1; // fix to show bottom border...
 	

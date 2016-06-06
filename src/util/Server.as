@@ -158,7 +158,7 @@ public class Server {
 		var list:Array = Excel.Parse(bytes);
 		return CsvReader.ReadDict(list[0]);
 	}
-
+/*
 	public function getSelectedLang(whenDone:Function):void {
 		// Get the language setting.
 		if (SharedObjectManager.sharedManager().available("lang")){
@@ -173,4 +173,5 @@ public class Server {
 		}
 		SharedObjectManager.sharedManager().setObject("lang", lang);
 	}
+	*/
 }}
