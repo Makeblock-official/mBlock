@@ -56,16 +56,17 @@ function setCode(code){
 	}
 	document.getElementById("line_number").innerHTML = "<pre>" + lineText + "</pre>";
 }
-var contentText = "";
 function appendInfo(info){
-	contentText += info;
 	var div = document.getElementById("content");
-	div.innerHTML = "<pre>" + escapeHtmlChar(contentText) + "</pre>";
+	var node = div.firstChild;
+	node.appendChild(document.createTextNode(info));
+	if(node.childNodes.length > 200){
+		node.removeChild(node.firstChild);
+	}
 	div.scrollTop = div.scrollHeight;
 }
 function clearInfo(){
-	contentText = "";
-	document.getElementById("content").innerHTML = "";
+	document.getElementById("content").firstChild.innerHTML = "";
 }
 
 function isSendBinaryMode(){
@@ -137,7 +138,7 @@ function updateTranslation(){
 	</table>
 </div>
 <div id="bottom_view">
-	<div id="content" style="overflow:auto;height:200px;"></div>
+	<div id="content" style="overflow:auto;height:200px;"><pre></pre></div>
 	<table style="width:100%;font-size:12px;">
 		<tr><td>
 		<fieldset><legend name="send encode mode">send encode mode</legend>
