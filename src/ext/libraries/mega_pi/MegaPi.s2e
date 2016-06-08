@@ -57,10 +57,10 @@
 		["R", "encoder motor %d.exMotorPort %d.encoderValue", "getEncoderValue","Port1", "speed",
 		{"encode":"{d0}","setup":"","inc":"","def":"","work":"Encoder_{0}.GetCurrentSpeed()","loop":""}],
 		
-		["R", "ultrasonic sensor %d.whitePorts distance","getUltrasonic","Port6",
+		["R", "ultrasonic sensor %d.whitePorts distance","getUltrasonic","Port7",
 		{"encode":"{d0}","setup":"","inc":"","def":"MeUltrasonicSensor ultrasonic_{0}({0});\n","work":"ultrasonic_{0}.distanceCm()","loop":""}],
 		
-		["R", "line follower %d.bluePorts","getLinefollower","Port6",
+		["R", "line follower %d.bluePorts","getLinefollower","Port8",
 		{"encode":"{d0}","setup":"","inc":"","def":"MeLineFollower linefollower_{0}({0});\n","work":"linefollower_{0}.readSensors()","loop":""}],
 		
 		["R", "light sensor %d.laport","getLightsensor","Port6",
