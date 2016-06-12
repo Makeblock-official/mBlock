@@ -62,19 +62,19 @@ package extensions
 		private var projectPath:String = "";
 //		private var _currentDevice:String;
 		private var _extSrcPath:String = "";
-		private var leoPortMap:Array=[[null,null],["11","A8"],["13","A11"],["10","9"],["1","0"],["MISO","SCK"],["A0","A1"],["A2","A3"],["A4","A5"],["6","7"],["5","4"]]
-		private var portEnum:Object = {"Port1":1,"Port2":2,"Port3":3,"Port4":4,"Port5":5,"Port6":6,"Port7":7,"Port8":8,"M1":9,"M2":10}
-		private var portPortEnum:Object={"Port1":"PORT_1","Port2":"PORT_2","Port3":"PORT_3","Port4":"PORT_4","Port5":"PORT_5","Port6":"PORT_6","Port7":"PORT_7","Port8":"PORT_8","M1":"M1","M2":"M2"}
-		private var slotSlotEnum:Object={"Slot1":"SLOT_1","Slot2":"SLOT_2"}
-		private var slotEnum:Object = {"Slot1":0,"Slot2":1}
-		private var noteEnum:Object = {"B0":31,"C1":33,"D1":37,"E1":41,"F1":44,"G1":49,"A1":55,"B1":62,
-			"C2":65,"D2":73,"E2":82,"F2":87,"G2":98,"A2":110,"B2":123,
-			"C3":131,"D3":147,"E3":165,"F3":175,"G3":196,"A3":220,"B3":247,
-			"C4":262,"D4":294,"E4":330,"F4":349,"G4":392,"A4":440,"B4":494,
-			"C5":523,"D5":587,"E5":659,"F5":698,"G5":784,"A5":880,"B5":988,
-			"C6":1047,"D6":1175,"E6":1319,"F6":1397,"G6":1568,"A6":1760,"B6":1976,
-			"C7":2093,"D7":2349,"E7":2637,"F7":2794,"G7":3136,"A7":3520,"B7":3951,
-			"C8":4186,"D8":4699,"Half":500,"Quarter":250,"Eighth":125,"Whole":1000,"Double":2000,"Zero":0};
+//		private var leoPortMap:Array=[[null,null],["11","A8"],["13","A11"],["10","9"],["1","0"],["MISO","SCK"],["A0","A1"],["A2","A3"],["A4","A5"],["6","7"],["5","4"]]
+//		private var portEnum:Object = {"Port1":1,"Port2":2,"Port3":3,"Port4":4,"Port5":5,"Port6":6,"Port7":7,"Port8":8,"M1":9,"M2":10}
+//		private var portPortEnum:Object={"Port1":"PORT_1","Port2":"PORT_2","Port3":"PORT_3","Port4":"PORT_4","Port5":"PORT_5","Port6":"PORT_6","Port7":"PORT_7","Port8":"PORT_8","M1":"M1","M2":"M2"}
+//		private var slotSlotEnum:Object={"Slot1":"SLOT_1","Slot2":"SLOT_2"}
+//		private var slotEnum:Object = {"Slot1":0,"Slot2":1}
+//		private var noteEnum:Object = {"B0":31,"C1":33,"D1":37,"E1":41,"F1":44,"G1":49,"A1":55,"B1":62,
+//			"C2":65,"D2":73,"E2":82,"F2":87,"G2":98,"A2":110,"B2":123,
+//			"C3":131,"D3":147,"E3":165,"F3":175,"G3":196,"A3":220,"B3":247,
+//			"C4":262,"D4":294,"E4":330,"F4":349,"G4":392,"A4":440,"B4":494,
+//			"C5":523,"D5":587,"E5":659,"F5":698,"G5":784,"A5":880,"B5":988,
+//			"C6":1047,"D6":1175,"E6":1319,"F6":1397,"G6":1568,"A6":1760,"B6":1976,
+//			"C7":2093,"D7":2349,"E7":2637,"F7":2794,"G7":3136,"A7":3520,"B7":3951,
+//			"C8":4186,"D8":4699,"Half":500,"Quarter":250,"Eighth":125,"Whole":1000,"Double":2000,"Zero":0};
 		private var EVENT_NATIVE_DONE:String = "EVENT_NATIVE_DONE"
 		private var EVENT_LIBCOMPILE_DONE:String = "EVENT_LIBCOMPILE_DONE"
 		private var EVENT_COMPILE_DONE:String = "EVENT_COMPILE_DONE"
@@ -228,7 +228,7 @@ void updateVar(char * varName,double * var)
 		public function setScratch(scratch:MBlock):void{
 			_scratch = scratch;
 		}
-		
+		/*
 		private function portMapPin(port:String,slot:String):String{
 			var pin:String = leoPortMap[portEnum[port]][slotEnum[slot]]
 			return pin
@@ -241,7 +241,7 @@ void updateVar(char * varName,double * var)
 		private function slotMapSlot(slot:String):String{
 			return slotSlotEnum[slot]
 		}
-		
+		*/
 		private function parseMath(blk:Object):CodeObj{
 			var op:Object= blk[0]
 			var mp1:CodeBlock=getCodeBlock(blk[1]);
@@ -336,7 +336,7 @@ void updateVar(char * varName,double * var)
 		}
 		private function parseDoRepeat(blk:Object):String{
 			var initCode:CodeBlock = getCodeBlock(blk[1]);
-			var repeatCode:String=StringUtil.substitute("for(int i=0;i<{0};i++)\n{\n",initCode.type=="obj"?initCode.code.code:initCode.code);
+			var repeatCode:String=StringUtil.substitute("for(int __i__=0;__i__<{0};++__i__)\n{\n",initCode.type=="obj"?initCode.code.code:initCode.code);
 			if(blk[2]!=null){
 				for(var i:int=0;i<blk[2].length;i++){
 					var b:Object = blk[2][i]

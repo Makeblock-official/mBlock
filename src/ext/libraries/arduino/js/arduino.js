@@ -64,7 +64,7 @@
 	ext.runTone = function(pin,tone,beat){
 		runPackage(34,pin,short2array(typeof tone=="number"?tone:tones[tone]),short2array(typeof beat=="number"?beat:beats[beat]));
 	};
-	ext.runServo = function(pin, angle){
+	ext.runServoArduino = function(pin, angle){
 		runPackage(33,pin,angle);
 	};
 	ext.resetTimer = function(){
@@ -83,7 +83,7 @@
 		var deviceId = 37;
 		getPackage(nextID,deviceId,pin,short2array(timeout));
     };
-	ext.getUltrasonic = function(nextID,trig,echo){
+	ext.getUltrasonicArduino = function(nextID,trig,echo){
 		var deviceId = 36;
 		getPackage(nextID,deviceId,trig,echo);
 	}
