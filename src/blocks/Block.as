@@ -100,6 +100,7 @@ public class Block extends Sprite {
 
 	private var suppressLayout:Boolean; // used to avoid extra layouts during block initialization
 	public var labelsAndArgs:Array = [];
+	private const oldArgValues:Array = [];
 	private var argTypes:Array = [];
 //	public var nextID:Array = [];
 	private var elseLabel:TextField;
@@ -564,6 +565,9 @@ public class Block extends Sprite {
 			var i:int = labelsAndArgs.indexOf(b);
 			if (i < 0) return;
 			var newArg:DisplayObject = argOrLabelFor(argTypes[i], base.color);
+			if(newArg is BlockArg){
+				(newArg as BlockArg).setArgValue(oldArgValues[i]);
+			}
 			labelsAndArgs[i] = newArg;
 			addChild(newArg);
 			fixExpressionLayout();
@@ -628,6 +632,10 @@ public class Block extends Sprite {
 	public function replaceArgWithBlock(oldArg:DisplayObject, b:Block, pane:DisplayObjectContainer):void {
 		var i:int = labelsAndArgs.indexOf(oldArg);
 		if (i < 0) return;
+		
+		if(oldArg is BlockArg){
+			oldArgValues[i] = (oldArg as BlockArg).argValue;
+		}
 
 		// remove the old argument
 		removeChild(oldArg);
