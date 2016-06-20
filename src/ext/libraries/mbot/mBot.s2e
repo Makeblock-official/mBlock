@@ -21,6 +21,9 @@
 		["w", "set led %d.lport %d.index red%d.value green%d.value blue%d.value","runLed", "led on board","all",0,0,0,
 		{"encode":"{d0}{d1}{d2}{d3}{d4}","setup":"","inc":"","def":"MeRGBLed rgbled_{0}({0}, {0}==7?2:4);\n","work":"rgbled_{0}.setColor({1},{2},{3},{4});\nrgbled_{0}.show();\n","loop":""}],
 		
+		["w", "set led %d.yellowPorts %d.index0 red%d.value green%d.value blue%d.value","runLedExternal", "Port1","all",0,0,0,
+		{"encode":"{d0}{d1}{d2}{d3}{d4}","setup":"","inc":"","def":"MeRGBLed rgbled_{0}({0}, {0}==7?2:4);\n","work":"rgbled_{0}.setColor({1},{2},{3},{4});\nrgbled_{0}.show();\n","loop":""}],
+		
 		["w", "set led strip %d.normalPort %d.slot %d.index2 red%d.value green%d.value blue%d.value","runLedStrip", "Port1","Slot2","all",0,0,0,
 		{"encode":"{d0}{d1}{d2}{d3}{d4}","setup":"","inc":"","def":"MeRGBLed rgbled_{0}_{1}({0}, {1}, 32);\n","work":"rgbled_{0}_{1}.setColor({2},{3},{4},{5});\nrgbled_{0}_{1}.show();\n","loop":""}],
 		
@@ -132,12 +135,13 @@
 		"normalPort":["Port1","Port2","Port3","Port4"],
 		"servoPort":["Port1","Port2","Port3","Port4"],
 		"slot":["Slot1","Slot2"],
-		"index":["all",1,2,3,4],
+		"index":["all","led left","led right"],
+		"index0":["all",1,2,3,4],
 		"index2":["all",1,15,30],
 		"Axis":["X-Axis","Y-Axis"],
 		"GyroAxis":["X-Axis","Y-Axis","Z-Axis"],
 		"port":["Port1","Port2","Port3","Port4"],
-		"lport":["led on board","Port1","Port2","Port3","Port4"],
+		"lport":["led on board"],
 		"laport":["light sensor on board","Port3","Port4"],
 		"direction":["run forward","run backward","turn right","turn left"],
 		"points":[":"," "],
@@ -155,6 +159,8 @@
 		"humiture":["humidity","temperature"]
 	},
 	"values":{
+		"led left":2,
+		"led right":1,
 		"Half":500,"Quarter":250,"Eighth":125,"Whole":1000,"Double":2000,"Zero":0,
 		"servovalue":[0,45,90,135,180],
 		"all":0,

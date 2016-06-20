@@ -157,6 +157,14 @@
 	};
 	
 	ext.runLed = function(port,ledIndex,red,green,blue){
+		if(ledIndex == "led left"){
+			ledIndex = 2;
+		}else if(ledIndex == "led right"){
+			ledIndex = 1;
+		}
+		ext.runLedStrip(port, 2, ledIndex, red,green,blue);
+	};
+	ext.runLedExternal = function(port,ledIndex,red,green,blue){
 		ext.runLedStrip(port, 2, ledIndex, red,green,blue);
 	};
 	ext.runLedStrip = function(port,slot,ledIndex,red,green,blue){

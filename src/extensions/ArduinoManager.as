@@ -57,11 +57,11 @@ package extensions
 		
 		// maintance of project and arduino path
 		private var arduinoPath:String;
-		private var avrPath:String = "";
+//		private var avrPath:String = "";
 		private var arduinoLibPath:String = "";
 		private var projectPath:String = "";
 //		private var _currentDevice:String;
-		private var _extSrcPath:String = "";
+//		private var _extSrcPath:String = "";
 //		private var leoPortMap:Array=[[null,null],["11","A8"],["13","A11"],["10","9"],["1","0"],["MISO","SCK"],["A0","A1"],["A2","A3"],["A4","A5"],["6","7"],["5","4"]]
 //		private var portEnum:Object = {"Port1":1,"Port2":2,"Port3":3,"Port4":4,"Port5":5,"Port6":6,"Port7":7,"Port8":8,"M1":9,"M2":10}
 //		private var portPortEnum:Object={"Port1":"PORT_1","Port2":"PORT_2","Port3":"PORT_3","Port4":"PORT_4","Port5":"PORT_5","Port6":"PORT_6","Port7":"PORT_7","Port8":"PORT_8","M1":"M1","M2":"M2"}
@@ -971,6 +971,7 @@ void updateVar(char * varName,double * var)
 			return (retcode);
 			//			buildAll(retcode, requiredCpp);
 		}
+		
 		private function parseScripts(scripts:Object):Boolean
 		{
 			if(null == scripts){
