@@ -134,6 +134,7 @@ package extensions
 			_htmlLoader.window.trace = trace;
 			_htmlLoader.window.interruptThread = interruptThread;
 			_htmlLoader.window.air = {"trace":trace};
+			_htmlLoader.window.notifyMbotButtonPressed = MBlock.app.runtime.mbotButtonPressed.notify;
 			ConnectionManager.sharedManager().addEventListener(Event.CONNECT,onConnected);
 			ConnectionManager.sharedManager().addEventListener(Event.REMOVED,onRemoved);
 			ConnectionManager.sharedManager().addEventListener(Event.CLOSE,onClosed);
