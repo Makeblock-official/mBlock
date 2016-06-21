@@ -1,8 +1,5 @@
 package extensions
 {
-	import util.LogManager;
-	import util.SharedObjectManager;
-
 	public class DeviceManager
 	{
 		private static var _instance:DeviceManager;
@@ -19,7 +16,7 @@ package extensions
 			}
 			return _instance;
 		}
-		private function set board(value:String):void
+		public function set board(value:String):void
 		{
 			_board = value;
 			var tempList:Array = _board.split("_");
@@ -30,25 +27,21 @@ package extensions
 				return;
 			}
 			this.board = value;
-			if(_board=="picoboard_unknown"){
-				MBlock.app.extensionManager.singleSelectExtension("PicoBoard");
-			}else{
+//			if(_board=="picoboard_unknown"){
+//				MBlock.app.extensionManager.singleSelectExtension("PicoBoard");
+//			}else{
 				if(_board=="mbot_uno"){
 					MBlock.app.extensionManager.singleSelectExtension("mBot");
 				}else if(_board.indexOf("arduino")>-1){
 					MBlock.app.extensionManager.singleSelectExtension("Arduino");
 				}else if(_board.indexOf("me/orion_uno")>-1){
 					MBlock.app.extensionManager.singleSelectExtension("Makeblock");
-				}else if(_board.indexOf("me/baseboard")>-1){
-					MBlock.app.extensionManager.singleSelectExtension("BaseBoard");
 				}else if(_board.indexOf("me/uno_shield")>-1){
 					MBlock.app.extensionManager.singleSelectExtension("UNO Shield");
 				}else if(_board.indexOf("me/auriga") >= 0){
 					MBlock.app.extensionManager.singleSelectExtension("Auriga");
-				}else{
-					MBlock.app.extensionManager.singleSelectExtension("PicoBoard");
 				}
-			}
+//			}
 			MBlock.app.topBarPart.setBoardTitle();
 		}
 		public function checkCurrentBoard(board:String):Boolean{

@@ -28,7 +28,7 @@ package util
 //				__getStageSnapshot();
 //			});
 			var projectUrl:String = stage.loaderInfo.parameters["url"];
-			projectUrl = "__proj.sb2"
+//			projectUrl = "__proj.sb2"
 			MBlock.app.setEditMode(true);
 			if(projectUrl != null){
 				__openProject(projectUrl, function():void{
@@ -120,8 +120,9 @@ package util
 			loader.load(new URLRequest(url));
 		}
 		
-		static private function __newProject(projectName:String):void
+		static private function __newProject(projectName:String=null):void
 		{
+			DeviceManager.sharedManager().board = "mbot_uno";
 			trace("__newProject", projectName);
 			MBlock.app.createNewProject();
 		}
@@ -173,7 +174,6 @@ package util
 					DeviceManager.sharedManager().onSelectBoard("me/auriga");
 					break;
 			}
-			trace("__setRobotName", value);
 		}
 		
 		static private function __getRobotName():String
