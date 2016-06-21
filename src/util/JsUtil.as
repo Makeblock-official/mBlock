@@ -122,7 +122,7 @@ package util
 		
 		static private function __newProject(projectName:String=null):void
 		{
-			DeviceManager.sharedManager().board = "mbot_uno";
+//			DeviceManager.sharedManager().board = "mbot_uno";
 			trace("__newProject", projectName);
 			MBlock.app.createNewProject();
 		}

@@ -322,10 +322,10 @@ public class ExtensionManager {
 		_extensionList = [];
 		trace(this, "importExtension");
 		
-		SharedObjectManager.sharedManager().setObject("mBot_selected",true);
-		setTimeout(function():void{
-			singleSelectExtension("mBot");
-		}, 1000);
+//		SharedObjectManager.sharedManager().setObject("mBot_selected",true);
+//		setTimeout(function():void{
+//			singleSelectExtension("mBot");
+//		}, 1000);
 //		if(ApplicationManager.sharedManager().documents.resolvePath("mBlock/libraries/").exists){
 //			var docs:Array =  ApplicationManager.sharedManager().documents.resolvePath("mBlock/libraries/").getDirectoryListing();
 			var docs:Object = fileDict;
