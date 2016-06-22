@@ -453,7 +453,7 @@
 						}
 							break;
 						case 3:{
-							value = readShort(_rxBuf,position);
+							value = readInt(_rxBuf,position,2);
 							position+=2;
 						}
 							break;
@@ -468,14 +468,15 @@
 							position+=4;
 						}
 							break;
+						case 6:
+							value = readInt(_rxBuf,position,4);
+							position+=4;
+							break;
 					}
-					if(type<=5){
-						if(values[extId]!=undefined){
-							responseValue(extId,values[extId](value,extId));
-						}else{
-							responseValue(extId,value);
-						}
-						values[extId] = null;
+					if(type<=6){
+						responseValue(extId,value);
+					}else{
+						responseValue();
 					}
 					_rxBuf = [];
 				}
@@ -486,9 +487,12 @@
 		var f= [arr[position],arr[position+1],arr[position+2],arr[position+3]];
 		return parseFloat(f);
 	}
-	function readShort(arr,position){
-		var s= [arr[position],arr[position+1]];
-		return parseShort(s);
+	function readInt(arr,position,count){
+		var result = 0;
+		for(var i=0; i<count; ++i){
+			result |= arr[position+i] << (i << 3);
+		}
+		return result;
 	}
 	function readDouble(arr,position){
 		return readFloat(arr,position);
