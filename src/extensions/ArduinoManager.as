@@ -41,6 +41,7 @@ package extensions
 		private var ccode_setup_fun:String = "";
 //		private var ccode_setup_def:String = "";
 		private var ccode_loop:String = ""
+		private var ccode_loop2:String = ""
 		private var ccode_def:String = ""
 		private var ccode_inc:String = ""
 		private var ccode_pointer:String="setup"
@@ -136,6 +137,16 @@ void setup(){
 void loop(){
 //serialParserCall
 //loop
+_loop();
+}
+
+void _delay(float seconds){
+long endTime = millis() + seconds * 1000;
+while(millis() < endTime)_loop();
+}
+
+void _loop(){
+//_loop
 }
 
 ]]> ).toString();//delay(50);
@@ -331,7 +342,7 @@ void updateVar(char * varName,double * var)
 		
 		private function parseDelay(fun:Object):String{
 			var cBlk:CodeBlock=getCodeBlock(fun[1]);
-			var funcode:String=(StringUtil.substitute("delay(1000*{0});\n",cBlk.type=="obj"?cBlk.code.code:cBlk.code));
+			var funcode:String=(StringUtil.substitute("_delay({0});\n",cBlk.type=="obj"?cBlk.code.code:cBlk.code));
 			return funcode;
 		}
 		private function parseDoRepeat(blk:Object):String{
@@ -962,6 +973,7 @@ void updateVar(char * varName,double * var)
 			}
 			ccode_func+=buildFunctions();
 			var retcode:String = codeTemplate.replace("//setup",ccode_setup).replace("//loop", ccode_loop).replace("//define", ccode_def).replace("//include", ccode_inc).replace("//function",ccode_func);
+			retcode = retcode.replace("//_loop", ccode_loop2);
 			retcode = buildSerialParser(retcode);
 			retcode = fixTabs(retcode);
 			retcode = fixVars(retcode);
@@ -1013,7 +1025,7 @@ void updateVar(char * varName,double * var)
 			//buildSetup();
 			ccode_setup+=ccode_setup_fun;
 			ccode_setup_fun = "";
-			ccode_loop+=buildLoopMaintance();
+			ccode_loop2=buildLoopMaintance();
 		}
 		private function buildSetup():String{
 			var modInitCode:String = "";
