@@ -7,6 +7,8 @@ package extensions
 	import flash.net.navigateToURL;
 	import flash.utils.ByteArray;
 	
+	import cc.makeblock.interpreter.BlockInterpreter;
+	
 	import util.ApplicationManager;
 	import util.LogManager;
 
@@ -67,6 +69,7 @@ package extensions
 					break;
 				}
 				case "connect_hid":{
+					BlockInterpreter.Instance.stopAllThreads();
 					if(!HIDManager.sharedManager().isConnected){
 						HIDManager.sharedManager().onOpen();
 					}else{
@@ -75,6 +78,7 @@ package extensions
 					break;
 				}
 				default:{
+					BlockInterpreter.Instance.stopAllThreads();
 					if(name.indexOf("serial_")>-1){
 						SerialManager.sharedManager().connect(name.split("serial_").join(""));
 					}
