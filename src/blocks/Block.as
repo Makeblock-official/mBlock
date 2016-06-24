@@ -801,6 +801,8 @@ public class Block extends Sprite {
 		}else if (parent) {
 			parent.removeChild(this);
 			if(nextBlock != null){
+				nextBlock.x = this.x;
+				nextBlock.y = this.y;
 				prevParent.addChild(nextBlock);
 			}
 		}
