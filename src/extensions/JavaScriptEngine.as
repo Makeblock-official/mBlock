@@ -134,18 +134,18 @@ package extensions
 			_htmlLoader.window.trace = trace;
 			_htmlLoader.window.interruptThread = interruptThread;
 			_htmlLoader.window.air = {"trace":trace};
-			_htmlLoader.window.notifyMbotButtonPressed = MBlock.app.runtime.mbotButtonPressed.notify;
 			ConnectionManager.sharedManager().addEventListener(Event.CONNECT,onConnected);
 			ConnectionManager.sharedManager().addEventListener(Event.REMOVED,onRemoved);
 			ConnectionManager.sharedManager().addEventListener(Event.CLOSE,onClosed);
 		}
 		private function responseValue(...args):void{
-			if(args.length >= 2){
-				RemoteCallMgr.Instance.onPacketRecv(args[1]);
-			}else{
+			if(args.length < 2){
 				RemoteCallMgr.Instance.onPacketRecv();
+			}else if(args[0] == 0x80){
+				MBlock.app.runtime.mbotButtonPressed.notify(Boolean(args[1]));
+			}else{
+				RemoteCallMgr.Instance.onPacketRecv(args[1]);
 			}
-			MBlock.app.extensionManager.reporterCompleted(_name,args[0],args[1]);
 		}
 		
 		static private function interruptThread(msg:String):void

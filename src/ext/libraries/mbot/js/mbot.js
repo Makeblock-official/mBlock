@@ -491,11 +491,7 @@
 							break;
 					}
 					if(type<=6){
-						if(0x80 == extId){
-							notifyMbotButtonPressed(Boolean(value));
-						}else{
-							responseValue(extId,value);
-						}
+						responseValue(extId,value);
 					}else{
 						responseValue();
 					}
