@@ -704,7 +704,7 @@ public class ScratchStage extends ScratchObj {
 		var scriptCount:int;
 		for each (var obj:ScratchObj in allObjects()) {
 			for each (var b:* in obj.scripts) {
-				if ((b is Block) && b.isHat) scriptCount++;
+				if (b is Block) scriptCount++;
 			}
 		}
 		return scriptCount;
