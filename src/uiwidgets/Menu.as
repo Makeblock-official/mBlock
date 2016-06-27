@@ -126,7 +126,7 @@ public class Menu extends Sprite {
 	}
 
 	static public function removeMenusFrom(o:DisplayObjectContainer):void {
-		if (menuJustCreated) { menuJustCreated = false; return; }
+//		if (menuJustCreated) { menuJustCreated = false; return; }
 		var i:int, menus:Array = [];
 		for (i = 0; i < o.numChildren; i++) {
 			if (o.getChildAt(i) is Menu) menus.push(o.getChildAt(i));
