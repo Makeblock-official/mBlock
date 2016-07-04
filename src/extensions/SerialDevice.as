@@ -48,6 +48,11 @@ package extensions
 			}
 		}
 		private var _receiveHandlers:Array=[];
+		public function clearAll():void{
+			_ports=[];
+			_receiveHandlers.length = 0;
+		}
+
 		public function clear(v:String):void{
 			var index:int = _ports.indexOf(v);
 			_ports.splice(index);

@@ -10,6 +10,8 @@ package cc.makeblock.util
 	import flash.events.InvokeEvent;
 	import flash.events.NativeDragEvent;
 	import flash.filesystem.File;
+	import flash.display.NativeWindowDisplayState;
+
 
 	public class InvokeMgr
 	{
@@ -48,6 +50,12 @@ package cc.makeblock.util
 			var arg:String = evt.arguments[0];
 			if(Boolean(arg)){
 				MBlock.app.runtime.selectedProjectFile(new File(arg));
+				if(MBlock.app.stage.nativeWindow.displayState==NativeWindowDisplayState.MINIMIZED)
+				{
+					MBlock.app.stage.nativeWindow.restore();
+				}
+				MBlock.app.stage.nativeWindow.orderToFront();
+
 			}
 		}
 	}

@@ -144,7 +144,8 @@ package cc.makeblock.interpreter {
 				case "ln": return Math.log(n);
 				case "log": return Math.log(n) / Math.LN10;
 				case "e ^": return Math.exp(n);
-				case "10 ^": return Math.exp(n * Math.LN10);
+				case "10 ^": return Math.pow(10,n);//是10的n次方，用power，谭启亮 2016.7.2  //turn Math.exp(n * Math.LN10);
+
 			}
 			return 0;
 		}

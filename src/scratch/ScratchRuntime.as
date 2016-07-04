@@ -505,7 +505,7 @@ package scratch {
 				if (info != null) delete info.thumbnail; // delete old thumbnail
 			}
 			if (saveForRevert) app.saveForRevert(data, false);
-			app.extensionManager.clearImportedExtensions();
+			//app.extensionManager.clearImportedExtensions();//fix 打开新项目出现未定义的模块
 			decodeImagesAndInstall(newProject);
 		}
 	

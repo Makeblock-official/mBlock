@@ -117,6 +117,7 @@ package extensions
 					MBlock.app.topBarPart.setConnectedTitle("Network");
 				}
 			}
+			BlockInterpreter.Instance.stopAllThreads();
 			this.dispatchEvent(new Event(Event.CLOSE));
 		}
 		public function onRemoved(extName:String = ""):void{

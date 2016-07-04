@@ -12,7 +12,7 @@ package extensions
 	import flash.utils.Timer;
 	import flash.utils.getTimer;
 	import flash.utils.setTimeout;
-	
+	import cc.makeblock.interpreter.BlockInterpreter;
 	import cc.makeblock.mbot.util.AppTitleMgr;
 	import cc.makeblock.util.UploadSizeInfo;
 	
@@ -170,6 +170,8 @@ package extensions
 		}
 		public function close():void{
 			if(_serial.isConnected){
+				SerialDevice.sharedDevice().clearAll();
+				BlockInterpreter.Instance.stopAllThreads();
 				_serial.removeEventListener(Event.CHANGE,onChanged);
 				_serial.close();
 				ConnectionManager.sharedManager().onClose(_selectPort);
