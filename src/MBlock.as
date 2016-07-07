@@ -688,6 +688,7 @@ package {
 	
 		public function createNewProject(ignore:* = null):void {
 			saveProjectAndThen(clearProject);
+			saveNeeded = true;
 		}
 	
 		public function saveProjectAndThen(postSaveAction:Function = null):void {
@@ -776,6 +777,11 @@ package {
 			}
 			function fileSaved(e:Event):void {
 				var file:File = e.target as File;
+				//自动为文件名加上后缀，如果用户没指定的话
+				if(file.url.substr(file.url.length-4)!=".sb2")
+				{
+					file = File.desktopDirectory.resolvePath(file.url+".sb2");
+				}
 				FileUtil.WriteBytes(file, projIO.encodeProjectAsZipFile(stagePane));
 				
 				saveNeeded = false;
@@ -881,7 +887,7 @@ package {
 			// Set saveNeeded flag and update the status string.
 			saveNeeded = true;
 			if (!wasEdited){ saveNow = true;} // force a save on first change
-			clearRevertUndo();
+			//clearRevertUndo();//这里是根据积木是否有改动设置是否需要保存代码，保存代码的时候不应该清除revertUndo，否则revertUndo一直是null
 		}
 	
 		protected function clearSaveNeeded():void {
