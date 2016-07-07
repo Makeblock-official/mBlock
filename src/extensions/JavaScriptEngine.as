@@ -26,7 +26,15 @@ package extensions
 		}
 		private function register(name:String,descriptor:Object,ext:Object,param:Object):void{
 			_ext = ext;
-			
+			/*if(_ext._getStatus().msg.indexOf("disconnected")>-1)
+			{
+				ConnectionManager.sharedManager().onConnect(null);
+			}*/
+			if(_ext._getStatus().msg.indexOf("disconnected")>-1)
+			{
+				//尝试连接
+				ConnectionManager.sharedManager().onOpen(null);
+			}
 			LogManager.sharedManager().log("registed:"+_ext._getStatus().msg);
 			//trace(SerialManager.sharedManager().list());
 			//_timer.start();

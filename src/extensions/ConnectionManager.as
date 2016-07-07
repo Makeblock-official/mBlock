@@ -25,7 +25,10 @@ package extensions
 			}
 			return _instance;
 		}
+		//保存当前连接的串口名称
+		private var tempConnectPort:String;
 		public function onConnect(name:String):void{
+			tempConnectPort = name;
 			switch(name){
 				case "discover_bt":{
 					BluetoothManager.sharedManager().discover();
@@ -119,12 +122,19 @@ package extensions
 			}
 			BlockInterpreter.Instance.stopAllThreads();
 			this.dispatchEvent(new Event(Event.CLOSE));
+			tempConnectPort = null;
 		}
 		public function onRemoved(extName:String = ""):void{
 			extensionName = extName;
 			this.dispatchEvent(new Event(Event.REMOVED));
 		}
 		public function onOpen(port:String):void{
+			port = port?port:tempConnectPort;
+			if(!port)
+			{
+				return;
+			}
+			tempConnectPort = port;
 			SerialDevice.sharedDevice().port = port;
 			this.dispatchEvent(new Event(Event.CONNECT));
 		}
