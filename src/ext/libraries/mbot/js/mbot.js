@@ -156,13 +156,13 @@
 		runPackage(9,port,float2array(display));
 	};
 	
-	ext.runLed = function(port,ledIndex,red,green,blue){
+	ext.runLed = function(ledIndex,red,green,blue){
 		if(ledIndex == "led left"){
 			ledIndex = 2;
 		}else if(ledIndex == "led right"){
 			ledIndex = 1;
 		}
-		ext.runLedStrip(port, 2, ledIndex, red,green,blue);
+		ext.runLedStrip(7, 2, ledIndex, red,green,blue);
 	};
 	ext.runLedExternal = function(port,ledIndex,red,green,blue){
 		ext.runLedStrip(port, 2, ledIndex, red,green,blue);
@@ -569,7 +569,6 @@
         if(watchdog) return {status: 1, msg: 'Probing for mBot'};
         return {status: 2, msg: 'mBot connected'};
     }
-
     var descriptor = {};
 	ScratchExtensions.register('mBot', descriptor, ext, {type: 'serial'});
 })({});

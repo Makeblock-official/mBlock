@@ -80,7 +80,7 @@
     	"bluePorts":["Port3","Port4","Port6"],
     	"grayPorts":["Port5"],
     	"whitePorts":["Port3","Port4","Port6","Port7","Port8"],
-    	"blackPorts":["Port6","Port7","Port8"],
+    	"blackPorts":["Port6"],
     	"soundPort":["Port6","Port7","Port8"],
     	"laport":["Port6","Port7","Port8"],
 		"normalPort":["Port3","Port4","Port6","Port7","Port8"],

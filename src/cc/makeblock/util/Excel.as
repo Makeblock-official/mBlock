@@ -54,6 +54,7 @@ package cc.makeblock.util
 		{
 			var ns:Namespace = table.namespace();
 			var rowList:Array = [];
+			if(!table || table=="")return rowList;
 			for each(var row:XML in table.ns::sheetData.ns::row){
 				var colList:Array = [];
 				for each(var col:XML in row.ns::c){

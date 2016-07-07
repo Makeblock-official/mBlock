@@ -38,7 +38,7 @@
 		{"encode":"{d0}{d1}{d2}{d3}{d4}","setup":"","inc":"","def":"MeRGBLed rgbled_{0}_{1}({0}, {1}, 32);\n","work":"rgbled_{0}_{1}.setColor({2},{3},{4},{5});\nrgbled_{0}_{1}.show();\n","loop":""}],
 		
 		["w", "play tone on note %d.note beat %d.beats","runBuzzer", "C4", "Half",
-		{"encode":"{s0}","setup":"buzzer.setpin(45);\n","inc":"","def":"MeBuzzer buzzer;\n","work":"buzzer.tone({0}, {1});\n","loop":""}],
+		{"encode":"{s0}","setup":"buzzer.setpin(45);\n","inc":"","def":"MeBuzzer buzzer;\n","work":"buzzer.tone({0}, {1});\ndelay(20);\n","loop":""}],
 		
 		["w", "stop tone","stopBuzzer",0,
 		{"encode":"{s0}","setup":"","inc":"","def":"MeBuzzer buzzer;\n","work":"buzzer.noTone();\n","loop":""}],
