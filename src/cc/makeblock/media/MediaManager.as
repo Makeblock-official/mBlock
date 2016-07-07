@@ -36,13 +36,19 @@ package cc.makeblock.media
 		
 		public function importImage():void
 		{
-			var panel:JOptionPane = PopupUtil.showConfirm("Type", __onChooseType);
+			var panel:JOptionPane = PopupUtil.showQuitAlert( __onChooseType);
+			panel.getFrame().setTitle("Type");
 			panel.getYesButton().setText(Translator.map('Backdrop'));
-			panel.getCancelButton().setText(Translator.map('Costume'));
+			panel.getNoButton().setText(Translator.map('Costume'));
+			panel.getCancelButton().setText(Translator.map("Cancel"));
 		}
 		
 		private function __onChooseType(code:int):void
 		{
+			if(code==JOptionPane.CANCEL)
+			{
+				return;
+			}
 			isBackDrop = (JOptionPane.YES == code);
 			var file:File = new File();
 			file.addEventListener(FileListEvent.SELECT_MULTIPLE, __onSelect);
