@@ -688,7 +688,7 @@ package {
 	
 		public function createNewProject(ignore:* = null):void {
 			saveProjectAndThen(clearProject);
-			saveNeeded = true;
+			//AppTitleMgr.Instance.setProjectModifyInfo(true);
 		}
 	
 		public function saveProjectAndThen(postSaveAction:Function = null):void {
@@ -863,6 +863,7 @@ package {
 			projectID = newID;
 //			projectIsPrivate = true;
 			loadInProgress = false;
+			saveNeeded = true;
 		}
 	
 		// -----------------------------
