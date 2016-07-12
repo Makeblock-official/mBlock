@@ -177,7 +177,17 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 		
 		static private function delExt(extName:String):Boolean
 		{
-			var file:File = libPath.resolvePath(extName);
+			for each(var obj:Object in MBlock.app.extensionManager.extensionList)
+			{
+				if(obj.extensionName==extName)
+				{
+					var path:String = decodeURI(obj.srcPath);
+					var _arr:Array = path.split("/");
+					path = _arr[_arr.length-2];
+					break;
+				}
+			}
+			var file:File = libPath.resolvePath(path);
 			if(file.exists){
 				file.moveToTrash();
 				return true;
