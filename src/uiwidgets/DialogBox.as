@@ -249,7 +249,16 @@ private function getCheckMark(b:Boolean):Sprite{
 	}
 
 	public function accept():void {
-		if (acceptFunction != null) acceptFunction();
+		if (acceptFunction != null) 
+		{
+			try{
+				acceptFunction(this);
+			}
+			catch(err:Error)
+			{
+				acceptFunction();
+			}
+		}
 		if (parent != null) parent.removeChild(this);
 	}
 
