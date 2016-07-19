@@ -289,12 +289,23 @@ package cc.makeblock.mbot.ui.parts
 			
 			var enabled:Boolean = MBlock.app.extensionManager.checkExtensionEnabled();
 			var arr:Array = SerialManager.sharedManager().list;
-			for(var i:int=0;i<arr.length;i++){
-				var item:NativeMenuItem = subMenu.addItem(new NativeMenuItem(arr[i]));
-				item.name = "serial_"+arr[i];
-				item.enabled = enabled;
-				item.checked = SerialDevice.sharedDevice().ports.indexOf(arr[i])>-1 && SerialManager.sharedManager().isConnected;
+			if(arr.length==0)
+			{
+				var nullItem:NativeMenuItem = new NativeMenuItem(Translator.map("no serial port"));
+				nullItem.enabled = false;
+				nullItem.name = "serial_"+"null";
+				subMenu.addItem(nullItem);
 			}
+			else
+			{
+				for(var i:int=0;i<arr.length;i++){
+					var item:NativeMenuItem = subMenu.addItem(new NativeMenuItem(arr[i]));
+					item.name = "serial_"+arr[i];
+					item.enabled = enabled;
+					item.checked = SerialDevice.sharedDevice().ports.indexOf(arr[i])>-1 && SerialManager.sharedManager().isConnected;
+				}
+			}
+			
 			menu.getItemByName("Serial Port").submenu = subMenu;
 			
 			var bluetoothItem:NativeMenuItem = menu.getItemByName("Bluetooth");
