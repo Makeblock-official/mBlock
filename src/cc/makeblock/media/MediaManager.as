@@ -71,7 +71,7 @@ package cc.makeblock.media
 				var info:Object = {};
 				info.name = file.name.split(".")[0];
 				info.md5 = file.name;
-				info.type = isBackDrop ? "backdrop" : "costume";
+				info.type = isBackDrop ? "backdrop" : "sprite";
 				info.tags = ["favourite"];
 				info.info = [];
 				libData.push(info);
