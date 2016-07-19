@@ -63,6 +63,7 @@ package ui.parts {
 	import uiwidgets.ZoomWidget;
 	
 	import util.JSON;
+	import cc.makeblock.mbot.util.AppTitleMgr;
 
 public class ScriptsPart extends UIPart {
 	private var htmlLoader:HTMLLoader;
@@ -339,6 +340,7 @@ public class ScriptsPart extends UIPart {
 				htmlLoader.window.clearInfo();
 				if(showArduinoCode()){
 					htmlLoader.window.appendInfo(ArduinoManager.sharedManager().buildAll(arduinoCodeText));
+					AppTitleMgr.Instance.setConnectInfo("Uploading");
 				}
 			}
 		}else{
