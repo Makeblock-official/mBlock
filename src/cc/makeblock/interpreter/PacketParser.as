@@ -37,7 +37,11 @@ package cc.makeblock.interpreter
 			}
 			if(buffer[2] == 0x0D && buffer[3] == 0x0A){
 				buffer.splice(0, 4);
-				callback();
+				if(callback!=RemoteCallMgr.Instance.onPacketRecv)
+				{
+					trace("callback！=RemoteCallMgr.Instance.onPacketRecv")
+					callback();
+				}
 			}else{
 				ba.clear();
 				var index:int = buffer[2];
@@ -107,7 +111,11 @@ package cc.makeblock.interpreter
 				if(index == 0x80){//button pressed
 					MBlock.app.runtime.mbotButtonPressed.notify(Boolean(value));
 				}else{
-					callback(value);
+					if(callback!=RemoteCallMgr.Instance.onPacketRecv)
+					{
+						callback(value);
+						trace("callback！=RemoteCallMgr.Instance.onPacketRecv")
+					}					
 				}
 			}
 			parse();
