@@ -199,11 +199,17 @@ package {
 //			try{
 				extensionManager = new ExtensionManager(this);
 				var extensionsPath:File = ApplicationManager.sharedManager().documents.resolvePath("mBlock");
+				var firstRunFile:File = new File(File.applicationDirectory.resolvePath("firstrun.dat").nativePath);
 				if(!extensionsPath.exists){
 					SharedObjectManager.sharedManager().clear();
 					SharedObjectManager.sharedManager().setObject(versionString+".0."+_currentVer,true);
 					extensionManager.copyLocalFiles();
+					if(firstRunFile.exists)
+					{
+						firstRunFile.deleteFile()
+					}
 				}
+				
 		//		extensionManager.importExtension();
 				addParts();
 				systemMenu = new TopSystemMenu(stage, "assets/menu.xml");
@@ -227,11 +233,13 @@ package {
 			fixLayout();
 			setTimeout(SocketManager.sharedManager, 100);
 			setTimeout(DeviceManager.sharedManager, 100);
-			if(!SharedObjectManager.sharedManager().getObject(versionString+".0."+_currentVer,false)){
+			if(!SharedObjectManager.sharedManager().getObject(versionString+".0."+_currentVer,false) || firstRunFile.exists){
 				//SharedObjectManager.sharedManager().clear();
 				SharedObjectManager.sharedManager().setObject(versionString+".0."+_currentVer,true);
 				extensionsPath.deleteDirectory(true);
 				extensionManager.copyLocalFiles();
+				SharedObjectManager.sharedManager().setObject("first-launch",true);
+				firstRunFile.deleteFile();
 				//SharedObjectManager.sharedManager().setObject("board","mbot_uno");
 			}
 			//VersionManager.sharedManager().start(); //在线更新资源文件
@@ -765,14 +773,23 @@ package {
 //				var zipData:ByteArray = projIO.encodeProjectAsZipFile(stagePane);
 				var file:File;
 				if(projectFile != null){
+					//如果项目已存在，那么就在这个file上进行保存，并且关闭
 					file = projectFile.clone();
+					FileUtil.WriteBytes(file, projIO.encodeProjectAsZipFile(stagePane));
+					saveNeeded = false;
+					setProjectFile(file);
+					if(postSaveAction!=null){
+						postSaveAction();
+					}
+					
 				}else{
 					var defaultName:String = (projectName().length > 1) ? projectName() + '.sb2' : 'project.sb2';
 					var path:String = fixFileName(defaultName);
 					file = File.desktopDirectory.resolvePath(path);
+					file.addEventListener(Event.SELECT, fileSaved);
+					file.browseForSave("please choose file location");
 				}
-				file.addEventListener(Event.SELECT, fileSaved);
-				file.browseForSave("please choose file location");
+				
 //				file.save(zipData, path);
 			}
 			function fileSaved(e:Event):void {
