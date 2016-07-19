@@ -31,12 +31,17 @@ package extensions
 			_dialog.addTitle(Translator.map('Start Uploading'));
 			_dialog.addButton(Translator.map('Close'), _dialog.cancel);
 		}
-		
+		private function updateDialog():void
+		{
+			_dialog.setTitle(('Start Uploading'));
+			_dialog.setButton(('Close'));
+			_dialog.fixLayout();
+		}
 		public function upload(filePath:String):void
 		{
 			_dialog.setText(Translator.map('Uploading'));
 			_dialog.showOnStage(MBlock.app.stage);
-			
+			updateDialog();
 			var info:NativeProcessStartupInfo = new NativeProcessStartupInfo();
 			info.executable = getArduino();
 			var argList:Vector.<String> = new Vector.<String>();
