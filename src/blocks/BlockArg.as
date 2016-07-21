@@ -56,6 +56,7 @@ package blocks {
 	import translation.Translator;
 	
 	import util.Color;
+	import uiwidgets.Menu;
 
 public class BlockArg extends Sprite {
 
@@ -306,6 +307,7 @@ public class BlockArg extends Sprite {
 		if (Block.MenuHandlerFunction != null) {
 			Block.MenuHandlerFunction(evt, parent, this, menuName);
 			evt.stopImmediatePropagation();
+			Menu.menuJustCreated = true;
 		}
 	}
 
