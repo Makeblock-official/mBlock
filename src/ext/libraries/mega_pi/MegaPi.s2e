@@ -8,7 +8,10 @@
 		["h","MegaPi Program","runArduino",{"src":"orion","inc":"#include <MeMegaPi.h>\n","def":"","setup":"//Set Pwm 8KHz\nTCCR1A = _BV(WGM10);\nTCCR1B = _BV(CS11) | _BV(WGM12);\nTCCR2A = _BV(WGM21) | _BV(WGM20);\nTCCR2B = _BV(CS21);\n\n","loop":""}],
 		
 		["w", "%m.direction at speed %d.motorvalue","runBot", "run forward", 0,
-		{"encode":"{d0}{s1}","setup":"attachInterrupt(Encoder_1.GetIntNum(), isr_process_encoder1, RISING);\nattachInterrupt(Encoder_2.GetIntNum(), isr_process_encoder2, RISING);\n","inc":"","def":"","work":"move({0},{1});\n","loop":"Encoder_1.Update_speed();\nEncoder_2.Update_speed();\n"}],
+		{"encode":"{d0}{s1}","setup":"attachInterrupt(Encoder_1.getIntNum(), isr_process_encoder1, RISING);\nattachInterrupt(Encoder_2.getIntNum(), isr_process_encoder2, RISING);\n","inc":"","def":"","work":"move({0},{1});\n","loop":"Encoder_1.loop();\nEncoder_2.loop();\n"}],
+		
+		["w", "%m.direction %n degrees at the speed of%d.motorDegreesvalue","runDegreesBot", "run forward", 1000,100,
+		{"encode":"{d0}{s1}","setup":"attachInterrupt(Encoder_1.getIntNum(), isr_process_encoder1, RISING);\nattachInterrupt(Encoder_2.getIntNum(), isr_process_encoder2, RISING);\nEncoder_1.setPulse(8);\nEncoder_2.setPulse(8);\nEncoder_1.setRatio(46.67);\nEncoder_2.setRatio(46.67);\nEncoder_1.setPosPid(1.8,0,1.2);\nEncoder_2.setPosPid(1.8,0,1.2);\nEncoder_1.setSpeedPid(0.18,0,0);\nEncoder_2.setSpeedPid(0.18,0,0);\n","inc":"","def":"","work":"moveDegrees({0},{1},{2});\n","loop":"Encoder_1.loop();\nEncoder_2.loop();\n"}],
 		
 		["w", "set motor%d.motorPort speed %d.motorvalue","runMotor", "Port1A", 0,
 		{"encode":"{d0}{s1}","setup":"","inc":"","def":"MeMegaPiDCMotor motor_{0}({0});\n","work":"motor_{0}.run({1});\n","loop":""}],
@@ -22,8 +25,11 @@
 		["w", "set stepper motor%d.exMotorPort speed %d.stepperSpeed distance %n","runStepperMotor", "Port1", 3000, 1000,
 		{"encode":"{d0}{s1}{s2}","setup":"stepper_{0}.setMicroStep(16);\nstepper_{0}.enableOutputs();\n","inc":"","def":"MeStepperOnBoard stepper_{0}({0});\n","work":"stepper_{0}.move({2});\nstepper_{0}.setMaxSpeed({1});\nstepper_{0}.setSpeed({1});\n","loop":"stepper_{0}.runSpeedToPosition();\n"}],
 		
-		["w", "set encoder motor%d.exMotorPort speed %d.motorvalue","runEncoderMotor", "Port1", 100,
-		{"encode":"{d0}{s1}{s2}","setup":"attachInterrupt(Encoder_{0}.GetIntNum(), isr_process_encoder{0}, RISING);\n","inc":"","def":"","work":"Encoder_{0}.setMotorPwm({1});\n","loop":"Encoder_{0}.Update_speed();\n"}],
+		["w", "set encoder motor%d.exMotorPort speed %n rpm","runEncoderMotor", "Port1", 180,
+		{"encode":"{d0}{s1}{s2}","setup":"attachInterrupt(Encoder_{0}.getIntNum(), isr_process_encoder{0}, RISING);\nEncoder_1.setPulse(8);\nEncoder_2.setPulse(8);\nEncoder_1.setRatio(46.67);\nEncoder_2.setRatio(46.67);\nEncoder_1.setPosPid(1.8,0,1.2);\nEncoder_2.setPosPid(1.8,0,1.2);\nEncoder_1.setSpeedPid(0.18,0,0);\nEncoder_2.setSpeedPid(0.18,0,0);\n","inc":"","def":"","work":"Encoder_{0}.runSpeed({1});\n","loop":"Encoder_{0}.loop();\n"}],
+		
+		["w", "set encoder motor%d.exMotorPort rotate %n degrees at speed %n rpm","runEncoderMotorRotate", "Port1",1000, 180,
+		{"encode":"{d0}{s1}{s2}","setup":"attachInterrupt(Encoder_{0}.getIntNum(), isr_process_encoder{0}, RISING);\n Encoder_1.setPulse(8);\nEncoder_2.setPulse(8);\nEncoder_1.setRatio(46.67);\nEncoder_2.setRatio(46.67);\nEncoder_1.setPosPid(1.8,0,1.2);\nEncoder_2.setPosPid(1.8,0,1.2);\nEncoder_1.setSpeedPid(0.18,0,0);\nEncoder_2.setSpeedPid(0.18,0,0);\n","inc":"","def":"","work":"Encoder_{0}.move({1},{2});\n","loop":"Encoder_{0}.loop();\n"}],
 		
 		["w", "set 7-segments display%d.bluePorts number %n","runSevseg", "Port6", 100,
 		{"encode":"{d0}{f1}","setup":"","inc":"","def":"Me7SegmentDisplay seg7_{0}({0});\n","work":"seg7_{0}.display({1});\n","loop":""}],
@@ -54,8 +60,11 @@
 		
 		["-"],
 		
-		["R", "encoder motor %d.exMotorPort %d.encoderValue", "getEncoderValue","Port1", "speed",
-		{"encode":"{d0}","setup":"","inc":"","def":"","work":"Encoder_{0}.GetCurrentSpeed()","loop":""}],
+		["R", "encoder motor %d.exMotorPort speed/rpm", "getEncoderSpeedValue","Port1",
+		{"encode":"{d0}","setup":"","inc":"","def":"","work":"Encoder_{0}.getCurrentSpeed()","loop":""}],
+		
+		["R", "encoder motor %d.exMotorPort position/degrees", "getEncoderPosValue","Port1",
+		{"encode":"{d0}","setup":"","inc":"","def":"","work":"Encoder_{0}.getCurPos()","loop":""}],
 		
 		["R", "ultrasonic sensor %d.whitePorts distance","getUltrasonic","Port7",
 		{"encode":"{d0}","setup":"","inc":"","def":"MeUltrasonicSensor ultrasonic_{0}({0});\n","work":"ultrasonic_{0}.distanceCm()","loop":""}],
@@ -131,6 +140,7 @@
 		"servovalue":[0,45,90,135,180],
 		"direction":["run forward","run backward","turn right","turn left"],
 		"motorvalue":[255,100,50,0,-50,-100,-255],
+		"motorDegreesvalue":[200,100,50,0],
 		"value":[0,20,60,150,255],
 		"encodeType":["time","turns"],
 		"stepType":["time","steps"],

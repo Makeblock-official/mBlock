@@ -80,7 +80,10 @@
 		"IR mode":3,
 		"line follower mode":4
     };
-	var values = {};
+	var values = {"run forward":1,
+		"run backward":2,
+		"turn left":3,
+		"turn right":4};
 	var indexs = [];
 	var versionIndex = 0xFA;
     ext.resetAll = function(){
@@ -113,6 +116,10 @@
 		}
         runPackage(5,short2array(leftSpeed),short2array(rightSpeed));
     };
+    ext.runDegreesBot = function(direction,distance,speed){
+		direction = values[direction];
+        runPackage(62,05,direction,int2array(distance),short2array(speed));
+    }
 	ext.getTouchSensor = function(port){
     	var deviceId = 51;
     	if(typeof port=="string"){
@@ -178,9 +185,19 @@
 		runPackage(40,port,short2array(speed),int2array(distance));
 	};
 	ext.runEncoderMotorOnBoard = function(slot, speed){
-		ext.runEncoderMotor(0, slot, speed, 0);
+		if(typeof slot=="string"){
+			slot = slots[slot];
+		}
+		runPackage(62, 2,slot, short2array(speed));
 	};
-	ext.runEncoderMotor = function(port, slot, speed, distance){
+	ext.runEncoderMotorRotateOnBoard = function(slot, distance,speed){
+		if(typeof slot=="string"){
+			slot = slots[slot];
+		}
+		runPackage(62, 1,slot, int2array(distance),short2array(speed));
+	};
+	
+	ext.runEncoderMotor = function(port, slot, distance, speed){
 		if(typeof port=="string"){
 			port = ports[port];
 		}
@@ -391,6 +408,20 @@
 			port = ports[port];
 		}
 		getPackage(nextID,deviceId,port);
+    };
+    ext.getEncoderSpeedValue = function(nextID,slot){
+    	var deviceId = 61;
+    	if(typeof slot=="string"){
+    		slot = slots[slot];
+    	}
+    	getPackage(nextID,deviceId,00,slot,02);
+    };
+    ext.getEncoderPosValue = function(nextID,slot){
+    	var deviceId = 61;
+    	if(typeof slot=="string"){
+    		slot = slots[slot];
+    	}
+    	getPackage(nextID,deviceId,00,slot,01);
     };
 	function sendPackage(argList, type){
 		var bytes = [0xff, 0x55, 0, 0, type];
