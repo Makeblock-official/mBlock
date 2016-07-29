@@ -796,8 +796,15 @@ void updateVar(char * varName,double * var)
 		private function substitute(str:String,params:Array,ext:ScratchExtension=null,offset:uint = 1):String{
 			for(var i:uint=0;i<params.length-offset;i++){
 				var o:CodeBlock = getCodeBlock(params[i+offset]);
+				if(str.indexOf("ir.sendString")>-1)
+				{
+					var v:*=o.code;
+				}
+				else
+				{
+					v=o.type=="string"?(ext.values[o.code]==undefined?o.code:ext.values[o.code]):null;
+				}
 				
-				var v:*=o.type=="string"?(ext.values[o.code]==undefined?o.code:ext.values[o.code]):null;
 //				if(str.indexOf("sendString")>-1){
 //					v = o.code;
 //				}
@@ -1110,19 +1117,19 @@ MeEncoderOnBoard Encoder_2(SLOT2);
 
 void isr_process_encoder1(void)
 {
-  if(digitalRead(Encoder_1.GetPortB()) == 0){
-    Encoder_1.PulsePosMinus();
+  if(digitalRead(Encoder_1.getPortB()) == 0){
+    Encoder_1.pulsePosMinus();
   }else{
-    Encoder_1.PulsePosPlus();
+    Encoder_1.pulsePosPlus();
   }
 }
 
 void isr_process_encoder2(void)
 {
-  if(digitalRead(Encoder_2.GetPortB()) == 0){
-    Encoder_2.PulsePosMinus();
+  if(digitalRead(Encoder_2.getPortB()) == 0){
+    Encoder_2.pulsePosMinus();
   }else{
-    Encoder_2.PulsePosPlus();
+    Encoder_2.pulsePosPlus();
   }
 }
 
@@ -1146,6 +1153,29 @@ void move(int direction, int speed)
   Encoder_1.setMotorPwm(leftSpeed);
   Encoder_2.setMotorPwm(rightSpeed);
 }
+void moveDegrees(int direction,int degrees, int speed_temp)
+{
+  if(direction == 1)
+  {
+    Encoder_1.move(-degrees,(float)speed_temp);
+    Encoder_2.move(degrees,(float)speed_temp);
+  }
+  else if(direction == 2)
+  {
+    Encoder_1.move(degrees,(float)speed_temp);
+    Encoder_2.move(-degrees,(float)speed_temp);
+  }
+  else if(direction == 3)
+  {
+    Encoder_1.move(-degrees,(float)speed_temp);
+    Encoder_2.move(-degrees,(float)speed_temp);
+  }
+  else if(direction == 4)
+  {
+    Encoder_1.move(degrees,(float)speed_temp);
+    Encoder_2.move(degrees,(float)speed_temp);
+  }
+}
 ]]>.toString();
 			}else if(DeviceManager.sharedManager().currentName == "Mega Pi" && ccode_inc.indexOf("void isr_process_encoder1(void)") < 0){
 				ccode_inc += <![CDATA[
@@ -1158,37 +1188,37 @@ MeEncoderOnBoard Encoder_4(SLOT4);
 
 void isr_process_encoder1(void)
 {
-  if(digitalRead(Encoder_1.GetPortB()) == 0){
-    Encoder_1.PulsePosMinus();
+  if(digitalRead(Encoder_1.getPortB()) == 0){
+    Encoder_1.pulsePosMinus();
   }else{
-    Encoder_1.PulsePosPlus();
+    Encoder_1.pulsePosPlus();
   }
 }
 
 void isr_process_encoder2(void)
 {
-  if(digitalRead(Encoder_2.GetPortB()) == 0){
-    Encoder_2.PulsePosMinus();
+  if(digitalRead(Encoder_2.getPortB()) == 0){
+    Encoder_2.pulsePosMinus();
   }else{
-    Encoder_2.PulsePosPlus();
+    Encoder_2.pulsePosPlus();
   }
 }
 
 void isr_process_encoder3(void)
 {
-  if(digitalRead(Encoder_3.GetPortB()) == 0){
-    Encoder_3.PulsePosMinus();
+  if(digitalRead(Encoder_3.getPortB()) == 0){
+    Encoder_3.pulsePosMinus();
   }else{
-    Encoder_3.PulsePosPlus();
+    Encoder_3.pulsePosPlus();
   }
 }
 
 void isr_process_encoder4(void)
 {
-  if(digitalRead(Encoder_4.GetPortB()) == 0){
-    Encoder_4.PulsePosMinus();
+  if(digitalRead(Encoder_4.getPortB()) == 0){
+    Encoder_4.pulsePosMinus();
   }else{
-    Encoder_4.PulsePosPlus();
+    Encoder_4.pulsePosPlus();
   }
 }
 
@@ -1211,6 +1241,31 @@ void move(int direction, int speed)
   }
   Encoder_1.setMotorPwm(rightSpeed);
   Encoder_2.setMotorPwm(leftSpeed);
+}
+void moveDegrees(int direction,int degrees, int speed_temp)
+{
+   
+  if(direction == 1)
+  {
+    Encoder_1.move(degrees,(float)speed_temp);
+    Encoder_2.move(-degrees,(float)speed_temp);
+  }
+  else if(direction == 2)
+  {
+    Encoder_1.move(-degrees,(float)speed_temp);
+    Encoder_2.move(degrees,(float)speed_temp);
+  }
+  else if(direction == 3)
+  {
+    Encoder_1.move(degrees,(float)speed_temp);
+    Encoder_2.move(degrees,(float)speed_temp);
+  }
+  else if(direction == 4)
+  {
+    Encoder_1.move(-degrees,(float)speed_temp);
+    Encoder_2.move(-degrees,(float)speed_temp);
+  }
+
 }
 ]]>.toString();
 			}
