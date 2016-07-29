@@ -249,8 +249,8 @@ public class ProjectIO {
 		['Communication.serial\\/write\\/line','Communication.writeLine'],
 		['Communication.serial\\/write\\/command','Communication.writeCommand'],
 		['Communication.serial\\/read\\/command','Communication.readCommand'],
-		['Communication.serial\\/clear','Communication.clearBuffer'],
-		['["mBot.runLed", "all",','["mBot.runLed", "led on board","all",']
+		['Communication.serial\\/clear','Communication.clearBuffer']/*,
+		['["mBot.runLed", "all",','["mBot.runLed", "led on board","all",']*/
 	];
 	private function fixForNewExtension(json:String):String{
 		trace(json);
