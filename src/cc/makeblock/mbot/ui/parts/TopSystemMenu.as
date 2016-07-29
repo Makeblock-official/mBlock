@@ -63,7 +63,7 @@ package cc.makeblock.mbot.ui.parts
 			var ext:ScratchExtension;
 			var filePath:String;
 			switch(item.name){
-				case "mBot":
+				case "mymBot":
 					filePath = "mBlock/tools/hex/mbot_reset.hex";
 					break;
 				case "Starter IR":
@@ -361,7 +361,7 @@ package cc.makeblock.mbot.ui.parts
 				defaultProgramMenu.submenu.removeAllItems();
 				switch(DeviceManager.sharedManager().currentName){
 					case "mBot":
-						defaultProgramMenu.submenu.addItem(new NativeMenuItem("mBot")).name = "mBot";
+						defaultProgramMenu.submenu.addItem(new NativeMenuItem("mBot")).name = "mymBot";
 						break;
 					case "Me Auriga":
 						defaultProgramMenu.submenu.addItem(new NativeMenuItem("mBot Ranger")).name = "mBot Ranger";
