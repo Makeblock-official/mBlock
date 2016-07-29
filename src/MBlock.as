@@ -239,7 +239,11 @@ package {
 				extensionsPath.deleteDirectory(true);
 				extensionManager.copyLocalFiles();
 				SharedObjectManager.sharedManager().setObject("first-launch",true);
-				firstRunFile.deleteFile();
+				if(firstRunFile.exists)
+				{
+					firstRunFile.deleteFile();
+				}
+				
 				//SharedObjectManager.sharedManager().setObject("board","mbot_uno");
 			}
 			//VersionManager.sharedManager().start(); //在线更新资源文件
@@ -772,8 +776,8 @@ package {
 				scriptsPane.saveScripts(false);
 //				var zipData:ByteArray = projIO.encodeProjectAsZipFile(stagePane);
 				var file:File;
-				if(projectFile != null){
-					//如果项目已存在，那么就在这个file上进行保存，并且关闭
+				if(projectFile != null && postSaveAction!=null){
+					//如果项目已存在，并且回调函数不为空，说明当前是关闭前的保存，那么就在这个file上进行保存，并且关闭
 					file = projectFile.clone();
 					FileUtil.WriteBytes(file, projIO.encodeProjectAsZipFile(stagePane));
 					saveNeeded = false;
