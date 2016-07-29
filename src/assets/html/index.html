@@ -59,10 +59,16 @@ function setCode(code){
 function appendInfo(info){
 	var div = document.getElementById("content");
 	var node = div.firstChild;
-	node.appendChild(document.createTextNode(info));
+/* 	node.appendChild(document.createTextNode(info));
 	if(node.childNodes.length > 200){
 		node.removeChild(node.firstChild);
+	} */
+	var newText = node.innerText+info;
+	if(newText.length > 2000) {
+		newText = newText.substring(newText.length - 1500);
 	}
+	node.innerText = newText;
+	
 	div.scrollTop = div.scrollHeight;
 }
 function clearInfo(){
