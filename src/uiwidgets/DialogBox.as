@@ -57,7 +57,7 @@ public class DialogBox extends Sprite {
 	private var heightPerField:int = Math.max(makeLabel('foo').height, makeField(10).height) + 10;
 	private const spaceAfterText:int = 18;
 	private const blankLineSpace:int = 7;
-
+	//private var backMaskMc:Sprite;
 	private var acceptFunction:Function; // if not nil, called when menu interaction is accepted
 
 	public function DialogBox(acceptFunction:Function = null) {
@@ -223,11 +223,21 @@ private function getCheckMark(b:Boolean):Sprite{
 		}
 		x = Math.max(0, Math.min(x, stage.nativeWindow.width - width));
 		y = Math.max(0, Math.min(y, stage.nativeWindow.height - height));
+		/*if(!backMaskMc)
+		{
+			backMaskMc = new Sprite();
+			backMaskMc.graphics.beginFill(0,0.5);
+			backMaskMc.graphics.drawRect(0,0,stage.width,stage.height);
+			backMaskMc.graphics.endFill();
+		}
+		stage.addChild(backMaskMc);*/
 		stage.addChild(this);
 		if (labelsAndFields.length > 0) {
 			// note: doesn't work when testing from FlexBuilder; works when deployed
 			stage.focus = labelsAndFields[0][1];
 		}
+		
+		
 	}
 
 	public static function findDialogBoxes(targetTitle:String, stage:Stage):Array {
@@ -260,10 +270,20 @@ private function getCheckMark(b:Boolean):Sprite{
 			}
 		}
 		if (parent != null) parent.removeChild(this);
+		/*if(backMaskMc && backMaskMc.parent)
+		{
+			backMaskMc.parent.removeChild(backMaskMc);
+			backMaskMc = null;
+		}*/
 	}
-
+	
 	public function cancel():void {
 		if (parent != null) parent.removeChild(this);
+		/*if(backMaskMc && backMaskMc.parent)
+		{
+			backMaskMc.parent.removeChild(backMaskMc);
+			backMaskMc = null;
+		}*/
 	}
 
 	public function getField(fieldName:String):* {
