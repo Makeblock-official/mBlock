@@ -1155,6 +1155,7 @@ void move(int direction, int speed)
 }
 void moveDegrees(int direction,int degrees, int speed_temp)
 {
+  speed_temp = abs(speed_temp);
   if(direction == 1)
   {
     Encoder_1.move(-degrees,(float)speed_temp);
@@ -1244,7 +1245,7 @@ void move(int direction, int speed)
 }
 void moveDegrees(int direction,int degrees, int speed_temp)
 {
-   
+  speed_temp = abs(speed_temp);
   if(direction == 1)
   {
     Encoder_1.move(degrees,(float)speed_temp);
