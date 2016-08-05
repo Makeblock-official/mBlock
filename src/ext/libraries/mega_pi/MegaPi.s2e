@@ -10,7 +10,7 @@
 		["w", "%m.direction at speed %d.motorvalue","runBot", "run forward", 0,
 		{"encode":"{d0}{s1}","setup":"attachInterrupt(Encoder_1.getIntNum(), isr_process_encoder1, RISING);\nattachInterrupt(Encoder_2.getIntNum(), isr_process_encoder2, RISING);\n","inc":"","def":"","work":"move({0},{1});\n","loop":"Encoder_1.loop();\nEncoder_2.loop();\n"}],
 		
-		["w", "%m.direction %n degrees at the speed of%d.motorDegreesvalue","runDegreesBot", "run forward", 1000,100,
+		["w", "%m.direction %n degrees at the speed of%d.motorDegreesvalue rpm","runDegreesBot", "run forward", 1000,100,
 		{"encode":"{d0}{s1}","setup":"attachInterrupt(Encoder_1.getIntNum(), isr_process_encoder1, RISING);\nattachInterrupt(Encoder_2.getIntNum(), isr_process_encoder2, RISING);\nEncoder_1.setPulse(8);\nEncoder_2.setPulse(8);\nEncoder_1.setRatio(46.67);\nEncoder_2.setRatio(46.67);\nEncoder_1.setPosPid(1.8,0,1.2);\nEncoder_2.setPosPid(1.8,0,1.2);\nEncoder_1.setSpeedPid(0.18,0,0);\nEncoder_2.setSpeedPid(0.18,0,0);\n","inc":"","def":"","work":"moveDegrees({0},{1},{2});\n","loop":"Encoder_1.loop();\nEncoder_2.loop();\n"}],
 		
 		["w", "set motor%d.motorPort speed %d.motorvalue","runMotor", "Port1A", 0,
@@ -29,7 +29,7 @@
 		{"encode":"{d0}{s1}{s2}","setup":"attachInterrupt(Encoder_{0}.getIntNum(), isr_process_encoder{0}, RISING);\nEncoder_1.setPulse(8);\nEncoder_2.setPulse(8);\nEncoder_1.setRatio(46.67);\nEncoder_2.setRatio(46.67);\nEncoder_1.setPosPid(1.8,0,1.2);\nEncoder_2.setPosPid(1.8,0,1.2);\nEncoder_1.setSpeedPid(0.18,0,0);\nEncoder_2.setSpeedPid(0.18,0,0);\n","inc":"","def":"","work":"Encoder_{0}.runSpeed({1});\n","loop":"Encoder_{0}.loop();\n"}],
 		
 		["w", "set encoder motor%d.exMotorPort rotate %n degrees at speed %n rpm","runEncoderMotorRotate", "Port1",1000, 180,
-		{"encode":"{d0}{s1}{s2}","setup":"attachInterrupt(Encoder_{0}.getIntNum(), isr_process_encoder{0}, RISING);\n Encoder_1.setPulse(8);\nEncoder_2.setPulse(8);\nEncoder_1.setRatio(46.67);\nEncoder_2.setRatio(46.67);\nEncoder_1.setPosPid(1.8,0,1.2);\nEncoder_2.setPosPid(1.8,0,1.2);\nEncoder_1.setSpeedPid(0.18,0,0);\nEncoder_2.setSpeedPid(0.18,0,0);\n","inc":"","def":"","work":"Encoder_{0}.move({1},{2});\n","loop":"Encoder_{0}.loop();\n"}],
+		{"encode":"{d0}{s1}{s2}","setup":"attachInterrupt(Encoder_{0}.getIntNum(), isr_process_encoder{0}, RISING);\n Encoder_1.setPulse(8);\nEncoder_2.setPulse(8);\nEncoder_1.setRatio(46.67);\nEncoder_2.setRatio(46.67);\nEncoder_1.setPosPid(1.8,0,1.2);\nEncoder_2.setPosPid(1.8,0,1.2);\nEncoder_1.setSpeedPid(0.18,0,0);\nEncoder_2.setSpeedPid(0.18,0,0);\n","inc":"","def":"","work":"Encoder_{0}.move({1},abs({2}));\n","loop":"Encoder_{0}.loop();\n"}],
 		
 		["w", "set 7-segments display%d.bluePorts number %n","runSevseg", "Port6", 100,
 		{"encode":"{d0}{f1}","setup":"","inc":"","def":"Me7SegmentDisplay seg7_{0}({0});\n","work":"seg7_{0}.display({1});\n","loop":""}],

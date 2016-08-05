@@ -117,7 +117,7 @@
     };
     ext.runDegreesBot = function(direction,distance,speed){
     	direction = values[direction];
-        runPackage(62,05,direction,int2array(distance),short2array(speed));
+        runPackage(62,05,direction,int2array(distance),short2array(Math.abs(speed)));
     };
 	ext.getTouchSensor = function(port){
     	var deviceId = 51;
@@ -186,7 +186,7 @@
 		if(typeof port=="string"){
 			port = ports[port];
 		}
-		runPackage(62, 01,port, int2array(distance),short2array(speed));
+		runPackage(62, 01,port, int2array(distance),short2array(Math.abs(speed)));
 		
 	};
 	ext.runSevseg = function(port,display){

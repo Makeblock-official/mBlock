@@ -118,7 +118,7 @@
     };
     ext.runDegreesBot = function(direction,distance,speed){
 		direction = values[direction];
-        runPackage(62,05,direction,int2array(distance),short2array(speed));
+        runPackage(62,05,direction,int2array(distance),short2array(Math.abs(speed)));
     }
 	ext.getTouchSensor = function(port){
     	var deviceId = 51;
@@ -194,10 +194,10 @@
 		if(typeof slot=="string"){
 			slot = slots[slot];
 		}
-		runPackage(62, 1,slot, int2array(distance),short2array(speed));
+		runPackage(62, 1,slot, int2array(distance),short2array(Math.abs(speed)));
 	};
 	
-	ext.runEncoderMotor = function(port, slot, distance, speed){
+	ext.runEncoderMotorRpm = function(port, slot, distance, speed){
 		if(typeof port=="string"){
 			port = ports[port];
 		}
