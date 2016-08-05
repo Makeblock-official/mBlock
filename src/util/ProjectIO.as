@@ -177,6 +177,8 @@ public class ProjectIO {
 			}
 		}
 		var jsonObj:Object = util.JSON.parse(jsonData);
+		//先处理mbot板载led兼容性问题
+		fixMbotLed(jsonObj);
 		if(jsonObj['info']){
 			if(jsonObj['info']['boardVersion']){
 				DeviceManager.sharedManager().onSelectBoard(jsonObj['info']['boardVersion']);
@@ -185,6 +187,7 @@ public class ProjectIO {
 			}
 		}
 		if (jsonObj['children']) { // project JSON
+			
 			var proj:ScratchStage = new ScratchStage();
 			proj.readJSON(jsonObj);
 			if (proj.penLayerID >= 0) proj.penLayerPNG = images[proj.penLayerID]
@@ -200,6 +203,55 @@ public class ProjectIO {
 			return sprite;
 		}
 		return null;
+	}
+	private function fixMbotLed(obj:Object):void
+	{
+		var childs:Array = obj["children"];
+		if(!childs)return;
+		for each(var sc:Object in childs)
+		{
+			var script:Array = sc["scripts"];
+			if(!script)
+			{
+				continue;
+			}
+			for(var i:int=0;i<script.length;i++)
+			{
+				var blocks:Array = script[i][2];
+				if(!blocks)continue;
+				fixRecursion(blocks);
+			}
+			
+		}
+	}
+	private function fixRecursion(blocks:Array):void
+	{
+		for(var j:int=0;j<blocks.length;j++)
+		{
+			if(blocks[j] is Array)
+			{
+				if(blocks[j].indexOf("mBot.runLed")>-1 )
+				{
+					if(blocks[j].length==6)
+					{
+						blocks[j].splice(1,1);
+					}
+				}
+				else
+				{
+					for(var k:int=0;k<blocks[j].length;k++)
+					{
+						if(blocks[j][k] is Array)
+						{
+							fixRecursion(blocks[j][k]);
+						}
+						
+					}
+				}
+				
+				
+			}
+		}
 	}
 	private var fixList:Array = [
 		["arduino\\/main","runArduino"],
@@ -249,7 +301,11 @@ public class ProjectIO {
 		['Communication.serial\\/write\\/line','Communication.writeLine'],
 		['Communication.serial\\/write\\/command','Communication.writeCommand'],
 		['Communication.serial\\/read\\/command','Communication.readCommand'],
-		['Communication.serial\\/clear','Communication.clearBuffer']/*,
+		['Communication.serial\\/clear','Communication.clearBuffer'],
+		['Auriga.getEncoderValue','Auriga.getEncoderSpeedValue'],
+		['MegaPi.getEncoderValue','MegaPi.getEncoderSpeedValue'], /*兼容V3.3.2 auriga和megapi的getEncoderValue，将改语句块拆分成了速度和位置两块，所以要兼容旧版本，旧版本转为速度快（旧版本只实现了读取速度功能）*/
+		['"Auriga.runEncoderMotor"','"Auriga.runEncoderMotorRpm"']    /*由于Auriga和Megapi同一语句块参数不一样，所以切换板的时候有问题，因此这里修改了Auriga的语句块名字，并且兼容*/
+		/*,
 		['["mBot.runLed", "all",','["mBot.runLed", "led on board","all",']*/
 	];
 	private function fixForNewExtension(json:String):String{
