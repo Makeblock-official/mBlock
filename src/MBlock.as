@@ -199,15 +199,10 @@ package {
 //			try{
 				extensionManager = new ExtensionManager(this);
 				var extensionsPath:File = ApplicationManager.sharedManager().documents.resolvePath("mBlock");
-				var firstRunFile:File = new File(File.applicationDirectory.resolvePath("firstrun.dat").nativePath);
 				if(!extensionsPath.exists){
 					SharedObjectManager.sharedManager().clear();
 					SharedObjectManager.sharedManager().setObject(versionString+".0."+_currentVer,true);
 					extensionManager.copyLocalFiles();
-					if(firstRunFile.exists)
-					{
-						firstRunFile.deleteFile()
-					}
 				}
 				
 		//		extensionManager.importExtension();
@@ -233,16 +228,12 @@ package {
 			fixLayout();
 			setTimeout(SocketManager.sharedManager, 100);
 			setTimeout(DeviceManager.sharedManager, 100);
-			if(!SharedObjectManager.sharedManager().getObject(versionString+".0."+_currentVer,false) || firstRunFile.exists){
+			if(!SharedObjectManager.sharedManager().getObject(versionString+".0."+_currentVer,false)){
 				//SharedObjectManager.sharedManager().clear();
 				SharedObjectManager.sharedManager().setObject(versionString+".0."+_currentVer,true);
 				extensionsPath.deleteDirectory(true);
 				extensionManager.copyLocalFiles();
 				SharedObjectManager.sharedManager().setObject("first-launch",true);
-				if(firstRunFile.exists)
-				{
-					firstRunFile.deleteFile();
-				}
 				
 				//SharedObjectManager.sharedManager().setObject("board","mbot_uno");
 			}
