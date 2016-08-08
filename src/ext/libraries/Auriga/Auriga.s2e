@@ -30,7 +30,7 @@
 		{"encode":"{d0}{s1}{s2}","setup":"attachInterrupt(Encoder_{0}.getIntNum(), isr_process_encoder{0}, RISING);\nEncoder_{0}.setPulse(9);\nEncoder_{0}.setRatio(39.267);\nEncoder_{0}.setPosPid(0.18,0,0);\nEncoder_{0}.setSpeedPid(0.18,0,0);\n\n","inc":"","def":"","work":"Encoder_{0}.runSpeed({1});\n","loop":"Encoder_{0}.loop();\n"}],
 		
 		["w", "set encoder motor on board %d.slot rotate %n degrees at the speed of %n rpm","runEncoderMotorRotateOnBoard", "Slot1", 1000,180,
-		{"encode":"{d0}{s1}{s2}","setup":"attachInterrupt(Encoder_{0}.getIntNum(), isr_process_encoder{0}, RISING);\nEncoder_{0}.setPulse(9);\nEncoder_{0}.setRatio(39.267);\nEncoder_{0}.setPosPid(0.18,0,0);\nEncoder_{0}.setSpeedPid(0.18,0,0);\n\n","inc":"","def":"","work":"Encoder_{0}.move({1},{2});\n","loop":"Encoder_{0}.loop();\n"}],
+		{"encode":"{d0}{s1}{s2}","setup":"attachInterrupt(Encoder_{0}.getIntNum(), isr_process_encoder{0}, RISING);\nEncoder_{0}.setPulse(9);\nEncoder_{0}.setRatio(39.267);\nEncoder_{0}.setPosPid(0.18,0,0);\nEncoder_{0}.setSpeedPid(0.18,0,0);\n\n","inc":"","def":"","work":"Encoder_{0}.move({1},abs({2}));\n","loop":"Encoder_{0}.loop();\n"}],
 		
 		["w", "set 7-segments display%d.bluePorts number %n","runSevseg", "Port6", 100,
 		{"encode":"{d0}{f1}","setup":"","inc":"","def":"Me7SegmentDisplay seg7_{0}({0});\n","work":"seg7_{0}.display({1});\n","loop":""}],
