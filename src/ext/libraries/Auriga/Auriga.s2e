@@ -11,7 +11,7 @@
 		{"encode":"{d0}{s1}","setup":"attachInterrupt(Encoder_1.getIntNum(), isr_process_encoder1, RISING);\nattachInterrupt(Encoder_2.getIntNum(), isr_process_encoder2, RISING);\n","inc":"","def":"","work":"move({0},{1});\n","loop":"Encoder_1.loop();\nEncoder_2.loop();\n"}],
 		
 		["w", "%m.direction %n degrees at the speed of%d.motorDegreesvalue rpm","runDegreesBot", "run forward",1000, 100,
-		{"encode":"{d0}{d1}{s2}","setup":"attachInterrupt(Encoder_1.getIntNum(), isr_process_encoder1, RISING);\nattachInterrupt(Encoder_2.getIntNum(), isr_process_encoder2, RISING);\nEncoder_1.setPulse(9);\nEncoder_1.setRatio(39.267);\nEncoder_1.setPosPid(0.18,0,0);\nEncoder_1.setSpeedPid(0.18,0,0);\nEncoder_2.setPulse(9);\nEncoder_2.setRatio(39.267);\nEncoder_2.setPosPid(0.18,0,0);\nEncoder_2.setSpeedPid(0.18,0,0);\n\n","inc":"","def":"","work":"moveDegrees({0},{1},{2});\n","loop":"Encoder_1.loop();\nEncoder_2.loop();\n"}],
+		{"encode":"{d0}{d1}{s2}","setup":"attachInterrupt(Encoder_1.getIntNum(), isr_process_encoder1, RISING);\nattachInterrupt(Encoder_2.getIntNum(), isr_process_encoder2, RISING);\nEncoder_1.setPulse(9);\nEncoder_1.setRatio(39.267);\nEncoder_1.setPosPid(1.8,0,1.2);\nEncoder_1.setSpeedPid(0.18,0,0);\nEncoder_2.setPulse(9);\nEncoder_2.setRatio(39.267);\nEncoder_2.setPosPid(1.8,0,1.2);\nEncoder_2.setSpeedPid(0.18,0,0);\n\n","inc":"","def":"","work":"moveDegrees({0},{1},{2});\n","loop":"Encoder_1.loop();\nEncoder_2.loop();\n"}],
 		
 		["w", "set DC motor%d.motorPort speed %d.motorvalue","runMotor", "Port1", 0,
 		{"encode":"{d0}{s1}","setup":"","inc":"","def":"MeDCMotor motor_{0}({0});\n","work":"motor_{0}.run({1});\n","loop":""}],
@@ -23,14 +23,14 @@
 		{"encode":"{d0}{s1}{s2}","setup":"","inc":"","def":"MeStepper stepper_{0}({0});\n","work":"stepper_{0}.move({2});\nstepper_{0}.setMaxSpeed({1});\nstepper_{0}.setSpeed({1});\n","loop":"stepper_{0}.runSpeedToPosition();\n"}],
 		
 		["w", "set encoder motor%d.exMotorPort %d.slot rotate %n degrees at the speed of %n rpm","runEncoderMotorRpm", "Port1", "Slot1", 1000, 180,
-		{"encode":"{d0}{s1}{s2}","setup":"encoder_{0}_{1}.begin();\nencoder_{0}_{1}.runSpeed(0);\n","inc":"","def":"MeEncoderMotor encoder_{0}_{1}(0x09,{1});\n","work":"encoder_{0}_{1}.move({2},abs({3}));\n","loop":"encoder_{0}_{1}.loop();"}],
+		{"encode":"{d0}{s1}{s2}","setup":"encoder_{0}_{1}.begin();\nencoder_{0}_{1}.runSpeed(0);\n","inc":"","def":"MeEncoderMotor encoder_{0}_{1}(0x09,{1});\n","work":"encoder_{0}_{1}.move({2},abs({3}));\n","loop":""}],
 		
 		
 		["w", "set encoder motor on board %d.slot rotate at the speed of %n rpm","runEncoderMotorOnBoard", "Slot1", 100,
-		{"encode":"{d0}{s1}{s2}","setup":"attachInterrupt(Encoder_{0}.getIntNum(), isr_process_encoder{0}, RISING);\nEncoder_{0}.setPulse(9);\nEncoder_{0}.setRatio(39.267);\nEncoder_{0}.setPosPid(0.18,0,0);\nEncoder_{0}.setSpeedPid(0.18,0,0);\n\n","inc":"","def":"","work":"Encoder_{0}.runSpeed({1});\n","loop":"Encoder_{0}.loop();\n"}],
+		{"encode":"{d0}{s1}{s2}","setup":"attachInterrupt(Encoder_{0}.getIntNum(), isr_process_encoder{0}, RISING);\nEncoder_{0}.setPulse(9);\nEncoder_{0}.setRatio(39.267);\nEncoder_{0}.setPosPid(1.8,0,1.2);\nEncoder_{0}.setSpeedPid(0.18,0,0);\n\n","inc":"","def":"","work":"Encoder_{0}.runSpeed({1});\n","loop":"Encoder_{0}.loop();\n"}],
 		
 		["w", "set encoder motor on board %d.slot rotate %n degrees at the speed of %n rpm","runEncoderMotorRotateOnBoard", "Slot1", 1000,180,
-		{"encode":"{d0}{s1}{s2}","setup":"attachInterrupt(Encoder_{0}.getIntNum(), isr_process_encoder{0}, RISING);\nEncoder_{0}.setPulse(9);\nEncoder_{0}.setRatio(39.267);\nEncoder_{0}.setPosPid(0.18,0,0);\nEncoder_{0}.setSpeedPid(0.18,0,0);\n\n","inc":"","def":"","work":"Encoder_{0}.move({1},abs({2}));\n","loop":"Encoder_{0}.loop();\n"}],
+		{"encode":"{d0}{s1}{s2}","setup":"attachInterrupt(Encoder_{0}.getIntNum(), isr_process_encoder{0}, RISING);\nEncoder_{0}.setPulse(9);\nEncoder_{0}.setRatio(39.267);\nEncoder_{0}.setPosPid(1.8,0,1.2);\nEncoder_{0}.setSpeedPid(0.18,0,0);\n\n","inc":"","def":"","work":"Encoder_{0}.move({1},abs({2}));\n","loop":"Encoder_{0}.loop();\n"}],
 		
 		["w", "set 7-segments display%d.bluePorts number %n","runSevseg", "Port6", 100,
 		{"encode":"{d0}{f1}","setup":"","inc":"","def":"Me7SegmentDisplay seg7_{0}({0});\n","work":"seg7_{0}.display({1});\n","loop":""}],
