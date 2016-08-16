@@ -35,7 +35,7 @@
 
 		
 		["w", "set 7-segments display%d.bluePorts number %n","runSevseg", "Port6", 100,
-		{"encode":"{d0}{f1}","setup":"","inc":"","def":"Me7SegmentDisplay seg7_{0}({0});\n","work":"seg7_{0}.display({1});\n","loop":""}],
+		{"encode":"{d0}{f1}","setup":"","inc":"","def":"Me7SegmentDisplay seg7_{0}({0});\n","work":"seg7_{0}.display((float){1});\n","loop":""}],
 		
 		["w", "set led on board %d.index3 red%d.value green%d.value blue%d.value","runLedOnBoard","all",0,0,0,
 		{"encode":"{d0}{d1}{d2}{d3}{d4}","setup":"rgbled_0.setpin(44);\n","inc":"","def":"MeRGBLed rgbled_0(0, 12);\n","work":"rgbled_0.setColor({0},{1},{2},{3});\nrgbled_0.show();\n","loop":""}],

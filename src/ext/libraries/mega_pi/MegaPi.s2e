@@ -32,7 +32,7 @@
 		{"encode":"{d0}{s1}{s2}","setup":"attachInterrupt(Encoder_{0}.getIntNum(), isr_process_encoder{0}, RISING);\n Encoder_1.setPulse(8);\nEncoder_2.setPulse(8);\nEncoder_1.setRatio(46.67);\nEncoder_2.setRatio(46.67);\nEncoder_1.setPosPid(1.8,0,1.2);\nEncoder_2.setPosPid(1.8,0,1.2);\nEncoder_1.setSpeedPid(0.18,0,0);\nEncoder_2.setSpeedPid(0.18,0,0);\n","inc":"","def":"","work":"Encoder_{0}.move({1},abs({2}));\n","loop":"Encoder_{0}.loop();\n"}],
 		
 		["w", "set 7-segments display%d.bluePorts number %n","runSevseg", "Port6", 100,
-		{"encode":"{d0}{f1}","setup":"","inc":"","def":"Me7SegmentDisplay seg7_{0}({0});\n","work":"seg7_{0}.display({1});\n","loop":""}],
+		{"encode":"{d0}{f1}","setup":"","inc":"","def":"Me7SegmentDisplay seg7_{0}({0});\n","work":"seg7_{0}.display((float){1});\n","loop":""}],
 		
 		["w", "set led %d.lport %d.index red%d.value green%d.value blue%d.value","runLed", "Port6","all",0,0,0,
 		{"encode":"{d0}{d1}{d2}{d3}{d4}","setup":"","inc":"","def":"MeRGBLed rgbled_{0}({0}, 4);\n","work":"rgbled_{0}.setColor({1},{2},{3},{4});\nrgbled_{0}.show();\n","loop":""}],
