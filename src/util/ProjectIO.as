@@ -177,8 +177,8 @@ public class ProjectIO {
 			}
 		}
 		var jsonObj:Object = util.JSON.parse(jsonData);
-		//先处理mbot板载led兼容性问题
-		fixMbotLed(jsonObj);
+		//先处理兼容性问题
+		fixManager(jsonObj);
 		if(jsonObj['info']){
 			if(jsonObj['info']['boardVersion']){
 				DeviceManager.sharedManager().onSelectBoard(jsonObj['info']['boardVersion']);
@@ -204,8 +204,10 @@ public class ProjectIO {
 		}
 		return null;
 	}
-	private function fixMbotLed(obj:Object):void
+	private function fixManager(obj:Object):void
 	{
+		var board:String = obj.info.boardVersion;
+		trace("board="+board);
 		var childs:Array = obj["children"];
 		if(!childs)return;
 		for each(var sc:Object in childs)
@@ -219,40 +221,141 @@ public class ProjectIO {
 			{
 				var blocks:Array = script[i][2];
 				if(!blocks)continue;
-				fixRecursion(blocks);
+				/*'??'指的是原来什么值就什么值，不作对比和修改
+				* +表示插入+号后面的项，比如arr1=[1,2,3],arr2=[4,"+",8]，转换后得 arr1=[4,8,2,3];
+				*- 表示要删除该项，比如arr1=[1,2,3],arr2=["-","??","??"]，转换后得 arr1=[2,3];
+				* T 表示交换位置，比如第1个和第2个参数交换位置，arr1=[1,2,3],arr2=["T1","T1","??"],转换后arr1=[2,1,3];这里T是成对出现的，多对要交换用T加序号来实现
+				* "Port1|Port2|Port3|Port4" 竖线隔开表示满足其中任意一个都算匹配上了。
+				* "1:led right|2:led left" 替代的项，1:led right 表示如果值为1，则替换成led right
+				*/
+				
+				if(board=="mbot_uno")
+				{
+					//fix mBot 
+					fixCategoryRecursion(blocks,["mBot.runLed", "Port1|Port2|Port3|Port4", "??", "??", "??", "??"],["mBot.runLedExternal"]);
+					fixCategoryRecursion(blocks,["mBot.runLed", "led on board", "??", "??", "??", "??"],["mBot.runLed","-","1:led right|2:led left"]);
+				}
+				else if(board=="me/auriga_mega2560")
+				{
+					//fix auriga
+					//兼容V3.3.2 auriga和megapi的getEncoderValue，将改语句块拆分成了速度和位置两块，所以要兼容旧版本，旧版本转为速度快（旧版本只实现了读取速度功能）
+					fixCategoryRecursion(blocks,["Auriga.getEncoderValue", "??", "position"],["Auriga.getEncoderPosValue","??","-"]);
+					fixCategoryRecursion(blocks,["Auriga.getEncoderValue", "??", "speed"],["Auriga.getEncoderSpeedValue","??","-"]);
+					/*由于Auriga和Megapi同一语句块参数不一样，所以切换板的时候有问题，因此这里修改了Auriga的语句块名字，并且兼容，调换角度与速度的位置*/
+					fixCategoryRecursion(blocks,["Auriga.runEncoderMotor", "??", "??", "??", "??"],["Auriga.runEncoderMotorRpm","??","??","T1","T1"]);
+				}
+				else if(board=="me/mega_pi_mega2560")
+				{
+					fixCategoryRecursion(blocks,["MegaPi.getEncoderValue", "??", "position"],["MegaPi.getEncoderPosValue","??","-"]);
+					fixCategoryRecursion(blocks,["MegaPi.getEncoderValue", "??", "speed"],["MegaPi.getEncoderSpeedValue","??","-"]);
+				}
+				
 			}
 			
 		}
 	}
-	private function fixRecursion(blocks:Array):void
+	
+	/**
+	 * 功能：在blocks中查找与originalArr匹配的项，然后替换成targetArr。用在兼容旧版本的地方
+	 * @param blocks 数据对象
+	 * @param originalArr 要匹配的项
+	 * @param targetArr  要替换的项
+	 * 
+	 */	
+	private function fixCategoryRecursion(blocks:Array,originalArr:Array,targetArr:Array):void
 	{
-		for(var j:int=0;j<blocks.length;j++)
+			
+		if(blocks.length==originalArr.length)
 		{
-			if(blocks[j] is Array)
+			for(var j:int=0;j<originalArr.length;j++)
 			{
-				if(blocks[j].indexOf("mBot.runLed")>-1 )
+				if(originalArr[j]=="??" || originalArr[j]==blocks[j] || originalArr[j].indexOf(blocks[j])>=0)
 				{
-					if(blocks[j].length==6)
-					{
-						blocks[j].splice(1,1);
-					}
+					continue;
 				}
 				else
 				{
-					for(var k:int=0;k<blocks[j].length;k++)
+					j--;
+					break;
+				}
+			}
+			//全等，准备替换
+			if(j==originalArr.length)
+			{
+				var tmpArr:Array = targetArr.slice();
+				for(var k:int=0;k<tmpArr.length;k++)
+				{
+					if(tmpArr[k] is String && tmpArr[k].charAt(0)=="T")
 					{
-						if(blocks[j][k] is Array)
+						var key:String = tmpArr[k];
+						var ind1:int = k;
+						var ind2:int = tmpArr.lastIndexOf(key);
+						if(ind2>=0)
 						{
-							fixRecursion(blocks[j][k]);
+							var tmpStr:String = blocks[ind1];
+							blocks[ind1] = blocks[ind2];
+							blocks[ind2] = tmpStr;
+						}
+					}
+					else if(tmpArr[k]=="+")
+					{
+						tmpArr.splice(k,1);
+						blocks.splice(k,0,tmpArr[k]);
+					}
+					else if(tmpArr[k]=="-")
+					{
+						blocks.splice(k,1);
+						tmpArr.splice(k,1);
+						k--;
+					}
+					else if(tmpArr[k]!="??")
+					{
+						if(tmpArr[k].indexOf("|")>=0)
+						{
+							var valueArr:Array = tmpArr[k].split("|");
+							for each(var value:String in valueArr)
+							{
+								var arr:Array = value.split(":");
+								if(blocks[k]==arr[0])
+								{
+									blocks[k] = arr[1];
+									break;
+								}
+							}
+						}
+						else
+						{
+							blocks[k] = tmpArr[k];
 						}
 						
 					}
 				}
-				
-				
+			}
+			else
+			{
+				for(var t:int=0;t<blocks.length;t++)
+				{
+					if(blocks[t] is Array)
+					{
+						fixCategoryRecursion(blocks[t],originalArr,targetArr);
+					}
+				}
 			}
 		}
+		else
+		{
+			for(t=0;t<blocks.length;t++)
+			{
+				if(blocks[t] is Array)
+				{
+					fixCategoryRecursion(blocks[t],originalArr,targetArr);
+				}
+			}
+		}
+			
+		
 	}
+	
 	private var fixList:Array = [
 		["arduino\\/main","runArduino"],
 		["Robots.","Makeblock."],
@@ -302,9 +405,7 @@ public class ProjectIO {
 		['Communication.serial\\/write\\/command','Communication.writeCommand'],
 		['Communication.serial\\/read\\/command','Communication.readCommand'],
 		['Communication.serial\\/clear','Communication.clearBuffer'],
-		['Auriga.getEncoderValue','Auriga.getEncoderSpeedValue'],
-		['MegaPi.getEncoderValue','MegaPi.getEncoderSpeedValue'], /*兼容V3.3.2 auriga和megapi的getEncoderValue，将改语句块拆分成了速度和位置两块，所以要兼容旧版本，旧版本转为速度快（旧版本只实现了读取速度功能）*/
-		['"Auriga.runEncoderMotor"','"Auriga.runEncoderMotorRpm"']    /*由于Auriga和Megapi同一语句块参数不一样，所以切换板的时候有问题，因此这里修改了Auriga的语句块名字，并且兼容*/
+		['"Quater"','"Quarter"']
 		/*,
 		['["mBot.runLed", "all",','["mBot.runLed", "led on board","all",']*/
 	];
