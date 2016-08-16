@@ -2,8 +2,8 @@
 * File Name          : baseboard_firmware.ino
 * Author             : Ander, Mark Yan
 * Updated            : Ander, Mark Yan
-* Version            : V0b.01.103
-* Date               : 01/09/2016
+* Version            : V0b.01.104
+* Date               : 07/06/2016
 * Description        : Firmware for Makeblock Electronic modules with Scratch.  
 * License            : CC-BY-SA 3.0
 * Copyright (C) 2013 - 2016 Maker Works Technology Co., Ltd. All right reserved.
@@ -66,7 +66,7 @@ MeModule modules[12];
 #if defined(__AVR_ATmega1280__)|| defined(__AVR_ATmega2560__)
   int analogs[16]={A0,A1,A2,A3,A4,A5,A6,A7,A8,A9,A10,A11,A12,A13,A14,A15};
 #endif
-String mVersion = "0b.01.103";
+String mVersion = "0b.01.104";
 boolean isAvailable = false;
 boolean isBluetooth = false;
 
@@ -398,10 +398,13 @@ void runModule(int device){
      int g = readBuffer(10);
      int b = readBuffer(11);
      led.reset(port,slot);
-     if(idx>0){
+     if(idx>0)
+     {
        led.setColorAt(idx-1,r,g,b); 
-     }else{
-        led.setColor(r,g,b); 
+     }
+     else
+     {
+       led.setColor(r,g,b); 
      }
      led.show();
    }
@@ -411,10 +414,10 @@ void runModule(int device){
      pin = slot==1?mePort[port].s1:mePort[port].s2;
      int v = readBuffer(8);
      Servo sv = servos[searchServoPin(pin)];
-     if(v>=0&&v<=180){
-       if(port>0){
-         sv.attach(pin);
-       }else{
+     if(v >= 0 && v <= 180)
+     {
+       if(!sv.attached())
+       {
          sv.attach(pin);
        }
        sv.write(v);
@@ -474,9 +477,13 @@ void runModule(int device){
    break;
    case SERVO_PIN:{
      int v = readBuffer(7);
-     if(v>=0&&v<=180){
-       Servo sv = servos[searchServoPin(pin)];
-       sv.attach(pin);
+     Servo sv = servos[searchServoPin(pin)]; 
+     if(v >= 0 && v <= 180)
+     {
+       if(!sv.attached())
+       {
+         sv.attach(pin);
+       }
        sv.write(v);
      }
    }
@@ -515,7 +522,6 @@ void readSensor(int device){
        us.reset(port);
      }
      value = us.distanceCm();
-     delayMicroseconds(100);
      writeHead();
      writeSerial(command_index);
      sendFloat(value);
@@ -600,10 +606,10 @@ void readSensor(int device){
      }
      if(slot==1){
        pinMode(generalDevice.pin1(),INPUT_PULLUP);
-       value = generalDevice.dRead1();
+       value = !generalDevice.dRead1();
      }else{
        pinMode(generalDevice.pin2(),INPUT_PULLUP);
-       value = generalDevice.dRead2();
+       value = !generalDevice.dRead2();
      }
      sendFloat(value);  
    }

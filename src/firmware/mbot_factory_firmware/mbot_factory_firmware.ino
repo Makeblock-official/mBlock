@@ -2,8 +2,8 @@
 * File Name          : mbot_factory_firmware.ino
 * Author             : Ander, Mark Yan
 * Updated            : Ander, Mark Yan
-* Version            : V06.01.005
-* Date               : 03/05/2016
+* Version            : V06.01.007
+* Date               : 07/06/2016
 * Description        : Firmware for Makeblock Electronic modules with Scratch.  
 * License            : CC-BY-SA 3.0
 * Copyright (C) 2013 - 2016 Maker Works Technology Co., Ltd. All right reserved.
@@ -97,7 +97,7 @@ byte index = 0;
 byte dataLen;
 byte modulesLen=0;
 unsigned char prevc=0;
-String mVersion = "06.01.005";
+String mVersion = "06.01.007";
 
 boolean isAvailable = false;
 boolean isStart = false;
@@ -769,8 +769,7 @@ void readSensor(int device){
      if(ultr.getPort()!=port){
        ultr.reset(port);
      }
-     value = (float)ultr.distanceCm(50000);
-     delayMicroseconds(100);
+     value = (float)ultr.distanceCm();
      writeHead();
      writeSerial(command_index);
      sendFloat(value);
@@ -866,10 +865,10 @@ void readSensor(int device){
      }
      if(slot==1){
        pinMode(generalDevice.pin1(),INPUT_PULLUP);
-       value = generalDevice.dRead1();
+       value = !generalDevice.dRead1();
      }else{
        pinMode(generalDevice.pin2(),INPUT_PULLUP);
-       value = generalDevice.dRead2();
+       value = !generalDevice.dRead2();
      }
      sendFloat(value);  
    }

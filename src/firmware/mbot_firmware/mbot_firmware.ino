@@ -2,8 +2,8 @@
 * File Name          : mbot_firmware.ino
 * Author             : Ander, Mark Yan
 * Updated            : Ander, Mark Yan
-* Version            : V06.01.104
-* Date               : 03/14/2016
+* Version            : V06.01.106
+* Date               : 07/06/2016
 * Description        : Firmware for Makeblock Electronic modules with Scratch.  
 * License            : CC-BY-SA 3.0
 * Copyright (C) 2013 - 2016 Maker Works Technology Co., Ltd. All right reserved.
@@ -62,7 +62,7 @@ const int analogs[12] PROGMEM = {A0,A1,A2,A3,A4,A5,A6,A7,A8,A9,A10,A11};
 #else
 const int analogs[8] PROGMEM = {A0,A1,A2,A3,A4,A5,A6,A7};
 #endif
-String mVersion = "06.01.104";
+String mVersion = "06.01.106";
 boolean isAvailable = false;
 
 int len = 52;
@@ -400,9 +400,12 @@ void runModule(int device){
      int g = readBuffer(10);
      int b = readBuffer(11);
      led.reset(port,slot);
-     if(idx>0){
+     if(idx>0)
+     {
        led.setColorAt(idx-1,r,g,b); 
-     }else{
+     }
+     else
+     {
        led.setColor(r,g,b); 
      }
      led.show();
@@ -412,10 +415,14 @@ void runModule(int device){
      int slot = readBuffer(7);
      pin = slot==1?mePort[port].s1:mePort[port].s2;
      int v = readBuffer(8);
-     if(v>=0&&v<=180){
-       int sp = searchServoPin(pin);
-       servos[sp].attach(pin);
-       servos[sp].write(v);
+     Servo sv = servos[searchServoPin(pin)];
+     if(v >= 0 && v <= 180)
+     {
+       if(!sv.attached())
+       {
+         sv.attach(pin);
+       }
+       sv.write(v);
      }
    }
    break;
@@ -507,10 +514,14 @@ void runModule(int device){
    break;
    case SERVO_PIN:{
      int v = readBuffer(7);
-     if(v >= 0 && v <= 180){
-       int sp = searchServoPin(pin);
-       servos[sp].attach(pin);
-       servos[sp].write(v);
+     Servo sv = servos[searchServoPin(pin)]; 
+     if(v >= 0 && v <= 180)
+     {
+       if(!sv.attached())
+       {
+         sv.attach(pin);
+       }
+       sv.write(v);
      }
    }
    break;
@@ -520,6 +531,7 @@ void runModule(int device){
    break;
   }
 }
+
 int searchServoPin(int pin){
     for(int i=0;i<8;i++){
       if(servo_pins[i] == pin){
@@ -547,8 +559,7 @@ void readSensor(int device){
      if(us.getPort()!=port){
        us.reset(port);
      }
-     value = (float)us.distanceCm(50000);
-     delayMicroseconds(100);
+     value = (float)us.distanceCm();
      writeHead();
      writeSerial(command_index);
      sendFloat(value);
@@ -636,10 +647,10 @@ void readSensor(int device){
      }
      if(slot==1){
        pinMode(generalDevice.pin1(),INPUT_PULLUP);
-       value = generalDevice.dRead1();
+       value = !generalDevice.dRead1();
      }else{
        pinMode(generalDevice.pin2(),INPUT_PULLUP);
-       value = generalDevice.dRead2();
+       value = !generalDevice.dRead2();
      }
      sendFloat(value);  
    }
