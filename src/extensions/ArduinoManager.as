@@ -286,9 +286,21 @@ void updateVar(char * varName,double * var)
 			var code:String = StringUtil.substitute("({0}) {1} ({2})",mp1.type=="obj"?mp1.code.code:mp1.code ,op,mp2.type=="obj"?mp2.code.code:mp2.code);
 			if(op=="=="){
 				if(mp1.type=="string"&&mp2.type=="string"){
-					code = StringUtil.substitute("({0}.equals(\"{1}\"))",mp1.code,mp2.code);
+					code = StringUtil.substitute("(\"{0}\"==\"{1}\")",mp1.code,mp2.code);
 				}else{
-					code = StringUtil.substitute("(({0})==({1}))",mp1.type=="obj"?mp1.code.code:mp1.code,mp2.type=="obj"?mp2.code.code:mp2.code);
+					if(mp1.type=="string")
+					{
+						code = StringUtil.substitute("((\"{0}\")==({1}))",mp1.code,mp2.type=="obj"?mp2.code.code:mp2.code);
+					}
+					else if(mp2.type=="string")
+					{
+						code = StringUtil.substitute("(({0})==(\"{1}\"))",mp1.type=="obj"?mp1.code.code:mp1.code,mp2.code);
+					}
+					else
+					{
+						code = StringUtil.substitute("(({0})==({1}))",mp1.type=="obj"?mp1.code.code:mp1.code,mp2.type=="obj"?mp2.code.code:mp2.code);
+					}
+					
 				}
 			}else if(op=="%"){
 				code = StringUtil.substitute("fmod({0},{1})",mp1.type=="obj"?mp1.code.code:mp1.code,mp2.type=="obj"?mp2.code.code:mp2.code);
@@ -358,6 +370,29 @@ void updateVar(char * varName,double * var)
 			repeatCode+="}\n";
 			return repeatCode;
 		}
+		/*private function parseForever(blk:Object):String{
+			var forEverCode:String = "while(1){\n";
+			if(blk[1])
+			{
+				if(blk[1] is Array)
+				{
+					for(var k:int=0;k<blk[1].length;k++)
+					{
+						var initCode:CodeBlock = getCodeBlock(blk[1][k]);
+						forEverCode+=initCode.type=="obj"?initCode.code.code:initCode.code;
+					}
+				}
+				else
+				{
+					initCode = getCodeBlock(blk[1]);
+					forEverCode+=initCode.type=="obj"?initCode.code.code:initCode.code;
+				}
+			}
+			
+			
+			forEverCode+="}\n";
+			return forEverCode;
+		}*/
 		private function parseDoWaitUntil(blk:Object):String{
 			var initCode:CodeBlock = getCodeBlock(blk[1]);
 			var untilCode:String=StringUtil.substitute("while(!({0}));\n",initCode.type=="obj"?initCode.code.code:initCode.code);
@@ -704,7 +739,11 @@ void updateVar(char * varName,double * var)
 				codeBlock.type = "string";
 				codeBlock.code = parseDoRepeat(blk);
 				return codeBlock;
-			}else if(blk[0]=="doWaitUntil"){
+			}/*else if(blk[0]=="doForever"){
+				codeBlock.type = "string";
+				codeBlock.code = parseForever(blk);
+				return codeBlock;
+			}*/else if(blk[0]=="doWaitUntil"){
 				codeBlock.type = "string";
 				codeBlock.code = parseDoWaitUntil(blk);
 				return codeBlock;
@@ -796,7 +835,8 @@ void updateVar(char * varName,double * var)
 		private function substitute(str:String,params:Array,ext:ScratchExtension=null,offset:uint = 1):String{
 			for(var i:uint=0;i<params.length-offset;i++){
 				var o:CodeBlock = getCodeBlock(params[i+offset]);
-				if(str.indexOf("ir.sendString")>-1)
+				//满足下面的条件则不作字符替换处理
+				if(str.indexOf("ir.sendString")>-1 || (str.indexOf(".drawStr(")>-1 && i==3))
 				{
 					var v:*=o.code;
 				}
@@ -1150,8 +1190,8 @@ void move(int direction, int speed)
     leftSpeed = speed;
     rightSpeed = speed;
   }
-  Encoder_1.setMotorPwm(leftSpeed);
-  Encoder_2.setMotorPwm(rightSpeed);
+  Encoder_1.setTarPWM(leftSpeed);
+  Encoder_2.setTarPWM(rightSpeed);
 }
 void moveDegrees(int direction,int degrees, int speed_temp)
 {
@@ -1269,6 +1309,34 @@ void moveDegrees(int direction,int degrees, int speed_temp)
 
 }
 ]]>.toString();
+			}
+			else if(DeviceManager.sharedManager().currentName == "mBot" && ccode_inc.indexOf("void move(int direction, int speed)") < 0)
+			{
+				ccode_inc += <![CDATA[
+MeDCMotor motor_9(9);
+MeDCMotor motor_10(10);		
+
+void move(int direction, int speed)
+{
+  int leftSpeed = 0;
+  int rightSpeed = 0;
+  if(direction == 1){
+	leftSpeed = speed;
+	rightSpeed = speed;
+  }else if(direction == 2){
+	leftSpeed = -speed;
+	rightSpeed = -speed;
+  }else if(direction == 3){
+	leftSpeed = -speed;
+	rightSpeed = speed;
+  }else if(direction == 4){
+	leftSpeed = speed;
+	rightSpeed = -speed;
+  }
+  motor_9.run((9)==M1?-(leftSpeed):(leftSpeed));
+  motor_10.run((10)==M1?-(rightSpeed):(rightSpeed));
+}
+				]]>.toString();
 			}
 			return modIncudeCode;
 		}
