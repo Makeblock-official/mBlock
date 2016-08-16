@@ -75,14 +75,29 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 		private function __onViewSource(evt:AWEvent):void
 		{
 			var extName:String = getJLabel().getText().toLowerCase();
-			if(extName == "communication"){
+			/*if(extName == "communication"){
 				extName = "serial";
-			}
-			var file:File = ApplicationManager.sharedManager().documents.resolvePath("mBlock/libraries");
+			}*/
+			/*var file:File = ApplicationManager.sharedManager().documents.resolvePath("mBlock/libraries");
 			for each(var item:File in file.getDirectoryListing()){
 				if(item.name.toLowerCase() == extName){
 					item.openWithDefaultApplication();
 				}
+			}*/
+			//由于主板文件夹名和s2e文件描述的名字不一样，导致查看源码找不到路径，现在是通过对比s2e里面的extensionName来确定路径  by tql 20160810
+			for each(var obj:Object in MBlock.app.extensionManager.extensionList)
+			{
+				if(obj.extensionName.toLowerCase()==extName)
+				{
+					var path:String = decodeURI(obj.srcPath);
+					var _arr:Array = path.split("/");
+					path = _arr[_arr.length-2];
+					break;
+				}
+			}
+			var file:File = ApplicationManager.sharedManager().documents.resolvePath("mBlock/libraries/"+path);
+			if(file.exists){
+				file.openWithDefaultApplication();
 			}
 		}
 		
