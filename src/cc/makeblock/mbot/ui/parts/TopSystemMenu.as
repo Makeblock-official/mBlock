@@ -444,7 +444,7 @@ package cc.makeblock.mbot.ui.parts
 			var result:Boolean = true;
 			switch(extName)
 			{
-				case "Makeblock":
+				case "Orion":
 					result = board.indexOf("orion") >= 0;
 					break;
 				case "mBot":
