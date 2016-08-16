@@ -18,6 +18,7 @@
  */
 
 package uiwidgets {
+	import flash.desktop.NativeApplication;
 	import flash.display.DisplayObject;
 	import flash.display.Graphics;
 	import flash.display.Sprite;
@@ -37,6 +38,7 @@ package uiwidgets {
 	import translation.Translator;
 	
 	import ui.parts.UIPart;
+	import flash.system.Capabilities;
 
 public class DialogBox extends Sprite {
 
@@ -57,7 +59,7 @@ public class DialogBox extends Sprite {
 	private var heightPerField:int = Math.max(makeLabel('foo').height, makeField(10).height) + 10;
 	private const spaceAfterText:int = 18;
 	private const blankLineSpace:int = 7;
-	//private var backMaskMc:Sprite;
+	private var backMaskMc:Sprite;
 	private var acceptFunction:Function; // if not nil, called when menu interaction is accepted
 
 	public function DialogBox(acceptFunction:Function = null) {
@@ -223,23 +225,30 @@ private function getCheckMark(b:Boolean):Sprite{
 		}
 		x = Math.max(0, Math.min(x, stage.nativeWindow.width - width));
 		y = Math.max(0, Math.min(y, stage.nativeWindow.height - height));
-		/*if(!backMaskMc)
+		if(!backMaskMc)
 		{
 			backMaskMc = new Sprite();
 			backMaskMc.graphics.beginFill(0,0.5);
-			backMaskMc.graphics.drawRect(0,0,stage.width,stage.height);
+			backMaskMc.graphics.drawRect(0,0,Capabilities.screenResolutionX,Capabilities.screenResolutionY);
 			backMaskMc.graphics.endFill();
 		}
-		stage.addChild(backMaskMc);*/
+		
+		stage.addChild(backMaskMc);
+		stage.addEventListener(MouseEvent.MOUSE_DOWN,preventClickHandler,true);
 		stage.addChild(this);
 		if (labelsAndFields.length > 0) {
 			// note: doesn't work when testing from FlexBuilder; works when deployed
 			stage.focus = labelsAndFields[0][1];
 		}
-		
+	}
+	private function preventClickHandler(e:MouseEvent):void
+	{
+		if(e.target==backMaskMc)
+		{
+			e.stopImmediatePropagation();
+		}
 		
 	}
-
 	public static function findDialogBoxes(targetTitle:String, stage:Stage):Array {
 		// Return an array of all dialogs on the stage with the given title.
 		// If the given title is null then return all dialogs.
@@ -269,21 +278,32 @@ private function getCheckMark(b:Boolean):Sprite{
 				acceptFunction();
 			}
 		}
-		if (parent != null) parent.removeChild(this);
-		/*if(backMaskMc && backMaskMc.parent)
+		
+		if (parent != null) {
+			parent.removeEventListener(MouseEvent.MOUSE_DOWN,preventClickHandler,true);
+			parent.removeChild(this);
+		}
+		if(backMaskMc && backMaskMc.parent)
 		{
 			backMaskMc.parent.removeChild(backMaskMc);
 			backMaskMc = null;
-		}*/
+		}
+		
+		
 	}
 	
 	public function cancel():void {
-		if (parent != null) parent.removeChild(this);
-		/*if(backMaskMc && backMaskMc.parent)
+		
+		if (parent != null) {
+			parent.removeEventListener(MouseEvent.MOUSE_DOWN,preventClickHandler,true);
+			parent.removeChild(this);
+		}
+		if(backMaskMc && backMaskMc.parent)
 		{
 			backMaskMc.parent.removeChild(backMaskMc);
 			backMaskMc = null;
-		}*/
+		}
+		
 	}
 
 	public function getField(fieldName:String):* {
