@@ -43,7 +43,7 @@ package extensions
 					if(oldBoard.indexOf("me/orion_uno") < 0){
 						MBlock.app.openOrion();
 					}
-					MBlock.app.extensionManager.singleSelectExtension("Makeblock");
+					MBlock.app.extensionManager.singleSelectExtension("Orion");
 				}else if(_board.indexOf("me/baseboard")>-1){
 					MBlock.app.extensionManager.singleSelectExtension("BaseBoard");
 				}else if(_board.indexOf("me/uno_shield")>-1){
