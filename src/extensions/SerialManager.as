@@ -248,6 +248,9 @@ package extensions
 			if(boardName.indexOf("me/auriga") >= 0){
 				return "Firmware_for_Auriga";
 			}
+			if(boardName.indexOf("me/mega_pi") >= 0){
+				return "Firmware_for_MegaPi";
+			}
 			return "orion_firmware";
 		}
 		public function disconnect():void{
