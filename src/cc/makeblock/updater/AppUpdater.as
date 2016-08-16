@@ -67,6 +67,7 @@ package cc.makeblock.updater
 				result = /mac.+?v([\d.]+)\.zip/i.exec(str);
 			}
 			if(null == result){
+				PopupUtil.enableRightMouseEvent();
 				return;
 			}
 			var panel:JOptionPane;
