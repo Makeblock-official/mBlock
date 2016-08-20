@@ -42,7 +42,7 @@ package cc.makeblock.mbot.util
 			panel.getCancelButton().getParent().remove(panel.getCancelButton());
 			panel.getYesButton().setText(Translator.map("I know"));
 			panel.getFrame().setModal(true);
-			return panel;panel
+			return panel;
 		}
 		
 		static public function showConfirm(title:String, callback:Function):JOptionPane
@@ -105,12 +105,7 @@ package cc.makeblock.mbot.util
 			var trans:ColorTransform = new ColorTransform();
 			trans.alphaOffset = 100;
 			modalMC.transform.colorTransform = trans;
-			MBlock.app.stage.addEventListener(MouseEvent.MOUSE_DOWN,mouseHandler);
 			return panel;
-		}
-		static private function mouseHandler(e:MouseEvent):void
-		{
-			trace("e.target="+e.target)
 		}
 		static public function centerFrameTitle(frame:JFrame):void
 		{
