@@ -26,10 +26,10 @@
 		{"encode":"{d0}{s1}{s2}","setup":"stepper_{0}.setMicroStep(16);\nstepper_{0}.enableOutputs();\n","inc":"","def":"MeStepperOnBoard stepper_{0}({0});\n","work":"stepper_{0}.move({2});\nstepper_{0}.setMaxSpeed({1});\nstepper_{0}.setSpeed({1});\n","loop":"stepper_{0}.runSpeedToPosition();\n"}],
 		
 		["w", "set encoder motor%d.exMotorPort speed %n rpm","runEncoderMotor", "Port1", 180,
-		{"encode":"{d0}{s1}{s2}","setup":"attachInterrupt(Encoder_{0}.getIntNum(), isr_process_encoder{0}, RISING);\nEncoder_1.setPulse(8);\nEncoder_2.setPulse(8);\nEncoder_1.setRatio(46.67);\nEncoder_2.setRatio(46.67);\nEncoder_1.setPosPid(1.8,0,1.2);\nEncoder_2.setPosPid(1.8,0,1.2);\nEncoder_1.setSpeedPid(0.18,0,0);\nEncoder_2.setSpeedPid(0.18,0,0);\n","inc":"","def":"","work":"Encoder_{0}.runSpeed({1});\n","loop":"Encoder_{0}.loop();\n"}],
+		{"encode":"{d0}{s1}{s2}","setup":"attachInterrupt(Encoder_{0}.getIntNum(), isr_process_encoder{0}, RISING);\nEncoder_{0}.setPulse(8);\nEncoder_{0}.setRatio(46.67);\nEncoder_{0}.setPosPid(1.8,0,1.2);\nEncoder_{0}.setSpeedPid(0.18,0,0);\n","inc":"","def":"","work":"Encoder_{0}.runSpeed({1});\n","loop":"Encoder_{0}.loop();\n"}],
 		
 		["w", "set encoder motor%d.exMotorPort rotate %n degrees at speed %n rpm","runEncoderMotorRotate", "Port1",1000, 180,
-		{"encode":"{d0}{s1}{s2}","setup":"attachInterrupt(Encoder_{0}.getIntNum(), isr_process_encoder{0}, RISING);\n Encoder_1.setPulse(8);\nEncoder_2.setPulse(8);\nEncoder_1.setRatio(46.67);\nEncoder_2.setRatio(46.67);\nEncoder_1.setPosPid(1.8,0,1.2);\nEncoder_2.setPosPid(1.8,0,1.2);\nEncoder_1.setSpeedPid(0.18,0,0);\nEncoder_2.setSpeedPid(0.18,0,0);\n","inc":"","def":"","work":"Encoder_{0}.move({1},abs({2}));\n","loop":"Encoder_{0}.loop();\n"}],
+		{"encode":"{d0}{s1}{s2}","setup":"attachInterrupt(Encoder_{0}.getIntNum(), isr_process_encoder{0}, RISING);\nEncoder_{0}.setPulse(8);\nEncoder_{0}.setRatio(46.67);\nEncoder_{0}.setPosPid(1.8,0,1.2);\nEncoder_{0}.setSpeedPid(0.18,0,0);\n","inc":"","def":"","work":"Encoder_{0}.move({1},abs({2}));\n","loop":"Encoder_{0}.loop();\n"}],
 		
 		["w", "set 7-segments display%d.bluePorts number %n","runSevseg", "Port6", 100,
 		{"encode":"{d0}{f1}","setup":"","inc":"","def":"Me7SegmentDisplay seg7_{0}({0});\n","work":"seg7_{0}.display((float){1});\n","loop":""}],
@@ -44,7 +44,7 @@
 		{"encode":"{s0}","setup":"ledMtx_{0}.setColorIndex(1);\nledMtx_{0}.setBrightness(6);\n","inc":"","def":"MeLEDMatrix ledMtx_{0}({0});\n","work":"ledMtx_{0}.showNum({1},2);\n","loop":""}],
 	
 		["w", "show face %d.normalPort x:%n y:%n characters:%s","showCharacters", "Port6", 0,0,"Hi",
-		{"encode":"{s0}","setup":"ledMtx_{0}.setColorIndex(1);\nledMtx_{0}.setBrightness(6);\n","inc":"","def":"MeLEDMatrix ledMtx_{0}({0});\n","work":"ledMtx_{0}.drawStr({1},7-{2},{3});\n","loop":""}],
+		{"encode":"{s0}","setup":"ledMtx_{0}.setColorIndex(1);\nledMtx_{0}.setBrightness(6);\n","inc":"","def":"MeLEDMatrix ledMtx_{0}({0});\n","work":"ledMtx_{0}.drawStr({1},{2}+7,{3});\n","loop":""}],
 		
 		["w", "show time %d.normalPort hour:%n %m.points min:%n","showTime", "Port6", 10,":",20,
 		{"encode":"{s0}","setup":"ledMtx_{0}.setColorIndex(1);\nledMtx_{0}.setBrightness(6);\n","inc":"","def":"MeLEDMatrix ledMtx_{0}({0});\n","work":"ledMtx_{0}.showClock({1},{3},strcmp({2},\":\")==0);\n","loop":""}],
@@ -117,6 +117,7 @@
     	"soundPort":["Port6","Port7","Port8"],
 		"normalPort":["Port6","Port7","Port8"],
 		"lport":["Port6","Port7","Port8"],
+		"points":[":",""],
 		"motorPort":["Port1A","Port1B","Port2A","Port2B","Port3A","Port3B","Port4A","Port4B"],
 		"stepMotorPort":["Port1","Port2","Port3","Port4"],
 		"exMotorPort":["Port1","Port2","Port3","Port4"],

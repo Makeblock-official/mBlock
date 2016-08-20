@@ -56,7 +56,7 @@
 		{"encode":"{s0}","setup":"ledMtx_{0}.setColorIndex(1);\nledMtx_{0}.setBrightness(6);\n","inc":"","def":"MeLEDMatrix ledMtx_{0}({0});\n","work":"ledMtx_{0}.showNum({1},2);\n","loop":""}],
 	
 		["w", "show face %d.normalPort x:%n y:%n characters:%s","showCharacters", "Port6", 0,0,"Hi",
-		{"encode":"{s0}","setup":"ledMtx_{0}.setColorIndex(1);\nledMtx_{0}.setBrightness(6);\n","inc":"","def":"MeLEDMatrix ledMtx_{0}({0});\n","work":"ledMtx_{0}.drawStr({1},7-{2},{3});\n","loop":""}],
+		{"encode":"{s0}","setup":"ledMtx_{0}.setColorIndex(1);\nledMtx_{0}.setBrightness(6);\n","inc":"","def":"MeLEDMatrix ledMtx_{0}({0});\n","work":"ledMtx_{0}.drawStr({1},{2}+7,{3});\n","loop":""}],
 		
 		["w", "show time %d.normalPort hour:%n %m.points min:%n","showTime", "Port6", 10,":",20,
 		{"encode":"{s0}","setup":"ledMtx_{0}.setColorIndex(1);\nledMtx_{0}.setBrightness(6);\n","inc":"","def":"MeLEDMatrix ledMtx_{0}({0});\n","work":"ledMtx_{0}.showClock({1},{3},strcmp({2},\":\")==0);\n","loop":""}],
@@ -135,6 +135,7 @@
     	"soundPort":["sound on board","Port6","Port7","Port8","Port9","Port10"],
 		"normalPort":["Port6","Port7","Port8","Port9","Port10"],
 		"lport":["Port6","Port7","Port8","Port9","Port10"],
+		"points":[":",""],
 		"motorPort":["Port1","Port2","Port3","Port4"],
 		"stepMotorPort":["Port1","Port2","Port3","Port4"],
 		"exMotorPort":["Port1","Port2","Port3","Port4"],

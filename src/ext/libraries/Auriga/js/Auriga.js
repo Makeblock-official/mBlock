@@ -207,7 +207,7 @@
 		if(port == 0){
 			runPackage(61,0,slot,short2array(speed));
 		}else{
-			runPackage(12,0x8,slot,short2array(speed),float2array(distance));
+			runPackage(12,0x8,slot,short2array(Math.abs(speed)),float2array(distance));
 		}
 	};
 	ext.runSevseg = function(port,display){
@@ -261,7 +261,7 @@
 		if(x >  16) x = 16;
 		if(y >  8) y = 8;
 		if(y < -8) y = -8;
-		runPackage(41,port,1,x,7-y,message.length,string2array(message));
+		runPackage(41,port,1,x,y+7,message.length,string2array(message));
 	}
 	ext.showTime = function(port,hour,point,min){
 		if(typeof port=="string"){
@@ -277,7 +277,7 @@
 		if(x < -16) x = -16;
 		if(y >  8) y = 8;
 		if(y < -8) y = -8;
-		runPackage(41,port,2,x,-y,bytes);
+		runPackage(41,port,2,x,y,bytes);
 	}
 	var distPrev=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 	var dist=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
