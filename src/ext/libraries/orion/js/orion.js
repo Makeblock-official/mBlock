@@ -119,7 +119,7 @@
 		if(typeof slot=="string"){
 			slot = slots[slot];
 		}
-		runPackage(12,0x8,slot,short2array(speed),float2array(distance));
+		runPackage(12,0x8,slot,short2array(Math.abs(speed)),float2array(distance));
 	};
 	ext.runSevseg = function(port,display){
 		if(typeof port=="string"){
