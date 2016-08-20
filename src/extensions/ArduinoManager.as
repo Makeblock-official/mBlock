@@ -285,20 +285,24 @@ void updateVar(char * varName,double * var)
 			//			}
 			var code:String = StringUtil.substitute("({0}) {1} ({2})",mp1.type=="obj"?mp1.code.code:mp1.code ,op,mp2.type=="obj"?mp2.code.code:mp2.code);
 			if(op=="=="){
-				if(mp1.type=="string"&&mp2.type=="string"){
-					code = StringUtil.substitute("(\"{0}\"==\"{1}\")",mp1.code,mp2.code);
+				if(mp1.type=="obj"&&mp2.type=="obj"){
+					//code = StringUtil.substitute("strcmp({0},{1})",mp1.code.code,mp2.code.code);
+					code = StringUtil.substitute("({0}=={1})",mp1.code.code,mp2.code.code);
 				}else{
-					if(mp1.type=="string")
+					if(mp1.type=="obj")
 					{
-						code = StringUtil.substitute("((\"{0}\")==({1}))",mp1.code,mp2.type=="obj"?mp2.code.code:mp2.code);
+						//code = StringUtil.substitute("strcmp({0},\"{1}\")",mp1.code.code,mp2.code);
+						code = StringUtil.substitute("({0}==String(\"{1}\"))",mp1.code.code,mp2.code.replace(/\"/g,""));
 					}
-					else if(mp2.type=="string")
+					else if(mp2.type=="obj")
 					{
-						code = StringUtil.substitute("(({0})==(\"{1}\"))",mp1.type=="obj"?mp1.code.code:mp1.code,mp2.code);
+						//code = StringUtil.substitute("strcmp(\"{0}\",{1})",mp1.code,mp2.code.code);
+						code = StringUtil.substitute("(String(\"{0}\")=={1})",mp1.code.replace(/\"/g,""),mp2.code.code);
 					}
 					else
 					{
-						code = StringUtil.substitute("(({0})==({1}))",mp1.type=="obj"?mp1.code.code:mp1.code,mp2.type=="obj"?mp2.code.code:mp2.code);
+						//code = StringUtil.substitute("strcmp(\"{0}\",\"{1}\")",mp1.code,mp2.code);
+						code = StringUtil.substitute("(String(\"{0}\")==String(\"{1}\"))",mp1.code.replace(/\"/g,""),mp2.code.replace(/\"/g,""));
 					}
 					
 				}
@@ -1193,7 +1197,7 @@ void move(int direction, int speed)
   Encoder_1.setTarPWM(leftSpeed);
   Encoder_2.setTarPWM(rightSpeed);
 }
-void moveDegrees(int direction,int degrees, int speed_temp)
+void moveDegrees(int direction,long degrees, int speed_temp)
 {
   speed_temp = abs(speed_temp);
   if(direction == 1)
@@ -1280,10 +1284,10 @@ void move(int direction, int speed)
     leftSpeed = -speed;
     rightSpeed = -speed;
   }
-  Encoder_1.setMotorPwm(rightSpeed);
-  Encoder_2.setMotorPwm(leftSpeed);
+  Encoder_1.setTarPWM(rightSpeed);
+  Encoder_2.setTarPWM(leftSpeed);
 }
-void moveDegrees(int direction,int degrees, int speed_temp)
+void moveDegrees(int direction,long degrees, int speed_temp)
 {
   speed_temp = abs(speed_temp);
   if(direction == 1)
