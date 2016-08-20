@@ -52,6 +52,7 @@ package cc.makeblock.updater
 		private function __onError(evt:IOErrorEvent):void
 		{
 			UpdateFrame.getInstance().hide();
+			PopupUtil.showAlert(Translator.map("Connection error")).getYesButton().setText(Translator.map("Close"));
 			PopupUtil.enableRightMouseEvent();
 		}
 		
