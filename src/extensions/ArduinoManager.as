@@ -285,26 +285,10 @@ void updateVar(char * varName,double * var)
 			//			}
 			var code:String = StringUtil.substitute("({0}) {1} ({2})",mp1.type=="obj"?mp1.code.code:mp1.code ,op,mp2.type=="obj"?mp2.code.code:mp2.code);
 			if(op=="=="){
-				if(mp1.type=="obj"&&mp2.type=="obj"){
-					//code = StringUtil.substitute("strcmp({0},{1})",mp1.code.code,mp2.code.code);
-					code = StringUtil.substitute("({0}=={1})",mp1.code.code,mp2.code.code);
+				if(mp1.type=="string"&&mp2.type=="string"){
+					code = StringUtil.substitute("({0}.equals(\"{1}\"))",mp1.code,mp2.code);
 				}else{
-					if(mp1.type=="obj")
-					{
-						//code = StringUtil.substitute("strcmp({0},\"{1}\")",mp1.code.code,mp2.code);
-						code = StringUtil.substitute("({0}==String(\"{1}\"))",mp1.code.code,mp2.code.replace(/\"/g,""));
-					}
-					else if(mp2.type=="obj")
-					{
-						//code = StringUtil.substitute("strcmp(\"{0}\",{1})",mp1.code,mp2.code.code);
-						code = StringUtil.substitute("(String(\"{0}\")=={1})",mp1.code.replace(/\"/g,""),mp2.code.code);
-					}
-					else
-					{
-						//code = StringUtil.substitute("strcmp(\"{0}\",\"{1}\")",mp1.code,mp2.code);
-						code = StringUtil.substitute("(String(\"{0}\")==String(\"{1}\"))",mp1.code.replace(/\"/g,""),mp2.code.replace(/\"/g,""));
-					}
-					
+					code = StringUtil.substitute("(({0})==({1}))",mp1.type=="obj"?mp1.code.code:mp1.code,mp2.type=="obj"?mp2.code.code:mp2.code);
 				}
 			}else if(op=="%"){
 				code = StringUtil.substitute("fmod({0},{1})",mp1.type=="obj"?mp1.code.code:mp1.code,mp2.type=="obj"?mp2.code.code:mp2.code);
