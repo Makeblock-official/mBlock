@@ -56,6 +56,7 @@ package cc.makeblock.mbot.ui.parts
 			register("Restore Extensions", ExtensionUtil.OnLoadExtension);
 			register("Clear Cache", ArduinoManager.sharedManager().clearTempFiles);
 			register("Reset Default Program", __onResetDefaultProgram);
+			register("Set FirmWare Mode", __onResetDefaultProgram);
 		}
 		
 		private function __onResetDefaultProgram(item:NativeMenuItem):void
@@ -352,6 +353,8 @@ package cc.makeblock.mbot.ui.parts
 			var defaultProgramMenu:NativeMenuItem = MenuUtil.FindItem(getNativeMenu(), "Reset Default Program");
 			var canReset:Boolean = SerialManager.sharedManager().isConnected;
 			defaultProgramMenu.enabled = canReset;
+			var setModeItem:NativeMenuItem = menu.getItemByName("Set FirmWare Mode");
+			setModeItem.enabled = false;
 			canReset = SerialManager.sharedManager().isConnected && DeviceManager.sharedManager().currentName!="PicoBoard";
 			MenuUtil.FindItem(getNativeMenu(), "Upgrade Firmware").enabled = canReset;
 			canReset = DeviceManager.sharedManager().currentName!="PicoBoard";
@@ -365,14 +368,17 @@ package cc.makeblock.mbot.ui.parts
 						break;
 					case "Me Auriga":
 						defaultProgramMenu.submenu.addItem(new NativeMenuItem("mBot Ranger")).name = "mBot Ranger";
-						tempItem = defaultProgramMenu.submenu.addItem(new NativeMenuItem("", true));
+						
+						setModeItem.submenu.removeAllItems();
+						/*tempItem = defaultProgramMenu.submenu.addItem(new NativeMenuItem("", true));
 						tempItem.name = "";
 						tempItem = defaultProgramMenu.submenu.addItem(new NativeMenuItem(""));
 						tempItem.name = "Set mBot Ranger Mode";
-						tempItem.label = Translator.map(tempItem.name);
-						tempItem.enabled = false;
+						tempItem.label = Translator.map(tempItem.name);*/
+						//当前主板时Auriga且已连接
+						setModeItem.enabled = defaultProgramMenu.enabled;
 						for each(var modeName:String in rangerModeList){
-							tempItem = defaultProgramMenu.submenu.addItem(new NativeMenuItem(""));
+							tempItem = setModeItem.submenu.addItem(new NativeMenuItem(""));
 							tempItem.name = modeName;
 							tempItem.label = Translator.map(modeName);
 						}

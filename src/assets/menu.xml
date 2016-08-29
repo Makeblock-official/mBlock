@@ -42,6 +42,9 @@
 			<item name="Starter Bluetooth" label="Starter Bluetooth" />
 			<item name="mBot Ranger" label="mBot Ranger" />
 		</subMenu>
+		<subMenu name="Set FirmWare Mode" label="设置固件模式" >
+			<item name="bluetooth mode" label="蓝牙模式" />
+		</subMenu>
 		<item name="View Source" label="查看源码" action="view_source" />
 		<item name="Install Arduino Driver" label="安装Arduino驱动" action="driver" />
 	</subMenu>
