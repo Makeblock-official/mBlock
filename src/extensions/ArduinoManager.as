@@ -740,8 +740,8 @@ void updateVar(char * varName,double * var)
 				codeBlock.code = parseDoUntil(blk);
 				return codeBlock;
 			}else if(blk[0]=="call"){
-				codeBlock.type = "string";
-				codeBlock.code = parseCall(blk);
+				codeBlock.type = "obj";//修复新建的模块指令函数，无法重复调用
+				codeBlock.code = new CodeObj(parseCall(blk));
 				return codeBlock;
 			}else if(blk[0]=="randomFrom:to:"){
 				codeBlock.type = "number";
@@ -1133,12 +1133,19 @@ void updateVar(char * varName,double * var)
 				code = code is CodeObj?code.code:code;
 				if(code!=""){
 					if(ccode_inc.indexOf(code)==-1)
-						ccode_inc += code;
+						if(code.indexOf("#include")>-1)
+						{
+							ccode_inc = code+ccode_inc;
+						}
+						else
+						{
+							ccode_inc += code;
+						}
+						//ccode_inc += code;
 				}
 			}
 			if(DeviceManager.sharedManager().currentName == "Me Auriga" && ccode_inc.indexOf("void isr_process_encoder1(void)") < 0){
 				ccode_inc += <![CDATA[
-#include <MeAuriga.h>
 //Encoder Motor
 MeEncoderOnBoard Encoder_1(SLOT1);
 MeEncoderOnBoard Encoder_2(SLOT2);
@@ -1208,7 +1215,7 @@ void moveDegrees(int direction,long degrees, int speed_temp)
 ]]>.toString();
 			}else if(DeviceManager.sharedManager().currentName == "Mega Pi" && ccode_inc.indexOf("void isr_process_encoder1(void)") < 0){
 				ccode_inc += <![CDATA[
-#include <MeMegaPi.h>
+
 //Encoder Motor
 MeEncoderOnBoard Encoder_1(SLOT1);
 MeEncoderOnBoard Encoder_2(SLOT2);
