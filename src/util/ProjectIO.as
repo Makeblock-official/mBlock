@@ -206,8 +206,16 @@ public class ProjectIO {
 	}
 	private function fixManager(obj:Object):void
 	{
-		var board:String = obj.info.boardVersion;
-		trace("board="+board);
+		try
+		{
+			var board:String = obj.info.boardVersion;
+			trace("board="+board);
+		}
+		catch(err:Error)
+		{
+			board = "";
+		}
+		
 		var childs:Array = obj["children"];
 		if(!childs)return;
 		for each(var sc:Object in childs)
