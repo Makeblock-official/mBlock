@@ -76,7 +76,7 @@
 		{"encode":"{d0}","setup":"","inc":"","def":"MeLineFollower linefollower_{0}({0});\n","work":"linefollower_{0}.readSensors()","loop":""}],
 		
 		["B", "line follower %d.bluePorts %d.leftRight is %d.whiteBlack","getLinefollowerStatus","Port2", "leftSide", "black", 
-		{"encode":"{d0}{d1}{d2}","setup":"","inc":"","def":"MeLineFollower linefollower_{0}({0});\n","work":"({2}?(linefollower_{0}.readSensors()&{1}):!(linefollower_{0}.readSensors()&{1}))","loop":""}],
+		{"encode":"{d0}{d1}{d2}","setup":"","inc":"","def":"MeLineFollower linefollower_{0}({0});\n","work":"(true&&({2}?(linefollower_{0}.readSensors()&{1}):!(linefollower_{0}.readSensors()&{1})))","loop":""}],
 		
 		["R", "joystick %d.blackPorts %d.Axis","getJoystick","Port3","X-Axis",
 		{"encode":"{d0}{d1}","setup":"","inc":"","def":"MeJoystick joystick_{0}({0});\n","work":"joystick_{0}.read({1})","loop":""}],
