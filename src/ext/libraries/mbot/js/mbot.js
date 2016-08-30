@@ -88,6 +88,7 @@
 	var indexs = [];
 	var startTimer = 0;
 	var versionIndex = 0xFA;
+	var responsePreprocessor = {};
     ext.resetAll = function(){
     	device.send([0xff, 0x55, 2, 0, 4]);
     };
@@ -310,6 +311,21 @@
 		}
 		getPackage(nextID,deviceId,port);
     };
+	ext.getLinefollowerStatus = function(nextID, port, type, color) {
+		var deviceId = 17;
+		if(typeof port=="string"){
+			port = ports[port];
+		}
+		// the response of line follower is 0~3; in binary 00, 10, 01, 11, the higher digit is for left sensor
+		var sensorMask = type=='leftSide'? 2 : 1;
+		var reverseFlag = color=='black'? true : false;
+		responsePreprocessor[nextID] = (function(mask, flag){return function(value){
+			var result = (value & mask);
+			if(flag) result = !result;
+			return result?1:0;
+		}})(sensorMask, reverseFlag);
+		getPackage(nextID,deviceId,port);
+    };
 	ext.getLightSensor = function(nextID,port) {
 		var deviceId = 3;
 		if(typeof port=="string"){
@@ -491,6 +507,10 @@
 							break;
 					}
 					if(type<=6){
+						if (responsePreprocessor[extId] && responsePreprocessor[extId] != null) {
+							value = responsePreprocessor[extId](value);
+							responsePreprocessor[extId] = null;
+						}
 						responseValue(extId,value);
 					}else{
 						responseValue();

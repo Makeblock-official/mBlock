@@ -75,6 +75,9 @@
 		["R", "line follower %d.bluePorts","getLinefollower","Port2",
 		{"encode":"{d0}","setup":"","inc":"","def":"MeLineFollower linefollower_{0}({0});\n","work":"linefollower_{0}.readSensors()","loop":""}],
 		
+		["B", "line follower %d.bluePorts %d.leftRight is %d.whiteBlack","getLinefollowerStatus","Port2", "leftSide", "black", 
+		{"encode":"{d0}{d1}{d2}","setup":"","inc":"","def":"MeLineFollower linefollower_{0}({0});\n","work":"({2}?(linefollower_{0}.readSensors()&{1}):!(linefollower_{0}.readSensors()&{1}))","loop":""}],
+		
 		["R", "joystick %d.blackPorts %d.Axis","getJoystick","Port3","X-Axis",
 		{"encode":"{d0}{d1}","setup":"","inc":"","def":"MeJoystick joystick_{0}({0});\n","work":"joystick_{0}.read({1})","loop":""}],
 		
@@ -138,6 +141,8 @@
 		"index":["all","led left","led right"],
 		"index0":["all",1,2,3,4],
 		"index2":["all",1,15,30],
+		"leftRight":["leftSide", "rightSide"],
+		"whiteBlack":["black", "white"],
 		"Axis":["X-Axis","Y-Axis"],
 		"GyroAxis":["X-Axis","Y-Axis","Z-Axis"],
 		"port":["Port1","Port2","Port3","Port4"],
@@ -215,6 +220,10 @@
 		"X-Axis":1,
 		"Y-Axis":2,
 		"Z-Axis":3,
+		"leftSide": 2,
+		"rightSide": 1,
+		"black": 0,
+		"white": 1,
 		"run forward":1,
 		"run backward":2,
 		"turn left":3,
