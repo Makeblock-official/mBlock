@@ -843,8 +843,10 @@ void updateVar(char * varName,double * var)
 					s.type = (s.type=="obj"&&s.code.type!="code")?"string":"number";
 					
 				}else{
+					
 					s.type = isNaN(Number(v))?"string":"number";
 					s.code = v;
+
 				}
 				if((s.code==""||s.code==" ")&&s.code!=0&&s.type == "number"){
 					s.type = "string";
@@ -863,7 +865,20 @@ void updateVar(char * varName,double * var)
 						s.type = "string";
 					}
 				}
-				str = str.split("{"+i+"}").join(( s.type == "string")?('"'+s.code+'"'):(( s.type == "number")?s.code:s.code.code));
+				/*if(str.indexOf("se.equalString")>-1)
+				{
+					s.type = "string";
+				}*/
+				//如果用到通讯模块的=号，那么将数字也转为字符串进行比较，否则报错
+				if(str.indexOf("se.equalString")>-1)
+				{
+					str = str.split("{"+i+"}").join(( s.type == "string"||!isNaN(Number(s.code)))?('"'+s.code+'"'):(( s.type == "number")?s.code:s.code.code));
+				}
+				else
+				{
+					str = str.split("{"+i+"}").join(( s.type == "string")?('"'+s.code+'"'):(( s.type == "number")?s.code:s.code.code));
+				}
+				
 			}
 			return str;
 		}
