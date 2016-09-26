@@ -1,6 +1,11 @@
 package cc.makeblock.mbot.uiwidgets.extensionMgr
 {
+	import flash.events.Event;
+	import flash.events.EventDispatcher;
 	import flash.filesystem.File;
+	import flash.net.URLLoader;
+	import flash.net.URLRequest;
+	import flash.net.URLRequestMethod;
 	import flash.utils.ByteArray;
 	
 	import cc.makeblock.mbot.util.PathUtil;
@@ -24,7 +29,9 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 	public class ExtensionUtil
 	{
 		static private var panel:ExtensionMgrFrame;
-		
+		static private var availableList:Array=[];
+		static public var showType:uint = 0;
+		static public var dispatcher:EventDispatcher = new EventDispatcher();
 		static public function OnLoadExtension():void
 		{
 			MBlock.app.extensionManager.copyLocalFiles();
@@ -62,7 +69,11 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 			}
 			
 			var fileData:ByteArray = FileUtil.ReadBytes(file);
+			parseZip(fileData);
 			
+		}
+		static public function parseZip(fileData:ByteArray):void
+		{
 			var fzip:FZip = new FZip();
 			try{
 				fzip.loadBytes(fileData);
@@ -72,7 +83,31 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 			}
 			onParseSuccess(fzip);
 		}
-		
+		static public function checkAvailExtList(callBack:Function,url:String="http://www.mblock.cc/extensions/list.php"):void
+		{
+			function getExListComplete(e:Event):void
+			{
+				availableList = util.JSON.parse(e.target.data) as Array;
+				if(!availableList)
+				{
+					availableList = [];
+				}
+				availableList.sortOn("id",Array.NUMERIC);
+				if(callBack!=null)
+				{
+					callBack();
+				}
+			}
+			var loader:URLLoader = new URLLoader();
+			var urlRequest:URLRequest = new URLRequest(url);
+			urlRequest.method = URLRequestMethod.GET;
+			loader.load(urlRequest);
+			loader.addEventListener(Event.COMPLETE,getExListComplete);
+		}
+		static public function getAvailableList():Array
+		{
+			return availableList.slice();
+		}
 		static public function OnDelExtension(extName:String, callback:Function):void
 		{
 			PopupUtil.showConfirm("Want to delete?", function(value:int):void{
