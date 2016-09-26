@@ -1027,6 +1027,23 @@ void updateVar(char * varName,double * var)
 			retcode = buildSerialParser(retcode);
 			retcode = fixTabs(retcode);
 			retcode = fixVars(retcode);
+			//由于2.4G手柄，不同主板的接口不一样，所以在这里修正一下port口
+			if(retcode.indexOf("MePS2 MePS2(PORT)")>-1)
+			{
+				if(DeviceManager.sharedManager().currentName == "Mega Pi")
+				{
+					retcode = retcode.replace("MePS2 MePS2(PORT)","MePS2 MePS2(PORT_15)");
+				}
+				else if(DeviceManager.sharedManager().currentName == "Me Auriga")
+				{
+					retcode = retcode.replace("MePS2 MePS2(PORT)","MePS2 MePS2(PORT_16)");
+				}
+				else if(DeviceManager.sharedManager().currentName == "mBot")
+				{
+					retcode = retcode.replace("MePS2 MePS2(PORT)","MePS2 MePS2(PORT_5)");
+				}
+			}
+			
 			requiredCpp = getRequiredCpp()
 			// now go into compile process
 			if(!NativeProcess.isSupported) return "";

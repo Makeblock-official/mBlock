@@ -79,8 +79,10 @@ public class ExtensionManager {
 
 	public function specForCmd(op:String):Array {
 		// Return a command spec array for the given operation or null.
+		var count:int=0;
 		for each (var ext:ScratchExtension in extensionDict) {
 			var prefix:String = ext.useScratchPrimitives ? '' : (ext.name + '.');
+			trace(count++);
 			for each (var spec:Array in ext.blockSpecs) {
 				if(spec.length <= 2){
 					continue;
@@ -204,6 +206,7 @@ public class ExtensionManager {
 		switch(extName){
 			case "Arduino":
 			case "Communication":
+			case "Joystick(Arduino Mode Only)":
 				return true;
 		}
 		return false;
@@ -578,7 +581,7 @@ public class ExtensionManager {
 
 	public function menuItemsFor(op:String, menuName:String):Array {
 		// Return a list of menu items for the given menu of the extension associated with op or null.
-		var i:int = op.indexOf('.');
+		var i:int = op.lastIndexOf('.');
 		if (i < 0) return null;
 		var ext:ScratchExtension = extensionDict[op.slice(0, i)];
 		if (ext == null) return null; // unknown extension
