@@ -69,7 +69,7 @@ public class Translator {
 		if(Capabilities.language.indexOf("-") > 0){//中文,简体或繁体
 			setLanguage(Capabilities.language.replace("-", "_"));
 		}else{
-			setLanguage("en");
+			setLanguage(Capabilities.language);
 		}
 	}
 	
