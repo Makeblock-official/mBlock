@@ -91,7 +91,7 @@
 		["R", "temperature %d.normalPort%d.slot °C","getTemperature","Port3","Slot1",
 		{"encode":"{d0}{d1}","setup":"","inc":"","def":"MeTemperature temperature_{0}_{1}({0},{1});\n","work":"temperature_{0}_{1}.temperature()","loop":""}],
 		
-		["R", "pir motion sensor %d.bluePorts","getPirmotion","Port2",
+		["B", "pir motion sensor %d.bluePorts","getPirmotion","Port2",
 		{"encode":"{d0}","setup":"","inc":"","def":"MePIRMotionSensor pir_{0}({0});\n","work":"pir_{0}.isHumanDetected()","loop":""}],
 		
 		["R", "3-axis gyro %d.GyroAxis angle","getGyro","X-Axis",

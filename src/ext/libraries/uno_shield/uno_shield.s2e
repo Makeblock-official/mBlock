@@ -60,7 +60,7 @@
 		["B", "limit switch %d.normalPort %d.slot","getLimitswitch","Port6","Slot1",
 		{"encode":"{d0}{d1}","setup":"","inc":"","def":"MeLimitSwitch sw_{0}_{1}({0},{1});\n","work":"sw_{0}_{1}.touched()","loop":""}],
 		
-		["R", "pir motion sensor %d.bluePorts","getPirmotion","Port3",
+		["B", "pir motion sensor %d.bluePorts","getPirmotion","Port3",
 		{"encode":"{d0}","setup":"","inc":"","def":"MePIRMotionSensor pir_{0}({0});\n","work":"pir_{0}.isHumanDetected()","loop":""}],
 		
 		["R", "temperature %d.normalPort%d.slot °C","getTemperature","Port3","Slot1",
