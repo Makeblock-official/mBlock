@@ -32,6 +32,7 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 		static private var availableList:Array=[];
 		static public var showType:uint = 0;
 		static public var dispatcher:EventDispatcher = new EventDispatcher();
+		static public var currExtArr:Array = [];
 		static public function OnLoadExtension():void
 		{
 			MBlock.app.extensionManager.copyLocalFiles();

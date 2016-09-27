@@ -2,21 +2,23 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 {
 	import flash.events.Event;
 	import flash.events.FocusEvent;
-
+	import flash.events.TimerEvent;
 	import flash.filesystem.File;
 	import flash.net.FileFilter;
 	import flash.text.TextFormat;
+	import flash.utils.Timer;
 	import flash.utils.getDefinitionByName;
 	
 	import cc.makeblock.mbot.uiwidgets.MyFrame;
 	import cc.makeblock.mbot.uiwidgets.extensionMgr.DefaultListCell;
-	import cc.makeblock.mbot.util.PopupUtil;	
+	import cc.makeblock.mbot.util.PopupUtil;
+	
 	import org.aswing.ASColor;
 	import org.aswing.ASFont;
+	import org.aswing.AsWingConstants;
 	import org.aswing.AsWingUtils;
 	import org.aswing.BorderLayout;
 	import org.aswing.BoxLayout;
-	import org.aswing.CenterLayout;
 	import org.aswing.DefaultListTextCellFactory;
 	import org.aswing.FlowLayout;
 	import org.aswing.JButton;
@@ -42,27 +44,29 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 		private var availableBtn:JButton;
 		private var installedBtn:JButton;
 		private var defalutSearchTxt:String = "输入关键字                 				      ";
+		private var searchTimer:Timer = new Timer(1000,1);
+		
 		public function ExtensionMgrFrame(owner:*=null)
 		{
 			super(owner, "Extension Manager", true);
 			extList = new JList(null, new DefaultListTextCellFactory(DefaultListCell, true, true, 50));
 			extList.setBackgroundDecorator(new SolidBackground(new ASColor(0xFFFFFF)));
-			
+
 			btnList = new JPanel(new SoftBoxLayout(SoftBoxLayout.X_AXIS, 190, SoftBoxLayout.CENTER));
 			
 			btnAdd = new JButton("add extension");
 			setBtnStyle(btnAdd);
-			btnRemove = new JButton("remove extension");
-			setBtnStyle(btnRemove);
+			/*btnRemove = new JButton("remove extension");
+			setBtnStyle(btnRemove);*/
 			
 			searchTxtField = new JTextField(defalutSearchTxt);
 			searchTxtField.setTextFormat(new TextFormat(null,null,0x999999),0,searchTxtField.getText().length);
-			btnList.append(btnRemove);
+			//btnList.append(btnRemove);
 			btnList.append(btnAdd);
 			
-			var bottomWrapper:JPanel = new JPanel(new CenterLayout());
+			var bottomWrapper:JPanel = new JPanel(new FlowLayout(AsWingConstants.RIGHT));
 			bottomWrapper.setBackgroundDecorator(new SolidBackground(new ASColor(0xe9e9ea)));
-			bottomWrapper.setPreferredHeight(60);
+			bottomWrapper.setPreferredHeight(50);
 			bottomWrapper.append(btnList);
 			
 			var chooseBtnPanel:JPanel = new JPanel(new FlowLayout(2,0));
@@ -98,12 +102,51 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 			//btnRemove.addActionListener(__onRemoveExtension);
 			searchTxtField.addEventListener(FocusEvent.FOCUS_IN,onFocusIn);
 			searchTxtField.addEventListener(FocusEvent.FOCUS_OUT,onFocusOut);
+			searchTxtField.addEventListener(Event.CHANGE,onTextChangeHandler)
 			availableBtn.addActionListener(shwoAvailableExtension);
 			installedBtn.addActionListener(showInstalledExtension);
 			ExtensionUtil.dispatcher.addEventListener("removeItem",__onRemoveExtension);
+			ExtensionUtil.dispatcher.addEventListener("updateList",updateList);
+		}
+		private function onTextChangeHandler(e:Event):void
+		{
+			searchTimer.reset();
+			searchTimer.start();
+			searchTimer.addEventListener(TimerEvent.TIMER_COMPLETE,onTimerComplete);
+		}
+		private function onTimerComplete(e:TimerEvent):void
+		{
+			if(/\S/.test(searchTxtField.getText()))
+			{
+				var result:Array = searchItems(searchTxtField.getText());
+				extList.setListData(result);
+				
+			}
+			else if(searchTxtField.getText()=="")
+			{
+				updateList();
+			}
+		}
+		private function searchItems(str:String):Array
+		{
+			str = str.match(/\b.*\b/g)[0];
+			var vec:Array = new Array();
+			for each(var obj:Object in ExtensionUtil.currExtArr)
+			{
+				if(obj.name.toLowerCase().indexOf(str.toLocaleLowerCase())>-1)
+				{
+					vec.push(obj);
+				}
+				else if(obj.description.toLowerCase().indexOf(str.toLocaleLowerCase())>-1)
+				{
+					vec.push(obj);
+				}
+			}
+			return vec;
 		}
 		private function shwoAvailableExtension(evt:AWEvent):void
 		{
+			extList.clearSelection();
 			availableBtn.setSelected(true);
 			installedBtn.setSelected(false);
 			trace("check list")
@@ -115,6 +158,7 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 		}
 		private function showInstalledExtension(evt:AWEvent):void
 		{
+			extList.clearSelection();
 			availableBtn.setSelected(false);
 			installedBtn.setSelected(true);
 			updateList();
@@ -145,7 +189,7 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 		private function __onRemoveExtension(evt:Event):void
 		{
 			if(extList.getSelectedIndex() >= 0){
-				ExtensionUtil.OnDelExtension(extList.getSelectedValue(), updateList);
+				ExtensionUtil.OnDelExtension(extList.getSelectedValue().name, updateList);
 			}
 		}
 		
@@ -165,8 +209,9 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 			PopupUtil.enableRightMouseEvent();
 		}
 		
-		private function updateList():void
+		private function updateList(e:Event=null):void
 		{
+			ExtensionUtil.currExtArr = [];
 			if(availableBtn.isSelected())
 			{
 				ExtensionUtil.showType = 0;
@@ -200,7 +245,7 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 			setTitle(Translator.map("Manage Extensions"));
 			
 			btnAdd.setText(Translator.map("Add Extension"));
-			btnRemove.setText(Translator.map("Remove Extension"));
+			//btnRemove.setText(Translator.map("Remove Extension"));
 		}
 		
 		static private function setBtnStyle(btn:JButton):void

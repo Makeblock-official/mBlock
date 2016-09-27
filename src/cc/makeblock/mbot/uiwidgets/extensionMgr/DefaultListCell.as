@@ -4,6 +4,7 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.events.ProgressEvent;
+	import flash.events.TextEvent;
 	import flash.filesystem.File;
 	import flash.filters.GlowFilter;
 	import flash.net.URLLoader;
@@ -47,7 +48,6 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 		private var wrapper:JPanel;
 		private var btnPanel:JPanel;
 		private static var sharedToolTip:JSharedToolTip;
-		
 		public function DefaultListCell(){
 			super();
 			if(sharedToolTip == null){
@@ -57,10 +57,22 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 			}
 		}
 		 private var dataObj:Object = new Object();
-		
+		private var updataObj:Object;
+		private var canUpdata:Boolean;
 		override public function setCellValue(valueObj:*) : void {
 			super.setCellValue(valueObj);
+			canUpdata = false;
+			if(ExtensionUtil.currExtArr.indexOf(valueObj)<0)
+			{
+				ExtensionUtil.currExtArr.push(valueObj);
+			}
+			
 			dataObj = valueObj;
+			if(ExtensionUtil.showType==0)
+			{
+				updataObj = valueObj;
+			}
+			
 			getJLabel().clearText();
 			var valu:String = '<p><FONT FACE="Times New Roman" SIZE="15" COLOR="#000000" LETTERSPACING="0" KERNING="0"><b>'+valueObj.name+'<b></FONT></p>'
 			getJLabel().setLabel(valu);
@@ -72,15 +84,29 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 			getSummaryLabel().clearText();
 			valu = '<p><FONT FACE="Times New Roman" SIZE="12" COLOR="#444444" LETTERSPACING="0" KERNING="0">'+valueObj.description+'</FONT></p>'
 			getSummaryLabel().setLabel(valu);
-			valu = '<a href="http://www.mblock.cc/extensions/"><FONT FACE="Times New Roman" SIZE="12" COLOR="#0292FD" LETTERSPACING="0" KERNING="0">更多信息</FONT></a>'
-			getSummaryLabel().setLabel(valu);
-			if(ExtensionUtil.showType==0)
+			
+			if(ExtensionUtil.showType==1)
 			{
-				updataBtnStatus();
+				valu = '<a href="http://www.mblock.cc/extensions/"><FONT FACE="Times New Roman" SIZE="12" COLOR="#0292FD" LETTERSPACING="0" KERNING="0">更多信息</FONT><a href=\"event:00\"><FONT FACE="Times New Roman" SIZE="12" COLOR="#0292FD" LETTERSPACING="0" KERNING="0">   查看源代码</FONT></a></a>'
+				
+				getSummaryLabel().setLabel(valu);
+				getSummaryLabel().htmlText.addEventListener(TextEvent.LINK, linkHandler);
+				
 			}
+			else
+			{
+				valu = '<a href="http://www.mblock.cc/extensions/"><FONT FACE="Times New Roman" SIZE="12" COLOR="#0292FD" LETTERSPACING="0" KERNING="0">更多信息</FONT></a>'
+				getSummaryLabel().setLabel(valu);
+			}
+			updataBtnStatus();
 			__resized(null);
 		}
 		
+		private function linkHandler(e:TextEvent):void
+		{
+			//trace("查看源代码")
+			__onViewSource();
+		}
 		/**
 		 * Override this if you need other value->string translator
 		 */
@@ -93,11 +119,20 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 				wrapper.append(getSummaryLabel(),BorderLayout.CENTER);
 				
 				downloadBtn = new JButton();
-				
 				downloadBtn.addEventListener(MouseEvent.CLICK,downloadHandler);
 				downloadBtn.setX(200);
 				
 				downloadBtn.setBorder(new EmptyBorder(null, new Insets(0, 0, 0, 6)));
+				
+				
+				delBtn = new JButton();
+				delBtn.setText(Translator.map("delete"));
+				delBtn.addEventListener(MouseEvent.CLICK,removeHandler);
+				
+				updataBtn = new JButton();
+				updataBtn.setText(Translator.map("updata"));
+				updataBtn.addEventListener(MouseEvent.CLICK,downloadHandler);
+				
 			
 				
 				wrapper.setBorder(new SideLineBorder(null, SideLineBorder.SOUTH, new ASColor(0xf5f5f5)));
@@ -111,7 +146,7 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 				wrapper.append(btnPanel,BorderLayout.EAST);
 			}
 			btnPanel.removeAll();
-		
+			
 			if(ExtensionUtil.showType==0)
 			{
 				btnPanel.append(downloadBtn);
@@ -119,11 +154,9 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 			}
 			else if(ExtensionUtil.showType==1)
 			{
-				if(!delBtn)
+				if(canUpdata)
 				{
-					delBtn = new JButton();
-					delBtn.setText(Translator.map("delete"));
-					delBtn.addEventListener(MouseEvent.CLICK,removeHandler);
+					btnPanel.append(updataBtn);
 				}
 				btnPanel.append(delBtn);
 			}
@@ -132,45 +165,64 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 		}
 		private function updataBtnStatus():void
 		{
-			switch(hasDownloaded(dataObj,MBlock.app.extensionManager.extensionList))
+			if(ExtensionUtil.showType==0)
 			{
-				case 0:
-					//no download
-					downloadBtn.setText(Translator.map("download"));
-					downloadBtn.setEnabled(true);
-					break;
-				case 1:
-					//has downloaded
-					downloadBtn.setText(Translator.map("downloaded"));
-					downloadBtn.setEnabled(false);
-					break;
-				case 2:
-					//has a new version
-					downloadBtn.setText(Translator.map("updata"));
-					downloadBtn.setEnabled(true);
-					break;
-				default:
+				switch(hasDownloaded(dataObj,MBlock.app.extensionManager.extensionList))
+				{
+					case -1:
+						//no download
+						downloadBtn.setText(Translator.map("download"));
+						downloadBtn.setEnabled(true);
+						break;
+					case 0:
+					case 1:
+						//has downloaded
+						downloadBtn.setText(Translator.map("downloaded"));
+						downloadBtn.setEnabled(false);
+						break;
+					case 2:
+						//has a new version
+						downloadBtn.setText(Translator.map("updata"));
+						downloadBtn.setEnabled(true);
+						break;
+					default:
+				}
 			}
+			else if(ExtensionUtil.showType==1)
+			{
+				if(hasDownloaded(dataObj,ExtensionUtil.getAvailableList())==1)
+				{
+					canUpdata = true;
+				}
+				else
+				{
+					canUpdata = false;
+					btnPanel.remove(updataBtn);	
+				}
+			}
+			
 		}
-		private function hasDownloaded(targetObj:Object,sourceArr:Array):uint
+		private function hasDownloaded(targetObj:Object,sourceArr:Array):int
 		{
 			for each(var ext:Object in sourceArr){
-				if(ext.extensionName==targetObj.name)
+				if(ext.extensionName==targetObj.name || ext.name==targetObj.name)
 				{
-					//if local has a file
-					trace(ext.extensionName,"ext.version="+ext.version,"targetObj.version="+targetObj.version)
 					if(convertVersion(ext.version)<convertVersion(targetObj.version))
 					{
-						//there is a new version from network.
 						return 2;
 					}
-					else
+					else if(convertVersion(ext.version)>convertVersion(targetObj.version))
 					{
 						return 1;
 					}
+					else
+					{
+						return 0;
+					}
 				}
 			}
-			return 0;
+			//this is a new extension
+			return -1;
 		}
 		private  function convertVersion(str:String):Number
 		{
@@ -186,28 +238,35 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 		private function downloadHandler(evt:MouseEvent):void
 		{
 			var loader:URLLoader = new URLLoader();
-			var urlRequest:URLRequest = new URLRequest("http://www.mblock.cc/extensions/uploads/"+dataObj.download);
+			var urlRequest:URLRequest = new URLRequest("http://www.mblock.cc/extensions/uploads/"+updataObj.download);
 			trace("urlRequest="+urlRequest.url);
 			urlRequest.method = URLRequestMethod.GET;
-			var fileName:String = dataObj.download;
+			var fileName:String = updataObj.download;
 			loader.dataFormat = URLLoaderDataFormat.BINARY;
 			loader.load(urlRequest);
 			loader.addEventListener(Event.COMPLETE, onDownloadComplete);
 			loader.addEventListener(ProgressEvent.PROGRESS, onDownloadProgress);
+			
 		}
 		private function onDownloadProgress(e:ProgressEvent):void
 		{
 			var percent:Number = e.bytesLoaded/e.bytesTotal;
+			
 			trace(percent*100,"%")
 		}
 		private function onDownloadComplete(e:Event):void
 		{
 			ExtensionUtil.parseZip(ByteArray(e.target.data));
+			canUpdata = false;
+			btnPanel.remove(updataBtn);	
+			ExtensionUtil.dispatcher.dispatchEvent(new Event("updateList"));
+			//MBlock.app.stage.removeChild(progressSp);
 			trace("保存完成")
 		}
-		private function __onViewSource(evt:AWEvent):void
+		private function __onViewSource(evt:AWEvent=null):void
 		{
 			var extName:String = getJLabel().getText().toLowerCase();
+			extName = extName.match(/\b.*\b/g)[0];
 			/*if(extName == "communication"){
 				extName = "serial";
 			}*/
