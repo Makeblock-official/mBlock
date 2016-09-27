@@ -136,7 +136,6 @@
 		}
         runPackage(11,port,slot,angle);
     };
-    
 	ext.runBuzzer = function(tone, beat){
 		if(typeof tone == "string"){
 			tone = tones[tone];
@@ -198,6 +197,26 @@
 			port = ports[port];
 		}
 		runPackage(20,port,shutterStatus[status]);
+	};
+	ext.runFan = function(port, direction) {
+		var portToPin = {
+			Port1: [11, 12],
+			Port2: [9, 10],
+			Port3: [16, 17],
+			Port4: [14, 15]
+		};
+		var directionToValue = {
+			"clockwise": [1,0], 
+			"counter-clockwise": [0,1], 
+			"stop": [0,0]
+		};
+		if(typeof port=="string"){
+			pins = portToPin[port];
+			if(pins) {
+				runPackage(0x1e, pins[0], directionToValue[direction][0]);
+				runPackage(0x1e, pins[1], directionToValue[direction][1]);
+			}
+		}
 	};
 	ext.runIR = function(message){
 		runPackage(13,string2array(message));

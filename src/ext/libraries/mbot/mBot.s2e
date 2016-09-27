@@ -57,6 +57,9 @@
 		
 		["w", "set camera shutter %d.bluePorts as %d.shutter","runShutter","Port1", "Press",
 		{"encode":"{d0}{d1}","setup":"","inc":"","def":"MeShutter shutter_{0}({0});\n","work":"shutter_{0}.setState({1});\n","loop":""}],
+
+		["w", "set mini fan %d.bluePorts blow %d.fan","runFan","Port1", "clockwise",
+		{"encode":"{d0}{d1}","setup":"","inc":"","def":"MeShutter shutter_{0}({0});\n","work":"shutter_{0}.setState({1});\n","loop":""}],
 		
 		["-"],
 		["R", "light sensor %d.laport","getLightSensor","light sensor on board",
@@ -157,6 +160,7 @@
 		"value":[0,20,60,150,255],
 		"button_state":["pressed","released"],
 		"shutter":["Press","Release","Focus On","Focus Off"],
+		"fan":["clockwise", "counter-clockwise", "stop"],
 		"switch":["Off","On"],
 		"ircode":["A","B","C","D","E","F","↑","↓","←","→","Setting","R0","R1","R2","R3","R4","R5","R6","R7","R8","R9"],
 		"touch_mode":["direct","toggle"],
@@ -213,6 +217,8 @@
 		"Release":0,
 		"Focus On":3,
 		"Focus Off":2,
+		"clockwise": 0,
+		"counter-clockwise": 1,
 		"led on board":7,
 		"light sensor on board":6,
 		"M1":9,
