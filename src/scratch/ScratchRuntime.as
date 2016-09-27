@@ -670,6 +670,11 @@ package scratch {
 			if(65 <= keyCode && keyCode <= 90){
 				return keyCode + 32;
 			}
+			//将小键盘  数字键转为大键盘数字键
+			else if(96<=keyCode && keyCode<=105)
+			{
+				return keyCode-48;
+			}
 			return keyCode;
 		}
 	
