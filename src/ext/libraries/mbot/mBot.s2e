@@ -43,7 +43,7 @@
 		{"encode":"{s0}","setup":"ledMtx_{0}.setColorIndex(1);\nledMtx_{0}.setBrightness(6);\n","inc":"","def":"MeLEDMatrix ledMtx_{0}({0});\n","work":"ledMtx_{0}.showClock({1},{3},strcmp({2},\":\")==0);\n","loop":""}],
 		
 		["w", "show drawing %d.normalPort x:%n y:%n draw:%m.drawFace","showDraw", "Port1", 0,0,"        ",
-		{"encode":"{s0}","setup":"ledMtx_{0}.setColorIndex(1);\nledMtx_{0}.setBrightness(6);\n","inc":"","def":"MeLEDMatrix ledMtx_{0}({0});\nunsigned char drawBuffer[16];\nunsigned char *drawTemp;\n","work":"drawTemp = new unsigned char[16]{{3}};\nmemcpy(drawBuffer,drawTemp,16);\nfree(drawTemp);\nledMtx_{0}.drawBitmap({1},{2},16,drawBuffer);\n","loop":""}],
+		{"encode":"{s0}","setup":"ledMtx_{0}.setColorIndex(1);\nledMtx_{0}.setBrightness(6);\n","inc":"","def":"MeLEDMatrix ledMtx_{0}({0});\n--separator--unsigned char drawBuffer[16];\nunsigned char *drawTemp;\n","work":"drawTemp = new unsigned char[16]{{3}};\nmemcpy(drawBuffer,drawTemp,16);\nfree(drawTemp);\nledMtx_{0}.drawBitmap({1},{2},16,drawBuffer);\n","loop":""}],
 		
 		["-"],
 		
@@ -57,6 +57,9 @@
 		
 		["w", "set camera shutter %d.bluePorts as %d.shutter","runShutter","Port1", "Press",
 		{"encode":"{d0}{d1}","setup":"","inc":"","def":"MeShutter shutter_{0}({0});\n","work":"shutter_{0}.setState({1});\n","loop":""}],
+
+		["w", "set mini fan %d.fanPorts blow %d.fan","runFan","Port1", "clockwise",
+		{"encode":"{d0}{d1}","setup":"","inc":"","def":"MePort dc130({0});\n--separator--void dc130_run( uint8_t port, int8_t direction) \n{\n  pinMode(dc130.pin1(),OUTPUT);\n  pinMode(dc130.pin2(),OUTPUT);\n  if( direction > 0)\n  {\n    digitalWrite(dc130.pin2(),0);\n    digitalWrite(dc130.pin1(),1);\n  }\n  else if( direction < 0)\n  {\n    digitalWrite(dc130.pin1(),0);\n    digitalWrite(dc130.pin2(),1);\n  }\n  else\n  {\n    digitalWrite(dc130.pin1(),0);\n    digitalWrite(dc130.pin2(),0);\n  }\n}\n","work":"dc130_run({0},{1});\n","loop":""}],
 		
 		["-"],
 		["R", "light sensor %d.laport","getLightSensor","light sensor on board",
@@ -157,11 +160,13 @@
 		"value":[0,20,60,150,255],
 		"button_state":["pressed","released"],
 		"shutter":["Press","Release","Focus On","Focus Off"],
+		"fan":["clockwise", "counter-clockwise", "stop"],
 		"switch":["Off","On"],
 		"ircode":["A","B","C","D","E","F","↑","↓","←","→","Setting","R0","R1","R2","R3","R4","R5","R6","R7","R8","R9"],
 		"touch_mode":["direct","toggle"],
 		"button_key":["key1","key2","key3","key4"],
-		"humiture":["humidity","temperature"]
+		"humiture":["humidity","temperature"],
+		"fanPorts":["Port1","Port2","Port3","Port4"]
 	},
 	"values":{
 		"led left":2,
@@ -170,7 +175,7 @@
 		"servovalue":[0,45,90,135,180],
 		"all":0,
 		"run":2,
-		"stop":2,
+		"stop":0,
 		"get":1,
 		"motor":10,
 		"ir":13,
@@ -213,6 +218,8 @@
 		"Release":0,
 		"Focus On":3,
 		"Focus Off":2,
+		"clockwise": 1,
+		"counter-clockwise": -1,
 		"led on board":7,
 		"light sensor on board":6,
 		"M1":9,

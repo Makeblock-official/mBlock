@@ -119,7 +119,28 @@
     ext.runDegreesBot = function(direction,distance,speed){
 		direction = values[direction];
         runPackage(62,05,direction,int2array(distance),short2array(Math.abs(speed)));
-    }
+    };
+    ext.runFan = function(port, direction) {
+		var portToPin = {
+			Port6: [64, 69],
+			Port7: [63, 68],
+			Port8: [62, 67],
+			Port9: [61, 66],
+			Port10: [60, 65]
+		};
+		var directionToValue = {
+			"clockwise": [1,0], 
+			"counter-clockwise": [0,1], 
+			"stop": [0,0]
+		};
+		if(typeof port=="string"){
+			pins = portToPin[port];
+			if(pins) {
+				runPackage(0x1e, pins[0], directionToValue[direction][0]);
+				runPackage(0x1e, pins[1], directionToValue[direction][1]);
+			}
+		}
+	};
 	ext.getTouchSensor = function(port){
     	var deviceId = 51;
     	if(typeof port=="string"){

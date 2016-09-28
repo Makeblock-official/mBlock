@@ -1138,22 +1138,36 @@ void updateVar(char * varName,double * var)
 					ccode_def+=code;
 				}
 			}
+			
 			for(i=0;i<moduleList.length;i++){
 				var m:Object = moduleList[i]
 				code = m["code"]["def"];
 				code = code is CodeObj?code.code:code;
 				if(code!=""){
-					var array:Array = code.split("\n");
-					for(var j:int=0;j<array.length;j++){
-						if(!Boolean(array[j])){
-							continue;
+					var categoryArr:Array = code.split("--separator--");
+					for(var k:int=0;k<categoryArr.length;k++)
+					{
+						var array:Array = categoryArr[k].split("\n");
+						var tmpCode_def:String = "";
+						for(var j:int=0;j<array.length;j++){
+							if(!Boolean(array[j])){
+								continue;
+							}
+							
+							tmpCode_def+=array[j]+"\n";
+							
+							//ccode_def+=array[j]+"\n";
 						}
-						if(array[j].indexOf("#") == 0 || ccode_def.indexOf(array[j]) < 0){
-							ccode_def+=array[j]+"\n";
+						if(ccode_def.indexOf(tmpCode_def)<0)
+						{
+							ccode_def+=tmpCode_def;
 						}
+					
 					}
+					
 				}
 			}
+			
 			return modDefineCode;
 		}
 		
