@@ -58,6 +58,9 @@
 		["w", "set camera shutter %d.bluePorts as %d.shutter","runShutter","Port6", "Press",
 		{"encode":"{d0}{d1}","setup":"","inc":"","def":"MeShutter shutter_{0}({0});\n","work":"shutter_{0}.setState({1});\n","loop":""}],
 		
+		["w", "set mini fan %d.fanPorts blow %d.fan","runFan","Port5", "clockwise",
+		{"encode":"{d0}{d1}","setup":"","inc":"","def":"MePort dc130({0});\n--separator--void dc130_run( uint8_t port, int8_t direction) \n{\n  pinMode(dc130.pin1(),OUTPUT);\n  pinMode(dc130.pin2(),OUTPUT);\n  if( direction > 0)\n  {\n    digitalWrite(dc130.pin2(),0);\n    digitalWrite(dc130.pin1(),1);\n  }\n  else if( direction < 0)\n  {\n    digitalWrite(dc130.pin1(),0);\n    digitalWrite(dc130.pin2(),1);\n  }\n  else\n  {\n    digitalWrite(dc130.pin1(),0);\n    digitalWrite(dc130.pin2(),0);\n  }\n}\n","work":"dc130_run({0},{1});\n","loop":""}],
+		
 		["-"],
 		
 		["R", "encoder motor %d.exMotorPort speed/rpm", "getEncoderSpeedValue","Port1",
@@ -108,6 +111,7 @@
 		
         ],
     "menus": {
+    	"fanPorts":["Port5","Port6","Port7","Port8"],
     	"yellowPorts":["Port6","Port7","Port8"],
     	"bluePorts":["Port6","Port7","Port8"],
     	"grayPorts":["Port5"],
@@ -149,7 +153,8 @@
 		"encoderSpeed":[0,50,100,150,300],
 		"button_key":["key1","key2","key3","key4"],
 		"humiture":["humidity","temperature"],
-		"aurigaMode":["bluetooth mode", "ultrasonic mode", "balance mode", "IR mode", "line follower mode"]
+		"aurigaMode":["bluetooth mode", "ultrasonic mode", "balance mode", "IR mode", "line follower mode"],
+		"fan":["clockwise", "counter-clockwise", "stop"],
         },
 		"values":{
 		"bluetooth mode":0,
@@ -235,7 +240,10 @@
 		"key1":1,
 		"key2":2,
 		"key3":3,
-		"key4":4
+		"key4":4,
+		"stop":0,
+		"clockwise": 1,
+		"counter-clockwise": -1,
 	},
 	"translators":{
 	}

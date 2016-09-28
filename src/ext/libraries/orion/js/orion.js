@@ -154,6 +154,26 @@
 		}
 		runPackage(20,port,shutterStatus[status]);
 	};
+	 ext.runFan = function(port, direction) {
+		var portToPin = {
+			Port3: [12, 13],
+			Port4: [8, 2],
+			Port5: [1, 0],
+			Port6: [16, 17]
+		};
+		var directionToValue = {
+			"clockwise": [1,0], 
+			"counter-clockwise": [0,1], 
+			"stop": [0,0]
+		};
+		if(typeof port=="string"){
+			pins = portToPin[port];
+			if(pins) {
+				runPackage(0x1e, pins[0], directionToValue[direction][0]);
+				runPackage(0x1e, pins[1], directionToValue[direction][1]);
+			}
+		}
+	};
 	ext.showCharacters = function(port,x,y,message){
 		if(typeof port=="string"){
 			port = ports[port];
