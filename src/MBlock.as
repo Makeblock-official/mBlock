@@ -399,7 +399,7 @@ package {
 				setEditMode(true);
 			}
 			
-			track(enterPresentation?"enterFullscreen":"enterNormal");
+			track(enterPresentation?"/enterFullscreen":"/enterNormal");
 			stage.displayState = enterPresentation ? StageDisplayState.FULL_SCREEN_INTERACTIVE : StageDisplayState.NORMAL;
 			
 			for each (var o:ScratchObj in stagePane.allObjects()) o.applyFilters();
