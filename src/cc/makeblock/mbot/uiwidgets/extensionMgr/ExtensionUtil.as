@@ -2,6 +2,7 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 {
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
+	import flash.events.IOErrorEvent;
 	import flash.filesystem.File;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
@@ -99,11 +100,16 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 					callBack();
 				}
 			}
+			function onErrorHandler(e:IOErrorEvent):void
+			{
+				PopupUtil.showAlert(Translator.map("Connection timeout"));
+			}
 			var loader:URLLoader = new URLLoader();
 			var urlRequest:URLRequest = new URLRequest(url);
 			urlRequest.method = URLRequestMethod.GET;
 			loader.load(urlRequest);
 			loader.addEventListener(Event.COMPLETE,getExListComplete);
+			loader.addEventListener(IOErrorEvent.IO_ERROR,onErrorHandler);
 		}
 		static public function getAvailableList():Array
 		{
