@@ -58,6 +58,7 @@
     <buildTarget buildTargetName="default" platformId="default">
       <airSettings airCertificatePath="cert/air.p12" airTimestamp="false" anePathSet="true" version="1">
         <airExcludes>
+          <pathEntry path="Arduino"/>
           <pathEntry path="cygwin1.dll"/>
         </airExcludes>
         <anePaths>

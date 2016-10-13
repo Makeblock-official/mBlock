@@ -20,7 +20,7 @@ package extensions
 	import util.ApplicationManager;
 	import util.JSON;
 	import util.LogManager;
-	
+
 	public class ArduinoManager extends EventDispatcher
 	{
 		
@@ -1144,26 +1144,43 @@ void updateVar(char * varName,double * var)
 				code = m["code"]["def"];
 				code = code is CodeObj?code.code:code;
 				if(code!=""){
-					var categoryArr:Array = code.split("--separator--");
-					for(var k:int=0;k<categoryArr.length;k++)
+					if(code.indexOf("--separator--")>-1)
 					{
-						var array:Array = categoryArr[k].split("\n");
-						var tmpCode_def:String = "";
-						for(var j:int=0;j<array.length;j++){
-							if(!Boolean(array[j])){
-								continue;
-							}
-							
-							tmpCode_def+=array[j]+"\n";
-							
-							//ccode_def+=array[j]+"\n";
-						}
-						if(ccode_def.indexOf(tmpCode_def)<0)
+						//以--separator--分割，以代码块为单位进行去重
+						var categoryArr:Array = code.split("--separator--");
+						for(var k:int=0;k<categoryArr.length;k++)
 						{
-							ccode_def+=tmpCode_def;
+							var array:Array = categoryArr[k].split("\n");
+							var tmpCode_def:String = "";
+							for(var j:int=0;j<array.length;j++){
+								if(!Boolean(array[j])){
+									continue;
+								}
+								
+								tmpCode_def+=array[j]+"\n";
+								
+								//ccode_def+=array[j]+"\n";
+							}
+							if(ccode_def.indexOf(tmpCode_def)<0)
+							{
+								ccode_def+=tmpCode_def;
+							}
 						}
-					
 					}
+					else
+					{
+						//按行分割，进行去重
+						array = code.split("\n");
+						for(k=0;k<array.length;k++)
+						{
+							if(ccode_def.indexOf(array[k])<0)
+							{
+								ccode_def+=array[k]+"\n";
+							}
+						}
+						
+					}
+					
 					
 				}
 			}
