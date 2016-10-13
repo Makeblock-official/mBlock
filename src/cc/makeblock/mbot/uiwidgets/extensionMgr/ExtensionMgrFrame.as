@@ -43,7 +43,9 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 		private var searchTxtField:JTextField;
 		private var availableBtn:JButton;
 		private var installedBtn:JButton;
-		private var defalutSearchTxt:String = "输入关键字                 				      ";
+		private var searchLabel:JLabel;
+		private var defalutSearchTxt:String = "input the key words                  ";
+
 		private var searchTimer:Timer = new Timer(1000,1);
 		
 		public function ExtensionMgrFrame(owner:*=null)
@@ -60,6 +62,8 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 			setBtnStyle(btnRemove);*/
 			
 			searchTxtField = new JTextField(defalutSearchTxt);
+
+			searchTxtField.setWidth(500);
 			searchTxtField.setTextFormat(new TextFormat(null,null,0x999999),0,searchTxtField.getText().length);
 			//btnList.append(btnRemove);
 			btnList.append(btnAdd);
@@ -70,17 +74,17 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 			bottomWrapper.append(btnList);
 			
 			var chooseBtnPanel:JPanel = new JPanel(new FlowLayout(2,0));
-			availableBtn = new JButton("可用");
-			installedBtn = new JButton("已安装");
+			availableBtn = new JButton(Translator.map("Available"));
+			installedBtn = new JButton(Translator.map("Installed"));
 			chooseBtnPanel.append(availableBtn);
 			chooseBtnPanel.append(installedBtn);
 			
 			var searchPanel:JPanel = new JPanel(new FlowLayout());
-			var searchLabel:JLabel = new JLabel("搜索");
+			searchLabel = new JLabel(Translator.map("Search"));
 			searchPanel.append(searchLabel);
 			searchPanel.append(searchTxtField);
 			
-			var northList:JPanel = new JPanel(new BoxLayout());
+			var northList:JPanel = new JPanel(new BoxLayout(0,0));
 			northList.append(chooseBtnPanel,BorderLayout.WEST);
 			northList.append(searchPanel,BorderLayout.EAST);
 			
@@ -129,7 +133,7 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 		}
 		private function searchItems(str:String):Array
 		{
-			str = str.match(/\b.*\b/g)[0];
+			str = str.replace(/^\s+|\s+$/g,"");
 			var vec:Array = new Array();
 			for each(var obj:Object in ExtensionUtil.currExtArr)
 			{
@@ -146,18 +150,26 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 		}
 		private function shwoAvailableExtension(evt:AWEvent):void
 		{
+			if(availableBtn.isSelected())
+			{
+				return;
+			}
 			extList.clearSelection();
 			availableBtn.setSelected(true);
 			installedBtn.setSelected(false);
-			trace("check list")
+			
 			ExtensionUtil.checkAvailExtList(function():void{
 				updateList();
 				
-				trace("check over")
+				
 			})
 		}
 		private function showInstalledExtension(evt:AWEvent):void
 		{
+			if(installedBtn.isSelected())
+			{
+				return;
+			}
 			extList.clearSelection();
 			availableBtn.setSelected(false);
 			installedBtn.setSelected(true);
@@ -245,6 +257,12 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 			setTitle(Translator.map("Manage Extensions"));
 			
 			btnAdd.setText(Translator.map("Add Extension"));
+			
+			availableBtn.setText(Translator.map("Available"));
+			installedBtn.setText(Translator.map("Installed"));
+			
+			searchLabel.setText(Translator.map("Search"));
+			
 			//btnRemove.setText(Translator.map("Remove Extension"));
 		}
 		

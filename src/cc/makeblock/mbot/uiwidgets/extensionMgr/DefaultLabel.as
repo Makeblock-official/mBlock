@@ -1,7 +1,6 @@
 package cc.makeblock.mbot.uiwidgets.extensionMgr
 {
 	import flash.text.TextField;
-	import flash.text.TextFormat;
 	
 	import org.aswing.Component;
 
@@ -19,7 +18,6 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 			htmlText.width = 120;
 			htmlText.width = currWid;
 			htmlText.height = currHeig;
-			
 			this.addChild(htmlText);
 		}
 		

@@ -2,6 +2,7 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 {
 	
 	import flash.events.Event;
+	import flash.events.IOErrorEvent;
 	import flash.events.MouseEvent;
 	import flash.events.ProgressEvent;
 	import flash.events.TextEvent;
@@ -12,6 +13,8 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 	import flash.net.URLRequest;
 	import flash.net.URLRequestMethod;
 	import flash.utils.ByteArray;
+	
+	import cc.makeblock.mbot.util.PopupUtil;
 	
 	import org.aswing.ASColor;
 	import org.aswing.AbstractListCell;
@@ -72,22 +75,39 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 			{
 				updataObj = valueObj;
 			}
-			
+			else
+			{
+				for each(var obj:Object in ExtensionUtil.getAvailableList())
+				{
+					if(valueObj.name==obj.name)
+					{
+						updataObj = obj;
+						break;
+					}
+				}
+			}
 			getJLabel().clearText();
-			var valu:String = '<p><FONT FACE="Times New Roman" SIZE="15" COLOR="#000000" LETTERSPACING="0" KERNING="0"><b>'+valueObj.name+'<b></FONT></p>'
+			var valu:String = '<p><FONT FACE="Arial" SIZE="15" COLOR="#000000" LETTERSPACING="0" KERNING="0"><b>'+valueObj.name+'<b></FONT></p>'
 			getJLabel().setLabel(valu);
-			valu = '<a href="'+valueObj.authorLink+'"><FONT FACE="Times New Roman" SIZE="12" COLOR="#0292FD" LETTERSPACING="0" KERNING="0">'+valueObj.author+'</FONT></a>'
+			valu = '<a href="http://'+valueObj.authorLink+'"><FONT FACE="Arial" SIZE="12" COLOR="#0292FD" LETTERSPACING="0" KERNING="0">'+valueObj.author+'</FONT></a>'
 			getJLabel().setLabel(valu);
-			valu = '<p><FONT FACE="Times New Roman" SIZE="10" COLOR="#666666" LETTERSPACING="0" KERNING="0">'+valueObj.version+'</FONT></p>'
+			valu = '<p><FONT FACE="Arial" SIZE="10" COLOR="#666666" LETTERSPACING="0" KERNING="0">'+valueObj.version+'</FONT></p>'
 			getJLabel().setLabel(valu);
 			
 			getSummaryLabel().clearText();
-			valu = '<p><FONT FACE="Times New Roman" SIZE="12" COLOR="#444444" LETTERSPACING="0" KERNING="0">'+valueObj.description+'</FONT></p>'
+			valu = '<p><FONT FACE="Arial" SIZE="12" COLOR="#444444" LETTERSPACING="0" KERNING="0">'+valueObj.description+'</FONT></p>'
 			getSummaryLabel().setLabel(valu);
 			
 			if(ExtensionUtil.showType==1)
 			{
-				valu = '<a href="http://www.mblock.cc/extensions/"><FONT FACE="Times New Roman" SIZE="12" COLOR="#0292FD" LETTERSPACING="0" KERNING="0">更多信息</FONT><a href=\"event:00\"><FONT FACE="Times New Roman" SIZE="12" COLOR="#0292FD" LETTERSPACING="0" KERNING="0">   查看源代码</FONT></a></a>'
+				if(valueObj.homepage && valueObj.homepage!="")
+				{
+					valu = '<a href="http://'+valueObj.homepage+'"><FONT FACE="Times New Roman" SIZE="12" COLOR="#0292FD" LETTERSPACING="0" KERNING="0">'+Translator.map("More Info")+'</FONT>&nbsp;&nbsp;&nbsp;<a href=\"event:00\"><FONT FACE="Times New Roman" SIZE="12" COLOR="#0292FD" LETTERSPACING="0" KERNING="0">'+Translator.map("View Source")+'</FONT></a></a>';
+				}
+				else
+				{
+					valu = '<a href=\"event:00\"><FONT FACE="Times New Roman" SIZE="12" COLOR="#0292FD" LETTERSPACING="0" KERNING="0">'+Translator.map("View Source")+'</FONT></a></a>';
+				}
 				
 				getSummaryLabel().setLabel(valu);
 				getSummaryLabel().htmlText.addEventListener(TextEvent.LINK, linkHandler);
@@ -95,8 +115,12 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 			}
 			else
 			{
-				valu = '<a href="http://www.mblock.cc/extensions/"><FONT FACE="Times New Roman" SIZE="12" COLOR="#0292FD" LETTERSPACING="0" KERNING="0">更多信息</FONT></a>'
-				getSummaryLabel().setLabel(valu);
+				if(valueObj.homepage && valueObj.homepage!="")
+				{
+					valu = '<a href="http://'+valueObj.homepage+'"><FONT FACE="Times New Roman" SIZE="12" COLOR="#0292FD" LETTERSPACING="0" KERNING="0">'+Translator.map("More Info")+'</FONT></a>'
+					getSummaryLabel().setLabel(valu);
+				}
+				
 			}
 			updataBtnStatus();
 			__resized(null);
@@ -126,11 +150,11 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 				
 				
 				delBtn = new JButton();
-				delBtn.setText(Translator.map("delete"));
+				delBtn.setText(Translator.map("Remove"));
 				delBtn.addEventListener(MouseEvent.CLICK,removeHandler);
 				
 				updataBtn = new JButton();
-				updataBtn.setText(Translator.map("updata"));
+				updataBtn.setText(Translator.map("Update"));
 				updataBtn.addEventListener(MouseEvent.CLICK,downloadHandler);
 				
 			
@@ -171,18 +195,18 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 				{
 					case -1:
 						//no download
-						downloadBtn.setText(Translator.map("download"));
+						downloadBtn.setText(Translator.map("Download"));
 						downloadBtn.setEnabled(true);
 						break;
 					case 0:
 					case 1:
 						//has downloaded
-						downloadBtn.setText(Translator.map("downloaded"));
+						downloadBtn.setText(Translator.map("Downloaded"));
 						downloadBtn.setEnabled(false);
 						break;
 					case 2:
 						//has a new version
-						downloadBtn.setText(Translator.map("updata"));
+						downloadBtn.setText(Translator.map("Update"));
 						downloadBtn.setEnabled(true);
 						break;
 					default:
@@ -200,7 +224,8 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 					btnPanel.remove(updataBtn);	
 				}
 			}
-			
+			delBtn.setText(Translator.map("Delete"));
+			updataBtn.setText(Translator.map("Update"));
 		}
 		private function hasDownloaded(targetObj:Object,sourceArr:Array):int
 		{
@@ -237,14 +262,23 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 		}
 		private function downloadHandler(evt:MouseEvent):void
 		{
+			function onErrorHandler(e:IOErrorEvent):void
+			{
+				PopupUtil.showAlert(Translator.map("Connection timeout"));
+				loader.removeEventListener(IOErrorEvent.IO_ERROR,onErrorHandler);
+				loader.removeEventListener(ProgressEvent.PROGRESS, onDownloadProgress);
+				loader.removeEventListener(Event.COMPLETE, onDownloadComplete);
+				evt.target.setEnabled(true);
+			}
+			evt.target.setEnabled(false);
 			var loader:URLLoader = new URLLoader();
 			var urlRequest:URLRequest = new URLRequest("http://www.mblock.cc/extensions/uploads/"+updataObj.download);
-			trace("urlRequest="+urlRequest.url);
+			trace("urlRequest="+urlRequest.url,updataObj.name);
 			urlRequest.method = URLRequestMethod.GET;
-			var fileName:String = updataObj.download;
 			loader.dataFormat = URLLoaderDataFormat.BINARY;
 			loader.load(urlRequest);
 			loader.addEventListener(Event.COMPLETE, onDownloadComplete);
+			loader.addEventListener(IOErrorEvent.IO_ERROR,onErrorHandler);
 			loader.addEventListener(ProgressEvent.PROGRESS, onDownloadProgress);
 			
 		}
@@ -265,8 +299,8 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 		}
 		private function __onViewSource(evt:AWEvent=null):void
 		{
-			var extName:String = getJLabel().getText().toLowerCase();
-			extName = extName.match(/\b.*\b/g)[0];
+			var extName:String = dataObj.name.toLowerCase();
+			extName = extName.replace(/^\s+|\s+$/g,"");
 			/*if(extName == "communication"){
 				extName = "serial";
 			}*/
