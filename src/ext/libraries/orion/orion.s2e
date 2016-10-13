@@ -114,7 +114,7 @@
 		"button_key":["key1","key2","key3","key4"],
 		"humiture":["humidity","temperature"],
 		"fan":["clockwise", "counter-clockwise", "stop"],
-		"fanPorts":["Port3","Port4","Port5","Port6"]
+		"fanPorts":["Port3","Port4","Port6"]
         },
 		"values":{
 		"all":0,
