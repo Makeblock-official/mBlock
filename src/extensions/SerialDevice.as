@@ -1,13 +1,15 @@
 package extensions
 {
 	import flash.events.Event;
-	import blockly.signals.Signal;
 	import flash.utils.ByteArray;
+	
+	import blockly.signals.Signal;
 
 	public class SerialDevice
 	{
 		private static var _instance:SerialDevice;
 		private var _ports:Array = [];
+		private var _currPort:String="";
 		public function SerialDevice()
 		{
 		}
@@ -31,6 +33,11 @@ package extensions
 		}
 		public function get ports():Array{
 			return _ports;
+		}
+		public function get currPort():String
+		{
+			_currPort = port || _currPort;
+			return _currPort;
 		}
 		public function onConnect(port:String):void{
 			this.port = port;

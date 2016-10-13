@@ -6,6 +6,8 @@ package extensions
 	import flash.events.ProgressEvent;
 	import flash.filesystem.File;
 	
+	import cc.makeblock.mbot.util.AppTitleMgr;
+	
 	import translation.Translator;
 	
 	import uiwidgets.DialogBox;
@@ -47,7 +49,7 @@ package extensions
 			var argList:Vector.<String> = new Vector.<String>();
 			argList.push("--upload");
 			argList.push("--board", getBoardInfo());
-			argList.push("--port", SerialDevice.sharedDevice().port);
+			argList.push("--port", SerialDevice.sharedDevice().currPort);
 			argList.push("--verbose", "--preserve-temp-files");
 			argList.push(filePath);
 			
@@ -88,7 +90,8 @@ package extensions
 			}else{
 				_dialog.setText(Translator.map('Upload Failed'));
 			}
-			SerialManager.sharedManager().reopen();
+			AppTitleMgr.Instance.setConnectInfo(null);
+			//SerialManager.sharedManager().reopen();
 		}
 		
 		private function __onData(event:ProgressEvent):void

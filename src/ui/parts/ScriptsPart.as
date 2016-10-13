@@ -335,11 +335,14 @@ public class ScriptsPart extends UIPart {
 		return arduinoFrame.visible;
 	}
 	private function onCompileArduino(evt:MouseEvent):void{
-		if(SerialManager.sharedManager().isConnected){
+		//if(SerialManager.sharedManager().isConnected){
+		trace("SerialDevice.sharedDevice().port="+SerialDevice.sharedDevice().port)
+		if(SerialDevice.sharedDevice().currPort!=""){
 			if(ArduinoManager.sharedManager().isUploading==false){
 				htmlLoader.window.clearInfo();
 				if(showArduinoCode()){
 					htmlLoader.window.appendInfo(ArduinoManager.sharedManager().buildAll(arduinoCodeText));
+					ConnectionManager.sharedManager().onClose(SerialDevice.sharedDevice().port);
 					AppTitleMgr.Instance.setConnectInfo("Uploading");
 				}
 			}
