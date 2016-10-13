@@ -534,7 +534,7 @@ public class ScratchObj extends Sprite {
 		// Return null if not found.
 		var list:ListWatcher;
 		for each (list in lists) {
-			if (list.listName == listName) return list;
+			if (list.listName!=null && list.listName == listName) return list;
 		}
 		for each (list in MBlock.app.stagePane.lists) {
 			if (list.listName == listName) return list;
