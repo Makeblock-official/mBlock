@@ -79,14 +79,28 @@ package extensions
 				}
 				default:{
 					BlockInterpreter.Instance.stopAllThreads();
+					var isConnectCmd:Boolean = false;
+					
 					if(name.indexOf("serial_")>-1){
+						MBlock.app.track("/Connect/Serial");
+						isConnectCmd = true;
 						SerialManager.sharedManager().connect(name.split("serial_").join(""));
 					}
 					if(name.indexOf("bt_")>-1){
+						MBlock.app.track("/Connect/Bluetooth");
+						isConnectCmd = true;
 						BluetoothManager.sharedManager().connect(name.split("bt_").join(""));
 					}
 					if(name.indexOf("net_")>-1){
+						MBlock.app.track("/Connect/Net");
+						isConnectCmd = true;
 						SocketManager.sharedManager().probe(name.split("net_")[1]);
+					}
+					
+					if(isConnectCmd) {	// collect data on what type of board it connected to
+						var boardName:String = DeviceManager.sharedManager().currentBoard;
+						MBlock.app.track("/ConnectBoard/"+boardName);
+						
 					}
 				}
 			}
