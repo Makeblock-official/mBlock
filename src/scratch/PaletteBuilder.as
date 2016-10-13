@@ -218,6 +218,11 @@ public class PaletteBuilder {
 			var listNames:Array = app.runtime.allListNames().sort();
 			if (listNames.length > 0) {
 				for each (n in listNames) {
+					//如果n为空，则跳过，解决MBLOCK-209	【新建链表】链表运行后切换代码模块返回，报错  by 谭启亮 20161011
+					if(n==null)
+					{
+						continue;
+					}
 					addVariableCheckbox(n, true);
 					addItem(new Block(n, 'r', catColor, Specs.GET_LIST), true);
 				}
