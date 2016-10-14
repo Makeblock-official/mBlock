@@ -244,6 +244,8 @@ package {
 			}
 			initExtension();
 			MenuBuilder.BuildMenuList(XMLList(FileUtil.LoadFile("assets/context_menus.xml")));
+			//初始化项目标题
+			setProjectName('Untitled');
 		}
 		private function initExtension():void{
 //			ClickerManager.sharedManager().update();
