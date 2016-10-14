@@ -44,7 +44,7 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 		private var availableBtn:JButton;
 		private var installedBtn:JButton;
 		private var searchLabel:JLabel;
-		private var defalutSearchTxt:String = "input the key words                  ";
+		private var defalutSearchTxt:String = "                                                 ";
 
 		private var searchTimer:Timer = new Timer(1000,1);
 		
