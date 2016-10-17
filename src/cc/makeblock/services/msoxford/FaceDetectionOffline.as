@@ -2,12 +2,8 @@ package cc.makeblock.services.msoxford
 {
 	import com.quasimondo.bitmapdata.CameraBitmap;
 	
-	import flash.display.Bitmap;
 	import flash.display.BitmapData;
-	import flash.display.Graphics;
 	import flash.display.Sprite;
-	import flash.display.StageAlign;
-	import flash.display.StageScaleMode;
 	import flash.events.Event;
 	import flash.geom.Matrix;
 	import flash.geom.Rectangle;
@@ -56,8 +52,10 @@ package cc.makeblock.services.msoxford
 		
 		private function cameraReadyHandler( event:Event ):void
 		{
-			detectionMap.draw(MBlock.app.stageObj().videoImage.bitmapData,drawMatrix,null,"normal",null,true);
-			detector.detect( detectionMap );
+			if(MBlock.app.stageObj().videoImage){
+				detectionMap.draw(MBlock.app.stageObj().videoImage.bitmapData,drawMatrix,null,"normal",null,true);
+				detector.detect( detectionMap );
+			}
 		}
 		
 		private function initDetector():void
@@ -76,12 +74,12 @@ package cc.makeblock.services.msoxford
 					var rect:Rectangle = new Rectangle;
 					rect.x = r.x * scaleFactor-240;
 					rect.y = 160-r.y * scaleFactor;
-					rect.width = r.width * scaleFactor;
-					rect.height = r.height * scaleFactor;
+					rect.width = (r.width * scaleFactor);
+					rect.height = (r.height * scaleFactor)*0.8;
 					results.push(rect);
 				});
 				if(results.length>0){
-					MBlock.app.extensionManager.extensionByName("Oxford AI").stateVars["realFaceResultReceived"] = results;
+					MBlock.app.extensionManager.extensionByName("Microsoft Cognitive Services").stateVars["realFaceResultReceived"] = results;
 					MBlock.app.runtime.realFaceResultReceived.notify(true);
 				}
 			}

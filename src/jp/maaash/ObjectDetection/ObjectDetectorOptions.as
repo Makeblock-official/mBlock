@@ -33,7 +33,7 @@
 package jp.maaash.ObjectDetection
 {
 	public class ObjectDetectorOptions{
-		public static const SCALE_FACTOR      :Number = 1.2;
+		public static const SCALE_FACTOR      :Number = 1.5;
 		public static const MIN_SIZE          :int    = 15;
 		public static const MIN_MARGIN_SEARCH :int = 3;
 

@@ -1,4 +1,4 @@
-package cc.makeblock.msoxford
+package cc.makeblock.services.msoxford
 {
 	import flash.display.BitmapData;
 	import flash.display.JPEGEncoderOptions;

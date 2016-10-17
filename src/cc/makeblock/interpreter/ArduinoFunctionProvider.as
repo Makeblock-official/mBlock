@@ -6,6 +6,13 @@ package cc.makeblock.interpreter
 	import blockly.runtime.Thread;
 	import blockly.util.FunctionProviderHelper;
 	
+	import cc.makeblock.services.msoxford.EmotionDetection;
+	import cc.makeblock.services.msoxford.FaceDetection;
+	import cc.makeblock.services.msoxford.FaceDetectionOffline;
+	import cc.makeblock.services.msoxford.GraphicsToText;
+	import cc.makeblock.services.msoxford.SpeakerDetection;
+	import cc.makeblock.services.msoxford.SpeechToText;
+	
 	import extensions.ScratchExtension;
 	import extensions.SerialDevice;
 	
@@ -26,6 +33,12 @@ package cc.makeblock.interpreter
 		
 		private var mbotTimer:int;
 		private var netExt:NetExtension = new NetExtension();
+		private var speechAPI:SpeechToText = new SpeechToText();
+		private var speakerAPI:SpeakerDetection = new SpeakerDetection();
+		private var emotionAPI:EmotionDetection = new EmotionDetection();
+		private var faceAPI:FaceDetection = new FaceDetection();
+		private var realtimeFaceAPI:FaceDetectionOffline = new FaceDetectionOffline;
+		private var ocrAPI:GraphicsToText = new GraphicsToText();
 		
 		override protected function onCallUnregisteredFunction(thread:Thread, name:String, argList:Array, retCount:int):void
 		{
@@ -43,6 +56,39 @@ package cc.makeblock.interpreter
 				return;
 			}
 			var ext:ScratchExtension = MBlock.app.extensionManager.extensionByName(extName);
+			if(extName.toLocaleLowerCase().indexOf("microsoft cognitive services")>-1){
+				if(opName=="startVoiceRecognition"){
+					speechAPI.start();
+				}else if(opName=="stopVoiceRecognition"){
+					speechAPI.stop();
+					speakerAPI.stop();
+				}else if(opName=="capturePhoto"){
+					if(argList[0]=="emotion"){
+						emotionAPI.capture();
+					}else if(argList[0]=="face"){
+						faceAPI.capture();
+					}else if(argList[0]=="text"){
+						ocrAPI.capture();
+					}
+				}else if(opName=="captureFace"){
+					if(argList[0]=="start"){
+						realtimeFaceAPI.start();
+					}else if(argList[0]=="stop"){
+						realtimeFaceAPI.stop();
+					}
+				}else if(opName=="voiceCommandReceived"){
+					thread.push(ext.getStateVar(opName));
+				}else if(opName.indexOf("emotionResultReceived")>-1){
+					thread.push(ext.getStateVar(opName)[argList[0]-1][argList[1]]);
+				}else if(opName.indexOf("faceResultReceived")>-1){
+					thread.push(ext.getStateVar(opName)[argList[0]-1][argList[1]]);
+				}else if(opName.indexOf("realFaceResultReceived")>-1){
+					thread.push(ext.getStateVar(opName)[argList[0]-1][argList[1]]);
+				}else if(opName.indexOf("textResultReceived")>-1){
+					thread.push(ext.getStateVar(opName));
+				}
+				return;
+			}
 			if(null == ext){
 				thread.interrupt();
 				return;
