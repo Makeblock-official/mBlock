@@ -18,12 +18,8 @@ package cc.makeblock.services.msoxford
 	import flash.utils.getTimer;
 	import flash.utils.setTimeout;
 	
-	import extensions.ExtensionManager;
-	import extensions.ParseManager;
-	
 	import org.bytearray.micrecorder.MicRecorder;
 	import org.bytearray.micrecorder.encoder.WaveEncoder;
-	import org.bytearray.micrecorder.events.RecordingEvent;
 	
 	import util.SharedObjectManager;
 	
@@ -42,7 +38,7 @@ package cc.makeblock.services.msoxford
 			//			}
 		} 
 		public function start():void{
-			_secret = SharedObjectManager.sharedManager().getObject("keySpeech","");//"94712db8e9b34e25933af9e5b37b4807"
+			_secret = SharedObjectManager.sharedManager().getObject("keySpeech","94712db8e9b34e25933af9e5b37b4807");//""
 			if(_secret.length<10){
 				return;
 			}
@@ -213,7 +209,7 @@ package cc.makeblock.services.msoxford
 				if(ret.header.name.profanity!=undefined&&ret.header.name.profanity.length>0){
 					ret.header.name = "敏感词";
 				}
-				MBlock.app.extensionManager.extensionByName("Oxford AI").stateVars["voiceCommandReceived"] = ret.header.name;
+				MBlock.app.extensionManager.extensionByName("Microsoft Cognitive Services").stateVars["voiceCommandReceived"] = ret.header.name;
 				MBlock.app.runtime.voiceReceived.notify(true);
 			}
 			_recordStatus = 0;

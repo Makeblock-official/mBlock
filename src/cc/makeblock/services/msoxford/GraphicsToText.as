@@ -43,7 +43,7 @@ package cc.makeblock.services.msoxford
 			req.url = "https://api.projectoxford.ai/vision/v1/ocr?language=unk&detectOrientation=true";
 			req.method = URLRequestMethod.POST;
 			req.data = bytes;
-			var secret:String = SharedObjectManager.sharedManager().getObject("keyOCR");//"d30bb3fa0e40461eaf1d0b11b609a75a";
+			var secret:String = SharedObjectManager.sharedManager().getObject("keyOCR","d30bb3fa0e40461eaf1d0b11b609a75a");//;
 			if(secret.length<10){
 				return;
 			}
@@ -102,7 +102,7 @@ package cc.makeblock.services.msoxford
 				//				output += "悲伤:"+Math.round(ret.FaceRecognitionResult[i].scores.sadness*100)+"%    ";
 				//				output += "吃惊:"+Math.round(ret.FaceRecognitionResult[i].scores.surprise*100)+"%\r";
 			}*/
-			MBlock.app.extensionManager.extensionByName("Oxford AI").stateVars["textResultReceived"] = result;
+			MBlock.app.extensionManager.extensionByName("Microsoft Cognitive Services").stateVars["textResultReceived"] = result;
 			MBlock.app.runtime.textResultReceived.notify(true);
 		}
 		private function onIOError(evt:IOErrorEvent):void{

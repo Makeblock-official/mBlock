@@ -42,7 +42,7 @@ package cc.makeblock.services.msoxford
 			req.url = "https://api.projectoxford.ai/face/v1.0/detect?returnFaceId=true&returnFaceLandmarks=true&returnFaceAttributes=age,gender,headPose,smile";
 			req.method = URLRequestMethod.POST;
 			req.data = bytes;
-			var secret:String = SharedObjectManager.sharedManager().getObject("keyFace");//"05f40ce31c9e4d339c75a77007d479b8";
+			var secret:String = SharedObjectManager.sharedManager().getObject("keyFace","05f40ce31c9e4d339c75a77007d479b8");//"";
 			if(secret.length<10){
 				return;
 			}
@@ -57,40 +57,44 @@ package cc.makeblock.services.msoxford
 		private function onRequestComplete(evt:Event):void{
 			
 			MBlock.app.track("/OxfordAi/face/success");
-			var ret:XML = new XML(evt.target.data);
-			if (ret.namespace("") != undefined) 
-			{ 
-				default xml namespace = ret.namespace(""); 
-			}
-			var len:uint = ret.length();
-			var result:Array = [];
-			for(var i:uint=0;i<len;i++){
-				var faceAttributes:XMLList = ret[i].DetectedFace.faceAttributes;
-				var faceId:String = ret[i].DetectedFace.faceId;
-				var faceRectangle:XMLList = ret[i].DetectedFace.faceRectangle;
-				var faceLandmarks:XMLList = ret[i].DetectedFace.faceLandmarks;
+			try{
+				var ret:XML = new XML(evt.target.data);
+				if (ret.namespace("") != undefined) 
+				{ 
+					default xml namespace = ret.namespace(""); 
+				}
+				var len:uint = ret.length();
+				var result:Array = [];
+				for(var i:uint=0;i<len;i++){
+					var faceAttributes:XMLList = ret[i].DetectedFace.faceAttributes;
+					var faceId:String = ret[i].DetectedFace.faceId;
+					var faceRectangle:XMLList = ret[i].DetectedFace.faceRectangle;
+					var faceLandmarks:XMLList = ret[i].DetectedFace.faceLandmarks;
+					
+					var obj:Object = {};
+					obj.x = faceRectangle.left;
+					obj.y = faceRectangle.top;
+					obj.width = faceRectangle.width;
+					obj.height = faceRectangle.height;
+					obj.age = faceAttributes.age;
+					obj.gender = faceAttributes.gender;
+					obj.smile = faceAttributes.smile;
+					result.push(obj);
+					//				var output:String = "用户（"+(i+1)+"）愤怒:"+Math.round(ret.FaceRecognitionResult[i].scores.anger*100)+"%   ";
+					//				output += "鄙视:"+Math.round(ret.FaceRecognitionResult[i].scores.contempt*100)+"%    ";
+					//				output += "厌恶:"+Math.round(ret.FaceRecognitionResult[i].scores.disgust*100)+"%    ";
+					//				output += "恐惧:"+Math.round(ret.FaceRecognitionResult[i].scores.fear*100)+"%\r";
+					//				output += "开心:"+Math.round(ret.FaceRecognitionResult[i].scores.happiness*100)+"%    ";
+					//				output += "中立:"+Math.round(ret.FaceRecognitionResult[i].scores.neutral*100)+"%    ";
+					//				output += "悲伤:"+Math.round(ret.FaceRecognitionResult[i].scores.sadness*100)+"%    ";
+					//				output += "吃惊:"+Math.round(ret.FaceRecognitionResult[i].scores.surprise*100)+"%\r";
+				}
+				if(len>0){
+					MBlock.app.extensionManager.extensionByName("Microsoft Cognitive Services").stateVars["faceResultReceived"] = result;
+					MBlock.app.runtime.faceResultReceived.notify(true);
+				}
+			}catch(e:*){
 				
-				var obj:Object = {};
-				obj.x = faceRectangle.left;
-				obj.y = faceRectangle.top;
-				obj.width = faceRectangle.width;
-				obj.height = faceRectangle.height;
-				obj.age = faceAttributes.age;
-				obj.gender = faceAttributes.gender;
-				obj.smile = faceAttributes.smile;
-				result.push(obj);
-				//				var output:String = "用户（"+(i+1)+"）愤怒:"+Math.round(ret.FaceRecognitionResult[i].scores.anger*100)+"%   ";
-				//				output += "鄙视:"+Math.round(ret.FaceRecognitionResult[i].scores.contempt*100)+"%    ";
-				//				output += "厌恶:"+Math.round(ret.FaceRecognitionResult[i].scores.disgust*100)+"%    ";
-				//				output += "恐惧:"+Math.round(ret.FaceRecognitionResult[i].scores.fear*100)+"%\r";
-				//				output += "开心:"+Math.round(ret.FaceRecognitionResult[i].scores.happiness*100)+"%    ";
-				//				output += "中立:"+Math.round(ret.FaceRecognitionResult[i].scores.neutral*100)+"%    ";
-				//				output += "悲伤:"+Math.round(ret.FaceRecognitionResult[i].scores.sadness*100)+"%    ";
-				//				output += "吃惊:"+Math.round(ret.FaceRecognitionResult[i].scores.surprise*100)+"%\r";
-			}
-			if(len>0){
-				MBlock.app.extensionManager.extensionByName("Oxford AI").stateVars["faceResultReceived"] = result;
-				MBlock.app.runtime.faceResultReceived.notify(true);
 			}
 		}
 		private function onIOError(evt:IOErrorEvent):void{

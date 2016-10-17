@@ -35,7 +35,7 @@ package cc.makeblock.services.msoxford
 			//			}
 		} 
 		public function start():void{
-			_secret = SharedObjectManager.sharedManager().getObject("keySpeaker","");//"94712db8e9b34e25933af9e5b37b4807"
+			_secret = SharedObjectManager.sharedManager().getObject("keySpeaker","94712db8e9b34e25933af9e5b37b4807");//"94712db8e9b34e25933af9e5b37b4807"
 			_recorder.microphone = Microphone.getMicrophone();
 			trace("voice start:",_recorder.microphone);
 			if(_recorder.microphone==null){
@@ -201,7 +201,7 @@ package cc.makeblock.services.msoxford
 				if(ret.header.name.profanity!=undefined&&ret.header.name.profanity.length>0){
 					ret.header.name = "敏感词";
 				}
-				MBlock.app.extensionManager.extensionByName("Oxford AI").stateVars["voiceCommandReceived"] = ret.header.name;
+				MBlock.app.extensionManager.extensionByName("Microsoft Cognitive Services").stateVars["voiceCommandReceived"] = ret.header.name;
 				MBlock.app.runtime.voiceReceived.notify(true);
 			}
 			_recordStatus = 0;

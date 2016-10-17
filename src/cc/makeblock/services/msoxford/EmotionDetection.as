@@ -43,7 +43,7 @@ package cc.makeblock.services.msoxford
 			req.url = "https://api.projectoxford.ai/emotion/v1.0/recognize";
 			req.method = URLRequestMethod.POST;
 			req.data = bytes;
-			var secret:String = SharedObjectManager.sharedManager().getObject("keyEmotion");//"2a71aa9ef2fc478e8e35b13ca65d9e3f";
+			var secret:String = SharedObjectManager.sharedManager().getObject("keyEmotion","2a71aa9ef2fc478e8e35b13ca65d9e3f");//;
 			if(secret.length<10){
 				return;
 			}
@@ -93,7 +93,7 @@ package cc.makeblock.services.msoxford
 //				output += "吃惊:"+Math.round(ret.FaceRecognitionResult[i].scores.surprise*100)+"%\r";
 			}
 			if(len>0){
-				MBlock.app.extensionManager.extensionByName("Oxford AI").stateVars["emotionResultReceived"] = result;
+				MBlock.app.extensionManager.extensionByName("Microsoft Cognitive Services").stateVars["emotionResultReceived"] = result;
 				MBlock.app.runtime.emotionResultReceived.notify(true);
 			}
 		}
