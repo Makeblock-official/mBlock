@@ -786,7 +786,7 @@ package {
 					var path:String = fixFileName(defaultName);
 					file = File.desktopDirectory.resolvePath(path);
 					file.addEventListener(Event.SELECT, fileSaved);
-					file.browseForSave("please choose file location");
+					file.browseForSave(Translator.map("please choose file location"));
 				}
 				
 //				file.save(zipData, path);
