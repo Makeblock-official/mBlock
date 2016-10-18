@@ -20,6 +20,7 @@ package extensions
 	import util.ApplicationManager;
 	import util.JSON;
 	import util.LogManager;
+	import cc.makeblock.mbot.util.PopupUtil;
 
 	public class ArduinoManager extends EventDispatcher
 	{
@@ -234,6 +235,7 @@ void updateVar(char * varName,double * var)
 			if(File.applicationStorageDirectory.exists){
 				File.applicationStorageDirectory.deleteDirectory(true);
 			}
+			PopupUtil.showConfirm("是否重启mblock",MBlock.app.restart);
 		}
 		
 		public function setScratch(scratch:MBlock):void{
