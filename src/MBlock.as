@@ -2,6 +2,8 @@ package {
 	import com.google.analytics.GATracker;
 	
 	import flash.desktop.NativeApplication;
+	import flash.desktop.NativeProcess;
+	import flash.desktop.NativeProcessStartupInfo;
 	import flash.display.DisplayObject;
 	import flash.display.Loader;
 	import flash.display.Sprite;
@@ -823,11 +825,13 @@ package {
 		
 		public function toggleHideStage():void
 		{
+			stageIsArduino = false;
 			stageIsHided = !stageIsHided;
 			setSmallStageMode(stageIsContracted);
 		}
 	
 		public function toggleSmallStage():void {
+			stageIsArduino = false;
 			if(stageIsHided){
 				stageIsHided = false;
 				setSmallStageMode(stageIsContracted);
@@ -843,6 +847,7 @@ package {
 		}
 		public function changeToArduinoMode():void{
 			toggleArduinoMode();
+			
 			if(stageIsArduino)
 				scriptsPart.showArduinoCode();
 		}
@@ -870,7 +875,28 @@ package {
 			if (y == null) y = stage.mouseY;
 			gh.showBubble(text, Number(x), Number(y), width);
 		}
-	
+		public function restart(value:int):void
+		{
+			trace("重启"+value)
+			if(value==JOptionPane.YES)
+			{
+				var file:File = new File(File.applicationDirectory.nativePath);
+				file = file.resolvePath("mBlock.exe");
+				if(!file.exists)
+				{
+					return;	
+				}
+				
+				var nativeProcessStartupInfo:NativeProcessStartupInfo = new NativeProcessStartupInfo();
+				nativeProcessStartupInfo.executable = file;
+				var process:NativeProcess = new NativeProcess();
+				//NativeApplication.nativeApplication.exit();
+				stage.nativeWindow.close();
+				process.start(nativeProcessStartupInfo);
+				
+				
+			}
+		}
 		public function startNewProject(newOwner:String, newID:String):void {
 			runtime.installNewProject();
 //			projectOwner = newOwner;
