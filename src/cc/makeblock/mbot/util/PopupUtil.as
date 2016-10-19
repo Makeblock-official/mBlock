@@ -7,13 +7,18 @@ package cc.makeblock.mbot.util
 	import flash.geom.ColorTransform;
 	import flash.geom.Rectangle;
 	
+	import cc.makeblock.mbot.uiwidgets.extensionMgr.DefaultLabel;
+	
 	import org.aswing.AsWingConstants;
 	import org.aswing.AsWingUtils;
+	import org.aswing.BorderLayout;
 	import org.aswing.JFrame;
+
 	import org.aswing.JOptionPane;
-	import org.aswing.JPopup;
+
 	
 	import translation.Translator;
+
 	public class PopupUtil
 	{
 		static public function enableRightMouseEvent():void
@@ -110,6 +115,15 @@ package cc.makeblock.mbot.util
 		static public function centerFrameTitle(frame:JFrame):void
 		{
 			frame.getTitleBar().getLabel().setHorizontalAlignment(AsWingConstants.CENTER);
+		}
+		static public function appendText(cmp:JOptionPane,title:String,href:String):void
+		{
+			var label:DefaultLabel = new DefaultLabel(false,false);
+			var txt:String = '<p align="center"><a href="'+href+'"><FONT COLOR="#0292FD">'+Translator.map(title)+'</FONT></a></p>'
+			label.setLabel(txt);
+			label.htmlText.width = cmp.getFrame().width;
+			
+			cmp.append(label,BorderLayout.CENTER);
 		}
 	}
 }
