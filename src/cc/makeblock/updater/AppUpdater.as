@@ -6,7 +6,7 @@ package cc.makeblock.updater
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	import flash.net.navigateToURL;
-	
+	import flash.system.Capabilities;
 	import cc.makeblock.mbot.util.PopupUtil;
 	
 	import org.aswing.BorderLayout;
@@ -79,11 +79,21 @@ package cc.makeblock.updater
 				panel = PopupUtil.showConfirm(Translator.map("There is a newer version"), __onConfirm);
 				panel.getYesButton().setText(Translator.map("Download Now"));
 				panel.getCancelButton().setText(Translator.map("Download Later"));
+				
 				panel.getFrame().setModal(false);
 				_checkBox = new JCheckBox(Translator.map("Dont't show next time"));
 				_checkBox.setBorder(new EmptyBorder(null, new Insets(10, 0, 0, 0)));
-				panel.append(_checkBox, BorderLayout.CENTER);
-				panel.getFrame().setSizeWH(240, 100);
+				panel.append(_checkBox, BorderLayout.NORTH);
+				panel.getFrame().setSizeWH(240, 130);
+				if(Capabilities.language=="zh-CN")
+				{
+					PopupUtil.appendText(panel,"What's New","http://www.mblock.cc/release-logs-cn");
+				}
+				else
+				{
+					PopupUtil.appendText(panel,"What's New","http://www.mblock.cc/release-logs");
+				}
+				
 			}else{
 				VersionManager.sharedManager().start();
 				if(needNotice){
