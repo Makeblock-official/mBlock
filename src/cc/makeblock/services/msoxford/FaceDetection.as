@@ -27,6 +27,9 @@ package cc.makeblock.services.msoxford
 			if(_vid==null){
 				_vid = MBlock.app.stageObj().currentVideo;
 			}
+			if(_vid==null){
+				return;
+			}
 			var bmd:BitmapData = new BitmapData(_vid.width,_vid.height,true,0);
 			var matrix:Matrix = new Matrix;
 			matrix.a = -1;

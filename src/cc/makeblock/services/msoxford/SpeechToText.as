@@ -1,13 +1,9 @@
 package cc.makeblock.services.msoxford
 {
-	import flash.events.ActivityEvent;
 	import flash.events.Event;
 	import flash.events.HTTPStatusEvent;
 	import flash.events.IOErrorEvent;
 	import flash.events.StatusEvent;
-	import flash.filesystem.File;
-	import flash.filesystem.FileMode;
-	import flash.filesystem.FileStream;
 	import flash.media.Microphone;
 	import flash.net.URLLoader;
 	import flash.net.URLLoaderDataFormat;
@@ -20,6 +16,8 @@ package cc.makeblock.services.msoxford
 	
 	import org.bytearray.micrecorder.MicRecorder;
 	import org.bytearray.micrecorder.encoder.WaveEncoder;
+	
+	import translation.Translator;
 	
 	import util.SharedObjectManager;
 	
@@ -43,13 +41,13 @@ package cc.makeblock.services.msoxford
 				return;
 			}
 			_recorder.microphone = Microphone.getMicrophone();
-			trace("voice start:",_recorder.microphone);
 			if(_recorder.microphone==null){
 				return;
 			}
+			MBlock.app.scriptsPart.appendMessage("voice start:"+_recorder.microphone.name);
 			_recorder.silenceLevel = 5;
 			_recorder.rate = 11;
-			_recorder.gain = 60;
+			_recorder.gain = 50;
 			_recorder.timeOut = 100;
 //			_recorder.microphone.setLoopBack(true);
 			_recorder.microphone.setUseEchoSuppression(true);
@@ -68,22 +66,21 @@ package cc.makeblock.services.msoxford
 			}
 		}
 		private function startRecord():void{
-			trace("recording...");
+			MBlock.app.scriptsPart.appendMessage("recording...");
 			setTimeout(function():void{
 				_recordStatus = 2;
 				stopRecord();
 			},2000);
 		}
 		private function stopRecord():void{
-			trace("stop recording...");
+			MBlock.app.scriptsPart.appendMessage("stop recording...");
 			_recorder.stop();
 		}
 		private function onMicStatus(evt:StatusEvent):void{
-			trace(evt);
+			MBlock.app.scriptsPart.appendMessage(evt.toString());
 		}
 		private function onActivity(v:Number):void{
 			if(Math.abs(v*100)>30){
-				trace(v);
 				if(_recordStatus==0){
 					_recordStatus = 1;
 					startRecord();
@@ -120,10 +117,12 @@ package cc.makeblock.services.msoxford
 			urlloader.load(req);
 		}
 		private function onRequestAuthComplete(evt:Event):void{
+			MBlock.app.scriptsPart.appendMessage(evt.target.data);
 			var obj:Object = JSON.parse(evt.target.data);
 			var appid:String = "f84e364c-ec34-4773-a783-73707bd9a585";
 			var scenarios:String = "ulm";
-			var locale:String = "zh-CN";
+			var locale:String = Translator.getLanguage().split("_").join("-");
+			locale = locale=="en"?"en-US":locale;
 			var device:String = "Windows OS";
 			var version:String = "3.0";
 			var format:String = "xml";
@@ -153,13 +152,15 @@ package cc.makeblock.services.msoxford
 			MBlock.app.track("/OxfordAi/speech/launch");
 		}
 		private function onHttpStatus(evt:HTTPStatusEvent):void{
-			trace("Status:",evt);
+			MBlock.app.scriptsPart.appendMessage(evt.toString());
 		}
 		private function onIOError(evt:IOErrorEvent):void{
-			trace("error：",evt);
+			MBlock.app.scriptsPart.appendMessage(evt.toString());
+			_recordStatus = 0;
 			MBlock.app.track("/OxfordAi/speech/error");
 		}
 		private function onSpeechRequestComplete(evt:Event):void{
+			
 			var ret:XML = new XML(evt.target.data);
 			if (ret.namespace("") != undefined) 
 			{ 
@@ -205,7 +206,7 @@ package cc.makeblock.services.msoxford
 			</speechbox-root>
 			*/
 			if(ret.header.status=="success"){
-				trace(ret.header.name);
+				MBlock.app.scriptsPart.appendMessage(ret.header.name);
 				if(ret.header.name.profanity!=undefined&&ret.header.name.profanity.length>0){
 					ret.header.name = "敏感词";
 				}

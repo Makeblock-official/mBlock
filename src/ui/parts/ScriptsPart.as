@@ -391,7 +391,12 @@ public class ScriptsPart extends UIPart {
 	];
 	
 	public function showArduinoCode(arg:String=""):Boolean{
-		var retcode:String = util.JSON.stringify(app.stagePane);
+		var retcode:String = "";
+		try{
+			retcode = util.JSON.stringify(app.stagePane);
+		}catch(e:*){
+			return false;
+		}
 		var formatCode:String = ArduinoManager.sharedManager().jsonToCpp(retcode);
 		uploadBt.visible = !ArduinoManager.sharedManager().hasUnknownCode;
 		if(formatCode==null){
