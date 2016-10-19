@@ -102,11 +102,19 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 			{
 				if(valueObj.homepage && valueObj.homepage!="")
 				{
-					valu = '<a href="http://'+valueObj.homepage+'"><FONT FACE="Times New Roman" SIZE="12" COLOR="#0292FD" LETTERSPACING="0" KERNING="0">'+Translator.map("More Info")+'</FONT>&nbsp;&nbsp;&nbsp;<a href=\"event:00\"><FONT FACE="Times New Roman" SIZE="12" COLOR="#0292FD" LETTERSPACING="0" KERNING="0">'+Translator.map("View Source")+'</FONT></a></a>';
+					if(valueObj.homepage.indexOf("http")>-1)
+					{
+						valu = '<a href="'+valueObj.homepage+'"><FONT FACE="Times New Roman" SIZE="12" COLOR="#0292FD">'+Translator.map("More Info")+'</FONT>&nbsp;&nbsp;&nbsp;<a href=\"event:00\"><FONT FACE="Times New Roman" SIZE="12" COLOR="#0292FD">'+Translator.map("View Source")+'</FONT></a></a>';
+					}
+					else
+					{
+						valu = '<a href="http://'+valueObj.homepage+'"><FONT FACE="Times New Roman" SIZE="12" COLOR="#0292FD">'+Translator.map("More Info")+'</FONT>&nbsp;&nbsp;&nbsp;<a href=\"event:00\"><FONT FACE="Times New Roman" SIZE="12" COLOR="#0292FD">'+Translator.map("View Source")+'</FONT></a></a>';
+					}
+					
 				}
 				else
 				{
-					valu = '<a href=\"event:00\"><FONT FACE="Times New Roman" SIZE="12" COLOR="#0292FD" LETTERSPACING="0" KERNING="0">'+Translator.map("View Source")+'</FONT></a></a>';
+					valu = '<a href=\"event:00\"><FONT FACE="Times New Roman" SIZE="12" COLOR="#0292FD">'+Translator.map("View Source")+'</FONT></a></a>';
 				}
 				
 				getSummaryLabel().setLabel(valu);
@@ -117,7 +125,14 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 			{
 				if(valueObj.homepage && valueObj.homepage!="")
 				{
-					valu = '<a href="http://'+valueObj.homepage+'"><FONT FACE="Times New Roman" SIZE="12" COLOR="#0292FD" LETTERSPACING="0" KERNING="0">'+Translator.map("More Info")+'</FONT></a>'
+					if(valueObj.homepage.indexOf("http")>-1)
+					{
+						valu = '<a href="'+valueObj.homepage+'"><FONT FACE="Times New Roman" SIZE="12" COLOR="#0292FD">'+Translator.map("More Info")+'</FONT></a>';
+					}
+					else
+					{
+						valu = '<a href="http://'+valueObj.homepage+'"><FONT FACE="Times New Roman" SIZE="12" COLOR="#0292FD">'+Translator.map("More Info")+'</FONT></a>';
+					}
 					getSummaryLabel().setLabel(valu);
 				}
 				
@@ -182,7 +197,11 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 				{
 					btnPanel.append(updataBtn);
 				}
-				btnPanel.append(delBtn);
+				if(!dataObj.isMakeBlockBoard)
+				{
+					btnPanel.append(delBtn);
+				}
+				
 			}
 			
 			return wrapper;
@@ -222,6 +241,10 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 				{
 					canUpdata = false;
 					btnPanel.remove(updataBtn);	
+				}
+				if(dataObj.isMakeBlockBoard && delBtn.parent)
+				{
+					btnPanel.remove(delBtn);
 				}
 			}
 			delBtn.setText(Translator.map("Delete"));
