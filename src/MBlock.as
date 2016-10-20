@@ -81,6 +81,7 @@ package {
 	import uiwidgets.ScriptsPane;
 	
 	import util.ApplicationManager;
+	import util.DESParser;
 	import util.GestureHandler;
 	import util.LogManager;
 	import util.ProjectIO;
@@ -148,7 +149,11 @@ package {
 			app = this;
 			addEventListener(Event.ADDED_TO_STAGE,initStage);
 			loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, __onError);
-			
+//			trace(DESParser.encryptDES("123456",'05f40ce31c9e4d339c75a77007d479b8'));//face
+//			trace(DESParser.encryptDES("123456",'94712db8e9b34e25933af9e5b37b4807'));//speech
+//			trace(DESParser.encryptDES("123456",'2a71aa9ef2fc478e8e35b13ca65d9e3f'));//emotion
+//			trace(DESParser.encryptDES("123456",'d30bb3fa0e40461eaf1d0b11b609a75a'));//text
+			SharedObjectManager.sharedManager().loadRemoteConfig();
 		}
 		static private var errorFlag:Boolean;
 		private function __onError(evt:UncaughtErrorEvent):void

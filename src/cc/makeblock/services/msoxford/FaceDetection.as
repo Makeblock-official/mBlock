@@ -14,6 +14,7 @@ package cc.makeblock.services.msoxford
 	import flash.net.URLRequestMethod;
 	import flash.utils.ByteArray;
 	
+	import util.DESParser;
 	import util.SharedObjectManager;
 	
 	public class FaceDetection 
@@ -46,6 +47,7 @@ package cc.makeblock.services.msoxford
 			req.method = URLRequestMethod.POST;
 			req.data = bytes;
 			var secret:String = SharedObjectManager.sharedManager().getObject("keyFace","05f40ce31c9e4d339c75a77007d479b8");//"";
+		
 			if(secret.length<10){
 				return;
 			}
