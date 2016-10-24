@@ -20,6 +20,7 @@ package cc.makeblock.services.msoxford
 	{
 		private var _vid:Video;
 		private var _time:Number = 0;
+		private var _source:String = "system";
 		public function GraphicsToText()
 		{
 			
@@ -52,11 +53,13 @@ package cc.makeblock.services.msoxford
 			var secret:String = SharedObjectManager.sharedManager().getObject("keyOCR-user","");//;
 			if(secret==""){
 				SharedObjectManager.sharedManager().getObject("keyOCR-system","");
+			}else{
+				_source = "user";
 			}
 			if(secret.length<10){
 				return;
 			}
-			MBlock.app.track("/OxfordAi/OCR/launch");
+			MBlock.app.track("/OxfordAi/OCR/launch/"+_source);
 			req.requestHeaders.push(new URLRequestHeader("Content-Type","application/octet-stream"));
 			req.requestHeaders.push(new URLRequestHeader("Ocp-Apim-Subscription-Key",secret));
 			urlloader.addEventListener(Event.COMPLETE,onRequestComplete);
@@ -65,7 +68,7 @@ package cc.makeblock.services.msoxford
 			urlloader.load(req);
 		}
 		private function onRequestComplete(evt:Event):void{
-			MBlock.app.track("/OxfordAi/OCR/success");
+			MBlock.app.track("/OxfordAi/OCR/success/"+_source);
 			var ret:Object = JSON.parse(evt.target.data);
 			var regions:Array = ret.regions;
 			var len:uint = regions.length;
@@ -115,7 +118,7 @@ package cc.makeblock.services.msoxford
 			MBlock.app.runtime.textResultReceived.notify(true);
 		}
 		private function onIOError(evt:IOErrorEvent):void{
-			MBlock.app.track("/OxfordAi/OCR/error");
+			MBlock.app.track("/OxfordAi/OCR/error/"+_source);
 			trace("error：",evt);
 		}
 		private function onHttpStatus(evt:HTTPStatusEvent):void{

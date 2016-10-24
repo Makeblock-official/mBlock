@@ -21,6 +21,7 @@ package cc.makeblock.services.msoxford
 	{
 		private var _vid:Video;
 		private var _time:Number = 0;
+		private var _source:String = "system";
 		public function FaceDetection()
 		{
 			
@@ -55,11 +56,13 @@ package cc.makeblock.services.msoxford
 			var secret:String = SharedObjectManager.sharedManager().getObject("keyFace-user","");//"";
 			if(secret==""){
 				SharedObjectManager.sharedManager().getObject("keyFace-system","");
+			}else{
+				_source = "user";
 			}
 			if(secret.length<10){
 				return;
 			}
-			MBlock.app.track("/OxfordAi/face/launch");
+			MBlock.app.track("/OxfordAi/face/launch/"+_source);
 			req.requestHeaders.push(new URLRequestHeader("Content-Type","application/octet-stream"));
 			req.requestHeaders.push(new URLRequestHeader("Ocp-Apim-Subscription-Key",secret));
 			urlloader.addEventListener(Event.COMPLETE,onRequestComplete);
@@ -69,7 +72,7 @@ package cc.makeblock.services.msoxford
 		}
 		private function onRequestComplete(evt:Event):void{
 			
-			MBlock.app.track("/OxfordAi/face/success");
+			MBlock.app.track("/OxfordAi/face/success/"+_source);
 			try{
 				var ret:XML = new XML(evt.target.data);
 				if (ret.namespace("") != undefined) 
@@ -112,7 +115,7 @@ package cc.makeblock.services.msoxford
 		}
 		private function onIOError(evt:IOErrorEvent):void{
 			trace("error：",evt);
-			MBlock.app.track("/OxfordAi/face/error");
+			MBlock.app.track("/OxfordAi/face/error/"+_source);
 		}
 		private function onHttpStatus(evt:HTTPStatusEvent):void{
 			trace("Status:",evt);

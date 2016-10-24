@@ -29,6 +29,7 @@ package cc.makeblock.services.msoxford
 		private var _recordStatus:uint = 0;
 		private var _silentTime:uint = 0;
 		private var _time:Number = 0;
+		private var _source:String = "system";
 		public function SpeechToText()
 		{
 			//			var ret:XML = new XML('<speechbox-root><version>3.0</version><header><status>success</status><scenario>ulm</scenario><name>喂喂喂喂喂喂喂</name><lexical>喂喂喂 喂喂喂 喂</lexical><properties><property name="requestid">b8934c0e-b622-436a-8376-a114d51101b6</property><property name="HIGHCONF">1</property></properties></header><results><result><scenario>ulm</scenario><name>喂喂喂喂喂喂喂</name><lexical>喂喂喂 喂喂喂 喂</lexical><confidence>0.8946657</confidence><properties><property name="HIGHCONF">1</property></properties></result></results></speechbox-root>');
@@ -40,6 +41,8 @@ package cc.makeblock.services.msoxford
 			_secret = SharedObjectManager.sharedManager().getObject("keySpeech-user","");//""
 			if(_secret==""){
 				SharedObjectManager.sharedManager().getObject("keySpeech-system","");
+			}else{
+				_source = "user";
 			}
 			if(_secret.length<10){
 				return;
@@ -156,7 +159,7 @@ package cc.makeblock.services.msoxford
 			urlloader.addEventListener(IOErrorEvent.IO_ERROR,onIOError);
 			urlloader.addEventListener(HTTPStatusEvent.HTTP_RESPONSE_STATUS,onHttpStatus);
 			urlloader.load(req);
-			MBlock.app.track("/OxfordAi/speech/launch");
+			MBlock.app.track("/OxfordAi/speech/launch/"+_source);
 		}
 		private function onHttpStatus(evt:HTTPStatusEvent):void{
 			if(evt["statusCode"]=="403"){
@@ -167,7 +170,7 @@ package cc.makeblock.services.msoxford
 		private function onIOError(evt:IOErrorEvent):void{
 			MBlock.app.scriptsPart.appendMessage(evt.toString());
 			_recordStatus = 0;
-			MBlock.app.track("/OxfordAi/speech/error");
+			MBlock.app.track("/OxfordAi/speech/error/"+_source);
 		}
 		private function onSpeechRequestComplete(evt:Event):void{
 			
@@ -176,7 +179,7 @@ package cc.makeblock.services.msoxford
 			{ 
 				default xml namespace = ret.namespace(""); 
 			}
-			MBlock.app.track("/OxfordAi/speech/success");
+			MBlock.app.track("/OxfordAi/speech/success/"+_source);
 			/*
 			<speechbox-root>
 			<version>3.0</version>

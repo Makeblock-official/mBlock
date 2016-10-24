@@ -21,6 +21,7 @@ package cc.makeblock.services.msoxford
 	{
 		private var _vid:Video;
 		private var _time:Number = 0;
+		private var _source:String = "system";
 		public function EmotionDetection()
 		{
 			
@@ -52,11 +53,13 @@ package cc.makeblock.services.msoxford
 			var secret:String = SharedObjectManager.sharedManager().getObject("keyEmotion-user","");//;
 			if(secret==""){
 				SharedObjectManager.sharedManager().getObject("keyEmotion-system","");
+			}else{
+				_source = "user";
 			}
 			if(secret.length<10){
 				return;
 			}
-			MBlock.app.track("/OxfordAi/emotion/launch");
+			MBlock.app.track("/OxfordAi/emotion/launch/"+_source);
 			req.requestHeaders.push(new URLRequestHeader("Content-Type","application/octet-stream"));
 			req.requestHeaders.push(new URLRequestHeader("Ocp-Apim-Subscription-Key",secret));
 			urlloader.addEventListener(Event.COMPLETE,onRequestComplete);
@@ -70,7 +73,7 @@ package cc.makeblock.services.msoxford
 			{ 
 				default xml namespace = ret.namespace(""); 
 			}
-			MBlock.app.track("/OxfordAi/emotion/success");
+			MBlock.app.track("/OxfordAi/emotion/success/"+_source);
 			var len:uint = ret.FaceRecognitionResult.length();
 			var result:Array = [];
 			for(var i:uint=0;i<len;i++){
@@ -108,7 +111,7 @@ package cc.makeblock.services.msoxford
 		}
 		private function onIOError(evt:IOErrorEvent):void{
 			trace("error：",evt);
-			MBlock.app.track("/OxfordAi/emotion/error");
+			MBlock.app.track("/OxfordAi/emotion/error/"+_source);
 		}
 		private function onHttpStatus(evt:HTTPStatusEvent):void{
 			trace("Status:",evt);
