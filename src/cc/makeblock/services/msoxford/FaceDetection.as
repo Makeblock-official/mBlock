@@ -20,6 +20,7 @@ package cc.makeblock.services.msoxford
 	public class FaceDetection 
 	{
 		private var _vid:Video;
+		private var _time:Number = 0;
 		public function FaceDetection()
 		{
 			
@@ -29,6 +30,11 @@ package cc.makeblock.services.msoxford
 				_vid = MBlock.app.stageObj().currentVideo;
 			}
 			if(_vid==null){
+				return;
+			}
+			if(new Date().time-_time>4000){
+				_time = new Date().time;
+			}else{
 				return;
 			}
 			var bmd:BitmapData = new BitmapData(_vid.width,_vid.height,true,0);

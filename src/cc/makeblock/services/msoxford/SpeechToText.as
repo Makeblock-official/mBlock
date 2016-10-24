@@ -28,6 +28,7 @@ package cc.makeblock.services.msoxford
 		private var _secret:String = "";
 		private var _recordStatus:uint = 0;
 		private var _silentTime:uint = 0;
+		private var _time:Number = 0;
 		public function SpeechToText()
 		{
 			//			var ret:XML = new XML('<speechbox-root><version>3.0</version><header><status>success</status><scenario>ulm</scenario><name>喂喂喂喂喂喂喂</name><lexical>喂喂喂 喂喂喂 喂</lexical><properties><property name="requestid">b8934c0e-b622-436a-8376-a114d51101b6</property><property name="HIGHCONF">1</property></properties></header><results><result><scenario>ulm</scenario><name>喂喂喂喂喂喂喂</name><lexical>喂喂喂 喂喂喂 喂</lexical><confidence>0.8946657</confidence><properties><property name="HIGHCONF">1</property></properties></result></results></speechbox-root>');
@@ -85,8 +86,11 @@ package cc.makeblock.services.msoxford
 		private function onActivity(v:Number):void{
 			if(Math.abs(v*100)>30){
 				if(_recordStatus==0){
-					_recordStatus = 1;
-					startRecord();
+					if(new Date().time-_time>4000){
+						_time = new Date().time;
+						_recordStatus = 1;
+						startRecord();
+					}
 				}
 				_silentTime = getTimer();
 			}else{

@@ -19,7 +19,7 @@ package cc.makeblock.services.msoxford
 	public class GraphicsToText 
 	{
 		private var _vid:Video;
-		//d30bb3fa0e40461eaf1d0b11b609a75a
+		private var _time:Number = 0;
 		public function GraphicsToText()
 		{
 			
@@ -27,6 +27,12 @@ package cc.makeblock.services.msoxford
 		public function capture():void{
 			if(_vid==null){
 				_vid = MBlock.app.stageObj().currentVideo;
+			}
+			
+			if(new Date().time-_time>4000){
+				_time = new Date().time;
+			}else{
+				return;
 			}
 			var bmd:BitmapData = new BitmapData(_vid.width,_vid.height,true,0);
 			var matrix:Matrix = new Matrix;
