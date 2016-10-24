@@ -111,7 +111,7 @@ package primitives {
 			primTable["castDigitToString:"]	= castDigitToString;
 			primTable["letter:of:"]			= primLetterOf;
 			primTable["stringLength:"]		= function(b:*):* { return String(interp.arg(b, 0)).length };
-			
+			primTable["indexOfString:in:"]		= function(b:*):* { return String(interp.arg(b, 0)).indexOf(String(interp.arg(b, 1))) };
 			primTable["%"]					= primModulo;
 			primTable["rounded"]			= function(b:*):* { 
 				var r1:* = interp.arg(b, 0);

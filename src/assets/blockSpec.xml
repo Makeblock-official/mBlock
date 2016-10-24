@@ -212,6 +212,7 @@
 <command category="8" type="r" opcode="concatenate:with:" spec="join %s %s">["hello ","world"]</command>
 <command category="8" type="r" opcode="letter:of:" spec="letter %n of %s">[1,"world"]</command>
 <command category="8" type="r" opcode="stringLength:" spec="length of %s">["world"]</command>
+<command category="8" type="r" opcode="indexOfString:in:" spec="index of %s in %s">["world","hello world"]</command>
 <command category="8" type="r" opcode="castDigitToString:" spec="cast %n to string">[1]</command>
 <command/>
 <command category="8" type="r" opcode="%" spec="%n mod %n">["",""]</command>
