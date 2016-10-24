@@ -1069,6 +1069,10 @@ void updateVar(char * varName,double * var)
 			}
 			for(j=0;j<scripts.length;j++){
 				scr = scripts[j][2];
+				if(scr[0][0].indexOf("whenButtonPressed") > 0)
+				{
+					getCodeBlock(scr[0]);
+				}
 				if(scr[0][0].indexOf("runArduino") < 0){
 					continue;
 				}//选中的Arduino主代码
