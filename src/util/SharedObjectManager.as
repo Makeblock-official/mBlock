@@ -77,10 +77,10 @@ package util
 					keyText = DESParser.decryptDES("123456",keyText.substr(6,keyText.length-6)+keyText.substr(0,6)+"=");
 					var keySpeech:String = obj.keys.speech;
 					keySpeech = DESParser.decryptDES("123456",keySpeech.substr(6,keySpeech.length-6)+keySpeech.substr(0,6)+"=");
-					SharedObjectManager.sharedManager().setObject("keyFace",keyFace);
-					SharedObjectManager.sharedManager().setObject("keyEmotion",keyEmotion);
-					SharedObjectManager.sharedManager().setObject("keyOCR",keyText);
-					SharedObjectManager.sharedManager().setObject("keySpeech",keySpeech);
+					SharedObjectManager.sharedManager().setObject("keyFace-system",keyFace);
+					SharedObjectManager.sharedManager().setObject("keyEmotion-system",keyEmotion);
+					SharedObjectManager.sharedManager().setObject("keyOCR-system",keyText);
+					SharedObjectManager.sharedManager().setObject("keySpeech-system",keySpeech);
 				}catch(e:*){
 					
 				}

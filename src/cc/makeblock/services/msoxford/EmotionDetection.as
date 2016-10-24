@@ -43,7 +43,10 @@ package cc.makeblock.services.msoxford
 			req.url = "https://api.projectoxford.ai/emotion/v1.0/recognize";
 			req.method = URLRequestMethod.POST;
 			req.data = bytes;
-			var secret:String = SharedObjectManager.sharedManager().getObject("keyEmotion","2a71aa9ef2fc478e8e35b13ca65d9e3f");//;
+			var secret:String = SharedObjectManager.sharedManager().getObject("keyEmotion-user","");//;
+			if(secret==""){
+				SharedObjectManager.sharedManager().getObject("keyEmotion-system","");
+			}
 			if(secret.length<10){
 				return;
 			}

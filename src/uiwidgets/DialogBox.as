@@ -101,7 +101,12 @@ public class DialogBox extends Sprite {
 		addChild(title);
 	}
 	public function setTitle(label:String):void{
-		title.text = Translator.map(label);
+		if(title){
+			title.text = Translator.map(label);
+		}else{
+			title = makeLabel(Translator.map(label), true);
+			addChild(title);
+		}
 	}
 	public function addText(text:String):void {
 		for each (var s:String in text.split('\n')) {

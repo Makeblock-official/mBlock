@@ -46,8 +46,10 @@ package cc.makeblock.services.msoxford
 			req.url = "https://api.projectoxford.ai/face/v1.0/detect?returnFaceId=true&returnFaceLandmarks=true&returnFaceAttributes=age,gender,headPose,smile";
 			req.method = URLRequestMethod.POST;
 			req.data = bytes;
-			var secret:String = SharedObjectManager.sharedManager().getObject("keyFace","05f40ce31c9e4d339c75a77007d479b8");//"";
-		
+			var secret:String = SharedObjectManager.sharedManager().getObject("keyFace-user","");//"";
+			if(secret==""){
+				SharedObjectManager.sharedManager().getObject("keyFace-system","");
+			}
 			if(secret.length<10){
 				return;
 			}

@@ -149,8 +149,9 @@ package {
 			app = this;
 			addEventListener(Event.ADDED_TO_STAGE,initStage);
 			loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, __onError);
+//			trace(DESParser.decryptDES("123456","2YNQ6N8ahls0YmQ1NGI3OTkzMWM2OWM5YTczNDUzNGQ="));
 //			trace(DESParser.encryptDES("123456",'05f40ce31c9e4d339c75a77007d479b8'));//face
-//			trace(DESParser.encryptDES("123456",'94712db8e9b34e25933af9e5b37b4807'));//speech
+//			trace(DESParser.encryptDES("123456",'212ea29742574cae8add9ad79abcfe4a'));//speech
 //			trace(DESParser.encryptDES("123456",'2a71aa9ef2fc478e8e35b13ca65d9e3f'));//emotion
 //			trace(DESParser.encryptDES("123456",'d30bb3fa0e40461eaf1d0b11b609a75a'));//text
 			SharedObjectManager.sharedManager().loadRemoteConfig();
@@ -914,7 +915,33 @@ package {
 			saveNeeded = false;
 			wasEdited = true;
 		}
-	
+		public function openMicrosoftCognitiveSetting(msg:String):void{
+			var dialogBox:DialogBox = new DialogBox( function():void{
+				var keyFace:String = dialogBox.getField("人脸识别");
+				var keyEmotion:String = dialogBox.getField("情绪识别");
+				var keyOCR:String = dialogBox.getField("文字识别");
+				var keySpeaker:String = dialogBox.getField("声纹识别");
+				var keySpeech:String = dialogBox.getField("语音识别");
+				SharedObjectManager.sharedManager().setObject("keyFace-user",keyFace);
+				SharedObjectManager.sharedManager().setObject("keyEmotion-user",keyEmotion);
+				SharedObjectManager.sharedManager().setObject("keyOCR-user",keyOCR);
+				SharedObjectManager.sharedManager().setObject("keySpeaker-user",keySpeaker);
+				SharedObjectManager.sharedManager().setObject("keySpeech-user",keySpeech); 
+				MBlock.app.track("/OxfordAi/setting/save");
+			}); 
+			dialogBox.setTitle(msg+" API 秘钥");
+			dialogBox.addField("人脸识别",300,SharedObjectManager.sharedManager().getObject("keyFace-user",""),true);
+			dialogBox.addField("情绪识别",300,SharedObjectManager.sharedManager().getObject("keyEmotion-user",""),true);
+			dialogBox.addField("文字识别",300,SharedObjectManager.sharedManager().getObject("keyOCR-user",""),true);
+			//dialogBox.addField("声纹识别",300,SharedObjectManager.sharedManager().getObject("keySpeaker",""),true);
+			dialogBox.addField("语音识别",300,SharedObjectManager.sharedManager().getObject("keySpeech-user",""),true);
+			dialogBox.addText("使用您的微软账户激活微软认知服务，");
+			dialogBox.addText("获取对应API秘钥。更多信息访问");
+			dialogBox.addText("<a href='https://www.microsoft.com/cognitive-services' style='color:#0000ff'>https://www.microsoft.com/cognitive-services</a>");
+			dialogBox.addAcceptCancelButtons('OK');
+			dialogBox.showOnStage(stage);
+			MBlock.app.track("/OxfordAi/setting/open");
+		}
 		// -----------------------------
 		// Project Reverting
 		//------------------------------

@@ -35,7 +35,10 @@ package cc.makeblock.services.msoxford
 			//			}
 		} 
 		public function start():void{
-			_secret = SharedObjectManager.sharedManager().getObject("keySpeaker","94712db8e9b34e25933af9e5b37b4807");//"94712db8e9b34e25933af9e5b37b4807"
+			_secret = SharedObjectManager.sharedManager().getObject("keySpeaker-user","");//"94712db8e9b34e25933af9e5b37b4807"
+			if(_secret==""){
+				SharedObjectManager.sharedManager().getObject("keySpeaker-system","");
+			}
 			_recorder.microphone = Microphone.getMicrophone();
 			trace("voice start:",_recorder.microphone);
 			if(_recorder.microphone==null){

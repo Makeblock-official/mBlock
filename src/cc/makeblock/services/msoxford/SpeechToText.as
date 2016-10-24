@@ -36,7 +36,10 @@ package cc.makeblock.services.msoxford
 			//			}
 		} 
 		public function start():void{
-			_secret = SharedObjectManager.sharedManager().getObject("keySpeech","94712db8e9b34e25933af9e5b37b4807");//""
+			_secret = SharedObjectManager.sharedManager().getObject("keySpeech-user","");//""
+			if(_secret==""){
+				SharedObjectManager.sharedManager().getObject("keySpeech-system","");
+			}
 			if(_secret.length<10){
 				return;
 			}
@@ -152,6 +155,9 @@ package cc.makeblock.services.msoxford
 			MBlock.app.track("/OxfordAi/speech/launch");
 		}
 		private function onHttpStatus(evt:HTTPStatusEvent):void{
+			if(evt["statusCode"]=="403"){
+				
+			}
 			MBlock.app.scriptsPart.appendMessage(evt.toString());
 		}
 		private function onIOError(evt:IOErrorEvent):void{

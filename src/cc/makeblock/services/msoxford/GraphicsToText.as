@@ -43,7 +43,10 @@ package cc.makeblock.services.msoxford
 			req.url = "https://api.projectoxford.ai/vision/v1/ocr?language=unk&detectOrientation=true";
 			req.method = URLRequestMethod.POST;
 			req.data = bytes;
-			var secret:String = SharedObjectManager.sharedManager().getObject("keyOCR","d30bb3fa0e40461eaf1d0b11b609a75a");//;
+			var secret:String = SharedObjectManager.sharedManager().getObject("keyOCR-user","");//;
+			if(secret==""){
+				SharedObjectManager.sharedManager().getObject("keyOCR-system","");
+			}
 			if(secret.length<10){
 				return;
 			}
