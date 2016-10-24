@@ -1,0 +1,36 @@
+{	"extensionName": "Microsoft Cognitive Services",
+	"extensionPort": 80,
+	"sort":1,
+	"firmware":"1.2.103",
+	"javascriptURL":"js/oxford.js",
+	"blockSpecs": [
+		["w","start voice recognition","startVoiceRecognition"],
+		["w","stop voice recognition","stopVoiceRecognition"],
+		["h","when voice recognition received","whenVoiceCommandReceived"],
+		["r","voice recognition result","voiceCommandReceived"],
+		["--"],
+		["w","start capture photo for %m.phototype","capturePhoto","face"],
+		["h","when %m.phototype result received","whenPhotoResultReceived","face"],
+		["r","emotion %d.index %m.emotion 's value","emotionResultReceived",1,"anger"],
+		["r","face %d.index %m.face 's value","faceResultReceived",1,"age"],
+		["r","ocr result","textResultReceived"],
+		["--"],
+		["w","%m.action real-time face detection","captureFace","start"],
+		["h","when real-time face detection result received","whenRealFaceResultReceived"],
+		["r","real-time face %d.index %m.realtimeface 's value","realFaceResultReceived",1,"x"]
+	],
+	"menus": {
+		"index":[1,2,3,4],
+		"emotion":["x","y","width","height","anger","contempt","disgust","fear","happiness","neutral","sadness","surprise"],
+		"face":["x","y","width","height","age","gender","smile"],
+		"realtimeface":["x","y","width","height"],
+		"voicetype":["speaker","speech"],
+		"action":["start","stop"],
+		"phototype":["face","emotion","text"]
+	},
+	"values":{
+		
+	},
+	"translators":{
+	}
+}

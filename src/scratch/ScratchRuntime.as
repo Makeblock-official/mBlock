@@ -87,6 +87,11 @@ package scratch {
 		protected var saveAfterInstall:Boolean;
 		
 		public const mbotButtonPressed:Signal = new Signal(Boolean);
+		public const voiceReceived:Signal = new Signal(Boolean);
+		public const emotionResultReceived:Signal = new Signal(Boolean);
+		public const faceResultReceived:Signal = new Signal(Boolean);
+		public const textResultReceived:Signal = new Signal(Boolean);
+		public const realFaceResultReceived:Signal = new Signal(Boolean);
 	
 		public function ScratchRuntime(app:MBlock, interp:Interpreter) {
 			this.app = app;
@@ -94,6 +99,11 @@ package scratch {
 			timerBase = interp.currentMSecs;
 			clearKeyDownArray();
 			mbotButtonPressed.add(__onMbotButtonPressed);
+			voiceReceived.add(__onVoiceReceived);
+			emotionResultReceived.add(__onEmotionResultReceived);
+			faceResultReceived.add(__onFaceResultReceived);
+			textResultReceived.add(__onTextResultReceived);
+			realFaceResultReceived.add(__onRealFaceResultReceived);
 		}
 		
 		private function __onMbotButtonPressed(isPressed:Boolean):void
@@ -109,7 +119,75 @@ package scratch {
 				}
 			});
 		}
-		
+		private function __onVoiceReceived(isReceived:Boolean):void{
+			allStacksAndOwnersDo(function(stack:Block, target:ScratchObj):void{
+				if(stack.op.indexOf("whenVoiceCommandReceived")==-1){
+					return;
+				}
+				if(isReceived){
+					if (!interp.isRunning(stack, target)) {
+						interp.toggleThread(stack, target);
+					}
+				}
+			});
+		}
+		private function __onEmotionResultReceived(isReceived:Boolean):void{
+			allStacksAndOwnersDo(function(stack:Block, target:ScratchObj):void{
+				if(stack.op.indexOf("whenPhotoResultReceived")==-1){
+					return;
+				}
+				if(stack.args[0].argValue!="emotion"){
+					return;
+				}
+				if(isReceived){
+					if (!interp.isRunning(stack, target)) {
+						interp.toggleThread(stack, target);
+					}
+				}
+			});
+		}
+		private function __onFaceResultReceived(isReceived:Boolean):void{
+			allStacksAndOwnersDo(function(stack:Block, target:ScratchObj):void{
+				if(stack.op.indexOf("whenPhotoResultReceived")==-1){
+					return;
+				}
+				if(stack.args[0].argValue!="face"){
+					return;
+				}
+				if(isReceived){
+					if (!interp.isRunning(stack, target)) {
+						interp.toggleThread(stack, target);
+					}
+				}
+			});
+		}
+		private function __onTextResultReceived(isReceived:Boolean):void{
+			allStacksAndOwnersDo(function(stack:Block, target:ScratchObj):void{
+				if(stack.op.indexOf("whenPhotoResultReceived")==-1){
+					return;
+				}
+				if(stack.args[0].argValue!="text"){
+					return;
+				}
+				if(isReceived){
+					if (!interp.isRunning(stack, target)) {
+						interp.toggleThread(stack, target);
+					}
+				}
+			});
+		}
+		private function __onRealFaceResultReceived(isReceived:Boolean):void{
+			allStacksAndOwnersDo(function(stack:Block, target:ScratchObj):void{
+				if(stack.op.indexOf("whenRealFaceResultReceived")==-1){
+					return;
+				}
+				if(isReceived){
+					if (!interp.isRunning(stack, target)) {
+						interp.toggleThread(stack, target);
+					}
+				}
+			});
+		}
 		// -----------------------------
 		// Running and stopping
 		//------------------------------

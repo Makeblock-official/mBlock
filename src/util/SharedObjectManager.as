@@ -1,9 +1,12 @@
 package util
 {
+	import flash.events.Event;
 	import flash.filesystem.File;
 	import flash.filesystem.FileMode;
 	import flash.filesystem.FileStream;
 	import flash.net.SharedObject;
+	import flash.net.URLLoader;
+	import flash.net.URLRequest;
 
 	public class SharedObjectManager
 	{
@@ -57,6 +60,31 @@ package util
 		}
 		public function clear():void{
 			_so.clear();
+		}
+		public function loadRemoteConfig():void{
+			var req:URLRequest = new URLRequest;
+			req.url = "http://openrobotech.com/wp-content/uploads/2016/10/oxford.json?t="+new Date().time;
+			var loader:URLLoader = new URLLoader;
+			loader.load(req);
+			loader.addEventListener(Event.COMPLETE,function(e:Event):void{
+				var obj:Object = util.JSON.parse(e.target.data);
+				try{
+					var keyFace:String = obj.keys.face;
+					keyFace = DESParser.decryptDES("123456",keyFace.substr(6,keyFace.length-6)+keyFace.substr(0,6)+"=");
+					var keyEmotion:String = obj.keys.emotion;
+					keyEmotion = DESParser.decryptDES("123456",keyEmotion.substr(6,keyEmotion.length-6)+keyEmotion.substr(0,6)+"=");
+					var keyText:String = obj.keys.text;
+					keyText = DESParser.decryptDES("123456",keyText.substr(6,keyText.length-6)+keyText.substr(0,6)+"=");
+					var keySpeech:String = obj.keys.speech;
+					keySpeech = DESParser.decryptDES("123456",keySpeech.substr(6,keySpeech.length-6)+keySpeech.substr(0,6)+"=");
+					SharedObjectManager.sharedManager().setObject("keyFace-system",keyFace);
+					SharedObjectManager.sharedManager().setObject("keyEmotion-system",keyEmotion);
+					SharedObjectManager.sharedManager().setObject("keyOCR-system",keyText);
+					SharedObjectManager.sharedManager().setObject("keySpeech-system",keySpeech);
+				}catch(e:*){
+					
+				}
+			});
 		}
 	}
 }

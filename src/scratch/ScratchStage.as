@@ -397,6 +397,8 @@ public class ScratchStage extends ScratchObj {
 				if (c is ListWatcher) ListWatcher(c).step();
 			}
 		}
+		
+		dispatchEvent( new Event( Event.RENDER ) );
 	}
 
 //	private var testBM:Bitmap = new Bitmap();
@@ -484,7 +486,10 @@ public class ScratchStage extends ScratchObj {
 			addChildAt(videoImage, getChildIndex(penLayer) + 1);
 		}
 	}
-
+	
+	public function get currentVideo():Video{
+		return video;
+	}
 	public function setVideoTransparency(transparency:Number):void {
 		videoAlpha = 1 - Math.max(0, Math.min(transparency / 100, 1));
 		if (videoImage) videoImage.alpha = videoAlpha;

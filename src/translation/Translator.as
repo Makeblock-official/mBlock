@@ -33,7 +33,6 @@ package translation {
 	
 	import uiwidgets.Menu;
 	
-	import util.ReadStream;
 	import util.SharedObjectManager;
 
 public class Translator {
@@ -98,7 +97,9 @@ public class Translator {
 
 		MBlock.app.server.setSelectedLang(lang);
 	}
-
+	public static function getLanguage():String {
+		return SharedObjectManager.sharedManager().getObject("lang","en-US");
+	}
 	public static function importTranslationFromFile():void {
 		function fileSelected(e:Event):void {
 			var file:FileReference = FileReference(files.fileList[0]);

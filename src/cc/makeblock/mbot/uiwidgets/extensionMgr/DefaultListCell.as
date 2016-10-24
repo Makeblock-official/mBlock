@@ -247,7 +247,7 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 					btnPanel.remove(delBtn);
 				}
 			}
-			delBtn.setText(Translator.map("Delete"));
+			delBtn.setText(Translator.map("Remove"));
 			updataBtn.setText(Translator.map("Update"));
 		}
 		private function hasDownloaded(targetObj:Object,sourceArr:Array):int

@@ -57,7 +57,7 @@ package cc.makeblock.interpreter {
 			provider.register("castDigitToString:", castDigitToString);
 			provider.register("letter:of:", primLetterOf);
 			provider.register("stringLength:", function(thread:Thread, argList:Array):void { thread.push( String(argList[0]).length) });
-			
+			provider.register("indexOfString:in:", function(thread:Thread, argList:Array):void { thread.push( String(argList[1]).indexOf(String(argList[0]))) });
 			provider.register("%", primModulo);
 			provider.register("rounded", function(thread:Thread, argList:Array):void { 
 				thread.push( Math.round(Number(argList[0])));

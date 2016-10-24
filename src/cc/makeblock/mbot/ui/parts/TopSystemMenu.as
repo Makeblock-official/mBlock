@@ -56,6 +56,7 @@ package cc.makeblock.mbot.ui.parts
 			register("Restore Extensions", ExtensionUtil.OnLoadExtension);
 			register("Clear Cache", ArduinoManager.sharedManager().clearTempFiles);
 			register("Reset Default Program", __onResetDefaultProgram);
+			register("Microsoft Cognitive Service Setting", __onMicrosoftSettingSelect);
 			register("Set FirmWare Mode", __onResetDefaultProgram);
 		}
 		
@@ -249,6 +250,10 @@ package cc.makeblock.mbot.ui.parts
 			}
 		}
 		
+		private function __onMicrosoftSettingSelect(item:NativeMenuItem):void
+		{
+			MBlock.app.openMicrosoftCognitiveSetting(Translator.map("Microsoft Cognitive Service"));
+		}
 		private function __onLanguageSelect(evt:Event):void
 		{
 			var item:NativeMenuItem = evt.target as NativeMenuItem;

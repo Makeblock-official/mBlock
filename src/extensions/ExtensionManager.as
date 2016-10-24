@@ -907,6 +907,7 @@ public class ExtensionManager {
 			ext.isBusy = false;
 			ext.success = "Okay";
 			ext.problem = "";
+			return;
 		}else{
 			ext.success = "";
 			ext.problem = ext.js.msg;
