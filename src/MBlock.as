@@ -230,18 +230,13 @@ package {
 			fixLayout();
 			setTimeout(SocketManager.sharedManager, 100);
 			setTimeout(DeviceManager.sharedManager, 100);
-			if(!SharedObjectManager.sharedManager().getObject("mblock-first-launch",false))
-			{
-				SharedObjectManager.sharedManager().setObject("mblock-first-launch",true);
-				ga.trackPageview(ApplicationManager.sharedManager().isCatVersion?"/myh/":"/") + "/mblock-first-launch";
-			}
 			if(!SharedObjectManager.sharedManager().getObject(versionString+".0."+_currentVer,false)){
 				//SharedObjectManager.sharedManager().clear();
 				SharedObjectManager.sharedManager().setObject(versionString+".0."+_currentVer,true);
 				extensionsPath.deleteDirectory(true);
 				extensionManager.copyLocalFiles();
 				SharedObjectManager.sharedManager().setObject("first-launch",true);
-				track("/first-launch");
+				
 				//SharedObjectManager.sharedManager().setObject("board","mbot_uno");
 			}
 			//VersionManager.sharedManager().start(); //在线更新资源文件
@@ -867,7 +862,6 @@ package {
 				if(!PaletteSelector.canUseInArduinoMode(category)){
 					scriptsPart.selector.select(Specs.controlCategory);
 				}
-				
 			}
 			
 //			this.scriptsPart.selector.select(stageIsArduino?6:1);
@@ -1080,7 +1074,5 @@ package {
 		public function createMediaInfo(obj:*, owningObj:ScratchObj = null):MediaInfo {
 			return new MediaInfo(obj, owningObj);
 		}
-		
-		
 	}
 }
