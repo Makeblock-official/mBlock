@@ -71,7 +71,7 @@
 		<item name="Restore Extensions" label="检查最新扩展" />
 		<item name="Clear Cache" label="清空缓存" />
 		<item isSeparator="true" />
-		<item name="Microsoft Cognitive Service Setting" label="微软认知服务设置"/>
+		<item name="Microsoft Cognitive Service Setting" label="Microsoft Cognitive Service Setting"/>
 		<item isSeparator="true" />
 	</subMenu>
 	<subMenu name="Language" label="语言">

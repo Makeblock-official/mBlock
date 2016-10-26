@@ -128,7 +128,7 @@ package cc.makeblock.mbot.ui.parts
 			}
 			var p:NativeMenuItem = MenuUtil.FindParentItem(item);
 			if(p != null && p.name == "Extensions"){
-				if(p.submenu.getItemIndex(item) > 2){
+				if(p.submenu.getItemIndex(item) > 4){
 					return true;
 				}
 			}
@@ -252,7 +252,7 @@ package cc.makeblock.mbot.ui.parts
 		
 		private function __onMicrosoftSettingSelect(item:NativeMenuItem):void
 		{
-			MBlock.app.openMicrosoftCognitiveSetting(Translator.map("Microsoft Cognitive Service"));
+			MBlock.app.openMicrosoftCognitiveSetting(Translator.map("Microsoft Cognitive Services"));
 		}
 		private function __onLanguageSelect(evt:Event):void
 		{
