@@ -39,8 +39,8 @@ package cc.makeblock.services.msoxford
 		} 
 		public function start():void{
 			_secret = SharedObjectManager.sharedManager().getObject("keySpeech-user","");//""
-			if(_secret==""){
-				SharedObjectManager.sharedManager().getObject("keySpeech-system","");
+			if(_secret.length<10){
+				_secret = SharedObjectManager.sharedManager().getObject("keySpeech-system","");
 			}else{
 				_source = "user";
 			}

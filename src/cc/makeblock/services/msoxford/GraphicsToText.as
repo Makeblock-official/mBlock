@@ -51,8 +51,8 @@ package cc.makeblock.services.msoxford
 			req.method = URLRequestMethod.POST;
 			req.data = bytes;
 			var secret:String = SharedObjectManager.sharedManager().getObject("keyOCR-user","");//;
-			if(secret==""){
-				SharedObjectManager.sharedManager().getObject("keyOCR-system","");
+			if(secret.length<10){
+				secret = SharedObjectManager.sharedManager().getObject("keyOCR-system","");
 			}else{
 				_source = "user";
 			}

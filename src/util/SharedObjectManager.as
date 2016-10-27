@@ -82,7 +82,7 @@ package util
 					SharedObjectManager.sharedManager().setObject("keyOCR-system",keyText);
 					SharedObjectManager.sharedManager().setObject("keySpeech-system",keySpeech);
 				}catch(e:*){
-					
+					trace(e);
 				}
 			});
 		}
