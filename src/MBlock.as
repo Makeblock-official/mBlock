@@ -890,7 +890,15 @@ package {
 			if(value==JOptionPane.YES)
 			{
 				var file:File = new File(File.applicationDirectory.nativePath);
-				file = file.resolvePath("mBlock.exe");
+				if(ApplicationManager.sharedManager().system==ApplicationManager.WINDOWS)
+				{
+					file = file.resolvePath("mBlock.exe");
+				}
+				else
+				{
+					file = file.resolvePath("../MacOS/mBlock");
+				}
+				
 				if(!file.exists)
 				{
 					return;	
@@ -899,8 +907,8 @@ package {
 				var nativeProcessStartupInfo:NativeProcessStartupInfo = new NativeProcessStartupInfo();
 				nativeProcessStartupInfo.executable = file;
 				var process:NativeProcess = new NativeProcess();
-				//NativeApplication.nativeApplication.exit();
-				stage.nativeWindow.close();
+				NativeApplication.nativeApplication.exit();
+				//stage.nativeWindow.close();
 				process.start(nativeProcessStartupInfo);
 				
 				
