@@ -271,6 +271,7 @@ package extensions
 				return;
 			}
 			_list = str.split(",");
+			//_list.push("asdf","fda","666","7777","asdfasdfasdf","谭启亮","mblock","makeblock","airblock","flash builder","谭启亮","mblock","makeblock","airblock","flash builder","end")
 			LogManager.sharedManager().log("device list:"+_list);
 			for(var i:uint=0;i<_list.length;i++){
 				for(var j:* in _dialogboxDiscover){
@@ -285,8 +286,10 @@ package extensions
 							d.cancel();
 						}
 						d.addButton("Cancel",onClose);
-						d.fixLayout();
+						d.fixLayout(DialogBox.VERTICAL);
 					}
+					d.x = (MBlock.app.stage.stageWidth-d.width)/2<0?0:(MBlock.app.stage.stageWidth-d.width)/2;
+					d.y = (MBlock.app.stage.stageHeight-d.height)/2<0?0:(MBlock.app.stage.stageHeight-d.height)/2;
 				}
 			}
 			
