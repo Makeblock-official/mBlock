@@ -16,7 +16,7 @@ package extensions
 	import blocks.BlockIO;
 	
 	import cc.makeblock.mbot.util.StringUtil;
-	
+	import translation.Translator;
 	import util.ApplicationManager;
 	import util.JSON;
 	import util.LogManager;
@@ -235,7 +235,7 @@ void updateVar(char * varName,double * var)
 			if(File.applicationStorageDirectory.exists){
 				File.applicationStorageDirectory.deleteDirectory(true);
 			}
-			PopupUtil.showConfirm("是否重启mblock",MBlock.app.restart);
+			PopupUtil.showConfirm(Translator.map("restart mblock?"),MBlock.app.restart);
 		}
 		
 		public function setScratch(scratch:MBlock):void{
