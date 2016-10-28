@@ -28,6 +28,7 @@ package uiwidgets {
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
 	import flash.filters.DropShadowFilter;
+	import flash.system.Capabilities;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFieldType;
@@ -38,7 +39,6 @@ package uiwidgets {
 	import translation.Translator;
 	
 	import ui.parts.UIPart;
-	import flash.system.Capabilities;
 
 public class DialogBox extends Sprite {
 
@@ -61,6 +61,9 @@ public class DialogBox extends Sprite {
 	private const blankLineSpace:int = 7;
 	private var backMaskMc:Sprite;
 	private var acceptFunction:Function; // if not nil, called when menu interaction is accepted
+	//arrange type
+	static public var HORIZONTAL:uint=0;  //横
+	static public var VERTICAL:uint=1;		//竖
 
 	public function DialogBox(acceptFunction:Function = null) {
 		this.acceptFunction = acceptFunction;
@@ -354,10 +357,10 @@ private function getCheckMark(b:Boolean):Sprite{
 		return result;
 	}
 
-	public function fixLayout():void {
+	public function fixLayout(layoutType:uint=0):void {
 		var label:TextField;
-		var i:int, totalW:int;
-		fixSize();
+		var i:int, totalW:int,totalH:int;
+		fixSize(layoutType);
 		var fieldX:int = maxLabelWidth + 17;
 		var fieldY:int = 15;
 		if (title != null) {
@@ -411,20 +414,40 @@ private function getCheckMark(b:Boolean):Sprite{
 		if (textLines.length > 0) fieldY += spaceAfterText;
 		// buttons
 		if (buttons.length > 0) {
-			totalW = (buttons.length - 1) * 10;
-			for (i = 0; i < buttons.length; i++) totalW += buttons[i].width;
-			var buttonX:int = (w - totalW) / 2;
-			var buttonY:int = h - (buttons[0].height + 15);
-			for (i = 0; i < buttons.length; i++) {
-				buttons[i].x = buttonX;
-				buttons[i].y = buttonY;
-				buttonX += buttons[i].width + 10;
+			if(layoutType==HORIZONTAL)
+			{
+				totalW = (buttons.length - 1) * 10;
+				for (i = 0; i < buttons.length; i++) totalW += buttons[i].width;
+				var buttonX:int = (w - totalW) / 2;
+				var buttonY:int = h - (buttons[0].height + 15);
+				for (i = 0; i < buttons.length; i++) {
+					buttons[i].x = buttonX;
+					buttons[i].y = buttonY;
+					buttonX += buttons[i].width + 10;
+				}
 			}
+			//竖向排列
+			else if(layoutType==VERTICAL)
+			{
+				totalH = 0;
+				for (i = 0; i < buttons.length; i++) {
+					totalH += buttons[i].height;
+				}
+				
+				buttonY = buttons[0].height+15;
+				for (i = 0; i < buttons.length; i++) {
+					buttonX = (w - buttons[i].width) / 2;
+					buttons[i].x = buttonX;
+					buttons[i].y = buttonY;
+					buttonY += buttons[i].height + 10;
+				}
+			}
+			
 		}
 	}
 
-	private function fixSize():void {
-		var i:int, totalW:int;
+	private function fixSize(layoutType:uint=0):void {
+		var i:int, totalW:int,totalH:int;
 		w = h = 0;
 		// title
 		if (title != null) {
@@ -467,12 +490,32 @@ private function getCheckMark(b:Boolean):Sprite{
 		if (textLines.length > 0) h += spaceAfterText;
 		// buttons
 		totalW = 0;
-		for (i = 0; i < buttons.length; i++) totalW += buttons[i].width + 10;
-		w = Math.max(w, totalW);
+		totalH = 0;
+		if(layoutType==DialogBox.HORIZONTAL)
+		{
+			for (i = 0; i < buttons.length; i++) {
+			
+				totalW += buttons[i].width + 10;
+			}
+			w = Math.max(w, totalW);
+		}
+		else if(layoutType==DialogBox.VERTICAL)
+		{
+			for (i = 0; i < buttons.length; i++) {
+				
+				totalH += buttons[i].height + 10;
+				w = Math.max(w, buttons[i].width);
+			}
+			h = Math.max(h,totalH);
+		}
+				
+		
+		
 		if (buttons.length > 0) h += buttons[0].height + 15;
 		if ((labelsAndFields.length > 0) || (booleanLabelsAndFields.length > 0)) h += 15;
 		w += 30;
 		h += 10;
+		
 		drawBackground();
 	}
 
