@@ -437,13 +437,15 @@ package {
 			tabsPart.refresh();
 			stagePane.applyFilters();
 			stagePane.updateCostume();
+			this.tabsPart.soundsTab.visible = !stageIsArduino;
+			this.tabsPart.imagesTab.visible = !stageIsArduino;
 		}
 	
 		public function projectLoaded():void {
 			removeLoadProgressBox();
 			System.gc();
 //			if (autostart) runtime.startGreenFlags(true);
-			saveNeeded = false;
+			//saveNeeded = false;
 	
 			// translate the blocks of the newly loaded project
 			for each (var o:ScratchObj in stagePane.allObjects()) {
@@ -833,6 +835,7 @@ package {
 		{
 			stageIsArduino = false;
 			stageIsHided = !stageIsHided;
+			stageIsContracted = false;
 			setSmallStageMode(stageIsContracted);
 		}
 	
@@ -871,8 +874,8 @@ package {
 			}
 			
 //			this.scriptsPart.selector.select(stageIsArduino?6:1);
-			this.tabsPart.soundsTab.visible = !stageIsArduino;
-			this.tabsPart.imagesTab.visible = !stageIsArduino;
+			//this.tabsPart.soundsTab.visible = !stageIsArduino;
+			//this.tabsPart.imagesTab.visible = !stageIsArduino;
 			setTab("scripts");
 		}
 	
@@ -936,7 +939,10 @@ package {
 			if (!wasEdited){ saveNow = true;} // force a save on first change
 			//clearRevertUndo();//这里是根据积木是否有改动设置是否需要保存代码，保存代码的时候不应该清除revertUndo，否则revertUndo一直是null
 		}
-	
+		public function setSaveNeededValue(value:Boolean):void
+		{
+			saveNeeded = value;
+		}
 		protected function clearSaveNeeded():void {
 			// Clear saveNeeded flag and update the status string.
 //			function twoDigits(n:int):String { return ((n < 10) ? '0' : '') + n }
@@ -984,6 +990,7 @@ package {
 	
 		protected function doRevert():void {
 			runtime.installProjectFromData(originalProj, false);
+			saveNeeded=false;
 		}
 		
 		private function preDoRevert():void {
@@ -1000,9 +1007,10 @@ package {
 			if (!revertUndo) return;
 			runtime.installProjectFromData(revertUndo, false);
 			revertUndo = null;
+			saveNeeded = true;
 		}
 	
-		public function canRevert():Boolean { return originalProj != null }
+		public function canRevert():Boolean { return originalProj != null && saveNeeded }
 		public function canUndoRevert():Boolean { return revertUndo != null }
 		private function clearRevertUndo():void { revertUndo = null }
 	
