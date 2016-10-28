@@ -165,9 +165,9 @@ public class ExtensionManager {
 		if(name=="_import_"){
 			return;
 		}
-		if(isMakeBlockExt(name)){
+		/*if(isMakeBlockExt(name)){
 			return;
-		}
+		}*/
 		var ext:Object = findExtensionByName(name);
 		if(null == ext){
 			return;
