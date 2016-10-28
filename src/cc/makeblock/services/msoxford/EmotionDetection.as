@@ -51,8 +51,8 @@ package cc.makeblock.services.msoxford
 			req.method = URLRequestMethod.POST;
 			req.data = bytes;
 			var secret:String = SharedObjectManager.sharedManager().getObject("keyEmotion-user","");//;
-			if(secret==""){
-				SharedObjectManager.sharedManager().getObject("keyEmotion-system","");
+			if(secret.length<10){
+				secret = SharedObjectManager.sharedManager().getObject("keyEmotion-system","");
 			}else{
 				_source = "user";
 			}

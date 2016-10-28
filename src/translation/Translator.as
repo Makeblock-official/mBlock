@@ -185,6 +185,12 @@ public class Translator {
 //		}
 		return result;
 	}
+	public static function toHeadUpperCase(s:String):String{
+		if(s.length>0){
+			s = s.substr(0,1).toUpperCase()+s.substr(1,s.length);
+		}
+		return s;
+	}
 	public static function addEntry(key:String,value:String):void{
 		if(dictionary[key]==undefined){
 			dictionary[key]=value;

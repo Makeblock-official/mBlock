@@ -54,12 +54,13 @@ package cc.makeblock.services.msoxford
 			req.method = URLRequestMethod.POST;
 			req.data = bytes;
 			var secret:String = SharedObjectManager.sharedManager().getObject("keyFace-user","");//"";
-			if(secret==""){
-				SharedObjectManager.sharedManager().getObject("keyFace-system","");
+			if(secret.length<10){
+				secret = SharedObjectManager.sharedManager().getObject("keyFace-system","");
 			}else{
 				_source = "user";
 			}
 			if(secret.length<10){
+				trace("no secret");
 				return;
 			}
 			MBlock.app.track("/OxfordAi/face/launch/"+_source);

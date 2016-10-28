@@ -57,6 +57,7 @@ package cc.makeblock.interpreter
 			}
 			var ext:ScratchExtension = MBlock.app.extensionManager.extensionByName(extName);
 			if(extName.toLocaleLowerCase().indexOf("microsoft cognitive services")>-1){
+				var o = ext.getStateVar(opName)
 				if(opName=="startVoiceRecognition"){
 					speechAPI.start();
 				}else if(opName=="stopVoiceRecognition"){
@@ -77,15 +78,35 @@ package cc.makeblock.interpreter
 						realtimeFaceAPI.stop();
 					}
 				}else if(opName=="voiceCommandReceived"){
-					thread.push(ext.getStateVar(opName));
+					if(o)
+					thread.push(o);
+					else{
+						thread.push(0);
+					}
 				}else if(opName.indexOf("emotionResultReceived")>-1){
-					thread.push(ext.getStateVar(opName)[argList[0]-1][argList[1]]);
+					if(o)
+					thread.push(o[argList[0]-1][argList[1]]);
+					else{
+						thread.push(0);
+					}
 				}else if(opName.indexOf("faceResultReceived")>-1){
-					thread.push(ext.getStateVar(opName)[argList[0]-1][argList[1]]);
+					if(o)
+					thread.push(o[argList[0]-1][argList[1]]);
+					else{
+						thread.push(0);
+					}
 				}else if(opName.indexOf("realFaceResultReceived")>-1){
-					thread.push(ext.getStateVar(opName)[argList[0]-1][argList[1]]);
+					if(o)
+					thread.push(o[argList[0]-1][argList[1]]);
+					else{
+						thread.push(0);
+					}
 				}else if(opName.indexOf("textResultReceived")>-1){
-					thread.push(ext.getStateVar(opName));
+					if(o)
+					thread.push(o);
+					else{
+						thread.push(0);
+					}
 				}
 				return;
 			}
