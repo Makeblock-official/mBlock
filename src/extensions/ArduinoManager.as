@@ -237,7 +237,7 @@ void updateVar(char * varName,double * var)
 			if(File.applicationStorageDirectory.exists){
 				File.applicationStorageDirectory.deleteDirectory(true);
 			}
-			PopupUtil.showConfirm(Translator.map("restart mblock?"),MBlock.app.restart);
+			PopupUtil.showConfirm(Translator.map("Restart mBlock?"),MBlock.app.restart);
 		}
 		
 		public function setScratch(scratch:MBlock):void{
