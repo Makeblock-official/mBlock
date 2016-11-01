@@ -15,12 +15,14 @@ package extensions
 	import blocks.Block;
 	import blocks.BlockIO;
 	
+	import cc.makeblock.mbot.util.PopupUtil;
 	import cc.makeblock.mbot.util.StringUtil;
+	
 	import translation.Translator;
+	
 	import util.ApplicationManager;
 	import util.JSON;
 	import util.LogManager;
-	import cc.makeblock.mbot.util.PopupUtil;
 
 	public class ArduinoManager extends EventDispatcher
 	{
@@ -1602,11 +1604,14 @@ void move(int direction, int speed)
 		private function get projectDocumentName():String{
 			var now:Date = new Date;
 			var pName:String = MBlock.app.projectName().split(" ").join("").split("(").join("").split(")").join("");
-			for(var i:uint=0;i<pName.length;i++){
+			//用正则表达式来过滤非法字符
+			var reg:RegExp = /[^A-z0-9]|^_/g;
+			pName = pName.replace(reg,"_");
+			/*for(var i:uint=0;i<pName.length;i++){
 				if(pName.charCodeAt(i)>100){
 					pName = pName.split(pName.charAt(i)).join("_");
 				}
-			}
+			}*/
 			_projectDocumentName = "project_"+pName+ (now.getMonth()+"_"+now.getDay());
 			if(_projectDocumentName=="project_"){
 				_projectDocumentName = "project";
