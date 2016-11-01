@@ -19,6 +19,8 @@ package {
 	import flash.geom.Point;
 	import flash.net.URLRequest;
 	import flash.system.System;
+	import flash.text.TextField;
+	import flash.text.TextFormat;
 	import flash.ui.Keyboard;
 	import flash.utils.ByteArray;
 	import flash.utils.setTimeout;
@@ -77,6 +79,7 @@ package {
 	import ui.parts.TabsPart;
 	import ui.parts.TopBarPart;
 	
+	import uiwidgets.Button;
 	import uiwidgets.CursorTool;
 	import uiwidgets.DialogBox;
 	import uiwidgets.Menu;
@@ -791,8 +794,11 @@ package {
 					
 				}else{
 					var defaultName:String = (projectName().length > 1) ? projectName() + '.sb2' : 'project.sb2';
+					showMessege("defaultName="+defaultName);
 					var path:String = fixFileName(defaultName);
+					showMessege("path="+path);
 					file = File.desktopDirectory.resolvePath(path);
+					showMessege("file.url0="+file.url);
 					file.addEventListener(Event.SELECT, fileSaved);
 					file.browseForSave(Translator.map("please choose file location"));
 				}
@@ -800,12 +806,26 @@ package {
 //				file.save(zipData, path);
 			}
 			function fileSaved(e:Event):void {
+				
 				var file:File = e.target as File;
+				showMessege("file.url11="+file.url);
+				//处理ios 10.11.6，会自动将默认名称包含进去，比如Untitle.sb2/myproject.sb2
+				var pathArr:Array = file.url.split("/");
+				for(var i:int=0;i<pathArr.length;i++)
+				{
+					if(i<pathArr.length-1 &&　pathArr[i].indexOf(".sb2")>-1)
+					{
+						pathArr.splice(i,1);
+						i--;
+					}
+				}
+				file.url = pathArr.join("/");
 				//自动为文件名加上后缀，如果用户没指定的话
 				if(file.url.substr(file.url.length-4)!=".sb2")
 				{
-					file = File.desktopDirectory.resolvePath(file.url+".sb2");
+					file.url = file.url+".sb2";
 				}
+				showMessege("file.url="+file.url);
 				FileUtil.WriteBytes(file, projIO.encodeProjectAsZipFile(stagePane));
 				
 				saveNeeded = false;
@@ -818,7 +838,61 @@ package {
 			var projIO:ProjectIO = new ProjectIO(this);
 			projIO.convertSqueakSounds(stagePane, squeakSoundsConverted);
 		}
-	
+		//调试用
+		private var messegePanel:Sprite;
+		public function showMessege(...msg):void
+		{
+			return;
+			if(!messegePanel)
+			{
+				function closeHandler():void
+				{
+					messegePanel.parent.removeChild(messegePanel);
+				}
+				function clearHandler():void
+				{
+					TextField(messegePanel.getChildByName("txt")).text = "";
+				}
+				function onDown(e:MouseEvent):void
+				{
+					if(messegePanel.mouseY>30)
+					{
+						return;
+					}
+					messegePanel.startDrag();
+					messegePanel.addEventListener(MouseEvent.MOUSE_UP,onUp);
+				}
+				function onUp(e:MouseEvent):void
+				{
+					messegePanel.stopDrag();
+				}
+				messegePanel = new Sprite();
+				messegePanel.graphics.beginFill(0xCCCCCC,1);
+				messegePanel.graphics.drawRoundRect(0,0,200,200,10,10);
+				messegePanel.graphics.endFill();
+				messegePanel.addEventListener(MouseEvent.MOUSE_DOWN,onDown);
+				var txt:TextField = new TextField();
+				var txtFormat:TextFormat = new TextFormat();
+				txtFormat.size = 12;
+				txt.defaultTextFormat = txtFormat;
+				txt.name = "txt";
+				txt.width = 200;
+				txt.height = 180;
+				txt.y = 30;
+				txt.wordWrap = true;
+				messegePanel.addChild(txt);
+				var closeBtn:Button = new Button("close",closeHandler);
+				messegePanel.addChild(closeBtn);
+				closeBtn.x=0;
+				closeBtn.y = 200;
+				var clearBtn:Button = new Button("clear",clearHandler);
+				messegePanel.addChild(clearBtn);
+				clearBtn.x=closeBtn.width;
+				clearBtn.y = 200;
+			}
+			app.stage.addChild(messegePanel);
+			TextField(messegePanel.getChildByName("txt")).appendText(msg.join(",")+"\n");
+		}
 		private static function fixFileName(s:String):String {
 			// Replace illegal characters in the given string with dashes.
 			const illegal:String = '\\/:*?"<>|%';
