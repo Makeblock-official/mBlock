@@ -25,8 +25,12 @@
 // the blocks palette is filled with the blocks for the selected category.
 
 package ui {
+	import flash.display.DisplayObject;
 	import flash.display.Graphics;
 	import flash.display.Sprite;
+	import flash.geom.ColorTransform;
+	
+	import blocks.Block;
 	
 	import scratch.ScratchSprite;
 	import scratch.ScratchStage;
@@ -80,6 +84,23 @@ public class PaletteSelector extends Sprite {
 		var oldID:int = selectedCategory;
 		selectedCategory = id;
 		app.getPaletteBuilder().showBlocksForCategory(selectedCategory, (id != oldID), shiftKey);
+		//这里处理一下Arudino模式下一些特殊的块，比如whenButtonPressed不可用，置灰
+		if(app.stageIsArduino)
+		{
+			for (var k:int=0;k< app.palette.numChildren;k++)
+			{
+				var b:Block = app.palette.getChildAt(k) as Block;
+				if(b && b.op.indexOf("whenButtonPressed")>-1)
+				{
+					var trans:ColorTransform = new ColorTransform();
+					trans.color = 0x999999;
+					b.base.transform.colorTransform = trans;
+					b.mouseEnabled = false;
+					b.mouseChildren = false;
+				}
+			}
+		}
+		
 	}
 
 	private function initCategories():void {

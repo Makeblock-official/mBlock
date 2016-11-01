@@ -7,12 +7,12 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 	import flash.net.FileFilter;
 	import flash.text.TextFormat;
 	import flash.utils.Timer;
-	import flash.utils.getDefinitionByName;
 	
 	import cc.makeblock.mbot.uiwidgets.MyFrame;
 	import cc.makeblock.mbot.uiwidgets.extensionMgr.DefaultListCell;
 	import cc.makeblock.mbot.util.PopupUtil;
 	
+
 	import org.aswing.ASColor;
 	import org.aswing.ASFont;
 	import org.aswing.AsWingConstants;
@@ -243,7 +243,15 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 				var author:String = ext.author?ext.author.substr(0,ext.author.indexOf("(")):"";
 				var authorLink:String = ext.author?ext.author.match(/\(.+\)/):"";
 				authorLink = authorLink && authorLink.length>0?authorLink.substring(1,authorLink.length-1):"";
-				var obj:Object = {name:ext.extensionName||"",description:ext.description||"",version:ext.version||"",author:author,authorLink:authorLink,homepage:ext.homepage||""}
+				var obj:Object = {name:ext.extensionName||"",description:ext.description||"",version:ext.version||"",author:author,authorLink:authorLink,homepage:ext.homepage||"",isMakeBlockBoard:ext.isMakeBlockBoard};
+				for(var key:String in ext)
+				{
+					if(!obj[key])
+					{
+						obj[key] = ext[key];
+					}
+					
+				}
 				result.push(obj);
 			}
 			return result;

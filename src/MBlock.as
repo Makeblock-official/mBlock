@@ -2,6 +2,8 @@ package {
 	import com.google.analytics.GATracker;
 	
 	import flash.desktop.NativeApplication;
+	import flash.desktop.NativeProcess;
+	import flash.desktop.NativeProcessStartupInfo;
 	import flash.display.DisplayObject;
 	import flash.display.Loader;
 	import flash.display.Sprite;
@@ -17,6 +19,8 @@ package {
 	import flash.geom.Point;
 	import flash.net.URLRequest;
 	import flash.system.System;
+	import flash.text.TextField;
+	import flash.text.TextFormat;
 	import flash.ui.Keyboard;
 	import flash.utils.ByteArray;
 	import flash.utils.setTimeout;
@@ -75,6 +79,7 @@ package {
 	import ui.parts.TabsPart;
 	import ui.parts.TopBarPart;
 	
+	import uiwidgets.Button;
 	import uiwidgets.CursorTool;
 	import uiwidgets.DialogBox;
 	import uiwidgets.Menu;
@@ -250,6 +255,8 @@ package {
 			}
 			initExtension();
 			MenuBuilder.BuildMenuList(XMLList(FileUtil.LoadFile("assets/context_menus.xml")));
+			//初始化项目标题
+			setProjectName('Untitled');
 		}
 		private function initExtension():void{
 //			ClickerManager.sharedManager().update();
@@ -433,13 +440,15 @@ package {
 			tabsPart.refresh();
 			stagePane.applyFilters();
 			stagePane.updateCostume();
+			this.tabsPart.soundsTab.visible = !stageIsArduino;
+			this.tabsPart.imagesTab.visible = !stageIsArduino;
 		}
 	
 		public function projectLoaded():void {
 			removeLoadProgressBox();
 			System.gc();
 //			if (autostart) runtime.startGreenFlags(true);
-			saveNeeded = false;
+			//saveNeeded = false;
 	
 			// translate the blocks of the newly loaded project
 			for each (var o:ScratchObj in stagePane.allObjects()) {
@@ -785,21 +794,38 @@ package {
 					
 				}else{
 					var defaultName:String = (projectName().length > 1) ? projectName() + '.sb2' : 'project.sb2';
+					showMessege("defaultName="+defaultName);
 					var path:String = fixFileName(defaultName);
+					showMessege("path="+path);
 					file = File.desktopDirectory.resolvePath(path);
+					showMessege("file.url0="+file.url);
 					file.addEventListener(Event.SELECT, fileSaved);
-					file.browseForSave("please choose file location");
+					file.browseForSave(Translator.map("please choose file location"));
 				}
 				
 //				file.save(zipData, path);
 			}
 			function fileSaved(e:Event):void {
+				
 				var file:File = e.target as File;
+				showMessege("file.url11="+file.url);
+				//处理ios 10.11.6，会自动将默认名称包含进去，比如Untitle.sb2/myproject.sb2
+				var pathArr:Array = file.url.split("/");
+				for(var i:int=0;i<pathArr.length;i++)
+				{
+					if(i<pathArr.length-1 &&　pathArr[i].indexOf(".sb2")>-1)
+					{
+						pathArr.splice(i,1);
+						i--;
+					}
+				}
+				file.url = pathArr.join("/");
 				//自动为文件名加上后缀，如果用户没指定的话
 				if(file.url.substr(file.url.length-4)!=".sb2")
 				{
-					file = File.desktopDirectory.resolvePath(file.url+".sb2");
+					file.url = file.url+".sb2";
 				}
+				showMessege("file.url="+file.url);
 				FileUtil.WriteBytes(file, projIO.encodeProjectAsZipFile(stagePane));
 				
 				saveNeeded = false;
@@ -812,7 +838,61 @@ package {
 			var projIO:ProjectIO = new ProjectIO(this);
 			projIO.convertSqueakSounds(stagePane, squeakSoundsConverted);
 		}
-	
+		//调试用
+		private var messegePanel:Sprite;
+		public function showMessege(...msg):void
+		{
+			return;
+			if(!messegePanel)
+			{
+				function closeHandler():void
+				{
+					messegePanel.parent.removeChild(messegePanel);
+				}
+				function clearHandler():void
+				{
+					TextField(messegePanel.getChildByName("txt")).text = "";
+				}
+				function onDown(e:MouseEvent):void
+				{
+					if(messegePanel.mouseY>30)
+					{
+						return;
+					}
+					messegePanel.startDrag();
+					messegePanel.addEventListener(MouseEvent.MOUSE_UP,onUp);
+				}
+				function onUp(e:MouseEvent):void
+				{
+					messegePanel.stopDrag();
+				}
+				messegePanel = new Sprite();
+				messegePanel.graphics.beginFill(0xCCCCCC,1);
+				messegePanel.graphics.drawRoundRect(0,0,200,200,10,10);
+				messegePanel.graphics.endFill();
+				messegePanel.addEventListener(MouseEvent.MOUSE_DOWN,onDown);
+				var txt:TextField = new TextField();
+				var txtFormat:TextFormat = new TextFormat();
+				txtFormat.size = 12;
+				txt.defaultTextFormat = txtFormat;
+				txt.name = "txt";
+				txt.width = 200;
+				txt.height = 180;
+				txt.y = 30;
+				txt.wordWrap = true;
+				messegePanel.addChild(txt);
+				var closeBtn:Button = new Button("close",closeHandler);
+				messegePanel.addChild(closeBtn);
+				closeBtn.x=0;
+				closeBtn.y = 200;
+				var clearBtn:Button = new Button("clear",clearHandler);
+				messegePanel.addChild(clearBtn);
+				clearBtn.x=closeBtn.width;
+				clearBtn.y = 200;
+			}
+			app.stage.addChild(messegePanel);
+			TextField(messegePanel.getChildByName("txt")).appendText(msg.join(",")+"\n");
+		}
 		private static function fixFileName(s:String):String {
 			// Replace illegal characters in the given string with dashes.
 			const illegal:String = '\\/:*?"<>|%';
@@ -827,11 +907,14 @@ package {
 		
 		public function toggleHideStage():void
 		{
+			stageIsArduino = false;
 			stageIsHided = !stageIsHided;
+			stageIsContracted = false;
 			setSmallStageMode(stageIsContracted);
 		}
 	
 		public function toggleSmallStage():void {
+			stageIsArduino = false;
 			if(stageIsHided){
 				stageIsHided = false;
 				setSmallStageMode(stageIsContracted);
@@ -847,6 +930,7 @@ package {
 		}
 		public function changeToArduinoMode():void{
 			toggleArduinoMode();
+			
 			if(stageIsArduino)
 				scriptsPart.showArduinoCode();
 		}
@@ -864,8 +948,8 @@ package {
 			}
 			
 //			this.scriptsPart.selector.select(stageIsArduino?6:1);
-			this.tabsPart.soundsTab.visible = !stageIsArduino;
-			this.tabsPart.imagesTab.visible = !stageIsArduino;
+			//this.tabsPart.soundsTab.visible = !stageIsArduino;
+			//this.tabsPart.imagesTab.visible = !stageIsArduino;
 			setTab("scripts");
 		}
 	
@@ -874,7 +958,36 @@ package {
 			if (y == null) y = stage.mouseY;
 			gh.showBubble(text, Number(x), Number(y), width);
 		}
-	
+		public function restart(value:int):void
+		{
+			trace("重启"+value)
+			if(value==JOptionPane.YES)
+			{
+				var file:File = new File(File.applicationDirectory.nativePath);
+				if(ApplicationManager.sharedManager().system==ApplicationManager.WINDOWS)
+				{
+					file = file.resolvePath("mBlock.exe");
+				}
+				else
+				{
+					file = file.resolvePath("../MacOS/mBlock");
+				}
+				
+				if(!file.exists)
+				{
+					return;	
+				}
+				
+				var nativeProcessStartupInfo:NativeProcessStartupInfo = new NativeProcessStartupInfo();
+				nativeProcessStartupInfo.executable = file;
+				var process:NativeProcess = new NativeProcess();
+				NativeApplication.nativeApplication.exit();
+				//stage.nativeWindow.close();
+				process.start(nativeProcessStartupInfo);
+				
+				
+			}
+		}
 		public function startNewProject(newOwner:String, newID:String):void {
 			runtime.installNewProject();
 //			projectOwner = newOwner;
@@ -908,7 +1021,10 @@ package {
 			if (!wasEdited){ saveNow = true;} // force a save on first change
 			//clearRevertUndo();//这里是根据积木是否有改动设置是否需要保存代码，保存代码的时候不应该清除revertUndo，否则revertUndo一直是null
 		}
-	
+		public function setSaveNeededValue(value:Boolean):void
+		{
+			saveNeeded = value;
+		}
 		protected function clearSaveNeeded():void {
 			// Clear saveNeeded flag and update the status string.
 //			function twoDigits(n:int):String { return ((n < 10) ? '0' : '') + n }
@@ -955,6 +1071,7 @@ package {
 	
 		protected function doRevert():void {
 			runtime.installProjectFromData(originalProj, false);
+			saveNeeded=false;
 		}
 		
 		private function preDoRevert():void {
@@ -971,9 +1088,10 @@ package {
 			if (!revertUndo) return;
 			runtime.installProjectFromData(revertUndo, false);
 			revertUndo = null;
+			saveNeeded = true;
 		}
 	
-		public function canRevert():Boolean { return originalProj != null }
+		public function canRevert():Boolean { return originalProj != null && saveNeeded }
 		public function canUndoRevert():Boolean { return revertUndo != null }
 		private function clearRevertUndo():void { revertUndo = null }
 	

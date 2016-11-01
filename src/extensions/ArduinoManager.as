@@ -15,7 +15,10 @@ package extensions
 	import blocks.Block;
 	import blocks.BlockIO;
 	
+	import cc.makeblock.mbot.util.PopupUtil;
 	import cc.makeblock.mbot.util.StringUtil;
+	
+	import translation.Translator;
 	
 	import util.ApplicationManager;
 	import util.JSON;
@@ -234,6 +237,7 @@ void updateVar(char * varName,double * var)
 			if(File.applicationStorageDirectory.exists){
 				File.applicationStorageDirectory.deleteDirectory(true);
 			}
+			PopupUtil.showConfirm(Translator.map("restart mblock?"),MBlock.app.restart);
 		}
 		
 		public function setScratch(scratch:MBlock):void{
@@ -1067,6 +1071,10 @@ void updateVar(char * varName,double * var)
 			}
 			for(j=0;j<scripts.length;j++){
 				scr = scripts[j][2];
+				if(scr[0][0].indexOf("whenButtonPressed") > 0)
+				{
+					getCodeBlock(scr[0]);
+				}
 				if(scr[0][0].indexOf("runArduino") < 0){
 					continue;
 				}//选中的Arduino主代码
@@ -1596,11 +1604,14 @@ void move(int direction, int speed)
 		private function get projectDocumentName():String{
 			var now:Date = new Date;
 			var pName:String = MBlock.app.projectName().split(" ").join("").split("(").join("").split(")").join("");
-			for(var i:uint=0;i<pName.length;i++){
+			//用正则表达式来过滤非法字符
+			var reg:RegExp = /[^A-z0-9]|^_/g;
+			pName = pName.replace(reg,"_");
+			/*for(var i:uint=0;i<pName.length;i++){
 				if(pName.charCodeAt(i)>100){
 					pName = pName.split(pName.charAt(i)).join("_");
 				}
-			}
+			}*/
 			_projectDocumentName = "project_"+pName+ (now.getMonth()+"_"+now.getDay());
 			if(_projectDocumentName=="project_"){
 				_projectDocumentName = "project";

@@ -538,6 +538,8 @@ package scratch {
 			
 			function doInstall(ignore:* = null):void {
 				installProjectFromFile(file);
+				//打开已有项目时，标题应该显示已保存  谭启亮 20161018 
+				MBlock.app.setSaveNeededValue(false);
 			}
 			
 			if (app.stagePane.isEmpty()) {
