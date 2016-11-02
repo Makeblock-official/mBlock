@@ -112,14 +112,16 @@ package cc.makeblock.services.msoxford
 			//			return;
 			var urlloader:URLLoader = new URLLoader;
 			var req:URLRequest = new URLRequest();
-			req.url = "https://oxford-speech.cloudapp.net/token/issueToken";
+			req.url = "https://api.cognitive.microsoft.com/sts/v1.0/issueToken";
 			var vars:URLVariables = new URLVariables;
-			vars["grant_type"] = "client_credentials";
-			vars["client_id"] = "client_credentials";
-			vars["client_secret"] = _secret;
-			vars["scope"] = encodeURI("https://speech.platform.bing.com");
+//			vars["grant_type"] = "client_credentials";
+//			vars["client_id"] = "client_credentials";
+//			vars["client_secret"] = _secret;
+//			vars["scope"] = encodeURI("https://speech.platform.bing.com");
 			req.method = URLRequestMethod.POST;
-			req.data = vars;
+//			req.data = vars;
+			req.requestHeaders.push(new URLRequestHeader("Content-Length","0"));
+			req.requestHeaders.push(new URLRequestHeader("Ocp-Apim-Subscription-Key",_secret));
 			req.requestHeaders.push(new URLRequestHeader("Content-Type","application/x-www-form-urlencoded"));
 			urlloader.addEventListener(Event.COMPLETE,onRequestAuthComplete);
 			urlloader.addEventListener(IOErrorEvent.IO_ERROR,onIOError);
@@ -128,43 +130,45 @@ package cc.makeblock.services.msoxford
 		}
 		private function onRequestAuthComplete(evt:Event):void{
 			MBlock.app.scriptsPart.appendMessage(evt.target.data);
-			var obj:Object = JSON.parse(evt.target.data);
-			var appid:String = "f84e364c-ec34-4773-a783-73707bd9a585";
-			var scenarios:String = "ulm";
-			var locale:String = Translator.getLanguage().split("_").join("-");
-			locale = locale=="en"?"en-US":locale;
-			var device:String = "Windows OS";
-			var version:String = "3.0";
-			var format:String = "xml";
-			var requestid:String = "1d4b6030-9099-11e0-91e4-0800200c9a66";
-			var instanceid:String = "1d4b6030-9099-11e0-91e4-0800200c9a66";
-			var urlloader:URLLoader = new URLLoader;
-			
-			urlloader.dataFormat = URLLoaderDataFormat.BINARY;
-			var req:URLRequest = new URLRequest();
-			req.url = "https://speech.platform.bing.com/recognize/query?appid="+appid;
-			req.url += "&device.os="+device;
-			req.url += "&scenarios="+scenarios;
-			req.url += "&locale="+locale;
-			req.url += "&version="+version;
-			req.url += "&format="+format;
-			req.url += "&requestid="+requestid;
-			req.url += "&instanceid="+instanceid;
-			req.method = URLRequestMethod.POST;
-			req.data = _recorder.output;
-			var authCode:String = obj.access_token;
-			req.requestHeaders.push(new URLRequestHeader("Content-Type","audio/wav; samplerate=8000"));
-			req.requestHeaders.push(new URLRequestHeader("Authorization","Bearer "+authCode));
-			urlloader.addEventListener(Event.COMPLETE,onSpeechRequestComplete);
-			urlloader.addEventListener(IOErrorEvent.IO_ERROR,onIOError);
-			urlloader.addEventListener(HTTPStatusEvent.HTTP_RESPONSE_STATUS,onHttpStatus);
-			urlloader.load(req);
+			try{
+//				var obj:Object = JSON.parse(evt.target.data);
+				var authCode:String = evt.target.data
+				var appid:String = "f84e364c-ec34-4773-a783-73707bd9a585";
+				var scenarios:String = "ulm";
+				var locale:String = Translator.getLanguage().split("_").join("-");
+				locale = locale=="en"?"en-US":locale;
+				var device:String = "Windows OS";
+				var version:String = "3.0";
+				var format:String = "xml";
+				var requestid:String = "1d4b6030-9099-11e0-91e4-0800200c9a66";
+				var instanceid:String = "1d4b6030-9099-11e0-91e4-0800200c9a66";
+				var urlloader:URLLoader = new URLLoader;
+				
+				urlloader.dataFormat = URLLoaderDataFormat.BINARY;
+				var req:URLRequest = new URLRequest();
+				req.url = "https://speech.platform.bing.com/recognize/query?appid="+appid;
+				req.url += "&device.os="+device;
+				req.url += "&scenarios="+scenarios;
+				req.url += "&locale="+locale;
+				req.url += "&version="+version;
+				req.url += "&format="+format;
+				req.url += "&requestid="+requestid;
+				req.url += "&instanceid="+instanceid;
+				req.method = URLRequestMethod.POST;
+				req.data = _recorder.output;
+				// = obj.access_token;
+				req.requestHeaders.push(new URLRequestHeader("Content-Type","audio/wav; samplerate=8000"));
+				req.requestHeaders.push(new URLRequestHeader("Authorization","Bearer "+authCode));
+				urlloader.addEventListener(Event.COMPLETE,onSpeechRequestComplete);
+				urlloader.addEventListener(IOErrorEvent.IO_ERROR,onIOError);
+				urlloader.addEventListener(HTTPStatusEvent.HTTP_RESPONSE_STATUS,onHttpStatus);
+				urlloader.load(req);
+			}catch(e:*){
+				
+			}
 			MBlock.app.track("/OxfordAi/speech/launch/"+_source);
 		}
 		private function onHttpStatus(evt:HTTPStatusEvent):void{
-			if(evt["statusCode"]=="403"){
-				
-			}
 			MBlock.app.scriptsPart.appendMessage(evt.toString());
 		}
 		private function onIOError(evt:IOErrorEvent):void{
