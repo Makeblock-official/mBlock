@@ -79,6 +79,7 @@ package scratch {
 		public var lastAnswer:String = '';
 		public var cloneCount:int;
 		public var edgeTriggersEnabled:Boolean = false; // initially false, becomes true when project first run
+		public var extensionsInstalled:Boolean = false;
 	
 		private var microphone:Microphone;
 		private var timerBase:uint;
@@ -537,6 +538,8 @@ package scratch {
 			
 			function doInstall(ignore:* = null):void {
 				installProjectFromFile(file);
+				//打开已有项目时，标题应该显示已保存  谭启亮 20161018 
+				MBlock.app.setSaveNeededValue(false);
 			}
 			
 			if (app.stagePane.isEmpty()) {
@@ -613,7 +616,18 @@ package scratch {
 	
 			//app.extensionManager.clearImportedExtensions();
 			//app.extensionManager.loadSavedExtensions(project.info.savedExtensions);
-			app.extensionManager.importExtension();
+			
+			// Wangyu: stop loading extensions when user open a project second time.
+			// OR ELSE: mBlock won't receive any serial data from the robot; it will wait until timeout.
+			// +++ added by yu
+			if (!extensionsInstalled) {
+				extensionsInstalled = true;
+				app.extensionManager.importExtension();
+			}
+			// --- removed from the last version
+			// app.extensionManager.importExtension();
+			// Wangyu: END of modification
+			
 			app.installStage(project);
 			app.updateSpriteLibrary(true);
 			// set the active sprite

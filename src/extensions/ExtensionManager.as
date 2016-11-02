@@ -165,9 +165,9 @@ public class ExtensionManager {
 		if(name=="_import_"){
 			return;
 		}
-		if(isMakeBlockExt(name)){
+		/*if(isMakeBlockExt(name)){
 			return;
-		}
+		}*/
 		var ext:Object = findExtensionByName(name);
 		if(null == ext){
 			return;
@@ -313,6 +313,8 @@ public class ExtensionManager {
 	}
 	public function importExtension():void {
 		_extensionList = [];
+		//重新加载所有的扩展时，应该清除extensionDict，解决扩展面板删除扩展时，实时更新选项卡
+		extensionDict = {};
 //		SharedObjectManager.sharedManager().setObject("mBot_selected",true);
 		if(ApplicationManager.sharedManager().documents.resolvePath("mBlock/libraries/").exists){
 			var docs:Array =  ApplicationManager.sharedManager().documents.resolvePath("mBlock/libraries/").getDirectoryListing();

@@ -1,6 +1,5 @@
 package cc.makeblock.interpreter
 {
-	import flash.utils.getTimer;
 	
 	import blockly.runtime.FunctionProvider;
 	import blockly.runtime.Thread;
@@ -57,7 +56,7 @@ package cc.makeblock.interpreter
 			}
 			var ext:ScratchExtension = MBlock.app.extensionManager.extensionByName(extName);
 			if(extName.toLocaleLowerCase().indexOf("microsoft cognitive services")>-1){
-				var o = ext.getStateVar(opName)
+				var o:* = ext.getStateVar(opName)
 				if(opName=="startVoiceRecognition"){
 					speechAPI.start();
 				}else if(opName=="stopVoiceRecognition"){

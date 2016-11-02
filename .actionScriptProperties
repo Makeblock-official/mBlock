@@ -65,7 +65,7 @@
         </anePaths>
         <newLaunchParams/>
         <modifiedLaunchParams>
-          <Parameter name="debug" value="E:\working\mblock\bin-debug\adl.exe"/>
+          <Parameter name="调试启动程序" value="E:\working\mblock\bin-debug\adl.exe"/>
         </modifiedLaunchParams>
         <newPackagingParams/>
         <modifiedPackagingParams/>
