@@ -129,7 +129,7 @@ package cc.makeblock.services.msoxford
 			urlloader.load(req);
 		}
 		private function onRequestAuthComplete(evt:Event):void{
-			MBlock.app.scriptsPart.appendMessage(evt.target.data);
+			//MBlock.app.scriptsPart.appendMessage(evt.target.data);
 			try{
 //				var obj:Object = JSON.parse(evt.target.data);
 				var authCode:String = evt.target.data
