@@ -12,8 +12,11 @@ package cc.makeblock.util
 	import flash.events.InvokeEvent;
 	import flash.events.NativeDragEvent;
 	import flash.filesystem.File;
-
+	import flash.text.TextField;
 	
+	import translation.Translator;
+	
+	import uiwidgets.DialogBox;
 
 	public class InvokeMgr
 	{
@@ -48,18 +51,40 @@ package cc.makeblock.util
 			if(evt.arguments.length <= 0){
 				return;
 			}
-			var arg:String = evt.arguments[0];
-			if(Boolean(arg)){
-				if(MBlock.app.stage.nativeWindow.displayState==NativeWindowDisplayState.MINIMIZED)
-				{
-					MBlock.app.stage.nativeWindow.restore();
-				}
-				MBlock.app.stage.nativeWindow.notifyUser(NotificationType.INFORMATIONAL);
-				MBlock.app.stage.nativeWindow.alwaysInFront = true;
-				var result:Boolean = MBlock.app.stage.nativeWindow.orderToFront();
-				MBlock.app.runtime.selectedProjectFile(new File(arg));
-				MBlock.app.stage.nativeWindow.alwaysInFront = false;
+			var arg:String = evt.arguments.join(" ");
+			var file:File = new File(arg);
+			evt.arguments.forEach(function(element:String,index:int,arr:Array):void{
+				MBlock.app.showMessage("fileName="+element);
+			});
+			
+			if(!file.exists)
+			{
+				var d:DialogBox = new DialogBox;
+				d.setTitle(Translator.map('Open the file with "File/Load project"'));
+				var text:String = Translator.map('Sorry that you cannot open the files with consecutive spaces by double clicking. Use "File/Load project" in the menu instead.');
+				var textField:TextField = new TextField();
+				textField.defaultTextFormat = CSS.normalTextFormat;
+				textField.wordWrap = true;
+				textField.text = text;
+				textField.width = 300;
+				textField.height = textField.textHeight + 8;
+				d.addBlock(textField);
+				d.addButton('Close', function():void{
+					d.cancel();
+				});
+				d.showOnStage(MBlock.app.stage);
+				return;
 			}
+			
+			if(MBlock.app.stage.nativeWindow.displayState==NativeWindowDisplayState.MINIMIZED)
+			{
+				MBlock.app.stage.nativeWindow.restore();
+			}
+			MBlock.app.stage.nativeWindow.notifyUser(NotificationType.INFORMATIONAL);
+			MBlock.app.stage.nativeWindow.alwaysInFront = true;
+			var result:Boolean = MBlock.app.stage.nativeWindow.orderToFront();
+			MBlock.app.runtime.selectedProjectFile(new File(arg));
+			MBlock.app.stage.nativeWindow.alwaysInFront = false;
 		}
 	}
 }
