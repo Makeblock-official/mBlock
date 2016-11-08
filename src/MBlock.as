@@ -326,13 +326,21 @@ package {
 				evt.preventDefault();
 				saveProjectAndThen(quitApp);
 			}
+			else
+			{
+				SerialManager.sharedManager().disconnect();
+				HIDManager.sharedManager().disconnect();
+			}
 			MBlock.app.gh.mouseUp(new MouseEvent(MouseEvent.MOUSE_UP));
-			SerialManager.sharedManager().disconnect();
-			HIDManager.sharedManager().disconnect();
+			
+			
+			
 		}
 		
 		public function quitApp():void
 		{
+			SerialManager.sharedManager().disconnect();
+			HIDManager.sharedManager().disconnect();
 			NativeApplication.nativeApplication.exit();
 			track("/app/exit");
 			LogManager.sharedManager().save();
@@ -794,11 +802,11 @@ package {
 					
 				}else{
 					var defaultName:String = (projectName().length > 1) ? projectName() + '.sb2' : 'project.sb2';
-					showMessege("defaultName="+defaultName);
+					showMessage("defaultName="+defaultName);
 					var path:String = fixFileName(defaultName);
-					showMessege("path="+path);
+					showMessage("path="+path);
 					file = File.desktopDirectory.resolvePath(path);
-					showMessege("file.url0="+file.url);
+					showMessage("file.url0="+file.url);
 					file.addEventListener(Event.SELECT, fileSaved);
 					file.browseForSave(Translator.map("please choose file location"));
 				}
@@ -808,7 +816,7 @@ package {
 			function fileSaved(e:Event):void {
 				
 				var file:File = e.target as File;
-				showMessege("file.url11="+file.url);
+				showMessage("file.url11="+file.url);
 				//处理ios 10.11.6，会自动将默认名称包含进去，比如Untitle.sb2/myproject.sb2
 				var pathArr:Array = file.url.split("/");
 				for(var i:int=0;i<pathArr.length;i++)
@@ -825,7 +833,7 @@ package {
 				{
 					file.url = file.url+".sb2";
 				}
-				showMessege("file.url="+file.url);
+				showMessage("file.url="+file.url);
 				FileUtil.WriteBytes(file, projIO.encodeProjectAsZipFile(stagePane));
 				
 				saveNeeded = false;
@@ -840,7 +848,7 @@ package {
 		}
 		//调试用
 		private var messegePanel:Sprite;
-		public function showMessege(...msg):void
+		public function showMessage(...msg):void
 		{
 			return;
 			if(!messegePanel)
@@ -893,6 +901,7 @@ package {
 			app.stage.addChild(messegePanel);
 			TextField(messegePanel.getChildByName("txt")).appendText(msg.join(",")+"\n");
 		}
+		
 		private static function fixFileName(s:String):String {
 			// Replace illegal characters in the given string with dashes.
 			const illegal:String = '\\/:*?"<>|%';
