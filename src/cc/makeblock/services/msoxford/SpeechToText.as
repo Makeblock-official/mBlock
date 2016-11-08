@@ -129,7 +129,7 @@ package cc.makeblock.services.msoxford
 			urlloader.load(req);
 		}
 		private function onRequestAuthComplete(evt:Event):void{
-			MBlock.app.scriptsPart.appendMessage(evt.target.data);
+			//MBlock.app.scriptsPart.appendMessage(evt.target.data);
 			try{
 //				var obj:Object = JSON.parse(evt.target.data);
 				var authCode:String = evt.target.data
@@ -169,10 +169,10 @@ package cc.makeblock.services.msoxford
 			MBlock.app.track("/OxfordAi/speech/launch/"+_source);
 		}
 		private function onHttpStatus(evt:HTTPStatusEvent):void{
-			MBlock.app.scriptsPart.appendMessage(evt.toString());
+			//MBlock.app.scriptsPart.appendMessage(evt.toString());
 		}
 		private function onIOError(evt:IOErrorEvent):void{
-			MBlock.app.scriptsPart.appendMessage(evt.toString());
+			//MBlock.app.scriptsPart.appendMessage(evt.toString());
 			_recordStatus = 0;
 			MBlock.app.track("/OxfordAi/speech/error/"+_source);
 		}
@@ -223,7 +223,7 @@ package cc.makeblock.services.msoxford
 			</speechbox-root>
 			*/
 			if(ret.header.status=="success"){
-				MBlock.app.scriptsPart.appendMessage(ret.header.name);
+				//MBlock.app.scriptsPart.appendMessage(ret.header.name);
 				if(ret.header.name.profanity!=undefined&&ret.header.name.profanity.length>0){
 					ret.header.name = "敏感词";
 				}
