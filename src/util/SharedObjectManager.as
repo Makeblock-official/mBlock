@@ -1,6 +1,7 @@
 package util
 {
 	import flash.events.Event;
+	import flash.events.IOErrorEvent;
 	import flash.filesystem.File;
 	import flash.filesystem.FileMode;
 	import flash.filesystem.FileStream;
@@ -66,6 +67,9 @@ package util
 			req.url = "http://openrobotech.com/wp-content/uploads/2016/10/oxford.json?t="+new Date().time;
 			var loader:URLLoader = new URLLoader;
 			loader.load(req);
+			loader.addEventListener(IOErrorEvent.IO_ERROR,function(e:Event):void{
+				trace("connect timeout!");
+			});
 			loader.addEventListener(Event.COMPLETE,function(e:Event):void{
 				var obj:Object = util.JSON.parse(e.target.data);
 				try{
