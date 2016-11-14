@@ -50,7 +50,7 @@ public class Menu extends Sprite {
 	public var minWidth:int;
 	public var itemHeight:int;
 
-	private static var menuJustCreated:Boolean;
+	public static var menuJustCreated:Boolean;
 
 	private var menuName:String = '';
 	private var allItems:Array = [];
@@ -89,7 +89,6 @@ public class Menu extends Sprite {
 		}
 		removeMenusFrom(stage); // remove old menus
 		if (allItems.length == 0) return;
-		menuJustCreated = true;
 		prepMenu(stage);
 		scrollBy(0);
 		this.x = (x > 0) ? x : stage.mouseX + 5;

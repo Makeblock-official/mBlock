@@ -4,7 +4,6 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 	import flash.display.BitmapData;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
-	import flash.filesystem.File;
 	import flash.ui.Mouse;
 	import flash.ui.MouseCursor;
 	
@@ -160,6 +159,8 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 		
 		private function loadPresets():void
 		{
+			trace(this, "loadPresets");
+			/*
 			var file:File = File.applicationDirectory.resolvePath("assets/emotions");
 			for each(var item:File in file.getDirectoryListing()){
 				var str:String = FileUtil.ReadString(item);
@@ -173,15 +174,18 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 				str = FileUtil.ReadString(item);
 				thumbPane.addThumb(item.name, genBitmapData(str), false);
 			}
+			*/
 		}
-		
+		/*
 		private function getCustomEmotionDir():File
 		{
 			return File.documentsDirectory.resolvePath("mBlock/emotions");
 		}
-		
+		*/
 		private function saveToFile(bmd:BitmapData):String
 		{
+			trace(this, "saveToFile");
+			/*
 			var result:String = "";
 			for(var i:int=0; i< LightSensor.COUNT_H; i++){
 				for (var j:int = 0; j < LightSensor.COUNT_W; j++) 
@@ -205,6 +209,8 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 			var fileName:String = new Date().getTime() + ".txt";
 			FileUtil.WriteString(dir.resolvePath(fileName), result);
 			return fileName;
+			*/
+			return "";
 		}
 		
 		private function __onSelect(evt:Event):void
@@ -259,6 +265,7 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 		
 		private function __onDeleteFavorite(evt:AWEvent):void
 		{
+			/*
 			if(null == focusThumb){
 				return;
 			}
@@ -273,6 +280,8 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 			focusThumb = null;
 			
 			showDeleteBtn(false);
+			*/
+			trace(this, "__onDeleteFavorite");
 		}
 		
 		private function showDeleteBtn(value:Boolean):void

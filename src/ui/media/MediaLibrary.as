@@ -325,10 +325,16 @@ spriteFeaturesFilter.visible = false; // disable features filter for now
 			addScratchExtensions();
 			return;
 		}
-//		if (!libraryCache){
-			var s:String = app.server.getMediaLibrary();
-			libraryCache = util.JSON.parse(stripComments(s)) as Array;
-//		}
+		if(libraryCache == null){
+			app.server.getMediaLibrary(function(data:ByteArray):void{
+				libraryCache = util.JSON.parse(stripComments(data.toString())) as Array;
+				viewLibraryImpl();
+			});
+		}else{
+			viewLibraryImpl();
+		}
+	}
+	private function viewLibraryImpl():void {
 		allItems = [];
 		for each (var entry:Object in libraryCache) {
 			if (entry.type == assetType) {

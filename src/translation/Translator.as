@@ -67,7 +67,11 @@ public class Translator {
 	public static function initializeLanguageList():void {
 		// Get a list of language names for the languages menu from the server.
 		languages = MBlock.app.server.getLanguageList();
-		setLanguage(SharedObjectManager.sharedManager().getObject("lang",Capabilities.language=="zh-CN"?'zh_CN':(Capabilities.language=="zh-TW"?'zh_TW':'en')));
+		if(Capabilities.language.indexOf("-") > 0){//中文,简体或繁体
+			setLanguage(Capabilities.language.replace("-", "_"));
+		}else{
+			setLanguage(Capabilities.language);
+		}
 	}
 	
 	public static function setLanguage(lang:String):void {
@@ -95,7 +99,7 @@ public class Translator {
 		}
 		langChangedSignal.dispatchEvent(new Event(Event.CHANGE));
 
-		MBlock.app.server.setSelectedLang(lang);
+//		MBlock.app.server.setSelectedLang(lang);
 	}
 	public static function getLanguage():String {
 		return SharedObjectManager.sharedManager().getObject("lang","en-US");
@@ -126,16 +130,17 @@ public class Translator {
 			files.browse();
 		} catch(e:*) {}
 	}
+	static private var labelSize:int = 14;
 	
 	static public function setFontSize(labelSize:int):void {
-		SharedObjectManager.sharedManager().setObject("labelSize",labelSize);
+		Translator.labelSize = labelSize;
 		var argSize:int = Math.round(0.9 * labelSize);
 		var vOffset:int = labelSize > 13 ? 1 : 0;
 		Block.setFonts(labelSize, argSize, false, vOffset);
 		MBlock.app.translationChanged();
 	}
 	static public function get currentFontSize():int {
-		return SharedObjectManager.sharedManager().getObject("labelSize",14);
+		return labelSize;
 	}
 	
 	private static function fontSizeMenu():void {
@@ -157,17 +162,13 @@ public class Translator {
 //		if (font12.indexOf(lang) > -1) Block.setFonts(11, 10, false, 0);
 //		if (font13.indexOf(lang) > -1) Block.setFonts(13, 12, false, 0);
 		if(lang.indexOf('zh_CN')>-1||lang.indexOf('zh_TW')>-1){
-			if(!SharedObjectManager.sharedManager().available("labelSize")){
-				SharedObjectManager.sharedManager().setObject("labelSize",13);
-				Block.setFonts(13, 12, false, 0);
-			}
+			labelSize = 13;
+			Block.setFonts(13, 12, false, 0);
 //			Block.setFonts(13, 12, false, 0);
 			
 		}else{
-			if(!SharedObjectManager.sharedManager().available("labelSize")){
-				SharedObjectManager.sharedManager().setObject("labelSize",12);
-				Block.setFonts(12, 12, false, 0);
-			}
+			labelSize = 12;
+			Block.setFonts(12, 12, false, 0);
 		}
 		//Block.setFonts(28, 26, true, 0);
 	}

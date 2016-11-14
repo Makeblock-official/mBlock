@@ -1,16 +1,10 @@
 package cc.makeblock.interpreter
 {
+	import flash.utils.getTimer;
 	
 	import blockly.runtime.FunctionProvider;
 	import blockly.runtime.Thread;
 	import blockly.util.FunctionProviderHelper;
-	
-	import cc.makeblock.services.msoxford.EmotionDetection;
-	import cc.makeblock.services.msoxford.FaceDetection;
-	import cc.makeblock.services.msoxford.FaceDetectionOffline;
-	import cc.makeblock.services.msoxford.GraphicsToText;
-	import cc.makeblock.services.msoxford.SpeakerDetection;
-	import cc.makeblock.services.msoxford.SpeechToText;
 	
 	import extensions.ScratchExtension;
 	import extensions.SerialDevice;
@@ -31,13 +25,6 @@ package cc.makeblock.interpreter
 		}
 		
 		private var mbotTimer:int;
-		private var netExt:NetExtension = new NetExtension();
-		private var speechAPI:SpeechToText = new SpeechToText();
-		private var speakerAPI:SpeakerDetection = new SpeakerDetection();
-		private var emotionAPI:EmotionDetection = new EmotionDetection();
-		private var faceAPI:FaceDetection = new FaceDetection();
-		private var realtimeFaceAPI:FaceDetectionOffline = new FaceDetectionOffline;
-		private var ocrAPI:GraphicsToText = new GraphicsToText();
 		
 		override protected function onCallUnregisteredFunction(thread:Thread, name:String, argList:Array, retCount:int):void
 		{
@@ -50,65 +37,15 @@ package cc.makeblock.interpreter
 			}
 			var extName:String = name.slice(0, index);
 			var opName:String = name.slice(index+1);
-			if(extName == "Communication"){
-				netExt.exec(thread, opName, argList);
-				return;
+			switch(opName){
+				case "getTimer":
+					thread.push(0.001 * (getTimer()-mbotTimer));
+					return;
+				case "resetTimer":
+					mbotTimer = getTimer();
+					return;
 			}
 			var ext:ScratchExtension = MBlock.app.extensionManager.extensionByName(extName);
-			if(extName.toLocaleLowerCase().indexOf("microsoft cognitive services")>-1){
-				var o:* = ext.getStateVar(opName)
-				if(opName=="startVoiceRecognition"){
-					speechAPI.start();
-				}else if(opName=="stopVoiceRecognition"){
-					speechAPI.stop();
-					speakerAPI.stop();
-				}else if(opName=="capturePhoto"){
-					if(argList[0]=="emotion"){
-						emotionAPI.capture();
-					}else if(argList[0]=="face"){
-						faceAPI.capture();
-					}else if(argList[0]=="text"){
-						ocrAPI.capture();
-					}
-				}else if(opName=="captureFace"){
-					if(argList[0]=="start"){
-						realtimeFaceAPI.start();
-					}else if(argList[0]=="stop"){
-						realtimeFaceAPI.stop();
-					}
-				}else if(opName=="voiceCommandReceived"){
-					if(o)
-					thread.push(o);
-					else{
-						thread.push(0);
-					}
-				}else if(opName.indexOf("emotionResultReceived")>-1){
-					if(o)
-					thread.push(o[argList[0]-1][argList[1]]);
-					else{
-						thread.push(0);
-					}
-				}else if(opName.indexOf("faceResultReceived")>-1){
-					if(o)
-					thread.push(o[argList[0]-1][argList[1]]);
-					else{
-						thread.push(0);
-					}
-				}else if(opName.indexOf("realFaceResultReceived")>-1){
-					if(o)
-					thread.push(o[argList[0]-1][argList[1]]);
-					else{
-						thread.push(0);
-					}
-				}else if(opName.indexOf("textResultReceived")>-1){
-					if(o)
-					thread.push(o);
-					else{
-						thread.push(0);
-					}
-				}
-				return;
-			}
 			if(null == ext){
 				thread.interrupt();
 				return;

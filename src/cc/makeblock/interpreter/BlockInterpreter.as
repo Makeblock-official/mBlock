@@ -7,12 +7,16 @@ package cc.makeblock.interpreter
 	
 	import scratch.ScratchObj;
 	
+	import util.JsUtil;
+	
 	public class BlockInterpreter
 	{
 		static public const Instance:BlockInterpreter = new BlockInterpreter();
 		
 		private var converter:BlockJsonPrinter;
 		private var realInterpreter:Interpreter;
+		
+		private var waitList:Array = [];
 		
 		public function BlockInterpreter()
 		{
@@ -21,8 +25,26 @@ package cc.makeblock.interpreter
 			converter = new BlockJsonPrinter();
 		}
 		
+		public function onReadyToRun():void
+		{
+			if(!JsUtil.readyToRun()){
+				return;
+			}
+			while(waitList.length > 0){
+				execute.apply(null, waitList.shift());
+			}
+		}
+		
 		public function execute(block:Block, targetObj:ScratchObj):Thread
 		{
+			var thread:Thread;
+			if(!JsUtil.readyToRun()){
+				waitList.push(arguments);
+				thread = realInterpreter.executeAssembly([]);
+				thread.userData = new ThreadUserData(targetObj, block);
+				return thread;
+			}
+			
 			var funcList:Array = targetObj.procedureDefinitions();
 			var blockList:Array = [];
 			for each(var funcBlock:Block in funcList){
@@ -35,7 +57,7 @@ package cc.makeblock.interpreter
 //			var codeList:Array = realInterpreter.compile(blockList);
 //			trace(codeList.join("\n"));
 //			trace("end==================");
-			var thread:Thread = realInterpreter.execute(blockList);
+			thread = realInterpreter.execute(blockList);
 			thread.userData = new ThreadUserData(targetObj, block);
 			return thread;
 		}

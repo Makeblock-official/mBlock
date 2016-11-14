@@ -102,6 +102,20 @@ public class StagePart extends UIPart {
 		turboIndicator.x = w - turboIndicator.width - 73;
 		updateProjectInfo();
 	}
+	
+	public function hideTopBar():void
+	{
+		readouts.visible = false;
+		projectTitle.visible = false;
+		projectInfo.visible = false;
+		stageSizeButton.visible = false;
+		turboIndicator.visible = false;
+		fullscreenButton.visible = false;
+		runButton.visible = false;
+		stopButton.visible = false;
+		outline.graphics.clear();
+		stageSizeButton.graphics.clear();
+	}
 
 	public function setWidthHeight(w:int, h:int, scale:Number):void {
 		this.w = w;
@@ -136,10 +150,14 @@ public class StagePart extends UIPart {
 	public function setProjectName(s:String):void { projectTitle.setContents(s) }
 	public function isInPresentationMode():Boolean { return fullscreenButton.visible && fullscreenButton.isOn() }
 
-	public function exitPresentationMode():void {
-		fullscreenButton.setOn(false);
+	public function switchPresentationMode(flag:Boolean):void {
+		fullscreenButton.setOn(flag);
 		drawOutline();
 		refresh();
+	}
+	
+	public function exitPresentationMode():void {
+		switchPresentationMode(false);
 	}
 
 	public function refresh():void {

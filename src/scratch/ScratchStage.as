@@ -237,20 +237,11 @@ public class ScratchStage extends ScratchObj {
 	}
 
 	/* Menu */
-	private var _menu:NativeMenu;
 
-	public function menu(evt:MouseEvent):NativeMenu {
-		if(null == _menu){
-			_menu = new NativeMenu();
-			_menu.addItem(new NativeMenuItem()).name = "save picture of stage";
-			_menu.addEventListener(Event.SELECT, __onSelected);
-		}
-		return _menu;
-		/*
+	public function menu(evt:MouseEvent):Menu {
 		var m:Menu = new Menu();
 		m.addItem('save picture of stage', saveScreenshot);
 		return m;
-		*/
 	}
 	
 	private function __onSelected(event:Event):void

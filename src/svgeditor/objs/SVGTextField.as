@@ -63,10 +63,8 @@ package svgeditor.objs
 			_tf.backgroundColor = 0xFFFFFF;
 			_tf.multiline = true;
 			this.cacheAsBitmap = true;
-			this.cacheAsBitmapMatrix = new Matrix;
 			_ttf.antiAliasType = AntiAliasType.ADVANCED;
 			_ttf.cacheAsBitmap = true;
-			_ttf.cacheAsBitmapMatrix = new Matrix;
 			_ttf.embedFonts = false;
 			_ttf.backgroundColor = 0xFFFFFF;
 			_ttf.multiline = true;

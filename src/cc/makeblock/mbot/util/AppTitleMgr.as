@@ -1,6 +1,5 @@
 package cc.makeblock.mbot.util
 {
-	import flash.display.NativeWindow;
 	import flash.events.Event;
 	
 	import translation.Translator;
@@ -10,14 +9,14 @@ package cc.makeblock.mbot.util
 		static public const Uploading:String = "Uploading";
 		static public const Instance:AppTitleMgr = new AppTitleMgr();
 		
-		private var window:NativeWindow;
+		private var window:Object;
 		private var strList:Array;
 		
 		public function AppTitleMgr()
 		{
 		}
 		
-		public function init(window:NativeWindow):void
+		public function init(window:Object):void
 		{
 			this.window = window;
 			strList = [window.title];
@@ -39,6 +38,8 @@ package cc.makeblock.mbot.util
 		
 		public function setProjectModifyInfo(isModified:Boolean):void
 		{
+			trace(this, "setProjectModifyInfo");
+			return;
 			strList[2] = isModified;
 			updateTitle();
 		}

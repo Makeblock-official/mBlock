@@ -2,12 +2,9 @@ package extensions
 {
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
-	import flash.filesystem.File;
 	import flash.net.URLRequest;
 	import flash.net.navigateToURL;
 	import flash.utils.ByteArray;
-	
-	import cc.makeblock.interpreter.BlockInterpreter;
 	
 	import util.ApplicationManager;
 	import util.LogManager;
@@ -28,11 +25,11 @@ package extensions
 		public function onConnect(name:String):void{
 			switch(name){
 				case "discover_bt":{
-					BluetoothManager.sharedManager().discover();
+//					BluetoothManager.sharedManager().discover();
 					break;
 				}
 				case "clear_bt":{
-					BluetoothManager.sharedManager().clearHistory();
+//					BluetoothManager.sharedManager().clearHistory();
 					break;
 				}
 				case "netframework":{
@@ -48,60 +45,41 @@ package extensions
 					break;
 				}
 				case "reset_program":{
-					SerialManager.sharedManager().upgrade(ApplicationManager.sharedManager().documents.resolvePath("mBlock/tools/hex/mbot_reset.hex").nativePath);
+//					SerialManager.sharedManager().upgrade(ApplicationManager.sharedManager().documents.resolvePath("mBlock/tools/hex/mbot_reset.hex").nativePath);
 					break;
 				}
 				case "connect_network":{
-					SocketManager.sharedManager().probe("custom");
+//					SocketManager.sharedManager().probe("custom");
 					break;
 				}
 				case "driver":{
 					MBlock.app.track("/OpenSerial/InstallDriver");
-					var fileDriver:File;
-					if(ApplicationManager.sharedManager().system==ApplicationManager.MAC_OS){
+//					if(ApplicationManager.sharedManager().system==ApplicationManager.MAC_OS){
 //						navigateToURL(new URLRequest("https://github.com/Makeblock-official/Makeblock-USB-Driver"));
-						fileDriver = new File(File.applicationDirectory.nativePath+"/drivers/Arduino Driver.pkg");
-						fileDriver.openWithDefaultApplication();
-					}else{
-						fileDriver = new File(File.applicationDirectory.nativePath+"/drivers/Driver_for_Windows.exe");
-						fileDriver.openWithDefaultApplication();
-					}
+//					}else{
+//						var fileDriver:File = new File(File.applicationDirectory.nativePath+"/drivers/Driver_for_Windows.exe");
+//						fileDriver.openWithDefaultApplication();
+//					}
 					break;
 				}
 				case "connect_hid":{
-					BlockInterpreter.Instance.stopAllThreads();
-					if(!HIDManager.sharedManager().isConnected){
-						HIDManager.sharedManager().onOpen();
-					}else{
-						HIDManager.sharedManager().onClose();
-					}
+//					if(!HIDManager.sharedManager().isConnected){
+//						HIDManager.sharedManager().onOpen();
+//					}else{
+//						HIDManager.sharedManager().onClose();
+//					}
 					break;
 				}
 				default:{
-					BlockInterpreter.Instance.stopAllThreads();
-					var isConnectCmd:Boolean = false;
-					
 					if(name.indexOf("serial_")>-1){
-						MBlock.app.track("/Connect/Serial");
-						isConnectCmd = true;
 						SerialManager.sharedManager().connect(name.split("serial_").join(""));
 					}
-					if(name.indexOf("bt_")>-1){
-						MBlock.app.track("/Connect/Bluetooth");
-						isConnectCmd = true;
-						BluetoothManager.sharedManager().connect(name.split("bt_").join(""));
-					}
-					if(name.indexOf("net_")>-1){
-						MBlock.app.track("/Connect/Net");
-						isConnectCmd = true;
-						SocketManager.sharedManager().probe(name.split("net_")[1]);
-					}
-					
-					if(isConnectCmd) {	// collect data on what type of board it connected to
-						var boardName:String = DeviceManager.sharedManager().currentBoard;
-						MBlock.app.track("/ConnectBoard/"+boardName);
-						
-					}
+//					if(name.indexOf("bt_")>-1){
+//						BluetoothManager.sharedManager().connect(name.split("bt_").join(""));
+//					}
+//					if(name.indexOf("net_")>-1){
+//						SocketManager.sharedManager().probe(name.split("net_")[1]);
+//					}
 				}
 			}
 		}
@@ -110,12 +88,6 @@ package extensions
 			if(port){
 				if(port.indexOf("COM")>-1||port.indexOf("/dev/tty.")>-1){
 					return SerialManager.sharedManager().open(port,baud);
-				}else if(port.indexOf(" (")>-1){
-					return BluetoothManager.sharedManager().open(port);
-				}else if(port.indexOf("HID")>-1){
-					return HIDManager.sharedManager().open();
-				}else{
-					return SocketManager.sharedManager().open(port);
 				}
 			}
 			return false;
@@ -125,13 +97,12 @@ package extensions
 			if(!SerialDevice.sharedDevice().connected){
 				MBlock.app.topBarPart.setDisconnectedTitle();
 			}else{
-				if(SerialManager.sharedManager().isConnected||HIDManager.sharedManager().isConnected||BluetoothManager.sharedManager().isConnected){
+				if(SerialManager.sharedManager().isConnected){
 					MBlock.app.topBarPart.setConnectedTitle("Serial Port");
 				}else{
 					MBlock.app.topBarPart.setConnectedTitle("Network");
 				}
 			}
-			BlockInterpreter.Instance.stopAllThreads();
 			this.dispatchEvent(new Event(Event.CLOSE));
 		}
 		public function onRemoved(extName:String = ""):void{
@@ -157,11 +128,8 @@ package extensions
 		public function sendBytes(bytes:ByteArray):void{
 			if(SerialManager.sharedManager().isConnected){
 				SerialManager.sharedManager().sendBytes(bytes);
-			}else if(BluetoothManager.sharedManager().isConnected){
-				BluetoothManager.sharedManager().sendBytes(bytes);
-			}else if(HIDManager.sharedManager().isConnected){
-				HIDManager.sharedManager().sendBytes(bytes);
 			}
+			trace(this, "data send!!!");
 			bytes.clear();
 		}
 		public function readBytes():ByteArray{

@@ -1,8 +1,5 @@
 package extensions
 {
-	import util.LogManager;
-	import util.SharedObjectManager;
-
 	public class DeviceManager
 	{
 		private static var _instance:DeviceManager;
@@ -11,7 +8,7 @@ package extensions
 		private var _name:String = "";
 		public function DeviceManager()
 		{
-			onSelectBoard(SharedObjectManager.sharedManager().getObject("board","mbot_uno"));
+			onSelectBoard("mbot_uno");
 		}
 		public static function sharedManager():DeviceManager{
 			if(_instance==null){
@@ -19,7 +16,7 @@ package extensions
 			}
 			return _instance;
 		}
-		private function set board(value:String):void
+		public function set board(value:String):void
 		{
 			_board = value;
 			var tempList:Array = _board.split("_");
@@ -30,32 +27,21 @@ package extensions
 				return;
 			}
 			this.board = value;
-			var oldBoard:String = SharedObjectManager.sharedManager().getObject("board");
-			SharedObjectManager.sharedManager().setObject("board",_board);
-			if(_board=="picoboard_unknown"){
-				MBlock.app.extensionManager.singleSelectExtension("PicoBoard");
-			}else{
+//			if(_board=="picoboard_unknown"){
+//				MBlock.app.extensionManager.singleSelectExtension("PicoBoard");
+//			}else{
 				if(_board=="mbot_uno"){
 					MBlock.app.extensionManager.singleSelectExtension("mBot");
 				}else if(_board.indexOf("arduino")>-1){
 					MBlock.app.extensionManager.singleSelectExtension("Arduino");
 				}else if(_board.indexOf("me/orion_uno")>-1){
-					if(oldBoard.indexOf("me/orion_uno") < 0){
-						MBlock.app.openOrion();
-					}
-					MBlock.app.extensionManager.singleSelectExtension("Orion");
-				}else if(_board.indexOf("me/baseboard")>-1){
-					MBlock.app.extensionManager.singleSelectExtension("BaseBoard");
+					MBlock.app.extensionManager.singleSelectExtension("Makeblock");
 				}else if(_board.indexOf("me/uno_shield")>-1){
 					MBlock.app.extensionManager.singleSelectExtension("UNO Shield");
 				}else if(_board.indexOf("me/auriga") >= 0){
 					MBlock.app.extensionManager.singleSelectExtension("Auriga");
-				}else if(_board.indexOf("me/mega_pi") >= 0){
-					MBlock.app.extensionManager.singleSelectExtension("MegaPi");
-				}else{
-					MBlock.app.extensionManager.singleSelectExtension("PicoBoard");
 				}
-			}
+//			}
 			MBlock.app.topBarPart.setBoardTitle();
 		}
 		public function checkCurrentBoard(board:String):Boolean{
@@ -77,8 +63,6 @@ package extensions
 				_name = "UNO Shield";
 			}else if(_board.indexOf("auriga") >= 0){
 				_name = "Me Auriga";
-			}else if(_board.indexOf("mega_pi") >= 0){
-				_name = "Mega Pi";
 			}
 			return _name;
 		}

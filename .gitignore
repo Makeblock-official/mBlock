@@ -1,5 +1,6 @@
 *.actionScriptProperties
 /bin-debug
+/bin-release
 /bin-release-temp
 adl.exe
 static_tips.zip

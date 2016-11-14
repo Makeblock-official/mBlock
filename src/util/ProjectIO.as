@@ -182,8 +182,10 @@ public class ProjectIO {
 		if(jsonObj['info']){
 			if(jsonObj['info']['boardVersion']){
 				DeviceManager.sharedManager().onSelectBoard(jsonObj['info']['boardVersion']);
+				JsUtil.setProjectRobotName(jsonObj['info']['boardVersion']);
 			}else{
 				DeviceManager.sharedManager().onSelectBoard("mbot_uno");
+				JsUtil.setProjectRobotName("mbot");
 			}
 		}
 		if (jsonObj['children']) { // project JSON
@@ -575,27 +577,28 @@ public class ProjectIO {
 			c.baseLayerMD5 = id;
 			whenDone(c);
 		}
-		gotCostumeData(app.server.getAsset(id));
-		return null;
+		return app.server.getAsset(id, gotCostumeData);
 	}
 
 	public function fetchSound(id:String, sndName:String, whenDone:Function):void {
 		// Fetch a sound asset from the server and call whenDone with the resulting ScratchSound.
-		var sndData:ByteArray = app.server.getAsset(id);
-		if (!sndData) {
-			app.log('Sound not found on server: ' + id);
-			return;
-		}
-		var snd:ScratchSound;
-		try {
-			snd = new ScratchSound(sndName, sndData); // try reading data as WAV file
-		} catch (e:*) { }
-		if (snd && (snd.sampleCount > 0)) { // WAV data
-			snd.md5 = id;
-			whenDone(snd);
-		} else { // try to read data as an MP3 file
-			MP3Loader.convertToScratchSound(sndName, sndData, whenDone);
-		}
+		app.server.getAsset(id, function(sndData:ByteArray):void{
+			if (!sndData) {
+				app.log('Sound not found on server: ' + id);
+				return;
+			}
+			var snd:ScratchSound;
+			try {
+				snd = new ScratchSound(sndName, sndData); // try reading data as WAV file
+			} catch (e:*) { }
+			if (snd && (snd.sampleCount > 0)) { // WAV data
+				snd.md5 = id;
+				whenDone(snd);
+			} else { // try to read data as an MP3 file
+				MP3Loader.convertToScratchSound(sndName, sndData, whenDone);
+			}
+		
+		});
 		
 	}
 
@@ -615,11 +618,12 @@ public class ProjectIO {
 			whenDone(spr);
 		}
 		var spr:ScratchSprite = new ScratchSprite();
-		var data:ByteArray = app.server.getAsset(md5AndExt);
-		if (!data) return;
-		spr.readJSON(util.JSON.parse(data.readUTFBytes(data.length)));
-		spr.instantiateFromJSON(app.stagePane);
-		fetchSpriteAssets([spr], assetsReceived);
+		app.server.getAsset(md5AndExt, function(data:ByteArray):void{
+			if (!data) return;
+			spr.readJSON(util.JSON.parse(data.readUTFBytes(data.length)));
+			spr.instantiateFromJSON(app.stagePane);
+			fetchSpriteAssets([spr], assetsReceived);
+		});
 	}
 
 	private function fetchSpriteAssets(objList:Array, whenDone:Function):void {
@@ -677,8 +681,9 @@ public class ProjectIO {
 	}
 
 	public function fetchAsset(md5:String, whenDone:Function):void {
-		var data:ByteArray = app.server.getAsset(md5);
-		whenDone(md5, data);
+		app.server.getAsset(md5, function(data:ByteArray):void{
+			whenDone(md5, data);
+		});
 	}
 
 	//----------------------------

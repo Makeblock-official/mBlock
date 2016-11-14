@@ -20,7 +20,6 @@
 package scratch {
 	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
-	import flash.display.NativeMenu;
 	import flash.display.NativeMenuItem;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -31,9 +30,9 @@ package scratch {
 	
 	import blocks.Block;
 	import blocks.BlockArg;
+	import blocks.BlockIO;
 	
 	import cc.makeblock.mbot.uiwidgets.lightSetter.LightSetterFrame;
-	import cc.makeblock.menu.MenuUtil;
 	
 	import extensions.ArduinoManager;
 	
@@ -235,7 +234,6 @@ public class BlockMenus implements DragClient {
 
 	private function showMenu(m:*):void {
 		var p:Point;
-		if(m is Menu){
 			m.color = block.base.color;
 			m.itemHeight = 22;
 			if (blockArg) {
@@ -244,17 +242,6 @@ public class BlockMenus implements DragClient {
 			} else {
 				m.showOnStage(app.stage);
 			}
-		}else if(m is NativeMenu){
-			var ctxMenu:NativeMenu = m as NativeMenu;
-			MenuUtil.RemoveLastLines(ctxMenu);
-			MenuUtil.ChangeLang(ctxMenu);
-			if (blockArg) {
-				p = blockArg.localToGlobal(new Point(0, 0));
-				ctxMenu.display(app.stage, p.x - 9, p.y + blockArg.height);
-			} else {
-				ctxMenu.display(app.stage, app.stage.mouseX, app.stage.mouseY);
-			}
-		}
 	}
 
 	private function setBlockArg(selection:*):void {
@@ -599,42 +586,36 @@ public class BlockMenus implements DragClient {
 
 	private function genericBlockMenu(evt:MouseEvent):void {
 		if (!block || block.isEmbeddedParameter()) return;
-//		var m:Menu = new Menu(null, 'genericBlock');
-		var m:NativeMenu = new NativeMenu();
+		var m:Menu = new Menu(null, 'genericBlock');
 		addGenericBlockItems(m);
 		showMenu(m);
 	}
 
-	private function addGenericBlockItems(m:NativeMenu):void {
+	private function addGenericBlockItems(m:Menu):void {
 		if (!block) return;
-//		m.addLine();
-		MenuUtil.AddLine(m);
+		m.addLine();
 		if (!isInPalette(block)) {
 			if (!block.isProcDef()) {
 				if(block.op.indexOf("runArduino")>-1){
 					ArduinoManager.sharedManager().mainX = block.x;
 					ArduinoManager.sharedManager().mainY = block.y;
-					if(!app.stageIsArduino){
-						MenuUtil.AddItem(m, 'upload to arduino');
-//						m.addItem('upload to arduino',app.scriptsPart.showArduinoCode);
-					}
 				}
-				MenuUtil.AddItem(m, 'duplicate');
-				MenuUtil.AddItem(m, 'delete');
-				MenuUtil.AddLine(m);
-				/*
 				m.addItem('duplicate', duplicateStack);
 				m.addItem('delete', block.deleteStack);
 				m.addLine();
-				*/
 			}
-//			m.addItem('add comment', block.addComment);
-			MenuUtil.AddItem(m, 'add comment');
+			m.addItem('add comment', block.addComment);
 		}
 		//m.addItem('help', block.showHelp);
-//		m.addLine();
-		MenuUtil.AddLine(m);
-		m.addEventListener(Event.SELECT, __onSelect);
+		m.addLine();
+	}
+	
+	private function duplicateStack():void
+	{
+		var prevTool:String = CursorTool.tool;
+		CursorTool.tool = "copy";
+		block.duplicateStack(app.mouseX - startX, app.mouseY - startY);
+		CursorTool.tool = prevTool;
 	}
 	
 	private function __onSelect(evt:Event):void
@@ -709,20 +690,16 @@ public class BlockMenus implements DragClient {
 	}
 
 	private function changeOpMenu(evt:MouseEvent, opList:Array):void {
-		/*
 		function opMenu(selection:*):void {
 			if (selection is Function) { selection(); return; }
 			block.changeOperator(selection);
 		}
-		*/
 		if (!block) return;
-//		var m:Menu = new Menu(opMenu, 'changeOp');
-		var m:NativeMenu = new NativeMenu();
+		var m:Menu = new Menu(opMenu, 'changeOp');
 		addGenericBlockItems(m);
 		if (!isInPalette(block)){
 			for each (var op:String in opList){
-//				m.addItem(op);
-				MenuUtil.AddItem(m, op);
+				m.addItem(op);
 			}
 		}
 		showMenu(m);
@@ -731,12 +708,12 @@ public class BlockMenus implements DragClient {
 	// ***** Procedure menu (for procedure definition hats and call blocks) *****
 
 	private function procMenu(evt:MouseEvent):void {
-//		var m:Menu = new Menu(null, 'proc');
-		var m:NativeMenu = new NativeMenu();
-		MenuUtil.AddItem(m, 'delete');
+		var m:Menu = new Menu(null, 'proc');
+//		var m:NativeMenu = new NativeMenu();
+//		MenuUtil.AddItem(m, 'delete');
 		addGenericBlockItems(m);
-		MenuUtil.AddItem(m, 'edit');
-//		m.addItem('edit', editProcSpec);
+//		MenuUtil.AddItem(m, 'edit');
+		m.addItem('edit', editProcSpec);
 		showMenu(m);
 	}
 
@@ -784,33 +761,24 @@ public class BlockMenus implements DragClient {
 	// ***** Variable and List menus *****
 
 	private function listMenu(evt:MouseEvent):void {
-//		var m:Menu = new Menu(varOrListSelection, 'list');
-		var m:NativeMenu = new NativeMenu();
+		var m:Menu = new Menu(varOrListSelection, 'list');
 		m.addEventListener(Event.SELECT, __onSelect);
 		if (block.op == Specs.GET_LIST) {
 			if (isInPalette(block)){
-				MenuUtil.AddItem(m, 'delete list');
-				MenuUtil.AddItem(m, 'rename list');
-//				m.addItem('delete list', deleteVarOrList); // list reporter in palette
+//				MenuUtil.AddItem(m, 'delete list');
+//				MenuUtil.AddItem(m, 'rename list');
+				m.addItem('delete list', deleteVarOrList); // list reporter in palette
 			}
 			addGenericBlockItems(m);
 		} else {
-			var t:NativeMenuItem;
 			var listName:String;
 			for each (listName in app.stageObj().listNames()){
-//				m.addItem(listName);
-				t = new NativeMenuItem(listName);
-				t.name = "@@list";
-				m.addItem(t);
+				m.addItem(listName);
 			}
 			if (!app.viewedObj().isStage) {
-//				m.addLine();
-				MenuUtil.AddLine(m);
+				m.addLine();
 				for each (listName in app.viewedObj().listNames()){
-//					m.addItem(listName);
-					t = new NativeMenuItem(listName);
-					t.name = "@@list";
-					m.addItem(t);
+					m.addItem(listName);
 				}
 			}
 		}
@@ -818,15 +786,12 @@ public class BlockMenus implements DragClient {
 	}
 
 	private function varMenu(evt:MouseEvent):void {
-//		var m:Menu = new Menu(varOrListSelection, 'var');
-		var m:NativeMenu = new NativeMenu();
+		var m:Menu = new Menu(varOrListSelection, 'var');
 		m.addEventListener(Event.SELECT, __onSelect);
 		var isGetter:Boolean = (block.op == Specs.GET_VAR);
 		if (isGetter && isInPalette(block)) { // var reporter in palette
-//			m.addItem('rename variable', renameVar);
-//			m.addItem('delete variable', deleteVarOrList);
-			MenuUtil.AddItem(m, 'rename variable');
-			MenuUtil.AddItem(m, 'delete variable');
+			m.addItem('rename variable', renameVar);
+			m.addItem('delete variable', deleteVarOrList);
 			addGenericBlockItems(m);
 		} else {
 			if (isGetter) addGenericBlockItems(m);
@@ -838,12 +803,10 @@ public class BlockMenus implements DragClient {
 					continue;
 				}
 				if (!isGetter || (vName != myName)){
-					t = new NativeMenuItem(vName);
-					t.name = "@@var";
-					m.addItem(t);
-//					m.addItem(vName);
+					m.addItem(vName);
 				}
 			}
+			/*
 			if (!app.viewedObj().isStage) {
 				MenuUtil.AddLine(m);
 				for each (vName in app.viewedObj().varNames()) {
@@ -854,9 +817,11 @@ public class BlockMenus implements DragClient {
 						t = new NativeMenuItem(vName);
 						t.name = "@@var";
 						m.addItem(t);
+						
 					}
 				}
 			}
+			*/
 		}
 		showMenu(m);
 	}
@@ -869,12 +834,12 @@ public class BlockMenus implements DragClient {
 		}
 		return false;
 	}
-/*
+
 	private function varOrListSelection(selection:*):void {
 		if (selection is Function) { selection(); return; }
 		setBlockVarOrListName(selection);
 	}
-*/
+
 	private function renameVar(isList:Boolean):void {
 		function doVarRename(dialog:DialogBox):void {
 			var newName:String = dialog.fields['New name'].text.replace(/^\s+|\s+$/g, '');
@@ -1005,7 +970,7 @@ public class BlockMenus implements DragClient {
 	}
 
 	private function broadcastInfoMenu(evt:MouseEvent):void {
-		/*
+		//*
 		function showBroadcasts(selection:*):void {
 			if (selection is Function) { selection(); return; }
 			var msg:String = block.args[0].argValue;
@@ -1016,14 +981,14 @@ public class BlockMenus implements DragClient {
 			app.highlightSprites(sprites);
 		}
 		var m:Menu = new Menu(showBroadcasts, 'broadcastInfo');
-		*/
-		var m:NativeMenu = new NativeMenu();
+		//*/
+//		var m:NativeMenu = new NativeMenu();
 		addGenericBlockItems(m);
-		if (!isInPalette(block)) {
-			MenuUtil.AddItem(m, 'show senders');
-			MenuUtil.AddItem(m, 'show receivers');
-			MenuUtil.AddItem(m, 'clear senders/receivers');
-		}
+//		if (!isInPalette(block)) {
+//			MenuUtil.AddItem(m, 'show senders');
+//			MenuUtil.AddItem(m, 'show receivers');
+//			MenuUtil.AddItem(m, 'clear senders/receivers');
+//		}
 		showMenu(m);
 	}
 	

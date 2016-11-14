@@ -26,13 +26,12 @@ package scratch {
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
-	import flash.filesystem.File;
 	import flash.geom.Rectangle;
 	import flash.media.Microphone;
 	import flash.media.SoundTransform;
 	import flash.net.FileFilter;
 	import flash.net.FileReference;
-	import blockly.signals.Signal;
+	import flash.signals.Signal;
 	import flash.system.System;
 	import flash.text.TextField;
 	import flash.text.TextFieldType;
@@ -44,9 +43,7 @@ package scratch {
 	
 	import cc.makeblock.interpreter.BlockInterpreter;
 	import cc.makeblock.interpreter.FunctionVideoMotion;
-	import cc.makeblock.util.FileUtil;
 	
-	import extensions.ConnectionManager;
 	import extensions.ParseManager;
 	
 	import interpreter.Interpreter;
@@ -79,7 +76,6 @@ package scratch {
 		public var lastAnswer:String = '';
 		public var cloneCount:int;
 		public var edgeTriggersEnabled:Boolean = false; // initially false, becomes true when project first run
-		public var extensionsInstalled:Boolean = false;
 	
 		private var microphone:Microphone;
 		private var timerBase:uint;
@@ -88,11 +84,6 @@ package scratch {
 		protected var saveAfterInstall:Boolean;
 		
 		public const mbotButtonPressed:Signal = new Signal(Boolean);
-		public const voiceReceived:Signal = new Signal(Boolean);
-		public const emotionResultReceived:Signal = new Signal(Boolean);
-		public const faceResultReceived:Signal = new Signal(Boolean);
-		public const textResultReceived:Signal = new Signal(Boolean);
-		public const realFaceResultReceived:Signal = new Signal(Boolean);
 	
 		public function ScratchRuntime(app:MBlock, interp:Interpreter) {
 			this.app = app;
@@ -100,11 +91,6 @@ package scratch {
 			timerBase = interp.currentMSecs;
 			clearKeyDownArray();
 			mbotButtonPressed.add(__onMbotButtonPressed);
-			voiceReceived.add(__onVoiceReceived);
-			emotionResultReceived.add(__onEmotionResultReceived);
-			faceResultReceived.add(__onFaceResultReceived);
-			textResultReceived.add(__onTextResultReceived);
-			realFaceResultReceived.add(__onRealFaceResultReceived);
 		}
 		
 		private function __onMbotButtonPressed(isPressed:Boolean):void
@@ -120,75 +106,7 @@ package scratch {
 				}
 			});
 		}
-		private function __onVoiceReceived(isReceived:Boolean):void{
-			allStacksAndOwnersDo(function(stack:Block, target:ScratchObj):void{
-				if(stack.op.indexOf("whenVoiceCommandReceived")==-1){
-					return;
-				}
-				if(isReceived){
-					if (!interp.isRunning(stack, target)) {
-						interp.toggleThread(stack, target);
-					}
-				}
-			});
-		}
-		private function __onEmotionResultReceived(isReceived:Boolean):void{
-			allStacksAndOwnersDo(function(stack:Block, target:ScratchObj):void{
-				if(stack.op.indexOf("whenPhotoResultReceived")==-1){
-					return;
-				}
-				if(stack.args[0].argValue!="emotion"){
-					return;
-				}
-				if(isReceived){
-					if (!interp.isRunning(stack, target)) {
-						interp.toggleThread(stack, target);
-					}
-				}
-			});
-		}
-		private function __onFaceResultReceived(isReceived:Boolean):void{
-			allStacksAndOwnersDo(function(stack:Block, target:ScratchObj):void{
-				if(stack.op.indexOf("whenPhotoResultReceived")==-1){
-					return;
-				}
-				if(stack.args[0].argValue!="face"){
-					return;
-				}
-				if(isReceived){
-					if (!interp.isRunning(stack, target)) {
-						interp.toggleThread(stack, target);
-					}
-				}
-			});
-		}
-		private function __onTextResultReceived(isReceived:Boolean):void{
-			allStacksAndOwnersDo(function(stack:Block, target:ScratchObj):void{
-				if(stack.op.indexOf("whenPhotoResultReceived")==-1){
-					return;
-				}
-				if(stack.args[0].argValue!="text"){
-					return;
-				}
-				if(isReceived){
-					if (!interp.isRunning(stack, target)) {
-						interp.toggleThread(stack, target);
-					}
-				}
-			});
-		}
-		private function __onRealFaceResultReceived(isReceived:Boolean):void{
-			allStacksAndOwnersDo(function(stack:Block, target:ScratchObj):void{
-				if(stack.op.indexOf("whenRealFaceResultReceived")==-1){
-					return;
-				}
-				if(isReceived){
-					if (!interp.isRunning(stack, target)) {
-						interp.toggleThread(stack, target);
-					}
-				}
-			});
-		}
+		
 		// -----------------------------
 		// Running and stopping
 		//------------------------------
@@ -514,17 +432,22 @@ package scratch {
 		public function installNewProject():void {
 			installEmptyProject();
 		}
-	
+		private var file:FileReference = new FileReference();
 		public function selectProjectFile():void {
 			// Prompt user for a file name and load that file.
 			function fileSelected(event:Event):void {
+				file.load();
+			}
+			
+			function fileLoaded(event:Event):void{
 				selectedProjectFile(file);
 			}
 			
 			stopAll();
-			var file:File = new File();
+//			var file:FileReference = new FileReference();
 			file.addEventListener(Event.SELECT, fileSelected);
-			file.browseForOpen("choose file to open", fileFilters);
+			file.addEventListener(Event.COMPLETE, fileLoaded);
+			file.browse(fileFilters);
 		}
 		
 		static private const fileFilters:Array = [
@@ -532,14 +455,12 @@ package scratch {
 			new FileFilter('Scratch 1.4 Project', '*.sb')
 		];
 		
-		public function selectedProjectFile(file:File):void {
+		public function selectedProjectFile(file:FileReference):void {
 			// Prompt user for a file name and load that file.
 			stopAll();
 			
 			function doInstall(ignore:* = null):void {
 				installProjectFromFile(file);
-				//打开已有项目时，标题应该显示已保存  谭启亮 20161018 
-				MBlock.app.setSaveNeededValue(false);
 			}
 			
 			if (app.stagePane.isEmpty()) {
@@ -549,17 +470,18 @@ package scratch {
 			}
 		}
 		
-		private function installProjectFromFile(file:File):void {
+		private function installProjectFromFile(file:FileReference):void {
 			// Install a project from a file with the given name and contents.
 			stopAll();
 //			app.oldWebsiteURL = '';
 			app.loadInProgress = true;
-			installProjectFromData(FileUtil.ReadBytes(file));
+			installProjectFromData(file.data);
+			trace(this, "installProjectFromFile");
 			app.setProjectFile(file);
-			setTimeout(ConnectionManager.sharedManager().onReOpen,1000);
+//			setTimeout(ConnectionManager.sharedManager().onReOpen,1000);
 		}
 	
-		public function installProjectFromData(data:ByteArray, saveForRevert:Boolean = true):void {
+		public function installProjectFromData(data:ByteArray, saveForRevert:Boolean = true, callback:Function=null):void {
 			var newProject:ScratchStage;
 			stopAll();
 			data.position = 0;
@@ -586,8 +508,8 @@ package scratch {
 				if (info != null) delete info.thumbnail; // delete old thumbnail
 			}
 			if (saveForRevert) app.saveForRevert(data, false);
-			//app.extensionManager.clearImportedExtensions();//fix 打开新项目出现未定义的模块
-			decodeImagesAndInstall(newProject);
+			app.extensionManager.clearImportedExtensions();
+			decodeImagesAndInstall(newProject, callback);
 		}
 	
 		public function projectLoadFailed(ignore:* = null):void {
@@ -596,8 +518,13 @@ package scratch {
 			app.loadProjectFailed();
 		}
 	
-		public function decodeImagesAndInstall(newProject:ScratchStage):void {
-			function imagesDecoded():void { projectToInstall = newProject } // stepRuntime() will finish installation
+		public function decodeImagesAndInstall(newProject:ScratchStage, callback:Function=null):void {
+			function imagesDecoded():void {
+				projectToInstall = newProject;
+				if(callback != null){
+					callback();
+				}
+			} // stepRuntime() will finish installation
 			new ProjectIO(app).decodeAllImages(newProject.allObjects(), imagesDecoded);
 		}
 	
@@ -616,18 +543,7 @@ package scratch {
 	
 			//app.extensionManager.clearImportedExtensions();
 			//app.extensionManager.loadSavedExtensions(project.info.savedExtensions);
-			
-			// Wangyu: stop loading extensions when user open a project second time.
-			// OR ELSE: mBlock won't receive any serial data from the robot; it will wait until timeout.
-			// +++ added by yu
-			if (!extensionsInstalled) {
-				extensionsInstalled = true;
-				app.extensionManager.importExtension();
-			}
-			// --- removed from the last version
-			// app.extensionManager.importExtension();
-			// Wangyu: END of modification
-			
+			app.extensionManager.importExtension();
 			app.installStage(project);
 			app.updateSpriteLibrary(true);
 			// set the active sprite
@@ -761,11 +677,6 @@ package scratch {
 			// map A-Z to a-z
 			if(65 <= keyCode && keyCode <= 90){
 				return keyCode + 32;
-			}
-			//将小键盘  数字键转为大键盘数字键
-			else if(96<=keyCode && keyCode<=105)
-			{
-				return keyCode-48;
 			}
 			return keyCode;
 		}

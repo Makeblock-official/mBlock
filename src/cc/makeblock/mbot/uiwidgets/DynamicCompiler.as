@@ -1,10 +1,5 @@
 package cc.makeblock.mbot.uiwidgets
 {
-	import flash.filesystem.File;
-	
-	import cc.makeblock.util.FileUtil;
-	
-	import extensions.ArduinoManager;
 	import extensions.DeviceManager;
 	
 	import org.aswing.AsWingConstants;
@@ -99,6 +94,7 @@ package cc.makeblock.mbot.uiwidgets
 		
 		private function __onCompile(evt:AWEvent):void
 		{
+			/*
 			var fileName:String = getFileName();
 			if(null == fileName){
 				return;
@@ -117,6 +113,7 @@ package cc.makeblock.mbot.uiwidgets
 			}
 			trace(source);
 			MBlock.app.scriptsPart.appendMessage(ArduinoManager.sharedManager().buildAll(source));
+			*/
 		}
 		
 		private function __onSelectAll(evt:AWEvent):void

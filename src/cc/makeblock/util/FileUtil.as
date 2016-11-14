@@ -1,5 +1,6 @@
 package cc.makeblock.util
 {
+	/*
 	import flash.display.BitmapData;
 	import flash.display.PNGEncoderOptions;
 	import flash.display.StageQuality;
@@ -8,9 +9,11 @@ package cc.makeblock.util
 	import flash.filesystem.FileStream;
 	import flash.geom.Matrix;
 	import flash.utils.ByteArray;
+	*/
 
 	public class FileUtil
 	{
+		/*
 		static private const fs:FileStream = new FileStream();
 		
 		static public function LoadFile(path:String):String
@@ -77,5 +80,6 @@ package cc.makeblock.util
 			FileUtil.WriteBytes(fileScreen, jpeg);
 			jpeg.clear();
 		}
+		*/
 	}
 }

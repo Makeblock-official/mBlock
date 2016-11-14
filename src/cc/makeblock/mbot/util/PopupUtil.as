@@ -1,21 +1,12 @@
 package cc.makeblock.mbot.util
 {
-	import flash.display.NativeWindow;
-	import flash.display.NativeWindowDisplayState;
-	import flash.display.Sprite;
 	import flash.events.MouseEvent;
-	import flash.geom.ColorTransform;
 	import flash.geom.Rectangle;
-	
-	import cc.makeblock.mbot.uiwidgets.extensionMgr.DefaultLabel;
 	
 	import org.aswing.AsWingConstants;
 	import org.aswing.AsWingUtils;
-	import org.aswing.BorderLayout;
 	import org.aswing.JFrame;
-
 	import org.aswing.JOptionPane;
-
 	
 	import translation.Translator;
 
@@ -46,7 +37,7 @@ package cc.makeblock.mbot.util
 			var panel:JOptionPane = PopupUtil.showConfirm(title, null);
 			panel.getCancelButton().getParent().remove(panel.getCancelButton());
 			panel.getYesButton().setText(Translator.map("I know"));
-			panel.getFrame().setModal(true);
+			panel.getFrame().setModal(false);
 			return panel;
 		}
 		
@@ -94,36 +85,15 @@ package cc.makeblock.mbot.util
 			
 			panel.getFrame().setSizeWH(340, 90);
 			
-			
-			
-			var window:NativeWindow = panel.stage.nativeWindow;
 			var frame:JFrame = panel.getFrame();
-			if(window.displayState == NativeWindowDisplayState.MINIMIZED){
-				var bounds:Rectangle = window.bounds;
-				frame.setX((bounds.width - frame.getWidth()) * 0.5);
-				frame.setY((bounds.height - frame.getHeight()) * 0.5);
-			}else{
-				AsWingUtils.centerLocate(frame);
-			}
+			AsWingUtils.centerLocate(frame);
 			
-			var modalMC:Sprite = panel.getFrame().getModalMC();
-			var trans:ColorTransform = new ColorTransform();
-			trans.alphaOffset = 100;
-			modalMC.transform.colorTransform = trans;
 			return panel;
 		}
+		
 		static public function centerFrameTitle(frame:JFrame):void
 		{
 			frame.getTitleBar().getLabel().setHorizontalAlignment(AsWingConstants.CENTER);
-		}
-		static public function appendText(cmp:JOptionPane,title:String,href:String):void
-		{
-			var label:DefaultLabel = new DefaultLabel(false,false);
-			var txt:String = '<p align="center"><a href="'+href+'"><FONT COLOR="#0292FD">'+Translator.map(title)+'</FONT></a></p>'
-			label.setLabel(txt);
-			label.htmlText.width = cmp.getFrame().width;
-			
-			cmp.append(label,BorderLayout.CENTER);
 		}
 	}
 }

@@ -1,36 +1,27 @@
 package extensions
 {
 	import flash.events.Event;
-	import flash.filesystem.File;
-	import flash.html.HTMLLoader;
+	import flash.external.ExternalInterface;
 	import flash.utils.ByteArray;
 	import flash.utils.Endian;
 	
 	import cc.makeblock.interpreter.RemoteCallMgr;
-	import cc.makeblock.util.FileUtil;
 	
-	import org.aswing.JOptionPane;
-	
+	import util.JsUtil;
 	import util.LogManager;
 	
 	public class JavaScriptEngine
 	{
-		private const _htmlLoader:HTMLLoader = new HTMLLoader();
 		private var _ext:Object;
 		private var _name:String = "";
 //		public var port:String = "";
 		public function JavaScriptEngine(name:String="")
 		{
 			_name = name;
-			_htmlLoader.placeLoadStringContentInApplicationSandbox = true;
 		}
 		private function register(name:String,descriptor:Object,ext:Object,param:Object):void{
 			_ext = ext;
-			if(_ext._getStatus().msg.indexOf("disconnected")>-1 && SerialManager.sharedManager().isConnected)
-			{
-				//尝试连接
-				onConnected(null);
-			}
+			
 			LogManager.sharedManager().log("registed:"+_ext._getStatus().msg);
 			//trace(SerialManager.sharedManager().list());
 			//_timer.start();
@@ -48,24 +39,7 @@ package extensions
 			return "Disconnected";
 		}
 		public function call(method:String,param:Array,ext:ScratchExtension):void{
-			if(!connected){
-				return;
-			}
-			var handler:Function = _ext[method];
-			if(null == handler){
-				trace(method + " not provide!");
-				responseValue();
-				return;
-			}
-			try{
-				if(handler.length > param.length){
-					handler.apply(null, [0].concat(param));
-				}else{
-					handler.apply(null, param);
-				}
-			}catch(error:Error) {
-				trace(error.getStackTrace());
-			}
+			JsUtil.Call("callJs", [ext.name, method, param]);
 		}
 		/*
 		public function requestValue(method:String,param:Array,ext:ScratchExtension, nextID:int):void
@@ -83,7 +57,7 @@ package extensions
 			}
 			return _ext[method].apply(null, param);
 		}
-		*/
+		
 		public function closeDevice():void{
 			if(_ext){
 				_ext._shutdown();
@@ -113,16 +87,14 @@ package extensions
 				_ext = null;
 			}
 		}
+		*/
 		public function loadJS(path:String):void{
-			var html:String = "var ScratchExtensions = {};" +
-				"ScratchExtensions.register = function(name,desc,ext,param){" +
-				"	try{			" +
-				"		callRegister(name,desc,ext,param);		" +
-				"	}catch(err){			" +
-				"		setTimeout(ScratchExtensions.register,10,name,desc,ext,param);	" +
-				"	}	" +
-				"};";
+			trace(this, "loadJS", path);
+//			var jsData:String = ExtensionManager.fileDict[path].toString();
+//			JsUtil.Eval(jsData);
+//			return;
 //			html += FileUtil.ReadString(File.applicationDirectory.resolvePath("js/AIRAliases.js"));
+			/*
 			html += FileUtil.ReadString(new File(path));
 			_htmlLoader.window.eval(html);
 			_htmlLoader.window.callRegister = register;
@@ -136,26 +108,22 @@ package extensions
 			_htmlLoader.window.array2string = array2string;
 			_htmlLoader.window.responseValue = responseValue;
 			_htmlLoader.window.trace = trace;
-			_htmlLoader.window.interruptThread = interruptThread;
 			_htmlLoader.window.air = {"trace":trace};
+			
 			ConnectionManager.sharedManager().addEventListener(Event.CONNECT,onConnected);
 			ConnectionManager.sharedManager().addEventListener(Event.REMOVED,onRemoved);
 			ConnectionManager.sharedManager().addEventListener(Event.CLOSE,onClosed);
+			*/
+			
 		}
+		/*
 		private function responseValue(...args):void{
-			if(args.length < 2){
-				RemoteCallMgr.Instance.onPacketRecv();
-			}else if(args[0] == 0x80){
-				MBlock.app.runtime.mbotButtonPressed.notify(Boolean(args[1]));
-			}else{
+			if(args.length >= 2){
 				RemoteCallMgr.Instance.onPacketRecv(args[1]);
+			}else{
+				RemoteCallMgr.Instance.onPacketRecv();
 			}
-		}
-		
-		static private function interruptThread(msg:String):void
-		{
-			RemoteCallMgr.Instance.interruptThread();
-			JOptionPane.showMessageDialog("", msg);
+			MBlock.app.extensionManager.reporterCompleted(_name,args[0],args[1]);
 		}
 		
 		static private function readFloat(bytes:Array):Number{
@@ -214,5 +182,6 @@ package extensions
 		}
 		static private const tempBytes:ByteArray = new ByteArray();
 		tempBytes.endian = Endian.LITTLE_ENDIAN;
+		*/
 	}
 }

@@ -1,20 +1,12 @@
 package cc.makeblock.media
 {
 	import flash.events.Event;
-	import flash.events.FileListEvent;
-	import flash.filesystem.File;
-	import flash.net.FileFilter;
 	
 	import cc.makeblock.mbot.util.PopupUtil;
-	import cc.makeblock.util.FileUtil;
 	
 	import org.aswing.JOptionPane;
 	
 	import translation.Translator;
-	
-	import ui.media.MediaLibrary;
-	
-	import util.JSON;
 
 	public class MediaManager
 	{
@@ -50,11 +42,14 @@ package cc.makeblock.media
 				return;
 			}
 			isBackDrop = (JOptionPane.YES == code);
+			/*
 			var file:File = new File();
 			file.addEventListener(FileListEvent.SELECT_MULTIPLE, __onSelect);
 			file.browseForOpenMultiple(Translator.map("Please choose images to import"), [new FileFilter("image", "*.png;*.jpg")]);
+			*/
+			trace(this, "__onChooseType");
 		}
-		
+		/*
 		private function __onSelect(evt:FileListEvent):void
 		{
 			if(evt.files.length <= 0){
@@ -80,16 +75,20 @@ package cc.makeblock.media
 			FileUtil.WriteString(jsonPath, util.JSON.stringify(libData));
 			PopupUtil.showAlert("Import Success");
 		}
-		
+		*/
 		public function exportImage():void
 		{
+			/*
 			var file:File = new File();
 			file.addEventListener(Event.SELECT, __onChooseDir);
 			file.browseForDirectory(Translator.map("Please choose export directory"));
+			*/
+			trace(this, "exportImage");
 		}
 		
 		private function __onChooseDir(evt:Event):void
 		{
+			/*
 			var exportFile:File = evt.target as File;
 			
 			var mediaDir:File = File.applicationStorageDirectory.resolvePath("mBlock/media");
@@ -104,6 +103,8 @@ package cc.makeblock.media
 				var fileName:String = info.md5;
 				mediaDir.resolvePath(fileName).copyToAsync(exportFile.resolvePath(fileName));
 			}
+			*/
+			trace(this, "__onChooseDir");
 		}
 	}
 }

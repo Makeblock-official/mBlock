@@ -18,7 +18,6 @@
  */
 
 package uiwidgets {
-	import flash.desktop.NativeApplication;
 	import flash.display.DisplayObject;
 	import flash.display.Graphics;
 	import flash.display.Sprite;
@@ -28,7 +27,6 @@ package uiwidgets {
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
 	import flash.filters.DropShadowFilter;
-	import flash.system.Capabilities;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFieldType;
@@ -59,11 +57,8 @@ public class DialogBox extends Sprite {
 	private var heightPerField:int = Math.max(makeLabel('foo').height, makeField(10).height) + 10;
 	private const spaceAfterText:int = 18;
 	private const blankLineSpace:int = 7;
-	private var backMaskMc:Sprite;
+
 	private var acceptFunction:Function; // if not nil, called when menu interaction is accepted
-	//arrange type
-	static public var HORIZONTAL:uint=0;  //横
-	static public var VERTICAL:uint=1;		//竖
 
 	public function DialogBox(acceptFunction:Function = null) {
 		this.acceptFunction = acceptFunction;
@@ -104,12 +99,7 @@ public class DialogBox extends Sprite {
 		addChild(title);
 	}
 	public function setTitle(label:String):void{
-		if(title){
-			title.text = Translator.map(label);
-		}else{
-			title = makeLabel(Translator.map(label), true);
-			addChild(title);
-		}
+		title.text = Translator.map(label);
 	}
 	public function addText(text:String):void {
 		for each (var s:String in text.split('\n')) {
@@ -225,38 +215,21 @@ private function getCheckMark(b:Boolean):Sprite{
 	public function showOnStage(stage:Stage, center:Boolean = true):void {
 		fixLayout();
 		if (center) {
-			x = (stage.nativeWindow.width - width) / 2;
-			y = (stage.nativeWindow.height - height) / 2;
+			x = (stage.stageWidth - width) / 2;
+			y = (stage.stageHeight - height) / 2;
 		} else {
 			x = stage.mouseX + 10;
 			y = stage.mouseY + 10;
 		}
-		x = Math.max(0, Math.min(x, stage.nativeWindow.width - width));
-		y = Math.max(0, Math.min(y, stage.nativeWindow.height - height));
-		if(!backMaskMc)
-		{
-			backMaskMc = new Sprite();
-			backMaskMc.graphics.beginFill(0,0.5);
-			backMaskMc.graphics.drawRect(0,0,Capabilities.screenResolutionX,Capabilities.screenResolutionY);
-			backMaskMc.graphics.endFill();
-		}
-		
-		stage.addChild(backMaskMc);
-		stage.addEventListener(MouseEvent.MOUSE_DOWN,preventClickHandler,true);
+		x = Math.max(0, Math.min(x, stage.stageWidth - width));
+		y = Math.max(0, Math.min(y, stage.stageHeight - height));
 		stage.addChild(this);
 		if (labelsAndFields.length > 0) {
 			// note: doesn't work when testing from FlexBuilder; works when deployed
 			stage.focus = labelsAndFields[0][1];
 		}
 	}
-	private function preventClickHandler(e:MouseEvent):void
-	{
-		if(e.target==backMaskMc)
-		{
-			e.stopImmediatePropagation();
-		}
-		
-	}
+
 	public static function findDialogBoxes(targetTitle:String, stage:Stage):Array {
 		// Return an array of all dialogs on the stage with the given title.
 		// If the given title is null then return all dialogs.
@@ -276,42 +249,12 @@ private function getCheckMark(b:Boolean):Sprite{
 	}
 
 	public function accept():void {
-		if (acceptFunction != null) 
-		{
-			try{
-				acceptFunction(this);
-			}
-			catch(err:Error)
-			{
-				acceptFunction();
-			}
-		}
-		
-		if (parent != null) {
-			parent.removeEventListener(MouseEvent.MOUSE_DOWN,preventClickHandler,true);
-			parent.removeChild(this);
-		}
-		if(backMaskMc && backMaskMc.parent)
-		{
-			backMaskMc.parent.removeChild(backMaskMc);
-			backMaskMc = null;
-		}
-		
-		
+		if (acceptFunction != null) acceptFunction(this);
+		if (parent != null) parent.removeChild(this);
 	}
-	
+
 	public function cancel():void {
-		
-		if (parent != null) {
-			parent.removeEventListener(MouseEvent.MOUSE_DOWN,preventClickHandler,true);
-			parent.removeChild(this);
-		}
-		if(backMaskMc && backMaskMc.parent)
-		{
-			backMaskMc.parent.removeChild(backMaskMc);
-			backMaskMc = null;
-		}
-		
+		if (parent != null) parent.removeChild(this);
 	}
 
 	public function getField(fieldName:String):* {
@@ -357,10 +300,10 @@ private function getCheckMark(b:Boolean):Sprite{
 		return result;
 	}
 
-	public function fixLayout(layoutType:uint=0):void {
+	public function fixLayout():void {
 		var label:TextField;
-		var i:int, totalW:int,totalH:int;
-		fixSize(layoutType);
+		var i:int, totalW:int;
+		fixSize();
 		var fieldX:int = maxLabelWidth + 17;
 		var fieldY:int = 15;
 		if (title != null) {
@@ -414,40 +357,20 @@ private function getCheckMark(b:Boolean):Sprite{
 		if (textLines.length > 0) fieldY += spaceAfterText;
 		// buttons
 		if (buttons.length > 0) {
-			if(layoutType==HORIZONTAL)
-			{
-				totalW = (buttons.length - 1) * 10;
-				for (i = 0; i < buttons.length; i++) totalW += buttons[i].width;
-				var buttonX:int = (w - totalW) / 2;
-				var buttonY:int = h - (buttons[0].height + 15);
-				for (i = 0; i < buttons.length; i++) {
-					buttons[i].x = buttonX;
-					buttons[i].y = buttonY;
-					buttonX += buttons[i].width + 10;
-				}
+			totalW = (buttons.length - 1) * 10;
+			for (i = 0; i < buttons.length; i++) totalW += buttons[i].width;
+			var buttonX:int = (w - totalW) / 2;
+			var buttonY:int = h - (buttons[0].height + 15);
+			for (i = 0; i < buttons.length; i++) {
+				buttons[i].x = buttonX;
+				buttons[i].y = buttonY;
+				buttonX += buttons[i].width + 10;
 			}
-			//竖向排列
-			else if(layoutType==VERTICAL)
-			{
-				totalH = 0;
-				for (i = 0; i < buttons.length; i++) {
-					totalH += buttons[i].height;
-				}
-				
-				buttonY = buttons[0].height+15;
-				for (i = 0; i < buttons.length; i++) {
-					buttonX = (w - buttons[i].width) / 2;
-					buttons[i].x = buttonX;
-					buttons[i].y = buttonY;
-					buttonY += buttons[i].height + 10;
-				}
-			}
-			
 		}
 	}
 
-	private function fixSize(layoutType:uint=0):void {
-		var i:int, totalW:int,totalH:int;
+	private function fixSize():void {
+		var i:int, totalW:int;
 		w = h = 0;
 		// title
 		if (title != null) {
@@ -490,32 +413,12 @@ private function getCheckMark(b:Boolean):Sprite{
 		if (textLines.length > 0) h += spaceAfterText;
 		// buttons
 		totalW = 0;
-		totalH = 0;
-		if(layoutType==DialogBox.HORIZONTAL)
-		{
-			for (i = 0; i < buttons.length; i++) {
-			
-				totalW += buttons[i].width + 10;
-			}
-			w = Math.max(w, totalW);
-		}
-		else if(layoutType==DialogBox.VERTICAL)
-		{
-			for (i = 0; i < buttons.length; i++) {
-				
-				totalH += buttons[i].height + 10;
-				w = Math.max(w, buttons[i].width);
-			}
-			h = Math.max(h,totalH);
-		}
-				
-		
-		
+		for (i = 0; i < buttons.length; i++) totalW += buttons[i].width + 10;
+		w = Math.max(w, totalW);
 		if (buttons.length > 0) h += buttons[0].height + 15;
 		if ((labelsAndFields.length > 0) || (booleanLabelsAndFields.length > 0)) h += 15;
 		w += 30;
 		h += 10;
-		
 		drawBackground();
 	}
 

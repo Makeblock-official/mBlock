@@ -1,50 +1,39 @@
 package cc.makeblock.mbot.ui.parts
 {
-	import flash.display.NativeMenu;
-	import flash.display.NativeMenuItem;
 	import flash.display.Stage;
 	import flash.events.Event;
-	import flash.filesystem.File;
 	import flash.net.URLRequest;
 	import flash.net.navigateToURL;
 	
 	import cc.makeblock.mbot.uiwidgets.DynamicCompiler;
 	import cc.makeblock.mbot.uiwidgets.errorreport.ErrorReportFrame;
-	import cc.makeblock.mbot.uiwidgets.extensionMgr.ExtensionUtil;
 	import cc.makeblock.media.MediaManager;
-	import cc.makeblock.menu.MenuUtil;
-	import cc.makeblock.menu.SystemMenu;
-	import cc.makeblock.updater.AppUpdater;
 	
-	import extensions.ArduinoManager;
-	import extensions.BluetoothManager;
 	import extensions.ConnectionManager;
 	import extensions.DeviceManager;
-	import extensions.ExtensionManager;
-	import extensions.HIDManager;
-	import extensions.ScratchExtension;
-	import extensions.SerialDevice;
-	import extensions.SerialManager;
-	import extensions.SocketManager;
 	
 	import org.aswing.AsWingUtils;
 	
 	import translation.Translator;
 	
-	import util.ApplicationManager;
-	import util.SharedObjectManager;
-	
-	public class TopSystemMenu extends SystemMenu
+	public class TopSystemMenu// extends SystemMenu
 	{
 		public function TopSystemMenu(stage:Stage, path:String)
 		{
-			super(stage, path);
+//			super(stage, path);
+			/*
+			if(!ApplicationManager.sharedManager().isCatVersion){
+				var helpMenu:NativeMenu = getNativeMenu().getItemByName("Help").submenu;
+				helpMenu.removeItemAt(2);
+				helpMenu.removeItemAt(1);
+				helpMenu.removeItemAt(0);
+			}
 			
 			getNativeMenu().getItemByName("File").submenu.addEventListener(Event.DISPLAYING, __onInitFielMenu);
 			getNativeMenu().getItemByName("Edit").submenu.addEventListener(Event.DISPLAYING, __onInitEditMenu);
-			getNativeMenu().getItemByName("Connect").submenu.addEventListener(Event.DISPLAYING, __onShowConnect);
-			getNativeMenu().getItemByName("Boards").submenu.addEventListener(Event.DISPLAYING, __onShowBoards);
 			getNativeMenu().getItemByName("Extensions").submenu.addEventListener(Event.DISPLAYING, __onInitExtMenu);
+			getNativeMenu().getItemByName("Boards").submenu.addEventListener(Event.DISPLAYING, __onShowBoards);
+			getNativeMenu().getItemByName("Connect").submenu.addEventListener(Event.DISPLAYING, __onShowConnect);
 			getNativeMenu().getItemByName("Language").submenu.addEventListener(Event.DISPLAYING, __onShowLanguage);
 			
 			register("File", __onFile);
@@ -55,70 +44,17 @@ package cc.makeblock.mbot.ui.parts
 			register("Manage Extensions", ExtensionUtil.OnManagerExtension);
 			register("Restore Extensions", ExtensionUtil.OnLoadExtension);
 			register("Clear Cache", ArduinoManager.sharedManager().clearTempFiles);
-			register("Reset Default Program", __onResetDefaultProgram);
-			register("Microsoft Cognitive Service Setting", __onMicrosoftSettingSelect);
-			register("Set FirmWare Mode", __onResetDefaultProgram);
-		}
-		
-		private function __onResetDefaultProgram(item:NativeMenuItem):void
-		{
-			var ext:ScratchExtension;
-			var filePath:String;
-			switch(item.name){
-				case "mymBot":
-					filePath = "mBlock/tools/hex/mbot_reset.hex";
-					break;
-				case "Starter IR":
-					filePath = "mBlock/tools/hex/Starter_IR.hex";
-					break;
-				case "Starter Bluetooth":
-					filePath = "mBlock/tools/hex/Starter_Bluetooth.hex";
-					break;
-				case "mBot Ranger":
-					filePath = "mBlock/tools/hex/auriga.hex";
-					break;
-				case "Mega Pi":
-					filePath = "mBlock/tools/hex/mega_pi.hex";
-					break;
-				case "bluetooth mode":
-					ext = MBlock.app.extensionManager.extensionByName("Auriga");
-					if(ext != null)
-						ext.js.call("switchMode", [0], null);
-					return;
-				case "ultrasonic mode":
-					ext = MBlock.app.extensionManager.extensionByName("Auriga");
-					if(ext != null)
-						ext.js.call("switchMode", [1], null);
-					return;
-				case "line follower mode":
-					ext = MBlock.app.extensionManager.extensionByName("Auriga");
-					if(ext != null)
-						ext.js.call("switchMode", [4], null);
-					return;
-				case "balance mode":
-					ext = MBlock.app.extensionManager.extensionByName("Auriga");
-					if(ext != null)
-						ext.js.call("switchMode", [2], null);
-					return;
-				default:
-					MBlock.app.scriptsPart.appendMessage("Unknow board: " + item.name);
-					return;
-			}
-			var file:File = ApplicationManager.sharedManager().documents.resolvePath(filePath);
-			if(file.exists){
-				SerialManager.sharedManager().upgrade(file.nativePath);
-			}else{
-				MBlock.app.scriptsPart.appendMessage("File not exist: " + file.nativePath);
-			}
+			*/
 		}
 		
 		public function changeLang():void
 		{
-			MenuUtil.ForEach(getNativeMenu(), changeLangImpl);
+//			MenuUtil.ForEach(getNativeMenu(), changeLangImpl);
 		}
 		
-		private function changeLangImpl(item:NativeMenuItem):*
+		private function changeLangImpl(item:Object):*
 		{
+			/*
 			var index:int = getNativeMenu().getItemIndex(item);
 			if(0 <= index && index < defaultMenuCount){
 				return true;
@@ -128,7 +64,7 @@ package cc.makeblock.mbot.ui.parts
 			}
 			var p:NativeMenuItem = MenuUtil.FindParentItem(item);
 			if(p != null && p.name == "Extensions"){
-				if(p.submenu.getItemIndex(item) > 4){
+				if(p.submenu.getItemIndex(item) > 2){
 					return true;
 				}
 			}
@@ -142,8 +78,9 @@ package cc.makeblock.mbot.ui.parts
 				setItemLabel(item);
 				return true;
 			}
+			*/
 		}
-		
+		/*
 		private function setItemLabel(item:NativeMenuItem):void
 		{
 			var newLabel:String = Translator.map(item.name);
@@ -151,8 +88,8 @@ package cc.makeblock.mbot.ui.parts
 				item.label = newLabel;
 			}
 		}
-		
-		private function __onFile(item:NativeMenuItem):void
+		*/
+		private function __onFile(item:Object):void
 		{
 			switch(item.name)
 			{
@@ -183,7 +120,7 @@ package cc.makeblock.mbot.ui.parts
 			}
 		}
 		
-		private function __onEdit(item:NativeMenuItem):void
+		private function __onEdit(item:Object):void
 		{
 			switch(item.name){
 				case "Undelete":
@@ -205,7 +142,7 @@ package cc.makeblock.mbot.ui.parts
 			MBlock.app.track("/OpenEdit");
 		}
 		
-		private function __onConnect(menuItem:NativeMenuItem):void
+		private function __onConnect(menuItem:Object):void
 		{
 			var key:String;
 			if(menuItem.data){
@@ -224,6 +161,7 @@ package cc.makeblock.mbot.ui.parts
 		
 		private function __onShowLanguage(evt:Event):void
 		{
+			/*
 			var languageMenu:NativeMenu = evt.target as NativeMenu;
 			if(languageMenu.numItems <= 2){
 				for each (var entry:Array in Translator.languages) {
@@ -248,34 +186,36 @@ package cc.makeblock.mbot.ui.parts
 			}catch(e:Error){
 				
 			}
+			*/
 		}
 		
-		private function __onMicrosoftSettingSelect(item:NativeMenuItem):void
-		{
-			MBlock.app.openMicrosoftCognitiveSetting(Translator.map("Microsoft Cognitive Services"));
-		}
 		private function __onLanguageSelect(evt:Event):void
 		{
+			/*
 			var item:NativeMenuItem = evt.target as NativeMenuItem;
 			if(item.name == "setFontSize"){
 				Translator.setFontSize(int(item.label));
 			}else{
 				Translator.setLanguage(item.name);
 			}
+			*/
 		}
 		
 		private function __onInitFielMenu(evt:Event):void
 		{
+			/*
 			var menu:NativeMenu = evt.target as NativeMenu;
 			
 			MenuUtil.setEnable(menu.getItemByName("Undo Revert"), MBlock.app.canUndoRevert());
 			MenuUtil.setEnable(menu.getItemByName("Revert"), MBlock.app.canRevert());
 			
 			MBlock.app.track("/OpenFile");
+			*/
 		}
 		
 		private function __onInitEditMenu(evt:Event):void
 		{
+			/*
 			var menu:NativeMenu = evt.target as NativeMenu;
 			MenuUtil.setEnable(menu.getItemByName("Undelete"), MBlock.app.runtime.canUndelete());
 			MenuUtil.setChecked(menu.getItemByName("Hide stage layout"), MBlock.app.stageIsHided);
@@ -283,10 +223,12 @@ package cc.makeblock.mbot.ui.parts
 			MenuUtil.setChecked(menu.getItemByName("Turbo mode"), MBlock.app.interp.turboMode);
 			MenuUtil.setChecked(menu.getItemByName("Arduino mode"), MBlock.app.stageIsArduino);
 			MBlock.app.track("/OpenEdit");
+			*/
 		}
 		
 		private function __onShowConnect(evt:Event):void
 		{
+			/*
 			SocketManager.sharedManager().probe();
 			HIDManager.sharedManager();
 			
@@ -295,23 +237,12 @@ package cc.makeblock.mbot.ui.parts
 			
 			var enabled:Boolean = MBlock.app.extensionManager.checkExtensionEnabled();
 			var arr:Array = SerialManager.sharedManager().list;
-			if(arr.length==0)
-			{
-				var nullItem:NativeMenuItem = new NativeMenuItem(Translator.map("no serial port"));
-				nullItem.enabled = false;
-				nullItem.name = "serial_"+"null";
-				subMenu.addItem(nullItem);
+			for(var i:int=0;i<arr.length;i++){
+				var item:NativeMenuItem = subMenu.addItem(new NativeMenuItem(arr[i]));
+				item.name = "serial_"+arr[i];
+				item.enabled = enabled;
+				item.checked = SerialDevice.sharedDevice().ports.indexOf(arr[i])>-1 && SerialManager.sharedManager().isConnected;
 			}
-			else
-			{
-				for(var i:int=0;i<arr.length;i++){
-					var item:NativeMenuItem = subMenu.addItem(new NativeMenuItem(arr[i]));
-					item.name = "serial_"+arr[i];
-					item.enabled = enabled;
-					item.checked = SerialDevice.sharedDevice().ports.indexOf(arr[i])>-1 && SerialManager.sharedManager().isConnected;
-				}
-			}
-			
 			menu.getItemByName("Serial Port").submenu = subMenu;
 			
 			var bluetoothItem:NativeMenuItem = menu.getItemByName("Bluetooth");
@@ -355,71 +286,37 @@ package cc.makeblock.mbot.ui.parts
 				item.checked = SocketManager.sharedManager().connected(ips[0]);
 			}
 			netWorkMenuItem.submenu = subMenu;
-			var defaultProgramMenu:NativeMenuItem = MenuUtil.FindItem(getNativeMenu(), "Reset Default Program");
-			var canReset:Boolean = SerialManager.sharedManager().isConnected;
-			defaultProgramMenu.enabled = canReset;
-			var setModeItem:NativeMenuItem = menu.getItemByName("Set FirmWare Mode");
-			setModeItem.enabled = false;
+			var canReset:Boolean = SerialManager.sharedManager().isConnected && DeviceManager.sharedManager().currentName=="mBot";
+			MenuUtil.FindItem(getNativeMenu(), "Reset Default Program").enabled = canReset;
 			canReset = SerialManager.sharedManager().isConnected && DeviceManager.sharedManager().currentName!="PicoBoard";
 			MenuUtil.FindItem(getNativeMenu(), "Upgrade Firmware").enabled = canReset;
 			canReset = DeviceManager.sharedManager().currentName!="PicoBoard";
 			MenuUtil.FindItem(getNativeMenu(), "View Source").enabled = canReset;
-			
-			if(canReset){
-				defaultProgramMenu.submenu.removeAllItems();
-				switch(DeviceManager.sharedManager().currentName){
-					case "mBot":
-						defaultProgramMenu.submenu.addItem(new NativeMenuItem("mBot")).name = "mymBot";
-						break;
-					case "Me Auriga":
-						defaultProgramMenu.submenu.addItem(new NativeMenuItem("mBot Ranger")).name = "mBot Ranger";
-						
-						setModeItem.submenu.removeAllItems();
-						/*tempItem = defaultProgramMenu.submenu.addItem(new NativeMenuItem("", true));
-						tempItem.name = "";
-						tempItem = defaultProgramMenu.submenu.addItem(new NativeMenuItem(""));
-						tempItem.name = "Set mBot Ranger Mode";
-						tempItem.label = Translator.map(tempItem.name);*/
-						//当前主板时Auriga且已连接
-						setModeItem.enabled = defaultProgramMenu.enabled;
-						for each(var modeName:String in rangerModeList){
-							tempItem = setModeItem.submenu.addItem(new NativeMenuItem(""));
-							tempItem.name = modeName;
-							tempItem.label = Translator.map(modeName);
-						}
-						break;
-					case "Me Orion":
-						defaultProgramMenu.submenu.addItem(new NativeMenuItem("Starter IR")).name = "Starter IR";
-						defaultProgramMenu.submenu.addItem(new NativeMenuItem("Starter Bluetooth")).name = "Starter Bluetooth";
-						break;
-					case "Mega Pi":
-						defaultProgramMenu.submenu.addItem(new NativeMenuItem("Mega Pi")).name = "Mega Pi";
-						break;
-				}
-			}
+			*/
 		}
 		
-		static private const rangerModeList:Array = ["bluetooth mode","ultrasonic mode","line follower mode","balance mode"];
-		
-		private function __onSelectBoard(menuItem:NativeMenuItem):void
+		private function __onSelectBoard(menuItem:Object):void
 		{
 			DeviceManager.sharedManager().onSelectBoard(menuItem.name);
 		}
 		
 		private function __onShowBoards(evt:Event):void
 		{
+			/*
 			var menu:NativeMenu = evt.target as NativeMenu;
 			for each(var item:NativeMenuItem in menu.items){
 				if(item.enabled){
 					MenuUtil.setChecked(item, DeviceManager.sharedManager().checkCurrentBoard(item.name));
 				}
 			}
+			*/
 		}
 		
 		private var initExtMenuItemCount:int = -1;
 		
 		private function __onInitExtMenu(evt:Event):void
 		{
+			/*
 			var menuItem:NativeMenu = evt.target as NativeMenu;
 //			menuItem.removeEventListener(evt.type, __onInitExtMenu);
 //			menuItem.addEventListener(evt.type, __onShowExtMenu);
@@ -443,10 +340,11 @@ package cc.makeblock.mbot.ui.parts
 				}
 				var subMenuItem:NativeMenuItem = menuItem.addItem(new NativeMenuItem(Translator.map(extName)));
 				subMenuItem.name = extName;
-				subMenuItem.label = ExtensionManager.isMakeBlockExt(extName) ? "Makeblock" : extName;
+				subMenuItem.label = ExtensionManager.isMekeBlockExt(extName) ? "Makeblock" : extName;
 				subMenuItem.checked = MBlock.app.extensionManager.checkExtensionSelected(extName);
 				register(extName, __onExtensions);
 			}
+			*/
 		}
 		
 		static private function canShowExt(extName:String):Boolean
@@ -455,7 +353,7 @@ package cc.makeblock.mbot.ui.parts
 			var result:Boolean = true;
 			switch(extName)
 			{
-				case "Orion":
+				case "Makeblock":
 					result = board.indexOf("orion") >= 0;
 					break;
 				case "mBot":
@@ -464,8 +362,8 @@ package cc.makeblock.mbot.ui.parts
 				case "UNO Shield":
 					result = board.indexOf("shield") >= 0;
 					break;
-				case "MegaPi":
-					result = board.indexOf("mega_pi") >= 0;
+				case "BaseBoard":
+					result = board.indexOf("baseboard") >= 0;
 					break;
 				case "PicoBoard":
 					result = board.indexOf("picoboard") >= 0;
@@ -488,27 +386,19 @@ package cc.makeblock.mbot.ui.parts
 			}
 		}
 		*/
-		private function __onExtensions(menuItem:NativeMenuItem):void
+		private function __onExtensions(menuItem:Object):void
 		{
 			MBlock.app.extensionManager.onSelectExtension(menuItem.name);
 		}
 		
-		private function __onHelp(menuItem:NativeMenuItem):void
+		private function __onHelp(menuItem:Object):void
 		{
 			var path:String = menuItem.data.@url;
-//			if("Forum" == menuItem.name){
-//				path = Translator.map(path);
-//			}
+			if("Forum" == menuItem.name){
+				path = Translator.map(path);
+			}
 			if(path){
 				navigateToURL(new URLRequest(path),"_blank");
-			}else{
-				path = menuItem.data.@url_en;
-				if(path){
-					if(Translator.currentLang == "zh_CN" || Translator.currentLang == "zh_TW"){
-						path = menuItem.data.@url_cn;
-					}
-					navigateToURL(new URLRequest(path),"_blank");
-				}
 			}
 			
 			switch(menuItem.name)
@@ -525,7 +415,6 @@ package cc.makeblock.mbot.ui.parts
 			
 			switch(menuItem.data.@key.toString()){
 				case "check_app_update":
-					AppUpdater.getInstance().start(true);
 					break;
 				case "upload_bug":
 					ErrorReportFrame.OpenSendWindow("");

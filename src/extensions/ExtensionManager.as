@@ -27,23 +27,20 @@ package extensions {
 import flash.events.Event;
 import flash.events.IOErrorEvent;
 import flash.events.SecurityErrorEvent;
-import flash.filesystem.File;
 import flash.net.URLLoader;
 import flash.net.URLRequest;
+import flash.utils.ByteArray;
 import flash.utils.getTimer;
 import flash.utils.setTimeout;
 
 import blocks.Block;
 
-import cc.makeblock.interpreter.RemoteCallMgr;
-import cc.makeblock.util.FileUtil;
+import cc.makeblock.util.Zip;
 
 import translation.Translator;
 
 import uiwidgets.IndicatorLight;
 
-import util.ApplicationManager;
-import util.JSON;
 import util.LogManager;
 import util.ReadStream;
 import util.SharedObjectManager;
@@ -79,10 +76,8 @@ public class ExtensionManager {
 
 	public function specForCmd(op:String):Array {
 		// Return a command spec array for the given operation or null.
-		var count:int=0;
 		for each (var ext:ScratchExtension in extensionDict) {
 			var prefix:String = ext.useScratchPrimitives ? '' : (ext.name + '.');
-			trace(count++);
 			for each (var spec:Array in ext.blockSpecs) {
 				if(spec.length <= 2){
 					continue;
@@ -165,9 +160,9 @@ public class ExtensionManager {
 		if(name=="_import_"){
 			return;
 		}
-		/*if(isMakeBlockExt(name)){
+		if(isMekeBlockExt(name)){
 			return;
-		}*/
+		}
 		var ext:Object = findExtensionByName(name);
 		if(null == ext){
 			return;
@@ -206,15 +201,22 @@ public class ExtensionManager {
 		switch(extName){
 			case "Arduino":
 			case "Communication":
-			case "Joystick(Arduino Mode Only)":
 				return true;
 		}
 		return false;
 	}
-	static public function isMakeBlockExt(extName:String):Boolean
+	static public function isMekeBlockExt(extName:String):Boolean
 	{
-		var ext:Object = MBlock.app.extensionManager.findExtensionByName(extName);
-		return ext != null && ext.isMakeBlockBoard;
+		switch(extName){
+			case "Makeblock":
+			case "mBot":
+			case "UNO Shield":
+			case "BaseBoard":
+			case "PicoBoard":
+			case "Auriga":
+				return true;
+		}
+		return false;
 	}
 	public function singleSelectExtension(name:String):void{
 		var ext:Object = findExtensionByName(name);
@@ -223,7 +225,7 @@ public class ExtensionManager {
 		}
 		for each(var tempExt:Object in _extensionList){
 			var extName:String = tempExt.extensionName;
-			if(!isMakeBlockExt(extName)){
+			if(!isMekeBlockExt(extName)){
 				continue;
 			}
 			if(checkExtensionSelected(extName)){
@@ -288,7 +290,7 @@ public class ExtensionManager {
 	*/
 	public function copyLocalExtensionFiles():void{
 		trace("copyLocalExtensionFiles");
-		copyDir("ext/libraries", "libraries");
+//		copyDir("ext/libraries", "libraries");
 		/*
 		var srcFile:File = File.applicationDirectory.resolvePath("ext/libraries/");
 		for each(var sf:File in srcFile.getDirectoryListing()){
@@ -309,59 +311,80 @@ public class ExtensionManager {
 		LogManager.sharedManager().log("copy local files...");
 		copyLocalExtensionFiles();
 		copyFirmwareAndHex();
-		copyDir("media/mediaLibrary.json");
+//		copyDir("media/mediaLibrary.json");
 	}
+	
+	[Embed(source="/assets/libraries.zip", mimeType="application/octet-stream")]
+	static private const EXT_DATA:Class;
+	static public const fileDict:Object = Zip.Parse(new EXT_DATA());
+	
 	public function importExtension():void {
 		_extensionList = [];
-		//重新加载所有的扩展时，应该清除extensionDict，解决扩展面板删除扩展时，实时更新选项卡
-		extensionDict = {};
+		trace(this, "importExtension");
+		
 //		SharedObjectManager.sharedManager().setObject("mBot_selected",true);
-		if(ApplicationManager.sharedManager().documents.resolvePath("mBlock/libraries/").exists){
-			var docs:Array =  ApplicationManager.sharedManager().documents.resolvePath("mBlock/libraries/").getDirectoryListing();
-			for each(var doc:File in docs){
-				if(!doc.isDirectory){
+//		setTimeout(function():void{
+//			singleSelectExtension("mBot");
+//		}, 1000);
+//		if(ApplicationManager.sharedManager().documents.resolvePath("mBlock/libraries/").exists){
+//			var docs:Array =  ApplicationManager.sharedManager().documents.resolvePath("mBlock/libraries/").getDirectoryListing();
+			var docs:Object = fileDict;
+			for(var key:String in docs){
+				var bytes:ByteArray = docs[key];
+				if(bytes.length <= 0){
 					continue;
 				}
-				var fs:Array = doc.getDirectoryListing();
-				for each(var f:File in fs){
-					if(f.extension=="s2e"||f.extension=="json"){
-						/*
-						function onLoadedFile(evt:Event):void{
-							var extObj:Object;
-							try {
-								extObj = util.JSON.parse(evt.target.data.toString());
-								var ldr:MeURLLoader = evt.target as MeURLLoader;
-								extObj.srcPath = ldr.url;
-								_extensionList.push(extObj);
-								if(checkExtensionSelected(extObj.extensionName)){
-									loadRawExtension(extObj);
-								}
-							} catch(e:*) {}
-						}
-						var urlloader:MeURLLoader = new MeURLLoader();
-						urlloader.addEventListener(Event.COMPLETE,onLoadedFile);
-						urlloader.url = f.url;
-						urlloader.load(new URLRequest(f.url));
-						*/
-						var extObj:Object = util.JSON.parse(FileUtil.ReadString(f));
-						extObj.srcPath = f.url;
-						_extensionList.push(extObj);
-						if(checkExtensionSelected(extObj.extensionName)){
-							loadRawExtension(extObj);
-						}
-					}
+				if(key.indexOf(".s2e") < 0){
+					continue;
 				}
-				_extensionList.sortOn("sort", Array.NUMERIC);
+				var extObj:Object = util.JSON.parse(bytes.toString());
+				extObj.srcPath = key;
+				_extensionList.push(extObj);
+				if(checkExtensionSelected(extObj.extensionName)){
+					loadRawExtension(extObj);
+				}
+//				var fs:Array = doc.getDirectoryListing();
+//				for each(var f:File in fs){
+//					if(f.extension=="s2e"||f.extension=="json"){
+//						//*
+//						function onLoadedFile(evt:Event):void{
+//							var extObj:Object;
+//							try {
+//								extObj = util.JSON.parse(evt.target.data.toString());
+//								var ldr:MeURLLoader = evt.target as MeURLLoader;
+//								extObj.srcPath = ldr.url;
+//								_extensionList.push(extObj);
+//								if(checkExtensionSelected(extObj.extensionName)){
+//									loadRawExtension(extObj);
+//								}
+//							} catch(e:*) {}
+//						}
+//						var urlloader:MeURLLoader = new MeURLLoader();
+//						urlloader.addEventListener(Event.COMPLETE,onLoadedFile);
+//						urlloader.url = f.url;
+//						urlloader.load(new URLRequest(f.url));
+//						//*/
+//						//*
+//						var extObj:Object = util.JSON.parse(FileUtil.ReadString(f));
+//						extObj.srcPath = f.url;
+//						_extensionList.push(extObj);
+//						if(checkExtensionSelected(extObj.extensionName)){
+//							loadRawExtension(extObj);
+//						}
+						//*/
+//					}
+//				}
+//				_extensionList.sortOn("sort", Array.NUMERIC);
 			}
-		}else{
-			if(SharedObjectManager.sharedManager().available("first-launch")){
-				SharedObjectManager.sharedManager().clear();
-				SerialManager.sharedManager().device = "uno";
-			}else{
-			}
-		}
+//		}else{
+//			if(SharedObjectManager.sharedManager().available("first-launch")){
+//				SharedObjectManager.sharedManager().clear();
+//				SerialManager.sharedManager().device = "uno";
+//			}else{
+//			}
+//		}
 		
-		return;
+//		return;
 //		var fs:Array =  File.applicationDirectory.resolvePath("ext/").getDirectoryListing();
 //		for each(var f:File in fs){ 
 //			if(f.extension=="s2e"||f.extension=="json"){
@@ -395,18 +418,18 @@ public class ExtensionManager {
 		var ltf:File = ApplicationManager.sharedManager().documents.resolvePath("mBlock/locale/");
 		localsFile.copyTo(ltf,true);
 		*/
-		copyDir("firmware");
-		copyDir("tools/hex");
-		copyDir("locale");
+//		copyDir("firmware");
+//		copyDir("tools/hex");
+//		copyDir("locale");
 	}
-	
+	/*
 	static private function copyDir(dirName:String, destDirName:String=null):void
 	{
 		var fromFile:File = File.applicationDirectory.resolvePath(dirName);
 		var toFile:File = File.applicationStorageDirectory.resolvePath("mBlock").resolvePath(destDirName || dirName);
 		fromFile.copyTo(toFile, true);
 	}
-	
+	*/
 	public function extensionsToSave():Array {
 		// Answer an array of extension descriptor objects for imported extensions to be saved with the project.
 		var result:Array = [];
@@ -583,7 +606,7 @@ public class ExtensionManager {
 
 	public function menuItemsFor(op:String, menuName:String):Array {
 		// Return a list of menu items for the given menu of the extension associated with op or null.
-		var i:int = op.lastIndexOf('.');
+		var i:int = op.indexOf('.');
 		if (i < 0) return null;
 		var ext:ScratchExtension = extensionDict[op.slice(0, i)];
 		if (ext == null) return null; // unknown extension
@@ -907,7 +930,6 @@ public class ExtensionManager {
 			ext.isBusy = false;
 			ext.success = "Okay";
 			ext.problem = "";
-			return;
 		}else{
 			ext.success = "";
 			ext.problem = ext.js.msg;

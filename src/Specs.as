@@ -27,11 +27,8 @@
 
 package {
 	import flash.display.Bitmap;
-	import flash.filesystem.File;
 	
 	import assets.Resources;
-	
-	import cc.makeblock.util.FileUtil;
 	
 
 public class Specs {
@@ -118,9 +115,12 @@ public class Specs {
 		return icon;
 	}
 	
+	[Embed(source="assets/blockSpec.xml", mimeType="application/octet-stream")]
+	static private const BLOCK_SPEC_CLS:Class;
+	
 	static private function Init():void
 	{
-		var content:String = FileUtil.ReadString(File.applicationDirectory.resolvePath("assets/blockSpec.xml"));
+		var content:String = new BLOCK_SPEC_CLS().toString();
 		var xml:XML = XML(content);
 		var item:XML;
 		for each(item in xml.category){

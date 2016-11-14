@@ -1,11 +1,7 @@
 package {
 	import com.google.analytics.GATracker;
 	
-	import flash.desktop.NativeApplication;
-	import flash.desktop.NativeProcess;
-	import flash.desktop.NativeProcessStartupInfo;
 	import flash.display.DisplayObject;
-	import flash.display.Loader;
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
 	import flash.display.StageDisplayState;
@@ -15,12 +11,9 @@ package {
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
 	import flash.events.UncaughtErrorEvent;
-	import flash.filesystem.File;
 	import flash.geom.Point;
-	import flash.net.URLRequest;
+	import flash.net.FileReference;
 	import flash.system.System;
-	import flash.text.TextField;
-	import flash.text.TextFormat;
 	import flash.ui.Keyboard;
 	import flash.utils.ByteArray;
 	import flash.utils.setTimeout;
@@ -30,27 +23,17 @@ package {
 	import blocks.Block;
 	
 	import cc.makeblock.mbot.lookandfeel.MyLookAndFeel;
-	import cc.makeblock.mbot.ui.parts.TopSystemMenu;
 	import cc.makeblock.mbot.uiwidgets.errorreport.ErrorReportFrame;
 	import cc.makeblock.mbot.util.AppTitleMgr;
-	import cc.makeblock.mbot.util.PopupUtil;
-	import cc.makeblock.menu.MenuBuilder;
-	import cc.makeblock.updater.AppUpdater;
-	import cc.makeblock.util.FileUtil;
 	import cc.makeblock.util.FlashSprite;
-	import cc.makeblock.util.InvokeMgr;
 	
-	import extensions.BluetoothManager;
 	import extensions.DeviceManager;
 	import extensions.ExtensionManager;
-	import extensions.HIDManager;
 	import extensions.SerialManager;
-	import extensions.SocketManager;
 	
 	import interpreter.Interpreter;
 	
 	import org.aswing.AsWingManager;
-	import org.aswing.JOptionPane;
 	import org.aswing.UIManager;
 	
 	import scratch.BlockMenus;
@@ -79,15 +62,14 @@ package {
 	import ui.parts.TabsPart;
 	import ui.parts.TopBarPart;
 	
-	import uiwidgets.Button;
 	import uiwidgets.CursorTool;
 	import uiwidgets.DialogBox;
 	import uiwidgets.Menu;
 	import uiwidgets.ScriptsPane;
 	
 	import util.ApplicationManager;
-	import util.DESParser;
 	import util.GestureHandler;
+	import util.JsUtil;
 	import util.LogManager;
 	import util.ProjectIO;
 	import util.Server;
@@ -95,13 +77,11 @@ package {
 	
 	import watchers.ListWatcher;
 
-	[SWF(frameRate="30")]
+	[SWF(frameRate="30", width="1280", height="768")]
 	public class MBlock extends Sprite {
 		// Version
-		private static var vxml:XML = NativeApplication.nativeApplication.applicationDescriptor; 
-		private static var xmlns:Namespace = new Namespace(vxml.namespace());
 	
-		public static const versionString:String = 'v'+vxml.xmlns::versionNumber;
+		public static const versionString:String = 'v3.2.2';
 		public static var app:MBlock; // static reference to the app, used for debugging
 	
 		// Display modes
@@ -111,8 +91,6 @@ package {
 		public var stageIsContracted:Boolean; // true when the stage is half size to give more space on small screens
 		public var stageIsHided:Boolean;
 		public var stageIsArduino:Boolean;
-	
-		private var systemMenu:TopSystemMenu;
 		
 		// Runtime
 		public var runtime:ScratchRuntime;
@@ -121,7 +99,6 @@ package {
 		public const server:Server = new Server();
 		public var gh:GestureHandler;
 		
-		private var projectFile:File;
 		public var projectID:String = '';
 		public var loadInProgress:Boolean;
 	
@@ -145,21 +122,16 @@ package {
 		public var scriptsPart:ScriptsPart;
 		public var imagesPart:ImagesPart;
 		protected var soundsPart:SoundsPart;
-		protected var stagePart:StagePart;
+		public var stagePart:StagePart;
 		private var ga:GATracker;
 		private var tabsPart:TabsPart;
-		private var _welcomeView:Loader;
-		private var _currentVer:String = "05.05.001";
+		private var _currentVer:String = "03.14.001";
 		public function MBlock(){
+			SharedObjectManager.sharedManager().setObject("board","uno");
+			SharedObjectManager.sharedManager().setObject("device","uno");
 			app = this;
 			addEventListener(Event.ADDED_TO_STAGE,initStage);
 			loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, __onError);
-//			trace(DESParser.decryptDES("123456","2YNQ6N8ahls0YmQ1NGI3OTkzMWM2OWM5YTczNDUzNGQ="));
-//			trace(DESParser.encryptDES("123456",'05f40ce31c9e4d339c75a77007d479b8'));//face
-//			trace(DESParser.encryptDES("123456",'212ea29742574cae8add9ad79abcfe4a'));//speech
-//			trace(DESParser.encryptDES("123456",'2a71aa9ef2fc478e8e35b13ca65d9e3f'));//emotion
-//			trace(DESParser.encryptDES("123456",'d30bb3fa0e40461eaf1d0b11b609a75a'));//text
-			SharedObjectManager.sharedManager().loadRemoteConfig();
 		}
 		static private var errorFlag:Boolean;
 		private function __onError(evt:UncaughtErrorEvent):void
@@ -179,16 +151,10 @@ package {
 		
 		private function initStage(evt:Event):void{
 			removeEventListener(Event.ADDED_TO_STAGE,initStage);
-			stage.nativeWindow.title += "(" + versionString + ")";
 			AsWingManager.initAsStandard(this);
 			UIManager.setLookAndFeel(new MyLookAndFeel());
-			AppTitleMgr.Instance.init(stage.nativeWindow);
-//			ApplicationManager.sharedManager().isCatVersion = NativeApplication.nativeApplication.applicationDescriptor.toString().indexOf("猫友")>-1;
 			ga = new GATracker(this,"UA-54268669-1","AS3",false);
 			track("/app/launch");
-			new InvokeMgr();
-			stage.nativeWindow.addEventListener(Event.CLOSING,onExiting);
-			AppUpdater.getInstance().start();
 			stage.align = StageAlign.TOP_LEFT;
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			
@@ -209,16 +175,8 @@ package {
 			initRuntime();
 //			try{
 				extensionManager = new ExtensionManager(this);
-				var extensionsPath:File = ApplicationManager.sharedManager().documents.resolvePath("mBlock");
-				if(!extensionsPath.exists){
-					SharedObjectManager.sharedManager().clear();
-					SharedObjectManager.sharedManager().setObject(versionString+".0."+_currentVer,true);
-					extensionManager.copyLocalFiles();
-				}
-				
 		//		extensionManager.importExtension();
 				addParts();
-				systemMenu = new TopSystemMenu(stage, "assets/menu.xml");
 				Translator.initializeLanguageList();
 //				playerBG = new Shape(); // create, but don't add
 				stage.addEventListener(MouseEvent.MOUSE_DOWN, gh.mouseDown);
@@ -231,56 +189,12 @@ package {
 				stage.addEventListener(KeyboardEvent.KEY_DOWN, keyDown); // to handle escape key
 				stage.addEventListener(Event.ENTER_FRAME, step);
 				stage.addEventListener(Event.RESIZE, onResize);
-				setEditMode(true);
 			// install project before calling fixLayout()
-			if (editMode) runtime.installNewProject();
-			else runtime.installEmptyProject();
+				JsUtil.Init(stage);
 			
-			fixLayout();
-			setTimeout(SocketManager.sharedManager, 100);
 			setTimeout(DeviceManager.sharedManager, 100);
-			if(!SharedObjectManager.sharedManager().getObject(versionString+".0."+_currentVer,false)){
-				//SharedObjectManager.sharedManager().clear();
-				SharedObjectManager.sharedManager().setObject(versionString+".0."+_currentVer,true);
-				extensionsPath.deleteDirectory(true);
-				extensionManager.copyLocalFiles();
-				SharedObjectManager.sharedManager().setObject("first-launch",true);
-				
-				//SharedObjectManager.sharedManager().setObject("board","mbot_uno");
-			}
 			//VersionManager.sharedManager().start(); //在线更新资源文件
-			if(SharedObjectManager.sharedManager().getObject("first-launch",true)){
-				SharedObjectManager.sharedManager().setObject("first-launch",false);
-				openWelcome();
-			}
-			initExtension();
-			MenuBuilder.BuildMenuList(XMLList(FileUtil.LoadFile("assets/context_menus.xml")));
-			//初始化项目标题
-			setProjectName('Untitled');
-		}
-		private function initExtension():void{
-//			ClickerManager.sharedManager().update();
 			SerialManager.sharedManager().setMBlock(this);
-			HIDManager.sharedManager().setMBlock(this);
-		}
-		private function openWelcome():void{
-			openSwf("welcome.swf");
-		}
-		public function openOrion():void{
-			openSwf("orion_buzzer.swf");
-		}
-		private function openSwf(path:String):void
-		{
-			_welcomeView = new Loader();
-			_welcomeView.load(new URLRequest(path));
-			_welcomeView.contentLoaderInfo.addEventListener(Event.COMPLETE,onWelcomeLoaded);
-		}
-		private function onWelcomeLoaded(evt:Event):void{
-			var w:uint = stage.stageWidth;
-			var h:uint = stage.stageHeight;
-			_welcomeView.x = (w-550)/2;
-			_welcomeView.y = (h-400)/2+30;
-			setTimeout(addChild, 500, _welcomeView);
 		}
 		
 		public function track(msg:String):void{
@@ -320,28 +234,18 @@ package {
 		public function getPaletteBuilder():PaletteBuilder {
 			return new PaletteBuilder(this);
 		}
-		
+		/*
 		private function onExiting(evt:Event):void{
 			if(saveNeeded){
 				evt.preventDefault();
 				saveProjectAndThen(quitApp);
 			}
-			else
-			{
-				SerialManager.sharedManager().disconnect();
-				HIDManager.sharedManager().disconnect();
-			}
 			MBlock.app.gh.mouseUp(new MouseEvent(MouseEvent.MOUSE_UP));
-			
-			
-			
 		}
-		
+		*/
 		public function quitApp():void
 		{
-			SerialManager.sharedManager().disconnect();
-			HIDManager.sharedManager().disconnect();
-			NativeApplication.nativeApplication.exit();
+			trace(this, "quitApp");
 			track("/app/exit");
 			LogManager.sharedManager().save();
 		}
@@ -392,25 +296,25 @@ package {
 			if (isShowing(scriptsPart)) scriptsPart.updatePalette();
 			if (clearCaches) runtime.clearAllCaches();
 		}
-		
-		public function setProjectFile(file:File):void
+		//*
+		public function setProjectFile(file:Object):void
 		{
 			if(file != null){
-				setProjectName(file.name);
+				setProjectName("file name");
 			}else{
 				setProjectName('Untitled');
 			}
-			projectFile = file;
+//			projectFile = file;
 		}
-	
-		private function setProjectName(s:String):void {
+	//*/
+		public function setProjectName(s:String):void {
 			if (s.slice(-3) == '.sb') s = s.slice(0, -3);
 			if (s.slice(-4) == '.sb2') s = s.slice(0, -4);
 			stagePart.setProjectName(s);
 		}
 	
 		protected var wasEditing:Boolean;
-		public function setPresentationMode(enterPresentation:Boolean):void {
+		public function setPresentationMode(enterPresentation:Boolean, fullscreenFlag:Boolean=true):void {
 			if (enterPresentation) {
 				wasEditing = editMode;
 				if (wasEditing) {
@@ -419,10 +323,10 @@ package {
 			} else if (wasEditing){
 				setEditMode(true);
 			}
-			
-			track(enterPresentation?"/enterFullscreen":"/enterNormal");
-			stage.displayState = enterPresentation ? StageDisplayState.FULL_SCREEN_INTERACTIVE : StageDisplayState.NORMAL;
-			
+			if(fullscreenFlag){
+				track(enterPresentation?"enterFullscreen":"enterNormal");
+				stage.displayState = enterPresentation ? StageDisplayState.FULL_SCREEN_INTERACTIVE : StageDisplayState.NORMAL;
+			}
 			for each (var o:ScratchObj in stagePane.allObjects()) o.applyFilters();
 	
 			if (lp) fixLoadProgressLayout();
@@ -435,9 +339,11 @@ package {
 				setPresentationMode(false);
 				stagePart.exitPresentationMode();
 			}
+			/*
 			if(evt.ctrlKey && evt.keyCode == Keyboard.P){
 				FileUtil.PrintScreen();
 			}
+			*/
 		}
 	
 		private function setSmallStageMode(flag:Boolean):void {
@@ -448,15 +354,13 @@ package {
 			tabsPart.refresh();
 			stagePane.applyFilters();
 			stagePane.updateCostume();
-			this.tabsPart.soundsTab.visible = !stageIsArduino;
-			this.tabsPart.imagesTab.visible = !stageIsArduino;
 		}
 	
 		public function projectLoaded():void {
 			removeLoadProgressBox();
 			System.gc();
 //			if (autostart) runtime.startGreenFlags(true);
-			//saveNeeded = false;
+			saveNeeded = false;
 	
 			// translate the blocks of the newly loaded project
 			for each (var o:ScratchObj in stagePane.allObjects()) {
@@ -465,6 +369,9 @@ package {
 		}
 	
 		protected function step(e:Event):void {
+			if(scriptsPart == null){
+				return;
+			}
 			// Step the runtime system and all UI components.
 			gh.step();
 			runtime.stepRuntime();
@@ -564,7 +471,7 @@ package {
 		// UI Modes and Resizing
 		//------------------------------
 	
-		private function setEditMode(newMode:Boolean):void {
+		public function setEditMode(newMode:Boolean):void {
 			Menu.removeMenusFrom(stage);
 			editMode = newMode;
 			if (editMode) {
@@ -597,7 +504,7 @@ package {
 			
 		}
 	
-		private function fixLayout():void {
+		public function fixLayout():void {
 			var w:int = stage.stageWidth;
 			var h:int = stage.stageHeight - 1; // fix to show bottom border...
 	
@@ -605,10 +512,6 @@ package {
 			h = Math.ceil(h / scaleY);
 	
 			updateLayout(w, h);
-			if(_welcomeView){
-				_welcomeView.x = (w-550)/2;
-				_welcomeView.y = (h-400)/2+30;
-			}
 		}
 	
 		protected function updateLayout(w:int, h:int):void {
@@ -696,12 +599,6 @@ package {
 			imagesPart.updateTranslation();
 			soundsPart.updateTranslation();
 			scriptsPart.updateTranslation();
-			
-			systemMenu.changeLang();
-		}
-		
-		public function openBluetooth(b:*):void{
-			BluetoothManager.sharedManager().discover();
 		}
 		
 		private function clearProject():void
@@ -713,23 +610,12 @@ package {
 		}
 	
 		public function createNewProject(ignore:* = null):void {
-			saveProjectAndThen(clearProject);
-			//AppTitleMgr.Instance.setProjectModifyInfo(true);
+//			saveProjectAndThen(clearProject);
+			clearProject();
 		}
-	
+	/*
 		public function saveProjectAndThen(postSaveAction:Function = null):void {
 			// Give the user a chance to save their project, if needed, then call postSaveAction.
-			/*
-			function doNothing():void {}
-			function cancel():void { d.cancel(); }
-			function proceedWithoutSaving():void { d.cancel(); postSaveAction() }
-			function save():void {
-				d.cancel();
-				exportProjectToFile(false,postSaveAction); // if this succeeds, saveNeeded will become false
-				if (!saveNeeded) postSaveAction();
-			}
-			if (postSaveAction == null) postSaveAction = doNothing;
-			*/
 			if(isPanelShowing){
 				return;
 			}
@@ -739,14 +625,6 @@ package {
 				}
 				return;
 			}
-			/*
-			var d:DialogBox = new DialogBox();
-			d.addTitle(Translator.map('Save project') + '?');
-			d.addButton('Save', save);
-			d.addButton('Don\'t save', proceedWithoutSaving);
-			d.addButton('Cancel', cancel);
-			d.showOnStage(stage);
-			*/
 			isPanelShowing = true;
 			PopupUtil.showQuitAlert(function(value:int):void{
 				switch(value){
@@ -762,6 +640,8 @@ package {
 				isPanelShowing = false;
 			});
 		}
+		*/
+		private var projectFile:Object;
 		
 		public function saveFile():void
 		{
@@ -778,66 +658,35 @@ package {
 		
 		private function __onSqueakSoundsConverted(projIO:ProjectIO):void
 		{
+			trace(this, "__onSqueakSoundsConverted");
 			saveNeeded = false;
 			scriptsPane.saveScripts(false);
-			FileUtil.WriteBytes(projectFile, projIO.encodeProjectAsZipFile(stagePane));
+//			FileUtil.WriteBytes(projectFile, projIO.encodeProjectAsZipFile(stagePane));
 		}
 		
-		private var isPanelShowing:Boolean;
+//		private var isPanelShowing:Boolean;
 	
 		public function exportProjectToFile(postSaveAction:Function=null):void {
 			function squeakSoundsConverted(projIO:ProjectIO):void {
 				scriptsPane.saveScripts(false);
 //				var zipData:ByteArray = projIO.encodeProjectAsZipFile(stagePane);
-				var file:File;
-				if(projectFile != null && postSaveAction!=null){
-					//如果项目已存在，并且回调函数不为空，说明当前是关闭前的保存，那么就在这个file上进行保存，并且关闭
+				var file:FileReference;
+				if(projectFile != null){
 					file = projectFile.clone();
-					FileUtil.WriteBytes(file, projIO.encodeProjectAsZipFile(stagePane));
-					saveNeeded = false;
-					setProjectFile(file);
-					if(postSaveAction!=null){
-						postSaveAction();
-					}
-					
 				}else{
 					var defaultName:String = (projectName().length > 1) ? projectName() + '.sb2' : 'project.sb2';
-					showMessage("defaultName="+defaultName);
 					var path:String = fixFileName(defaultName);
-					showMessage("path="+path);
-					file = File.desktopDirectory.resolvePath(path);
-					showMessage("file.url0="+file.url);
-					file.addEventListener(Event.SELECT, fileSaved);
-					file.browseForSave(Translator.map("please choose file location"));
 				}
-				
+				file.addEventListener(Event.SELECT, fileSaved);
 //				file.save(zipData, path);
 			}
 			function fileSaved(e:Event):void {
-				
-				var file:File = e.target as File;
-				showMessage("file.url11="+file.url);
-				//处理ios 10.11.6，会自动将默认名称包含进去，比如Untitle.sb2/myproject.sb2
-				var pathArr:Array = file.url.split("/");
-				for(var i:int=0;i<pathArr.length;i++)
-				{
-					if(i<pathArr.length-1 &&　pathArr[i].indexOf(".sb2")>-1)
-					{
-						pathArr.splice(i,1);
-						i--;
-					}
-				}
-				file.url = pathArr.join("/");
-				//自动为文件名加上后缀，如果用户没指定的话
-				if(file.url.substr(file.url.length-4)!=".sb2")
-				{
-					file.url = file.url+".sb2";
-				}
-				showMessage("file.url="+file.url);
-				FileUtil.WriteBytes(file, projIO.encodeProjectAsZipFile(stagePane));
+//				var file:File = e.target as File;
+//				FileUtil.WriteBytes(file, projIO.encodeProjectAsZipFile(stagePane));
+				trace(this, "fileSaved");
 				
 				saveNeeded = false;
-				setProjectFile(file);
+//				setProjectFile(file);
 				if(postSaveAction!=null){
 					postSaveAction();
 				}
@@ -846,62 +695,7 @@ package {
 			var projIO:ProjectIO = new ProjectIO(this);
 			projIO.convertSqueakSounds(stagePane, squeakSoundsConverted);
 		}
-		//调试用
-		private var messegePanel:Sprite;
-		public function showMessage(...msg):void
-		{
-			return;
-			if(!messegePanel)
-			{
-				function closeHandler():void
-				{
-					messegePanel.parent.removeChild(messegePanel);
-				}
-				function clearHandler():void
-				{
-					TextField(messegePanel.getChildByName("txt")).text = "";
-				}
-				function onDown(e:MouseEvent):void
-				{
-					if(messegePanel.mouseY>30)
-					{
-						return;
-					}
-					messegePanel.startDrag();
-					messegePanel.addEventListener(MouseEvent.MOUSE_UP,onUp);
-				}
-				function onUp(e:MouseEvent):void
-				{
-					messegePanel.stopDrag();
-				}
-				messegePanel = new Sprite();
-				messegePanel.graphics.beginFill(0xCCCCCC,1);
-				messegePanel.graphics.drawRoundRect(0,0,200,200,10,10);
-				messegePanel.graphics.endFill();
-				messegePanel.addEventListener(MouseEvent.MOUSE_DOWN,onDown);
-				var txt:TextField = new TextField();
-				var txtFormat:TextFormat = new TextFormat();
-				txtFormat.size = 12;
-				txt.defaultTextFormat = txtFormat;
-				txt.name = "txt";
-				txt.width = 200;
-				txt.height = 180;
-				txt.y = 30;
-				txt.wordWrap = true;
-				messegePanel.addChild(txt);
-				var closeBtn:Button = new Button("close",closeHandler);
-				messegePanel.addChild(closeBtn);
-				closeBtn.x=0;
-				closeBtn.y = 200;
-				var clearBtn:Button = new Button("clear",clearHandler);
-				messegePanel.addChild(clearBtn);
-				clearBtn.x=closeBtn.width;
-				clearBtn.y = 200;
-			}
-			app.stage.addChild(messegePanel);
-			TextField(messegePanel.getChildByName("txt")).appendText(msg.join(",")+"\n");
-		}
-		
+	
 		private static function fixFileName(s:String):String {
 			// Replace illegal characters in the given string with dashes.
 			const illegal:String = '\\/:*?"<>|%';
@@ -916,14 +710,11 @@ package {
 		
 		public function toggleHideStage():void
 		{
-			stageIsArduino = false;
 			stageIsHided = !stageIsHided;
-			stageIsContracted = false;
 			setSmallStageMode(stageIsContracted);
 		}
 	
 		public function toggleSmallStage():void {
-			stageIsArduino = false;
 			if(stageIsHided){
 				stageIsHided = false;
 				setSmallStageMode(stageIsContracted);
@@ -939,7 +730,6 @@ package {
 		}
 		public function changeToArduinoMode():void{
 			toggleArduinoMode();
-			
 			if(stageIsArduino)
 				scriptsPart.showArduinoCode();
 		}
@@ -957,8 +747,8 @@ package {
 			}
 			
 //			this.scriptsPart.selector.select(stageIsArduino?6:1);
-			//this.tabsPart.soundsTab.visible = !stageIsArduino;
-			//this.tabsPart.imagesTab.visible = !stageIsArduino;
+			this.tabsPart.soundsTab.visible = !stageIsArduino;
+			this.tabsPart.imagesTab.visible = !stageIsArduino;
 			setTab("scripts");
 		}
 	
@@ -967,43 +757,13 @@ package {
 			if (y == null) y = stage.mouseY;
 			gh.showBubble(text, Number(x), Number(y), width);
 		}
-		public function restart(value:int):void
-		{
-			trace("重启"+value)
-			if(value==JOptionPane.YES)
-			{
-				var file:File = new File(File.applicationDirectory.nativePath);
-				if(ApplicationManager.sharedManager().system==ApplicationManager.WINDOWS)
-				{
-					file = file.resolvePath("mBlock.exe");
-				}
-				else
-				{
-					file = file.resolvePath("../MacOS/mBlock");
-				}
-				
-				if(!file.exists)
-				{
-					return;	
-				}
-				
-				var nativeProcessStartupInfo:NativeProcessStartupInfo = new NativeProcessStartupInfo();
-				nativeProcessStartupInfo.executable = file;
-				var process:NativeProcess = new NativeProcess();
-				NativeApplication.nativeApplication.exit();
-				//stage.nativeWindow.close();
-				process.start(nativeProcessStartupInfo);
-				
-				
-			}
-		}
+	
 		public function startNewProject(newOwner:String, newID:String):void {
 			runtime.installNewProject();
 //			projectOwner = newOwner;
 			projectID = newID;
 //			projectIsPrivate = true;
 			loadInProgress = false;
-			saveNeeded = true;
 		}
 	
 		// -----------------------------
@@ -1012,10 +772,10 @@ package {
 	
 		private var _saveNeeded:Boolean;
 		
-		private function get saveNeeded():Boolean{
+		public function get saveNeeded():Boolean{
 			return _saveNeeded;
 		}
-		private function set saveNeeded(value:Boolean):void{
+		public function set saveNeeded(value:Boolean):void{
 			if(_saveNeeded == value){
 				return;
 			}
@@ -1028,44 +788,16 @@ package {
 			// Set saveNeeded flag and update the status string.
 			saveNeeded = true;
 			if (!wasEdited){ saveNow = true;} // force a save on first change
-			//clearRevertUndo();//这里是根据积木是否有改动设置是否需要保存代码，保存代码的时候不应该清除revertUndo，否则revertUndo一直是null
+			clearRevertUndo();
 		}
-		public function setSaveNeededValue(value:Boolean):void
-		{
-			saveNeeded = value;
-		}
+	
 		protected function clearSaveNeeded():void {
 			// Clear saveNeeded flag and update the status string.
 //			function twoDigits(n:int):String { return ((n < 10) ? '0' : '') + n }
 			saveNeeded = false;
 			wasEdited = true;
 		}
-		public function openMicrosoftCognitiveSetting(msg:String):void{
-			var dialogBox:DialogBox = new DialogBox( function():void{
-				var keyFace:String = dialogBox.getField(Translator.toHeadUpperCase(Translator.map("face")));
-				var keyEmotion:String = dialogBox.getField(Translator.toHeadUpperCase(Translator.map("emotion")));
-				var keyOCR:String = dialogBox.getField(Translator.toHeadUpperCase(Translator.map("text")));
-				var keySpeaker:String = dialogBox.getField(Translator.toHeadUpperCase(Translator.map("speaker")));
-				var keySpeech:String = dialogBox.getField(Translator.toHeadUpperCase(Translator.map("speech")));
-				SharedObjectManager.sharedManager().setObject("keyFace-user",keyFace);
-				SharedObjectManager.sharedManager().setObject("keyEmotion-user",keyEmotion);
-				SharedObjectManager.sharedManager().setObject("keyOCR-user",keyOCR);
-				SharedObjectManager.sharedManager().setObject("keySpeaker-user",keySpeaker);
-				SharedObjectManager.sharedManager().setObject("keySpeech-user",keySpeech); 
-				MBlock.app.track("/OxfordAi/setting/save");
-			}); 
-			dialogBox.setTitle(msg+" "+Translator.map("API Key"));
-			dialogBox.addField(Translator.toHeadUpperCase(Translator.map("face")),300,SharedObjectManager.sharedManager().getObject("keyFace-user",""),true);
-			dialogBox.addField(Translator.toHeadUpperCase(Translator.map("emotion")),300,SharedObjectManager.sharedManager().getObject("keyEmotion-user",""),true);
-			dialogBox.addField(Translator.toHeadUpperCase(Translator.map("text")),300,SharedObjectManager.sharedManager().getObject("keyOCR-user",""),true);
-			//dialogBox.addField("声纹识别",300,SharedObjectManager.sharedManager().getObject("keySpeaker",""),true);
-			dialogBox.addField(Translator.toHeadUpperCase(Translator.map("speech")),300,SharedObjectManager.sharedManager().getObject("keySpeech-user",""),true);
-			dialogBox.addText("<a href='https://www.microsoft.com/cognitive-services' style='color:#0000ff'>https://www.microsoft.com/cognitive-services</a>");
-			dialogBox.addText(Translator.map("For More Information"));
-			dialogBox.addAcceptCancelButtons('OK');
-			dialogBox.showOnStage(stage);
-			MBlock.app.track("/OxfordAi/setting/open");
-		}
+	
 		// -----------------------------
 		// Project Reverting
 		//------------------------------
@@ -1080,7 +812,6 @@ package {
 	
 		protected function doRevert():void {
 			runtime.installProjectFromData(originalProj, false);
-			saveNeeded=false;
 		}
 		
 		private function preDoRevert():void {
@@ -1097,10 +828,9 @@ package {
 			if (!revertUndo) return;
 			runtime.installProjectFromData(revertUndo, false);
 			revertUndo = null;
-			saveNeeded = true;
 		}
 	
-		public function canRevert():Boolean { return originalProj != null && saveNeeded }
+		public function canRevert():Boolean { return originalProj != null }
 		public function canUndoRevert():Boolean { return revertUndo != null }
 		private function clearRevertUndo():void { revertUndo = null }
 	
