@@ -57,9 +57,7 @@
   <buildTargets>
     <buildTarget buildTargetName="default" platformId="default">
       <airSettings airCertificatePath="cert/air.p12" airTimestamp="false" anePathSet="true" version="1">
-        <airExcludes>
-          <pathEntry path="Arduino"/>
-        </airExcludes>
+        <airExcludes/>
         <anePaths>
           <anePathEntry path="libs/AIRSerial_win.ane"/>
           <anePathEntry path="libs/BluetoothManager_win.ane"/>
