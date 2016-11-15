@@ -1,0 +1,19 @@
+{
+  "name": "mblock-core",
+  "version": "1.0.0",
+  "description": "mblock-core",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": "https://github.com/xeecos/mblock-core",
+  "keywords": [
+    "Electron",
+    "demo"
+  ],
+  "author": "GitHub",
+  "license": "CC0-1.0",
+  "devDependencies": {
+    "electron": "^1.4.5"
+  }
+}

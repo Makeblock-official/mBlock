@@ -1,0 +1,49 @@
+{	"extensionName": "Joystick(Arduino Mode Only)",
+	"sort":1,
+	"extensionPort": 0,
+	"firmware":"",
+	"javascriptURL":"js/2.4G.js",
+	"blockSpecs": [
+		
+		["R", "2.4G Joystick %m.axis","getJoystickValue","RX",
+		{"encode":"{d0}","setup":"MePS2.begin(115200);\n","inc":"","def":"MePS2 MePS2(PORT);\n","work":"MePS2.MeAnalog({0})","loop":"MePS2.loop();\n"}],
+		
+		["B", "2.4G Joystick %m.joystickKyes pressed","checkKey","×",
+		{"encode":"{d0}","setup":"MePS2.begin(115200);\n","inc":"","def":"MePS2 MePS2(PORT);\n","work":"MePS2.ButtonPressed({0})","loop":"MePS2.loop();\n"}],
+		
+		],
+	"menus": {
+		"beats":["500","250","125","1000","2000","0"],
+		"servovalue":["0","45","90","135","180"],
+		"pwmvalue":["0","50","100","150","255"],
+		"digital":["HIGH","LOW"],
+		"notes":["C2","D2","E2","F2","G2","A2","B2","C3","D3","E3","F3","G3","A3","B3","C4","D4","E4","F4","G4","A4","B4","C5","D5","E5","F5","G5","A5","B5","C6","D6","E6","F6","G6","A6","B6","C7","D7","E7","F7","G7","A7","B7","C8","D8"],
+		"beats":["Half","Quarter","Eighth","Whole","Double","Zero"],
+		"joystickKyes":["×","●","▲","■","←","↑","→","↓","L1","R1","L2","R2","Left Thumb","Right Thumb","Start","Select"],
+		"axis":["RX","RY","LX","LY"]
+	},
+	"values":{
+		"run":2,
+		"get":1,
+		"digital":30,
+		"analog":31,
+		"pwm":32,
+		"servo_pin":33,
+		"tone":34,
+		"timer":50,
+		"HIGH":1,"LOW":0,
+		"B0":31,"C1":33,"D1":37,"E1":41,"F1":44,"G1":49,"A1":55,"B1":62,
+			"C2":65,"D2":73,"E2":82,"F2":87,"G2":98,"A2":110,"B2":123,
+			"C3":131,"D3":147,"E3":165,"F3":175,"G3":196,"A3":220,"B3":247,
+			"C4":262,"D4":294,"E4":330,"F4":349,"G4":392,"A4":440,"B4":494,
+			"C5":523,"D5":587,"E5":659,"F5":698,"G5":784,"A5":880,"B5":988,
+			"C6":1047,"D6":1175,"E6":1319,"F6":1397,"G6":1568,"A6":1760,"B6":1976,
+			"C7":2093,"D7":2349,"E7":2637,"F7":2794,"G7":3136,"A7":3520,"B7":3951,
+			"C8":4186,"D8":4699,
+		"×":"10","●":"12","▲":"9","■":"11","←":"16","↑":"14","→":"17","↓":"15",
+		"L1":"5","R1":"1","L2":"7","R2":"3","Left Thumb":"20","Right Thumb":"21","Start":"13","Select":"18",
+		"RX":6,"RY":8,"LX":2,"LY":4
+	},
+	"translators":{
+	}
+}

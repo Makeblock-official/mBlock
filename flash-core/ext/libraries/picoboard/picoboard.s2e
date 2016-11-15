@@ -1,0 +1,18 @@
+{	"extensionName": "PicoBoard",
+	"extensionPort": 0,
+	"sort":6,
+	"firmware":"1.2.103",
+	"javascriptURL":"js/picoExtension.js",
+	"isMakeBlockBoard":true,
+	"blockSpecs": [
+            ["h", "when %m.booleanSensor",         "whenSensorConnected", "button pressed"],
+            ["h", "when %m.sensor %m.lessMore %n", "whenSensorPass",      "slider", ">", 50],
+            ["B", "sensor %m.booleanSensor?",      "sensorPressed",       "button pressed"],
+            ["R", "%m.sensor sensor value",        "sensor",              "slider"]
+        ],
+    "menus": {
+            "booleanSensor": ["button pressed", "A connected", "B connected", "C connected", "D connected"],
+            "sensor": ["slider", "light", "sound", "resistance-A", "resistance-B", "resistance-C", "resistance-D"],
+            "lessMore": [">", "<"]
+        }
+ }

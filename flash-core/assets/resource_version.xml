@@ -1,0 +1,11 @@
+<resources>
+    <resource version="1.0.3" name="mblock" path="firmware">http://download.makeblock.cc/mblock/resources/firmware/mblock_firmware.zip</resource>
+    <resource version="1.0.4" name="mbot" path="firmware">http://download.makeblock.cc/mblock/resources/firmware/mbot_firmware.zip</resource>
+    <resource version="1.0.8" name="tools" path="tools">http://download.makeblock.cc/mblock/resources/tools/hex.zip</resource>
+    <resource version="1.0.12" name="makeblock" path="libraries">http://download.makeblock.cc/mblock/resources/libraries/makeblock.zip</resource>
+    <resource version="1.0.9" name="arduino" path="libraries">http://download.makeblock.cc/mblock/resources/libraries/arduino.zip</resource>
+    <resource version="1.0.16" name="mbot" path="libraries">http://download.makeblock.cc/mblock/resources/libraries/mbot.zip</resource>
+    <resource version="1.0.5" name="picoboard" path="libraries">http://download.makeblock.cc/mblock/resources/libraries/picoboard.zip</resource>
+    <resource version="1.0.7" name="serial" path="libraries">http://download.makeblock.cc/mblock/resources/libraries/serial.zip</resource>
+    <resource version="1.0.10" name="locale" path="">http://download.makeblock.cc/mblock/resources/locale/locale.zip</resource>
+</resources>
