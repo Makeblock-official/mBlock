@@ -41,23 +41,27 @@ package util
 			}
 			if(!ExternalInterface.available)
 				return;
-			ExternalInterface.marshallExceptions = true;
-			ExternalInterface.addCallback("responseValue", __responseValue);
-			ExternalInterface.addCallback("importProject", __importProject);
-			ExternalInterface.addCallback("openProject", __openProject);
-			ExternalInterface.addCallback("newProject", __newProject);
-			ExternalInterface.addCallback("exportProject", __exportProject);
-			ExternalInterface.addCallback("saveLocalCopy", __saveLocalCopy);
-			ExternalInterface.addCallback("hasChanged", __hasChanged);
-			ExternalInterface.addCallback("onReadyToRun", __onReadyToRun);
-			ExternalInterface.addCallback("setRobotName", __setRobotName);
-			ExternalInterface.addCallback("getRobotName", __getRobotName);
-			ExternalInterface.addCallback("setUnmodified", __setUnmodified);
-			ExternalInterface.addCallback("setProjectTitle", __setProjectTitle);
-			ExternalInterface.addCallback("getStageSnapshot", __getStageSnapshot);
-			ExternalInterface.addCallback("showFullscreen", __showFullscreen);
-			ExternalInterface.addCallback("playCode", __playCode);
-			ExternalInterface.addCallback("stopCode", __stopCode);
+			try{
+				ExternalInterface.marshallExceptions = true;
+				ExternalInterface.addCallback("responseValue", __responseValue);
+				ExternalInterface.addCallback("importProject", __importProject);
+				ExternalInterface.addCallback("openProject", __openProject);
+				ExternalInterface.addCallback("newProject", __newProject);
+				ExternalInterface.addCallback("exportProject", __exportProject);
+				ExternalInterface.addCallback("saveLocalCopy", __saveLocalCopy);
+				ExternalInterface.addCallback("hasChanged", __hasChanged);
+				ExternalInterface.addCallback("onReadyToRun", __onReadyToRun);
+				ExternalInterface.addCallback("setRobotName", __setRobotName);
+				ExternalInterface.addCallback("getRobotName", __getRobotName);
+				ExternalInterface.addCallback("setUnmodified", __setUnmodified);
+				ExternalInterface.addCallback("setProjectTitle", __setProjectTitle);
+				ExternalInterface.addCallback("getStageSnapshot", __getStageSnapshot);
+				ExternalInterface.addCallback("showFullscreen", __showFullscreen);
+				ExternalInterface.addCallback("playCode", __playCode);
+				ExternalInterface.addCallback("stopCode", __stopCode);
+			}catch(e:*){
+				
+			}
 		}
 		
 		static public function Call(method:String, args:Array):*

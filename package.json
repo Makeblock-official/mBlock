@@ -1,19 +1,22 @@
 {
-  "name": "mblock-core",
+  "name": "mBlock",
   "version": "1.0.0",
-  "description": "mblock-core",
-  "main": "main.js",
+  "description": "mblock 4.0",
+  "main": "./app/main.js",
   "scripts": {
     "start": "electron ."
   },
-  "repository": "https://github.com/xeecos/mblock-core",
+  "repository": "https://git.oschina.net/makeblock/mblock-for-myh",
   "keywords": [
-    "Electron",
-    "demo"
+    "mBlock",
   ],
   "author": "GitHub",
-  "license": "CC0-1.0",
+  "license": "MIT",
   "devDependencies": {
-    "electron": "^1.4.5"
+    "electron": "^1.4.5",
+    "express":"^4.14.0",
+    "serialport":"^4.0.6",
+    "node-hid":"^0.5.2",
+    "bluetooth-serial-port":"^2.1.0"
   }
 }

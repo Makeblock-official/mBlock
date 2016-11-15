@@ -7,22 +7,34 @@
         <style type="text/css" media="screen"> 
             html, body  { height:100%; }
             body { margin:0; padding:0; overflow:hidden; text-align:center; 
-                   background-color: ${bgcolor}; }   
+                   background-color: #fff; }   
             object:focus { outline:none; }
             #flashContent { display:none; }
         </style>
   </head>
   <body>
          <object id="mblock" width="100%" height="100%">
-            <embed src="./bin-debug/MBlock.swf"
-            type="application/x-shockwave-flash" allowfullscreen="true" allowscriptaccess="always" width="500" height="400"></embed>
-            <param name="movie" value="./bin-debug/MBlock.swf" />
+            <embed name="mblock" src="flash-core/mblock.swf?time=2"
+            type="application/x-shockwave-flash" allowfullscreen="true" allowScriptAccess="always" width="100%" height="100%"></embed>
+            <param name="movie" value="flash-core/mblock.swf?time=2" />
             <param name="bgcolor" value="#ffffff" />
             <param name="height" value="100%" />
             <param name="width" value="100%" />
             <param name="quality" value="high" />
             <param name="menu" value="false" />
-            <param name="allowscriptaccess" value="always" />
+            <param name="allowScriptAccess" value="always" />
         </object>
+        <script>
+            const {ipcRenderer} = require('electron')
+            ipcRenderer.on('data', (sender,obj) => {
+                var mcore = document.getElementById("mblock");
+                mcore.openProject(obj.url);
+                // ipcRenderer.sendToHost('pong')
+            })
+            function sendMsg(msg){
+                console.log(msg)
+            }
+            console.log("init core");
+        </script>
   </body>
 </html>

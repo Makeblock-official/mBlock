@@ -38,15 +38,16 @@ import flash.net.URLLoaderDataFormat;
 import flash.net.URLRequest;
 import flash.utils.ByteArray;
 
+import cc.makeblock.mbot.uiwidgets.errorreport.ErrorReportFrame;
 import cc.makeblock.util.CsvReader;
 import cc.makeblock.util.Excel;
-import cc.makeblock.util.FileUtil;
 
 
 public class Server {
 	// -----------------------------
 	// Asset API
 	//------------------------------
+	private var rootPath:String = "/flash-core/"
 	static public function fetchAsset(url:String, whenDone:Function):URLLoader
 	{
 		// Make a GET or POST request to the given URL (do a POST if the data is not null).
@@ -73,18 +74,24 @@ public class Server {
 		loader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, errorHandler);
 		loader.addEventListener(IOErrorEvent.IO_ERROR, errorHandler);
 		var request:URLRequest = new URLRequest(url);
-		loader.load(request);
+		try{
+			loader.load(request);
+		}catch(e:*){
+			MBlock.app.logMessage(e.toString());
+		}
 		return loader;
 	}
 
-	public function getAsset(md5:String, whenDone:Function):URLLoader
+	public function getAsset(md5:String, whenDone:Function):*
 	{
-		return fetchAsset("media/" + md5, whenDone);
+		
+		return fetchAsset(rootPath+"media/" + md5, whenDone);
 	}
 
 	public function getMediaLibrary(whenDone:Function):URLLoader
 	{
-		return fetchAsset('media/mediaLibrary.json', whenDone);
+		
+		return fetchAsset(rootPath+'media/mediaLibrary.json', whenDone);
 	}
 
 	public function getThumbnail(md5:String, w:int, h:int, whenDone:Function):URLLoader {
