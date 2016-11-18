@@ -1,4 +1,4 @@
-const {BrowserWindow,app} = require('electron');
+const {BrowserWindow,app,Menu} = require('electron');
 const mBlock = require('./mBlock.js');
 var express = require('express');
 var http = express();
@@ -48,8 +48,7 @@ function createWindow () {
   mainWindow.on('closed', function () {
     mainWindow = null
   })
-
-  mBlock.initMenu();
+  Menu.setApplicationMenu(new Menu())
 }
 app.on('ready', createWindow)
 app.on('window-all-closed', function () {

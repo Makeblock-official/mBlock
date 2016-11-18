@@ -11,6 +11,8 @@ webview.addEventListener('ipc-message', (evt) => {
         ipcRenderer.send("fullscreen",evt.args[0]);
     }else if(evt.channel=="command"){
         ipcRenderer.send("command",evt.args[0]);
+    }else if(evt.channel=="flashReady"){
+        ipcRenderer.send("flashReady");
     }
 })
 webview.addEventListener('dom-ready', () => {

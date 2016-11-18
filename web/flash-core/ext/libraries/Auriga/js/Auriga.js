@@ -606,5 +606,5 @@
     }
 
     var descriptor = {};
-	ScratchExtensions.register('Makeblock', descriptor, ext, {type: 'serial'});
+	ScratchExtensions.register('Auriga', descriptor, ext, {type: 'serial'});
 })({});
