@@ -26,6 +26,7 @@ package scratch {
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
+	import flash.external.ExternalInterface;
 	import flash.geom.Rectangle;
 	import flash.media.Microphone;
 	import flash.media.SoundTransform;
@@ -443,7 +444,7 @@ package scratch {
 				selectedProjectFile(file);
 			}
 			
-			stopAll();
+			//stopAll();
 //			var file:FileReference = new FileReference();
 			file.addEventListener(Event.SELECT, fileSelected);
 			file.addEventListener(Event.COMPLETE, fileLoaded);
@@ -521,6 +522,7 @@ package scratch {
 		public function decodeImagesAndInstall(newProject:ScratchStage, callback:Function=null):void {
 			function imagesDecoded():void {
 				projectToInstall = newProject;
+				
 				if(callback != null){
 					callback();
 				}

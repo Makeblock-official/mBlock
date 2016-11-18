@@ -45,9 +45,11 @@ package util
 				ExternalInterface.marshallExceptions = true;
 				ExternalInterface.addCallback("responseValue", __responseValue);
 				ExternalInterface.addCallback("importProject", __importProject);
+				ExternalInterface.addCallback("selectProjectFile",__selectProjectFile);
 				ExternalInterface.addCallback("openProject", __openProject);
 				ExternalInterface.addCallback("newProject", __newProject);
 				ExternalInterface.addCallback("exportProject", __exportProject);
+				ExternalInterface.addCallback("saveProject", __saveProject);
 				ExternalInterface.addCallback("saveLocalCopy", __saveLocalCopy);
 				ExternalInterface.addCallback("hasChanged", __hasChanged);
 				ExternalInterface.addCallback("onReadyToRun", __onReadyToRun);
@@ -59,6 +61,7 @@ package util
 				ExternalInterface.addCallback("showFullscreen", __showFullscreen);
 				ExternalInterface.addCallback("playCode", __playCode);
 				ExternalInterface.addCallback("stopCode", __stopCode);
+				Call("readyForFlash",[]);
 			}catch(e:*){
 				
 			}
@@ -68,6 +71,8 @@ package util
 		{
 			if(ExternalInterface.available){
 				args.unshift(method);
+				ExternalInterface.call("sendMsg",method);
+//				return;
 				return ExternalInterface.call.apply(null, args);
 			}else{
 				trace("ExternalInterface is not available!");
@@ -88,7 +93,10 @@ package util
 		{
 			return Call("readyToRun", []);
 		}
-		
+		static public function boardConnected():Boolean
+		{
+			return Call("boardConnected",[]);
+		}
 		static private function __responseValue(...args):void
 		{
 			if(args.length < 2){
@@ -103,7 +111,9 @@ package util
 					RemoteCallMgr.Instance.onPacketRecv(args[1]);
 			}
 		}
-		
+		static private function __selectProjectFile():void{
+			MBlock.app.runtime.selectProjectFile();
+		}
 		static private function __importProject(projectData:String):void
 		{
 			var fileData:ByteArray = Base64.decode(projectData);
@@ -111,12 +121,13 @@ package util
 //			MBlock.app.runtime.selectProjectFile();
 		}
 		
-		static private function __openProject(url:String, callback:Function=null):void
+		static private function __openProject(url:String,callback:Function=null):void
 		{
 			var loader:URLLoader = new URLLoader();
 			loader.dataFormat = URLLoaderDataFormat.BINARY;
 			loader.addEventListener(Event.COMPLETE, function(evt:Event):void{
-				MBlock.app.runtime.installProjectFromData(loader.data, true, callback);
+				MBlock.app.runtime.installProjectFromData(loader.data, true,callback);
+				Call("openSuccess",[]);
 			});
 			loader.addEventListener(IOErrorEvent.IO_ERROR, function(evt:IOErrorEvent):void{
 				trace(evt);
@@ -127,7 +138,7 @@ package util
 		static private function __newProject(projectName:String=null):void
 		{
 //			DeviceManager.sharedManager().board = "mbot_uno";
-			trace("__newProject", projectName);
+//			trace("__newProject", projectName);
 			MBlock.app.createNewProject();
 		}
 		
@@ -156,6 +167,16 @@ package util
 			projIO.convertSqueakSounds(MBlock.app.stagePane, squeakSoundsConverted);
 		}
 		
+		static private function __saveProject():void
+		{
+			function squeakSoundsConverted(projIO:ProjectIO):void {
+				var zipData:ByteArray = projIO.encodeProjectAsZipFile(MBlock.app.stagePane);
+				var base64Str:String = Base64.encode(zipData);
+				Call("saveProject", [base64Str]);
+			}
+			var projIO:ProjectIO = new ProjectIO(MBlock.app);
+			projIO.convertSqueakSounds(MBlock.app.stagePane, squeakSoundsConverted);
+		}
 		static private function __hasChanged():Boolean
 		{
 			trace("__hasChanged");

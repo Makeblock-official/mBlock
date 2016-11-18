@@ -30,6 +30,7 @@ package util {
 import flash.display.BitmapData;
 import flash.display.Loader;
 import flash.events.Event;
+import flash.external.ExternalInterface;
 import flash.net.URLLoader;
 import flash.net.URLLoaderDataFormat;
 import flash.net.URLRequest;
@@ -140,6 +141,7 @@ public class ProjectIO {
 		var jsonData:String;
 		images = [];
 		sounds = [];
+		
 		try {
 			var files:Array = new ZipIO().read(zipData);
 		} catch (e:*) {
@@ -176,6 +178,7 @@ public class ProjectIO {
 				MBlock.app.extensionManager.onSelectExtension("Arduino");
 			}
 		}
+		
 		var jsonObj:Object = util.JSON.parse(jsonData);
 		//先处理兼容性问题
 		fixManager(jsonObj);
@@ -188,6 +191,7 @@ public class ProjectIO {
 				JsUtil.setProjectRobotName("mbot");
 			}
 		}
+		
 		if (jsonObj['children']) { // project JSON
 			
 			var proj:ScratchStage = new ScratchStage();

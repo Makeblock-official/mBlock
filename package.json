@@ -4,19 +4,25 @@
   "description": "mblock 4.0",
   "main": "./app/main.js",
   "scripts": {
+    "rebuild": "electron-rebuild -f -w serialport",
     "start": "electron ."
   },
   "repository": "https://git.oschina.net/makeblock/mblock-for-myh",
   "keywords": [
-    "mBlock",
+    "mBlock"
   ],
   "author": "GitHub",
   "license": "MIT",
   "devDependencies": {
-    "electron": "^1.4.5",
-    "express":"^4.14.0",
-    "serialport":"^4.0.6",
-    "node-hid":"^0.5.2",
-    "bluetooth-serial-port":"^2.1.0"
+    "bluetooth-serial-port": "^2.1.0",
+    "electron": "^1.4.6",
+    "electron-prebuilt": "^1.4.6",
+    "electron-rebuild": "^1.4.0",
+    "express": "^4.14.0",
+    "node-hid": "^0.5.2",
+    "serialport": "^4.0.6"
+  },
+  "dependencies": {
+    "os-locale": "^2.0.0"
   }
 }

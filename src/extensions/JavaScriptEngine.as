@@ -89,7 +89,7 @@ package extensions
 		}
 		*/
 		public function loadJS(path:String):void{
-			trace(this, "loadJS", path);
+//			JsUtil.Call("sendMsg",["loadJS:"+path]);
 //			var jsData:String = ExtensionManager.fileDict[path].toString();
 //			JsUtil.Eval(jsData);
 //			return;

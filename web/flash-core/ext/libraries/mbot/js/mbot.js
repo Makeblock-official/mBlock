@@ -112,6 +112,7 @@
 			leftSpeed = -speed;
 			rightSpeed = -speed;
 		}
+
         runPackage(5,short2array(leftSpeed),short2array(rightSpeed));
     };
     
@@ -122,6 +123,7 @@
 		if(port == 9){
 			speed = -speed;
 		}
+		console.log(port+":"+speed);
         runPackage(10,port,short2array(speed));
     };
     ext.runServo = function(port,slot,angle) {
@@ -455,6 +457,7 @@
 			}
 		}
 		bytes[2] = bytes.length - 3;
+
 		device.send(bytes);
 	}
 	

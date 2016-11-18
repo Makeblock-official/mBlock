@@ -1,20 +1,18 @@
-
-const electron = require('electron')
-const {Menu,MenuItem,app} = require('electron');
+const {BrowserWindow,app} = require('electron');
+const mBlock = require('./mBlock.js');
 var express = require('express');
 var http = express();
 
-http.use(express.static('web'));
 var httpPort = 7070
+http.use(express.static('web'));
 http.listen(httpPort, function () {
   console.log('app listening on port '+httpPort+'!');
 });
 
-const BrowserWindow = electron.BrowserWindow
 var appName = app.getName();
-
 var path = require('path');
 var pluginName;
+
 switch (process.platform) {
   case 'win32':
     pluginName = 'pepflashplayer.dll'
@@ -27,7 +25,6 @@ switch (process.platform) {
     break
 }
 var rootPath = __dirname+"/..";
-
 
 app.commandLine.appendSwitch('ppapi-flash-path', path.join(rootPath, "/plugins/"+pluginName));
 app.commandLine.appendSwitch('ppapi-flash-version', '23.0.0.207')
@@ -52,13 +49,11 @@ function createWindow () {
     mainWindow = null
   })
 
-  initMenu();
+  mBlock.initMenu();
 }
 app.on('ready', createWindow)
 app.on('window-all-closed', function () {
-  if (process.platform !== 'darwin') {
     app.quit()
-  }
 })
 
 app.on('activate', function () {
@@ -66,24 +61,3 @@ app.on('activate', function () {
     createWindow()
   }
 })
-function initMenu(){
-  var menu = require('./menu.js');
-  var template = menu.template();
-  if (process.platform === 'darwin') {
-    template.unshift({
-      label: app.getName(),
-      submenu: [
-        {
-          role: 'about',
-          label:'About mBlock'
-        },
-        {
-          role: 'quit',
-          label:'Quit'
-        }
-      ]
-    })
-  }
-  var mainMenu = Menu.buildFromTemplate(template);
-  Menu.setApplicationMenu(mainMenu)
-}

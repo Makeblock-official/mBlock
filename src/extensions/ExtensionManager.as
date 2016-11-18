@@ -41,6 +41,7 @@ import translation.Translator;
 
 import uiwidgets.IndicatorLight;
 
+import util.JsUtil;
 import util.LogManager;
 import util.ReadStream;
 import util.SharedObjectManager;
@@ -481,7 +482,7 @@ public class ExtensionManager {
 	}
 
 	public function loadRawExtension(extObj:Object):void {
-	
+		JsUtil.Call("sendMsg",["loadRawExtension:"+extObj.extensionName])
 		var ext:ScratchExtension = extensionDict[extObj.extensionName];
 		if(ext){
 			return;
@@ -621,7 +622,7 @@ public class ExtensionManager {
 		
 		var msecsSinceLastResponse:uint = getTimer() - ext.lastPollResponseTime;
 		if(ext.useSerial){
-			if (!SerialDevice.sharedDevice().connected) {
+			if (!JsUtil.boardConnected()) {
 				indicator.setColorAndMsg(0xE00000, Translator.map('Disconnected'));
 //				MBlock.app.topBarPart.setBluetoothTitle(false);
 			}

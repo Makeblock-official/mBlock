@@ -1,9 +1,10 @@
 package extensions
 {
 	import flash.events.Event;
+	import flash.signals.Signal;
 	import flash.utils.ByteArray;
 	
-	import flash.signals.Signal;
+	import util.JsUtil;
 
 	public class SerialDevice
 	{
@@ -113,7 +114,7 @@ package extensions
 			}
 		}
 		public function get connected():Boolean{
-			return true;
+			return JsUtil.readyToRun();
 			return SerialManager.sharedManager().isConnected;
 		}
 		public function close():void{

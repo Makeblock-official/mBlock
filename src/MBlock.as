@@ -194,7 +194,6 @@ package {
 				stage.addEventListener(Event.RESIZE, onResize);
 			// install project before calling fixLayout()
 				JsUtil.Init(stage);
-				DialogBox.notify("ex","can:"+ExternalInterface.available);
 				
 			setTimeout(DeviceManager.sharedManager, 100);
 			//VersionManager.sharedManager().start(); //在线更新资源文件
@@ -320,6 +319,7 @@ package {
 	
 		protected var wasEditing:Boolean;
 		public function setPresentationMode(enterPresentation:Boolean, fullscreenFlag:Boolean=true):void {
+			JsUtil.Call("setFullscreen",[enterPresentation]);
 			if (enterPresentation) {
 				wasEditing = editMode;
 				if (wasEditing) {
