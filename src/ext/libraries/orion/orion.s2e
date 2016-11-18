@@ -56,13 +56,13 @@
 		["R", "sound sensor %d.soundPort","getSoundsensor","Port6",
 		{"encode":"{d0}","setup":"","inc":"","def":"MeSoundSensor soundsensor_{0}({0});\n","work":"soundsensor_{0}.strength()","loop":""}],
 		
-		["R", "infrared receiver %d.bluePorts","getInfrared","Port6",
+		["R", "infrared receiver %d.bluePorts (Arduino Mode Only)","getInfrared","Port6",
 		{"encode":"{d0}","setup":"ir_{0}.begin();\n","inc":"","def":"MeInfraredReceiver ir_{0}({0});\n","work":"ir_{0}.getCode()","loop":"ir_{0}.loop();\n"}],
 		
 		["B", "limit switch %d.normalPort %d.slot","getLimitswitch","Port6","Slot1",
 		{"encode":"{d0}{d1}","setup":"","inc":"","def":"MeLimitSwitch sw_{0}_{1}({0},{1});\n","work":"sw_{0}_{1}.touched()","loop":""}],
 		
-		["B", "pir motion sensor %d.bluePorts (Arduino Mode Only)","getPirmotion","Port6",
+		["B", "pir motion sensor %d.bluePorts","getPirmotion","Port6",
 		{"encode":"{d0}","setup":"","inc":"","def":"MePIRMotionSensor pir_{0}({0});\n","work":"pir_{0}.isHumanDetected()","loop":""}],
 		
 		["R", "temperature %d.normalPort%d.slot °C","getTemperature","Port3","Slot1",
