@@ -1,7 +1,9 @@
 ### 环境配置
 
-1. npm install -g cnpm --registry=https://registry.npm.taobao.org
-2. cnpm install --save-dev electron-rebuild serialport electron-prebuilt
+1. 安装cnpm加速。
+> npm install -g cnpm --registry=https://registry.npm.taobao.org
+2. 安装electron环境和serialport
+> cnpm install --save-dev electron-rebuild serialport electron-prebuilt
 3. 编辑package.json
  **新增scripts** 
 > "scripts": {
