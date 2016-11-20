@@ -4,7 +4,7 @@
 
 > npm install -g cnpm --registry=https://registry.npm.taobao.org
 
-（electron加速：修改node_modules\electron-download\build\index.js->baseUrl->https://npm.taobao.org/mirrors/electron/，或者export ELECTRON_MIRROR=https://npm.taobao.org/mirrors/electron/）
+（electron加速：修改node_modules\electron-download\build\index.js->baseUrl->https://npm.taobao.org/mirrors/electron/ ，或者export ELECTRON_MIRROR=https://npm.taobao.org/mirrors/electron/）
 
 2、 安装electron环境和serialport
 
