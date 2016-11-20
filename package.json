@@ -16,7 +16,7 @@
   "devDependencies": {
     "bluetooth-serial-port": "^2.1.0",
     "express": "^4.14.0",
-    "node-hid": "^0.5.2",
+    "node-hid": "^0.5.2"
   },
   "dependencies": {
     "os-locale": "^2.0.0"
