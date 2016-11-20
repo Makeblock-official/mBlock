@@ -16,6 +16,9 @@
 > }
 
 4、 为electron重新编译serialport
+
 > cnpm run rebuild
-5、 运行。
+
+5、 运行
+
 > cnpm start
