@@ -431,8 +431,8 @@ package scratch {
 			}
 			var triggerCondition:Boolean = false;
 			if ('whenSensorGreaterThan' == hat.op) {
-				var sensorName:String = hat.args[0];
-				var threshold:Number = Number(hat.args[1]);
+				var sensorName:String = hat.args[0]["argValue"];
+				var threshold:Number = Number(hat.args[1]["argValue"]);
 				triggerCondition = (
 						(('loudness' == sensorName) && (soundLevel() > threshold)) ||
 						(('timer' == sensorName) && (timer() > threshold))/* ||
@@ -480,7 +480,9 @@ package scratch {
 		private function processEdgeTriggeredHats():void {
 			if (!edgeTriggersEnabled) return;
 			activeHats = [];
-//			allStacksAndOwnersDo(startEdgeTriggeredHats);
+			//下面这行是由于邵凯在20151231 由于“修复局域网网络通讯bug”而注释掉的，导致“事件”选项卡里面的原生“当‘’大于‘’”指令块失效，
+			//现在把注释打开，目测不会有什么问题，后面若有修改请参考这个情况  by tql 20161121 
+			allStacksAndOwnersDo(startEdgeTriggeredHats);
 			triggeredHats = activeHats;
 		}
 	
