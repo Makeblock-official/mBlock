@@ -217,7 +217,21 @@
 		}
 		runPackage(62, 1,slot, int2array(distance),short2array(Math.abs(speed)));
 	};
-	
+	ext.runEncoderMotorOnBoardPWM = function(slot,speed){
+		if(typeof slot=="string"){
+			slot = slots[slot];
+		}
+		runPackage(61,0,slot,short2array(speed));
+	};
+	ext.runEncoderMotorPWM = function(port,slot,speed){
+		if(typeof port=="string"){
+			port = ports[port];
+		}
+		if(typeof slot=="string"){
+			slot = slots[slot];
+		}
+		runPackage(12,0x8,slot,short2array(speed),0);
+	};
 	ext.runEncoderMotorRpm = function(port, slot, distance, speed){
 		if(typeof port=="string"){
 			port = ports[port];
@@ -444,6 +458,16 @@
     	}
     	getPackage(nextID,deviceId,00,slot,01);
     };
+    ext.getTimer = function(nextID){
+		if(startTimer==0){
+			startTimer = (new Date().getTime())/1000.0;
+		}
+		responseValue(nextID,(new Date().getTime())/1000.0-startTimer);
+	};
+	ext.resetTimer = function(){
+		startTimer = (new Date().getTime())/1000.0;
+		responseValue();
+	};
 	function sendPackage(argList, type){
 		var bytes = [0xff, 0x55, 0, 0, type];
 		for(var i=0;i<argList.length;++i){

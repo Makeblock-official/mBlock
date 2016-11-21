@@ -182,6 +182,13 @@
 		}
 		runPackage(62,02,port,short2array(speed));
 	};
+	ext.runEncoderMotorPWM = function(port,speed){
+		if(typeof port=="string")
+		{
+			port = ports[port];
+		}
+		runPackage(61,0,port,short2array(speed));
+	};
 	ext.runEncoderMotorRotate = function(port,distance,speed){
 		if(typeof port=="string"){
 			port = ports[port];
@@ -278,6 +285,16 @@
 		if(y < -8) y = -8;
 		runPackage(41,port,2,x,y,bytes);
 	}
+	ext.getTimer = function(nextID){
+		if(startTimer==0){
+			startTimer = (new Date().getTime())/1000.0;
+		}
+		responseValue(nextID,(new Date().getTime())/1000.0-startTimer);
+	};
+	ext.resetTimer = function(){
+		startTimer = (new Date().getTime())/1000.0;
+		responseValue();
+	};
 	var distPrev=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 	var dist=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 	var dist_output =[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
