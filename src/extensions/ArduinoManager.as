@@ -654,13 +654,15 @@ void updateVar(char * varName,double * var)
 			if(funcode.length==0) return;
 			var c:String =  funcode.charAt(funcode.length-1)
 			if(ccode_pointer=="setup"){
-				if((ccode_setup.indexOf(funcode)==-1&&ccode_setup_fun.indexOf(funcode)==-1)||funcode.indexOf("delay")>-1||allowAdd){
+				ccode_setup_fun += funcode;
+				//解决连续两条设置变量的指令在Arduino下会被过滤的bug 这里貌似不需要去重处理，只要setup里面的代码保持初始化一次，后面work的代码应该可以多次出现 20161121
+				/*if((ccode_setup.indexOf(funcode)==-1&&ccode_setup_fun.indexOf(funcode)==-1)||funcode.indexOf("delay")>-1||allowAdd){
 //					if((funcode.indexOf(" = ")>-1&&funcode.indexOf("drawTemp")==-1&&funcode.indexOf("lastTime = ")==-1)&&funcode.indexOf("while")==-1&&funcode.indexOf("for")==-1){
 //						ccode_setup_def = funcode + ccode_setup_def;
 //					}else{
 						ccode_setup_fun += funcode;
 //					}
-				}
+				}*/
 			}
 			else if(ccode_pointer=="loop"){
 				ccode_loop+=funcode;
