@@ -68,8 +68,8 @@ package cc.makeblock.mbot.ui.parts
 				case "mymBot":
 					filePath = "mBlock/tools/hex/mbot_reset.hex";
 					break;
-				case "Starter IR":
-					filePath = "mBlock/tools/hex/Starter_IR.hex";
+				case "Starter":
+					filePath = "mBlock/tools/hex/starter_factory_firmware.hex";
 					break;
 				case "Starter Bluetooth":
 					filePath = "mBlock/tools/hex/Starter_Bluetooth.hex";
@@ -389,8 +389,7 @@ package cc.makeblock.mbot.ui.parts
 						}
 						break;
 					case "Me Orion":
-						defaultProgramMenu.submenu.addItem(new NativeMenuItem("Starter IR")).name = "Starter IR";
-						defaultProgramMenu.submenu.addItem(new NativeMenuItem("Starter Bluetooth")).name = "Starter Bluetooth";
+						defaultProgramMenu.submenu.addItem(new NativeMenuItem("Starter")).name = "Starter";
 						break;
 					case "Mega Pi":
 						defaultProgramMenu.submenu.addItem(new NativeMenuItem("Mega Pi")).name = "Mega Pi";
@@ -472,6 +471,9 @@ package cc.makeblock.mbot.ui.parts
 					break;
 				case "Auriga":
 					result = board.indexOf("auriga") >= 0;
+					break;
+				case "Neuron":
+					result = board.indexOf("Neuron")>=0;
 					break;
 			}
 			return result;
