@@ -90,6 +90,9 @@ package extensions
 		private function onReceived(evt:Event):void
 		{
 			var _receivedBuffer:ByteArray = ConnectionManager.sharedManager().readBytes();
+			//因为在字符模式下，发送的byte被修改过position（可以参考 ScriptsPart::onSerialSend()）,
+			//所以接收的byte的position也是有影响的，所以这里要初始化一下position，否则造成无法读取接收的值，导致一系列问题，比如字符模式下发收卡顿问题 谭启亮 20161121
+			_receivedBuffer.position=0;
 			var _receivedBytes:Array = [];
 			while(_receivedBuffer.bytesAvailable > 0){
 				_receivedBytes.push(_receivedBuffer.readUnsignedByte());
