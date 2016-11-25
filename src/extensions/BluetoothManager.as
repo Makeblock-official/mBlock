@@ -234,7 +234,7 @@ package extensions
 						setTimeout(checkName,3000);
 					}else{
 						_connectCnt++;
-						if(_connectCnt>=_connectTimes)
+						if(_connectCnt<_connectTimes)
 						{
 							i=0;
 							setTimeout(checkName,1000);
