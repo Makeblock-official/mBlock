@@ -1029,6 +1029,7 @@ void updateVar(char * varName,double * var)
 				parseScripts(objs.scripts);
 			}
 			ccode_func+=buildFunctions();
+			ccode_setup = hackVaribleWithPinMode(ccode_setup);
 			var retcode:String = codeTemplate.replace("//setup",ccode_setup).replace("//loop", ccode_loop).replace("//define", ccode_def).replace("//include", ccode_inc).replace("//function",ccode_func);
 			retcode = retcode.replace("//_loop", ccode_loop2);
 			retcode = buildSerialParser(retcode);
@@ -1056,6 +1057,43 @@ void updateVar(char * varName,double * var)
 			if(!NativeProcess.isSupported) return "";
 			return (retcode);
 			//			buildAll(retcode, requiredCpp);
+		}
+		
+		// HACK: 在Arduino模式下，如果你定义一个变量，设置一个变量，并对其进行IO操作，
+		// 该变量会在pinMode语句之后被设置。
+		// 这会导致pinMode语句中变量未初始化的问题。
+		private function hackVaribleWithPinMode(originalCode:String):String
+		{
+			var lines:Array= originalCode.split("\n");
+			var collectedPinModes:Array = [];
+			var line:String;
+			// collect all pinMode commands
+			for(var i:int=0; i<lines.length; i++) {
+				line = lines[i];
+				if( line.indexOf("pinMode") != -1 ) {
+					var sliced:Array = lines.splice(i, 1);
+					collectedPinModes = collectedPinModes.concat(sliced);
+					i = i-1;
+				}
+			}
+			
+			if(collectedPinModes.length == 0){
+				return originalCode;
+			}
+			
+			// put pinMode command just before io commands
+			for(i=0; i<lines.length; i++) {
+				line = lines[i];
+				if(line.indexOf("digitalWrite")!=-1 || line.indexOf("digitalRead")!=-1 || 
+					line.indexOf("analogWrite")!=-1 || line.indexOf("analogWrite")!=-1) {
+					break;
+				}
+			}
+			var linesBefore:Array = lines.splice(0, i);
+			lines = linesBefore.concat(collectedPinModes, lines);
+				
+			var joinedLines:String = lines.join("\n");
+			return joinedLines;
 		}
 		
 		private function parseScripts(scripts:Object):Boolean
