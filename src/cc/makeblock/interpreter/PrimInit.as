@@ -49,9 +49,17 @@ package cc.makeblock.interpreter
 			var receivers:Array = [];
 			msg = msg.toLowerCase();
 			function findReceivers(stack:Block, obj:ScratchObj):void {
-				if ((stack.op == "whenIReceive") && (stack.args[0].argValue.toLowerCase() == msg)) {
-					receivers.push([stack, obj]);
+				//有个sb2文件随便一点都会报错，这里先加个catch处理  by谭启亮 20161123
+				try{
+					if ((stack.op == "whenIReceive") && (stack.args[0].argValue.toLowerCase() == msg)) {
+						receivers.push([stack, obj]);
+					}
 				}
+				catch(err:Error)
+				{
+					trace("error come");
+				}
+				
 			}
 			MBlock.app.runtime.allStacksAndOwnersDo(findReceivers);
 			var threadList:Array = [];
