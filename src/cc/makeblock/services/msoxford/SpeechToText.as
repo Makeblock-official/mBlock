@@ -136,7 +136,7 @@ package cc.makeblock.services.msoxford
 				var appid:String = "f84e364c-ec34-4773-a783-73707bd9a585";
 				var scenarios:String = "ulm";
 				var locale:String = Translator.getLanguage().split("_").join("-");
-				locale = locale=="en"?"en-US":locale;
+				locale = locale=="en"?"en-US":((locale=="ja"||locale=="ja-HIRA")?"ja-JP":(locale=="ko"?"ko-KR":locale));
 				var device:String = "Windows OS";
 				var version:String = "3.0";
 				var format:String = "xml";
