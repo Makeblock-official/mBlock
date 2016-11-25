@@ -808,7 +808,7 @@ package scratch {
 			case 'year': return now.fullYear; // four digit year (e.g. 2012)
 			case 'month': return now.month + 1; // 1-12
 			case 'date': return now.date; // 1-31
-			case 'day of week': return now.day + 1; // 1-7, where 1 is Sunday
+			case 'day of week': return now.day; // 0-6, where 0 is Sunday
 			}
 			return ''; // shouldn't happen
 		}
