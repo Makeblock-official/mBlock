@@ -260,7 +260,7 @@ public class ScriptsPart extends UIPart {
 	
 	public function onSerialSend(bytes:ByteArray):void
 	{
-		if(_isRecvBinaryMode){
+		if(isByteInputMode){
 			appendMsgWithTimestamp(HexUtil.bytesToString(bytes), true);
 		}else{
 			bytes.position = 0;
