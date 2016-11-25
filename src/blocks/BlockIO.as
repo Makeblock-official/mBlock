@@ -123,7 +123,11 @@ public class BlockIO {
 		var hadSpriteRef:Boolean;
 		if(cmd[0].indexOf(".showDraw") > 0){
 			args = cmd.slice(1,-1);
-			args.push(spec[4][3]);
+			//这里原本有bug，有时候spec[4][3]并没有内容导致catch an error，然后整个block变成一个不携带参数的undefined，导致后面再切换含有该模块的主板的时候，无法正常显示。所以这里要加个安全判断
+			if(spec[4] && spec[4][3])
+			{
+				args.push(spec[4][3]);
+			}
 			b = new Block(label, spec[1], Specs.blockColor(spec[2]), spec[3], args);
 			for(i=0; i<args.length-1;i++){
 				if(args[i] is Array){
