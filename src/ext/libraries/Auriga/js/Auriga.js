@@ -86,6 +86,7 @@
 		"turn right":4};
 	var indexs = [];
 	var versionIndex = 0xFA;
+	var startTimer = 0;
     ext.resetAll = function(){
     	device.send([0xff, 0x55, 2, 0, 4]);
     };
@@ -223,15 +224,7 @@
 		}
 		runPackage(61,0,slot,short2array(speed));
 	};
-	ext.runEncoderMotorPWM = function(port,slot,speed){
-		if(typeof port=="string"){
-			port = ports[port];
-		}
-		if(typeof slot=="string"){
-			slot = slots[slot];
-		}
-		runPackage(12,0x8,slot,short2array(speed),0);
-	};
+	
 	ext.runEncoderMotorRpm = function(port, slot, distance, speed){
 		if(typeof port=="string"){
 			port = ports[port];

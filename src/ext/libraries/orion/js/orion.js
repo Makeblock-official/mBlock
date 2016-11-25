@@ -332,6 +332,7 @@
 		}
 		getPackage(nextID,deviceId,port);
     };
+    var startTimer = 0;
     ext.getTimer = function(nextID){
 		if(startTimer==0){
 			startTimer = (new Date().getTime())/1000.0;

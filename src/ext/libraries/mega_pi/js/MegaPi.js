@@ -285,6 +285,7 @@
 		if(y < -8) y = -8;
 		runPackage(41,port,2,x,y,bytes);
 	}
+	var startTimer = 0;
 	ext.getTimer = function(nextID){
 		if(startTimer==0){
 			startTimer = (new Date().getTime())/1000.0;
