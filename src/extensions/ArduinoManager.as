@@ -49,7 +49,8 @@ package extensions
 		private var ccode_inc:String = ""
 		private var ccode_pointer:String="setup"
 		private var ccode_func:String = "";
-		private var mathOp:Array=["+","-","*","/","%",">","=","<","&","|","!","not","rounded"];
+		//添加 && ||
+		private var mathOp:Array=["+","-","*","/","%",">","=","<","&","&&","|","||","!","not","rounded"];
 		private var varList:Array = [];
 		private var varStringList:Array = [];
 		private var varListWrite:Array=[]

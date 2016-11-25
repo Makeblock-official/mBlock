@@ -205,8 +205,8 @@
 <command category="8" type="b" opcode="=" spec="%s = %s">["",""]</command>
 <command category="8" type="b" opcode=">" spec="%s > %s">["",""]</command>
 <command/>
-<command category="8" type="b" opcode="&amp;" spec="%b and %b"/>
-<command category="8" type="b" opcode="|" spec="%b or %b"/>
+<command category="8" type="b" opcode="&amp;&amp;" spec="%b and %b"/>
+<command category="8" type="b" opcode="||" spec="%b or %b"/>
 <command category="8" type="b" opcode="not" spec="not %b"/>
 <command/>
 <command category="8" type="r" opcode="concatenate:with:" spec="join %s %s">["hello ","world"]</command>
