@@ -1070,7 +1070,7 @@ void updateVar(char * varName,double * var)
 			// collect all pinMode commands
 			for(var i:int=0; i<lines.length; i++) {
 				line = lines[i];
-				if( line.indexOf("pinMode") != -1 ) {
+				if( line.indexOf("pinMode") != -1 || line.indexOf("// init pin") != -1 ) {
 					var sliced:Array = lines.splice(i, 1);
 					collectedPinModes = collectedPinModes.concat(sliced);
 					i = i-1;
@@ -1085,7 +1085,7 @@ void updateVar(char * varName,double * var)
 			for(i=0; i<lines.length; i++) {
 				line = lines[i];
 				if(line.indexOf("digitalWrite")!=-1 || line.indexOf("digitalRead")!=-1 || 
-					line.indexOf("analogWrite")!=-1 || line.indexOf("analogWrite")!=-1) {
+					line.indexOf("analogWrite")!=-1 || line.indexOf("analogWrite")!=-1 || line.indexOf("// write to")!=-1) {
 					break;
 				}
 			}
