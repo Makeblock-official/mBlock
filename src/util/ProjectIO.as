@@ -413,7 +413,9 @@ public class ProjectIO {
 		['Communication.serial\\/write\\/command','Communication.writeCommand'],
 		['Communication.serial\\/read\\/command','Communication.readCommand'],
 		['Communication.serial\\/clear','Communication.clearBuffer'],
-		['"Quater"','"Quarter"']
+		['"Quater"','"Quarter"'],
+		['&','&&'],
+		['|','||']
 		/*,
 		['["mBot.runLed", "all",','["mBot.runLed", "led on board","all",']*/
 	];
