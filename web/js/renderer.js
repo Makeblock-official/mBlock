@@ -1,5 +1,6 @@
 const ipcRenderer = require('electron').ipcRenderer
-const webview = document.getElementById('webview')
+const webview = document.getElementById('webview');
+
 console.log("ready")
 webview.addEventListener('console-message', (e) => {
     console.log("line "+e.line+" from "+e.sourceId+" : "+e.message)
