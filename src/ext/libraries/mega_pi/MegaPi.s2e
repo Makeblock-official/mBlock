@@ -27,7 +27,7 @@
 		{"encode":"{d0}{s1}{s2}","setup":"stepper_{0}.setMicroStep(16);\nstepper_{0}.enableOutputs();\n","inc":"","def":"MeStepperOnBoard stepper_{0}({0});\n","work":"stepper_{0}.move({2});\nstepper_{0}.setMaxSpeed({1});\nstepper_{0}.setSpeed({1});\n","loop":"stepper_{0}.runSpeedToPosition();\n"}],
 		
 		["w", "set encoder motor%d.exMotorPort power to %d.motorvalue","runEncoderMotorPWM", "Port1", 100,
-        {"encode":"{d0}{s1}{s2}","setup":"attachInterrupt(Encoder_{0}.GetIntNum(), isr_process_encoder{0}, RISING);\n","inc":"","def":"","work":"Encoder_{0}.setMotorPwm({1});\n","loop":"Encoder_{0}.Update_speed();\n"}],
+        {"encode":"{d0}{s1}{s2}","setup":"attachInterrupt(Encoder_{0}.getIntNum(), isr_process_encoder{0}, RISING);\n","inc":"","def":"","work":"Encoder_{0}.setTarPWM({1});\n","loop":"Encoder_{0}.loop();\n"}],
 		
 		["w", "set encoder motor%d.exMotorPort speed %n rpm","runEncoderMotor", "Port1", 180,
 		{"encode":"{d0}{s1}{s2}","setup":"attachInterrupt(Encoder_{0}.getIntNum(), isr_process_encoder{0}, RISING);\nEncoder_{0}.setPulse(8);\nEncoder_{0}.setRatio(46.67);\nEncoder_{0}.setPosPid(1.8,0,1.2);\nEncoder_{0}.setSpeedPid(0.18,0,0);\n","inc":"","def":"","work":"Encoder_{0}.runSpeed({1});\n","loop":"Encoder_{0}.loop();\n"}],

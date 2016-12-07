@@ -187,7 +187,7 @@
 		{
 			port = ports[port];
 		}
-		runPackage(61,0,port,short2array(speed));
+		runPackage(61,0,port,short2array(-speed));
 	};
 	ext.runEncoderMotorRotate = function(port,distance,speed){
 		if(typeof port=="string"){
