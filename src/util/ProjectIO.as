@@ -179,6 +179,7 @@ public class ProjectIO {
 		var jsonObj:Object = util.JSON.parse(jsonData);
 		//先处理兼容性问题
 		fixManager(jsonObj);
+		trace(util.JSON.stringify(jsonObj));
 		if(jsonObj['info']){
 			if(jsonObj['info']['boardVersion']){
 				DeviceManager.sharedManager().onSelectBoard(jsonObj['info']['boardVersion']);
@@ -202,6 +203,7 @@ public class ProjectIO {
 			installImagesAndSounds([sprite]);
 			return sprite;
 		}
+		
 		return null;
 	}
 	private function fixManager(obj:Object):void
@@ -233,15 +235,15 @@ public class ProjectIO {
 				* +表示插入+号后面的项，比如arr1=[1,2,3],arr2=[4,"+",8]，转换后得 arr1=[4,8,2,3];
 				*- 表示要删除该项，比如arr1=[1,2,3],arr2=["-","??","??"]，转换后得 arr1=[2,3];
 				* T 表示交换位置，比如第1个和第2个参数交换位置，arr1=[1,2,3],arr2=["T1","T1","??"],转换后arr1=[2,1,3];这里T是成对出现的，多对要交换用T加序号来实现
-				* "Port1|Port2|Port3|Port4" 竖线隔开表示满足其中任意一个都算匹配上了。
-				* "1:led right|2:led left" 替代的项，1:led right 表示如果值为1，则替换成led right
+				* "Port1¦Port2¦Port3¦Port4" 竖线隔开表示满足其中任意一个都算匹配上了。
+				* "1:led right¦2:led left" 替代的项，1:led right 表示如果值为1，则替换成led right
 				*/
 				
 				if(board=="mbot_uno")
 				{
 					//fix mBot 
-					fixCategoryRecursion(blocks,["mBot.runLed", "Port1|Port2|Port3|Port4", "??", "??", "??", "??"],["mBot.runLedExternal"]);
-					fixCategoryRecursion(blocks,["mBot.runLed", "led on board", "??", "??", "??", "??"],["mBot.runLed","-","1:led right|2:led left"]);
+					fixCategoryRecursion(blocks,["mBot.runLed", "Port1¦Port2¦Port3¦Port4", "??", "??", "??", "??"],["mBot.runLedExternal"]);
+					fixCategoryRecursion(blocks,["mBot.runLed", "led on board", "??", "??", "??", "??"],["mBot.runLed","-","1:led right¦2:led left"]);
 				}
 				else if(board=="me/auriga_mega2560")
 				{
@@ -258,6 +260,12 @@ public class ProjectIO {
 					fixCategoryRecursion(blocks,["MegaPi.getEncoderValue", "??", "speed"],["MegaPi.getEncoderSpeedValue","??","-"]);
 				}
 				
+				//通用模块
+				fixCategoryRecursion(blocks,["&", "??", "??"],["&&","??","??"]);
+				fixCategoryRecursion(blocks,["&&&&", "??", "??"],["&&","??","??"]);
+				
+				fixCategoryRecursion(blocks,["|", "??", "??"],["||","??","??"]);
+				fixCategoryRecursion(blocks,["||||", "??", "??"],["||","??","??"]);
 			}
 			
 		}
@@ -277,7 +285,7 @@ public class ProjectIO {
 		{
 			for(var j:int=0;j<originalArr.length;j++)
 			{
-				if(originalArr[j]=="??" || originalArr[j]==blocks[j] || originalArr[j].indexOf(blocks[j])>=0)
+				if(originalArr[j]=="??" || originalArr[j]==blocks[j] || (originalArr[j].indexOf("¦")>=0 && originalArr[j].indexOf(blocks[j])>=0))
 				{
 					continue;
 				}
@@ -318,9 +326,9 @@ public class ProjectIO {
 					}
 					else if(tmpArr[k]!="??")
 					{
-						if(tmpArr[k].indexOf("|")>=0)
+						if(tmpArr[k].indexOf("¦")>=0)
 						{
-							var valueArr:Array = tmpArr[k].split("|");
+							var valueArr:Array = tmpArr[k].split("¦");
 							for each(var value:String in valueArr)
 							{
 								var arr:Array = value.split(":");
@@ -413,9 +421,7 @@ public class ProjectIO {
 		['Communication.serial\\/write\\/command','Communication.writeCommand'],
 		['Communication.serial\\/read\\/command','Communication.readCommand'],
 		['Communication.serial\\/clear','Communication.clearBuffer'],
-		['"Quater"','"Quarter"'],
-		['&','&&'],
-		['|','||']
+		['"Quater"','"Quarter"']
 		/*,
 		['["mBot.runLed", "all",','["mBot.runLed", "led on board","all",']*/
 	];
@@ -424,7 +430,6 @@ public class ProjectIO {
 		for(var i:uint=0;i<fixList.length;i++){
 			json = json.split(fixList[i][0]).join(fixList[i][1]);
 		}
-		trace(json);
 		return json.split("arduino\\/main").join("runArduino");
 	}
 	private function integerName(s:String):String {
