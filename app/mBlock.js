@@ -79,7 +79,7 @@ function updateSerialPort(){
 					Serial.connect(item.label,updateSerialPort,onSerialReceived,onSerialDisconnect);
 				}
 			})
-			mainMenu.items[3].submenu.items[0].submenu.insert(0,item)
+			mainMenu.items[process.platform === 'darwin'?3:2].submenu.items[0].submenu.insert(0,item)
 		}
 		updateMenu();
 	})
