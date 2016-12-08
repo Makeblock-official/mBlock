@@ -3,7 +3,8 @@ const mBlock = require('./mBlock.js');
 var express = require('express');
 var http = express();
 
-var httpPort = 7070
+const httpPort = 7070
+
 http.use(express.static('web'));
 http.listen(httpPort, function () {
   console.log('app listening on port '+httpPort+'!');

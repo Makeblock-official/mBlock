@@ -1,5 +1,6 @@
 const {ipcMain,dialog,BrowserWindow,MenuItem,Menu,app} = require('electron')
 
+const i18n = require('i18n');
 var Serial = require("./usbserial.js")
 var Boards = require("./boards.js");
 var fs = require("fs");
@@ -8,6 +9,10 @@ const host = "http://localhost:7070"
 
 var client,saveAs=false,currentProjectPath = "",mainMenu,currentLocale;
 
+i18n.configure({
+    locales:['en', 'zh-CN', 'zh-TW'],
+    directory: __dirname + '/../locales'
+});
 ipcMain.on('menu_connected', function (event, arg) {
 	console.log("client connected");
   	client = event.sender;
@@ -87,6 +92,31 @@ function updateSerialPort(){
 		client.send("data",{method:"connected",connected:Serial.isConnected()})
 	}
 }
+function setLanguage(lang){
+	i18n.setLocale(lang);
+	generalMenu();
+	updateMenu();
+}
+
+function initLanguagesMenu(){
+	var languages = [
+			{name:"en",label:"English"},
+			{name:"zh-CN",label:"简体中文"},
+			{name:"zh-TW",label:"繁体中文"}
+			];
+	for(var i=languages.length-1;i>=0;i--){
+		var item = new MenuItem({
+			name:languages[i].name,
+			label:languages[i].label,
+			checked:languages[i].name==i18n.getLocale(),
+			type:'checkbox',
+			click:function(item,focusedWindow){
+				setLanguage(item.name);
+			}
+		})
+		mainMenu.items[process.platform === 'darwin'?6:5].submenu.insert(0,item);
+	}
+}
 function onSerialDisconnect(){
 	client.send("data",{method:"connected",connected:false})
 }
@@ -100,11 +130,11 @@ function generalMenu(){
 	const _menu = [
 		{
 			name:'File',
-			label: '文件',
+			label: i18n.__("File"),
 			submenu: [
 				{
 					name:'New',
-					label: '新建项目',
+					label: i18n.__('New Project'),
 					accelerator: 'CmdOrCtrl+N',
 					click: function (item, focusedWindow) {
 						client.send("data",{method:"newProject",title:"new-project"})
@@ -115,7 +145,7 @@ function generalMenu(){
 				},
 				{
 					name:'Load Project',
-					label: '打开项目',
+					label: i18n.__('Load Project'),
 					accelerator: 'CmdOrCtrl+O',
 					click: function (item, focusedWindow) {
 						dialog.showOpenDialog({title:"打开项目",properties: ['openFile'],filters: [{ name: 'Scratch', extensions: ['sb2'] }  ]},function(path){
@@ -127,7 +157,7 @@ function generalMenu(){
 				},
 				{
 					name:'Save Project',
-					label: '保存项目',
+					label: i18n.__('Save Project'),
 					accelerator: 'CmdOrCtrl+S',
 					click: function (item, focusedWindow) {
 						saveProject();
@@ -135,7 +165,7 @@ function generalMenu(){
 				},
 				{
 					name:'Save Project As',
-					label: '另存项目',
+					label: i18n.__('Save Project As'),
 					accelerator: 'CmdOrCtrl+Alt+S',
 					click: function (item, focusedWindow) {
 						saveProjectAs();
@@ -146,22 +176,22 @@ function generalMenu(){
 				},
 				{
 					name:'Import Image',
-					label: '导入图片'
+					label: i18n.__('Import Image')
 				},
 				{
 					name:'Export Image',
-					label: '导出图片'
+					label: i18n.__('Export Image')
 				},
 				{
 					type: 'separator'
 				},
 				{
 					name:'Undo Revert',
-					label: '取消转换'
+					label: i18n.__('Undo Revert')
 				},
 				{
 					name:'Revert',
-					label: '转换'
+					label: i18n.__('Revert')
 				}
 			]
 		},{
@@ -522,10 +552,12 @@ function generalMenu(){
 		})
 	}
 	mainMenu = Menu.buildFromTemplate(template);
+	initLanguagesMenu();
 }
 exports.initMenu = function() {
 	Boards.selectBoard("me/auriga_mega2560")
   	currentLocale = app.getLocale();
+	i18n.setLocale(currentLocale);
 	updateSerialPort();
 }
 /*
