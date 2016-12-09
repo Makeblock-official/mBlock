@@ -59,6 +59,7 @@ package scratch {
 	
 	import uiwidgets.DialogBox;
 	
+	import util.JsUtil;
 	import util.ObjReader;
 	import util.OldProjectReader;
 	import util.ProjectIO;
@@ -515,14 +516,13 @@ package scratch {
 	
 		public function projectLoadFailed(ignore:* = null):void {
 			app.removeLoadProgressBox();
-			//DialogBox.notify('Error!', 'Project did not load.', app.stage);
 			app.loadProjectFailed();
+			DialogBox.notify('Error!', 'Project did not load.', app.stage);			
 		}
 	
 		public function decodeImagesAndInstall(newProject:ScratchStage, callback:Function=null):void {
 			function imagesDecoded():void {
 				projectToInstall = newProject;
-				
 				if(callback != null){
 					callback();
 				}

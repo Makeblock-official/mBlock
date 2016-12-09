@@ -19,6 +19,8 @@ ipcMain.on('menu_connected', function (event, arg) {
 	
 })
 ipcMain.on('flashReady',function(event,arg){
+	console.log("ready")
+  	client = event.sender;
 	Boards.init(client);
   	mBlock.initMenu();
 })
@@ -49,19 +51,19 @@ function openProject(path){
 	var tmp = path.split(".");
 	var filename = "/tmp/project."+tmp[tmp.length-1];
 	fs.writeFileSync("./web"+filename, data);
-	client.send("data",{method:"openProject",url:filename})
+	client.send("openProject",{url:filename})
 }
 function newProject(){
 	currentProjectPath = ""
-	client.send("data",{method:"newProject",title:"new-project"})
+	client.send("newProject",{title:"new-project"})
 }
 function saveProject(){
 	saveAs = false;
-    client.send("data",{method:"saveProject"})
+    client.send("saveProject",{})
 }
 function saveProjectAs(){
 	saveAs = true;
-    client.send("data",{method:"saveProject"})
+    client.send("saveProject",{})
 }
 function openURL(url){
 	require('electron').shell.openExternal(url)
@@ -89,7 +91,7 @@ function updateSerialPort(){
 		updateMenu();
 	})
 	if(client){
-		client.send("data",{method:"connected",connected:Serial.isConnected()})
+		client.send("connected",{connected:Serial.isConnected()})
 	}
 }
 function setLanguage(lang){

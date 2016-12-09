@@ -2,7 +2,6 @@ const {BrowserWindow,app,Menu} = require('electron');
 const mBlock = require('./mBlock.js');
 var express = require('express');
 var http = express();
-
 const httpPort = 7070
 
 http.use(express.static('web'));

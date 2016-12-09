@@ -120,7 +120,6 @@ package util
 			MBlock.app.runtime.installProjectFromData(fileData);
 //			MBlock.app.runtime.selectProjectFile();
 		}
-		
 		static private function __openProject(url:String,callback:Function=null):void
 		{
 			var loader:URLLoader = new URLLoader();
@@ -128,6 +127,7 @@ package util
 			loader.addEventListener(Event.COMPLETE, function(evt:Event):void{
 				MBlock.app.runtime.installProjectFromData(loader.data, true,callback);
 				Call("openSuccess",[]);
+				//回调成功消息
 			});
 			loader.addEventListener(IOErrorEvent.IO_ERROR, function(evt:IOErrorEvent):void{
 				trace(evt);

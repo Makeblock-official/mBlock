@@ -1,31 +1,39 @@
+
+module.paths.push(__dirname.split('node_modules')[0]+"node_modules/");
+
 const {ipcRenderer} = require('electron')
+var SerialPort = require('serialport');
 var flashCore = document.getElementById("mblock");
 var ScratchExtensions = {};
 var globalExt = {},onReceived=null,connected = false;
 var device = {};
-ipcRenderer.on('webview', (sender,obj) => {    
-    if(obj.method=="openProject"){
-        flashCore.openProject(obj.url);
-    }else if(obj.method=="newProject"){
-        console.log("newProject")
-        flashCore.newProject(obj.title);
-    }else if(obj.method=="saveProject"){
-        console.log("saveProject")
-        flashCore.saveProject();
-    }else if(obj.method=="command"){
-        console.log("command");
-        //obj.buffer
-        if(onReceived){
-            onReceived(obj.buffer);
-        }
-    }else if(obj.method=="connected"){
-        connected = obj.connected;
-    }else if(obj.method=="changeToBoard"){
-        changeToBoard(obj.board);
+ipcRenderer.on('openProject', (sender,obj) => {  
+    flashCore.openProject(obj.url);
+});  
+ipcRenderer.on('newProject', (sender,obj) => {  
+    flashCore.newProject(obj.title);
+});   
+ipcRenderer.on('saveProject', (sender,obj) => {  
+    flashCore.saveProject();
+});  
+ipcRenderer.on('command', (sender,obj) => {  
+    if(onReceived){
+        onReceived(obj.buffer);
     }
-})
+});  
+ipcRenderer.on('connected', (sender,obj) => {  
+    connected = obj.connected;
+});  
+ipcRenderer.on('changeToBoard', (sender,obj) => {  
+    changeToBoard(obj.board);
+}); 
+
 function callJs(extName, method, args){
+    if(!globalExt[extName]){
+        return;
+    }
 	var handler = globalExt[extName][method];
+
 	if(args.length < handler.length){
 		args.unshift(0);
 	}
@@ -51,11 +59,11 @@ function boardConnected(){
     return connected;
 }
 function sendMsg(msg){
-    console.log(msg)
+    console.log("sendMsg:"+msg)
 }
 function readyForFlash(){
     window.responseValue = flashCore.responseValue;
-    ipcRenderer.sendToHost("flashReady");
+    ipcRenderer.send("flashReady");
 }
 function changeToBoard(name){
     name = name.toLowerCase();
@@ -70,11 +78,11 @@ function changeToBoard(name){
     }
 }
 function setFullscreen(status){
-    ipcRenderer.sendToHost("fullscreen",status);
+    ipcRenderer.send("fullscreen",status);
 }
 function saveProject(data){
     var date = new Date();
-    ipcRenderer.sendToHost("save",{title:date.getFullYear()+"-"+date.getMonth()+"-"+date.getDate()+".sb2",data:data});
+    ipcRenderer.send("save",{title:date.getFullYear()+"-"+date.getMonth()+"-"+date.getDate()+".sb2",data:data});
 }
 function openSuccess(){
     console.log("openSuccess")
@@ -94,11 +102,15 @@ device.set_receive_handler = function(name,callback){
         callback(data);
     }
 }
+function resetAll(){
 
+}
 function isArray(target){
 	return Object.prototype.toString.call(target) == "[object Array]";
 }
-
+function translator(s){
+    return i18n.__(s);
+}
 function castDataView2Array(dataView){
 	var n = dataView.byteLength;
 	var result = new Array(n);
