@@ -1,9 +1,9 @@
 const {BrowserWindow,app,Menu} = require('electron');
 const mBlock = require('./mBlock.js');
-var express = require('express');
-var http = express();
+const express = require('express');
 const httpPort = 7070
-
+var http = express();
+var appMain;
 http.use(express.static('web'));
 http.listen(httpPort, function () {
   console.log('app listening on port '+httpPort+'!');
@@ -48,7 +48,9 @@ function createWindow () {
   mainWindow.on('closed', function () {
     mainWindow = null
   })
-  Menu.setApplicationMenu(new Menu())
+  Menu.setApplicationMenu(new Menu());
+  
+  appMain = new mBlock();
 }
 app.on('ready', createWindow)
 app.on('window-all-closed', function () {

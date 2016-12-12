@@ -1,14 +1,16 @@
-var currentBoardName;
-var client;
-exports.init = function(conn){
-    client = conn;
-}
-exports.selectBoard = function(name){
-    currentBoardName = name;
-    if(client){
-	    client.send("data",{method:"changeToBoard",board:name})
+var _currentBoardName;
+var _client,_app;
+function Boards(app){
+    _app = app;
+    _client = _app.getClient();
+    this.selectBoard = function(name){
+        _currentBoardName = name;
+        if(_client){
+            _client.send("data",{method:"changeToBoard",board:name})
+        }
+    }
+    this.selected = function(name){
+        return _currentBoardName == name;
     }
 }
-exports.selected = function(name){
-    return currentBoardName == name;
-}
+module.exports = Boards;
