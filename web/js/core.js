@@ -15,6 +15,9 @@ ipcRenderer.on('newProject', (sender,obj) => {
 });   
 ipcRenderer.on('saveProject', (sender,obj) => {  
     flashCore.saveProject();
+});    
+ipcRenderer.on('setLanguage', (sender,obj) => {  
+    flashCore.setLanguage(obj.lang,obj.dict);
 });  
 ipcRenderer.on('command', (sender,obj) => {  
     if(onReceived){
@@ -110,6 +113,9 @@ function isArray(target){
 }
 function translator(s){
     return i18n.__(s);
+}
+function setLanguage(lang,dict){
+	flashCore.setLanguage(lang,dict);
 }
 function castDataView2Array(dataView){
 	var n = dataView.byteLength;

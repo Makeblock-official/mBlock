@@ -7,5 +7,7 @@
 	"Import Image": "Import Image",
 	"Export Image": "Export Image",
 	"Undo Revert": "Undo Revert",
-	"Revert": "Revert"
+	"Revert": "Revert",
+	"mBot Program":"mBot主程序",
+	"Make a Variable":"新建变量"
 }

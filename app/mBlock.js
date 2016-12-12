@@ -98,6 +98,8 @@ function setLanguage(lang){
 	i18n.setLocale(lang);
 	generalMenu();
 	updateMenu();
+
+	client.send("setLanguage",{lang:lang,dict:i18n.getCatalog(lang)})
 }
 
 function initLanguagesMenu(){

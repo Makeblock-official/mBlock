@@ -74,7 +74,14 @@ package translation {
 				setLanguage(Capabilities.language);
 			}
 		}
-		
+		public static function setDictionary(lang:String="en",obj:Object=null):void{
+			if(obj){
+				dictionary = obj;
+				setFontsFor(lang);
+				checkBlockTranslations();
+				MBlock.app.translationChanged();
+			}
+		}
 		public static function setLanguage(lang:String):void {
 		
 			if ('import translation file' == lang) { importTranslationFromFile(); return; }

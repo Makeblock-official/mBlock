@@ -19,6 +19,8 @@ package util
 	import cc.makeblock.interpreter.RemoteCallMgr;
 	
 	import extensions.DeviceManager;
+	
+	import translation.Translator;
 
 	public class JsUtil
 	{
@@ -57,6 +59,7 @@ package util
 				ExternalInterface.addCallback("getRobotName", __getRobotName);
 				ExternalInterface.addCallback("setUnmodified", __setUnmodified);
 				ExternalInterface.addCallback("setProjectTitle", __setProjectTitle);
+				ExternalInterface.addCallback("setLanguage", __setLanguage);
 				ExternalInterface.addCallback("getStageSnapshot", __getStageSnapshot);
 				ExternalInterface.addCallback("showFullscreen", __showFullscreen);
 				ExternalInterface.addCallback("playCode", __playCode);
@@ -221,7 +224,9 @@ package util
 		{
 			MBlock.app.setProjectName(title);
 		}
-		
+		static private function __setLanguage(lang:String,dict:Object):void{
+			Translator.setDictionary(lang,dict);
+		}
 		static private function __getStageSnapshot():String
 		{
 			var view:Sprite = MBlock.app.stagePart;
