@@ -86,7 +86,6 @@ package {
 	import uiwidgets.ScriptsPane;
 	
 	import util.ApplicationManager;
-	import util.DESParser;
 	import util.GestureHandler;
 	import util.LogManager;
 	import util.ProjectIO;
@@ -122,6 +121,7 @@ package {
 		public var gh:GestureHandler;
 		
 		private var projectFile:File;
+		private var autoProjectFile:File;
 		public var projectID:String = '';
 		public var loadInProgress:Boolean;
 	
@@ -175,6 +175,11 @@ package {
 			}
 			errorFlag = true;
 			ErrorReportFrame.OpenSendWindow(errorText);
+			if(saveNeeded)
+			{
+				autoSaveFile();
+			}
+			
 		}
 		
 		private function initStage(evt:Event):void{
@@ -239,6 +244,11 @@ package {
 			fixLayout();
 			setTimeout(SocketManager.sharedManager, 100);
 			setTimeout(DeviceManager.sharedManager, 100);
+			if(!SharedObjectManager.sharedManager().getObject("mblock-first-launch",false))
+			{
+				SharedObjectManager.sharedManager().setObject("mblock-first-launch",true);
+				ga.trackPageview(ApplicationManager.sharedManager().isCatVersion?"/myh/":"/") + "/mblock-first-launch";
+			}
 			if(!SharedObjectManager.sharedManager().getObject(versionString+".0."+_currentVer,false)){
 				//SharedObjectManager.sharedManager().clear();
 				SharedObjectManager.sharedManager().setObject(versionString+".0."+_currentVer,true);
@@ -257,6 +267,32 @@ package {
 			MenuBuilder.BuildMenuList(XMLList(FileUtil.LoadFile("assets/context_menus.xml")));
 			//初始化项目标题
 			setProjectName('Untitled');
+			setTimeout(openAutoProjectFile,1000);
+			
+			
+		}
+		private function openAutoProjectFile():void
+		{
+			autoProjectFile = File.applicationStorageDirectory.resolvePath("autoProjectFile.sb2");
+			if(autoProjectFile.exists)
+			{
+				function reductionFile(value:int):void
+				{
+					if(value==JOptionPane.YES)
+					{
+						MBlock.app.runtime.selectedProjectFile(autoProjectFile);
+					}
+					autoProjectFile.deleteFileAsync();
+					projectFile = null;
+					saveNeeded = true;
+				}
+				
+				if(autoProjectFile.exists)
+				{
+					var panel:JOptionPane = PopupUtil.showConfirm(Translator.map("There is an abnormal exit, reduction?"),reductionFile);
+					panel.getFrame().setWidth(350);
+				}
+			}
 		}
 		private function initExtension():void{
 //			ClickerManager.sharedManager().update();
@@ -775,7 +811,15 @@ package {
 			var projIO:ProjectIO = new ProjectIO(this);
 			projIO.convertSqueakSounds(stagePane, __onSqueakSoundsConverted);
 		}
-		
+		public function autoSaveFile():void
+		{
+			var projIO:ProjectIO = new ProjectIO(this);
+			autoProjectFile = File.applicationStorageDirectory.resolvePath("autoProjectFile.sb2");
+			projIO.convertSqueakSounds(stagePane, function(projIO:ProjectIO):void{
+				FileUtil.WriteBytes(autoProjectFile, projIO.encodeProjectAsZipFile(stagePane));
+			});
+			trace("autosave");
+		}
 		private function __onSqueakSoundsConverted(projIO:ProjectIO):void
 		{
 			saveNeeded = false;
@@ -1010,7 +1054,7 @@ package {
 		// Save status
 		//------------------------------
 	
-		private var _saveNeeded:Boolean;
+		private var _saveNeeded:Boolean = true;
 		
 		private function get saveNeeded():Boolean{
 			return _saveNeeded;
