@@ -18,10 +18,13 @@
  */
 
 package uiwidgets {
-	import flash.display.*;
+	import flash.display.DisplayObject;
+	import flash.display.GradientType;
+	import flash.display.Sprite;
 	import flash.events.MouseEvent;
 	import flash.geom.Matrix;
-	import flash.text.*;
+	import flash.text.TextField;
+	import flash.text.TextFieldAutoSize;
 	
 public class Button extends Sprite {
 
@@ -97,7 +100,26 @@ public class Button extends Sprite {
 		if (action != null) action();
 		evt.stopImmediatePropagation();
 	}
-
+	public function setEnable(bool:Boolean):void
+	{
+		if(bool)
+		{
+			this.mouseEnabled = true;
+			this.mouseChildren = true;
+			setColor(CSS.titleBarColors);
+		}
+		else
+		{
+			this.mouseEnabled = false;
+			this.mouseChildren = false;
+			setColor(CSS.disableColor);
+			color = CSS.disableColor;
+			if (labelOrIcon is TextField) {
+				(labelOrIcon as TextField).textColor = CSS.offColor;
+			}
+			setMinWidthHeight(5, 5);
+		}
+	}
 	public function handleTool(tool:String, evt:MouseEvent):void {
 		if (tool == 'help' && tipName) MBlock.app.showTip(tipName);
 	}
