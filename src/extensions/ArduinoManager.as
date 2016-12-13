@@ -702,6 +702,13 @@ void updateVar(char * varName,double * var)
 				codeBlock.code = parseVarRead(blk);
 				return codeBlock;
 			}
+			else if(blk[0]=="initVar:to:"){
+				codeBlock.type = "obj";
+				codeBlock.code = null;
+				var tmpCodeBlock:Object = {code:{setup:parseVarSet(blk),work:"",def:"",inc:"",loop:""}}
+				moduleList.push(tmpCodeBlock);
+				return codeBlock;
+			}
 			else if(blk[0]=="setVar:to:"){
 				codeBlock.type = "string";
 				codeBlock.code = parseVarSet(blk);
@@ -1029,7 +1036,7 @@ void updateVar(char * varName,double * var)
 				parseScripts(objs.scripts);
 			}
 			ccode_func+=buildFunctions();
-			ccode_setup = hackVaribleWithPinMode(ccode_setup);
+			//ccode_setup = hackVaribleWithPinMode(ccode_setup);
 			var retcode:String = codeTemplate.replace("//setup",ccode_setup).replace("//loop", ccode_loop).replace("//define", ccode_def).replace("//include", ccode_inc).replace("//function",ccode_func);
 			retcode = retcode.replace("//_loop", ccode_loop2);
 			retcode = buildSerialParser(retcode);
