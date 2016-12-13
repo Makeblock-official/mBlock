@@ -808,9 +808,12 @@ public class BlockMenus implements DragClient {
 				MenuUtil.AddLine(m);
 				for each (listName in app.viewedObj().listNames()){
 //					m.addItem(listName);
-					t = new NativeMenuItem(listName);
-					t.name = "@@list";
-					m.addItem(t);
+					if(listName)
+					{
+						t = new NativeMenuItem(listName);
+						t.name = "@@list";
+						m.addItem(t);
+					}
 				}
 			}
 		}
