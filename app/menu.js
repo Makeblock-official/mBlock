@@ -21,7 +21,7 @@ function AppMenu(app){
                         label: _translator.map('New Project'),
                         accelerator: 'CmdOrCtrl+N',
                         click: function (item, focusedWindow) {
-                            client.send("data",{method:"newProject",title:"new-project"})
+                            currentProject.newProject();
                         }
                     },
                     {
@@ -86,7 +86,7 @@ function AppMenu(app){
                         name:'Undelete',
                         label: '撤销删除',
                         click: function (item, focusedWindow) {
-                            client.send("data",{method:"newProject",title:"new-project"})
+                            
                         }
                     },
                     {
@@ -96,28 +96,28 @@ function AppMenu(app){
                         name:'Hide Stage',
                         label: '隐藏舞台',
                         click: function (item, focusedWindow) {
-                            client.send("data",{method:"newProject",title:"new-project"})
+                            
                         }
                     },
                     {
                         name:'Small stage layout',
                         label: '小舞台布局模式',
                         click: function (item, focusedWindow) {
-                            client.send("data",{method:"newProject",title:"new-project"})
+                            
                         }
                     },
                     {
                         name:'Turbo mode',
                         label: '加速模式',
                         click: function (item, focusedWindow) {
-                            client.send("data",{method:"newProject",title:"new-project"})
+                            
                         }
                     },
                     {
                         name:'Arduino mode',
                         label: 'Arduino模式',
                         click: function (item, focusedWindow) {
-                            client.send("data",{method:"newProject",title:"new-project"})
+                            
                         }
                     }
                 ]
@@ -288,21 +288,21 @@ function AppMenu(app){
                         name:'Manage Extensions',
                         label: '管理扩展',
                         click: function (item, focusedWindow) {
-                            _client.send("data",{method:"newProject",title:"new-project"})
+                            
                         }
                     },
                     {
                         name:'Restore Extensions',
                         label: '检查最新扩展',
                         click: function (item, focusedWindow) {
-                            _client.send("data",{method:"newProject",title:"new-project"})
+                            
                         }
                     },
                     {
                         name:'Clear Cache',
                         label: '清空缓存',
                         click: function (item, focusedWindow) {
-                            _client.send("data",{method:"newProject",title:"new-project"})
+                            
                         }
                     },
                     {
@@ -312,7 +312,7 @@ function AppMenu(app){
                         name:'Microsoft Cognitive Service Setting',
                         label: 'Microsoft Cognitive Service Setting',
                         click: function (item, focusedWindow) {
-                            _client.send("data",{method:"newProject",title:"new-project"})
+                            
                         }
                     },
                     {
