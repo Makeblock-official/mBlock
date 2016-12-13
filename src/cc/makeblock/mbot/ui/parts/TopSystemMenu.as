@@ -307,6 +307,13 @@ package cc.makeblock.mbot.ui.parts
 				for(var i:int=0;i<arr.length;i++){
 					var item:NativeMenuItem = subMenu.addItem(new NativeMenuItem(arr[i]));
 					item.name = "serial_"+arr[i];
+					if(ApplicationManager.sharedManager().system == ApplicationManager.MAC_OS)
+					{
+						if(arr[i].indexOf("serial")==-1)
+						{
+							item.name = arr[i];
+						}
+					}
 					item.enabled = enabled;
 					item.checked = SerialDevice.sharedDevice().ports.indexOf(arr[i])>-1 && SerialManager.sharedManager().isConnected;
 				}
