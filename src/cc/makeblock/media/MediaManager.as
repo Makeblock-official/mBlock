@@ -15,7 +15,6 @@ package cc.makeblock.media
 	import ui.media.MediaLibrary;
 	
 	import util.JSON;
-
 	public class MediaManager
 	{
 		static public var _instance:MediaManager;
@@ -96,14 +95,40 @@ package cc.makeblock.media
 			var jsonPath:File = mediaDir.resolvePath("mediaLibrary.json");
 			var s:String = FileUtil.ReadString(jsonPath);
 			var libData:Array = util.JSON.parse(MediaLibrary.stripComments(s)) as Array;
-			
+			var panelArr:Array=[]
 			for each(var info:Object in libData){
 				if(info.tags[0] != "favourite"){
 					continue;
 				}
 				var fileName:String = info.md5;
-				mediaDir.resolvePath(fileName).copyToAsync(exportFile.resolvePath(fileName));
+				if(exportFile.resolvePath(fileName).exists)
+				{
+					var tmpFileName:String = fileName.length<15?fileName:fileName.substr(0,15)+"…";
+					
+					var panel:JOptionPane = PopupUtil.showConfirm(Translator.map('File')+' "'+tmpFileName+'" '+Translator.map('already exists, overwrite?'),function(value:int):void{
+						if(value==JOptionPane.YES)
+						{
+							mediaDir.resolvePath(fileName).copyToAsync(exportFile.resolvePath(fileName),true);
+						}
+						else
+						{
+							if(panelArr.length>0)
+							{
+								panelArr.shift().getFrame().visible = true;
+							}
+						}
+					});
+					panel.getFrame().setWidth(400);
+					panel.getFrame().visible = false;
+					panelArr.push(panel);
+				}
+				else
+				{
+					mediaDir.resolvePath(fileName).copyToAsync(exportFile.resolvePath(fileName));
+				}
+				
 			}
+			panelArr.shift().getFrame().visible = true;
 		}
 	}
 }
