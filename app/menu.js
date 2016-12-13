@@ -1,10 +1,10 @@
 const{Menu} = require('electron');
 const events = require('events');
 var _emitter = new events.EventEmitter();  
-var _app,_mainMenu,_this,_translator,_serial;
+var _app,_mainMenu,self,_translator,_serial;
 function AppMenu(app){
     _app = app;
-    _this = this;
+    self = this;
     _translator = _app.getTranslator();
     _serial = _app.getSerial();
     this.reset = function (){
@@ -191,35 +191,35 @@ function AppMenu(app){
                         label:"Arduino Uno",
                         type:"checkbox",
                         checked:_boards.selected("arduino_uno"),
-                        click:_this.onSelectBoard
+                        click:self.onSelectBoard
                     },
                     {
                         name:"arduino_leonardo",
                         label:"Arduino Leonardo",
                         type:"checkbox",
                         checked:_boards.selected("arduino_leonardo"),
-                        click:_this.onSelectBoard
+                        click:self.onSelectBoard
                     },
                     {
                         name:"arduino_nano328",
                         label:"Arduino Nano ( mega328 )",
                         type:"checkbox",
                         checked:_boards.selected("arduino_nano328"),
-                        click:_this.onSelectBoard
+                        click:self.onSelectBoard
                     },
                     {
                         name:"arduino_mega1280",
                         label:"Arduino Mega 1280",
                         type:"checkbox",
                         checked:_boards.selected("arduino_mega1280"),
-                        click:_this.onSelectBoard
+                        click:self.onSelectBoard
                     },
                     {
                         name:"arduino_mega2560",
                         label:"Arduino Mega 2560",
                         type:"checkbox",
                         checked:_boards.selected("arduino_mega2560"),
-                        click:_this.onSelectBoard
+                        click:self.onSelectBoard
                     },
                     {
                         type:"separator"
@@ -234,35 +234,35 @@ function AppMenu(app){
                         label:"Starter/Ultimate (Orion)",
                         type:"checkbox",
                         checked:_boards.selected("me/orion_uno"),
-                        click:_this.onSelectBoard
+                        click:self.onSelectBoard
                     },
                     {
                         name:"me/uno_shield_uno",
                         label:"Me Uno Shield",
                         type:"checkbox",
                         checked:_boards.selected("me/uno_shield_uno"),
-                        click:_this.onSelectBoard
+                        click:self.onSelectBoard
                     },
                     {
                         name:"me/mbot_uno",
                         label:"mBot (mCore)",
                         type:"checkbox",
                         checked:_boards.selected("me/mbot_uno"),
-                        click:_this.onSelectBoard
+                        click:self.onSelectBoard
                     },
                     {
                         name:"me/auriga_mega2560",
                         label:"mBot Ranger (Auriga)",
                         type:"checkbox",
                         checked:_boards.selected("me/auriga_mega2560"),
-                        click:_this.onSelectBoard
+                        click:self.onSelectBoard
                     },
                     {
                         name:"me/mega_pi_mega2560",
                         label:"Ultimate 2.0 (Mega Pi)",
                         type:"checkbox",
                         checked:_boards.selected("me/mega_pi_mega2560"),
-                        click:_this.onSelectBoard
+                        click:self.onSelectBoard
                     },
                     {
                         type:"separator"
@@ -277,7 +277,7 @@ function AppMenu(app){
                         label:"PicoBoard",
                         type:"checkbox",
                         checked:_boards.selected("picoboard_unknown"),
-                        click:_this.onSelectBoard
+                        click:self.onSelectBoard
                     }
                 ]
             },{
@@ -449,10 +449,10 @@ function AppMenu(app){
     }
     this.selectBoard = function(item){
         _boards.selectBoard(item.name);
-        _this.update();
+        self.update();
 	}
     this.update = function(){
-		_this.reset();
+		self.reset();
         Menu.setApplicationMenu(_mainMenu);
     }
     this.on = function(event,listener){

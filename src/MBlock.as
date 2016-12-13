@@ -319,7 +319,7 @@ package {
 	
 		protected var wasEditing:Boolean;
 		public function setPresentationMode(enterPresentation:Boolean, fullscreenFlag:Boolean=true):void {
-			JsUtil.Call("setFullscreen",[enterPresentation]);
+			JsUtil.callApp("fullscreen",enterPresentation);
 			if (enterPresentation) {
 				wasEditing = editMode;
 				if (wasEditing) {

@@ -2,7 +2,7 @@ const i18n = require('i18n');
 const{MenuItem} = require('electron')
 const events = require('events');
 var _emitter = new events.EventEmitter();  
-var _client,_lang,_app,_this;
+var _client,_lang,_app,self;
 const _languages = [
 			{name:"en",label:"English"},
 			{name:"zh-CN",label:"简体中文"},
@@ -12,7 +12,7 @@ function Translator(app){
     _app = app;
     _client = _app.getClient();
     _lang = _app.getLocale();
-    _this = this;
+    self = this;
     i18n.configure({
         locales:['en', 'zh-CN', 'zh-TW'],
         directory: __dirname + '/../locales'
@@ -37,7 +37,7 @@ function Translator(app){
                 checked:_languages[i].name==_lang,
                 type:'checkbox',
                 click:function(item,focusedWindow){
-                    _this.setLanguage(item.name);
+                    self.setLanguage(item.name);
                     _app.updateMenu();
                 }
             })

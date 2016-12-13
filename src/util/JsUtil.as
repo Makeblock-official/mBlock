@@ -81,6 +81,9 @@ package util
 				trace("ExternalInterface is not available!");
 			}
 		}
+		static public function callApp(method:String,args:Object):void{
+			Call("callAppFromFlash",[method,args]);
+		}
 		/*
 		static public function Eval(code:String):void
 		{
@@ -175,7 +178,8 @@ package util
 			function squeakSoundsConverted(projIO:ProjectIO):void {
 				var zipData:ByteArray = projIO.encodeProjectAsZipFile(MBlock.app.stagePane);
 				var base64Str:String = Base64.encode(zipData);
-				Call("saveProject", [base64Str]);
+				//Call("saveProject", [base64Str]);
+				callApp("saveProject",{title: MBlock.app.projectName() + '.sb2', data:base64Str});
 			}
 			var projIO:ProjectIO = new ProjectIO(MBlock.app);
 			projIO.convertSqueakSounds(MBlock.app.stagePane, squeakSoundsConverted);

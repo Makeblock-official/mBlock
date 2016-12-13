@@ -4,10 +4,10 @@ const events = require('events');
 var _emitter = new events.EventEmitter();  
 var _currentSerialPort=""
 var _port;
-var _client,_this,_app,_items=[];
+var self,_client,_app,_items=[];
 function Serial(app){
 	_app = app;
-	_this = this;
+	self = this;
 	_client = _app.getClient();
 	this.list = function(callback) {
 		SerialPort.list(callback);
@@ -77,10 +77,10 @@ function Serial(app){
 				var item = new MenuItem({
 					name:ports[i].comName,
 					label:ports[i].comName,
-					checked:_this.isConnected(ports[i].comName),
+					checked:self.isConnected(ports[i].comName),
 					type:'checkbox',
 					click:function(item,focusedWindow){
-						_this.connect(item.label,_this.onOpen,_this.onReceived,_this.onDisconnect);
+						self.connect(item.label,self.onOpen,self.onReceived,self.onDisconnect);
 					}
 				})
 			}
@@ -94,7 +94,7 @@ function Serial(app){
 	this.onOpen = function(){
 		_app.updateMenu();
 		if(_client){
-			_client.send("connected",{connected:_this.isConnected()})
+			_client.send("connected",{connected:self.isConnected()})
 		}
 	}
 	this.onDisconnect = function(){

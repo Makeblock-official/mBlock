@@ -80,19 +80,18 @@ function changeToBoard(name){
         });
     }
 }
-function setFullscreen(status){
-    ipcRenderer.send("fullscreen",status);
-}
-function saveProject(data){
-    var date = new Date();
-    ipcRenderer.send("save",{title:date.getFullYear()+"-"+date.getMonth()+"-"+date.getDate()+".sb2",data:data});
-}
+// function setFullscreen(status){
+//     ipcRenderer.send("fullscreen",status);
+// }
+// function saveProject(data){
+//     var date = new Date();
+//     ipcRenderer.send("save",{title:date.getFullYear()+"-"+date.getMonth()+"-"+date.getDate()+".sb2",data:data});
+// }
 function openSuccess(){
     console.log("openSuccess")
 }
 device.send = function(data){
-    console.log(data);
-    ipcRenderer.sendToHost("command",{buffer:data});
+    ipcRenderer.send("command",{buffer:data});
 }
 device.open = function(option,success){
     if(success){
@@ -105,17 +104,19 @@ device.set_receive_handler = function(name,callback){
         callback(data);
     }
 }
+
+function setLanguage(lang,dict){
+	flashCore.setLanguage(lang,dict);
+}
+function callAppFromFlash(method,params){
+	console.log(method+":"+params);
+	ipcRenderer.send(method,params);
+}
 function resetAll(){
 
 }
 function isArray(target){
 	return Object.prototype.toString.call(target) == "[object Array]";
-}
-function translator(s){
-    return i18n.__(s);
-}
-function setLanguage(lang,dict){
-	flashCore.setLanguage(lang,dict);
 }
 function castDataView2Array(dataView){
 	var n = dataView.byteLength;
@@ -191,15 +192,13 @@ function array2string(bytes){
 }
 
 function callFlash(method, args){
-	var flash = swfobject.getObjectById("MBlock");
-	return flash[method].apply(flash, args);
+	return flashCore[method].apply(flash, args);
 }
 
 function responseValue(index, value){
-	var flash = swfobject.getObjectById("MBlock");
 	if(arguments.length > 0){
-		flash.responseValue(index, value);
+		flashCore.responseValue(index, value);
 	}else{
-		flash.responseValue();
+		flashCore.responseValue();
 	}
 }

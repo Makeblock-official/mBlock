@@ -4,8 +4,9 @@ const events = require('events');
 var _emitter = new events.EventEmitter();  
 var _saveAs=false;
 var _currentProjectPath = "";
-var _client,_app;
+var _client,_app,self;
 function Project(app) {
+    self = this;
     _app = app;
     _client = _app.getClient();
     this.saveProject = function(title,data){

@@ -6,10 +6,10 @@ const Project = require("./project.js");
 const AppMenu = require('./menu.js')
 const Translator = require("./translator.js")
 
-var _project,_menu,_serial,_translator,_this;
+var _project,_menu,_serial,_translator,self;
 
 function mBlock(){
-	_this = this;
+	self = this;
 	ipcMain.on('flashReady',function(event,arg){
 		console.log("ready")
 		onFlashReady(event.sender);
@@ -69,13 +69,13 @@ function mBlock(){
 
 function onFlashReady(client){
 	_client = client;
-	_project = new Project(_this);
-	_translator = new Translator(_this);
-	_serial = new Serial(_this);
-	_boards = new Boards(_this);
-	_menu = new AppMenu(_this)
+	_project = new Project(self);
+	_translator = new Translator(self);
+	_serial = new Serial(self);
+	_boards = new Boards(self);
+	_menu = new AppMenu(self)
 	_boards.selectBoard("me/auriga_mega2560");
-	_this.init();
+	self.init();
 }
 
 module.exports = mBlock;
