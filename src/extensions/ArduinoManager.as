@@ -1084,7 +1084,8 @@ void updateVar(char * varName,double * var)
 			// put pinMode command just before io commands
 			for(i=0; i<lines.length; i++) {
 				line = lines[i];
-				if(line.indexOf("digitalWrite")!=-1 || line.indexOf("digitalRead")!=-1 || 
+				if(line.indexOf("digitalWrite")!=-1 || line.indexOf("digitalRead")!=-1 || line.indexOf("pulseIn")!=-1 || 
+					line.indexOf("if(")!=-1 || line.indexOf("for(")!=-1 || line.indexOf("while(")!=-1 || 
 					line.indexOf("analogWrite")!=-1 || line.indexOf("analogWrite")!=-1 || line.indexOf("// write to")!=-1) {
 					break;
 				}
