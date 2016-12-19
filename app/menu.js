@@ -86,7 +86,7 @@ function AppMenu(app){
                         name:'Undelete',
                         label: '撤销删除',
                         click: function (item, focusedWindow) {
-                            
+                            _app.changeStageMode("undelete");
                         }
                     },
                     {
@@ -95,29 +95,37 @@ function AppMenu(app){
                     {
                         name:'Hide Stage',
                         label: '隐藏舞台',
+                        type:"checkbox",
+                        checked:_app.isStageMode("hide stage layout"),
                         click: function (item, focusedWindow) {
-                            
+                            _app.changeStageMode("hide stage layout");
                         }
                     },
                     {
                         name:'Small stage layout',
                         label: '小舞台布局模式',
+                        type:"checkbox",
+                        checked:_app.isStageMode("small stage layout"),
                         click: function (item, focusedWindow) {
-                            
+                            _app.changeStageMode("small stage layout");
                         }
                     },
                     {
                         name:'Turbo mode',
                         label: '加速模式',
+                        type:"checkbox",
+                        checked:_app.isStageMode("turbo mode"),
                         click: function (item, focusedWindow) {
-                            
+                            _app.changeStageMode("turbo mode");
                         }
                     },
                     {
                         name:'Arduino mode',
                         label: 'Arduino模式',
+                        type:"checkbox",
+                        checked:_app.isStageMode("arduino mode"),
                         click: function (item, focusedWindow) {
-                            
+                            _app.changeStageMode("arduino mode");
                         }
                     }
                 ]

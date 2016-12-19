@@ -62,6 +62,7 @@ package util
 				ExternalInterface.addCallback("setLanguage", __setLanguage);
 				ExternalInterface.addCallback("getStageSnapshot", __getStageSnapshot);
 				ExternalInterface.addCallback("showFullscreen", __showFullscreen);
+				ExternalInterface.addCallback("changeStageMode",__changeStageMode);
 				ExternalInterface.addCallback("playCode", __playCode);
 				ExternalInterface.addCallback("stopCode", __stopCode);
 				Call("readyForFlash",[]);
@@ -94,7 +95,6 @@ package util
 		{
 			Call("setProjectRobotName", [name]);
 		}
-		
 		static public function readyToRun():Boolean
 		{
 			return Call("readyToRun", []);
@@ -116,6 +116,26 @@ package util
 				default:
 					RemoteCallMgr.Instance.onPacketRecv(args[1]);
 			}
+		}
+		static private function __changeStageMode(name:String=""):void{
+			switch(name.toLocaleLowerCase()){
+				case "undelete":
+					MBlock.app.runtime.undelete();
+					break;
+				case "hide stage layout":
+					MBlock.app.toggleHideStage();
+					break;
+				case "small stage layout":
+					MBlock.app.toggleSmallStage();
+					break;
+				case "turbo mode":
+					MBlock.app.toggleTurboMode();
+					break;
+				case "arduino mode":
+					MBlock.app.changeToArduinoMode();
+					break;
+			}
+			MBlock.app.track("/OpenEdit");
 		}
 		static private function __selectProjectFile():void{
 			MBlock.app.runtime.selectProjectFile();

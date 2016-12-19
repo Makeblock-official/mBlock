@@ -19,6 +19,9 @@ ipcRenderer.on('saveProject', (sender,obj) => {
 ipcRenderer.on('setLanguage', (sender,obj) => {  
     flashCore.setLanguage(obj.lang,obj.dict);
 });  
+ipcRenderer.on('changeStageMode',(sender,obj) =>{
+	flashCore.changeStageMode(obj.name);
+})
 ipcRenderer.on('command', (sender,obj) => {  
     if(onReceived){
         onReceived(obj.buffer);

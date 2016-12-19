@@ -7,7 +7,8 @@ const AppMenu = require('./menu.js')
 const Translator = require("./translator.js")
 
 var _project,_menu,_serial,_translator,self;
-
+var _isArduinoMode = false;
+var _stageMode = {};
 function mBlock(){
 	self = this;
 	ipcMain.on('flashReady',function(event,arg){
@@ -42,6 +43,35 @@ function mBlock(){
 		return app.getLocale();
 	}
 	this.updateMenu = function(){
+		_menu.update();
+	}
+	this.isStageMode = function(name){
+		if(_stageMode[name]==undefined){
+			_stageMode[name] = false;
+		}
+		return _stageMode[name];
+	}
+	this.changeStageMode = function(name){
+		_stageMode[name] = !_stageMode[name];
+		if(name=="arduino mode"){
+			if(_stageMode[name] == false){
+				_stageMode["hide stage layout"] = false;	
+			}else{
+				_stageMode["hide stage layout"] = true;	
+			}
+			_stageMode["small stage layout"] = false;
+		}else if(name=="small stage layout"){
+			if(_stageMode["hide stage layout"]&&!_stageMode["arduino mode"]){
+				_client.send("changeStageMode",{name:"hide stage layout"});
+			}else if(_stageMode["arduino mode"]&&_stageMode["small stage layout"]){
+				_client.send("changeStageMode",{name:"arduino mode"});
+				_stageMode["arduino mode"] = false;
+			}
+			_stageMode["hide stage layout"] = false;
+		}else if(name=="hide stage layout"){
+			_stageMode["small stage layout"] = false;
+		}
+		_client.send("changeStageMode",{name:name});
 		_menu.update();
 	}
 	this.init = function(){
