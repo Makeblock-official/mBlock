@@ -4,6 +4,7 @@ module.paths.push(__dirname.split('node_modules')[0]+"node_modules/");
 const {ipcRenderer} = require('electron')
 var SerialPort = require('serialport');
 var flashCore = document.getElementById("mblock");
+
 var ScratchExtensions = {};
 var globalExt = {},onReceived=null,connected = false;
 var device = {};

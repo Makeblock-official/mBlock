@@ -4,7 +4,7 @@
   "description": "mblock 4.0",
   "main": "./app/main.js",
   "scripts": {
-    "rebuild": "electron-rebuild -f -w serialport",
+    "rebuild": "electron-rebuild -f -w node-hid",
     "start": "electron ."
   },
   "repository": "https://git.oschina.net/makeblock/mblock-for-myh",
@@ -22,6 +22,7 @@
     "serialport": "^4.0.6"
   },
   "dependencies": {
+    "node-hid": "^0.5.2",
     "os-locale": "^2.0.0"
   }
 }

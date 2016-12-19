@@ -172,7 +172,10 @@ function AppMenu(app){
                                 name:"Connect",
                                 label:"连接",
                                 type:"checkbox",
-                                checked:false
+                                checked:_app.getHID().isConnected(),
+                                click: function (item, focusedWindow) {
+                                    _app.getHID().connect();
+                                }
                             }
                         ]
                     },

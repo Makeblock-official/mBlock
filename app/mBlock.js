@@ -5,8 +5,8 @@ const Boards = require("./boards.js");
 const Project = require("./project.js");
 const AppMenu = require('./menu.js')
 const Translator = require("./translator.js")
-
-var _project,_menu,_serial,_translator,self;
+const HID = require("./hid.js");
+var _project,_menu,_serial,_hid,_translator,self;
 var _isArduinoMode = false;
 var _stageMode = {};
 function mBlock(){
@@ -35,6 +35,9 @@ function mBlock(){
 	}
 	this.getSerial = function(){
 		return _serial;
+	}
+	this.getHID = function(){
+		return _hid;
 	}
 	this.getName = function(){
 		return app.getName()
@@ -104,6 +107,7 @@ function onFlashReady(client){
 	_serial = new Serial(self);
 	_boards = new Boards(self);
 	_menu = new AppMenu(self)
+	_hid = new HID(self);
 	_boards.selectBoard("me/auriga_mega2560");
 	self.init();
 }
