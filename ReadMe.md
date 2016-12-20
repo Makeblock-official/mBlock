@@ -7,7 +7,17 @@
 （electron加速：修改node_modules\electron-download\build\index.js->baseUrl->https://npm.taobao.org/mirrors/electron/ ，或者export ELECTRON_MIRROR=https://npm.taobao.org/mirrors/electron/ ）
 
 2、 安装electron环境和serialport
+> cnpm install -g node-gyp
 
+On Unix:
+> python (v2.7 recommended, v3.x.x is not supported)
+> make
+> A proper C/C++ compiler toolchain, like GCC
+On Mac OS X:
+> python (v2.7 recommended, v3.x.x is not supported) (already installed on Mac OS X)
+> Xcode
+On Windows:
+> cnpm install -g --production windows-build-tools from an elevated PowerShell or CMD.exe (run as Administrator).
 > cnpm install --save-dev electron-rebuild serialport electron-prebuilt
 
 3、 编辑package.json， **新增scripts**
