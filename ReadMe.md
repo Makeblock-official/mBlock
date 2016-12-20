@@ -18,7 +18,7 @@ On Mac OS X:
 > python (v2.7 recommended, v3.x.x is not supported) (already installed on Mac OS X)
 > Xcode
 
-On Windows:
+On Windows( [Windows Vista / 7 only] requires .NET Framework 4.5.1):
 > cnpm install -g --production windows-build-tools
 > cnpm install --save-dev electron-rebuild serialport electron-prebuilt
 
