@@ -537,7 +537,7 @@ package scratch {
 		public function selectedProjectFile(file:File):void {
 			// Prompt user for a file name and load that file.
 			stopAll();
-			
+			MBlock.app.closeWelcome();
 			function doInstall(ignore:* = null):void {
 				installProjectFromFile(file);
 				//打开已有项目时，标题应该显示已保存  谭启亮 20161018 
