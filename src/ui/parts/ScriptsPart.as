@@ -148,7 +148,7 @@ public class ScriptsPart extends UIPart {
 		uploadBt.y = 10;
 		uploadBt.addEventListener(MouseEvent.CLICK,onCompileArduino);
 		arduinoFrame.addChild(uploadBt);
-		uploadBt.setEnable(false);
+		
 		openBt.y = 10;
 		openBt.addEventListener(MouseEvent.CLICK,onOpenArduinoIDE);
 		
@@ -336,7 +336,7 @@ public class ScriptsPart extends UIPart {
 	}
 	private function onCompileArduino(evt:MouseEvent):void{
 		//if(SerialManager.sharedManager().isConnected){
-		if(SerialDevice.sharedDevice().currPort!=""){
+		if(SerialDevice.sharedDevice().currPort!="" && (SerialDevice.sharedDevice().currPort.indexOf("COM")>-1||SerialDevice.sharedDevice().currPort.indexOf("serial")>-1)){
 			if(ArduinoManager.sharedManager().isUploading==false){
 				htmlLoader.window.clearInfo();
 				if(showArduinoCode()){
@@ -526,10 +526,6 @@ public class ScriptsPart extends UIPart {
 //		sendBt.setLabel(Translator.map("Send"));
 //		displayModeBtn.setLabel(Translator.map(isByteDisplayMode ? "binary mode" :  "char mode"));
 //		inputModeBtn.setLabel(Translator.map(isByteInputMode ? "binary mode" :  "char mode"));
-	}
-	public function setUploadBtEnabled(bool:Boolean):void
-	{
-		uploadBt.setEnable(bool);
 	}
 	private function get isByteInputMode():Boolean
 	{

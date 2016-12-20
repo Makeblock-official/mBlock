@@ -26,7 +26,6 @@ package extensions
 			return _instance;
 		}
 		public function onConnect(name:String):void{
-			MBlock.app.scriptsPart.setUploadBtEnabled(false);
 			switch(name){
 				case "discover_bt":{
 					BluetoothManager.sharedManager().discover();
@@ -86,7 +85,6 @@ package extensions
 						MBlock.app.track("/Connect/Serial");
 						isConnectCmd = true;
 						SerialManager.sharedManager().connect(name.split("serial_").join(""));
-						MBlock.app.scriptsPart.setUploadBtEnabled(true);
 					}
 					if(name.indexOf("bt_")>-1){
 						MBlock.app.track("/Connect/Bluetooth");
