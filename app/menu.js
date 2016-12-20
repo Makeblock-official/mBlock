@@ -202,35 +202,45 @@ function AppMenu(app){
                         label:"Arduino Uno",
                         type:"checkbox",
                         checked:_boards.selected("arduino_uno"),
-                        click:self.onSelectBoard
+                        click:function(item, focusedWindow){
+                            _boards.selectBoard(item.name);
+                        }
                     },
                     {
                         name:"arduino_leonardo",
                         label:"Arduino Leonardo",
                         type:"checkbox",
                         checked:_boards.selected("arduino_leonardo"),
-                        click:self.onSelectBoard
+                        click:function(item, focusedWindow){
+                            _boards.selectBoard(item.name);
+                        }
                     },
                     {
                         name:"arduino_nano328",
                         label:"Arduino Nano ( mega328 )",
                         type:"checkbox",
                         checked:_boards.selected("arduino_nano328"),
-                        click:self.onSelectBoard
+                        click:function(item, focusedWindow){
+                            _boards.selectBoard(item.name);
+                        }
                     },
                     {
                         name:"arduino_mega1280",
                         label:"Arduino Mega 1280",
                         type:"checkbox",
                         checked:_boards.selected("arduino_mega1280"),
-                        click:self.onSelectBoard
+                        click:function(item, focusedWindow){
+                            _boards.selectBoard(item.name);
+                        }
                     },
                     {
                         name:"arduino_mega2560",
                         label:"Arduino Mega 2560",
                         type:"checkbox",
                         checked:_boards.selected("arduino_mega2560"),
-                        click:self.onSelectBoard
+                        click:function(item, focusedWindow){
+                            _boards.selectBoard(item.name);
+                        }
                     },
                     {
                         type:"separator"
@@ -245,35 +255,45 @@ function AppMenu(app){
                         label:"Starter/Ultimate (Orion)",
                         type:"checkbox",
                         checked:_boards.selected("me/orion_uno"),
-                        click:self.onSelectBoard
+                        click:function(item, focusedWindow){
+                            _boards.selectBoard(item.name);
+                        }
                     },
                     {
                         name:"me/uno_shield_uno",
                         label:"Me Uno Shield",
                         type:"checkbox",
                         checked:_boards.selected("me/uno_shield_uno"),
-                        click:self.onSelectBoard
+                        click:function(item, focusedWindow){
+                            _boards.selectBoard(item.name);
+                        }
                     },
                     {
                         name:"me/mbot_uno",
                         label:"mBot (mCore)",
                         type:"checkbox",
                         checked:_boards.selected("me/mbot_uno"),
-                        click:self.onSelectBoard
+                        click:function(item, focusedWindow){
+                            _boards.selectBoard(item.name);
+                        }
                     },
                     {
                         name:"me/auriga_mega2560",
                         label:"mBot Ranger (Auriga)",
                         type:"checkbox",
                         checked:_boards.selected("me/auriga_mega2560"),
-                        click:self.onSelectBoard
+                        click:function(item, focusedWindow){
+                            _boards.selectBoard(item.name);
+                        }
                     },
                     {
                         name:"me/mega_pi_mega2560",
                         label:"Ultimate 2.0 (Mega Pi)",
                         type:"checkbox",
                         checked:_boards.selected("me/mega_pi_mega2560"),
-                        click:self.onSelectBoard
+                        click:function(item, focusedWindow){
+                            _boards.selectBoard(item.name);
+                        }
                     },
                     {
                         type:"separator"
@@ -288,7 +308,9 @@ function AppMenu(app){
                         label:"PicoBoard",
                         type:"checkbox",
                         checked:_boards.selected("picoboard_unknown"),
-                        click:self.onSelectBoard
+                        click:function(item, focusedWindow){
+                            _boards.selectBoard(item.name);
+                        }
                     }
                 ]
             },{
@@ -458,9 +480,9 @@ function AppMenu(app){
             _mainMenu.items[process.platform === 'darwin'?3:2].submenu.items[0].submenu.insert(0,item);
         }
     }
-    this.selectBoard = function(item){
+    this.selectBoard = function(item, focusedWindow){
         _boards.selectBoard(item.name);
-        self.update();
+        //self.update();
 	}
     this.update = function(){
 		self.reset();

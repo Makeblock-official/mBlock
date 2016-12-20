@@ -482,7 +482,7 @@ public class ExtensionManager {
 	}
 
 	public function loadRawExtension(extObj:Object):void {
-		JsUtil.Call("sendMsg",["loadRawExtension:"+extObj.extensionName])
+		JsUtil.callApp("sendMsg",["loadRawExtension:"+extObj.extensionName])
 		var ext:ScratchExtension = extensionDict[extObj.extensionName];
 		if(ext){
 			return;

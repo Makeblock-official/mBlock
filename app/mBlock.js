@@ -108,8 +108,9 @@ function onFlashReady(client){
 	_boards = new Boards(self);
 	_menu = new AppMenu(self)
 	_hid = new HID(self);
-	_boards.selectBoard("me/auriga_mega2560");
 	self.init();
+
+	_boards.selectBoard("me/auriga_mega2560");
 }
 
 module.exports = mBlock;

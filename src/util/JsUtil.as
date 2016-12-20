@@ -24,6 +24,7 @@ package util
 
 	public class JsUtil
 	{
+		static private var _app:Object;
 		static public function Init(stage:Stage):void
 		{
 //			stage.addEventListener(MouseEvent.CLICK, function(e){
@@ -65,7 +66,7 @@ package util
 				ExternalInterface.addCallback("changeStageMode",__changeStageMode);
 				ExternalInterface.addCallback("playCode", __playCode);
 				ExternalInterface.addCallback("stopCode", __stopCode);
-				Call("readyForFlash",[]);
+				callApp("readyForFlash");
 			}catch(e:*){
 				
 			}
@@ -75,15 +76,21 @@ package util
 		{
 			if(ExternalInterface.available){
 				args.unshift(method);
-				ExternalInterface.call("sendMsg",method);
-//				return;
+				ExternalInterface.call("_app.sendMsg",method);
+
 				return ExternalInterface.call.apply(null, args);
 			}else{
 				trace("ExternalInterface is not available!");
 			}
 		}
-		static public function callApp(method:String,args:Object):void{
-			Call("callAppFromFlash",[method,args]);
+		static public function callApp(method:String,args:Object=null):void{
+			Call("_app."+method,[args]);
+		}
+		static public function callUtils(method:String,args:Object=null):void{
+			Call("_utils."+method,[args]);
+		}
+		static public function callExtension(method:String,args:Object=null):void{
+			Call("_ext."+method,[args]);
 		}
 		/*
 		static public function Eval(code:String):void
@@ -93,15 +100,15 @@ package util
 		*/
 		static public function setProjectRobotName(name:String):void
 		{
-			Call("setProjectRobotName", [name]);
+			callApp("setProjectRobotName", [name]);
 		}
 		static public function readyToRun():Boolean
 		{
-			return Call("readyToRun", []);
+			return callApp("readyToRun", []);
 		}
 		static public function boardConnected():Boolean
 		{
-			return Call("boardConnected",[]);
+			return callApp("boardConnected",[]);
 		}
 		static private function __responseValue(...args):void
 		{
@@ -117,6 +124,7 @@ package util
 					RemoteCallMgr.Instance.onPacketRecv(args[1]);
 			}
 		}
+		
 		static private function __changeStageMode(name:String=""):void{
 			switch(name.toLocaleLowerCase()){
 				case "undelete":
@@ -152,7 +160,7 @@ package util
 			loader.dataFormat = URLLoaderDataFormat.BINARY;
 			loader.addEventListener(Event.COMPLETE, function(evt:Event):void{
 				MBlock.app.runtime.installProjectFromData(loader.data, true,callback);
-				Call("openSuccess",[]);
+				callApp("openSuccess",[]);
 				//回调成功消息
 			});
 			loader.addEventListener(IOErrorEvent.IO_ERROR, function(evt:IOErrorEvent):void{
@@ -173,7 +181,7 @@ package util
 			function squeakSoundsConverted(projIO:ProjectIO):void {
 				var zipData:ByteArray = projIO.encodeProjectAsZipFile(MBlock.app.stagePane);
 				var base64Str:String = Base64.encode(zipData);
-				Call("exportProject", [token, base64Str]);
+				callApp("exportProject", [token, base64Str]);
 			}
 			var projIO:ProjectIO = new ProjectIO(MBlock.app);
 			projIO.convertSqueakSounds(MBlock.app.stagePane, squeakSoundsConverted);
@@ -187,7 +195,7 @@ package util
 			function squeakSoundsConverted(projIO:ProjectIO):void {
 				var zipData:ByteArray = projIO.encodeProjectAsZipFile(MBlock.app.stagePane);
 				var base64Str:String = Base64.encode(zipData);
-				Call("saveLocalCopy", [key, base64Str]);
+				callApp("saveLocalCopy", [key, base64Str]);
 			}
 			var projIO:ProjectIO = new ProjectIO(MBlock.app);
 			projIO.convertSqueakSounds(MBlock.app.stagePane, squeakSoundsConverted);
