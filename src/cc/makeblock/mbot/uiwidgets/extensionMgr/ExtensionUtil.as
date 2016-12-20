@@ -130,7 +130,7 @@ package cc.makeblock.mbot.uiwidgets.extensionMgr
 		
 		static private function showErrorAlert():void
 		{
-			JOptionPane.showMessageDialog(Translator.map("Warning"), "file is not a valid extension zip!");
+			JOptionPane.showMessageDialog(Translator.map("Warning"), Translator.map("file is not a valid extension zip!"));
 		}
 		
 		static private var extensionDir:String;
