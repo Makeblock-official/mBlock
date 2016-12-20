@@ -19,7 +19,7 @@ On Mac OS X:
 > Xcode
 
 On Windows:
-> cnpm install -g --production windows-build-tools from an elevated PowerShell or CMD.exe (run as Administrator).
+> cnpm install -g --production windows-build-tools
 > cnpm install --save-dev electron-rebuild serialport electron-prebuilt
 
 3、 编辑package.json， **新增scripts**
