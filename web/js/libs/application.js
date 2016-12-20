@@ -36,6 +36,9 @@ function Application(flash){
         // window.responseValue = _flash.responseValue;
         ipcRenderer.send("flashReady");
     }
+    this.saveProject = function(project){
+        ipcRenderer.send("saveProject",project);
+    }
     this.callFlash = function(method, args){
         return _flash[method].apply(flash, args);
     }

@@ -15,7 +15,7 @@ function mBlock(){
 		console.log("ready")
 		onFlashReady(event.sender);
 	})
-	ipcMain.on('save',function(event,arg){
+	ipcMain.on('saveProject',function(event,arg){
 		_project.saveProject(arg.title,arg.data);
 	});
 	ipcMain.on('fullscreen',function(event,arg){
@@ -29,6 +29,9 @@ function mBlock(){
 	})
 	this.getClient = function(){
 		return _client;
+	}
+	this.getProject = function(){
+		return _project;
 	}
 	this.getTranslator = function(){
 		return _translator;

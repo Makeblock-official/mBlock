@@ -89,7 +89,7 @@ package util
 		static public function callUtils(method:String,args:Object=null):void{
 			Call("_utils."+method,[args]);
 		}
-		static public function callExtension(method:String,args:Object=null):void{
+		static public function callExt(method:String,args:Object=null):void{
 			Call("_ext."+method,[args]);
 		}
 		/*

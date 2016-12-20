@@ -1,12 +1,13 @@
-const{Menu} = require('electron');
+const{Menu,dialog} = require('electron');
 const events = require('events');
 var _emitter = new events.EventEmitter();  
-var _app,_mainMenu,self,_translator,_serial;
+var _app,_mainMenu,self,_translator,_serial,_project;
 function AppMenu(app){
     _app = app;
     self = this;
     _translator = _app.getTranslator();
     _serial = _app.getSerial();
+    _project = _app.getProject();
     this.reset = function (){
         if(!_translator){
             return;
@@ -21,7 +22,7 @@ function AppMenu(app){
                         label: _translator.map('New Project'),
                         accelerator: 'CmdOrCtrl+N',
                         click: function (item, focusedWindow) {
-                            currentProject.newProject();
+                            _emitter.emit("newProject");
                         }
                     },
                     {
@@ -34,7 +35,7 @@ function AppMenu(app){
                         click: function (item, focusedWindow) {
                             dialog.showOpenDialog({title:"打开项目",properties: ['openFile'],filters: [{ name: 'Scratch', extensions: ['sb2'] }  ]},function(path){
                                 if(path&&path.length>0){
-                                    currentProject.openProject(path[0]);
+                                    _project.openProject(path[0]);
                                 }
                             })
                         }
@@ -44,7 +45,7 @@ function AppMenu(app){
                         label: _translator.map('Save Project'),
                         accelerator: 'CmdOrCtrl+S',
                         click: function (item, focusedWindow) {
-                            saveProject();
+                            _emitter.emit("saveProject");
                         }
                     },
                     {
@@ -52,7 +53,7 @@ function AppMenu(app){
                         label: _translator.map('Save Project As'),
                         accelerator: 'CmdOrCtrl+Alt+S',
                         click: function (item, focusedWindow) {
-                            saveProjectAs();
+                            _emitter.emit("saveProjectAs");
                         }
                     },
                     {
