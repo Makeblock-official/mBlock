@@ -110,12 +110,13 @@ package cc.makeblock.media
 						{
 							mediaDir.resolvePath(fileName).copyToAsync(exportFile.resolvePath(fileName),true);
 						}
+						if(panelArr.length>0)
+						{
+							panelArr.shift().getFrame().visible = true;
+						}
 						else
 						{
-							if(panelArr.length>0)
-							{
-								panelArr.shift().getFrame().visible = true;
-							}
+							PopupUtil.showAlert(Translator.map("Export Complete!"));
 						}
 					});
 					panel.getFrame().setWidth(400);
@@ -124,11 +125,14 @@ package cc.makeblock.media
 				}
 				else
 				{
-					mediaDir.resolvePath(fileName).copyToAsync(exportFile.resolvePath(fileName));
+					mediaDir.resolvePath(fileName).copyToAsync(exportFile.resolvePath(fileName),true);
 				}
 				
 			}
-			panelArr.shift().getFrame().visible = true;
+			if(panelArr.length>0)
+			{
+				panelArr.shift().getFrame().visible = true;
+			}
 		}
 	}
 }
