@@ -219,7 +219,6 @@
 <command category="8" type="r" opcode="rounded" spec="round %n">[""]</command>
 <command/>
 <command category="8" type="r" opcode="computeFunction:of:" spec="%m.mathOp of %n">["sqrt",9]</command>
-<command category="9" type=" " opcode="initVar:to:" spec="init %m.var to %s"/>
 <command category="9" type=" " opcode="setVar:to:" spec="set %m.var to %s"/>
 <command category="9" type=" " opcode="changeVar:by:" spec="change %m.var by %n"/>
 <command category="9" type=" " opcode="showVariable:" spec="show variable %m.var"/>
