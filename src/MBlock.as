@@ -289,7 +289,7 @@ package {
 				
 				if(autoProjectFile.exists)
 				{
-					var panel:JOptionPane = PopupUtil.showConfirm(Translator.map("There is an abnormal exit, reduction?"),reductionFile);
+					var panel:JOptionPane = PopupUtil.showConfirm(Translator.map("There is an abnormal exit, restore?"),reductionFile);
 					panel.getFrame().setWidth(350);
 				}
 			}
@@ -301,6 +301,12 @@ package {
 		}
 		private function openWelcome():void{
 			openSwf("welcome.swf");
+		}
+		public function closeWelcome():void{
+			if(_welcomeView && _welcomeView.parent)
+			{
+				this.removeChild(_welcomeView);
+			}
 		}
 		public function openOrion():void{
 			openSwf("orion_buzzer.swf");
