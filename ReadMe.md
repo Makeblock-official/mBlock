@@ -19,7 +19,9 @@ On Mac OS X:
 > Xcode
 
 On Windows( [Windows Vista / 7 only] requires .NET Framework 4.5.1):
-> cnpm install -g --production windows-build-tools
+> 按照缺省设置安装[Visual C++ Build Tools](http://landinghub.visualstudio.com/visual-cpp-build-tools)
+> 安装Python 2.7 (v3.x.x 不支持), 然后运行 ```cnpm config set python python2.7```
+> ```cnpm config set msvs_version 2015```
 > cnpm install --save-dev electron-rebuild serialport electron-prebuilt
 
 3、 编辑package.json， **新增scripts**
