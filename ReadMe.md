@@ -13,9 +13,11 @@ On Unix:
 > python (v2.7 recommended, v3.x.x is not supported)
 > make
 > A proper C/C++ compiler toolchain, like GCC
+
 On Mac OS X:
 > python (v2.7 recommended, v3.x.x is not supported) (already installed on Mac OS X)
 > Xcode
+
 On Windows:
 > cnpm install -g --production windows-build-tools from an elevated PowerShell or CMD.exe (run as Administrator).
 > cnpm install --save-dev electron-rebuild serialport electron-prebuilt
