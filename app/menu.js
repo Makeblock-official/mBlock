@@ -1,13 +1,18 @@
+/**
+ * 菜单管理
+ */
 const{Menu,dialog} = require('electron');
 const events = require('events');
 var _emitter = new events.EventEmitter();  
-var _app,_mainMenu,self,_translator,_serial,_project;
+var _app,_mainMenu,_stage,_translator,_serial,_hid,_project;
 function AppMenu(app){
+    var self = this;
     _app = app;
-    self = this;
+    _stage = _app.getStage();
     _translator = _app.getTranslator();
     _serial = _app.getSerial();
     _project = _app.getProject();
+    _hid = _app.getHID();
     this.reset = function (){
         if(!_translator){
             return;
@@ -87,7 +92,7 @@ function AppMenu(app){
                         name:'Undelete',
                         label: '撤销删除',
                         click: function (item, focusedWindow) {
-                            _app.changeStageMode("undelete");
+                            _stage.undelete();
                         }
                     },
                     {
@@ -97,36 +102,36 @@ function AppMenu(app){
                         name:'Hide Stage',
                         label: '隐藏舞台',
                         type:"checkbox",
-                        checked:_app.isStageMode("hide stage layout"),
+                        checked:_stage.isStageMode("hide stage layout"),
                         click: function (item, focusedWindow) {
-                            _app.changeStageMode("hide stage layout");
+                            _stage.changeStageMode("hide stage layout");
                         }
                     },
                     {
                         name:'Small stage layout',
                         label: '小舞台布局模式',
                         type:"checkbox",
-                        checked:_app.isStageMode("small stage layout"),
+                        checked:_stage.isStageMode("small stage layout"),
                         click: function (item, focusedWindow) {
-                            _app.changeStageMode("small stage layout");
+                            _stage.changeStageMode("small stage layout");
                         }
                     },
                     {
                         name:'Turbo mode',
                         label: '加速模式',
                         type:"checkbox",
-                        checked:_app.isStageMode("turbo mode"),
+                        checked:_stage.isStageMode("turbo mode"),
                         click: function (item, focusedWindow) {
-                            _app.changeStageMode("turbo mode");
+                            _stage.changeStageMode("turbo mode");
                         }
                     },
                     {
                         name:'Arduino mode',
                         label: 'Arduino模式',
                         type:"checkbox",
-                        checked:_app.isStageMode("arduino mode"),
+                        checked:_stage.isStageMode("arduino mode"),
                         click: function (item, focusedWindow) {
-                            _app.changeStageMode("arduino mode");
+                            _stage.changeStageMode("arduino mode");
                         }
                     }
                 ]
@@ -144,7 +149,7 @@ function AppMenu(app){
                             name:'Refresh',
                             label: '刷新串口',
                             click:function (item, focusedWindow) {
-                                updateSerialPort();
+                                self.updateSerialPort();
                             }
                         }]
                     },
@@ -173,9 +178,9 @@ function AppMenu(app){
                                 name:"Connect",
                                 label:"连接",
                                 type:"checkbox",
-                                checked:_app.getHID().isConnected(),
+                                checked:_hid.isConnected(),
                                 click: function (item, focusedWindow) {
-                                    _app.getHID().connect();
+                                    _hid.connect();
                                 }
                             }
                         ]
@@ -408,7 +413,7 @@ function AppMenu(app){
                         name:'Exploring Robotic World',
                         label: '探索机器人世界',
                         click: function (item, focusedWindow) {
-                            openURL("http://www.makeblock.com/?utm_source=software&utm_medium=mblock&utm_campaign=mblocktomakeblock");
+                            _app.openURL("http://www.makeblock.com/?utm_source=software&utm_medium=mblock&utm_campaign=mblocktomakeblock");
                         }
                     },
                     {
@@ -418,21 +423,21 @@ function AppMenu(app){
                         name:'Getting Started Rapidly',
                         label: '快速入门',
                         click: function (item, focusedWindow) {
-                            openURL("http://learn.makeblock.com/getting-started-programming-with-mblock?utm_source=software&utm_medium=mblock&utm_campaign=mblocktorumeng");
+                           _app.openURL("http://learn.makeblock.com/getting-started-programming-with-mblock?utm_source=software&utm_medium=mblock&utm_campaign=mblocktorumeng");
                         }
                     },
                     {
                         name:'Finding Answers Online',
                         label: '在线问答',
                         click: function (item, focusedWindow) {
-                            openURL(currentLocale=="zh-CN"?"http://bbs.makeblock.cc/forum-39-1.html?utm_source=software&utm_medium=mblock&utm_campaign=mblocktobbs":"http://forum.makeblock.cc/c/makeblock-products/mblock?utm_source=software&utm_medium=mblock&utm_campaign=mblocktoforum#scratch");
+                            _app.openURL(currentLocale=="zh-CN"?"http://bbs.makeblock.cc/forum-39-1.html?utm_source=software&utm_medium=mblock&utm_campaign=mblocktobbs":"http://forum.makeblock.cc/c/makeblock-products/mblock?utm_source=software&utm_medium=mblock&utm_campaign=mblocktoforum#scratch");
                         }
                     },
                     {
                         name:'Learn More Tutorials',
                         label: '浏览更多教程',
                         click: function (item, focusedWindow) {
-                            openURL("http://learn.makeblock.com/?utm_source=software&utm_medium=mblock&utm_campaign=mblocktolearn");
+                            _app.openURL("http://learn.makeblock.com/?utm_source=software&utm_medium=mblock&utm_campaign=mblocktolearn");
                         }
                     },
                     {

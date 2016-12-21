@@ -1,8 +1,12 @@
+/**
+ * Scratch JS
+ */
 var device = {};
 var globalExt = {},onReceived=null,connected = false;
 var _app;
 function Extension(app){
     _app = app;
+    var self = this;
     this.callJs = function(extName, method, args){
         if(!globalExt[extName]){
             return;

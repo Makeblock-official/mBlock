@@ -1,3 +1,6 @@
+/**
+ * IPC通讯、flash通讯
+ */
 const {ipcRenderer} = require('electron');
 var _flash;
 function Application(flash){
@@ -34,6 +37,9 @@ function Application(flash){
         self.changeToBoard(obj.board);
     }); 
 
+    this.openSuccess = function(){
+        console.log("openSuccess")
+    }
     this.readyForFlash = function(){
         console.log("readyForFlash");
         // window.responseValue = _flash.responseValue;

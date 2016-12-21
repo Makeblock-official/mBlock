@@ -1,13 +1,16 @@
+/**
+ * 串口通讯
+ */
 const {MenuItem} = require("electron")
 const SerialPort = require("serialport");
 const events = require('events');
 var _emitter = new events.EventEmitter();  
 var _currentSerialPort=""
 var _port;
-var self,_client,_app,_items=[];
+var _client,_app,_items=[];
 function Serial(app){
 	_app = app;
-	self = this;
+	var self = this;
 	_client = _app.getClient();
 	this.list = function(callback) {
 		SerialPort.list(callback);
@@ -92,7 +95,7 @@ function Serial(app){
 		_emitter.on(event,listener);
 	}
 	this.onOpen = function(){
-		_app.updateMenu();
+        _app.getMenu().update();
 		if(_client){
 			_client.send("connected",{connected:self.isConnected()})
 		}

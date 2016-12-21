@@ -1,3 +1,6 @@
+/**
+ * 项目文件管理：创建、保存、加载
+ */
 const {dialog,BrowserWindow} = require('electron')
 const fs = require("fs");
 const events = require('events');

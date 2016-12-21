@@ -1,9 +1,10 @@
+/**
+ * Flash常用数值转换函数
+ */
 var _app;
 function FlashUtils(app){
     _app = app;
-    this.openSuccess = function(){
-        console.log("openSuccess")
-    }
+    var self = this;
     this.isArray = function(target){
         return Object.prototype.toString.call(target) == "[object Array]";
     }
