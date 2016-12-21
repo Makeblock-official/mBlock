@@ -1,13 +1,16 @@
 const {MenuItem} = require("electron")
 const USBHID = require("node-hid");
 const events = require('events');
+/**
+ * 2.4G无线串口通讯： HID设备连接、数据收发
+ */
 var _emitter = new events.EventEmitter();  
 var _currentHidPath=""
 var _port;
-var self,_client,_app,_items=[];
+var _client,_app,_items=[];
 function HID(app){
+	var self = this;
 	_app = app;
-	self = this;
 	_client = _app.getClient();
 	this.list = function(callback) {
 		callback(USBHID.devices());
@@ -46,16 +49,15 @@ function HID(app){
 			_port = null;
 			return;
 		}
-		_port = new USBHID(0xffff,0x0416)
-		_port.on('open',function(){
-			if(success){
-				success();
-			}
-		})
+		_port = new USBHID.HID(0x0416,0xffff)
+		setTimeout(function(){
+			self.send("hello world\n");
+		},1000);
 		_port.on('error',function(err){
 
 		})
 		_port.on('data',function(data){
+			console.log("data:",data);
 			if(received){
 				received(data);
 			}
@@ -65,7 +67,7 @@ function HID(app){
 		_emitter.on(event,listener);
 	}
 	this.onOpen = function(){
-		_app.updateMenu();
+        _app.getMenu().update();
 		if(_client){
 			_client.send("connected",{connected:self.isConnected()})
 		}

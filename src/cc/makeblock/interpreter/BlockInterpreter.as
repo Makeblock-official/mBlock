@@ -39,6 +39,7 @@ package cc.makeblock.interpreter
 		{
 			var thread:Thread;
 			if(!JsUtil.readyToRun()){
+				JsUtil.Call("_app.sendMsg",[JsUtil.readyToRun()]);
 				waitList.push(arguments);
 				thread = realInterpreter.executeAssembly([]);
 				thread.userData = new ThreadUserData(targetObj, block);

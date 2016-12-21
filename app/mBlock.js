@@ -1,3 +1,13 @@
+/**
+ * mBlock 	// 实现与web通讯
+ * 		|----menu.js  		//菜单:构造、刷新
+ * 		|----project.js		//项目文件：创建、保存、加载
+ * 		|----translator.js  //多国语言
+ * 		|----boards.js		//控制板
+ * 		|----serial.js		//USB串口通讯
+ * 		|----hid.js			//无线2.4G串口通讯
+ * 		|----autoupdater.js	//自动更新
+ */
 const {ipcMain,dialog,BrowserWindow,MenuItem,Menu,app} = require('electron')
 
 const Serial = require("./serial.js")
@@ -5,15 +15,23 @@ const Boards = require("./boards.js");
 const Project = require("./project.js");
 const AppMenu = require('./menu.js')
 const Translator = require("./translator.js")
+const Stage = require("./stage.js")
 const HID = require("./hid.js");
-var _project,_menu,_serial,_hid,_translator,self;
-var _isArduinoMode = false;
-var _stageMode = {};
+var _project,_menu,_serial,_hid,_translator,_stage;
 function mBlock(){
-	self = this;
+	var self = this;
 	ipcMain.on('flashReady',function(event,arg){
 		console.log("ready")
-		onFlashReady(event.sender);
+		_client = event.sender;
+		_project = new Project(self);
+		_translator = new Translator(self);
+		_serial = new Serial(self);
+		_boards = new Boards(self);
+		_stage = new Stage(self);
+		_hid = new HID(self);
+		_menu = new AppMenu(self)
+		self.init();
+		_boards.selectBoard("me/auriga_mega2560");
 	})
 	ipcMain.on('saveProject',function(event,arg){
 		_project.saveProject(arg.title,arg.data);
@@ -22,9 +40,9 @@ function mBlock(){
 		var win = BrowserWindow.getFocusedWindow();
 		win.setFullScreen(arg);
 	})
-	ipcMain.on('command',function(event,arg){
-		if(arg.buffer){
-			Serial.send(arg.buffer);
+	ipcMain.on('package',function(event,arg){
+		if(_serial.isConnected()){
+			_serial.send(arg.data);
 		}
 	})
 	this.getClient = function(){
@@ -48,37 +66,11 @@ function mBlock(){
 	this.getLocale = function(){
 		return app.getLocale();
 	}
-	this.updateMenu = function(){
-		_menu.update();
+	this.getMenu = function(){
+		return _menu;
 	}
-	this.isStageMode = function(name){
-		if(_stageMode[name]==undefined){
-			_stageMode[name] = false;
-		}
-		return _stageMode[name];
-	}
-	this.changeStageMode = function(name){
-		_stageMode[name] = !_stageMode[name];
-		if(name=="arduino mode"){
-			if(_stageMode[name] == false){
-				_stageMode["hide stage layout"] = false;	
-			}else{
-				_stageMode["hide stage layout"] = true;	
-			}
-			_stageMode["small stage layout"] = false;
-		}else if(name=="small stage layout"){
-			if(_stageMode["hide stage layout"]&&!_stageMode["arduino mode"]){
-				_client.send("changeStageMode",{name:"hide stage layout"});
-			}else if(_stageMode["arduino mode"]&&_stageMode["small stage layout"]){
-				_client.send("changeStageMode",{name:"arduino mode"});
-				_stageMode["arduino mode"] = false;
-			}
-			_stageMode["hide stage layout"] = false;
-		}else if(name=="hide stage layout"){
-			_stageMode["small stage layout"] = false;
-		}
-		_client.send("changeStageMode",{name:name});
-		_menu.update();
+	this.getStage = function(){
+		return _stage;
 	}
 	this.init = function(){
 		_menu.on("newProject",function (){
@@ -101,19 +93,6 @@ function mBlock(){
 		});
 		_serial.update();
 	}
-}
-
-function onFlashReady(client){
-	_client = client;
-	_project = new Project(self);
-	_translator = new Translator(self);
-	_serial = new Serial(self);
-	_boards = new Boards(self);
-	_menu = new AppMenu(self)
-	_hid = new HID(self);
-	self.init();
-
-	_boards.selectBoard("me/auriga_mega2560");
 }
 
 module.exports = mBlock;

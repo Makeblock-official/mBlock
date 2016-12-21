@@ -1,3 +1,6 @@
+/**
+ * Electron 程序入口：创建窗口、加载flashplayer插件、创建Express服务
+ */
 const {BrowserWindow,app,Menu} = require('electron');
 const mBlock = require('./mBlock.js');
 const express = require('express');

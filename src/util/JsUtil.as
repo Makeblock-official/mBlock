@@ -83,14 +83,14 @@ package util
 				trace("ExternalInterface is not available!");
 			}
 		}
-		static public function callApp(method:String,args:Object=null):void{
-			Call("_app."+method,[args]);
+		static public function callApp(method:String,args:Object=null):*{
+			return Call("_app."+method,[args]);
 		}
-		static public function callUtils(method:String,args:Object=null):void{
-			Call("_utils."+method,[args]);
+		static public function callUtils(method:String,args:Object=null):*{
+			return Call("_utils."+method,[args]);
 		}
-		static public function callExt(method:String,args:Object=null):void{
-			Call("_ext."+method,[args]);
+		static public function callExt(method:String,args:Array=null):*{
+			return Call("_ext."+method,args);
 		}
 		/*
 		static public function Eval(code:String):void
@@ -104,11 +104,11 @@ package util
 		}
 		static public function readyToRun():Boolean
 		{
-			return callApp("readyToRun", []);
+			return callApp("readyToRun");
 		}
 		static public function boardConnected():Boolean
 		{
-			return callApp("boardConnected",[]);
+			return callApp("boardConnected");
 		}
 		static private function __responseValue(...args):void
 		{

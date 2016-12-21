@@ -1,8 +1,11 @@
+/**
+ * 多国语言管理
+ */
 const i18n = require('i18n');
 const{MenuItem} = require('electron')
 const events = require('events');
 var _emitter = new events.EventEmitter();  
-var _client,_lang,_app,self;
+var _client,_lang,_app;
 const _languages = [
 			{name:"en",label:"English"},
 			{name:"zh-CN",label:"简体中文"},
@@ -12,7 +15,7 @@ function Translator(app){
     _app = app;
     _client = _app.getClient();
     _lang = _app.getLocale();
-    self = this;
+    var self = this;
     i18n.configure({
         locales:['en', 'zh-CN', 'zh-TW'],
         directory: __dirname + '/../locales'
@@ -38,7 +41,7 @@ function Translator(app){
                 type:'checkbox',
                 click:function(item,focusedWindow){
                     self.setLanguage(item.name);
-                    _app.updateMenu();
+                    _app.getMenu().update();
                 }
             })
             items.push(item);
