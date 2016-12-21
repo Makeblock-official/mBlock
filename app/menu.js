@@ -86,7 +86,7 @@ function AppMenu(app){
                 ]
             },{
                 name:'Edit',
-                label: '编辑',
+                label: _translator.map('Edit'),
                 submenu: [
                     {
                         name:'Undelete',
@@ -196,7 +196,7 @@ function AppMenu(app){
                 ]
             },{
                 name:'Boards',
-                label: '控制板',
+                label: _translator.map('Boards'),
                 submenu: [
                     {
                         name:"Arduino",
@@ -321,7 +321,7 @@ function AppMenu(app){
                 ]
             },{
                 name:'Extensions',
-                label: '扩展',
+                label: _translator.map('Extensions'),
                 submenu: [
                     {
                         name:'Manage Extensions',
@@ -407,7 +407,7 @@ function AppMenu(app){
                 ]
             },{
                 name:'Help',
-                label: '帮助',
+                label: _translator.map('Help'),
                 submenu: [
                     {
                         name:'Exploring Robotic World',
