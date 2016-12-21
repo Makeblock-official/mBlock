@@ -14,6 +14,8 @@ package cc.makeblock.services.msoxford
 	import flash.net.URLRequestMethod;
 	import flash.utils.ByteArray;
 	
+	import translation.Translator;
+	
 	import util.SharedObjectManager;
 	
 	public class GraphicsToText 
@@ -47,7 +49,7 @@ package cc.makeblock.services.msoxford
 			
 			urlloader.dataFormat = URLLoaderDataFormat.BINARY;
 			var req:URLRequest = new URLRequest();
-			req.url = "https://api.projectoxford.ai/vision/v1/ocr?language=unk&detectOrientation=true";
+			req.url = "https://api.projectoxford.ai/vision/v1.0/ocr?language=unk&detectOrientation=true";
 			req.method = URLRequestMethod.POST;
 			req.data = bytes;
 			var secret:String = SharedObjectManager.sharedManager().getObject("keyOCR-user","");//;
@@ -71,18 +73,23 @@ package cc.makeblock.services.msoxford
 			MBlock.app.track("/OxfordAi/OCR/success/"+_source);
 			var ret:Object = JSON.parse(evt.target.data);
 			var regions:Array = ret.regions;
-			var len:uint = regions.length;
-			var result:String = "";
-			for(var i:uint=0;i<len;i++){
-				var region:Object = regions[i];
-				var lines:Array = region.lines;
-				for(var j:uint=0;j<lines.length;j++){
-					var words:Array = lines[j].words;
-					for(var k:uint=0;k<words.length;k++){
-						result+=words[k].text+" ";
+			if(regions){
+				var len:uint = regions.length;
+				var result:String = "";
+				for(var i:uint=0;i<len;i++){
+					var region:Object = regions[i];
+					var lines:Array = region.lines;
+					for(var j:uint=0;j<lines.length;j++){
+						var words:Array = lines[j].words;
+						for(var k:uint=0;k<words.length;k++){
+							result+=words[k].text+" ";
+						}
+						result+="\n";
 					}
-					result+="\n";
 				}
+				
+				MBlock.app.extensionManager.extensionByName("Microsoft Cognitive Services").stateVars["textResultReceived"] = result;
+				MBlock.app.runtime.textResultReceived.notify(true);
 			}
 			/*return;
 			var ret:XML = new XML(evt.target.data);
@@ -114,8 +121,6 @@ package cc.makeblock.services.msoxford
 				//				output += "悲伤:"+Math.round(ret.FaceRecognitionResult[i].scores.sadness*100)+"%    ";
 				//				output += "吃惊:"+Math.round(ret.FaceRecognitionResult[i].scores.surprise*100)+"%\r";
 			}*/
-			MBlock.app.extensionManager.extensionByName("Microsoft Cognitive Services").stateVars["textResultReceived"] = result;
-			MBlock.app.runtime.textResultReceived.notify(true);
 		}
 		private function onIOError(evt:IOErrorEvent):void{
 			MBlock.app.track("/OxfordAi/OCR/error/"+_source);
