@@ -1,4 +1,4 @@
-// makeblock.js
+// Auriga.js
 
 (function(ext) {
     var _device = null;
@@ -472,7 +472,7 @@
     var inputArray = [];
 	var _isParseStart = false;
 	var _isParseStartIndex = 0;
-    function processData(bytes) {
+    ext.processData = function(bytes) {
 		var len = bytes.length;
 		if(_rxBuf.length>30){
 			_rxBuf = [];
@@ -552,7 +552,7 @@
             // Opening the port failed.
             return;
         }
-        _device.set_receive_handler('Auriga',processData);
+        // _device.set_receive_handler('Auriga',processData);
     };
 
     ext._deviceRemoved = function(dev) {

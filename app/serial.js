@@ -29,13 +29,14 @@ function Serial(app){
 		_currentSerialPort = "";
 	}
 	this.send = function(data){
+		console.log(data)
 		if(_port&&_port.isOpen()){
 			_port.write(new Buffer(data),function(){
 
 			});
 		}
 	}
-	this.connect = function(name,success,received,disconnect){
+	this.connect = function(name){
 		if(_currentSerialPort!=name){
 			_currentSerialPort = name;
 		}else{
@@ -45,28 +46,20 @@ function Serial(app){
 		}
 		_port = new SerialPort(_currentSerialPort,{ baudRate:115200 })
 		_port.on('open',function(){
-			if(success){
-				success();
-			}
+			self.onOpen();
 		})
 		_port.on('error',function(err){
 
 		})
 		_port.on('data',function(data){
-			if(received){
-				received(data);
-			}
+			self.onReceived(data);
 		})
 		_port.on('close', function(){
-			if(disconnect){
-				disconnect();
-			}
+			self.onDisconnect()
 			currentSerialPort = "";
 		})
 		_port.on('disconnect', function(){
-			if(disconnect){
-				disconnect();
-			}
+			self.onDisconnect()
 			_currentSerialPort = "";
 		})
 	}
@@ -83,7 +76,7 @@ function Serial(app){
 					checked:self.isConnected(ports[i].comName),
 					type:'checkbox',
 					click:function(item,focusedWindow){
-						self.connect(item.label,self.onOpen,self.onReceived,self.onDisconnect);
+						self.connect(item.label);
 					}
 				})
 			}
@@ -102,12 +95,12 @@ function Serial(app){
 	}
 	this.onDisconnect = function(){
 		if(_client){
-			_client.send("data",{method:"connected",connected:false})
+			_client.send("connected",{connected:false})
 		}
 	}
 	this.onReceived = function(data){
 		if(_client){
-			_client.send("data",{method:"command",buffer:data})
+			_client.send("package",{data:data})
 		}
 	}
 }
