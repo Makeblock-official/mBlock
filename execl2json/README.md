@@ -12,5 +12,6 @@ sudo pip install xlrd
 - 运行
 
 ```
-python execl2json/run.py
+cd execl2json
+python run.py
 ```
