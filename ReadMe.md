@@ -29,7 +29,7 @@ On Windows( [Windows Vista / 7 only] requires .NET Framework 4.5.1):
 >   "start":"electron ."
 > }
 
-4、 为electron重新编译serialport
+4、 为electron重新编译serialport(只需要编译一次)
 
 > ```cnpm run rebuild```
 
