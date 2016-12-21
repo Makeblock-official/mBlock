@@ -1,6 +1,4 @@
 {
-	"hello": "hello",
-	"File": "File",
 	"New Project": "New Project",
 	"Load Project": "Load Project",
 	"Save Project": "Save Project",
@@ -8,5 +6,6 @@
 	"Import Image": "Import Image",
 	"Export Image": "Export Image",
 	"Undo Revert": "Undo Revert",
-	"Revert": "Revert"
+	"Revert": "Revert",
+	"File": "File"
 }

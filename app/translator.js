@@ -8,16 +8,16 @@ var _emitter = new events.EventEmitter();
 var _client,_lang,_app;
 const _languages = [
 			{name:"en",label:"English"},
-			{name:"zh-CN",label:"简体中文"},
-			{name:"zh-TW",label:"繁体中文"}
+			{name:"zh_CN",label:"简体中文"},
+			{name:"zh_TW",label:"繁体中文"}
 			];
 function Translator(app){
     _app = app;
     _client = _app.getClient();
-    _lang = _app.getLocale();
+    _lang = _app.getLocale().split("-").join("_");
     var self = this;
     i18n.configure({
-        locales:['en', 'zh-CN', 'zh-TW'],
+        locales:['en', 'zh_CN', 'zh_TW'],
         directory: __dirname + '/../locales'
     });
     this.setLanguage = function (lang){
@@ -48,6 +48,7 @@ function Translator(app){
         }
         return items;
     }
+    this.setLanguage("zh_CN");
     this.map = function(str){
         return i18n.__(str);
     }

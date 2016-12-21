@@ -90,7 +90,7 @@ function AppMenu(app){
                 submenu: [
                     {
                         name:'Undelete',
-                        label: '撤销删除',
+                        label: _translator.map('Undelete'),
                         click: function (item, focusedWindow) {
                             _stage.undelete();
                         }
@@ -99,8 +99,8 @@ function AppMenu(app){
                         type: 'separator'
                     },
                     {
-                        name:'Hide Stage',
-                        label: '隐藏舞台',
+                        name:'Hide stage layout',
+                        label: _translator.map('Hide stage layout'),
                         type:"checkbox",
                         checked:_stage.isStageMode("hide stage layout"),
                         click: function (item, focusedWindow) {
@@ -109,7 +109,7 @@ function AppMenu(app){
                     },
                     {
                         name:'Small stage layout',
-                        label: '小舞台布局模式',
+                        label: _translator.map('Small stage layout'),
                         type:"checkbox",
                         checked:_stage.isStageMode("small stage layout"),
                         click: function (item, focusedWindow) {
@@ -118,7 +118,7 @@ function AppMenu(app){
                     },
                     {
                         name:'Turbo mode',
-                        label: '加速模式',
+                        label: _translator.map('Turbo mode'),
                         type:"checkbox",
                         checked:_stage.isStageMode("turbo mode"),
                         click: function (item, focusedWindow) {
@@ -127,7 +127,7 @@ function AppMenu(app){
                     },
                     {
                         name:'Arduino mode',
-                        label: 'Arduino模式',
+                        label: _translator.map('Arduino mode'),
                         type:"checkbox",
                         checked:_stage.isStageMode("arduino mode"),
                         click: function (item, focusedWindow) {
@@ -137,17 +137,17 @@ function AppMenu(app){
                 ]
             },{
                 name:'Connect',
-                label: '连接',
+                label: _translator.map('Connect'),
                 submenu: [
                     {
                         name:'Serial Port',
-                        label: '串口',
+                        label: _translator.map('Serial Port'),
                         submenu: [
                             {
                                 type: 'separator'
                             },{
                             name:'Refresh',
-                            label: '刷新串口',
+                            label: _translator.map('Refresh'),
                             click:function (item, focusedWindow) {
                                 self.updateSerialPort();
                             }
@@ -155,28 +155,28 @@ function AppMenu(app){
                     },
                     {
                         name:'Bluetooth',
-                        label: '蓝牙',
+                        label: _translator.map('Bluetooth'),
                         submenu: [
                             {
                                 name:"Discover",
-                                label:"发现"
+                                label:_translator.map("Discover")
                             },
                             {
                                 type:"separator"
                             },
                             {
                                 name:"Clear Bluetooth",
-                                label:"清除记录"
+                                label:_translator.map("Clear Bluetooth")
                             }
                         ]
                     },
                     {
                         name:'2.4G Serial',
-                        label: '2.4G无线串口',
+                        label: _translator.map('2.4G Serial'),
                         submenu: [
                             {
                                 name:"Connect",
-                                label:"连接",
+                                label:_translator.map("Connect"),
                                 type:"checkbox",
                                 checked:_hid.isConnected(),
                                 click: function (item, focusedWindow) {
@@ -187,11 +187,11 @@ function AppMenu(app){
                     },
                     {
                         name:'View Source',
-                        label: '查看源码'
+                        label: _translator.map('View Source')
                     },
                     {
                         name:'Install Arduino Driver',
-                        label: '安装Arduino驱动'
+                        label: _translator.map('Install Arduino Driver')
                     }
                 ]
             },{
@@ -325,21 +325,21 @@ function AppMenu(app){
                 submenu: [
                     {
                         name:'Manage Extensions',
-                        label: '管理扩展',
+                        label: _translator.map('Manage Extensions'),
                         click: function (item, focusedWindow) {
                             
                         }
                     },
                     {
                         name:'Restore Extensions',
-                        label: '检查最新扩展',
+                        label: _translator.map('Restore Extensions'),
                         click: function (item, focusedWindow) {
                             
                         }
                     },
                     {
                         name:'Clear Cache',
-                        label: '清空缓存',
+                        label: _translator.map('Clear Cache'),
                         click: function (item, focusedWindow) {
                             
                         }
@@ -349,7 +349,7 @@ function AppMenu(app){
                     },
                     {
                         name:'Microsoft Cognitive Service Setting',
-                        label: 'Microsoft Cognitive Service Setting',
+                        label: _translator.map('Microsoft Cognitive Service Setting'),
                         click: function (item, focusedWindow) {
                             
                         }
@@ -360,11 +360,11 @@ function AppMenu(app){
                 ]
             },{
                 name:'Language',
-                label: '语言',
+                label: _translator.map('Language'),
                 submenu: [
                     {
                         name:'set font size',
-                        label: '设置字体大小',
+                        label: _translator.map('set font size'),
                         submenu:[
                             {
                                 name:"setFontSize",
@@ -411,7 +411,7 @@ function AppMenu(app){
                 submenu: [
                     {
                         name:'Exploring Robotic World',
-                        label: '探索机器人世界',
+                        label: _translator.map('Exploring Robotic World'),
                         click: function (item, focusedWindow) {
                             _app.openURL("http://www.makeblock.com/?utm_source=software&utm_medium=mblock&utm_campaign=mblocktomakeblock");
                         }
@@ -421,21 +421,21 @@ function AppMenu(app){
                     },
                     {
                         name:'Getting Started Rapidly',
-                        label: '快速入门',
+                        label: _translator.map('Getting Started Rapidly'),
                         click: function (item, focusedWindow) {
                            _app.openURL("http://learn.makeblock.com/getting-started-programming-with-mblock?utm_source=software&utm_medium=mblock&utm_campaign=mblocktorumeng");
                         }
                     },
                     {
                         name:'Finding Answers Online',
-                        label: '在线问答',
+                        label: _translator.map('Finding Answers Online'),
                         click: function (item, focusedWindow) {
                             _app.openURL(currentLocale=="zh-CN"?"http://bbs.makeblock.cc/forum-39-1.html?utm_source=software&utm_medium=mblock&utm_campaign=mblocktobbs":"http://forum.makeblock.cc/c/makeblock-products/mblock?utm_source=software&utm_medium=mblock&utm_campaign=mblocktoforum#scratch");
                         }
                     },
                     {
                         name:'Learn More Tutorials',
-                        label: '浏览更多教程',
+                        label: _translator.map('Learn More Tutorials'),
                         click: function (item, focusedWindow) {
                             _app.openURL("http://learn.makeblock.com/?utm_source=software&utm_medium=mblock&utm_campaign=mblocktolearn");
                         }
@@ -445,13 +445,13 @@ function AppMenu(app){
                     },
                     {
                         name:'Check For Update',
-                        label: '检查应用更新',
+                        label: _translator.map('Check For Update'),
                         click: function (item, focusedWindow) {
                         }
                     },
                     {
                         name:'Feedback',
-                        label: '报告错误',
+                        label: _translator.map('Feedback'),
                         click: function (item, focusedWindow) {
                         }
                     }
@@ -465,11 +465,11 @@ function AppMenu(app){
                 submenu: [
                     {
                         role: 'about',
-                        label:'About mBlock'
+                        label:_translator.map('About mBlock')
                     },
                     {
                         role: 'quit',
-                        label:'Quit'
+                        label:_translator.map('Quit')
                     }
                 ]
             })
