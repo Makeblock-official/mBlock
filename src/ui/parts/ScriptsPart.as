@@ -62,6 +62,7 @@ package ui.parts {
 	import uiwidgets.ZoomWidget;
 	
 	import util.JSON;
+	import util.JsUtil;
 
 public class ScriptsPart extends UIPart {
 
@@ -314,6 +315,9 @@ public class ScriptsPart extends UIPart {
 		return arduinoFrame.visible;
 	}
 	private function onCompileArduino(evt:MouseEvent):void{
+		JsUtil.callApp("uploadToArduino", arduinoTextPane.textField.text);
+		return;
+		
 		if(SerialManager.sharedManager().isConnected){
 			if(ArduinoManager.sharedManager().isUploading==false){
 				messageTextPane.clear();
@@ -337,7 +341,7 @@ public class ScriptsPart extends UIPart {
 	}
 	private function onOpenArduinoIDE(evt:MouseEvent):void{
 		if(showArduinoCode()){
-			ArduinoManager.sharedManager().openArduinoIDE(arduinoTextPane.textField.text);
+			JsUtil.callApp("openArduinoIDE", arduinoTextPane.textField.text);
 		}
 	}
 	private function onScroll(evt:Event):void{

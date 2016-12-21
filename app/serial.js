@@ -15,6 +15,7 @@ function Serial(app){
 	this.list = function(callback) {
 		SerialPort.list(callback);
 	}
+	this.currentSerialPort = function() { return _currentSerialPort; }
 	this.isConnected = function(name){
 		if(name){
 			return _currentSerialPort==name&&_port&&_port.isOpen();
