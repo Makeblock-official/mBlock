@@ -48,6 +48,15 @@ function Application(flash){
     this.saveProject = function(project){
         ipcRenderer.send("saveProject",project);
     }
+    // 用户点击了“上传到Arduino”按钮
+    this.uploadToArduino = function(code) {
+        console.log(code);
+    }
+    // 用户点击了"用Arduino IDE编辑"按钮
+    this.openArduinoIDE = function(code) {
+        console.log(code);
+    }
+    
     this.callFlash = function(method, args){
         return _flash[method].apply(flash, args);
     }
