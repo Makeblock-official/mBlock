@@ -1,41 +1,51 @@
 /**
  * Scratch JS
  */
-var device = {};
-var globalExt = {},onReceived=null,connected = false;
+module.paths.push(__dirname);
+
+const {ipcRenderer} = require('electron');
+const FlashUtils = require('utils');
+const _utils = new FlashUtils();
 var _app;
 function Extension(app){
     _app = app;
+    
+    this.device = {};
+    this.globalExt = {};
+    this.onReceived=null
+    this.connected = false;
+
     var self = this;
     this.callJs = function(extName, method, args){
-        if(!globalExt[extName]){
+        if(!self.globalExt[extName]){
             return;
         }
-        var handler = globalExt[extName][method];
+        var handler = self.globalExt[extName][method];
 
         if(args.length < handler.length){
             args.unshift(0);
         }
-        handler.apply(globalExt[extName], args);
+
+        handler.apply(self.globalExt[extName], args);
     }
     this.register = function(name,desc,ext,param){
-        globalExt[name] = ext;
-        globalExt[name]._deviceConnected(device);
+        self.globalExt[name] = ext;
+        self.globalExt[name]._deviceConnected(self.device,_utils);
     }
     this.unregister = function(name){
-        globalExt[name]._deviceRemoved(device);
-        globalExt[name] = null;
+        self.globalExt[name]._deviceRemoved(self.device);
+        self.globalExt[name] = null;
     }
-    device.send = function(data){
-        ipcRenderer.send("command",{buffer:data});
+    this.device.send = function(data){
+        ipcRenderer.send("package",{data:data});
     }
-    device.open = function(option,success){
+    this.device.open = function(option,success){
         if(success){
             success(this);
         }
     }
-    device.set_receive_handler = function(name,callback){
-        onReceived = function(data){
+    this.device.set_receive_handler = function(name,callback){
+        self.onReceived = function(data){
             console.log("received:"+data)
             callback(data);
         }

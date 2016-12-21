@@ -89,8 +89,8 @@ package util
 		static public function callUtils(method:String,args:Object=null):*{
 			return Call("_utils."+method,[args]);
 		}
-		static public function callExt(method:String,args:Object=null):*{
-			return Call("_ext."+method,[args]);
+		static public function callExt(method:String,args:Array=null):*{
+			return Call("_ext."+method,args);
 		}
 		/*
 		static public function Eval(code:String):void
