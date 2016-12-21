@@ -87,10 +87,10 @@ package util
 			return Call("_app."+method,[args]);
 		}
 		static public function callUtils(method:String,args:Object=null):*{
-			return Call("_utils."+method,[args]);
+			return Call("_app.getUtil()."+method,[args]);
 		}
-		static public function callExt(method:String,args:Object=null):*{
-			return Call("_ext."+method,[args]);
+		static public function callExt(method:String,args:Array=null):*{
+			return Call("_app.getExt()."+method,args);
 		}
 		/*
 		static public function Eval(code:String):void
@@ -231,6 +231,9 @@ package util
 					DeviceManager.sharedManager().onSelectBoard("mbot_uno");
 					break;
 				case "mbot ranger":
+					DeviceManager.sharedManager().onSelectBoard("me/auriga");
+					break;
+				case "ultimate2":
 					DeviceManager.sharedManager().onSelectBoard("me/auriga");
 					break;
 			}

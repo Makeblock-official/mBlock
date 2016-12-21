@@ -1,10 +1,14 @@
 /**
  * IPC通讯、flash通讯
  */
+module.paths.push(__dirname);
 const {ipcRenderer} = require('electron');
-var _flash;
+const Extension = require('extension');
+
+var _flash,_ext;
 function Application(flash){
     _flash = flash;
+    _ext = new Extension(this);
     var self = this;
     self.connected = false;
     ipcRenderer.on('openProject', (sender,obj) => {  
@@ -25,10 +29,8 @@ function Application(flash){
     ipcRenderer.on('changeStageMode',(sender,obj) =>{
         _flash.changeStageMode(obj.name);
     })
-    ipcRenderer.on('command', (sender,obj) => {  
-        if(self.onReceived){
-            self.onReceived(obj.buffer);
-        }
+    ipcRenderer.on('package', (sender,obj) => {  
+        _ext.onReceived(obj.data);
     });  
     ipcRenderer.on('connected', (sender,obj) => {  
         self.connected = obj.connected;
@@ -36,7 +38,9 @@ function Application(flash){
     ipcRenderer.on('changeToBoard', (sender,obj) => {  
         self.changeToBoard(obj.board);
     }); 
-
+    this.getExt = function(){
+        return _ext;
+    }
     this.openSuccess = function(){
         console.log("openSuccess")
     }
