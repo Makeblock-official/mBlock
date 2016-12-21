@@ -7,7 +7,7 @@
 （electron加速：修改node_modules\electron-download\build\index.js->baseUrl->https://npm.taobao.org/mirrors/electron/ ，或者export ELECTRON_MIRROR=https://npm.taobao.org/mirrors/electron/ ）
 
 2、 安装electron环境和serialport
-> cnpm install -g node-gyp
+> ```cnpm install -g node-gyp```
 
 On Unix:
 > python (v2.7 recommended, v3.x.x is not supported)
@@ -31,8 +31,8 @@ On Windows( [Windows Vista / 7 only] requires .NET Framework 4.5.1):
 
 4、 为electron重新编译serialport
 
-> cnpm run rebuild
+> ```cnpm run rebuild```
 
 5、 运行
 
-> cnpm start
+> ```cnpm start```
