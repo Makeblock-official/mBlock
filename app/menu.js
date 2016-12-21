@@ -186,6 +186,48 @@ function AppMenu(app){
                         ]
                     },
                     {
+                        type:"separator"
+                    },
+                    {
+                        name: 'Set firmware mode',
+                        label: _translator.map('Set firmware mode'),
+                        enabled:false,
+                        submenu:[
+                            {
+                                name:'Bluetooth mode',
+                                label: _translator.map('Bluetooth mode'),
+                                enabled:false,
+                                click:function (item, focusedWindow) {
+
+                                }
+                            },
+                            {
+                                name: 'Ultrasonic obstacle avoidance mode',
+                                label: _translator.map('Ultrasonic obstacle avoidance mode'),
+                                enabled:false,
+                                click:function (item, focusedWindow) {
+
+                                }
+                            },
+                            {
+                                name: 'Find line mode',
+                                label: _translator.map('Find line mode'),
+                                enabled:false,
+                                click:function (item, focusedWindow) {
+
+                                }
+                            },
+                            {
+                                name: 'Self balanced model',
+                                label: _translator.map('Self balanced model'),
+                                enabled:false,
+                                click:function (item, focusedWindow) {
+
+                                }
+                            }
+                        ]
+                    },
+                    {
                         name:'View Source',
                         label: '查看源码'
                     },
