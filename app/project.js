@@ -1,19 +1,28 @@
-const {dialog} = require('electron')
+const {dialog,BrowserWindow} = require('electron')
 const fs = require("fs");
 const events = require('events');
 var _emitter = new events.EventEmitter();  
 var _saveAs=false;
 var _currentProjectPath = "";
-var _client,_app,self;
+var _client,_app,_title;
 function Project(app) {
-    self = this;
+    var self = this;
     _app = app;
     _client = _app.getClient();
     this.saveProject = function(title,data){
         if(_saveAs||_currentProjectPath==""){
-            dialog.showSaveDialog({title:title},function(path){
+		    var mainWindow = BrowserWindow.getFocusedWindow();
+            if(title==" .sb2"){
+                title = "project";
+            }
+            if(_currentProjectPath==""){
+                _currentProjectPath = "."
+            }
+            dialog.showSaveDialog(mainWindow,{defaultPath:fs.realpathSync(_currentProjectPath+'/../')+"/"+title+".sb2"},function(path){
                 if(path){
                     _currentProjectPath = path;
+                    var temp = path.split("/");
+                    _title = temp[temp.length-1].split(".sb2")[0];
                     fs.writeFileSync(path, new Buffer(data, 'base64'));
                 }
             })
@@ -35,6 +44,11 @@ function Project(app) {
         _currentProjectPath = "";
         if(_client){
             _client.send("newProject",{title:"new-project"})
+        }
+    }
+    this.setProjectTitle = function(){
+        if(_client){
+            _client.send("setProjectTitle",{title:_title})
         }
     }
     this.saveAs = function(b){

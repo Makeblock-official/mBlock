@@ -10,6 +10,9 @@ function Application(flash){
     ipcRenderer.on('newProject', (sender,obj) => {  
         _flash.newProject(obj.title);
     });   
+    ipcRenderer.on('setProjectTitle', (sender,obj) => {  
+        _flash.setProjectTitle(obj.title);
+    });  
     ipcRenderer.on('saveProject', (sender,obj) => {  
         _flash.saveProject();
     });    
