@@ -3,7 +3,8 @@
  */
 const{Menu,dialog} = require('electron');
 const events = require('events');
-var _emitter = new events.EventEmitter();  
+const instructions = require('./instructions');
+var _emitter = new events.EventEmitter();
 var _app,_mainMenu,_stage,_translator,_serial,_hid,_project;
 function AppMenu(app){
     var self = this;
@@ -207,7 +208,55 @@ function AppMenu(app){
                         name: 'Reset Default Program',
                         label: _translator.map('Reset Default Program'),
                         enabled: _firmwareUploader.allowResetDefaultProgram(),
-                        click: function(item, focusedWindow) { _emitter.emit("resetDefaultProgram"); }
+                        click: function (item, focusedWindow) {
+                            _emitter.emit("resetDefaultProgram");
+                        }
+                    },
+                    {
+                        name: 'Set FirmWare Mode',
+                        label: _translator.map('Set FirmWare Mode'),
+                        submenu:[
+                            {
+                                name:'bluetooth mode',
+                                label: _translator.map('bluetooth mode'),
+                                enabled: _serial.isConnected() && _boards.selected("me/auriga_mega2560"),
+                                click:function (item, focusedWindow) {
+                                    if(_serial.isConnected()){
+                                        _serial.send(instructions.auriga.bluetooth_mode);
+                                    }
+                                }
+                            },
+                            {
+                                name: 'ultrasonic mode',
+                                label: _translator.map('ultrasonic mode'),
+                                enabled: _serial.isConnected() && _boards.selected("me/auriga_mega2560"),
+                                click:function (item, focusedWindow) {
+                                    if(_serial.isConnected()){
+                                        _serial.send(instructions.auriga.ultrasonic_mode);
+                                    }
+                                }
+                            },
+                            {
+                                name: 'line follower mode',
+                                label: _translator.map('line follower mode'),
+                                enabled: _serial.isConnected() && _boards.selected("me/auriga_mega2560"),
+                                click:function (item, focusedWindow) {
+                                    if(_serial.isConnected()){
+                                        _serial.send(instructions.auriga.line_follower_mode);
+                                    }
+                                }
+                            },
+                            {
+                                name: 'balance mode',
+                                label: _translator.map('balance mode'),
+                                enabled: _serial.isConnected() && _boards.selected("me/auriga_mega2560"),
+                                click:function (item, focusedWindow) {
+                                    if(_serial.isConnected()){
+                                        _serial.send(instructions.auriga.balance_mode);
+                                    }
+                                }
+                            }
+                        ]
                     },
                     {
                         name:'View Source',
@@ -351,21 +400,21 @@ function AppMenu(app){
                         name:'Manage Extensions',
                         label: _translator.map('Manage Extensions'),
                         click: function (item, focusedWindow) {
-                            
+
                         }
                     },
                     {
                         name:'Restore Extensions',
                         label: _translator.map('Restore Extensions'),
                         click: function (item, focusedWindow) {
-                            
+
                         }
                     },
                     {
                         name:'Clear Cache',
                         label: _translator.map('Clear Cache'),
                         click: function (item, focusedWindow) {
-                            
+
                         }
                     },
                     {
@@ -375,7 +424,7 @@ function AppMenu(app){
                         name:'Microsoft Cognitive Service Setting',
                         label: _translator.map('Microsoft Cognitive Service Setting'),
                         click: function (item, focusedWindow) {
-                            
+
                         }
                     },
                     {

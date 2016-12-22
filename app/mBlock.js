@@ -20,7 +20,8 @@ const Stage = require("./stage.js")
 const HID = require("./hid.js");
 const LocalStorage = require("./localStorage.js");
 const FirmwareUploader = require('./firmwareUploader.js');
-var _project,_menu,_serial,_hid,_translator,_stage,_firmwareUploader,_bluetooth,_localStorage;
+const ArduinoIDE = require('./arduinoIDE.js');
+var _project,_menu,_serial,_hid,_translator,_stage,_firmwareUploader,_bluetooth,_localStorage,_arduinoIDE;
 function mBlock(){
 	var self = this;
 	ipcMain.on('flashReady',function(event,arg){
@@ -35,6 +36,7 @@ function mBlock(){
 		_hid = new HID(self);
 		_bluetooth = new Bluetooth(self);
 		_firmwareUploader = FirmwareUploader.init(self);
+		_arduinoIDE = ArduinoIDE.init(self);
 		_menu = new AppMenu(self);
 		
 		self.init();
@@ -57,6 +59,12 @@ function mBlock(){
 		if(_bluetooth.isConnected()){
 			_bluetooth.send(arg.data);
 		}
+	});
+	ipcMain.on('openArduinoIDE', function(event, code) {
+		_arduinoIDE.openArduinoIDE(code);
+	});
+	ipcMain.on('uploadToArduino', function(event, code) {
+		_arduinoIDE.uploadCodeToBoard(code);
 	});
 	this.getClient = function(){
 		return _client;
@@ -121,8 +129,21 @@ function mBlock(){
 		_menu.on("upgradeFirmware",function(url){
 			_firmwareUploader.upgradeFirmware();
 		});
+		_menu.on("resetDefaultProgram",function(url){
+			_firmwareUploader.resetDefaultProgram();
+		});
+		// _serial.on("list",function(){
+		// 	_menu.update();
+		// });
 
 		_serial.update();
+	}
+
+	this.alert = function(message) {
+		this.getClient().send('alertBox', 'show', message);
+	}
+	this.logToArduinoConsole = function(message) {
+		this.getClient().send('logToArduinoConsole', message);
 	}
 }
 

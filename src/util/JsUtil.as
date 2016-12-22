@@ -66,6 +66,7 @@ package util
 				ExternalInterface.addCallback("changeStageMode",__changeStageMode);
 				ExternalInterface.addCallback("playCode", __playCode);
 				ExternalInterface.addCallback("stopCode", __stopCode);
+				ExternalInterface.addCallback("logToArduinoConsole", __logToArduinoConsole);
 				callApp("readyForFlash");
 			}catch(e:*){
 				
@@ -291,6 +292,11 @@ package util
 		static private function __stopCode():void
 		{
 			MBlock.app.runtime.stopAll();
+		}
+		
+		static private function __logToArduinoConsole(message:String):void
+		{
+			MBlock.app.scriptsPart.appendMessage(message);
 		}
 	}
 }
