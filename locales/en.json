@@ -8,10 +8,5 @@
 	"Import Image": "Import Image",
 	"Export Image": "Export Image",
 	"Undo Revert": "Undo Revert",
-	"Revert": "Revert",
-	"Set firmware mode": "Set firmware mode",
-	"Bluetooth mode": "Bluetooth mode",
-	"Ultrasonic obstacle avoidance mode": "Ultrasonic obstacle avoidance mode",
-	"Find line mode": "Find line mode",
-	"Self balanced model": "Self balanced model"
+	"Revert": "Revert"
 }

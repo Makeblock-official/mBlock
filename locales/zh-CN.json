@@ -9,5 +9,10 @@
 	"Undo Revert": "Undo Revert",
 	"Revert": "Revert",
 	"mBot Program":"mBot主程序",
-	"Make a Variable":"新建变量"
+	"Make a Variable":"新建变量",
+	"Set firmware mode": "设置固件模式",
+	"Bluetooth mode": "蓝牙模式",
+	"Ultrasonic obstacle avoidance mode": "超声波避障模式",
+	"Find line mode": "巡线模式",
+	"Self balanced model": "自平衡模式"
 }
