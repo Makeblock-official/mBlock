@@ -512,11 +512,11 @@ function AppMenu(app){
             var item = items[i];
             _mainMenu.items[process.platform === 'darwin'?3:2].submenu.items[0].submenu.insert(0,item);
         }
-      items = _app.getBluetooth().getMenuItems();
-      for(var i=0;i<items.length;i++){
-        var item = items[i];
-        _mainMenu.items[process.platform === 'darwin'?3:2].submenu.items[1].submenu.insert(0,item);
-      }
+        items = _app.getBluetooth().getMenuItems();
+        for(var i=0;i<items.length;i++){
+            var item = items[i];
+            _mainMenu.items[process.platform === 'darwin'?3:2].submenu.items[1].submenu.insert(0,item);
+        }
         // 设置固件模式
         self.seMenuItemFirmwareMode();
     }
