@@ -20,18 +20,20 @@ On Mac OS X:
 
 On Windows( [Windows Vista / 7 only] requires .NET Framework 4.5.1):
 > ```cnpm install -g --production windows-build-tools``` 此处安装比较耗时，也可能因为网络原因安装失败，必须确保此步安装成功
-> ```cnpm install --save-dev electron-rebuild serialport electron-prebuilt```
+> ```cnpm install --save-dev electron-rebuild serialport node-hid electron-prebuilt```(为确保不受网络影响，可以使用代理服务器，如果有shadowsocks，可以设置```cnpm config set proxy http://127.0.0.1:1080```)
 
 3、 编辑package.json， **新增scripts**
  
 > "scripts": {
->   "rebuild" :"electron-rebuild -f -w serialport",
+>   "rebuild-serialport" :"electron-rebuild -f -w serialport",
+>   "rebuild-hid" :"electron-rebuild -f -w node-hid",
 >   "start":"electron ."
 > }
 
-4、 为electron重新编译serialport(只需要编译一次)
+4、 为electron重新编译serialport,node-hid(只需要编译一次)
 
-> ```cnpm run rebuild```
+> ```cnpm run rebuild-serialport```
+> ```cnpm run rebuild-hid```
 
 5、 运行
 
