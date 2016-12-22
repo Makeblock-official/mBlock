@@ -38,6 +38,9 @@ function Application(flash){
     ipcRenderer.on('changeToBoard', (sender,obj) => {  
         self.changeToBoard(obj.board);
     }); 
+    ipcRenderer.on('logToArduinoConsole', (sender,obj) => {  
+        _flash.logToArduinoConsole(obj);
+    }); 
     this.getExt = function(){
         return _ext;
     }
