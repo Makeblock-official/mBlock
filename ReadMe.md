@@ -20,7 +20,7 @@ On Mac OS X:
 
 On Windows( [Windows Vista / 7 only] requires .NET Framework 4.5.1):
 > ```cnpm install -g --production windows-build-tools``` 此处安装比较耗时，也可能因为网络原因安装失败，必须确保此步安装成功
-> ```cnpm install --save-dev electron-rebuild serialport electron-prebuilt```(使用代理服务器保证安装成功，如果有shadowsocks，可以设置```cnpm config set proxy http://127.0.0.1:1080```)
+> ```cnpm install --save-dev electron-rebuild serialport electron-prebuilt```(为确保不受网络影响，可以使用代理服务器，如果有shadowsocks，可以设置```cnpm config set proxy http://127.0.0.1:1080```)
 
 3、 编辑package.json， **新增scripts**
  
