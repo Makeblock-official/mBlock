@@ -21,5 +21,9 @@ function Boards(app){
     this.selected = function(name){
         return _currentBoardName == name;
     }
+    this.currentBoardName = function() {
+        return _currentBoardName;
+    }
 }
+
 module.exports = Boards;
