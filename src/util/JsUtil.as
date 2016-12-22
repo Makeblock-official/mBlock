@@ -259,8 +259,8 @@ package util
 		{
 			MBlock.app.setProjectName(title);
 		}
-		static private function __setLanguage(lang:String,dict:Object):void{
-			Translator.setDictionary(lang,dict);
+		static private function __setLanguage(lang:String,dict:String):void{
+			Translator.setDictionary(lang,util.JSON.parse(dict));
 		}
 		static private function __getStageSnapshot():String
 		{

@@ -1,4 +1,8 @@
 {
+	"when distance < %n": "当距离 < %n", 
+	"Click \\\"Save now\\\" to try again or \\\"Download\\\" to save": "点击 重新尝试或 保存",
+    "Open the file with \"File/Load project\"": "用“文件/打开项目”来打开文件",
+	"Sorry that you cannot open the files with consecutive spaces by double clicking. Use \"File/Load project\" in the menu instead.": "对不起，你不能双击打开文件名含有连续空格的文件，请用“文件/打开项目”菜单代替",
 	"add comment here...": "在这里添加注释...",
 	"all": "全部",
 	"Z-Axis": "Z轴",
