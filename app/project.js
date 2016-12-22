@@ -62,6 +62,12 @@ function Project(app) {
         }
     }
     /**
+     * 获得项目标题
+     */
+    this.getProjectTitle = function() {
+        return _title;
+    }
+    /**
      * 向flash发送项目名称（名称由保存的文件名决定）
      */
     this.setProjectTitle = function(){

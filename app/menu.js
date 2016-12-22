@@ -160,15 +160,24 @@ function AppMenu(app){
                         label: _translator.map('Bluetooth'),
                         submenu: [
                             {
+                                type:"separator"
+                            },
+                            {
                                 name:"Discover",
-                                label:_translator.map("Discover")
+                                label:_translator.map("Discover"),
+                                click: function (item, focusedWindow) {
+                                    _app.getBluetooth().discover();
+                                }
                             },
                             {
                                 type:"separator"
                             },
                             {
                                 name:"Clear Bluetooth",
-                                label:_translator.map("Clear Bluetooth")
+                                label:_translator.map("Clear Bluetooth"),
+                                click:function(item,focusedWindow){
+                                    _app.getBluetooth().clear();
+                                }
                             }
                         ]
                     },
@@ -503,7 +512,11 @@ function AppMenu(app){
             var item = items[i];
             _mainMenu.items[process.platform === 'darwin'?3:2].submenu.items[0].submenu.insert(0,item);
         }
-
+      items = _app.getBluetooth().getMenuItems();
+      for(var i=0;i<items.length;i++){
+        var item = items[i];
+        _mainMenu.items[process.platform === 'darwin'?3:2].submenu.items[1].submenu.insert(0,item);
+      }
         // 设置固件模式
         self.seMenuItemFirmwareMode();
     }

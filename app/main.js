@@ -48,7 +48,6 @@ function createWindow () {
             'plugins': true
         }
   })
-	
 	mainWindow.loadURL(`file://${rootPath}/web/index.html`)
 
   mainWindow.webContents.openDevTools()
@@ -62,6 +61,7 @@ function createWindow () {
 }
 app.on('ready', createWindow)
 app.on('window-all-closed', function () {
+    appMain.quit();
     app.quit()
 })
 

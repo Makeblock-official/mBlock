@@ -6,6 +6,7 @@
   "scripts": {
     "rebuild-serialport": "electron-rebuild -f -w serialport",
     "rebuild-hid": "electron-rebuild -f -w node-hid",
+    "rebuild-bluetooth": "electron-rebuild -f -w bluetooth-serial-port",
     "start": "electron ."
   },
   "repository": "https://git.oschina.net/makeblock/mblock-for-myh",
@@ -15,7 +16,7 @@
   "author": "GitHub",
   "license": "MIT",
   "devDependencies": {
-    "bluetooth-serial-port": "^2.1.0",
+    "bluetooth-serial-port": "^2.1.1",
     "electron-prebuilt": "^1.4.13",
     "electron-rebuild": "^1.4.0",
     "express": "^4.14.0",

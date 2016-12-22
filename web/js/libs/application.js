@@ -24,7 +24,6 @@ function Application(flash){
         _flash.saveProject();
     });    
     ipcRenderer.on('setLanguage', (sender,obj) => {  
-        console.log(obj.dict["when distance < %n"]);
         _flash.setLanguage(obj.lang,obj.dict);
     });  
     ipcRenderer.on('changeStageMode',(sender,obj) =>{
@@ -38,6 +37,9 @@ function Application(flash){
     });  
     ipcRenderer.on('changeToBoard', (sender,obj) => {  
         self.changeToBoard(obj.board);
+    }); 
+    ipcRenderer.on('logToArduinoConsole', (sender,obj) => {  
+        _flash.logToArduinoConsole(obj);
     }); 
     this.getExt = function(){
         return _ext;
@@ -55,11 +57,11 @@ function Application(flash){
     }
     // 用户点击了“上传到Arduino”按钮
     this.uploadToArduino = function(code) {
-        console.log(code);
+        ipcRenderer.send("uploadToArduino", code);
     }
     // 用户点击了"用Arduino IDE编辑"按钮
     this.openArduinoIDE = function(code) {
-        console.log(code);
+        ipcRenderer.send("openArduinoIDE", code);
     }
     
     this.callFlash = function(method, args){

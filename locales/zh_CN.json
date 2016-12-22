@@ -951,5 +951,7 @@
 	"Bluetooth mode": "Bluetooth mode",
 	"Ultrasonic obstacle avoidance mode": "Ultrasonic obstacle avoidance mode",
 	"Find line mode": "Find line mode",
-	"Self balanced model": "Self balanced model"
+	"Self balanced model": "Self balanced model",
+	"Upload Succeeded": "Upload Succeeded",
+	"Uploading...": "Uploading..."
 }
