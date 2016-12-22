@@ -9,18 +9,30 @@ def read_xlsx(file= '../src/locale/locale.xlsx',by_name=u'locale'):
     booksheet = workbook.sheet_by_name(by_name)
     p = list()
     col = list()
+    pr_list = list()
     ret = {}
     for rowidx in range(booksheet.nrows):
         # print rowidx
         if rowidx == 1:
             continue
+        if rowidx > 1:
+            celzero = booksheet.cell(rowidx, 0)
+            valzero = celzero.value
+            # valzero = valzero.decode("unicode-escape")
+            if type(valzero) == unicode:
+                valzero = valzero.encode('utf-8')
+            if type(valzero) == str:
+                valzero = valzero.strip()
+
+            if valzero in pr_list:
+                print valzero
+            pr_list.append(valzero)
         for colidx in range(booksheet.ncols):
             cel = booksheet.cell(rowidx, colidx)
             val = cel.value
-
-            if (type(val) == unicode):
+            if type(val) == unicode:
                 val = val.encode('utf-8')
-            if (type(val) == str):
+            if type(val) == str:
                 val = val.strip()
             # print val
 
@@ -30,12 +42,6 @@ def read_xlsx(file= '../src/locale/locale.xlsx',by_name=u'locale'):
                 col.append(val)
                 p.append({})
             else:
-                celzero = booksheet.cell(rowidx, 0)
-                valzero = celzero.value
-                if (type(valzero) == unicode):
-                    valzero = valzero.encode('utf-8')
-                if (type(valzero) == str):
-                    valzero = valzero.strip()
                 p[colidx-1][valzero] = val
     ret['colume'] = col
     ret['row'] = p
