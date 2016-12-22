@@ -17,7 +17,8 @@ const AppMenu = require('./menu.js')
 const Translator = require("./translator.js")
 const Stage = require("./stage.js")
 const HID = require("./hid.js");
-var _project,_menu,_serial,_hid,_translator,_stage;
+const FirmwareUploader = require('./firmwareUploader.js');
+var _project,_menu,_serial,_hid,_translator,_stage,_firmwareUploader;
 function mBlock(){
 	var self = this;
 	ipcMain.on('flashReady',function(event,arg){
@@ -29,7 +30,9 @@ function mBlock(){
 		_boards = new Boards(self);
 		_stage = new Stage(self);
 		_hid = new HID(self);
-		_menu = new AppMenu(self)
+		_firmwareUploader = FirmwareUploader.init(self);
+		_menu = new AppMenu(self);
+		
 		self.init();
 		_boards.selectBoard("me/auriga_mega2560");
 	})
@@ -44,7 +47,7 @@ function mBlock(){
 		if(_serial.isConnected()){
 			_serial.send(arg.data);
 		}
-	})
+	});
 	this.getClient = function(){
 		return _client;
 	}
@@ -72,6 +75,12 @@ function mBlock(){
 	this.getStage = function(){
 		return _stage;
 	}
+	this.getBoards = function() {
+		return _boards;
+	}
+	this.getFirmwareUploader = function() {
+		return _firmwareUploader;
+	}
 	this.init = function(){
 		_menu.on("newProject",function (){
 			_project.newProject();
@@ -87,6 +96,9 @@ function mBlock(){
 		});
 		_menu.on("boardChanged",function(name){
 			_boards.selectBoard(name);
+		});
+		_menu.on("upgradeFirmware",function(url){
+			_firmwareUploader.upgradeFirmware();
 		});
 		_serial.on("list",function(){
 			_menu.update();

@@ -13,6 +13,7 @@ function AppMenu(app){
     _serial = _app.getSerial();
     _project = _app.getProject();
     _hid = _app.getHID();
+    _firmwareUploader = _app.getFirmwareUploader();
     this.reset = function (){
         if(!_translator){
             return;
@@ -184,6 +185,20 @@ function AppMenu(app){
                                 }
                             }
                         ]
+                    },
+                    {
+                        type:"separator"
+                    },
+                    {
+                        name: 'Upgrade Firmware',
+                        label: _translator.map('Upgrade Firmware'),
+                        click: function(item, focusedWindow) { _emitter.emit("upgradeFirmware"); }
+                    },
+                    {
+                        name: 'Reset Default Program',
+                        label: _translator.map('Reset Default Program'),
+                        enabled: _firmwareUploader.allowResetDefaultProgram(),
+                        click: function(item, focusedWindow) { _emitter.emit("resetDefaultProgram"); }
                     },
                     {
                         name:'View Source',
