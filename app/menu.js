@@ -204,46 +204,46 @@ function AppMenu(app){
                         }
                     },
                     {
-                        name: 'Set firmware mode',
-                        label: _translator.map('Set firmware mode'),
+                        name: 'Set FirmWare Mode',
+                        label: _translator.map('Set FirmWare Mode'),
                         submenu:[
                             {
-                                name:'Bluetooth mode',
-                                label: _translator.map('Bluetooth mode'),
+                                name:'bluetooth mode',
+                                label: _translator.map('bluetooth mode'),
                                 enabled: _serial.isConnected() && _boards.selected("me/auriga_mega2560"),
                                 click:function (item, focusedWindow) {
                                     if(_serial.isConnected()){
-                                        _serial.send(instructions.auriga.bluetooth_model);
+                                        _serial.send(instructions.auriga.bluetooth_mode);
                                     }
                                 }
                             },
                             {
-                                name: 'Ultrasonic obstacle avoidance mode',
-                                label: _translator.map('Ultrasonic obstacle avoidance mode'),
+                                name: 'ultrasonic mode',
+                                label: _translator.map('ultrasonic mode'),
                                 enabled: _serial.isConnected() && _boards.selected("me/auriga_mega2560"),
                                 click:function (item, focusedWindow) {
                                     if(_serial.isConnected()){
-                                        _serial.send(instructions.auriga.ultrasonic_obstacle_avoidance_mode);
+                                        _serial.send(instructions.auriga.ultrasonic_mode);
                                     }
                                 }
                             },
                             {
-                                name: 'Find line mode',
-                                label: _translator.map('Find line mode'),
+                                name: 'line follower mode',
+                                label: _translator.map('line follower mode'),
                                 enabled: _serial.isConnected() && _boards.selected("me/auriga_mega2560"),
                                 click:function (item, focusedWindow) {
                                     if(_serial.isConnected()){
-                                        _serial.send(instructions.auriga.find_line_mode);
+                                        _serial.send(instructions.auriga.line_follower_mode);
                                     }
                                 }
                             },
                             {
-                                name: 'Self balanced model',
-                                label: _translator.map('Self balanced model'),
+                                name: 'balance mode',
+                                label: _translator.map('balance mode'),
                                 enabled: _serial.isConnected() && _boards.selected("me/auriga_mega2560"),
                                 click:function (item, focusedWindow) {
                                     if(_serial.isConnected()){
-                                        _serial.send(instructions.auriga.self_balanced_model);
+                                        _serial.send(instructions.auriga.balance_mode);
                                     }
                                 }
                             }
