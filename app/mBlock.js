@@ -14,22 +14,26 @@ const Serial = require("./serial.js")
 const Boards = require("./boards.js");
 const Project = require("./project.js");
 const AppMenu = require('./menu.js')
+const Bluetooth = require('./bluetooth.js')
 const Translator = require("./translator.js")
 const Stage = require("./stage.js")
 const HID = require("./hid.js");
+const LocalStorage = require("./localStorage.js");
 const FirmwareUploader = require('./firmwareUploader.js');
-var _project,_menu,_serial,_hid,_translator,_stage,_firmwareUploader;
+var _project,_menu,_serial,_hid,_translator,_stage,_firmwareUploader,_bluetooth,_localStorage;
 function mBlock(){
 	var self = this;
 	ipcMain.on('flashReady',function(event,arg){
 		console.log("ready")
 		_client = event.sender;
+		_localStorage = new LocalStorage();
 		_project = new Project(self);
 		_translator = new Translator(self);
 		_serial = new Serial(self);
 		_boards = new Boards(self);
 		_stage = new Stage(self);
 		_hid = new HID(self);
+		_bluetooth = new Bluetooth(self);
 		_firmwareUploader = FirmwareUploader.init(self);
 		_menu = new AppMenu(self);
 		
@@ -50,6 +54,9 @@ function mBlock(){
 		if(_hid.isConnected()){
 			_hid.send(arg.data);
 		}
+		if(_bluetooth.isConnected()){
+			_bluetooth.send(arg.data);
+		}
 	});
 	this.getClient = function(){
 		return _client;
@@ -66,11 +73,17 @@ function mBlock(){
 	this.getHID = function(){
 		return _hid;
 	}
+	this.getLocalStorage = function(){
+		return _localStorage;
+	}
 	this.getName = function(){
 		return app.getName()
 	}
 	this.getLocale = function(){
 		return app.getLocale();
+	}
+	this.getBluetooth = function(){
+		return _bluetooth;
 	}
 	this.getMenu = function(){
 		return _menu;
@@ -83,6 +96,11 @@ function mBlock(){
 	}
 	this.getFirmwareUploader = function() {
 		return _firmwareUploader;
+	}
+	this.quit = function(){
+		_bluetooth.close();
+		_hid.close();
+		_serial.close();
 	}
 	this.init = function(){
 		_menu.on("newProject",function (){
@@ -103,9 +121,7 @@ function mBlock(){
 		_menu.on("upgradeFirmware",function(url){
 			_firmwareUploader.upgradeFirmware();
 		});
-		_serial.on("list",function(){
-			_menu.update();
-		});
+
 		_serial.update();
 	}
 }
