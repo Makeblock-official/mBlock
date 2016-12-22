@@ -47,6 +47,9 @@ function mBlock(){
 		if(_serial.isConnected()){
 			_serial.send(arg.data);
 		}
+		if(_hid.isConnected()){
+			_hid.send(arg.data);
+		}
 	});
 	this.getClient = function(){
 		return _client;
