@@ -7,7 +7,10 @@ const express = require('express');
 const httpPort = 7070
 var http = express();
 var appMain;
+
+//设置express静态资源目录
 http.use(express.static('web'));
+
 http.listen(httpPort, function () {
   console.log('app listening on port '+httpPort+'!');
 });
@@ -16,6 +19,7 @@ var appName = app.getName();
 var path = require('path');
 var pluginName;
 
+//根据系统加载对应版本的flash player插件
 switch (process.platform) {
   case 'win32':
     pluginName = 'pepflashplayer.dll'
@@ -34,6 +38,7 @@ app.commandLine.appendSwitch('ppapi-flash-version', '23.0.0.207')
 
 let mainWindow
 
+//创建主窗口
 function createWindow () {
   mainWindow = new BrowserWindow(
   {

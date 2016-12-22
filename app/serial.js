@@ -95,6 +95,7 @@ function Serial(app){
 		}
 	}
 	this.onDisconnect = function(){
+        _app.getMenu().update();
 		if(_client){
 			_client.send("connected",{connected:false})
 		}
