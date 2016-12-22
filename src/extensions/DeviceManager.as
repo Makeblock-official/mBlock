@@ -34,12 +34,14 @@ package extensions
 					MBlock.app.extensionManager.singleSelectExtension("mBot");
 				}else if(_board.indexOf("arduino")>-1){
 					MBlock.app.extensionManager.singleSelectExtension("Arduino");
-				}else if(_board.indexOf("me/orion_uno")>-1){
-					MBlock.app.extensionManager.singleSelectExtension("Makeblock");
+				}else if(_board.indexOf("me/orion")>-1){
+					MBlock.app.extensionManager.singleSelectExtension("Orion");
 				}else if(_board.indexOf("me/uno_shield")>-1){
 					MBlock.app.extensionManager.singleSelectExtension("UNO Shield");
-				}else if(_board.indexOf("me/auriga") >= 0){
+				}else if(_board.indexOf("me/auriga") > -1){
 					MBlock.app.extensionManager.singleSelectExtension("Auriga");
+				}else if(_board.indexOf("mega_pi") > -1){
+					MBlock.app.extensionManager.singleSelectExtension("MegaPi");
 				}
 //			}
 			MBlock.app.topBarPart.setBoardTitle();

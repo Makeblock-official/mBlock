@@ -215,6 +215,8 @@ public class ExtensionManager {
 			case "BaseBoard":
 			case "PicoBoard":
 			case "Auriga":
+			case "MegaPi":
+			case "Orion":
 				return true;
 		}
 		return false;
@@ -341,6 +343,9 @@ public class ExtensionManager {
 				var extObj:Object = util.JSON.parse(bytes.toString());
 				extObj.srcPath = key;
 				_extensionList.push(extObj);
+				setTimeout(function(v){
+					JsUtil.callApp("sendMsg",v);
+				},1000,key+":"+extObj.extensionName);
 				if(checkExtensionSelected(extObj.extensionName)){
 					loadRawExtension(extObj);
 				}
