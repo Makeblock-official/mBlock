@@ -3,6 +3,7 @@
  */
 const{Menu,dialog} = require('electron');
 const events = require('events');
+const instructions = require('./instructions');
 var _emitter = new events.EventEmitter();  
 var _app,_mainMenu,_stage,_translator,_serial,_hid,_project;
 function AppMenu(app){
@@ -181,6 +182,55 @@ function AppMenu(app){
                                 checked:_hid.isConnected(),
                                 click: function (item, focusedWindow) {
                                     _hid.connect();
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        type:"separator"
+                    },
+                    {
+                        name: 'Set firmware mode',
+                        label: _translator.map('Set firmware mode'),
+                        submenu:[
+                            {
+                                name:'Bluetooth mode',
+                                label: _translator.map('Bluetooth mode'),
+                                enabled: _serial.isConnected() && _boards.selected("me/auriga_mega2560"),
+                                click:function (item, focusedWindow) {
+                                    if(_serial.isConnected()){
+                                        _serial.send(instructions.auriga.bluetooth_model);
+                                    }
+                                }
+                            },
+                            {
+                                name: 'Ultrasonic obstacle avoidance mode',
+                                label: _translator.map('Ultrasonic obstacle avoidance mode'),
+                                enabled: _serial.isConnected() && _boards.selected("me/auriga_mega2560"),
+                                click:function (item, focusedWindow) {
+                                    if(_serial.isConnected()){
+                                        _serial.send(instructions.auriga.ultrasonic_obstacle_avoidance_mode);
+                                    }
+                                }
+                            },
+                            {
+                                name: 'Find line mode',
+                                label: _translator.map('Find line mode'),
+                                enabled: _serial.isConnected() && _boards.selected("me/auriga_mega2560"),
+                                click:function (item, focusedWindow) {
+                                    if(_serial.isConnected()){
+                                        _serial.send(instructions.auriga.find_line_mode);
+                                    }
+                                }
+                            },
+                            {
+                                name: 'Self balanced model',
+                                label: _translator.map('Self balanced model'),
+                                enabled: _serial.isConnected() && _boards.selected("me/auriga_mega2560"),
+                                click:function (item, focusedWindow) {
+                                    if(_serial.isConnected()){
+                                        _serial.send(instructions.auriga.self_balanced_model);
+                                    }
                                 }
                             }
                         ]
