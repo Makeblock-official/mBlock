@@ -7,6 +7,8 @@ function Boards(app){
     var self = this;
     _app = app;
     _client = _app.getClient();
+    
+    //切换主控板，通过ipc向flash发送切换主控板的请求
     this.selectBoard = function(name){
         _currentBoardName = name;
         if(_client){
@@ -14,6 +16,8 @@ function Boards(app){
         }
         _app.getMenu().update();
     }
+
+    //判断名称是否当前主控板
     this.selected = function(name){
         return _currentBoardName == name;
     }
