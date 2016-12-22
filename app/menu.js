@@ -4,7 +4,7 @@
 const{Menu,dialog} = require('electron');
 const events = require('events');
 const instructions = require('./instructions');
-var _emitter = new events.EventEmitter();  
+var _emitter = new events.EventEmitter();
 var _app,_mainMenu,_stage,_translator,_serial,_hid,_project;
 function AppMenu(app){
     var self = this;
@@ -14,6 +14,7 @@ function AppMenu(app){
     _serial = _app.getSerial();
     _project = _app.getProject();
     _hid = _app.getHID();
+    _firmwareUploader = _app.getFirmwareUploader();
     this.reset = function (){
         if(!_translator){
             return;
@@ -188,6 +189,19 @@ function AppMenu(app){
                     },
                     {
                         type:"separator"
+                    },
+                    {
+                        name: 'Upgrade Firmware',
+                        label: _translator.map('Upgrade Firmware'),
+                        click: function(item, focusedWindow) { _emitter.emit("upgradeFirmware"); }
+                    },
+                    {
+                        name: 'Reset Default Program',
+                        label: _translator.map('Reset Default Program'),
+                        enabled: _firmwareUploader.allowResetDefaultProgram(),
+                        click: function (item, focusedWindow) {
+                            _emitter.emit("resetDefaultProgram");
+                        }
                     },
                     {
                         name: 'Set firmware mode',
@@ -377,21 +391,21 @@ function AppMenu(app){
                         name:'Manage Extensions',
                         label: _translator.map('Manage Extensions'),
                         click: function (item, focusedWindow) {
-                            
+
                         }
                     },
                     {
                         name:'Restore Extensions',
                         label: _translator.map('Restore Extensions'),
                         click: function (item, focusedWindow) {
-                            
+
                         }
                     },
                     {
                         name:'Clear Cache',
                         label: _translator.map('Clear Cache'),
                         click: function (item, focusedWindow) {
-                            
+
                         }
                     },
                     {
@@ -401,7 +415,7 @@ function AppMenu(app){
                         name:'Microsoft Cognitive Service Setting',
                         label: _translator.map('Microsoft Cognitive Service Setting'),
                         click: function (item, focusedWindow) {
-                            
+
                         }
                     },
                     {

@@ -36,7 +36,12 @@ function HID(app){
 	//发送数据
 	this.send = function(data){
 		if(_port){
-            _port.write(new Buffer(data).toArray());
+			var buffer = new Buffer(data)
+			var arr = [buffer.length];
+			for(var i=0;i<buffer.length;i++){
+				arr.push(buffer[i]);
+			}
+            _port.write(arr);
 		}
 	}
 
@@ -95,7 +100,9 @@ function HID(app){
 	//ipc转发接收的数据包
 	this.onReceived = function(data){
 		if(_client){
-			_client.send(package,{data:data})
+			if(data[0]>0){
+				_client.send("package",{data:data})
+			}
 		}
 	}
 }
