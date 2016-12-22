@@ -24,10 +24,10 @@ def read_xlsx(file= '../src/locale/locale.xlsx',by_name=u'locale'):
                 valzero = valzero.encode('utf-8')
             if type(valzero) == str:
                 valzero = valzero.strip()
-                valzero = valzero.replace('\\','')
-                valzero = valzero.replace('\"','\'')
-            if string.find(valzero,'<') != -1:
-                continue
+            #     valzero = valzero.replace('\\','')
+            #     valzero = valzero.replace('\"','\'')
+            # if string.find(valzero,'<') != -1:
+            #     continue
 
             if valzero in pr_list:
                 print valzero
@@ -39,8 +39,8 @@ def read_xlsx(file= '../src/locale/locale.xlsx',by_name=u'locale'):
                 val = val.encode('utf-8')
             if type(val) == str:
                 val = val.strip()
-                val = val.replace('\\','')
-                val = val.replace('\"','\'')
+                # val = val.replace('\\','')
+                # val = val.replace('\"','\'')
             # print val
 
             if colidx == 0:
