@@ -9,21 +9,44 @@ var _client,_lang,_app;
 const _languages = [
 			{name:"en",label:"English"},
 			{name:"zh_CN",label:"简体中文"},
-			{name:"zh_TW",label:"繁体中文"}
+			{name:"zh_TW",label:"正體中文"},
+			{name:"it_IT",label:"Italiano"},
+			{name:"fr_FR",label:"Français"},
+			{name:"es_ES",label:"Español"},
+			{name:"ko",label:"한국어"},
+			{name:"da",label:"Dansk"},
+            {name:"ru_RU",label:"Русский"},
+            {name:"ja_HIRA",label:"にほんご"},
+            {name:"ja",label:"日本語"},
+            {name:"nl_NL",label:"Nederlands"},
+            {name:"de_DE",label:"Deutsch"},
+            {name:"hebrew",label:"Hebrew"},
+            {name:"et_EE",label:"Eesti"},
+            {name:"latin5",label:"Türkçe"},
+            {name:"cz_CZ",label:"Čeština"},
+            {name:"IA5",label:"Svenska"},
+            {name:"pt_BR",label:"Português"},
+            {name:"pl_PL",label:"Polski"},
+            {name:"hr_HRV",label:"Hrvatski"}															
 			];
 function Translator(app){
     _app = app;
     _client = _app.getClient();
     _lang = _app.getLocale().split("-").join("_");
     var self = this;
+    var locales = ['en'];
+    for(var i in _languages){
+        locales.push(_languages[i].name);
+    }
     i18n.configure({
-        locales:['en', 'zh_CN', 'zh_TW'],
+        locales:locales,
         directory: __dirname + '/../locales'
     });
     this.setLanguage = function (lang){
         _lang = lang;
         i18n.setLocale(lang);
-        _client.send("setLanguage",{lang:_lang,dict:i18n.getCatalog(_lang)})
+        var dict = i18n.getCatalog(_lang);
+        _client.send("setLanguage",{lang:_lang,dict:JSON.stringify(dict)})
     }
     this.getLanguage = function (){
         return _lang;
