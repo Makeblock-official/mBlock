@@ -1,3 +1,8 @@
+/**
+ * 目的：在前端显示一个可以更新内容到提示框
+ * 用法：（前端：alertBox.show(内容)）
+ * 后端：app.send('alertBox', 'show', msg);
+ */
 var dom = document.getElementById('alert-box');
 const {ipcRenderer} = require('electron');
 
@@ -11,6 +16,10 @@ var AlertBox = {
             ipcRenderer.send('alertBoxClosed');
             self.close();
         });
+        /**
+         * 这段的意思是，当收到app.send('alertBox', [functionName], ...)的时候
+         * 调用该对象到相应函数
+         */
         ipcRenderer.on('alertBox', function(event, arg) {
             var remainingArgs = Array.prototype.slice.call(arguments, 2);
             self[arguments[1]].apply(self, remainingArgs);

@@ -1,10 +1,8 @@
 const spawn = require('child_process').spawn;
+const utils = require('./utils');
 var Boards = require('./boards.js');
 var app = null;
-
-var progressCharacters = ['\\', '|', '/', '-'];
-var progressCharacterIndex = 0;
-
+var T = null;
 const boardFirmwareMap = {
     'arduino_uno': 'uno.hex',
     'arduino_leonardo': 'leonardo.hex',
@@ -18,68 +16,76 @@ const boardFirmwareMap = {
     'me/mega_pi_mega2560': 'mega_pi.hex'
 };
 
+const boardDefaultProgramMap = {
+    'me/mbot_uno': 'mbot_reset.hex',
+};
+
 var FirmwareUploader = {
     init: function(mBlock) {
         app = mBlock;
+        T = app.getTranslator().map;
         return this;
     },
 
     allowResetDefaultProgram: function() {
+        var boardName = app.getBoards().currentBoardName();
+        if(boardName == 'me/mbot_uno') {
+            return true;
+        }
         return false;
     },
 
     upgradeFirmware: function() {
+        var boardName = app.getBoards().currentBoardName();
+        this.uploadWithAvrdude(boardFirmwareMap[boardName]);
+    },
+
+    resetDefaultProgram: function() {
+        var boardName = app.getBoards().currentBoardName();
+        this.uploadWithAvrdude(boardDefaultProgramMap[boardName]);
+    },
+
+    uploadWithAvrdude: function(hexFileName) {
         var serialPort = app.getSerial().currentSerialPort();
         var boardName = app.getBoards().currentBoardName();
         console.log('current connection: '+serialPort);
         console.log('current board name: '+boardName);
 
-        if(!boardFirmwareMap[boardName]) {
-            this._displayMessage('No firmware available for this type of board');
+        if(!hexFileName) {
+            app.alert(T('No firmware available for this type of board'));
             return;
         }
         if(!serialPort) {
-            this._displayMessage('Please connect the serial port.');
+            app.alert(T('Please connect the serial port.'));
             return;
         }
-        return;
         
         var self = this;
         console.log('upgrade firmware');
-        this._displayMessage('Uploading...');
+        app.alert(T('Uploading...'));
         var command = 'tools/arduino/hardware/tools/avr/bin/avrdude';
         var args = [
             '-C', 'tools/arduino/hardware/tools/avr/etc/avrdude.conf', '-v', '-v', '-v', '-v',
             '-patmega328p', '-carduino', '-P'+serialPort, '-b115200', '-D', '-V', '-U', 
-            'flash:w:tools/hex/'+boardFirmwareMap[boardName]+':i'
+            'flash:w:tools/hex/'+hexFileName+':i'
         ];
         var avrdude = spawn(command, args, {stdio: ['pipe', null, null, null, 'pipe']});
         avrdude.stdout.on('data', function(data){
         });
         avrdude.stderr.on('data', function(data){
-            self._displayMessage('Uploading...'+self._getProgressCharacter());
+            app.logToArduinoConsole(data.toString());
+            app.alert(T('Uploading')+'...'+utils.getProgressCharacter());
         });
         avrdude.on('close', function(code){
             if(code == 0) {
-                self._displayMessage('Upload Succeeded');
+                app.alert(T('Upload Succeeded'));
             }
             else {
-                self._displayMessage('Upload Failed');
+                app.alert(T('Upload Failed'));
             }
         });
 
     },
-
-    _displayMessage: function(msg) {
-        app.getClient().send('alertBox', 'show', msg);
-    },
-
-    _getProgressCharacter: function() {
-        progressCharacterIndex++;
-        if(progressCharacterIndex > 3) progressCharacterIndex = 0;
-        return progressCharacters[progressCharacterIndex];
-    }
-
 
 }
 

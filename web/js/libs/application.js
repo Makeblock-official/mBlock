@@ -58,11 +58,11 @@ function Application(flash){
     }
     // 用户点击了“上传到Arduino”按钮
     this.uploadToArduino = function(code) {
-        console.log(code);
+        ipcRenderer.send("uploadToArduino", code);
     }
     // 用户点击了"用Arduino IDE编辑"按钮
     this.openArduinoIDE = function(code) {
-        console.log(code);
+        ipcRenderer.send("openArduinoIDE", code);
     }
     
     this.callFlash = function(method, args){
