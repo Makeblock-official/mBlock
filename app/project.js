@@ -26,6 +26,9 @@ function Project(app) {
             }
             dialog.showSaveDialog(mainWindow,{defaultPath:fs.realpathSync(_currentProjectPath+'/../')+"/"+title+".sb2"},function(path){
                 if(path){
+                    if (path.lastIndexOf('.sb2') != path.length-4 ){
+                        path += ".sb2";
+                    }
                     _currentProjectPath = path;
                     var temp = path.split("/");
                     _title = temp[temp.length-1].split(".sb2")[0];
@@ -57,6 +60,12 @@ function Project(app) {
         if(_client){
             _client.send("newProject",{title:"new-project"})
         }
+    }
+    /**
+     * 获得项目标题
+     */
+    this.getProjectTitle = function() {
+        return _title;
     }
     /**
      * 向flash发送项目名称（名称由保存的文件名决定）

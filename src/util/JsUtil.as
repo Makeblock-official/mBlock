@@ -66,6 +66,7 @@ package util
 				ExternalInterface.addCallback("changeStageMode",__changeStageMode);
 				ExternalInterface.addCallback("playCode", __playCode);
 				ExternalInterface.addCallback("stopCode", __stopCode);
+				ExternalInterface.addCallback("logToArduinoConsole", __logToArduinoConsole);
 				callApp("readyForFlash");
 			}catch(e:*){
 				
@@ -236,6 +237,15 @@ package util
 				case "ultimate2":
 					DeviceManager.sharedManager().onSelectBoard("me/auriga");
 					break;
+				case "orion":
+					DeviceManager.sharedManager().onSelectBoard("me/orion");
+					break;
+				case "uno shield":
+					DeviceManager.sharedManager().onSelectBoard("me/uno_shield");
+					break;
+				case "mega pi":
+					DeviceManager.sharedManager().onSelectBoard("me/mega_pi");
+					break;
 			}
 		}
 		
@@ -259,8 +269,8 @@ package util
 		{
 			MBlock.app.setProjectName(title);
 		}
-		static private function __setLanguage(lang:String,dict:Object):void{
-			Translator.setDictionary(lang,dict);
+		static private function __setLanguage(lang:String,dict:String):void{
+			Translator.setDictionary(lang,util.JSON.parse(dict));
 		}
 		static private function __getStageSnapshot():String
 		{
@@ -291,6 +301,11 @@ package util
 		static private function __stopCode():void
 		{
 			MBlock.app.runtime.stopAll();
+		}
+		
+		static private function __logToArduinoConsole(message:String):void
+		{
+			MBlock.app.scriptsPart.appendMessage(message);
 		}
 	}
 }

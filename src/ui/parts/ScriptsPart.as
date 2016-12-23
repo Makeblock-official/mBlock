@@ -253,6 +253,10 @@ public class ScriptsPart extends UIPart {
 	}
 	public function appendRawMessage(msg:String):void{
 		messageTextPane.textField.appendText(msg);
+		if(messageTextPane.textField.length > 2000) {
+			var text:String = messageTextPane.textField.text;
+			messageTextPane.textField.text = text.substr(text.length-1000);
+		}
 		messageTextPane.textField.scrollV = messageTextPane.textField.maxScrollV-1;
 	}
 	

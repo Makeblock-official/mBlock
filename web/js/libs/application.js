@@ -24,7 +24,6 @@ function Application(flash){
         _flash.saveProject();
     });    
     ipcRenderer.on('setLanguage', (sender,obj) => {  
-        console.log(obj.dict["when distance < %n"]);
         _flash.setLanguage(obj.lang,obj.dict);
     });  
     ipcRenderer.on('changeStageMode',(sender,obj) =>{
@@ -38,6 +37,9 @@ function Application(flash){
     });  
     ipcRenderer.on('changeToBoard', (sender,obj) => {  
         self.changeToBoard(obj.board);
+    }); 
+    ipcRenderer.on('logToArduinoConsole', (sender,obj) => {  
+        _flash.logToArduinoConsole(obj);
     }); 
     this.getExt = function(){
         return _ext;
@@ -55,11 +57,11 @@ function Application(flash){
     }
     // 用户点击了“上传到Arduino”按钮
     this.uploadToArduino = function(code) {
-        console.log(code);
+        ipcRenderer.send("uploadToArduino", code);
     }
     // 用户点击了"用Arduino IDE编辑"按钮
     this.openArduinoIDE = function(code) {
-        console.log(code);
+        ipcRenderer.send("openArduinoIDE", code);
     }
     
     this.callFlash = function(method, args){
@@ -89,17 +91,29 @@ function Application(flash){
     this.sendMsg = function(msg){
         console.log("sendMsg:"+msg)
     }
-    this.changeToBoard=function(name){
+    this.changeToBoard=function(name){ // 菜单控制板中的Makeblock选项
         name = name.toLowerCase();
-        if(name.indexOf("auriga")>-1){
-            window.loadScript("Auriga","flash-core/ext/libraries/Auriga/js/Auriga.js",function(){
-                _flash.setRobotName("mbot ranger");
-            });
-        }else if(name.indexOf("mbot")>-1){
+		if (name.indexOf('orion_uno') > -1) { // Starter/Ultimate (Orion)
+		    window.loadScript('orion', 'flash-core/ext/libraries/orion/js/orion.js', function () {
+				_flash.setRobotName('orion');
+			});
+		} else if (name.indexOf('uno_shield_uno') > -1) { // Me Uno Shield
+			window.loadScript('uno_shield', 'flash-core/ext/libraries/uno_shield/js/shield.js', function () {
+				_flash.setRobotName('uno shield');
+			});
+		} else if(name.indexOf('mbot_uno') > -1) { // mBot (mCore)
             window.loadScript("mBot","flash-core/ext/libraries/mbot/js/mbot.js",function(){
                 _flash.setRobotName("mbot");
             });
-        }
+        } else if(name.indexOf('auriga_mega2560') > -1) { // mBot Ranger (Auriga)
+            window.loadScript("Auriga","flash-core/ext/libraries/Auriga/js/Auriga.js",function(){
+                _flash.setRobotName("mbot ranger");
+            });
+        }  else if (name.indexOf('mega_pi_mega2560') > -1) { // Ultimate 2.0 (Mega Pi)
+			window.loadScript('mega_pi', 'flash-core/ext/libraries/mega_pi/js/MegaPi.js', function () {
+				_flash.setRobotName('mega pi');
+			});
+		} 
     }
 }
 module.exports = Application;

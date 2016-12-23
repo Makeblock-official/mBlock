@@ -8,28 +8,45 @@ var _emitter = new events.EventEmitter();
 var _currentHidPath=""
 var _port;
 var _client,_app,_items=[];
+var _isConnected = false;
 function HID(app){
 	var self = this;
 	_app = app;
 	_client = _app.getClient();
+
+	//返回hid设备列表
 	this.list = function(callback) {
 		callback(USBHID.devices());
 	}
+	
+	//hid设备是否已连接
 	this.isConnected = function(){
-		return _port!=null;
+		return _isConnected;
 	}
+
+	//断开hid设备连接
 	this.close = function(){
 		if(_port){
 			_port.close();
             _port = null;
+			self.onDisconnect();
 		}
 	}
+
+	//发送数据
 	this.send = function(data){
 		if(_port){
-            _port.write(new Buffer(data).toArray());
+			var buffer = new Buffer(data)
+			var arr = [buffer.length];
+			for(var i=0;i<buffer.length;i++){
+				arr.push(buffer[i]);
+			}
+            _port.write(arr);
 		}
 	}
-	this.connect = function(success,received,disconnect){
+
+	//连接hid设备
+	this.connect = function(){
         var devices = USBHID.devices();
         var isDeviceFound = false;
         for(var i in devices){
@@ -49,37 +66,43 @@ function HID(app){
 			_port = null;
 			return;
 		}
-		_port = new USBHID.HID(0x0416,0xffff)
-		setTimeout(function(){
-			self.send("hello world\n");
-		},1000);
+		_port = new USBHID.HID(0x0416,0xffff);
 		_port.on('error',function(err){
 
 		})
 		_port.on('data',function(data){
-			console.log("data:",data);
-			if(received){
-				received(data);
-			}
+			self.onReceived(data);
 		})
+		this.onOpen();
 	}
+
 	this.on = function(event,listener){
 		_emitter.on(event,listener);
 	}
+
+	//设备已连接
 	this.onOpen = function(){
         _app.getMenu().update();
 		if(_client){
-			_client.send("connected",{connected:self.isConnected()})
+			_client.send("connected",{connected:true})
 		}
+		_isConnected = true;
 	}
+
+	//设备已断开
 	this.onDisconnect = function(){
 		if(_client){
-			_client.send("data",{method:"connected",connected:false})
+			_client.send("connected",{connected:false})
 		}
+		_isConnected = false;
 	}
+
+	//ipc转发接收的数据包
 	this.onReceived = function(data){
 		if(_client){
-			_client.send("data",{method:"command",buffer:data})
+			if(data[0]>0){
+				_client.send("package",{data:data})
+			}
 		}
 	}
 }

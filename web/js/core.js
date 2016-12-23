@@ -13,4 +13,4 @@ const Application = require('application');
 const flashCore = document.getElementById("mblock");
 const _app = new Application(flashCore);
 
-
+require('ui-components/alertBox.js').init();

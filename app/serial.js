@@ -1,5 +1,5 @@
 /**
- * 串口通讯
+ * USB串口通讯
  */
 const {MenuItem} = require("electron")
 const SerialPort = require("serialport");
@@ -65,10 +65,10 @@ function Serial(app){
 		})
 	}
 	this.getMenuItems = function(){
-		return items;
+		return _items;
 	}
 	this.update = function(){
-		items = [];
+		_items = [];
 		SerialPort.list(function(err,ports){
 			for(var i=0;i<ports.length;i++){
 				var item = new MenuItem({
@@ -82,7 +82,7 @@ function Serial(app){
 				})
 				items.push(item);
 			}
-			_emitter.emit("list",items);
+			_app.getMenu().update();
 		})
 	}
 	this.on = function(event,listener){
@@ -95,6 +95,7 @@ function Serial(app){
 		}
 	}
 	this.onDisconnect = function(){
+        _app.getMenu().update();
 		if(_client){
 			_client.send("connected",{connected:false})
 		}

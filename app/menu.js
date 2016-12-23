@@ -1,9 +1,10 @@
 /**
  * 菜单管理
  */
-const{Menu,dialog} = require('electron');
+const{Menu,dialog,MenuItem} = require('electron');
 const events = require('events');
-var _emitter = new events.EventEmitter();  
+const instructions = require('./instructions');
+var _emitter = new events.EventEmitter();
 var _app,_mainMenu,_stage,_translator,_serial,_hid,_project;
 function AppMenu(app){
     var self = this;
@@ -13,6 +14,7 @@ function AppMenu(app){
     _serial = _app.getSerial();
     _project = _app.getProject();
     _hid = _app.getHID();
+    _firmwareUploader = _app.getFirmwareUploader();
     this.reset = function (){
         if(!_translator){
             return;
@@ -158,15 +160,24 @@ function AppMenu(app){
                         label: _translator.map('Bluetooth'),
                         submenu: [
                             {
+                                type:"separator"
+                            },
+                            {
                                 name:"Discover",
-                                label:_translator.map("Discover")
+                                label:_translator.map("Discover"),
+                                click: function (item, focusedWindow) {
+                                    _app.getBluetooth().discover();
+                                }
                             },
                             {
                                 type:"separator"
                             },
                             {
                                 name:"Clear Bluetooth",
-                                label:_translator.map("Clear Bluetooth")
+                                label:_translator.map("Clear Bluetooth"),
+                                click:function(item,focusedWindow){
+                                    _app.getBluetooth().clear();
+                                }
                             }
                         ]
                     },
@@ -184,6 +195,22 @@ function AppMenu(app){
                                 }
                             }
                         ]
+                    },
+                    {
+                        type:"separator"
+                    },
+                    {
+                        name: 'Upgrade Firmware',
+                        label: _translator.map('Upgrade Firmware'),
+                        click: function(item, focusedWindow) { _emitter.emit("upgradeFirmware"); }
+                    },
+                    {
+                        name: 'Reset Default Program',
+                        label: _translator.map('Reset Default Program'),
+                        enabled: _firmwareUploader.allowResetDefaultProgram(),
+                        click: function (item, focusedWindow) {
+                            _emitter.emit("resetDefaultProgram");
+                        }
                     },
                     {
                         name:'View Source',
@@ -327,21 +354,21 @@ function AppMenu(app){
                         name:'Manage Extensions',
                         label: _translator.map('Manage Extensions'),
                         click: function (item, focusedWindow) {
-                            
+
                         }
                     },
                     {
                         name:'Restore Extensions',
                         label: _translator.map('Restore Extensions'),
                         click: function (item, focusedWindow) {
-                            
+
                         }
                     },
                     {
                         name:'Clear Cache',
                         label: _translator.map('Clear Cache'),
                         click: function (item, focusedWindow) {
-                            
+
                         }
                     },
                     {
@@ -351,7 +378,7 @@ function AppMenu(app){
                         name:'Microsoft Cognitive Service Setting',
                         label: _translator.map('Microsoft Cognitive Service Setting'),
                         click: function (item, focusedWindow) {
-                            
+
                         }
                     },
                     {
@@ -485,6 +512,13 @@ function AppMenu(app){
             var item = items[i];
             _mainMenu.items[process.platform === 'darwin'?3:2].submenu.items[0].submenu.insert(0,item);
         }
+        items = _app.getBluetooth().getMenuItems();
+        for(var i=0;i<items.length;i++){
+            var item = items[i];
+            _mainMenu.items[process.platform === 'darwin'?3:2].submenu.items[1].submenu.insert(0,item);
+        }
+        // 设置固件模式
+        self.setMenuItemFirmwareMode();
     }
     this.selectBoard = function(item, focusedWindow){
         _boards.selectBoard(item.name);
@@ -497,6 +531,61 @@ function AppMenu(app){
     this.on = function(event,listener){
         _emitter.removeListener(event,listener);
         _emitter.on(event,listener);
+    }
+    this.setMenuItemFirmwareMode = function(){
+        var firmwareMode;
+        if (_serial.isConnected() && _boards.selected("me/auriga_mega2560")) {//已连接 & 选ranger
+            firmwareMode = new MenuItem({
+                name: 'Set FirmWare Mode',
+                label: _translator.map('Set FirmWare Mode'),
+                enabled: true,
+                submenu: [
+                    {
+                        name: 'bluetooth mode',
+                        label: _translator.map('bluetooth mode'),
+                        click: function (item, focusedWindow) {
+                            if (_serial.isConnected()) {
+                                _serial.send(instructions.auriga.bluetooth_mode);
+                            }
+                        }
+                    },
+                    {
+                        name: 'ultrasonic mode',
+                        label: _translator.map('ultrasonic mode'),
+                        click: function (item, focusedWindow) {
+                            if (_serial.isConnected()) {
+                                _serial.send(instructions.auriga.ultrasonic_mode);
+                            }
+                        }
+                    },
+                    {
+                        name: 'line follower mode',
+                        label: _translator.map('line follower mode'),
+                        click: function (item, focusedWindow) {
+                            if (_serial.isConnected()) {
+                                _serial.send(instructions.auriga.line_follower_mode);
+                            }
+                        }
+                    },
+                    {
+                        name: 'balance mode',
+                        label: _translator.map('balance mode'),
+                        click: function (item, focusedWindow) {
+                            if (_serial.isConnected()) {
+                                _serial.send(instructions.auriga.balance_mode);
+                            }
+                        }
+                    }
+                ]
+            });
+        } else {
+            firmwareMode = new MenuItem({
+                name: 'Set FirmWare Mode',
+                label: _translator.map('Set FirmWare Mode'),
+                enabled: false
+            });
+        }
+        _mainMenu.items[process.platform === 'darwin' ? 3 : 2].submenu.insert(7, firmwareMode);
     }
 }
 module.exports = AppMenu;
