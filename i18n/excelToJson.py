@@ -28,9 +28,8 @@ def read_xlsx(file= '../src/locale/locale.xlsx',by_name=u'locale'):
             #     valzero = valzero.replace('\"','\'')
             # if string.find(valzero,'<') != -1:
             #     continue
-
+            print 'Repeated KEY========>:'
             if valzero in pr_list:
-                print 'Repeated KEY========>:'
                 print valzero
             pr_list.append(valzero)
         for colidx in range(booksheet.ncols):
