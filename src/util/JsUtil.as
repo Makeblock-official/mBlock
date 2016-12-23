@@ -111,6 +111,10 @@ package util
 		{
 			return callApp("boardConnected");
 		}
+		static public function arduinoModeEnabled(status:Boolean):Boolean
+		{
+			return callApp("arduinoModeEnabled", status);
+		}
 		static private function __responseValue(...args):void
 		{
 			if(args.length < 2){
