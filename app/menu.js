@@ -3,7 +3,6 @@
  */
 const{Menu,dialog,MenuItem} = require('electron');
 const events = require('events');
-const instructions = require('./instructions');
 var _emitter = new events.EventEmitter();
 var _app,_mainMenu,_stage,_translator,_serial,_hid,_project;
 function AppMenu(app){
@@ -545,7 +544,7 @@ function AppMenu(app){
                         label: _translator.map('bluetooth mode'),
                         click: function (item, focusedWindow) {
                             if (_serial.isConnected()) {
-                                _serial.send(instructions.auriga.bluetooth_mode);
+                                _serial.send(_boards.aurigaInstructions.bluetooth_mode);
                             }
                         }
                     },
@@ -554,7 +553,7 @@ function AppMenu(app){
                         label: _translator.map('ultrasonic mode'),
                         click: function (item, focusedWindow) {
                             if (_serial.isConnected()) {
-                                _serial.send(instructions.auriga.ultrasonic_mode);
+                                _serial.send(_boards.aurigaInstructions.ultrasonic_mode);
                             }
                         }
                     },
@@ -563,7 +562,7 @@ function AppMenu(app){
                         label: _translator.map('line follower mode'),
                         click: function (item, focusedWindow) {
                             if (_serial.isConnected()) {
-                                _serial.send(instructions.auriga.line_follower_mode);
+                                _serial.send(_boards.aurigaInstructions.line_follower_mode);
                             }
                         }
                     },
@@ -572,7 +571,7 @@ function AppMenu(app){
                         label: _translator.map('balance mode'),
                         click: function (item, focusedWindow) {
                             if (_serial.isConnected()) {
-                                _serial.send(instructions.auriga.balance_mode);
+                                _serial.send(_boards.aurigaInstructions.balance_mode);
                             }
                         }
                     }
