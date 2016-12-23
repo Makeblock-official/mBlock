@@ -27,6 +27,20 @@ var FirmwareUploader = {
         return this;
     },
 
+    getArduinoPath: function() {
+        switch (process.platform) {
+        case 'win32':
+            pluginName = 'pepflashplayer.dll'
+            break
+        case 'darwin':
+            return 'tools/Arduino.app/Contents/Java';
+            break
+        case 'linux':
+            return 'tools/arduino';
+        }
+        return 'tools/arduino';
+    },
+
     allowResetDefaultProgram: function() {
         var boardName = app.getBoards().currentBoardName();
         if(boardName == 'me/mbot_uno') {
@@ -63,9 +77,9 @@ var FirmwareUploader = {
         var self = this;
         console.log('upgrade firmware');
         app.alert(T('Uploading...'));
-        var command = 'tools/arduino/hardware/tools/avr/bin/avrdude';
+        var command = self.getArduinoPath() + '/hardware/tools/avr/bin/avrdude';
         var args = [
-            '-C', 'tools/arduino/hardware/tools/avr/etc/avrdude.conf', '-v', '-v', '-v', '-v',
+            '-C', self.getArduinoPath() + '/hardware/tools/avr/etc/avrdude.conf', '-v', '-v', '-v', '-v',
             '-patmega328p', '-carduino', '-P'+serialPort, '-b115200', '-D', '-V', '-U', 
             'flash:w:tools/hex/'+hexFileName+':i'
         ];

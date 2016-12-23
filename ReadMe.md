@@ -45,3 +45,12 @@ On Linux
 5、 运行
 
 > ```cnpm start```
+
+
+
+### Arduino
+
+在云盘192.168.2.20/常用软件/mblock_tools里面，
+- Linux: 把arduino.tar.gz解压成为/tools/arduino
+- Mac: 把Arduino.app.zip解压成为/tools/Arduino.app
+- Windows: 
