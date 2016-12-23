@@ -15,6 +15,7 @@ package cc.makeblock.services.msoxford
 	import flash.utils.ByteArray;
 	
 	import util.DESParser;
+	import util.JSON;
 	import util.SharedObjectManager;
 	
 	public class FaceDetection 
@@ -75,18 +76,19 @@ package cc.makeblock.services.msoxford
 			
 			MBlock.app.track("/OxfordAi/face/success/"+_source);
 			try{
-				var ret:XML = new XML(evt.target.data);
-				if (ret.namespace("") != undefined) 
-				{ 
-					default xml namespace = ret.namespace(""); 
-				}
-				var len:uint = ret.length();
+				var ret:* = util.JSON.parse(evt.target.data);
+//				if (ret.namespace("") != undefined) 
+//				{ 
+//					default xml namespace = ret.namespace(""); 
+//				}
+				var len:uint = ret.length;
 				var result:Array = [];
+				
 				for(var i:uint=0;i<len;i++){
-					var faceAttributes:XMLList = ret[i].DetectedFace.faceAttributes;
-					var faceId:String = ret[i].DetectedFace.faceId;
-					var faceRectangle:XMLList = ret[i].DetectedFace.faceRectangle;
-					var faceLandmarks:XMLList = ret[i].DetectedFace.faceLandmarks;
+					var faceAttributes:Object = ret[i].faceAttributes;
+					var faceId:String = ret[i].faceId;
+					var faceRectangle:Object = ret[i].faceRectangle;
+					var faceLandmarks:Object = ret[i].faceLandmarks;
 					
 					var obj:Object = {};
 					obj.x = faceRectangle.left;

@@ -1,5 +1,7 @@
 package cc.makeblock.services.msoxford
 {
+	import com.google.analytics.core.Utils;
+	
 	import flash.display.BitmapData;
 	import flash.display.JPEGEncoderOptions;
 	import flash.events.Event;
@@ -15,6 +17,7 @@ package cc.makeblock.services.msoxford
 	import flash.net.URLRequestMethod;
 	import flash.utils.ByteArray;
 	
+	import util.JSON;
 	import util.SharedObjectManager;
 
 	public class EmotionDetection
@@ -33,6 +36,9 @@ package cc.makeblock.services.msoxford
 			if(new Date().time-_time>4000){
 				_time = new Date().time;
 			}else{
+				return;
+			}
+			if(!_vid){
 				return;
 			}
 			var bmd:BitmapData = new BitmapData(_vid.width,_vid.height,true,0);
@@ -68,32 +74,33 @@ package cc.makeblock.services.msoxford
 			urlloader.load(req);
 		}
 		private function onRequestComplete(evt:Event):void{
-			var ret:XML = new XML(evt.target.data);
-			if (ret.namespace("") != undefined) 
-			{ 
-				default xml namespace = ret.namespace(""); 
-			}
+			var ret:* = util.JSON.parse(evt.target.data);
+//			var ret:XML = new XML(evt.target.data);
+//			if (ret.namespace("") != undefined) 
+//			{ 
+//				default xml namespace = ret.namespace(""); 
+//			}
 			MBlock.app.track("/OxfordAi/emotion/success/"+_source);
-			var len:uint = ret.FaceRecognitionResult.length();
+			var len:uint = ret.length;
 			var result:Array = [];
 			for(var i:uint=0;i<len;i++){
-				var h:uint = ret.FaceRecognitionResult[i].faceRectangle.height;
-				var w:uint = ret.FaceRecognitionResult[i].faceRectangle.width;
-				var l:uint = ret.FaceRecognitionResult[i].faceRectangle.left;
-				var t:uint = ret.FaceRecognitionResult[i].faceRectangle.top;
+				var h:uint = ret[i].faceRectangle.height;
+				var w:uint = ret[i].faceRectangle.width;
+				var l:uint = ret[i].faceRectangle.left;
+				var t:uint = ret[i].faceRectangle.top;
 				var obj:Object = {};
 				obj.x = l;
 				obj.y = t;
 				obj.width = w;
 				obj.height = h;
-				obj.anger = Math.round(ret.FaceRecognitionResult[i].scores.anger*100);
-				obj.contempt = Math.round(ret.FaceRecognitionResult[i].scores.contempt*100);
-				obj.disgust = Math.round(ret.FaceRecognitionResult[i].scores.disgust*100);
-				obj.fear = Math.round(ret.FaceRecognitionResult[i].scores.fear*100);
-				obj.happiness = Math.round(ret.FaceRecognitionResult[i].scores.happiness*100);
-				obj.neutral = Math.round(ret.FaceRecognitionResult[i].scores.neutral*100);
-				obj.sadness = Math.round(ret.FaceRecognitionResult[i].scores.sadness*100);
-				obj.surprise = Math.round(ret.FaceRecognitionResult[i].scores.surprise*100);
+				obj.anger = Math.round(ret[i].scores.anger*100);
+				obj.contempt = Math.round(ret[i].scores.contempt*100);
+				obj.disgust = Math.round(ret[i].scores.disgust*100);
+				obj.fear = Math.round(ret[i].scores.fear*100);
+				obj.happiness = Math.round(ret[i].scores.happiness*100);
+				obj.neutral = Math.round(ret[i].scores.neutral*100);
+				obj.sadness = Math.round(ret[i].scores.sadness*100);
+				obj.surprise = Math.round(ret[i].scores.surprise*100);
 				result.push(obj);
 //				var output:String = "用户（"+(i+1)+"）愤怒:"+Math.round(ret.FaceRecognitionResult[i].scores.anger*100)+"%   ";
 //				output += "鄙视:"+Math.round(ret.FaceRecognitionResult[i].scores.contempt*100)+"%    ";

@@ -37,6 +37,9 @@ package cc.makeblock.services.msoxford
 			}else{
 				return;
 			}
+			if(!_vid){
+				return;
+			}
 			var bmd:BitmapData = new BitmapData(_vid.width,_vid.height,true,0);
 			var matrix:Matrix = new Matrix;
 			//matrix.a = 1;
