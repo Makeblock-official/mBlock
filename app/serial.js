@@ -80,8 +80,8 @@ function Serial(app){
 						self.connect(item.label);
 					}
 				})
+				items.push(item);
 			}
-			_items.push(item);
 			_app.getMenu().update();
 		})
 	}
