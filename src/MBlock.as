@@ -280,13 +280,19 @@ package {
 				{
 					if(value==JOptionPane.YES)
 					{
-						MBlock.app.runtime.selectedProjectFile(autoProjectFile);
+						MBlock.app.runtime.selectedProjectFile(autoProjectFile,deleteAutoProjectFile);
 					}
+					else
+					{
+						autoProjectFile.deleteFileAsync();
+					}
+				}
+				function deleteAutoProjectFile():void
+				{
 					autoProjectFile.deleteFileAsync();
 					projectFile = null;
 					saveNeeded = true;
 				}
-				
 				if(autoProjectFile.exists)
 				{
 					var panel:JOptionPane = PopupUtil.showConfirm(Translator.map("There is an abnormal exit, restore?"),reductionFile);
