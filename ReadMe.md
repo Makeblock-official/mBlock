@@ -37,6 +37,11 @@ On Windows( [Windows Vista / 7 only] requires .NET Framework 4.5.1):
 > ```cnpm run rebuild-hid```
 > ```cnpm run rebuild-bluetooth```
 
+On Linux
+> ```sudo apt-get install libbluetooth-dev```
+> ```npm install```
+> ```./node_modules/.bin/electron-rebuild```
+
 5、 运行
 
 > ```cnpm start```
