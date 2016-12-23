@@ -518,7 +518,7 @@ function AppMenu(app){
             _mainMenu.items[process.platform === 'darwin'?3:2].submenu.items[1].submenu.insert(0,item);
         }
         // 设置固件模式
-        self.seMenuItemFirmwareMode();
+        self.setMenuItemFirmwareMode();
     }
     this.selectBoard = function(item, focusedWindow){
         _boards.selectBoard(item.name);
@@ -532,7 +532,7 @@ function AppMenu(app){
         _emitter.removeListener(event,listener);
         _emitter.on(event,listener);
     }
-    this.seMenuItemFirmwareMode = function(){
+    this.setMenuItemFirmwareMode = function(){
         var firmwareMode;
         if (_serial.isConnected() && _boards.selected("me/auriga_mega2560")) {//已连接 & 选ranger
             firmwareMode = new MenuItem({
