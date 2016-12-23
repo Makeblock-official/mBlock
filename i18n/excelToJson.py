@@ -30,6 +30,7 @@ def read_xlsx(file= '../src/locale/locale.xlsx',by_name=u'locale'):
             #     continue
 
             if valzero in pr_list:
+                print 'Repeated KEY========>:'
                 print valzero
             pr_list.append(valzero)
         for colidx in range(booksheet.ncols):
@@ -55,7 +56,7 @@ def read_xlsx(file= '../src/locale/locale.xlsx',by_name=u'locale'):
     return ret
 
 def store(file_name, measurements):
-    file = "../locales/%s.json" % file_name
+    file = "locales/%s.json" % file_name
     with open(file, 'w') as f:
         f.write(json.dumps(measurements, ensure_ascii=False))
 
