@@ -74,13 +74,47 @@ package cc.makeblock.services.msoxford
 			urlloader.load(req);
 		}
 		private function onRequestComplete(evt:Event):void{
-			var ret:* = util.JSON.parse(evt.target.data);
-//			var ret:XML = new XML(evt.target.data);
-//			if (ret.namespace("") != undefined) 
-//			{ 
-//				default xml namespace = ret.namespace(""); 
-//			}
 			MBlock.app.track("/OxfordAi/emotion/success/"+_source);
+			var ret:*;
+			if(evt.target.data.toString().indexOf("xmlns")>-1){
+				try{
+					ret = new XML(evt.target.data);
+					if (ret.namespace("") != undefined) 
+					{ 
+						default xml namespace = ret.namespace(""); 
+					}
+					var len:uint = ret.FaceRecognitionResult.length();
+					var result:Array = [];
+					for(var i:uint=0;i<len;i++){
+						var h:uint = ret.FaceRecognitionResult[i].faceRectangle.height;
+						var w:uint = ret.FaceRecognitionResult[i].faceRectangle.width;
+						var l:uint = ret.FaceRecognitionResult[i].faceRectangle.left;
+						var t:uint = ret.FaceRecognitionResult[i].faceRectangle.top;
+						var obj:Object = {};
+						obj.x = l;
+						obj.y = t;
+						obj.width = w;
+						obj.height = h;
+						obj.anger = Math.round(ret.FaceRecognitionResult[i].scores.anger*100);
+						obj.contempt = Math.round(ret.FaceRecognitionResult[i].scores.contempt*100);
+						obj.disgust = Math.round(ret.FaceRecognitionResult[i].scores.disgust*100);
+						obj.fear = Math.round(ret.FaceRecognitionResult[i].scores.fear*100);
+						obj.happiness = Math.round(ret.FaceRecognitionResult[i].scores.happiness*100);
+						obj.neutral = Math.round(ret.FaceRecognitionResult[i].scores.neutral*100);
+						obj.sadness = Math.round(ret.FaceRecognitionResult[i].scores.sadness*100);
+						obj.surprise = Math.round(ret.FaceRecognitionResult[i].scores.surprise*100);
+						result.push(obj);
+					}
+					if(len>0){
+						MBlock.app.extensionManager.extensionByName("Microsoft Cognitive Services").stateVars["emotionResultReceived"] = result;
+						MBlock.app.runtime.emotionResultReceived.notify(true);
+					}
+				}catch(e:*){
+					
+				}
+				return;
+			}
+			ret = util.JSON.parse(evt.target.data);
 			var len:uint = ret.length;
 			var result:Array = [];
 			for(var i:uint=0;i<len;i++){
@@ -102,14 +136,6 @@ package cc.makeblock.services.msoxford
 				obj.sadness = Math.round(ret[i].scores.sadness*100);
 				obj.surprise = Math.round(ret[i].scores.surprise*100);
 				result.push(obj);
-//				var output:String = "用户（"+(i+1)+"）愤怒:"+Math.round(ret.FaceRecognitionResult[i].scores.anger*100)+"%   ";
-//				output += "鄙视:"+Math.round(ret.FaceRecognitionResult[i].scores.contempt*100)+"%    ";
-//				output += "厌恶:"+Math.round(ret.FaceRecognitionResult[i].scores.disgust*100)+"%    ";
-//				output += "恐惧:"+Math.round(ret.FaceRecognitionResult[i].scores.fear*100)+"%\r";
-//				output += "开心:"+Math.round(ret.FaceRecognitionResult[i].scores.happiness*100)+"%    ";
-//				output += "中立:"+Math.round(ret.FaceRecognitionResult[i].scores.neutral*100)+"%    ";
-//				output += "悲伤:"+Math.round(ret.FaceRecognitionResult[i].scores.sadness*100)+"%    ";
-//				output += "吃惊:"+Math.round(ret.FaceRecognitionResult[i].scores.surprise*100)+"%\r";
 			}
 			if(len>0){
 				MBlock.app.extensionManager.extensionByName("Microsoft Cognitive Services").stateVars["emotionResultReceived"] = result;
