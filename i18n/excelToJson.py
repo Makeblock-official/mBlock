@@ -28,7 +28,7 @@ def read_xlsx(file= '../src/locale/locale.xlsx',by_name=u'locale'):
             #     valzero = valzero.replace('\"','\'')
             # if string.find(valzero,'<') != -1:
             #     continue
-
+            print 'Repeated KEY========>:'
             if valzero in pr_list:
                 print valzero
             pr_list.append(valzero)
@@ -55,7 +55,7 @@ def read_xlsx(file= '../src/locale/locale.xlsx',by_name=u'locale'):
     return ret
 
 def store(file_name, measurements):
-    file = "../locales/%s.json" % file_name
+    file = "locales/%s.json" % file_name
     with open(file, 'w') as f:
         f.write(json.dumps(measurements, ensure_ascii=False))
 

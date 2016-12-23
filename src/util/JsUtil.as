@@ -241,6 +241,15 @@ package util
 				case "ultimate2":
 					DeviceManager.sharedManager().onSelectBoard("me/auriga");
 					break;
+				case "orion":
+					DeviceManager.sharedManager().onSelectBoard("me/orion");
+					break;
+				case "uno shield":
+					DeviceManager.sharedManager().onSelectBoard("me/uno_shield");
+					break;
+				case "mega pi":
+					DeviceManager.sharedManager().onSelectBoard("me/mega_pi");
+					break;
 			}
 		}
 		

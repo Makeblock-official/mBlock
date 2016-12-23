@@ -24,7 +24,6 @@ function Application(flash){
         _flash.saveProject();
     });    
     ipcRenderer.on('setLanguage', (sender,obj) => {  
-        console.log(obj.dict["when distance < %n"]);
         _flash.setLanguage(obj.lang,obj.dict);
     });  
     ipcRenderer.on('changeStageMode',(sender,obj) =>{

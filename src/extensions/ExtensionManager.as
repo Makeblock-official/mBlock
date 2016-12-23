@@ -215,6 +215,8 @@ public class ExtensionManager {
 			case "BaseBoard":
 			case "PicoBoard":
 			case "Auriga":
+			case "MegaPi":
+			case "Orion":
 				return true;
 		}
 		return false;

@@ -40,7 +40,7 @@ function Translator(app){
     }
     i18n.configure({
         locales:locales,
-        directory: __dirname + '/../locales'
+        directory: __dirname + '/../i18n/locales'
     });
     this.setLanguage = function (lang){
         _lang = lang;

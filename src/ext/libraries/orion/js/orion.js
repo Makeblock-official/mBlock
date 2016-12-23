@@ -488,11 +488,11 @@
     };
 
     ext._getStatus = function() {
-        if(!device) return {status: 1, msg: 'Makeblock disconnected'};
-        if(watchdog) return {status: 1, msg: 'Probing for Makeblock'};
-        return {status: 2, msg: 'Makeblock connected'};
+        if(!device) return {status: 1, msg: 'Orion disconnected'};
+        if(watchdog) return {status: 1, msg: 'Probing for Orion'};
+        return {status: 2, msg: 'Orion connected'};
     }
 
     var descriptor = {};
-	ScratchExtensions.register('Makeblock', descriptor, ext, {type: 'serial'});
+	ScratchExtensions.register('Orion', descriptor, ext, {type: 'serial'});
 })({});

@@ -1,9 +1,8 @@
 /**
  * 菜单管理
  */
-const{Menu,dialog} = require('electron');
+const{Menu,dialog,MenuItem} = require('electron');
 const events = require('events');
-const instructions = require('./instructions');
 var _emitter = new events.EventEmitter();
 var _app,_mainMenu,_stage,_translator,_serial,_hid,_project;
 function AppMenu(app){
@@ -160,15 +159,24 @@ function AppMenu(app){
                         label: _translator.map('Bluetooth'),
                         submenu: [
                             {
+                                type:"separator"
+                            },
+                            {
                                 name:"Discover",
-                                label:_translator.map("Discover")
+                                label:_translator.map("Discover"),
+                                click: function (item, focusedWindow) {
+                                    _app.getBluetooth().discover();
+                                }
                             },
                             {
                                 type:"separator"
                             },
                             {
                                 name:"Clear Bluetooth",
-                                label:_translator.map("Clear Bluetooth")
+                                label:_translator.map("Clear Bluetooth"),
+                                click:function(item,focusedWindow){
+                                    _app.getBluetooth().clear();
+                                }
                             }
                         ]
                     },
@@ -202,52 +210,6 @@ function AppMenu(app){
                         click: function (item, focusedWindow) {
                             _emitter.emit("resetDefaultProgram");
                         }
-                    },
-                    {
-                        name: 'Set FirmWare Mode',
-                        label: _translator.map('Set FirmWare Mode'),
-                        submenu:[
-                            {
-                                name:'bluetooth mode',
-                                label: _translator.map('bluetooth mode'),
-                                enabled: _serial.isConnected() && _boards.selected("me/auriga_mega2560"),
-                                click:function (item, focusedWindow) {
-                                    if(_serial.isConnected()){
-                                        _serial.send(instructions.auriga.bluetooth_mode);
-                                    }
-                                }
-                            },
-                            {
-                                name: 'ultrasonic mode',
-                                label: _translator.map('ultrasonic mode'),
-                                enabled: _serial.isConnected() && _boards.selected("me/auriga_mega2560"),
-                                click:function (item, focusedWindow) {
-                                    if(_serial.isConnected()){
-                                        _serial.send(instructions.auriga.ultrasonic_mode);
-                                    }
-                                }
-                            },
-                            {
-                                name: 'line follower mode',
-                                label: _translator.map('line follower mode'),
-                                enabled: _serial.isConnected() && _boards.selected("me/auriga_mega2560"),
-                                click:function (item, focusedWindow) {
-                                    if(_serial.isConnected()){
-                                        _serial.send(instructions.auriga.line_follower_mode);
-                                    }
-                                }
-                            },
-                            {
-                                name: 'balance mode',
-                                label: _translator.map('balance mode'),
-                                enabled: _serial.isConnected() && _boards.selected("me/auriga_mega2560"),
-                                click:function (item, focusedWindow) {
-                                    if(_serial.isConnected()){
-                                        _serial.send(instructions.auriga.balance_mode);
-                                    }
-                                }
-                            }
-                        ]
                     },
                     {
                         name:'View Source',
@@ -549,6 +511,13 @@ function AppMenu(app){
             var item = items[i];
             _mainMenu.items[process.platform === 'darwin'?3:2].submenu.items[0].submenu.insert(0,item);
         }
+        items = _app.getBluetooth().getMenuItems();
+        for(var i=0;i<items.length;i++){
+            var item = items[i];
+            _mainMenu.items[process.platform === 'darwin'?3:2].submenu.items[1].submenu.insert(0,item);
+        }
+        // 设置固件模式
+        self.setMenuItemFirmwareMode();
     }
     this.selectBoard = function(item, focusedWindow){
         _boards.selectBoard(item.name);
@@ -561,6 +530,61 @@ function AppMenu(app){
     this.on = function(event,listener){
         _emitter.removeListener(event,listener);
         _emitter.on(event,listener);
+    }
+    this.setMenuItemFirmwareMode = function(){
+        var firmwareMode;
+        if (_serial.isConnected() && _boards.selected("me/auriga_mega2560")) {//已连接 & 选ranger
+            firmwareMode = new MenuItem({
+                name: 'Set FirmWare Mode',
+                label: _translator.map('Set FirmWare Mode'),
+                enabled: true,
+                submenu: [
+                    {
+                        name: 'bluetooth mode',
+                        label: _translator.map('bluetooth mode'),
+                        click: function (item, focusedWindow) {
+                            if (_serial.isConnected()) {
+                                _serial.send(_boards.aurigaInstructions.bluetooth_mode);
+                            }
+                        }
+                    },
+                    {
+                        name: 'ultrasonic mode',
+                        label: _translator.map('ultrasonic mode'),
+                        click: function (item, focusedWindow) {
+                            if (_serial.isConnected()) {
+                                _serial.send(_boards.aurigaInstructions.ultrasonic_mode);
+                            }
+                        }
+                    },
+                    {
+                        name: 'line follower mode',
+                        label: _translator.map('line follower mode'),
+                        click: function (item, focusedWindow) {
+                            if (_serial.isConnected()) {
+                                _serial.send(_boards.aurigaInstructions.line_follower_mode);
+                            }
+                        }
+                    },
+                    {
+                        name: 'balance mode',
+                        label: _translator.map('balance mode'),
+                        click: function (item, focusedWindow) {
+                            if (_serial.isConnected()) {
+                                _serial.send(_boards.aurigaInstructions.balance_mode);
+                            }
+                        }
+                    }
+                ]
+            });
+        } else {
+            firmwareMode = new MenuItem({
+                name: 'Set FirmWare Mode',
+                label: _translator.map('Set FirmWare Mode'),
+                enabled: false
+            });
+        }
+        _mainMenu.items[process.platform === 'darwin' ? 3 : 2].submenu.insert(7, firmwareMode);
     }
 }
 module.exports = AppMenu;
