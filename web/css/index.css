@@ -1,0 +1,76 @@
+/**
+ * Created by lingqing.yang on 2016/12/24.
+ */
+
+html, body, #webview {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    text-align: center;
+    background-color: #fff;
+}
+
+object:focus {
+    outline: none;
+}
+
+.loading-content {
+    margin-top: -126px;
+    margin-left: -318px;
+    width: 632px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 101;
+}
+
+
+.loading-icon {
+    margin-bottom: 22px;
+    text-align: center;
+}
+
+.loading-bar {
+    background-color: rgba(0, 0, 0, .2);
+    border: 2px solid #9299a7;
+    border-radius: 15px;
+    position: relative;
+}
+
+
+.bar-percentage {
+    margin: 2px;
+    height: 11px;
+    border-radius: 11px;
+    overflow: hidden;
+    position: relative;
+}
+
+.bar-percentage .progress {
+    width: 0;
+    height: inherit;
+    display: block;
+    content: '';
+    border-radius: 0;
+    background-color: #14c0f3;
+    top: 0;
+    left: 0;
+    position: absolute;
+}
+
+.loading-overlay {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    z-index: 1001;
+}
+
+.loading-overlay {
+    background-color: #666;
+}

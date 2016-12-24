@@ -1,60 +1,146 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <meta charset="UTF-8">
     <title>Core</title>
-        <link rel="stylesheet" href="css/photon.min.css">
-        <style type="text/css" media="screen"> 
-            html, body  { height:100%; }
-            body { margin:0; padding:0; overflow:hidden; text-align:center; 
-                   background-color: #fff; }   
-            object:focus { outline:none; }
-            #flashContent { display:none; }
+    <link rel="stylesheet" href="css/photon.min.css">
+    <style type="text/css" media="screen">
+        html, body {
+            height: 100%;
+        }
 
-            dialog {
-                padding: 0;
-                border: 1px solid #bebebe;
-                border-radius: 6px;
-                box-shadow: 0 0 30px rgba(0,0,0,.1);
-                overflow: hidden;
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            text-align: center;
+            background-color: #fff;
+        }
+
+        object:focus {
+            outline: none;
+        }
+
+        #flashContent {
+            display: none;
+        }
+
+        dialog {
+            padding: 0;
+            border: 1px solid #bebebe;
+            border-radius: 6px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, .1);
+            overflow: hidden;
+        }
+
+        .alert {
+            top: 0px;
+            padding: 10px 20px;
+            border-top: none;
+            border-radius: 0 0 3px 3px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, .2);
+            background: #F6F6F6;
+        }
+
+        .overflow {
+            overflow: hidden;
+        }
+
+        .loader-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1000;
+            background-color: #666;
+        }
+
+        .loading-box {
+            margin-top: -75px;
+            margin-left: -50px;
+            top: 50%;
+            left: 50%;
+            position: absolute;
+        }
+
+        .loading-cog {
+            margin: 0 auto;
+            width: 100px;
+            height: 100px;
+            background: url("images/icon_cog.png") center no-repeat;
+            -webkit-animation: spin 4s linear infinite;
+            -moz-animation: spin 4s linear infinite;
+            animation: spin 4s linear infinite;
+        }
+
+        .loading-text {
+            margin-top: 20px;
+            font-size: 20px;
+            color: #fff;
+            text-align: center;
+        }
+
+        @-moz-keyframes spin {
+            100% {
+                -moz-transform: rotate(360deg);
             }
+        }
 
-            .alert {
-                top: 0px;
-                padding: 10px 20px;
-                border-top: none;
-                border-radius: 0 0 3px 3px;
-                box-shadow: 0 5px 20px rgba(0,0,0,.2);
-                background: #F6F6F6;
+        @-webkit-keyframes spin {
+            100% {
+                -webkit-transform: rotate(360deg);
             }
-        </style>
-        <script src="js/external/jquery.js"></script>
-  </head>
-  <body>
-         <object id="mblock" width="100%" height="100%">
-            <embed name="mblock" src="flash-core/mblock.swf"
-            type="application/x-shockwave-flash" allowfullscreen="true" allowscriptaccess="always" width="100%" height="100%"></embed>
-            <param name="movie" value="flash-core/mblock.swf" />
-            <param name="bgcolor" value="#ffffff" />
-            <param name="height" value="100%" />
-            <param name="width" value="100%" />
-            <param name="quality" value="high" />
-            <param name="menu" value="false" />
-            <param name="allowscriptaccess" value="always" />
-        </object>
+        }
 
-        <dialog id="alert-box" class="alert">
-            <div id="alert-box-content" style="padding:10px">
-                Imagine some great content here.Imagine some great content here.Imagine some great content here.Imagine some great content here.Imagine some great content here.Imagine some great content here.Imagine some great content here.Imagine some great content here.Imagine some great content here.Imagine some great content here.Imagine some great content here.
-            </div>
+        @keyframes spin {
+            100% {
+                -webkit-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
 
-            <footer>
-                <div class="toolbar-actions">
-                    <button id="alert-box-close" class="btn btn-default pull-right">Close</button>
-                </div>
-            </footer>
-        </dialog>
-        <script src="js/loader.js"></script>
-        <script src="js/core.js"></script>
-  </body>
+    </style>
+    <script src="js/external/jquery.js"></script>
+</head>
+<body class="overflow">
+
+<div id="loader-wrapper" class="loader-wrapper">
+    <div class="loading-box">
+        <div class="loading-cog"></div>
+        <div class="loading-text">Loading...</div>
+    </div>
+</div>
+
+
+<object id="mblock" width="100%" height="100%">
+    <embed name="mblock" src="flash-core/mblock.swf"
+           type="application/x-shockwave-flash" allowfullscreen="true" allowscriptaccess="always" width="100%"
+           height="100%"></embed>
+    <param name="movie" value="flash-core/mblock.swf"/>
+    <param name="bgcolor" value="#ffffff"/>
+    <param name="height" value="100%"/>
+    <param name="width" value="100%"/>
+    <param name="quality" value="high"/>
+    <param name="menu" value="false"/>
+    <param name="allowscriptaccess" value="always"/>
+</object>
+
+<dialog id="alert-box" class="alert">
+    <div id="alert-box-content" style="padding:10px">
+        Imagine some great content here.Imagine some great content here.Imagine some great content here.Imagine some
+        great content here.Imagine some great content here.Imagine some great content here.Imagine some great content
+        here.Imagine some great content here.Imagine some great content here.Imagine some great content here.Imagine
+        some great content here.
+    </div>
+
+    <footer>
+        <div class="toolbar-actions">
+            <button id="alert-box-close" class="btn btn-default pull-right">Close</button>
+        </div>
+    </footer>
+</dialog>
+<script src="js/loader.js"></script>
+<script src="js/core.js"></script>
+</body>
 </html>

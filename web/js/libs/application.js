@@ -49,8 +49,15 @@ function Application(flash){
     }
     this.readyForFlash = function(){
         console.log("readyForFlash");
-        // window.responseValue = _flash.responseValue;
+
         ipcRenderer.send("flashReady");
+
+        var loader = document.getElementById('loader-wrapper');           //remove loading page
+        var body = document.getElementById('body');
+        loader.parentNode.removeChild(loader);
+        body.className = '';
+        // window.responseValue = _flash.responseValue;
+
     }
     this.saveProject = function(project){
         ipcRenderer.send("saveProject",project);
