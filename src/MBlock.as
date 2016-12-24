@@ -743,6 +743,7 @@ package {
 			stageIsArduino = !stageIsArduino;
 			stageIsHided = stageIsArduino;
 			setSmallStageMode(stageIsArduino);
+			JsUtil.arduinoModeEnabled(stageIsArduino);
 			
 			if(stageIsArduino){
 				var category:int = scriptsPart.selector.selectedCategory;

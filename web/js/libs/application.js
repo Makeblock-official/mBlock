@@ -70,6 +70,15 @@ function Application(flash){
     this.openArduinoIDE = function(code) {
         ipcRenderer.send("openArduinoIDE", code);
     }
+    // flash被设置或者取消Arduino模式
+    this.arduinoModeEnabled = function(status) {
+        if(status) {
+            console.log('Arduino Mode Enabled');
+        }
+        else {
+            console.log('Exit Arduino Mode');
+        }
+    }
     
     this.callFlash = function(method, args){
         return _flash[method].apply(flash, args);

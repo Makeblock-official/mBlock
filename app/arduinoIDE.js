@@ -1,3 +1,4 @@
+const path = require('path');
 const fs = require('fs');
 const spawn = require('child_process').spawn;
 const utils = require('./utils');
@@ -14,6 +15,16 @@ var ArduinoIDE = {
     },
 
     getArduinoExecutable: function() {
+        switch (process.platform) {
+        case 'win32':
+            return 'tools/Arduino.app';
+            break
+        case 'darwin':
+            return 'tools/Arduino.app/Contents/MacOS/Arduino';
+            break
+        case 'linux':
+            return 'tools/arduino/arduino';
+        }
         return 'tools/arduino/arduino';
     },
 
@@ -63,7 +74,7 @@ var ArduinoIDE = {
             app.alert('Please connect the serial port.');
             return;
         }
-        var sketchFilePath = this.prepareProjectSketch(code);
+        var sketchFilePath = path.resolve(this.prepareProjectSketch(code));
         var arduinoCommandArguments = [
             '--upload',
             '--board', this.getUploadBoardParameter(),

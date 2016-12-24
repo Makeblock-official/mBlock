@@ -150,7 +150,7 @@ function AppMenu(app){
                             name:'Refresh',
                             label: _translator.map('Refresh'),
                             click:function (item, focusedWindow) {
-                                self.updateSerialPort();
+                                _app.getSerial().update();
                             }
                         }]
                     },

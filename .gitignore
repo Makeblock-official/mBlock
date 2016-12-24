@@ -9,4 +9,5 @@ node_modules
 .idea
 .vscode
 /tools/arduino
+/tools/Arduino.app
 /tmp/*
