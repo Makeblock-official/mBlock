@@ -44,11 +44,12 @@ function createWindow () {
   {
   	width: 1280, 
   	height: 768,
+    backgroundColor: '#666',
     'web-preferences': {
             'plugins': true
         }
   })
-	mainWindow.loadURL(`file://${rootPath}/web/index.html`)
+	mainWindow.loadURL(`file://${rootPath}/web/index.html`);
 
   mainWindow.webContents.openDevTools()
 
@@ -56,7 +57,6 @@ function createWindow () {
     mainWindow = null
   })
   Menu.setApplicationMenu(new Menu());
-  
   appMain = new mBlock();
 }
 app.on('ready', createWindow)
