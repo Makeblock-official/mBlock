@@ -40,7 +40,7 @@ function mBlock(){
 		_menu = new AppMenu(self);
 		
 		self.init();
-		_boards.selectBoard("me/auriga_mega2560");
+		_boards.selectBoard("me/mbot_uno");
 	})
 	ipcMain.on('saveProject',function(event,arg){
 		_project.saveProject(arg.title,arg.data);
