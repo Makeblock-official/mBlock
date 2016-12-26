@@ -76,6 +76,7 @@ function Application(flash){
             console.log('Arduino Mode Enabled');
         }
         else {
+            ipcRenderer.send("changeArduinoStageMode", false);
             console.log('Exit Arduino Mode');
         }
     }

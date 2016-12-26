@@ -40,5 +40,9 @@ function Stage(app){
 		_client.send("changeStageMode",{name:name});
 		_app.getMenu().update();
 	}
+	this.onlyChangeArduinoStageMode = function(bool){
+		_stageMode["arduino mode"] = bool;
+		_app.getMenu().update();
+	}
 }
 module.exports = Stage;

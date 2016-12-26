@@ -66,6 +66,9 @@ function mBlock(){
 	ipcMain.on('uploadToArduino', function(event, code) {
 		_arduinoIDE.uploadCodeToBoard(code);
 	});
+	ipcMain.on('changeArduinoStageMode', function(event, bool) {
+		_stage.onlyChangeArduinoStageMode(bool);
+	});
 	this.getClient = function(){
 		return _client;
 	}
