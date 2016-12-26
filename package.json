@@ -7,7 +7,8 @@
     "rebuild-serialport": "electron-rebuild -f -w serialport",
     "rebuild-hid": "electron-rebuild -f -w node-hid",
     "rebuild-bluetooth": "electron-rebuild -f -w bluetooth-serial-port",
-    "start": "electron ."
+    "start": "electron .",
+    "debug": "electron --debug=5858 ."
   },
   "repository": "https://git.oschina.net/makeblock/mblock-for-myh",
   "keywords": [
@@ -25,6 +26,7 @@
   },
   "dependencies": {
     "node-hid": "^0.5.2",
-    "os-locale": "^2.0.0"
+    "os-locale": "^2.0.0",
+    "sudo-prompt": "^6.2.1"
   }
 }

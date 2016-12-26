@@ -439,7 +439,7 @@ function AppMenu(app){
                         name:'Exploring Robotic World',
                         label: _translator.map('Exploring Robotic World'),
                         click: function (item, focusedWindow) {
-                            _app.openURL("http://www.makeblock.com/?utm_source=software&utm_medium=mblock&utm_campaign=mblocktomakeblock");
+                            _emitter.emit("openURL", "http://www.makeblock.com/?utm_source=software&utm_medium=mblock&utm_campaign=mblocktomakeblock");
                         }
                     },
                     {
@@ -449,21 +449,21 @@ function AppMenu(app){
                         name:'Getting Started Rapidly',
                         label: _translator.map('Getting Started Rapidly'),
                         click: function (item, focusedWindow) {
-                           _app.openURL("http://learn.makeblock.com/getting-started-programming-with-mblock?utm_source=software&utm_medium=mblock&utm_campaign=mblocktorumeng");
+                           _emitter.emit("openURL", "http://learn.makeblock.com/getting-started-programming-with-mblock?utm_source=software&utm_medium=mblock&utm_campaign=mblocktorumeng");
                         }
                     },
                     {
                         name:'Finding Answers Online',
                         label: _translator.map('Finding Answers Online'),
                         click: function (item, focusedWindow) {
-                            _app.openURL(currentLocale=="zh-CN"?"http://bbs.makeblock.cc/forum-39-1.html?utm_source=software&utm_medium=mblock&utm_campaign=mblocktobbs":"http://forum.makeblock.cc/c/makeblock-products/mblock?utm_source=software&utm_medium=mblock&utm_campaign=mblocktoforum#scratch");
+                            _emitter.emit("openURL", currentLocale=="zh-CN"?"http://bbs.makeblock.cc/forum-39-1.html?utm_source=software&utm_medium=mblock&utm_campaign=mblocktobbs":"http://forum.makeblock.cc/c/makeblock-products/mblock?utm_source=software&utm_medium=mblock&utm_campaign=mblocktoforum#scratch");
                         }
                     },
                     {
                         name:'Learn More Tutorials',
                         label: _translator.map('Learn More Tutorials'),
                         click: function (item, focusedWindow) {
-                            _app.openURL("http://learn.makeblock.com/?utm_source=software&utm_medium=mblock&utm_campaign=mblocktolearn");
+                            _emitter.emit("openURL", "http://learn.makeblock.com/?utm_source=software&utm_medium=mblock&utm_campaign=mblocktolearn");
                         }
                     },
                     {
