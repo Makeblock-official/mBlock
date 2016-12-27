@@ -11,3 +11,4 @@ node_modules
 /tools/arduino
 /tools/Arduino.app
 /tmp/*
+/dist/*
