@@ -19,6 +19,7 @@
     "bluetooth-serial-port": "^2.1.1",
     "electron-prebuilt": "^1.4.13",
     "electron-rebuild": "^1.4.0",
+    "electron-sudo": "^4.0.12",
     "express": "^4.14.0",
     "node-hid": "^0.5.2",
     "serialport": "^4.0.7"
