@@ -47,7 +47,7 @@ function Serial(app){
 			return;
 		}
 		_port = new SerialPort(_currentSerialPort,{ baudRate:115200 })
-		_port.on('open',function(){console.log(123);
+		_port.on('open',function(){ // 串口连接，进行连接
 			self.onOpen();
 		})
 		_port.on('error',function(err){ // cannot open XXX
@@ -64,9 +64,13 @@ function Serial(app){
 			self.onDisconnect()
 			_currentSerialPort = "";
 		})
-		var errorCallbackHander = function (boolean) {
-	        console.log(boolean);	
-	    };
+		var errorCallbackHander = function (error, stderr, stdout) {
+            if (error == null) { // 正常流程：密码输对的情况
+                console.log(name);
+				self.connect(name);
+				console.log('yi 连接');
+			}
+		};
 	}
 	this.getMenuItems = function(){
 		return _items;
@@ -92,7 +96,7 @@ function Serial(app){
 	this.on = function(event,listener){
 		_emitter.on(event,listener);
 	}
-	this.onOpen = function(){
+	this.onOpen = function(){console.log('ou海');
         _app.getMenu().update();
 		if(_client){
 			_client.send("connected",{connected:self.isConnected()})
