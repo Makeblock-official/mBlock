@@ -1,4 +1,4 @@
-var sudo = require('sudo-prompt');
+var sudo = require('./sudo-prompt');
 
 var SudoCommands = {
     enableSerialInLinux: function(callback) {

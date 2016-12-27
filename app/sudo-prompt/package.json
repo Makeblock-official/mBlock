@@ -1,0 +1,95 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "sudo-prompt@^6.2.1",
+        "scope": null,
+        "escapedName": "sudo-prompt",
+        "name": "sudo-prompt",
+        "rawSpec": "^6.2.1",
+        "spec": ">=6.2.1 <7.0.0",
+        "type": "range"
+      },
+      "/home/yu/mBlock-for-myh"
+    ]
+  ],
+  "_from": "sudo-prompt@>=6.2.1 <7.0.0",
+  "_id": "sudo-prompt@6.2.1",
+  "_inCache": true,
+  "_location": "/sudo-prompt",
+  "_nodeVersion": "6.6.0",
+  "_npmOperationalInternal": {
+    "host": "packages-18-east.internal.npmjs.com",
+    "tmp": "tmp/sudo-prompt-6.2.1.tgz_1481878380376_0.43767879577353597"
+  },
+  "_npmUser": {
+    "name": "jorandirkgreef",
+    "email": "joran@ronomon.com"
+  },
+  "_npmVersion": "3.10.3",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "sudo-prompt@^6.2.1",
+    "scope": null,
+    "escapedName": "sudo-prompt",
+    "name": "sudo-prompt",
+    "rawSpec": "^6.2.1",
+    "spec": ">=6.2.1 <7.0.0",
+    "type": "range"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/sudo-prompt/-/sudo-prompt-6.2.1.tgz",
+  "_shasum": "1079211ac2cf21f5230ffbeb124ffc22cee4c2b6",
+  "_shrinkwrap": null,
+  "_spec": "sudo-prompt@^6.2.1",
+  "_where": "/home/yu/mBlock-for-myh",
+  "author": {
+    "name": "Joran Dirk Greef"
+  },
+  "bugs": {
+    "url": "https://github.com/jorangreef/sudo-prompt/issues"
+  },
+  "dependencies": {},
+  "description": "Run a command using sudo, prompting the user with an OS dialog if necessary",
+  "devDependencies": {},
+  "directories": {},
+  "dist": {
+    "shasum": "1079211ac2cf21f5230ffbeb124ffc22cee4c2b6",
+    "tarball": "https://registry.npmjs.org/sudo-prompt/-/sudo-prompt-6.2.1.tgz"
+  },
+  "gitHead": "a9f1a9e58e675792616ef8fb58e269d98487fd9d",
+  "homepage": "https://github.com/jorangreef/sudo-prompt#readme",
+  "keywords": [
+    "sudo",
+    "os",
+    "dialog",
+    "prompt",
+    "command",
+    "exec",
+    "user access control",
+    "UAC",
+    "privileges",
+    "administrative",
+    "elevate",
+    "run as administrator"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "maintainers": [
+    {
+      "name": "jorandirkgreef",
+      "email": "joran@ronomon.com"
+    }
+  ],
+  "name": "sudo-prompt",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jorangreef/sudo-prompt.git"
+  },
+  "scripts": {},
+  "version": "6.2.1"
+}
