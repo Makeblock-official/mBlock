@@ -10,6 +10,7 @@
  */
 const {ipcMain,dialog,BrowserWindow,MenuItem,Menu,app} = require('electron')
 
+const path = require('path');
 const Serial = require("./serial.js")
 const Boards = require("./boards.js");
 const Project = require("./project.js");

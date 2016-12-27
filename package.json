@@ -7,7 +7,11 @@
     "rebuild-serialport": "electron-rebuild -f -w serialport",
     "rebuild-hid": "electron-rebuild -f -w node-hid",
     "rebuild-bluetooth": "electron-rebuild -f -w bluetooth-serial-port",
-    "start": "electron ."
+    "start": "electron .",
+    "debug": "electron --debug=5858 .",
+    "pack": "build --dir",
+    "dist": "build --linux AppImage",
+    "postinstall": "install-app-deps"
   },
   "repository": "https://git.oschina.net/makeblock/mblock-for-myh",
   "keywords": [
@@ -16,16 +20,23 @@
   "author": "GitHub",
   "license": "MIT",
   "devDependencies": {
-    "bluetooth-serial-port": "^2.1.1",
+    "electron-builder": "^10.12.0",
     "electron-prebuilt": "^1.4.13",
-    "electron-rebuild": "^1.4.0",
-    "electron-sudo": "^4.0.12",
-    "express": "^4.14.0",
-    "node-hid": "^0.5.2",
-    "serialport": "^4.0.7"
+    "electron-rebuild": "^1.4.0"
   },
   "dependencies": {
     "node-hid": "^0.5.2",
-    "os-locale": "^2.0.0"
+    "os-locale": "^2.0.0",
+    "sudo-prompt": "^6.2.1",
+    "serialport": "^4.0.7",
+    "express": "^4.14.0",
+    "bluetooth-serial-port": "^2.1.1",
+    "debug": "^2.4.5",
+    "i18n": "^0.8.3"
+  },
+  "build": {
+    "appId": "cc.mblock",
+    "files": ["app", "i18n", "node_modules"],
+    "extraResources": ["plugins", "tools", "web"]
   }
 }

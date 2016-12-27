@@ -1,6 +1,13 @@
 /**
  * Electron 程序入口：创建窗口、加载flashplayer插件、创建Express服务
  */
+const path = require('path');
+module.paths.push(path.resolve('node_modules'));
+module.paths.push(path.resolve('../node_modules'));
+module.paths.push(path.resolve('__dirname', '..', '..', '..', '..', 'resources', 'app', 'node_modules'));
+module.paths.push(path.resolve('__dirname', '..', '..', '..', '..', 'resources', 'app.asar', 'node_modules'));
+module.paths.push(path.resolve('node_modules'));
+
 const {BrowserWindow,app,Menu} = require('electron');
 const mBlock = require('./mBlock.js');
 const express = require('express');
@@ -16,7 +23,6 @@ http.listen(httpPort, function () {
 });
 
 var appName = app.getName();
-var path = require('path');
 var pluginName;
 
 //根据系统加载对应版本的flash player插件
@@ -32,6 +38,9 @@ switch (process.platform) {
     break
 }
 var rootPath = __dirname+"/..";
+if(rootPath.indexOf('asar') > -1) {
+  rootPath = __dirname+"/../..";
+}
 
 app.commandLine.appendSwitch('ppapi-flash-path', path.join(rootPath, "/plugins/"+pluginName));
 app.commandLine.appendSwitch('ppapi-flash-version', '23.0.0.207')
