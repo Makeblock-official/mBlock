@@ -4,6 +4,7 @@
 const {MenuItem} = require("electron")
 const SerialPort = require("serialport");
 const events = require('events');
+const sudoer = require('./sudoCommands.js');
 var _emitter = new events.EventEmitter();  
 var _currentSerialPort=""
 var _port;
@@ -37,7 +38,7 @@ function Serial(app){
 			});
 		}
 	}
-	this.connect = function(name){
+	this.connect = function(name){ // linux : /dev/ttyUSB0
 		if(_currentSerialPort!=name){
 			_currentSerialPort = name;
 		}else{
@@ -46,11 +47,11 @@ function Serial(app){
 			return;
 		}
 		_port = new SerialPort(_currentSerialPort,{ baudRate:115200 })
-		_port.on('open',function(){
+		_port.on('open',function(){ // 串口连接，进行连接
 			self.onOpen();
 		})
-		_port.on('error',function(err){
-
+		_port.on('error',function(err){ // cannot open XXX
+            sudoer.enableSerialInLinux(errorCallbackHander);
 		})
 		_port.on('data',function(data){
 			self.onReceived(data);
@@ -63,6 +64,13 @@ function Serial(app){
 			self.onDisconnect()
 			_currentSerialPort = "";
 		})
+		var errorCallbackHander = function (error, stderr, stdout) {
+            if (error == null) { // 正常流程：密码输对的情况
+                console.log(name);
+				self.connect(name);
+				console.log('yi 连接');
+			}
+		};
 	}
 	this.getMenuItems = function(){
 		return _items;
@@ -88,7 +96,7 @@ function Serial(app){
 	this.on = function(event,listener){
 		_emitter.on(event,listener);
 	}
-	this.onOpen = function(){
+	this.onOpen = function(){console.log('ou海');
         _app.getMenu().update();
 		if(_client){
 			_client.send("connected",{connected:self.isConnected()})
