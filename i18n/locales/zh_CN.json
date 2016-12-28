@@ -953,5 +953,6 @@
 	"Find line mode": "Find line mode",
 	"Self balanced model": "Self balanced model",
 	"Upload Succeeded": "Upload Succeeded",
-	"Uploading...": "Uploading..."
+	"Uploading...": "Uploading...",
+	"Please restart your computer to enable serial ports.": "Please restart your computer to enable serial ports."
 }

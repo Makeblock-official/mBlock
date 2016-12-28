@@ -12,6 +12,7 @@ var _client,_app,_items=[];
 function Serial(app){
 	_app = app;
 	var self = this;
+	var _translator = app.getTranslator();
 	_client = _app.getClient();
 	this.list = function(callback) {
 		SerialPort.list(callback);
@@ -31,7 +32,7 @@ function Serial(app){
 		_currentSerialPort = "";
 	}
 	this.send = function(data){
-		console.log(data)
+		//console.log(data)
 		if(_port&&_port.isOpen()){
 			_port.write(new Buffer(data),function(){
 
@@ -66,10 +67,10 @@ function Serial(app){
 		})
 		var errorCallbackHander = function (error, stderr, stdout) {
             if (error == null) { // 正常流程：密码输对的情况
-                console.log(name);
-				self.connect(name);
-				console.log('yi 连接');
+				_app.alert(_translator.map("Please restart your computer to enable serial ports."));
+				//_port.open(); // 死循环，因为没有重启电脑的情况下，还是需要输入密码
 			}
+		    self.update(); // 更新菜单
 		};
 	}
 	this.getMenuItems = function(){
@@ -96,13 +97,13 @@ function Serial(app){
 	this.on = function(event,listener){
 		_emitter.on(event,listener);
 	}
-	this.onOpen = function(){console.log('ou海');
+	this.onOpen = function(){
         _app.getMenu().update();
 		if(_client){
 			_client.send("connected",{connected:self.isConnected()})
 		}
 	}
-	this.onDisconnect = function(){
+	this.onDisconnect = function(){ // 主动断开连接或直接拔掉串口线
         _app.getMenu().update();
 		if(_client){
 			_client.send("connected",{connected:false})
