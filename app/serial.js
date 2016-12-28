@@ -52,6 +52,8 @@ function Serial(app){
 			self.onOpen();
 		})
 		_port.on('error',function(err){ // cannot open XXX
+		    console.log('串口连接发生错误：');
+			console.log(err);
             sudoer.enableSerialInLinux(errorCallbackHander);
 		})
 		_port.on('data',function(data){
@@ -59,7 +61,7 @@ function Serial(app){
 		})
 		_port.on('close', function(){
 			self.onDisconnect()
-			currentSerialPort = "";
+			_currentSerialPort = "";
 		})
 		_port.on('disconnect', function(){
 			self.onDisconnect()
@@ -76,7 +78,7 @@ function Serial(app){
 	this.getMenuItems = function(){
 		return _items;
 	}
-	this.update = function(){
+	this.update = function(){ // 更新菜单
 		_items = [];
 		SerialPort.list(function(err,ports){
 			for(var i=0;i<ports.length;i++){
@@ -98,13 +100,13 @@ function Serial(app){
 		_emitter.on(event,listener);
 	}
 	this.onOpen = function(){
-        _app.getMenu().update();
+        self.update();
 		if(_client){
 			_client.send("connected",{connected:self.isConnected()})
 		}
 	}
 	this.onDisconnect = function(){ // 主动断开连接或直接拔掉串口线
-        _app.getMenu().update();
+        self.update();
 		if(_client){
 			_client.send("connected",{connected:false})
 		}
