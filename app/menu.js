@@ -191,6 +191,7 @@ function AppMenu(app){
                                 checked:_hid.isConnected(),
                                 click: function (item, focusedWindow) {
                                     _hid.connect();
+                                    self.update();  //根据连接成功与否来更新菜单
                                 }
                             }
                         ]
