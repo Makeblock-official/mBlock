@@ -51,19 +51,21 @@ function Serial(app){
 		_port.on('open',function(){ // 串口连接，进行连接
 			self.onOpen();
 		})
-		_port.on('error',function(err){ // cannot open XXX
-		    console.log('串口连接发生错误：');
-			console.log(err);
-            sudoer.enableSerialInLinux(errorCallbackHander);
+		_port.on('error',function(err){
+            if (err.message.indexOf('cannot open') > -1) { // cannot open XXX : 无权限
+				sudoer.enableSerialInLinux(errorCallbackHander);
+			} else if (err.message.indexOf('Cannot lock port') > -1) { // Cannot lock port : 端口被锁
+				console.log(err);
+			}
 		})
 		_port.on('data',function(data){
 			self.onReceived(data);
 		})
-		_port.on('close', function(){
+		_port.on('close', function(){console.log(456);console.log('close'); // 主动点击取消连接
 			self.onDisconnect()
 			_currentSerialPort = "";
 		})
-		_port.on('disconnect', function(){
+		_port.on('disconnect', function(){console.log(789);console.log('disconnect'); // 拔出
 			self.onDisconnect()
 			_currentSerialPort = "";
 		})
