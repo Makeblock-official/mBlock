@@ -40,13 +40,8 @@ function Serial(app){
 		}
 	}
 	this.connect = function(name){ // linux : /dev/ttyUSB0
-		if(_currentSerialPort!=name){
-			_currentSerialPort = name;
-		}else{
-			this.close();
-			_port = null;
-			return;
-		}
+	    _currentSerialPort = name;
+		
 		_port = new SerialPort(_currentSerialPort,{ baudRate:115200 })
 		_port.on('open',function(){ // 串口连接，进行连接
 			self.onOpen();
@@ -61,11 +56,11 @@ function Serial(app){
 		_port.on('data',function(data){
 			self.onReceived(data);
 		})
-		_port.on('close', function(){console.log(456);console.log('close'); // 主动点击取消连接
+		_port.on('close', function() { // 主动点击取消连接
 			self.onDisconnect()
 			_currentSerialPort = "";
 		})
-		_port.on('disconnect', function(){console.log(789);console.log('disconnect'); // 拔出
+		_port.on('disconnect', function(){ // 拔出
 			self.onDisconnect()
 			_currentSerialPort = "";
 		})
@@ -84,13 +79,23 @@ function Serial(app){
 		_items = [];
 		SerialPort.list(function(err,ports){
 			for(var i=0;i<ports.length;i++){
+				if (ports[i].comName.indexOf('/dev/ttyS') > -1) {
+					continue;
+				}
 				var item = new MenuItem({
 					name:ports[i].comName,
 					label:ports[i].comName,
 					checked:self.isConnected(ports[i].comName),
 					type:'checkbox',
 					click:function(item,focusedWindow){
-						self.connect(item.label);
+						var isConnect = false;
+					    if(_currentSerialPort != item.name){ // 需要连接串口
+                            isConnect = true;
+						}
+						self.close();
+						if (isConnect) {
+							setTimeout(function () {self.connect(item.name);}, 1000);
+						}
 					}
 				})
 				_items.push(item);
