@@ -69,6 +69,14 @@ var ArduinoIDE = {
     },
 
     uploadCodeToBoard: function(code) {
+        var lastLog = "";
+        var appendToLastLog = function(msg) {
+            lastLog += msg;
+            if(lastLog.length > 2000) {
+                lastLog = lastLog.substr(lastLog.length - 1000);
+            }
+        }
+
         var serialPort = app.getSerial().currentSerialPort();
         if(!serialPort) {
             app.alert('Please connect the serial port.');
@@ -84,6 +92,7 @@ var ArduinoIDE = {
         ];
 
         app.alert(T('Uploading'));
+        app.getSerial().close();
         var arduinoProcess = spawn(this.getArduinoExecutable(), arduinoCommandArguments);
         arduinoProcess.stdout.on('data', function(data) {
             app.logToArduinoConsole(data.toString());
@@ -99,6 +108,7 @@ var ArduinoIDE = {
             else {
                 app.alert(T('Upload Failed'));
             }
+            app.getSerial().connect(serialPort);
         });
     },
 
