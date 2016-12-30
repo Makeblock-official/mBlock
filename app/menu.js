@@ -164,8 +164,11 @@ function AppMenu(app){
                             {
                                 name:"Discover",
                                 label:_translator.map("Discover"),
-                                click: function (item, focusedWindow) {
-                                    _app.getBluetooth().discover();
+								enabled : true,
+                                click: function (item, focusedWindow) { // focusedWindow : BrowserWindow
+									//item.label = _translator.map('Discovering');						
+                                    _app.getBluetooth().discover(item);
+									
                                 }
                             },
                             {

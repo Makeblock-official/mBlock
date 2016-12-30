@@ -50,8 +50,9 @@ function Serial(app){
             if (err.message.indexOf('cannot open') > -1) { // cannot open XXX : 无权限
 				sudoer.enableSerialInLinux(errorCallbackHander);
 			} else if (err.message.indexOf('Cannot lock port') > -1) { // Cannot lock port : 端口被锁
-				console.log(err);
+				console.log('port is locked:');
 			}
+			console.log(err);
 		})
 		_port.on('data',function(data){
 			self.onReceived(data);
@@ -115,7 +116,13 @@ function Serial(app){
 	this.onDisconnect = function(){ // 主动断开连接或直接拔掉串口线
         self.update();
 		if(_client){
-			_client.send("connected",{connected:false})
+			try {
+				_client.send("connected",{connected:false});
+			} catch (e) {
+				// when the program is shutting down, front-end web page
+				// no longer exists; in this case, ignore the 
+				// "Object has been destroyed" Exception.
+			}
 		}
 	}
 	this.onReceived = function(data){
