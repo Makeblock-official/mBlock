@@ -67,6 +67,7 @@ package util
 				ExternalInterface.addCallback("playCode", __playCode);
 				ExternalInterface.addCallback("stopCode", __stopCode);
 				ExternalInterface.addCallback("logToArduinoConsole", __logToArduinoConsole);
+				ExternalInterface.addCallback("setFontSize", __setFontSize);
 				callApp("readyForFlash");
 			}catch(e:*){
 				
@@ -310,6 +311,10 @@ package util
 		static private function __logToArduinoConsole(message:String):void
 		{
 			MBlock.app.scriptsPart.appendMessage(message);
+		}
+		static private function __setFontSize(size:int):void
+		{
+			Translator.setFontSize(size);
 		}
 	}
 }
