@@ -40,7 +40,10 @@ function Application(flash){
     }); 
     ipcRenderer.on('logToArduinoConsole', (sender,obj) => {  
         _flash.logToArduinoConsole(obj);
-    }); 
+    });
+    ipcRenderer.on('setFontSize', (sender,obj) => {
+        _flash.setFontSize(obj.size);
+    });
     this.getExt = function(){
         return _ext;
     }

@@ -17,12 +17,13 @@ const Project = require("./project.js");
 const AppMenu = require('./menu.js')
 const Bluetooth = require('./bluetooth.js')
 const Translator = require("./translator.js")
+const FontSize = require("./fontSize.js");
 const Stage = require("./stage.js")
 const HID = require("./hid.js");
 const LocalStorage = require("./localStorage.js");
 const FirmwareUploader = require('./firmwareUploader.js');
 const ArduinoIDE = require('./arduinoIDE.js');
-var _project,_menu,_serial,_hid,_translator,_stage,_firmwareUploader,_bluetooth,_localStorage,_arduinoIDE;
+var _project,_menu,_serial,_hid,_translator,_fontSize,_stage,_firmwareUploader,_bluetooth,_localStorage,_arduinoIDE;
 function mBlock(){
 	var self = this;
 	ipcMain.on('flashReady',function(event,arg){
@@ -31,6 +32,7 @@ function mBlock(){
 		_localStorage = new LocalStorage();
 		_project = new Project(self);
 		_translator = new Translator(self);
+		_fontSize = new FontSize(self);
 		_serial = new Serial(self);
 		_boards = new Boards(self);
 		_stage = new Stage(self);
@@ -78,6 +80,9 @@ function mBlock(){
 	}
 	this.getTranslator = function(){
 		return _translator;
+	}
+	this.getFontSize = function(){
+		return _fontSize;
 	}
 	this.getSerial = function(){
 		return _serial;

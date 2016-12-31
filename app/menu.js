@@ -4,12 +4,13 @@
 const{Menu,dialog,MenuItem} = require('electron');
 const events = require('events');
 var _emitter = new events.EventEmitter();
-var _app,_mainMenu,_stage,_translator,_serial,_hid,_project;
+var _app,_mainMenu,_stage,_translator,_serial,_hid,_project,_fontSize;
 function AppMenu(app){
     var self = this;
     _app = app;
     _stage = _app.getStage();
     _translator = _app.getTranslator();
+    _fontSize = _app.getFontSize();
     _serial = _app.getSerial();
     _project = _app.getProject();
     _hid = _app.getHID();
@@ -378,7 +379,7 @@ function AppMenu(app){
                         type:"separator"
                     },
                     {
-                        name:'Microsoft Cognitive Service Setting',
+                        name:'Microsoft Cognitiove Service Setting',
                         label: _translator.map('Microsoft Cognitive Service Setting'),
                         click: function (item, focusedWindow) {
 
@@ -391,50 +392,7 @@ function AppMenu(app){
             },{
                 name:'Language',
                 label: _translator.map('Language'),
-                submenu: [
-                    {
-                        name:'set font size',
-                        label: _translator.map('set font size'),
-                        submenu:[
-                            {
-                                name:"setFontSize",
-                                label:"8",
-                            },
-                            {
-                                name:"setFontSize",
-                                label:"10",
-                            },
-                            {
-                                name:"setFontSize",
-                                label:"11",
-                            },
-                            {
-                                name:"setFontSize",
-                                label:"12",
-                            },
-                            {
-                                name:"setFontSize",
-                                label:"14",
-                            },
-                            {
-                                name:"setFontSize",
-                                label:"16",
-                            },
-                            {
-                                name:"setFontSize",
-                                label:"18",
-                            },
-                            {
-                                name:"setFontSize",
-                                label:"20",
-                            },
-                            {
-                                name:"setFontSize",
-                                label:"24",
-                            }
-                        ]
-                    }
-                ]
+                submenu: []
             },{
                 name:'Help',
                 label: _translator.map('Help'),
@@ -505,11 +463,16 @@ function AppMenu(app){
             })
         }
         _mainMenu = Menu.buildFromTemplate(template);
+        //字体菜单
+        var item = _fontSize.getMenuItem();
+        _mainMenu.items[process.platform === 'darwin'?6:5].submenu.insert(0,item);
+
         var items = _translator.getMenuItems();
         for(var i=0;i<items.length;i++){
             var item = items[i];
             _mainMenu.items[process.platform === 'darwin'?6:5].submenu.insert(0,item);
         }
+
         items = _serial.getMenuItems();
         for(var i=0;i<items.length;i++){
             var item = items[i];
