@@ -24,7 +24,7 @@ function Project(app) {
             if(_currentProjectPath==""){
                 _currentProjectPath = "."
             }
-            dialog.showSaveDialog(mainWindow,{defaultPath:fs.realpathSync(_currentProjectPath+'/../')+"/"+title+".sb2"},function(path){
+            dialog.showSaveDialog(mainWindow,{defaultPath:fs.realpathSync(_currentProjectPath+'/../')+"/"+title},function(path){
                 if(path){
                     if (path.lastIndexOf('.sb2') != path.length-4 ){
                         path += ".sb2";
