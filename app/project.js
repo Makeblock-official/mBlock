@@ -16,13 +16,16 @@ function Project(app) {
      * 打开保存窗口，将项目文件写入到本地文件系统
      */
     this.saveProject = function(title,data){
-        if(_saveAs||_currentProjectPath==""){
+        if(_saveAs||_currentProjectPath==""|| _currentProjectPath == "."){
 		    var mainWindow = BrowserWindow.getFocusedWindow();
             if(title==" .sb2"){
                 title = "project";
             }
             if(_currentProjectPath==""){
                 _currentProjectPath = "."
+            }
+            if (title.lastIndexOf('.sb2') != title.length-4 ){
+                title += ".sb2";
             }
             dialog.showSaveDialog(mainWindow,{defaultPath:fs.realpathSync(_currentProjectPath+'/../')+"/"+title},function(path){
                 if(path){
@@ -72,7 +75,7 @@ function Project(app) {
      */
     this.setProjectTitle = function(){
         if(_client){
-            _client.send("setProjectTitle",{title:_title})
+            _client.send("setProjectTitle",{title:_title});
         }
     }
     /**
