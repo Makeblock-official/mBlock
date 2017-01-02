@@ -57,6 +57,7 @@ function HID(app){
             }
         }
         if(!isDeviceFound){
+			app.alert("没有找到可用设备");
             return;
         }
 		if(!_port){
@@ -82,7 +83,6 @@ function HID(app){
 
 	//设备已连接
 	this.onOpen = function(){
-        _app.getMenu().update();
 		if(_client){
 			_client.send("connected",{connected:true})
 		}
