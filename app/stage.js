@@ -35,6 +35,7 @@ function Stage(app){
 			}
 			_stageMode["hide stage layout"] = false;
 		}else if(name=="hide stage layout"){
+			_client.send("changeStageMode",{name:"small stage layout"});
 			_stageMode["small stage layout"] = false;
 		}
 		_client.send("changeStageMode",{name:name});

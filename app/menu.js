@@ -4,7 +4,7 @@
 const{Menu,dialog,MenuItem} = require('electron');
 const events = require('events');
 var _emitter = new events.EventEmitter();
-var _app,_mainMenu,_stage,_translator,_serial,_hid,_project,_fontSize;
+var _app,_mainMenu,_stage,_translator,_serial,_hid,_project,_fontSize,_undelete;
 function AppMenu(app){
     var self = this;
     _app = app;
@@ -93,8 +93,11 @@ function AppMenu(app){
                     {
                         name:'Undelete',
                         label: _translator.map('Undelete'),
+                        enabled:_undelete,
                         click: function (item, focusedWindow) {
                             _stage.undelete();
+                            _undelete = false;
+                            self.update();
                         }
                     },
                     {
