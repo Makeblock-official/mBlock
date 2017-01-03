@@ -4,7 +4,7 @@
 const{Menu,dialog,MenuItem} = require('electron');
 const events = require('events');
 var _emitter = new events.EventEmitter();
-var _app,_mainMenu,_stage,_translator,_serial,_hid,_project,_fontSize,_undelete;
+var _app,_mainMenu,_stage,_translator,_serial,_hid,_project,_fontSize,_undelete=false;
 function AppMenu(app){
     var self = this;
     _app = app;
@@ -555,6 +555,12 @@ function AppMenu(app){
             });
         }
         _mainMenu.items[process.platform === 'darwin' ? 3 : 2].submenu.insert(7, firmwareMode);
+    }
+
+    //允许撤销删除操作
+    this.enableUnDelete = function () {
+        _undelete = true;
+        self.update();
     }
 }
 module.exports = AppMenu;

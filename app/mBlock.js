@@ -72,6 +72,9 @@ function mBlock(){
 	ipcMain.on('changeArduinoStageMode', function(event, bool) {
 		_stage.onlyChangeArduinoStageMode(bool);
 	});
+	ipcMain.on('itemDeleted', function(event, arg) {
+		_menu.enableUnDelete();
+	});
 	this.getClient = function(){
 		return _client;
 	}
