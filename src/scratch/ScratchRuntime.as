@@ -1183,6 +1183,7 @@ package scratch {
 	
 		public function recordForUndelete(obj:*, x:int, y:int, index:int, owner:* = null):void {
 			lastDelete = [obj, x, y, index, owner];
+			JsUtil.Call("itemDeleted",null);
 		}
 	
 		public function undelete():void {
