@@ -194,7 +194,7 @@ package {
 				stage.addEventListener(Event.RESIZE, onResize);
 			// install project before calling fixLayout()
 				JsUtil.Init(stage);
-				
+			setProjectName("Untitled");
 			setTimeout(DeviceManager.sharedManager, 100);
 			//VersionManager.sharedManager().start(); //在线更新资源文件
 			SerialManager.sharedManager().setMBlock(this);
