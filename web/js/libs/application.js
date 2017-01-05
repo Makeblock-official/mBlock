@@ -65,6 +65,9 @@ function Application(flash){
     this.saveProject = function(project){
         ipcRenderer.send("saveProject",project);
     }
+    this.setSaveStatus = function(isSaved){
+        ipcRenderer.sendToHost("setSaveStatus",{isSaved:isSaved,isConnected:self.connected});
+    }
     // 用户点击了“上传到Arduino”按钮
     this.uploadToArduino = function(code) {
         ipcRenderer.send("uploadToArduino", code);
