@@ -42,5 +42,7 @@
 	"Help": "Help",
 	"Upgrade Firmware": "Upgrade Firmware",
 	"Reset Default Program": "Reset Default Program",
-	"Set FirmWare Mode": "Set FirmWare Mode"
+	"Set FirmWare Mode": "Set FirmWare Mode",
+	"Not saved": "Not saved",
+	"Disconnected": "Disconnected"
 }

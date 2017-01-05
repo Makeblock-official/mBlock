@@ -4,13 +4,17 @@
 module.paths.push(__dirname);
 const {ipcRenderer} = require('electron');
 const Extension = require('extension');
+const Translator = require("translator")
+const package = require("../../../package.json");
 
-var _flash,_ext;
+var _flash,_ext,_translator;
 function Application(flash){
     _flash = flash;
     _ext = new Extension(this);
+    _translator = new Translator(this);
     var self = this;
     self.connected = false;
+    self.saved = false;
     ipcRenderer.on('openProject', (sender,obj) => {  
         _flash.openProject(obj.url);
     });  
@@ -23,8 +27,10 @@ function Application(flash){
     ipcRenderer.on('saveProject', (sender,obj) => {  
         _flash.saveProject();
     });    
-    ipcRenderer.on('setLanguage', (sender,obj) => {  
+    ipcRenderer.on('setLanguage', (sender,obj) => {
         _flash.setLanguage(obj.lang,obj.dict);
+        _translator.setLanguage(obj.lang);
+        self.updateTitle();
     });  
     ipcRenderer.on('changeStageMode',(sender,obj) =>{
         _flash.changeStageMode(obj.name);
@@ -66,7 +72,14 @@ function Application(flash){
         ipcRenderer.send("saveProject",project);
     }
     this.setSaveStatus = function(isSaved){
-        ipcRenderer.sendToHost("setSaveStatus",{isSaved:isSaved,isConnected:self.connected});
+        self.saved = isSaved;
+        self.updateTitle();
+    }
+    this.updateTitle =function(){
+        var textSave = self.saved  ? _translator.map('Saved'): _translator.map("Not saved");
+        var textConnect = self.connected ? _translator.map('Connected'): _translator.map("Disconnected");
+        var title = package.description +" - " + textConnect+" - " +textSave;
+        ipcRenderer.sendToHost("setAppTitle",title);
     }
     // 用户点击了“上传到Arduino”按钮
     this.uploadToArduino = function(code) {
