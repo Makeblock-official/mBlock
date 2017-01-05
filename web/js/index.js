@@ -20,4 +20,19 @@ jQuery = require("./js/external/jquery.js");
             clearInterval(loadCheckInterval);
         }
     }, 200);
+
+    var title = document.querySelector('title');
+    var isSaved = "未保存";
+    var isConnected = " - 没有连接串口 - ";
+    title.innerHTML = "mblock"+ isConnected + isSaved;
+
+    const webview = document.getElementById('webview')
+    webview.addEventListener('ipc-message', (event) => {
+        if (event.channel == 'setSaveStatus'){
+            isConnected = event.args.isConnected ? " - 已经连接串口 - ":" - 没有连接串口 - ";
+            isSaved = event.args.isSaved ? "已保存":"未保存";
+            title.innerHTML = "mblock"+ isConnected + isSaved;
+        }
+    })
+
 })(jQuery);
