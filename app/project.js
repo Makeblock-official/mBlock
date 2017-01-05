@@ -16,6 +16,16 @@ function Project(app) {
      * 打开保存窗口，将项目文件写入到本地文件系统
      */
     this.saveProject = function(title,data){
+
+        // ret = dialog.showMessageBox(BrowserWindow.getFocusedWindow(),{
+        //     type:'question',
+        //     title:'我是标题',
+        //     message:'我是内容',
+        //     buttons:['确定','取消'],
+        //     noLink:false
+        // });
+        // console.log("return "+ret);
+
         if(_saveAs||_currentProjectPath==""|| _currentProjectPath == "."){
 		    var mainWindow = BrowserWindow.getFocusedWindow();
             if(title==" .sb2"){
