@@ -342,7 +342,7 @@ public class ScratchObj extends Sprite {
 			sprites = app.stagePane.sprites();
 			return (sprites.length > 0) ? ['x position', sprites[sprites.length - 1].objName] : ['volume', '_stage_'];
 		}
-
+		if ('initVar:to:' == op) return [defaultVarName(), 0];
 		if ('setVar:to:' == op) return [defaultVarName(), 0];
 		if ('changeVar:by:' == op) return [defaultVarName(), 1];
 		if ('showVariable:' == op) return [defaultVarName()];

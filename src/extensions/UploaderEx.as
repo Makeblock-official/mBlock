@@ -88,7 +88,15 @@ package extensions
 			if(event.exitCode == 0){
 				_dialog.setText(Translator.map('Upload Finish'));
 			}else{
-				_dialog.setText(Translator.map('Upload Failed'));
+				if(DeviceManager.sharedManager().currentBoard=="me/orion_uno")
+				{
+					_dialog.setText(Translator.map('Upload Failed, please remove the bluetooth module'));
+				}
+				else
+				{
+					_dialog.setText(Translator.map('Upload Failed'));
+				}
+				
 			}
 			AppTitleMgr.Instance.setConnectInfo(null);
 			//SerialManager.sharedManager().reopen();

@@ -181,7 +181,7 @@ internal class FunctionList {
 
 	private function listarg(obj:ScratchObj, argList:Array, i:int):ListWatcher {
 		var listName:String = argList[i];
-		if (listName.length == 0) return null;
+		if (!listName || listName.length == 0) return null;
 		var result:ListWatcher = obj.listCache[listName];
 		if (!result) {
 			result = obj.listCache[listName] = obj.lookupOrCreateList(listName);

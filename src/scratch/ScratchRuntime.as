@@ -32,12 +32,13 @@ package scratch {
 	import flash.media.SoundTransform;
 	import flash.net.FileFilter;
 	import flash.net.FileReference;
-	import blockly.signals.Signal;
 	import flash.system.System;
 	import flash.text.TextField;
 	import flash.text.TextFieldType;
 	import flash.utils.ByteArray;
 	import flash.utils.setTimeout;
+	
+	import blockly.signals.Signal;
 	
 	import blocks.Block;
 	import blocks.BlockArg;
@@ -534,14 +535,18 @@ package scratch {
 			new FileFilter('Scratch 1.4 Project', '*.sb')
 		];
 		
-		public function selectedProjectFile(file:File):void {
+		public function selectedProjectFile(file:File,callback:Function=null):void {
 			// Prompt user for a file name and load that file.
 			stopAll();
-			
+			MBlock.app.closeWelcome();
 			function doInstall(ignore:* = null):void {
 				installProjectFromFile(file);
 				//打开已有项目时，标题应该显示已保存  谭启亮 20161018 
 				MBlock.app.setSaveNeededValue(false);
+				if(callback!=null)
+				{
+					callback();
+				}
 			}
 			
 			if (app.stagePane.isEmpty()) {
@@ -565,7 +570,7 @@ package scratch {
 			var newProject:ScratchStage;
 			stopAll();
 			data.position = 0;
-			if (data.readUTFBytes(8) != 'ScratchV') {
+			if (data.length>0 && data.readUTFBytes(8) != 'ScratchV') {
 				data.position = 0;
 				newProject = new ProjectIO(app).decodeProjectFromZipFile(data);
 				if (!newProject) {

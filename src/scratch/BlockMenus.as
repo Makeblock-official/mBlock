@@ -733,7 +733,11 @@ public class BlockMenus implements DragClient {
 	private function procMenu(evt:MouseEvent):void {
 //		var m:Menu = new Menu(null, 'proc');
 		var m:NativeMenu = new NativeMenu();
-		MenuUtil.AddItem(m, 'delete');
+		if(isInPalette(block) || block.isProcDef())
+		{
+			MenuUtil.AddItem(m, 'delete');
+		}
+		
 		addGenericBlockItems(m);
 		MenuUtil.AddItem(m, 'edit');
 //		m.addItem('edit', editProcSpec);
@@ -808,9 +812,12 @@ public class BlockMenus implements DragClient {
 				MenuUtil.AddLine(m);
 				for each (listName in app.viewedObj().listNames()){
 //					m.addItem(listName);
-					t = new NativeMenuItem(listName);
-					t.name = "@@list";
-					m.addItem(t);
+					if(listName)
+					{
+						t = new NativeMenuItem(listName);
+						t.name = "@@list";
+						m.addItem(t);
+					}
 				}
 			}
 		}

@@ -64,7 +64,9 @@
           <anePathEntry path="libs/HID2.4G_win.ane"/>
         </anePaths>
         <newLaunchParams/>
-        <modifiedLaunchParams/>
+		<modifiedLaunchParams>
+          <Parameter name="调试启动程序" value="E:\working\mblock\bin-debug\adl.exe"/>
+        </modifiedLaunchParams>
         <newPackagingParams/>
         <modifiedPackagingParams/>
       </airSettings>

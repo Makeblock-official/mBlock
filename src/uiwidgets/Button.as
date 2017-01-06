@@ -18,10 +18,13 @@
  */
 
 package uiwidgets {
-	import flash.display.*;
+	import flash.display.DisplayObject;
+	import flash.display.GradientType;
+	import flash.display.Sprite;
 	import flash.events.MouseEvent;
 	import flash.geom.Matrix;
-	import flash.text.*;
+	import flash.text.TextField;
+	import flash.text.TextFieldAutoSize;
 	
 public class Button extends Sprite {
 

@@ -702,6 +702,13 @@ void updateVar(char * varName,double * var)
 				codeBlock.code = parseVarRead(blk);
 				return codeBlock;
 			}
+			else if(blk[0]=="initVar:to:"){
+				codeBlock.type = "obj";
+				codeBlock.code = null;
+				var tmpCodeBlock:Object = {code:{setup:parseVarSet(blk),work:"",def:"",inc:"",loop:""}}
+				moduleList.push(tmpCodeBlock);
+				return codeBlock;
+			}
 			else if(blk[0]=="setVar:to:"){
 				codeBlock.type = "string";
 				codeBlock.code = parseVarSet(blk);

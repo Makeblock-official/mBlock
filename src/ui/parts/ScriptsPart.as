@@ -336,7 +336,6 @@ public class ScriptsPart extends UIPart {
 	}
 	private function onCompileArduino(evt:MouseEvent):void{
 		//if(SerialManager.sharedManager().isConnected){
-		trace("SerialDevice.sharedDevice().port="+SerialDevice.sharedDevice().port)
 		if(SerialDevice.sharedDevice().currPort!=""){
 			if(ArduinoManager.sharedManager().isUploading==false){
 				htmlLoader.window.clearInfo();

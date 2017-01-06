@@ -16,7 +16,7 @@ package cc.makeblock.interpreter
 		private const requestList:Array = [];
 		private var timerId:uint;
 		private var reader:PacketParser;
-
+		private var oldValue:Object=0;
 		public function RemoteCallMgr()
 		{
 			reader = new PacketParser(onPacketRecv);
@@ -64,6 +64,7 @@ package cc.makeblock.interpreter
 			}
 			clearTimeout(timerId);
 			send();
+			oldValue = value||oldValue;
 		}
 		
 		public function call(thread:Thread, method:String, param:Array, ext:ScratchExtension, retCount:int):void
@@ -83,7 +84,15 @@ package cc.makeblock.interpreter
 			var info:Array = requestList[0];
 			var ext:ScratchExtension = info[3];
 			ext.js.call(info[1], info[2], null);
-			timerId = setTimeout(onTimeout, 5000);
+			if(info[1]=="runBuzzer")
+			{
+				timerId = setTimeout(onTimeout, 5000);
+			}
+			else
+			{
+				timerId = setTimeout(onTimeout, 500);
+			}
+			
 		}
 		
 		private function onTimeout():void
@@ -93,7 +102,7 @@ package cc.makeblock.interpreter
 			}
 			var info:Array = requestList[0];
 			if(info[4] > 0){
-				onPacketRecv(0);
+				onPacketRecv(oldValue);
 			}else{
 				onPacketRecv();
 			}
