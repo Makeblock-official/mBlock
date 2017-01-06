@@ -40,6 +40,7 @@ function Application(flash){
     });  
     ipcRenderer.on('connected', (sender,obj) => {  
         self.connected = obj.connected;
+        self.updateTitle();
     });  
     ipcRenderer.on('changeToBoard', (sender,obj) => {  
         self.changeToBoard(obj.board);
