@@ -157,6 +157,9 @@ function mBlock(){
 	this.logToArduinoConsole = function(message) {
 		this.getClient().send('logToArduinoConsole', message);
 	}
+	this.allDisconnect = function () { // 断开所有的连接，
+		
+	
 }
 
 module.exports = mBlock;
