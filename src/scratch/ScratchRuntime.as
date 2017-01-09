@@ -78,6 +78,7 @@ package scratch {
 		public var lastAnswer:String = '';
 		public var cloneCount:int;
 		public var edgeTriggersEnabled:Boolean = false; // initially false, becomes true when project first run
+		public var extensionsInstalled:Boolean = false;
 	
 		private var microphone:Microphone;
 		private var timerBase:uint;
@@ -86,6 +87,11 @@ package scratch {
 		protected var saveAfterInstall:Boolean;
 		
 		public const mbotButtonPressed:Signal = new Signal(Boolean);
+		public const voiceReceived:Signal = new Signal(Boolean);
+		public const emotionResultReceived:Signal = new Signal(Boolean);
+		public const faceResultReceived:Signal = new Signal(Boolean);
+		public const textResultReceived:Signal = new Signal(Boolean);
+		public const realFaceResultReceived:Signal = new Signal(Boolean);
 	
 		public function ScratchRuntime(app:MBlock, interp:Interpreter) {
 			this.app = app;
@@ -93,6 +99,11 @@ package scratch {
 			timerBase = interp.currentMSecs;
 			clearKeyDownArray();
 			mbotButtonPressed.add(__onMbotButtonPressed);
+			voiceReceived.add(__onVoiceReceived);
+			emotionResultReceived.add(__onEmotionResultReceived);
+			faceResultReceived.add(__onFaceResultReceived);
+			textResultReceived.add(__onTextResultReceived);
+			realFaceResultReceived.add(__onRealFaceResultReceived);
 		}
 		
 		private function __onMbotButtonPressed(isPressed:Boolean):void
@@ -108,7 +119,75 @@ package scratch {
 				}
 			});
 		}
-		
+		private function __onVoiceReceived(isReceived:Boolean):void{
+			allStacksAndOwnersDo(function(stack:Block, target:ScratchObj):void{
+				if(stack.op.indexOf("whenVoiceCommandReceived")==-1){
+					return;
+				}
+				if(isReceived){
+					if (!interp.isRunning(stack, target)) {
+						interp.toggleThread(stack, target);
+					}
+				}
+			});
+		}
+		private function __onEmotionResultReceived(isReceived:Boolean):void{
+			allStacksAndOwnersDo(function(stack:Block, target:ScratchObj):void{
+				if(stack.op.indexOf("whenPhotoResultReceived")==-1){
+					return;
+				}
+				if(stack.args[0].argValue!="emotion"){
+					return;
+				}
+				if(isReceived){
+					if (!interp.isRunning(stack, target)) {
+						interp.toggleThread(stack, target);
+					}
+				}
+			});
+		}
+		private function __onFaceResultReceived(isReceived:Boolean):void{
+			allStacksAndOwnersDo(function(stack:Block, target:ScratchObj):void{
+				if(stack.op.indexOf("whenPhotoResultReceived")==-1){
+					return;
+				}
+				if(stack.args[0].argValue!="face"){
+					return;
+				}
+				if(isReceived){
+					if (!interp.isRunning(stack, target)) {
+						interp.toggleThread(stack, target);
+					}
+				}
+			});
+		}
+		private function __onTextResultReceived(isReceived:Boolean):void{
+			allStacksAndOwnersDo(function(stack:Block, target:ScratchObj):void{
+				if(stack.op.indexOf("whenPhotoResultReceived")==-1){
+					return;
+				}
+				if(stack.args[0].argValue!="text"){
+					return;
+				}
+				if(isReceived){
+					if (!interp.isRunning(stack, target)) {
+						interp.toggleThread(stack, target);
+					}
+				}
+			});
+		}
+		private function __onRealFaceResultReceived(isReceived:Boolean):void{
+			allStacksAndOwnersDo(function(stack:Block, target:ScratchObj):void{
+				if(stack.op.indexOf("whenRealFaceResultReceived")==-1){
+					return;
+				}
+				if(isReceived){
+					if (!interp.isRunning(stack, target)) {
+						interp.toggleThread(stack, target);
+					}
+				}
+			});
+		}
 		// -----------------------------
 		// Running and stopping
 		//------------------------------
@@ -351,8 +430,8 @@ package scratch {
 			}
 			var triggerCondition:Boolean = false;
 			if ('whenSensorGreaterThan' == hat.op) {
-				var sensorName:String = hat.args[0];
-				var threshold:Number = Number(hat.args[1]);
+				var sensorName:String = hat.args[0]["argValue"];
+				var threshold:Number = Number(hat.args[1]["argValue"]);
 				triggerCondition = (
 						(('loudness' == sensorName) && (soundLevel() > threshold)) ||
 						(('timer' == sensorName) && (timer() > threshold))/* ||
@@ -400,7 +479,9 @@ package scratch {
 		private function processEdgeTriggeredHats():void {
 			if (!edgeTriggersEnabled) return;
 			activeHats = [];
-//			allStacksAndOwnersDo(startEdgeTriggeredHats);
+			//下面这行是由于邵凯在20151231 由于“修复局域网网络通讯bug”而注释掉的，导致“事件”选项卡里面的原生“当‘’大于‘’”指令块失效，
+			//现在把注释打开，目测不会有什么问题，后面若有修改请参考这个情况  by tql 20161121 
+			allStacksAndOwnersDo(startEdgeTriggeredHats);
 			triggeredHats = activeHats;
 		}
 	
@@ -487,7 +568,7 @@ package scratch {
 			var newProject:ScratchStage;
 			stopAll();
 			data.position = 0;
-			if (data.readUTFBytes(8) != 'ScratchV') {
+			if (data.length>0 && data.readUTFBytes(8) != 'ScratchV') {
 				data.position = 0;
 				newProject = new ProjectIO(app).decodeProjectFromZipFile(data);
 				if (!newProject) {
@@ -510,14 +591,14 @@ package scratch {
 				if (info != null) delete info.thumbnail; // delete old thumbnail
 			}
 			if (saveForRevert) app.saveForRevert(data, false);
-			app.extensionManager.clearImportedExtensions();
 			decodeImagesAndInstall(newProject, callback);
+			//app.extensionManager.clearImportedExtensions();//fix 打开新项目出现未定义的模块
 		}
 	
 		public function projectLoadFailed(ignore:* = null):void {
 			app.removeLoadProgressBox();
+			//DialogBox.notify('Error!', 'Project did not load.', app.stage);
 			app.loadProjectFailed();
-			DialogBox.notify('Error!', 'Project did not load.', app.stage);			
 		}
 	
 		public function decodeImagesAndInstall(newProject:ScratchStage, callback:Function=null):void {
@@ -545,7 +626,18 @@ package scratch {
 	
 			//app.extensionManager.clearImportedExtensions();
 			//app.extensionManager.loadSavedExtensions(project.info.savedExtensions);
-			app.extensionManager.importExtension();
+			
+			// Wangyu: stop loading extensions when user open a project second time.
+			// OR ELSE: mBlock won't receive any serial data from the robot; it will wait until timeout.
+			// +++ added by yu
+			if (!extensionsInstalled) {
+				extensionsInstalled = true;
+				app.extensionManager.importExtension();
+			}
+			// --- removed from the last version
+			// app.extensionManager.importExtension();
+			// Wangyu: END of modification
+			
 			app.installStage(project);
 			app.updateSpriteLibrary(true);
 			// set the active sprite
@@ -680,6 +772,11 @@ package scratch {
 			if(65 <= keyCode && keyCode <= 90){
 				return keyCode + 32;
 			}
+			//将小键盘  数字键转为大键盘数字键
+			else if(96<=keyCode && keyCode<=105)
+			{
+				return keyCode-48;
+			}
 			return keyCode;
 		}
 	
@@ -719,7 +816,7 @@ package scratch {
 			case 'year': return now.fullYear; // four digit year (e.g. 2012)
 			case 'month': return now.month + 1; // 1-12
 			case 'date': return now.date; // 1-31
-			case 'day of week': return now.day + 1; // 1-7, where 1 is Sunday
+			case 'day of week': return now.day; // 0-6, where 0 is Sunday
 			}
 			return ''; // shouldn't happen
 		}
@@ -1183,7 +1280,6 @@ package scratch {
 	
 		public function recordForUndelete(obj:*, x:int, y:int, index:int, owner:* = null):void {
 			lastDelete = [obj, x, y, index, owner];
-			JsUtil.Call("itemDeleted",null);
 		}
 	
 		public function undelete():void {

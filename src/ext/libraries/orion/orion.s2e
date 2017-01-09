@@ -28,7 +28,7 @@
 		["w", "set led strip %d.normalPort %d.slot %d.index2 red%d.value green%d.value blue%d.value","runLedStrip", "Port3","Slot2","all",0,0,0,
 		{"encode":"{d0}{d1}{d2}{d3}{d4}","setup":"","inc":"","def":"MeRGBLed rgbled_{0}_{1}({0}, {1}, 32);\n","work":"rgbled_{0}_{1}.setColor({2},{3},{4},{5});\nrgbled_{0}_{1}.show();\n","loop":""}],
 		
-		["w", "set light sensor %d.blackPorts led as %d.switch","runLightsensor", "Port6", "On",
+		["w", "set light sensor %d.lightPorts led as %d.switch","runLightsensor", "Port6", "On",
 		{"encode":"{d0}{d1}","setup":"","inc":"","def":"MeLightSensor lightsensor_{0}({0});\n","work":"lightsensor_{0}.dWrite1({1});\n","loop":""}],
 		
 		["w", "set camera shutter %d.bluePorts as %d.shutter","runShutter","Port6", "Press",
@@ -75,13 +75,21 @@
 		["R", "flame sensor %d.blackPorts", "getFlame", "Port6", {"encode":"", "setup":"", "inc":"", "def":"MeFlameSensor flameSensor_{0}({0});\n", "work":"flameSensor_{0}.readAnalog()", "loop":""}],
 		["R", "gas sensor %d.blackPorts", "getGas", "Port6", {"encode":"", "setup":"", "inc":"", "def":"MeGasSensor gasSensor_{0}({0});\n", "work":"gasSensor_{0}.readAnalog()", "loop":""}],
 		["B", "touch sensor %d.bluePorts","getTouchSensor","Port3",{"encode":"{d0}","setup":"","inc":"","def":"MeTouchSensor touchSensor_{0}({0});\n","work":"touchSensor_{0}.touched()","loop":""}],
-		["B", "button %d.blackPorts %m.button_key pressed","getButton","Port6","key1",{"encode":"{d0}","setup":"","inc":"","def":"Me4Button buttonSensor_{0}({0});\n","work":"(buttonSensor_{0}.pressed()=={1})","loop":"buttonSensor_{0}.pressed();"}]
+		["B", "button %d.blackPorts %m.button_key pressed","getButton","Port6","key1",{"encode":"{d0}","setup":"","inc":"","def":"Me4Button buttonSensor_{0}({0});\n","work":"(buttonSensor_{0}.pressed()=={1})","loop":"buttonSensor_{0}.pressed();"}],
+		["-"],
+		
+		["R", "timer","getTimer", "0",
+		{"encode":"{n0}","setup":"","inc":"","def":"double currentTime = 0;\ndouble lastTime = 0;\ndouble getLastTime(){\n\treturn currentTime = millis()/1000.0 - lastTime;\n}\n","work":"getLastTime()","loop":""}],
+		
+		["w", "reset timer","resetTimer", "0",
+		{"encode":"{n0}","setup":"","inc":"","def":"double currentTime = 0;\ndouble lastTime = 0;\n","work":"lastTime = millis()/1000.0;\n","loop":""}]
 		
         ],
     "menus": {
     	"yellowPorts":["Port3","Port4","Port6","Port7","Port8"],
     	"bluePorts":["Port3","Port4","Port6"],
     	"grayPorts":["Port5"],
+    	"lightPorts":["Port6"],
     	"whitePorts":["Port3","Port4","Port6","Port7","Port8"],
     	"blackPorts":["Port6","Port7","Port8"],
     	"soundPort":["Port6","Port7","Port8"],

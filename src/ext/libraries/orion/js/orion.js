@@ -332,6 +332,18 @@
 		}
 		getPackage(nextID,deviceId,port);
     };
+    var startTimer = 0;
+    ext.getTimer = function(nextID){
+		if(startTimer==0){
+			startTimer = (new Date().getTime())/1000.0;
+		}
+		responseValue(nextID,(new Date().getTime())/1000.0-startTimer);
+	};
+	ext.resetTimer = function(){
+		startTimer = (new Date().getTime())/1000.0;
+		responseValue();
+	};
+	
 	function sendPackage(argList, type){
 		var bytes = [0xff, 0x55, 0, 0, type];
 		for(var i=0;i<argList.length;++i){

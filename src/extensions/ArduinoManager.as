@@ -32,13 +32,15 @@ package extensions
 		public var hasUnknownCode:Boolean = false;
 		private var ccode_setup:String = "";
 		private var ccode_setup_fun:String = "";
-		private var ccode_setup_def:String = "";
+//		private var ccode_setup_def:String = "";
 		private var ccode_loop:String = ""
+		private var ccode_loop2:String = ""
 		private var ccode_def:String = ""
 		private var ccode_inc:String = ""
 		private var ccode_pointer:String="setup"
 		private var ccode_func:String = "";
-		private var mathOp:Array=["+","-","*","/","%",">","=","<","&","|","!","not","rounded"];
+		//添加 && ||
+		private var mathOp:Array=["+","-","*","/","%",">","=","<","&","&&","|","||","!","not","rounded"];
 		private var varList:Array = [];
 		private var varStringList:Array = [];
 		private var varListWrite:Array=[]
@@ -50,26 +52,24 @@ package extensions
 		
 		// maintance of project and arduino path
 		private var arduinoPath:String;
-		private var avrPath:String = "";
+//		private var avrPath:String = "";
 		private var arduinoLibPath:String = "";
 		private var projectPath:String = "";
-		private var _currentDevice:String;
-		private var _extSrcPath:String = "";
-		/*
-		private var leoPortMap:Array=[[null,null],["11","A8"],["13","A11"],["10","9"],["1","0"],["MISO","SCK"],["A0","A1"],["A2","A3"],["A4","A5"],["6","7"],["5","4"]]
-		private var portEnum:Object = {"Port1":1,"Port2":2,"Port3":3,"Port4":4,"Port5":5,"Port6":6,"Port7":7,"Port8":8,"M1":9,"M2":10}
-		private var portPortEnum:Object={"Port1":"PORT_1","Port2":"PORT_2","Port3":"PORT_3","Port4":"PORT_4","Port5":"PORT_5","Port6":"PORT_6","Port7":"PORT_7","Port8":"PORT_8","M1":"M1","M2":"M2"}
-		private var slotSlotEnum:Object={"Slot1":"SLOT_1","Slot2":"SLOT_2"}
-		private var slotEnum:Object = {"Slot1":0,"Slot2":1}
-		private var noteEnum:Object = {"B0":31,"C1":33,"D1":37,"E1":41,"F1":44,"G1":49,"A1":55,"B1":62,
-			"C2":65,"D2":73,"E2":82,"F2":87,"G2":98,"A2":110,"B2":123,
-			"C3":131,"D3":147,"E3":165,"F3":175,"G3":196,"A3":220,"B3":247,
-			"C4":262,"D4":294,"E4":330,"F4":349,"G4":392,"A4":440,"B4":494,
-			"C5":523,"D5":587,"E5":659,"F5":698,"G5":784,"A5":880,"B5":988,
-			"C6":1047,"D6":1175,"E6":1319,"F6":1397,"G6":1568,"A6":1760,"B6":1976,
-			"C7":2093,"D7":2349,"E7":2637,"F7":2794,"G7":3136,"A7":3520,"B7":3951,
-			"C8":4186,"D8":4699,"Half":500,"Quater":250,"Eighth":125,"Whole":1000,"Double":2000,"Zero":0};
-		*/
+//		private var _currentDevice:String;
+//		private var _extSrcPath:String = "";
+//		private var leoPortMap:Array=[[null,null],["11","A8"],["13","A11"],["10","9"],["1","0"],["MISO","SCK"],["A0","A1"],["A2","A3"],["A4","A5"],["6","7"],["5","4"]]
+//		private var portEnum:Object = {"Port1":1,"Port2":2,"Port3":3,"Port4":4,"Port5":5,"Port6":6,"Port7":7,"Port8":8,"M1":9,"M2":10}
+//		private var portPortEnum:Object={"Port1":"PORT_1","Port2":"PORT_2","Port3":"PORT_3","Port4":"PORT_4","Port5":"PORT_5","Port6":"PORT_6","Port7":"PORT_7","Port8":"PORT_8","M1":"M1","M2":"M2"}
+//		private var slotSlotEnum:Object={"Slot1":"SLOT_1","Slot2":"SLOT_2"}
+//		private var slotEnum:Object = {"Slot1":0,"Slot2":1}
+//		private var noteEnum:Object = {"B0":31,"C1":33,"D1":37,"E1":41,"F1":44,"G1":49,"A1":55,"B1":62,
+//			"C2":65,"D2":73,"E2":82,"F2":87,"G2":98,"A2":110,"B2":123,
+//			"C3":131,"D3":147,"E3":165,"F3":175,"G3":196,"A3":220,"B3":247,
+//			"C4":262,"D4":294,"E4":330,"F4":349,"G4":392,"A4":440,"B4":494,
+//			"C5":523,"D5":587,"E5":659,"F5":698,"G5":784,"A5":880,"B5":988,
+//			"C6":1047,"D6":1175,"E6":1319,"F6":1397,"G6":1568,"A6":1760,"B6":1976,
+//			"C7":2093,"D7":2349,"E7":2637,"F7":2794,"G7":3136,"A7":3520,"B7":3951,
+//			"C8":4186,"D8":4699,"Half":500,"Quarter":250,"Eighth":125,"Whole":1000,"Double":2000,"Zero":0};
 		private var EVENT_NATIVE_DONE:String = "EVENT_NATIVE_DONE"
 		private var EVENT_LIBCOMPILE_DONE:String = "EVENT_LIBCOMPILE_DONE"
 		private var EVENT_COMPILE_DONE:String = "EVENT_COMPILE_DONE"
@@ -131,6 +131,16 @@ void setup(){
 void loop(){
 //serialParserCall
 //loop
+_loop();
+}
+
+void _delay(float seconds){
+long endTime = millis() + seconds * 1000;
+while(millis() < endTime)_loop();
+}
+
+void _loop(){
+//_loop
 }
 
 ]]> ).toString();//delay(50);
@@ -324,12 +334,12 @@ void updateVar(char * varName,double * var)
 		
 		private function parseDelay(fun:Object):String{
 			var cBlk:CodeBlock=getCodeBlock(fun[1]);
-			var funcode:String=(StringUtil.substitute("delay(1000*{0});\n",cBlk.type=="obj"?cBlk.code.code:cBlk.code));
+			var funcode:String=(StringUtil.substitute("_delay({0});\n",cBlk.type=="obj"?cBlk.code.code:cBlk.code));
 			return funcode;
 		}
 		private function parseDoRepeat(blk:Object):String{
 			var initCode:CodeBlock = getCodeBlock(blk[1]);
-			var repeatCode:String=StringUtil.substitute("for(int i=0;i<{0};i++)\n{\n",initCode.type=="obj"?initCode.code.code:initCode.code);
+			var repeatCode:String=StringUtil.substitute("for(int __i__=0;__i__<{0};++__i__)\n{\n",initCode.type=="obj"?initCode.code.code:initCode.code);
 			if(blk[2]!=null){
 				for(var i:int=0;i<blk[2].length;i++){
 					var b:Object = blk[2][i]
@@ -340,14 +350,37 @@ void updateVar(char * varName,double * var)
 			repeatCode+="}\n";
 			return repeatCode;
 		}
+		/*private function parseForever(blk:Object):String{
+			var forEverCode:String = "while(1){\n";
+			if(blk[1])
+			{
+				if(blk[1] is Array)
+				{
+					for(var k:int=0;k<blk[1].length;k++)
+					{
+						var initCode:CodeBlock = getCodeBlock(blk[1][k]);
+						forEverCode+=initCode.type=="obj"?initCode.code.code:initCode.code;
+					}
+				}
+				else
+				{
+					initCode = getCodeBlock(blk[1]);
+					forEverCode+=initCode.type=="obj"?initCode.code.code:initCode.code;
+				}
+			}
+			
+			
+			forEverCode+="}\n";
+			return forEverCode;
+		}*/
 		private function parseDoWaitUntil(blk:Object):String{
 			var initCode:CodeBlock = getCodeBlock(blk[1]);
-			var untilCode:String=StringUtil.substitute("while(!({0}));\n",initCode.type=="obj"?initCode.code.code:initCode.code);
+			var untilCode:String=StringUtil.substitute("while(!({0}))\n{\n_loop();\n}\n",initCode.type=="obj"?initCode.code.code:initCode.code);
 			return (untilCode);
 		}
 		private function parseDoUntil(blk:Object):String{
 			var initCode:CodeBlock = getCodeBlock(blk[1]);
-			var untilCode:String=StringUtil.substitute("while(!({0}))\n{\n",initCode.type=="obj"?initCode.code.code:initCode.code);
+			var untilCode:String=StringUtil.substitute("while(!({0}))\n{\n_loop();\n",initCode.type=="obj"?initCode.code.code:initCode.code);
 			if(blk[2]!=null){
 				for(var i:int=0;i<blk[2].length;i++){
 					var b:Object = blk[2][i]
@@ -609,13 +642,15 @@ void updateVar(char * varName,double * var)
 			if(funcode.length==0) return;
 			var c:String =  funcode.charAt(funcode.length-1)
 			if(ccode_pointer=="setup"){
-				if((ccode_setup.indexOf(funcode)==-1&&ccode_setup_fun.indexOf(funcode)==-1)||funcode.indexOf("delay")>-1||allowAdd){
+				ccode_setup_fun += funcode;
+				//解决连续两条设置变量的指令在Arduino下会被过滤的bug 这里貌似不需要去重处理，只要setup里面的代码保持初始化一次，后面work的代码应该可以多次出现 20161121
+				/*if((ccode_setup.indexOf(funcode)==-1&&ccode_setup_fun.indexOf(funcode)==-1)||funcode.indexOf("delay")>-1||allowAdd){
 //					if((funcode.indexOf(" = ")>-1&&funcode.indexOf("drawTemp")==-1&&funcode.indexOf("lastTime = ")==-1)&&funcode.indexOf("while")==-1&&funcode.indexOf("for")==-1){
 //						ccode_setup_def = funcode + ccode_setup_def;
 //					}else{
 						ccode_setup_fun += funcode;
 //					}
-				}
+				}*/
 			}
 			else if(ccode_pointer=="loop"){
 				ccode_loop+=funcode;
@@ -654,6 +689,13 @@ void updateVar(char * varName,double * var)
 				codeBlock.code = parseVarRead(blk);
 				return codeBlock;
 			}
+			else if(blk[0]=="initVar:to:"){
+				codeBlock.type = "obj";
+				codeBlock.code = null;
+				var tmpCodeBlock:Object = {code:{setup:parseVarSet(blk),work:"",def:"",inc:"",loop:""}}
+				moduleList.push(tmpCodeBlock);
+				return codeBlock;
+			}
 			else if(blk[0]=="setVar:to:"){
 				codeBlock.type = "string";
 				codeBlock.code = parseVarSet(blk);
@@ -686,7 +728,11 @@ void updateVar(char * varName,double * var)
 				codeBlock.type = "string";
 				codeBlock.code = parseDoRepeat(blk);
 				return codeBlock;
-			}else if(blk[0]=="doWaitUntil"){
+			}/*else if(blk[0]=="doForever"){
+				codeBlock.type = "string";
+				codeBlock.code = parseForever(blk);
+				return codeBlock;
+			}*/else if(blk[0]=="doWaitUntil"){
 				codeBlock.type = "string";
 				codeBlock.code = parseDoWaitUntil(blk);
 				return codeBlock;
@@ -695,12 +741,13 @@ void updateVar(char * varName,double * var)
 				codeBlock.code = parseDoUntil(blk);
 				return codeBlock;
 			}else if(blk[0]=="call"){
-				codeBlock.type = "string";
-				codeBlock.code = parseCall(blk);
+				codeBlock.type = "obj";//修复新建的模块指令函数，无法重复调用
+				codeBlock.code = new CodeObj(parseCall(blk));
 				return codeBlock;
 			}else if(blk[0]=="randomFrom:to:"){
 				codeBlock.type = "number";
-				codeBlock.code = StringUtil.substitute("random({0},{1})",getCodeBlock(blk[1]).code,getCodeBlock(blk[2]).code);
+				//as same as scratch, include max value
+				codeBlock.code = StringUtil.substitute("random({0},({1})+1)",getCodeBlock(blk[1]).code,getCodeBlock(blk[2]).code);
 				return codeBlock;
 			}else if(blk[0]=="computeFunction:of:"){
 				codeBlock.type = "number";
@@ -777,8 +824,16 @@ void updateVar(char * varName,double * var)
 		private function substitute(str:String,params:Array,ext:ScratchExtension=null,offset:uint = 1):String{
 			for(var i:uint=0;i<params.length-offset;i++){
 				var o:CodeBlock = getCodeBlock(params[i+offset]);
+				//满足下面的条件则不作字符替换处理
+				if(str.indexOf("ir.sendString")>-1 || (str.indexOf(".drawStr(")>-1 && i==3))
+				{
+					var v:*=o.code;
+				}
+				else
+				{
+					v=o.type=="string"?(ext.values[o.code]==undefined?o.code:ext.values[o.code]):null;
+				}
 				
-				var v:*=o.type=="string"?(ext.values[o.code]==undefined?o.code:ext.values[o.code]):null;
 //				if(str.indexOf("sendString")>-1){
 //					v = o.code;
 //				}
@@ -789,8 +844,10 @@ void updateVar(char * varName,double * var)
 					s.type = (s.type=="obj"&&s.code.type!="code")?"string":"number";
 					
 				}else{
+					
 					s.type = isNaN(Number(v))?"string":"number";
 					s.code = v;
+
 				}
 				if((s.code==""||s.code==" ")&&s.code!=0&&s.type == "number"){
 					s.type = "string";
@@ -809,7 +866,20 @@ void updateVar(char * varName,double * var)
 						s.type = "string";
 					}
 				}
-				str = str.split("{"+i+"}").join(( s.type == "string")?('"'+s.code+'"'):(( s.type == "number")?s.code:s.code.code));
+				/*if(str.indexOf("se.equalString")>-1)
+				{
+					s.type = "string";
+				}*/
+				//如果用到通讯模块的=号，那么将数字也转为字符串进行比较，否则报错
+				if(str.indexOf("se.equalString")>-1)
+				{
+					str = str.split("{"+i+"}").join(( s.type == "string"||!isNaN(Number(s.code)))?('"'+s.code+'"'):(( s.type == "number")?s.code:s.code.code));
+				}
+				else
+				{
+					str = str.split("{"+i+"}").join(( s.type == "string")?('"'+s.code+'"'):(( s.type == "number")?s.code:s.code.code));
+				}
+				
 			}
 			return str;
 		}
@@ -925,10 +995,9 @@ void updateVar(char * varName,double * var)
 		private var requiredCpp:Array=[];
 		public function jsonToCpp(code:String):String{
 			// reset code buffers 
-			var retcode:String
 			ccode_setup=""
 			ccode_setup_fun = "";
-			ccode_setup_def = "";
+//			ccode_setup_def = "";
 			ccode_loop=""
 			ccode_inc=""
 			ccode_def=""
@@ -954,15 +1023,73 @@ void updateVar(char * varName,double * var)
 				parseScripts(objs.scripts);
 			}
 			ccode_func+=buildFunctions();
-			retcode = codeTemplate.replace("//setup",ccode_setup).replace("//loop", ccode_loop).replace("//define", ccode_def).replace("//include", ccode_inc).replace("//function",ccode_func);
+			ccode_setup = hackVaribleWithPinMode(ccode_setup);
+			var retcode:String = codeTemplate.replace("//setup",ccode_setup).replace("//loop", ccode_loop).replace("//define", ccode_def).replace("//include", ccode_inc).replace("//function",ccode_func);
+			retcode = retcode.replace("//_loop", ccode_loop2);
 			retcode = buildSerialParser(retcode);
 			retcode = fixTabs(retcode);
 			retcode = fixVars(retcode);
+			//由于2.4G手柄，不同主板的接口不一样，所以在这里修正一下port口
+			if(retcode.indexOf("MePS2 MePS2(PORT)")>-1)
+			{
+				if(DeviceManager.sharedManager().currentName == "Mega Pi")
+				{
+					retcode = retcode.replace("MePS2 MePS2(PORT)","MePS2 MePS2(PORT_15)");
+				}
+				else if(DeviceManager.sharedManager().currentName == "Me Auriga")
+				{
+					retcode = retcode.replace("MePS2 MePS2(PORT)","MePS2 MePS2(PORT_16)");
+				}
+				else if(DeviceManager.sharedManager().currentName == "mBot")
+				{
+					retcode = retcode.replace("MePS2 MePS2(PORT)","MePS2 MePS2(PORT_5)");
+				}
+			}
+			
 			requiredCpp = getRequiredCpp()
 			// now go into compile process
 			return (retcode);
 			//			buildAll(retcode, requiredCpp);
 		}
+		
+		// HACK: 在Arduino模式下，如果你定义一个变量，设置一个变量，并对其进行IO操作，
+		// 该变量会在pinMode语句之后被设置。
+		// 这会导致pinMode语句中变量未初始化的问题。
+		private function hackVaribleWithPinMode(originalCode:String):String
+		{
+			var lines:Array= originalCode.split("\n");
+			var collectedPinModes:Array = [];
+			var line:String;
+			// collect all pinMode commands
+			for(var i:int=0; i<lines.length; i++) {
+				line = lines[i];
+				if( line.indexOf("pinMode") != -1 || line.indexOf("// init pin") != -1 ) {
+					var sliced:Array = lines.splice(i, 1);
+					collectedPinModes = collectedPinModes.concat(sliced);
+					i = i-1;
+				}
+			}
+			
+			if(collectedPinModes.length == 0){
+				return originalCode;
+			}
+			
+			// put pinMode command just before io commands
+			for(i=0; i<lines.length; i++) {
+				line = lines[i];
+				if(line.indexOf("digitalWrite")!=-1 || line.indexOf("digitalRead")!=-1 || line.indexOf("pulseIn")!=-1 || 
+					line.indexOf("if(")!=-1 || line.indexOf("for(")!=-1 || line.indexOf("while(")!=-1 || 
+					line.indexOf("analogWrite")!=-1 || line.indexOf("analogWrite")!=-1 || line.indexOf("// write to")!=-1) {
+					break;
+				}
+			}
+			var linesBefore:Array = lines.splice(0, i);
+			lines = linesBefore.concat(collectedPinModes, lines);
+				
+			var joinedLines:String = lines.join("\n");
+			return joinedLines;
+		}
+		
 		private function parseScripts(scripts:Object):Boolean
 		{
 			if(null == scripts){
@@ -971,12 +1098,19 @@ void updateVar(char * varName,double * var)
 			var result:Boolean = false;
 			for(var j:uint=0;j<scripts.length;j++){
 				var scr:Object = scripts[j][2];
-				if(scr[0][0].indexOf("runArduino")==-1){
-					if(scr[0][0]=="procDef"){
-						addFunction(scr as Array);
-						parseModules(scr);
-						buildCodes();
-					}
+				if(scr[0][0]=="procDef"){
+					addFunction(scr as Array);
+					parseModules(scr);
+					buildCodes();
+				}
+			}
+			for(j=0;j<scripts.length;j++){
+				scr = scripts[j][2];
+				if(scr[0][0].indexOf("whenButtonPressed") > 0)
+				{
+					getCodeBlock(scr[0]);
+				}
+				if(scr[0][0].indexOf("runArduino") < 0){
 					continue;
 				}//选中的Arduino主代码
 				
@@ -984,11 +1118,12 @@ void updateVar(char * varName,double * var)
 					continue;
 				}
 				buildCodes();
-				if(_scratch!=null){
-					_scratch.dispatchEvent(new RobotEvent(RobotEvent.CCODE_GOT,""));
-				}
+
 				result = true;
 				//break; // only the first entrance is parsed
+			}
+			if(_scratch!=null){
+				_scratch.dispatchEvent(new RobotEvent(RobotEvent.CCODE_GOT,""));
 			}
 			return result;
 		}
@@ -996,11 +1131,11 @@ void updateVar(char * varName,double * var)
 			buildInclude();			
 			buildDefine();
 			buildSetup();
-			ccode_setup+=ccode_setup_def;
+//			ccode_setup+=ccode_setup_def;
 			//buildSetup();
 			ccode_setup+=ccode_setup_fun;
 			ccode_setup_fun = "";
-			ccode_loop+=buildLoopMaintance();
+			ccode_loop2=buildLoopMaintance();
 		}
 		private function buildSetup():String{
 			var modInitCode:String = "";
@@ -1046,22 +1181,53 @@ void updateVar(char * varName,double * var)
 					ccode_def+=code;
 				}
 			}
+			
 			for(i=0;i<moduleList.length;i++){
 				var m:Object = moduleList[i]
 				code = m["code"]["def"];
 				code = code is CodeObj?code.code:code;
 				if(code!=""){
-					var array:Array = code.split("\n");
-					for(var j:int=0;j<array.length;j++){
-						if(!Boolean(array[j])){
-							continue;
-						}
-						if(array[j].indexOf("#") == 0 || ccode_def.indexOf(array[j]) < 0){
-							ccode_def+=array[j]+"\n";
+					if(code.indexOf("--separator--")>-1)
+					{
+						//以--separator--分割，以代码块为单位进行去重
+						var categoryArr:Array = code.split("--separator--");
+						for(var k:int=0;k<categoryArr.length;k++)
+						{
+							var array:Array = categoryArr[k].split("\n");
+							var tmpCode_def:String = "";
+							for(var j:int=0;j<array.length;j++){
+								if(!Boolean(array[j])){
+									continue;
+								}
+								
+								tmpCode_def+=array[j]+"\n";
+								
+								//ccode_def+=array[j]+"\n";
+							}
+							if(ccode_def.indexOf(tmpCode_def)<0)
+							{
+								ccode_def+=tmpCode_def;
+							}
 						}
 					}
+					else
+					{
+						//按行分割，进行去重
+						array = code.split("\n");
+						for(k=0;k<array.length;k++)
+						{
+							if(ccode_def.indexOf(array[k])<0)
+							{
+								ccode_def+=array[k]+"\n";
+							}
+						}
+						
+					}
+					
+					
 				}
 			}
+			
 			return modDefineCode;
 		}
 		
@@ -1073,37 +1239,38 @@ void updateVar(char * varName,double * var)
 				code = code is CodeObj?code.code:code;
 				if(code!=""){
 					if(ccode_inc.indexOf(code)==-1)
-						ccode_inc += code;
+						if(code.indexOf("#include")>-1)
+						{
+							ccode_inc = code+ccode_inc;
+						}
+						else
+						{
+							ccode_inc += code;
+						}
+						//ccode_inc += code;
 				}
 			}
 			if(DeviceManager.sharedManager().currentName == "Me Auriga" && ccode_inc.indexOf("void isr_process_encoder1(void)") < 0){
 				ccode_inc += <![CDATA[
-#include <MeAuriga.h>
-
+//Encoder Motor
 MeEncoderOnBoard Encoder_1(SLOT1);
 MeEncoderOnBoard Encoder_2(SLOT2);
 
 void isr_process_encoder1(void)
 {
-  if(digitalRead(Encoder_1.GetPortB()) == 0)
-  {
-    Encoder_1.PulsePosMinus();
-  }
-  else
-  {
-    Encoder_1.PulsePosPlus();
+  if(digitalRead(Encoder_1.getPortB()) == 0){
+    Encoder_1.pulsePosMinus();
+  }else{
+    Encoder_1.pulsePosPlus();
   }
 }
 
 void isr_process_encoder2(void)
 {
-  if(digitalRead(Encoder_2.GetPortB()) == 0)
-  {
-    Encoder_2.PulsePosMinus();
-  }
-  else
-  {
-    Encoder_2.PulsePosPlus();
+  if(digitalRead(Encoder_2.getPortB()) == 0){
+    Encoder_2.pulsePosMinus();
+  }else{
+    Encoder_2.pulsePosPlus();
   }
 }
 
@@ -1111,30 +1278,166 @@ void move(int direction, int speed)
 {
   int leftSpeed = 0;
   int rightSpeed = 0;
-  if(direction == 1)
-  {
+  if(direction == 1){
     leftSpeed = -speed;
     rightSpeed = speed;
+  }else if(direction == 2){
+    leftSpeed = speed;
+    rightSpeed = -speed;
+  }else if(direction == 3){
+    leftSpeed = -speed;
+    rightSpeed = -speed;
+  }else if(direction == 4){
+    leftSpeed = speed;
+    rightSpeed = speed;
+  }
+  Encoder_1.setTarPWM(leftSpeed);
+  Encoder_2.setTarPWM(rightSpeed);
+}
+void moveDegrees(int direction,long degrees, int speed_temp)
+{
+  speed_temp = abs(speed_temp);
+  if(direction == 1)
+  {
+    Encoder_1.move(-degrees,(float)speed_temp);
+    Encoder_2.move(degrees,(float)speed_temp);
   }
   else if(direction == 2)
   {
-    leftSpeed = speed;
-    rightSpeed = -speed;
+    Encoder_1.move(degrees,(float)speed_temp);
+    Encoder_2.move(-degrees,(float)speed_temp);
   }
   else if(direction == 3)
   {
-    leftSpeed = -speed;
-    rightSpeed = -speed;
+    Encoder_1.move(-degrees,(float)speed_temp);
+    Encoder_2.move(-degrees,(float)speed_temp);
   }
   else if(direction == 4)
   {
-    leftSpeed = speed;
-    rightSpeed = speed;
+    Encoder_1.move(degrees,(float)speed_temp);
+    Encoder_2.move(degrees,(float)speed_temp);
   }
-  Encoder_1.setMotorPwm(leftSpeed);
-  Encoder_2.setMotorPwm(rightSpeed);
 }
 ]]>.toString();
+			}else if(DeviceManager.sharedManager().currentName == "Mega Pi" && ccode_inc.indexOf("void isr_process_encoder1(void)") < 0){
+				ccode_inc += <![CDATA[
+
+//Encoder Motor
+MeEncoderOnBoard Encoder_1(SLOT1);
+MeEncoderOnBoard Encoder_2(SLOT2);
+MeEncoderOnBoard Encoder_3(SLOT3);
+MeEncoderOnBoard Encoder_4(SLOT4);
+
+void isr_process_encoder1(void)
+{
+  if(digitalRead(Encoder_1.getPortB()) == 0){
+    Encoder_1.pulsePosMinus();
+  }else{
+    Encoder_1.pulsePosPlus();
+  }
+}
+
+void isr_process_encoder2(void)
+{
+  if(digitalRead(Encoder_2.getPortB()) == 0){
+    Encoder_2.pulsePosMinus();
+  }else{
+    Encoder_2.pulsePosPlus();
+  }
+}
+
+void isr_process_encoder3(void)
+{
+  if(digitalRead(Encoder_3.getPortB()) == 0){
+    Encoder_3.pulsePosMinus();
+  }else{
+    Encoder_3.pulsePosPlus();
+  }
+}
+
+void isr_process_encoder4(void)
+{
+  if(digitalRead(Encoder_4.getPortB()) == 0){
+    Encoder_4.pulsePosMinus();
+  }else{
+    Encoder_4.pulsePosPlus();
+  }
+}
+
+void move(int direction, int speed)
+{
+  int leftSpeed = 0;
+  int rightSpeed = 0;
+  if(direction == 1){
+    leftSpeed = -speed;
+    rightSpeed = speed;
+  }else if(direction == 2){
+    leftSpeed = speed;
+    rightSpeed = -speed;
+  }else if(direction == 3){
+    leftSpeed = speed;
+    rightSpeed = speed;
+  }else if(direction == 4){
+    leftSpeed = -speed;
+    rightSpeed = -speed;
+  }
+  Encoder_1.setTarPWM(rightSpeed);
+  Encoder_2.setTarPWM(leftSpeed);
+}
+void moveDegrees(int direction,long degrees, int speed_temp)
+{
+  speed_temp = abs(speed_temp);
+  if(direction == 1)
+  {
+    Encoder_1.move(degrees,(float)speed_temp);
+    Encoder_2.move(-degrees,(float)speed_temp);
+  }
+  else if(direction == 2)
+  {
+    Encoder_1.move(-degrees,(float)speed_temp);
+    Encoder_2.move(degrees,(float)speed_temp);
+  }
+  else if(direction == 3)
+  {
+    Encoder_1.move(degrees,(float)speed_temp);
+    Encoder_2.move(degrees,(float)speed_temp);
+  }
+  else if(direction == 4)
+  {
+    Encoder_1.move(-degrees,(float)speed_temp);
+    Encoder_2.move(-degrees,(float)speed_temp);
+  }
+
+}
+]]>.toString();
+			}
+			else if(DeviceManager.sharedManager().currentName == "mBot" && ccode_inc.indexOf("void move(int direction, int speed)") < 0)
+			{
+				ccode_inc += <![CDATA[
+MeDCMotor motor_9(9);
+MeDCMotor motor_10(10);		
+
+void move(int direction, int speed)
+{
+  int leftSpeed = 0;
+  int rightSpeed = 0;
+  if(direction == 1){
+	leftSpeed = speed;
+	rightSpeed = speed;
+  }else if(direction == 2){
+	leftSpeed = -speed;
+	rightSpeed = -speed;
+  }else if(direction == 3){
+	leftSpeed = -speed;
+	rightSpeed = speed;
+  }else if(direction == 4){
+	leftSpeed = speed;
+	rightSpeed = -speed;
+  }
+  motor_9.run((9)==M1?-(leftSpeed):(leftSpeed));
+  motor_10.run((10)==M1?-(rightSpeed):(rightSpeed));
+}
+				]]>.toString();
 			}
 			return modIncudeCode;
 		}
@@ -1257,13 +1560,7 @@ void move(int direction, int speed)
 		private var numOfProcess:uint = 0;
 		private var numOfSuccess:uint = 0;
 		private var _projectDocumentName:String = "";
-		private function prepareProjectDir(ccode:String):void{
-			_currentDevice = DeviceManager.sharedManager().currentDevice;
-			
-			var cppList:Array =  requiredCpp;
-			// get building direcotry ready
-			trace(this, "prepareProjectDir");
-		}
+		
 		
 		/*
 		public function uploadHex(evt:*):void{

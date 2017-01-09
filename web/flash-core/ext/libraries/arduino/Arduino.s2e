@@ -19,13 +19,13 @@
 		{"encode":"{d0}{d1}","setup":"pinMode({0},OUTPUT);\n","inc":"","def":"","work":"digitalWrite({0},{1});\n","loop":""}],
 		
 		["w", "set pwm pin %n output as %d.pwmvalue","runPwm", "5", 0,
-		{"encode":"{d0}{d1}","setup":"","inc":"","def":"","work":"pinMode({0},OUTPUT);\nanalogWrite({0},{1});\n","loop":""}],
+		{"encode":"{d0}{d1}","setup":"pinMode({0},OUTPUT);\n","inc":"","def":"","work":"analogWrite({0},{1});\n","loop":""}],
 		
 		["w", "play tone pin %n on note %d.notes beat %d.beats","runTone", "9", "C4","Half",
-		{"encode":"{d0}{s1}{s2}","setup":"","inc":"","def":"","work":"pinMode({0},OUTPUT);\ntone({0},{1},{2});\ndelay({2});\n","loop":""}],
+		{"encode":"{d0}{s1}{s2}","setup":"pinMode({0},OUTPUT);\n","inc":"","def":"","work":"tone({0},{1},{2}); // write to buzzer\ndelay({2});\n","loop":""}],
 		
 		["w", "set servo pin %n angle as %d.servovalue","runServoArduino", "9", 90,
-		{"encode":"{d0}{d1}","setup":"servo_{0}.attach({0});\n","inc":"#include <Servo.h>\n","def":"Servo servo_{0};\n","work":"servo_{0}.write({1});\n","loop":""}],
+		{"encode":"{d0}{d1}","setup":"servo_{0}.attach({0}); // init pin\n","inc":"#include <Servo.h>\n","def":"Servo servo_{0};\n","work":"servo_{0}.write({1}); // write to servo\n","loop":""}],
 		
 		["w", "serial write text %s", "serialWrite", "hello",
 		{"setup":"Serial.begin(115200);\n","inc":"","def":"","work":"Serial.println({0});\n","loop":""}],
@@ -37,13 +37,14 @@
 		{"setup":"Serial.begin(115200);\n","inc":"","def":"","work":"Serial.read()","loop":""}],
 		
 		["R", "read ultrasonic sensor trig pin %n echo pin %n","getUltrasonicArduino",13,12,
-		{"encode":"{d0}","setup":"","inc":"","def":"float getDistance(int trig,int echo){\npinMode(trig,OUTPUT);\ndigitalWrite(trig,LOW);\ndelayMicroseconds(2);\ndigitalWrite(trig,HIGH);\ndelayMicroseconds(10);\ndigitalWrite(trig,LOW);\npinMode(echo, INPUT);\nreturn pulseIn(echo,HIGH,30000)/58.0;\n}\n","work":"getDistance({0},{1})","loop":""}],
+		{"encode":"{d0}","setup":"","inc":"","def":"--separator--float getDistance(int trig,int echo){\npinMode(trig,OUTPUT);\ndigitalWrite(trig,LOW);\ndelayMicroseconds(2);\ndigitalWrite(trig,HIGH);\ndelayMicroseconds(10);\ndigitalWrite(trig,LOW);\npinMode(echo, INPUT);\nreturn pulseIn(echo,HIGH,30000)/58.0;\n}\n","work":"getDistance({0},{1})","loop":""}],
 		
 		["R", "timer","getTimer", "0",
-		{"encode":"{n0}","setup":"","inc":"","def":"double currentTime = 0;\ndouble lastTime = 0;\n","work":"currentTime","loop":"currentTime = millis()/1000.0 - lastTime;"}],
+		{"encode":"{n0}","setup":"","inc":"","def":"double currentTime = 0;\ndouble lastTime = 0;\ndouble getLastTime(){\n\treturn currentTime = millis()/1000.0 - lastTime;\n}\n","work":"getLastTime()","loop":""}],
 		
 		["w", "reset timer","resetTimer", "0",
 		{"encode":"{n0}","setup":"","inc":"","def":"double currentTime = 0;\ndouble lastTime = 0;\n","work":"lastTime = millis()/1000.0;\n","loop":""}]
+		
 	],
 	"menus": {
 		"beats":["500","250","125","1000","2000","0"],

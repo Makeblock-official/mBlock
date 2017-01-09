@@ -53,6 +53,12 @@ package cc.makeblock.interpreter
 			}
 			
 			blockList.push.apply(null, converter.printBlockList(block));
+			var allBlockOp:Array = [];
+			getAllBlocksOp(blockList,allBlockOp);
+			for(var i:int=0;i<allBlockOp.length;i++)
+			{
+				MBlock.app.track("/blocks/"+allBlockOp[i]);
+			}
 //			trace("begin==================");
 //			trace(JSON.stringify(blockList));
 //			var codeList:Array = realInterpreter.compile(blockList);
@@ -62,7 +68,29 @@ package cc.makeblock.interpreter
 			thread.userData = new ThreadUserData(targetObj, block);
 			return thread;
 		}
-		
+		private function getAllBlocksOp(blist:Array,resultArr:Array):void
+		{
+			for(var i:int=0;i<blist.length;i++)
+			{
+				if(blist[i].code)
+				{
+					resultArr.push(blist[i].type);
+					getAllBlocksOp(blist[i].code,resultArr);
+				}
+				if(blist[i].condition)
+				{
+					getAllBlocksOp([blist[i].condition],resultArr);
+				}
+				if(blist[i].argList)
+				{
+					getAllBlocksOp(blist[i].argList,resultArr);
+				}
+				if(blist[i].method)
+				{
+					resultArr.push(blist[i].method);
+				}
+			}
+		}
 		public function stopAllThreads():void
 		{
 			realInterpreter.stopAllThreads();
