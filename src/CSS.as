@@ -23,7 +23,8 @@
 // Styles for Scratch Editor based on the Upstatement design.
 
 package {
-	import flash.text.*;
+	import flash.text.TextFormat;
+	
 	import assets.Resources;
 
 public class CSS {
@@ -42,7 +43,7 @@ public class CSS {
 	public static const onColor:int = textColor; // 0x4C4D4F
 	public static const overColor:int = 0x179FD7;
 	public static const arrowColor:int = 0xA6A8AC;
-
+	public static const disableColor:uint = 0xEEEEEE;
 	// Fonts
 	public static const font:String = Resources.chooseFont(['微软雅黑','Arial', 'Verdana', 'DejaVu Sans','Microsoft Yahei']);
 	public static const menuFontSize:int = 13;

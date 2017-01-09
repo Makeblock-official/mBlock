@@ -7,11 +7,21 @@
 	"blockSpecs": [
 		["h","Auriga Program","runArduino",{"src":"orion","inc":"#include <MeAuriga.h>\n","def":"","setup":"//Set Pwm 8KHz\nTCCR1A = _BV(WGM10);\nTCCR1B = _BV(CS11) | _BV(WGM12);\nTCCR2A = _BV(WGM21) | _BV(WGM20);\nTCCR2B = _BV(CS21);\n\n ","loop":""}],
 		
+		
 		["w", "%m.direction at speed %d.motorvalue","runBot", "run forward", 0,
 		{"encode":"{d0}{s1}","setup":"attachInterrupt(Encoder_1.getIntNum(), isr_process_encoder1, RISING);\nattachInterrupt(Encoder_2.getIntNum(), isr_process_encoder2, RISING);\n","inc":"","def":"","work":"move({0},{1});\n","loop":"Encoder_1.loop();\nEncoder_2.loop();\n"}],
 		
 		["w", "%m.direction %n degrees at the speed of%d.motorDegreesvalue rpm","runDegreesBot", "run forward",1000, 100,
 		{"encode":"{d0}{d1}{s2}","setup":"attachInterrupt(Encoder_1.getIntNum(), isr_process_encoder1, RISING);\nattachInterrupt(Encoder_2.getIntNum(), isr_process_encoder2, RISING);\nEncoder_1.setPulse(9);\nEncoder_1.setRatio(39.267);\nEncoder_1.setPosPid(1.8,0,1.2);\nEncoder_1.setSpeedPid(0.18,0,0);\nEncoder_2.setPulse(9);\nEncoder_2.setRatio(39.267);\nEncoder_2.setPosPid(1.8,0,1.2);\nEncoder_2.setSpeedPid(0.18,0,0);\n\n","inc":"","def":"","work":"moveDegrees({0},{1},{2});\n","loop":"Encoder_1.loop();\nEncoder_2.loop();\n"}],
+		
+		["w", "set encoder motor on board %d.slot rotate at the speed of %n rpm","runEncoderMotorOnBoard", "Slot1", 100,
+		{"encode":"{d0}{s1}{s2}","setup":"attachInterrupt(Encoder_{0}.getIntNum(), isr_process_encoder{0}, RISING);\nEncoder_{0}.setPulse(9);\nEncoder_{0}.setRatio(39.267);\nEncoder_{0}.setPosPid(1.8,0,1.2);\nEncoder_{0}.setSpeedPid(0.18,0,0);\n\n","inc":"","def":"","work":"Encoder_{0}.runSpeed({1});\n","loop":"Encoder_{0}.loop();\n"}],
+		
+		["w", "set encoder motor on board %d.slot rotate %n degrees at the speed of %n rpm","runEncoderMotorRotateOnBoard", "Slot1", 1000,180,
+		{"encode":"{d0}{s1}{s2}","setup":"attachInterrupt(Encoder_{0}.getIntNum(), isr_process_encoder{0}, RISING);\nEncoder_{0}.setPulse(9);\nEncoder_{0}.setRatio(39.267);\nEncoder_{0}.setPosPid(1.8,0,1.2);\nEncoder_{0}.setSpeedPid(0.18,0,0);\n\n","inc":"","def":"","work":"Encoder_{0}.move({1},abs({2}));\n","loop":"Encoder_{0}.loop();\n"}],
+		
+		["w", "set encoder motor on board %d.slot power to %d.motorvalue","runEncoderMotorOnBoardPWM", "Slot1", 100,
+		{"encode":"{d0}{d1}","setup":"attachInterrupt(Encoder_{0}.getIntNum(), isr_process_encoder{0}, RISING);\n","inc":"","def":"","work":"Encoder_{0}.setTarPWM({1});\n","loop":"Encoder_{0}.loop();\n"}],
 		
 		["w", "set DC motor%d.motorPort speed %d.motorvalue","runMotor", "Port1", 0,
 		{"encode":"{d0}{s1}","setup":"","inc":"","def":"MeDCMotor motor_{0}({0});\n","work":"motor_{0}.run({1});\n","loop":""}],
@@ -21,18 +31,10 @@
 		
 		["w", "set stepper motor%d.exMotorPort speed %d.stepperSpeed distance %n","runStepperMotor", "Port1", 3000, 1000,
 		{"encode":"{d0}{s1}{s2}","setup":"","inc":"","def":"MeStepper stepper_{0}({0});\n","work":"stepper_{0}.move({2});\nstepper_{0}.setMaxSpeed({1});\nstepper_{0}.setSpeed({1});\n","loop":"stepper_{0}.runSpeedToPosition();\n"}],
-		
+			
 		["w", "set encoder motor%d.exMotorPort %d.slot rotate %n degrees at the speed of %n rpm","runEncoderMotorRpm", "Port1", "Slot1", 1000, 180,
 		{"encode":"{d0}{s1}{s2}","setup":"encoder_{0}_{1}.begin();\nencoder_{0}_{1}.runSpeed(0);\n","inc":"","def":"MeEncoderMotor encoder_{0}_{1}(0x09,{1});\n","work":"encoder_{0}_{1}.move({2},abs({3}));\n","loop":""}],
 		
-		
-		["w", "set encoder motor on board %d.slot rotate at the speed of %n rpm","runEncoderMotorOnBoard", "Slot1", 100,
-		{"encode":"{d0}{s1}{s2}","setup":"attachInterrupt(Encoder_{0}.getIntNum(), isr_process_encoder{0}, RISING);\nEncoder_{0}.setPulse(9);\nEncoder_{0}.setRatio(39.267);\nEncoder_{0}.setPosPid(1.8,0,1.2);\nEncoder_{0}.setSpeedPid(0.18,0,0);\n\n","inc":"","def":"","work":"Encoder_{0}.runSpeed({1});\n","loop":"Encoder_{0}.loop();\n"}],
-		
-		["w", "set encoder motor on board %d.slot rotate %n degrees at the speed of %n rpm","runEncoderMotorRotateOnBoard", "Slot1", 1000,180,
-
-		{"encode":"{d0}{s1}{s2}","setup":"attachInterrupt(Encoder_{0}.getIntNum(), isr_process_encoder{0}, RISING);\nEncoder_{0}.setPulse(9);\nEncoder_{0}.setRatio(39.267);\nEncoder_{0}.setPosPid(1.8,0,1.2);\nEncoder_{0}.setSpeedPid(0.18,0,0);\n\n","inc":"","def":"","work":"Encoder_{0}.move({1},abs({2}));\n","loop":"Encoder_{0}.loop();\n"}],
-
 		
 		["w", "set 7-segments display%d.bluePorts number %n","runSevseg", "Port6", 100,
 		{"encode":"{d0}{f1}","setup":"","inc":"","def":"Me7SegmentDisplay seg7_{0}({0});\n","work":"seg7_{0}.display((float){1});\n","loop":""}],
@@ -125,7 +127,14 @@
 		["R", "gas sensor %d.blackPorts", "getGas", "Port6", {"encode":"", "setup":"", "inc":"", "def":"MeGasSensor gasSensor_{0}({0});\n", "work":"gasSensor_{0}.readAnalog()", "loop":""}],
 		["R", "compass sensor %d.whitePorts", "gatCompass", "Port6",{"encode":"", "setup":"compass_{0}.begin();\n", "inc":"", "def":"MeCompass compass_{0}({0});\n", "work":"compass_{0}.getAngle()", "loop":""}],
 		["B", "touch sensor %d.bluePorts","getTouchSensor","Port6",{"encode":"{d0}","setup":"","inc":"","def":"MeTouchSensor touchSensor_{0}({0});\n","work":"touchSensor_{0}.touched()","loop":""}],
-		["B", "button %d.blackPorts %m.button_key pressed","getButton","Port6","key1",{"encode":"{d0}","setup":"","inc":"","def":"Me4Button buttonSensor_{0}({0});\n","work":"(buttonSensor_{0}.pressed()=={1})","loop":"buttonSensor_{0}.pressed();"}]
+		["B", "button %d.blackPorts %m.button_key pressed","getButton","Port6","key1",{"encode":"{d0}","setup":"","inc":"","def":"Me4Button buttonSensor_{0}({0});\n","work":"(buttonSensor_{0}.pressed()=={1})","loop":"buttonSensor_{0}.pressed();"}],
+		["-"],
+		
+		["R", "timer","getTimer", "0",
+		{"encode":"{n0}","setup":"","inc":"","def":"double currentTime = 0;\ndouble lastTime = 0;\ndouble getLastTime(){\n\treturn currentTime = millis()/1000.0 - lastTime;\n}\n","work":"getLastTime()","loop":""}],
+		
+		["w", "reset timer","resetTimer", "0",
+		{"encode":"{n0}","setup":"","inc":"","def":"double currentTime = 0;\ndouble lastTime = 0;\n","work":"lastTime = millis()/1000.0;\n","loop":""}]
 		
         ],
     "menus": {

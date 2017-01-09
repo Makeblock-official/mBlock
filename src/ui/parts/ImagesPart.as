@@ -186,7 +186,8 @@ public class ImagesPart extends UIPart {
 
 		editor.shutdown();
 		var c:ScratchCostume = obj.currentCostume();
-		useBitmapEditor(c.isBitmap() && !c.text);
+		//这里加这句会出现混乱，convert to bitmap有时候要点两次才会切换，而且会对图像进行切割，造成混乱
+		//useBitmapEditor(c.isBitmap() && !c.text);
 		editor.editCostume(c, obj.isStage);
 		if(changed) app.setSaveNeeded();
 	}

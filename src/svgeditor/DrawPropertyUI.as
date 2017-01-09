@@ -138,10 +138,15 @@ package svgeditor {
 			zoomButtons.x = w - zoomButtons.width - 5;
 			zoomButtons.y = 5;
 	
-			modeLabel.x = w - 103;
+			//一般来讲，按钮的长度比label长，所以为了完整显示按钮，必须以完整显示button的情况下，再让label以button居中对齐
+			modeLabel.y = h - 47;
+			modeButton.y = modeLabel.y + 22;
+			modeButton.x = w-modeButton.width-10;
+			modeLabel.x = modeButton.x+(modeButton.width-modeLabel.width)/2;
+			/*modeLabel.x = w - 103;
 			modeLabel.y = h - 47;
 			modeButton.x = modeLabel.x + Math.round((modeLabel.width - modeButton.width) / 2);
-			modeButton.y = modeLabel.y + 22;
+			modeButton.y = modeLabel.y + 22;*/
 	
 			// hide in embedded editor???
 			//modeLabel.visible = modeButton.visible = !isEmbedded;

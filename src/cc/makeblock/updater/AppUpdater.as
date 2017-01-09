@@ -65,11 +65,12 @@ package cc.makeblock.updater
 			UpdateFrame.getInstance().hide();
 			var str:String = ldr.data;
 			var result:Array;
-			if(ApplicationManager.sharedManager().system == ApplicationManager.WINDOWS){
+			/*if(ApplicationManager.sharedManager().system == ApplicationManager.WINDOWS){
 				result = /v([\d.]+)\.zip/i.exec(str);
 			}else{
 				result = /mac.+?v([\d.]+)\.zip/i.exec(str);
-			}
+			}*/
+			result = /v([\d.]+).zip/i.exec(str);
 			if(null == result){
 				PopupUtil.enableRightMouseEvent();
 				return;
@@ -211,13 +212,14 @@ package cc.makeblock.updater
 			return VerToInt(source) > VerToInt(compareTarget);
 		}
 		
-		static public function VerToInt(str:String):uint
+		static public function VerToInt(str:String):Number
 		{
 			var list:Array = str.split(".");
-			var result:uint = 0;
-			for(var i:int=0; i<3; ++i){
-				result *= 1000;
-				result += list[i] ? parseInt(list[i]) : 0;
+			var result:Number = 0;
+			for(var i:int=0; i<list.length; ++i){
+				/*result *= 1000;
+				result += list[i] ? parseInt(list[i]) : 0;*/
+				result+=parseInt(list[i])/(Math.pow(10,i));
 			}
 			return result;
 		}

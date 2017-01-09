@@ -21,6 +21,8 @@ package extensions
 		private var _list:Array = [];
 		private var _currentBluetooth:String;
 		private var _hasNetFramework:Boolean = false;
+		private var _connectCnt:uint=0;//当前连接的次数
+		private const _connectTimes:uint=2;//重试次数
 		public function BluetoothManager()
 		{
 			if(ApplicationManager.sharedManager().system==ApplicationManager.WINDOWS){
@@ -231,9 +233,20 @@ package extensions
 					if(i<40){
 						setTimeout(checkName,3000);
 					}else{
-						_isBusy = false;
-						d.setTitle(Translator.map("Connecting Timeout"));
-						ConnectionManager.sharedManager().onClose(_currentBluetooth);
+						_connectCnt++;
+						if(_connectCnt<_connectTimes)
+						{
+							i=0;
+							setTimeout(checkName,1000);
+						}
+						else
+						{
+							_connectCnt = 0;
+							_isBusy = false;
+							d.setTitle(Translator.map("Connecting Timeout"));
+							ConnectionManager.sharedManager().onClose(_currentBluetooth);
+						}
+						
 					}
 					i++;
 				}
