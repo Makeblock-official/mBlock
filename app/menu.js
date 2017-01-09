@@ -170,10 +170,9 @@ function AppMenu(app){
                                 label:_translator.map("Discover"),
 								enabled : true,
                                 click: function (item, focusedWindow) { // focusedWindow : BrowserWindow
-								item.enabled = false;
-								//item.label = _translator.map('Discovering');						
+								    item.enabled = false; // 禁掉"发现"按钮
+								    //item.label = _translator.map('Discovering');			
                                     _app.getBluetooth().discover(item);
-									
                                 }
                             },
                             {

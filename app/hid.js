@@ -60,21 +60,27 @@ function HID(app){
 			app.alert("没有找到可用设备");
             return;
         }
+		$isConnect = false;
 		if(!_port){
-
-		}else{
-			this.close();
-			_port = null;
+            $isConnect = true;
+		}
+		// 先断开之前的蓝牙连接，重新进行连接
+		_app.allDisconnect();
+		
+		if (!$isConnect) {
 			return;
 		}
-		_port = new USBHID.HID(0x0416,0xffff);
-		_port.on('error',function(err){
-
-		})
-		_port.on('data',function(data){
-			self.onReceived(data);
-		})
-		this.onOpen();
+		console.log('现在进行2.4G连接。。。');
+		setTimeout(function () {
+			_port = new USBHID.HID(0x0416,0xffff);
+			_port.on('error',function(err){
+				console.log(err);
+			})
+			_port.on('data',function(data){
+				self.onReceived(data);
+			})
+			this.onOpen();
+		}, 1000);
 	}
 
 	this.on = function(event,listener){

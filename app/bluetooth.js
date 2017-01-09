@@ -47,9 +47,6 @@ function Bluetooth(app){
     this.discover = function(item){ // 发现蓝牙
         _items = [];
         _devices = {};
-		// 禁掉"发现"按钮
-		item.enabled = false;
-
 		try {
             _btSerial.inquire(); // 异步
 		} catch (e) { // 如果linux没有蓝牙设备，“发现”蓝牙时程序会直接关闭，并且不抛任何异常（貌似内存溢出）
@@ -100,9 +97,9 @@ function Bluetooth(app){
 			isConnect = true;
 		}
 		// 先断开之前的蓝牙连接，重新进行连接
-		self.close(); 
+		_app.allDisconnect();
 		if (isConnect) {
-			self.connect(item.name);
+			setTimeout(function () {self.connect(item.name);}, 1000);
 		}
 	};
 	
