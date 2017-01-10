@@ -1,11 +1,18 @@
 /**
  * IPC通讯、flash通讯
  */
-module.paths.push(__dirname);
+module.paths = __module_paths;
 const {ipcRenderer} = require('electron');
 const Extension = require('extension');
-const Translator = require("translator")
-const package = require("../../../package.json");
+const Translator = require("translator");
+var packageJsonFile;
+if(__asar_mode) {
+    packageJsonFile = "../../../app.asar/package.json";
+}
+else {
+    packageJsonFile = "../../../package.json";
+}
+const package = require(packageJsonFile);
 
 var _flash,_ext,_translator;
 function Application(flash){

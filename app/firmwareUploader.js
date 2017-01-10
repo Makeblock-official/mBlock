@@ -1,4 +1,5 @@
 const spawn = require('child_process').spawn;
+const path = require('path');
 const utils = require('./utils');
 var Boards = require('./boards.js');
 var app = null;
@@ -74,9 +75,9 @@ var FirmwareUploader = {
             return 'tools/Arduino.app/Contents/Java';
             break
         case 'linux':
-            return 'tools/arduino';
+            return path.join(__root_path, 'tools/arduino');
         }
-        return 'tools/arduino';
+        return path.join(__root_path, 'tools/arduino');
     },
 
     allowResetDefaultProgram: function() {
@@ -115,9 +116,9 @@ var FirmwareUploader = {
         console.log('upgrade firmware');
         app.alert(T('Uploading...'));
         var command = self.getArduinoPath() + '/hardware/tools/avr/bin/avrdude';
-        var args = self.getAvrdudeParameter(serialPort, hexFileName); console.log(args);
+        var args = self.getAvrdudeParameter(serialPort, hexFileName); 
         app.getSerial().close();
-        var avrdude = spawn(command, args, {stdio: ['pipe', null, null, null, 'pipe']});
+        var avrdude = spawn(command, args, {cwd: __root_path});
         avrdude.stdout.on('data', function(data){
         });
         avrdude.stderr.on('data', function(data){

@@ -20,12 +20,12 @@ var ArduinoIDE = {
             return 'tools/Arduino.app';
             break
         case 'darwin':
-            return 'tools/Arduino.app/Contents/MacOS/Arduino';
+            return path.join(__root_path, 'tools/Arduino.app/Contents/MacOS/Arduino');
             break
         case 'linux':
-            return 'tools/arduino/arduino';
+            return path.join(__root_path, 'tools/arduino/arduino');
         }
-        return 'tools/arduino/arduino';
+        return path.join(__root_path, 'tools/arduino/arduino');
     },
 
     getValidProjectName: function() {
@@ -42,8 +42,13 @@ var ArduinoIDE = {
     },
 
     prepareProjectSketch: function(code) {
-        var projectName = this.getValidProjectName()
-        var projectPath = fs.mkdtempSync('tmp/'+projectName);
+        var projectName = this.getValidProjectName();
+        const tmpFolderPath = path.join(__root_path, 'tmp');
+        if (!fs.existsSync(tmpFolderPath)) {
+            fs.mkdirSync(tmpFolderPath);
+        }
+        
+        var projectPath = fs.mkdtempSync(path.join(__root_path, 'tmp', projectName));
         projectPath = projectPath + '/' + projectName;
         fs.mkdirSync(projectPath);
 
