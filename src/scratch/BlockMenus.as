@@ -767,7 +767,8 @@ public class BlockMenus implements DragClient {
 			if (isInPalette(block)){
 //				MenuUtil.AddItem(m, 'delete list');
 //				MenuUtil.AddItem(m, 'rename list');
-				m.addItem('delete list', deleteVarOrList); // list reporter in palette
+				m.addItem('rename list');
+				m.addItem('delete list'); // list reporter in palette
 			}
 			addGenericBlockItems(m);
 		} else {
@@ -787,11 +788,11 @@ public class BlockMenus implements DragClient {
 
 	private function varMenu(evt:MouseEvent):void {
 		var m:Menu = new Menu(varOrListSelection, 'var');
-		m.addEventListener(Event.SELECT, __onSelect);
+		//m.addEventListener(Event.SELECT, __onSelect);
 		var isGetter:Boolean = (block.op == Specs.GET_VAR);
 		if (isGetter && isInPalette(block)) { // var reporter in palette
-			m.addItem('rename variable', renameVar);
-			m.addItem('delete variable', deleteVarOrList);
+			m.addItem('rename variable',renameVar);
+			m.addItem('delete variable',deleteVarOrList);
 			addGenericBlockItems(m);
 		} else {
 			if (isGetter) addGenericBlockItems(m);
@@ -840,7 +841,7 @@ public class BlockMenus implements DragClient {
 		setBlockVarOrListName(selection);
 	}
 
-	private function renameVar(isList:Boolean):void {
+	private function renameVar(isList:Boolean=false):void {
 		function doVarRename(dialog:DialogBox):void {
 			var newName:String = dialog.fields['New name'].text.replace(/^\s+|\s+$/g, '');
 			if(newName.length <= 0){

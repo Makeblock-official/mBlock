@@ -93,7 +93,7 @@ function Serial(app){
 					    if(_currentSerialPort != item.name){ // 需要连接串口
                             isConnect = true;
 						}
-						self.close();
+						_app.allDisconnect(); // 断开之前的所有连接
 						if (isConnect) {
 							setTimeout(function () {self.connect(item.name);}, 1000);
 						}

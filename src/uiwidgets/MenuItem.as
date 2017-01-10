@@ -26,6 +26,7 @@ package uiwidgets {
 	import flash.display.Graphics;
 	import flash.display.Shape;
 	import flash.display.Sprite;
+	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
@@ -111,6 +112,7 @@ public class MenuItem extends Sprite {
 	}
 
 	private function addLabel(s:String, enabled:Boolean):void {
+		this.name = s;
 		label = new TextField();
 		label.autoSize = TextFieldAutoSize.LEFT;
 		label.selectable = false;
@@ -124,7 +126,6 @@ public class MenuItem extends Sprite {
 		addChild(label);
 		setBaseColor(menu.color);
 	}
-
 	private function setHighlight(highlight:Boolean):void {
 		setBaseColor(highlight ? selectedColorFrom(menu.color) : menu.color);
 		label.textColor = highlight ? colorWithBrightness(menu.color, 0.3) : CSS.white;
@@ -172,6 +173,7 @@ public class MenuItem extends Sprite {
 	private function mouseUp(evt:MouseEvent):void { 
 		Menu.isOver = false;
 		menu.selected(selection);
+		this.dispatchEvent(new Event(Event.SELECT,true));
 	}
 
 }}

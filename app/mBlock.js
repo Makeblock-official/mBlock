@@ -118,9 +118,7 @@ function mBlock(){
 		return _firmwareUploader;
 	}
 	this.quit = function(){
-		_bluetooth.close();
-		_hid.close();
-		_serial.close();
+        this.allDisconnect();
 	}
 	this.init = function(){
 		_menu.on("newProject",function (){
@@ -153,10 +151,15 @@ function mBlock(){
 
 	this.alert = function(message) {
 		this.getClient().send('alertBox', 'show', message);
-	}
+	};
 	this.logToArduinoConsole = function(message) {
 		this.getClient().send('logToArduinoConsole', message);
-	}
+	};
+	this.allDisconnect = function () { // 断开所有的连接，
+        _bluetooth.close();
+        _hid.close();
+		_serial.close();
+	};
 }
 
 module.exports = mBlock;

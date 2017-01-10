@@ -170,9 +170,9 @@ function AppMenu(app){
                                 label:_translator.map("Discover"),
 								enabled : true,
                                 click: function (item, focusedWindow) { // focusedWindow : BrowserWindow
-									//item.label = _translator.map('Discovering');						
+								    item.enabled = false; // 禁掉"发现"按钮
+								    //item.label = _translator.map('Discovering');			
                                     _app.getBluetooth().discover(item);
-									
                                 }
                             },
                             {
@@ -207,12 +207,13 @@ function AppMenu(app){
                         type:"separator"
                     },
                     {
-                        name: 'Upgrade Firmware',
+                        name: 'Upgrade Firmware', // 安装固件
                         label: _translator.map('Upgrade Firmware'),
+						enabled: false,
                         click: function(item, focusedWindow) { _emitter.emit("upgradeFirmware"); }
                     },
                     {
-                        name: 'Reset Default Program',
+                        name: 'Reset Default Program', // 恢复出厂程序（仅mBot适用）
                         label: _translator.map('Reset Default Program'),
                         enabled: _firmwareUploader.allowResetDefaultProgram(),
                         click: function (item, focusedWindow) {

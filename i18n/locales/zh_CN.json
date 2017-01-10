@@ -955,5 +955,6 @@
 	"Upload Succeeded": "Upload Succeeded",
 	"Uploading...": "Uploading...",
 	"Please restart your computer to enable serial ports.": "Please restart your computer to enable serial ports.",
-	"No Bluetooth devices found around it!": "No Bluetooth devices found around it!"
+	"No Bluetooth devices found around it!": "No Bluetooth devices found around it!",
+	"Discovering": "Discovering"
 }
