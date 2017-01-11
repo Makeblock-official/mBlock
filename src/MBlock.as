@@ -382,7 +382,6 @@ package {
 			MBlock.app.gh.mouseUp(new MouseEvent(MouseEvent.MOUSE_UP));
 			
 			
-			
 		}
 		
 		public function quitApp():void
@@ -1066,7 +1065,7 @@ package {
 		// Save status
 		//------------------------------
 	
-		private var _saveNeeded:Boolean = true;
+		private var _saveNeeded:Boolean;
 		
 		private function get saveNeeded():Boolean{
 			return _saveNeeded;

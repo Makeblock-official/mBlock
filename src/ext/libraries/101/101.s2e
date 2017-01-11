@@ -1,12 +1,10 @@
-{	"extensionName": "Arduino101",
+{	"extensionName": "Arduino/Genuino 101 + UNO Shield",
 	"extensionPort": 0,
-	"sort":5,
+	"sort":1,
 	"firmware":"1.2.103",
 	"javascriptURL":"js/101.js",
 	"isMakeBlockBoard":false,
 	"blockSpecs": [
-		["h","UNO Shield Program","runArduino",{"src":"orion","inc":"#include <MeShield.h>\n","def":"","setup":"","loop":""}],
-		
 		["w", "set motor%d.motorPort speed %d.motorvalue","runMotor", "Port2", 0,
 		{"encode":"{d0}{s1}","setup":"","inc":"","def":"MeDCMotor motor_{0}({0});\n","work":"motor_{0}.run({1});\n","loop":""}],
 		
