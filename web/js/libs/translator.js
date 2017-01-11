@@ -1,15 +1,24 @@
 /**
  * 多国语言管理
  */
-const i18n = require('i18n');
+module.paths = __module_paths;
+const i18n = require('i18n'); 
 var _lang,_app;
 
 function Translator(app){
     _app = app;
 
+    var localePath;
+    if(__asar_mode) {
+        localePath = __dirname + '/../../../app.asar/i18n/locales';
+    }
+    else {
+        localePath = __dirname + '/../../../i18n/locales';
+    }
+
     i18n.configure({
         defaultLocale: 'en',
-        directory: __dirname + '/../../../i18n/locales'
+        directory: localePath
     });
 
     this.setLanguage = function (lang){

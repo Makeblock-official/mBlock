@@ -15,8 +15,16 @@ const httpPort = 7070
 var http = express();
 var appMain;
 
+// rootPath和__root_path是能找到外部工具（如tools/）到地方。
+var rootPath = path.join(__dirname, "/..");
+if(rootPath.indexOf('asar') > -1) {
+  rootPath = path.join(__dirname, "/../..");
+}
+global.__root_path = rootPath;
+        
+console.log(path.join(rootPath,'/tools/arduino'));
 //设置express静态资源目录
-http.use(express.static('web'));
+http.use(express.static(rootPath+'/web'));
 
 http.listen(httpPort, function () {
   console.log('app listening on port '+httpPort+'!');
@@ -36,10 +44,6 @@ switch (process.platform) {
   case 'linux':
     pluginName = 'libpepflashplayer.so'
     break
-}
-var rootPath = __dirname+"/..";
-if(rootPath.indexOf('asar') > -1) {
-  rootPath = __dirname+"/../..";
 }
 
 app.commandLine.appendSwitch('ppapi-flash-path', path.join(rootPath, "/plugins/"+pluginName));

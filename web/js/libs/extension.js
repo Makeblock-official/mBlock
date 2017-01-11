@@ -1,7 +1,7 @@
 /**
  * Scratch JS
  */
-module.paths.push(__dirname);
+module.paths = __module_paths;
 
 const {ipcRenderer} = require('electron');
 const FlashUtils = require('utils');
