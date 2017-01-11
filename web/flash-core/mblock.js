@@ -114,7 +114,7 @@ device.set_receive_handler = function(name, callback){
 	dataCallback = callback;
 };
 
-function callJs(extName, method, args){
+function callJs(extName, method, args){console.log('-----------this --------------');
 	console.log(extName, method, args);
 	var handler = globalExt[method];
 	if(args.length < handler.length){
