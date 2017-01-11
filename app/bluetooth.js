@@ -20,12 +20,12 @@ function Bluetooth(app){
     this.initBluetoothSerialPort = function () {
         _btSerial = new SPP.BluetoothSerialPort();
 		//_serialPortServer = new SPP.BluetoothSerialPortServer();
+		var number = 0;
         _btSerial.on('found', function(address, name) { // 已找到蓝牙设备
 			// name : 蓝牙名称； address ： 蓝牙物理地址
 			console.log('已找到蓝牙:'+name+"("+address+")");
 			bluetoothDevicesFoundNumber++;
-			
-			var number = 0;
+
 			_btSerial.findSerialPortChannel(address, function(channel) { // 找到多少个蓝牙，就是循环多少次
 				name = name+"("+address+")";
 				var item = new MenuItem({
@@ -44,7 +44,7 @@ function Bluetooth(app){
 					bluetoothDevicesFoundNumber = 0;
 					bluetoothDevicesChannelProcessedNumber = 0;
 				}
-				number++;
+				number = number+1;
 			}, function() {
 				bluetoothDevicesChannelProcessedNumber++;
 				if (bluetoothDevicesChannelProcessedNumber == bluetoothDevicesFoundNumber) {
@@ -105,11 +105,13 @@ function Bluetooth(app){
 		//if (typeof(_serialPortServer) != 'undefined') {
 		//	_serialPortServer.close();
 		//}
-        if (typeof(_btSerial) != 'undefined') {console.log('蓝牙准备断开连接');
+        if (typeof(_btSerial) != 'undefined') {
 			_btSerial.close();
+			_btSerial = null;
+		} else {
+		    _currentBluetooth = ''; // 需要更新菜单
+            self.updateMenu();
 		}
-		_currentBluetooth = ''; // 判断是否需要更新菜单
-        self.updateMenu();
     };
     this.send = function(data){
         _btSerial.write(new Buffer(data), function(err, bytesWritten) {
@@ -139,7 +141,7 @@ function Bluetooth(app){
 		}
 	}
 	this.onDisconnect = function(){ // 断开连接 close the connection when you're ready
-        console.log('设备已断开连接，正在发送断开连接给flash，和已更新菜单');
+        self.updateMenu();
 		if(_client){
 			try {
 				_client.send("connected",{connected:false});

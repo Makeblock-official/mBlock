@@ -80,8 +80,7 @@ function HID(app){
 				self.onReceived(data);
 			})
 			self.onOpen();
-
-		}, 1000);
+		}, 1500);
 	}
 
 	this.on = function(event,listener){
