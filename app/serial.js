@@ -19,10 +19,11 @@ function Serial(app){
 	}
 	this.currentSerialPort = function() { return _currentSerialPort; }
 	this.isConnected = function(name){
+		//return _port&&_port.isOpen();
 		if(name){
-			return _currentSerialPort==name&&_port&&_port.isOpen();
+            return _currentSerialPort==name&&_port&&_port.isOpen();
 		}else{
-			return _currentSerialPort!=""&&_port&&_port.isOpen();
+            return _currentSerialPort!=""&&_port&&_port.isOpen();
 		}
 	}
 	this.close = function(){
@@ -95,7 +96,7 @@ function Serial(app){
 						}
 						_app.allDisconnect(); // 断开之前的所有连接
 						if (isConnect) {
-							setTimeout(function () {self.connect(item.name);}, 1000);
+							setTimeout(function () {self.connect(item.name);}, 1500);
 						}
 					}
 				})
