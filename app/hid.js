@@ -80,6 +80,7 @@ function HID(app){
 				self.onReceived(data);
 			})
 			self.onOpen();
+
 		}, 1000);
 	}
 
