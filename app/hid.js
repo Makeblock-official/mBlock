@@ -79,7 +79,7 @@ function HID(app){
 			_port.on('data',function(data){
 				self.onReceived(data);
 			})
-			this.onOpen();
+			self.onOpen();
 		}, 1000);
 	}
 
