@@ -9,14 +9,14 @@ const _utils = new FlashUtils();
 var _app;
 function Extension(app){
     _app = app;
-    
+    console.log('---你说呢----');
     this.device = {};
     this.globalExt = {};
     // this.onReceived=null
     this.connected = false;
 
     var self = this;
-    this.callJs = function(extName, method, args){
+    this.callJs = function(extName, method, args){console.log('call------- js');
         if(!self.globalExt[extName]){
             return;
         }console.log('call js');
