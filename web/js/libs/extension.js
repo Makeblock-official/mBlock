@@ -19,7 +19,10 @@ function Extension(app){
     this.callJs = function(extName, method, args){
         if(!self.globalExt[extName]){
             return;
-        }
+        }console.log('call js');
+		console.log(extName);
+		console.log(method);
+		console.log(args);
         var handler = self.globalExt[extName][method];
 
         if(args.length < handler.length){

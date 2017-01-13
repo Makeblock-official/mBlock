@@ -94,6 +94,9 @@ package util
 		static public function callExt(method:String,args:Array=null):*{
 			return Call("_app.getExt()."+method,args);
 		}
+		static public function log(content:Object):void {
+			Call("console.log", [content]);
+		}
 		/*
 		static public function Eval(code:String):void
 		{
