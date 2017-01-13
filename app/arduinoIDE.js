@@ -28,6 +28,25 @@ var ArduinoIDE = {
         return path.join(__root_path, 'tools/arduino/arduino');
     },
 
+    getTemporaryPath: function() {
+        var basePath = '/tmp';
+        switch (process.platform) {
+        case 'win32':
+            basePath = 'c:\tmp';
+            break;
+        case 'darwin':
+        case 'linux':
+            basePath = '/tmp';
+            break;
+        }
+        var fullPath = path.join(basePath, 'mblock');
+        if (!fs.existsSync(fullPath)) {
+            fs.mkdirSync(fullPath);
+        }
+        return fullPath;
+    },
+
+
     getValidProjectName: function() {
         var projectName = app.getProject().getProjectTitle();
         var now = new Date();
@@ -43,12 +62,12 @@ var ArduinoIDE = {
 
     prepareProjectSketch: function(code) {
         var projectName = this.getValidProjectName();
-        const tmpFolderPath = path.join(__root_path, 'tmp');
+        const tmpFolderPath = this.getTemporaryPath();
         if (!fs.existsSync(tmpFolderPath)) {
             fs.mkdirSync(tmpFolderPath);
         }
         
-        var projectPath = fs.mkdtempSync(path.join(__root_path, 'tmp', projectName));
+        var projectPath = fs.mkdtempSync(path.join(tmpFolderPath, projectName));
         projectPath = projectPath + '/' + projectName;
         fs.mkdirSync(projectPath);
 
