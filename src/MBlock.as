@@ -11,13 +11,10 @@ package {
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
 	import flash.events.UncaughtErrorEvent;
-	import flash.external.ExternalInterface;
 	import flash.geom.Point;
 	import flash.net.FileReference;
 	import flash.system.Security;
 	import flash.system.System;
-	import flash.text.TextField;
-	import flash.text.TextFormat;
 	import flash.ui.Keyboard;
 	import flash.utils.ByteArray;
 	import flash.utils.setTimeout;
@@ -66,7 +63,6 @@ package {
 	import ui.parts.TabsPart;
 	import ui.parts.TopBarPart;
 	
-	import uiwidgets.Button;
 	import uiwidgets.CursorTool;
 	import uiwidgets.DialogBox;
 	import uiwidgets.Menu;
@@ -942,60 +938,6 @@ package {
 		// Misc.
 		public function createMediaInfo(obj:*, owningObj:ScratchObj = null):MediaInfo {
 			return new MediaInfo(obj, owningObj);
-		}
-		//调试用
-		private var messegePanel:Sprite;
-		public function showMessage(...msg):void
-		{
-			if(!messegePanel)
-			{
-				function closeHandler():void
-				{
-					messegePanel.parent.removeChild(messegePanel);
-				}
-				function clearHandler():void
-				{
-					TextField(messegePanel.getChildByName("txt")).text = "";
-				}
-				function onDown(e:MouseEvent):void
-				{
-					if(messegePanel.mouseY>30)
-					{
-						return;
-					}
-					messegePanel.startDrag();
-					messegePanel.addEventListener(MouseEvent.MOUSE_UP,onUp);
-				}
-				function onUp(e:MouseEvent):void
-				{
-					messegePanel.stopDrag();
-				}
-				messegePanel = new Sprite();
-				messegePanel.graphics.beginFill(0xCCCCCC,1);
-				messegePanel.graphics.drawRoundRect(0,0,200,200,10,10);
-				messegePanel.graphics.endFill();
-				messegePanel.addEventListener(MouseEvent.MOUSE_DOWN,onDown);
-				var txt:TextField = new TextField();
-				var txtFormat:TextFormat = new TextFormat();
-				txtFormat.size = 12;
-				txt.defaultTextFormat = txtFormat;
-				txt.name = "txt";
-				txt.width = 200;
-				txt.height = 180;
-				txt.y = 30;
-				txt.wordWrap = true;
-				messegePanel.addChild(txt);
-				var closeBtn:Button = new Button("close",closeHandler);
-				messegePanel.addChild(closeBtn);
-				closeBtn.x=0;
-				closeBtn.y = 200;
-				var clearBtn:Button = new Button("clear",clearHandler);
-				messegePanel.addChild(clearBtn);
-				clearBtn.x=closeBtn.width;
-				clearBtn.y = 200;
-			}
-			app.stage.addChild(messegePanel);
-			TextField(messegePanel.getChildByName("txt")).appendText(msg.join(",")+"\n");
 		}
 	}
 }
