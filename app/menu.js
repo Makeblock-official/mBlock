@@ -209,7 +209,7 @@ function AppMenu(app){
                     {
                         name: 'Upgrade Firmware', // 安装固件
                         label: _translator.map('Upgrade Firmware'),
-						enabled: false,
+						enabled: true,
                         click: function(item, focusedWindow) { _emitter.emit("upgradeFirmware"); }
                     },
                     {
