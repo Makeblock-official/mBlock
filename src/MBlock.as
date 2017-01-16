@@ -981,7 +981,7 @@ package {
 			stageIsArduino = false;
 			if(stageIsHided){
 				stageIsHided = false;
-				setSmallStageMode(stageIsContracted);
+				setSmallStageMode(true);
 			}else{
 				setSmallStageMode(!stageIsContracted);
 			}

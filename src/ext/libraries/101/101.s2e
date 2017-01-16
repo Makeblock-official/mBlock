@@ -5,81 +5,60 @@
 	"javascriptURL":"js/101.js",
 	"isMakeBlockBoard":false,
 	"blockSpecs": [
-		["w", "set motor%d.motorPort speed %d.motorvalue","runMotor", "Port2", 0,
+		["w", "set motor%d.motorPort speed %d.motorvalue","runMotor_101", "Port2", 0,
 		{"encode":"{d0}{s1}","setup":"","inc":"","def":"MeDCMotor motor_{0}({0});\n","work":"motor_{0}.run({1});\n","loop":""}],
 		
-		["w", "set servo %d.servoPort %d.slot angle %d.servovalue","runServo", "Port3","Slot1", 90,
-		{"encode":"{d0}{d1}{d2}","setup":"servo_{0}_{1}.attach(port_{0}.pin{1}());\n","inc":"","def":"Servo servo_{0}_{1};\nMePort port_{0}({0});\n","work":"servo_{0}_{1}.write({2});\n","loop":""}],
-		
-		["w", "set stepper motor%d.exMotorPort speed %d.stepperSpeed distance %n","runStepperMotor", "Port2", 3000, 1000,
+		["w", "set stepper motor%d.exMotorPort speed %d.stepperSpeed distance %n","runStepperMotor_101", "Port2", 3000, 1000,
 		{"encode":"{d0}{s1}{s2}","setup":"","inc":"","def":"MeStepper stepper_{0}({0});\n","work":"stepper_{0}.move({2});\nstepper_{0}.setMaxSpeed({1});\nstepper_{0}.setSpeed({1});\n","loop":"stepper_{0}.runSpeedToPosition();\n"}],
 		
-		["w", "set encoder motor%d.normalMotorPort %d.slot speed %d.encoderSpeed distance %n","runEncoderMotor", "Port1", "Slot1", 100, 1000,
+		["w", "set encoder motor%d.normalMotorPort %d.slot speed %d.encoderSpeed distance %n","runEncoderMotor_101", "Port1", "Slot1", 100, 1000,
 		{"encode":"{d0}{s1}{s2}","setup":"encoder_{0}_{1}.begin();\nencoder_{0}_{1}.runSpeed(0);\n","inc":"","def":"MeEncoderMotor encoder_{0}_{1}(0x09,{1});\n","work":"encoder_{0}_{1}.move({3},{2});\n","loop":""}],
 		
-		["w", "set 7-segments display%d.bluePorts number %n","runSevseg", "Port3", 100,
+		["w", "set 7-segments display%d.bluePorts number %n","runSevseg_101", "Port3", 100,
 		{"encode":"{d0}{f1}","setup":"","inc":"","def":"Me7SegmentDisplay seg7_{0}({0});\n","work":"seg7_{0}.display((float){1});\n","loop":""}],
 		
-		["w", "set led %d.lport %d.index red%d.value green%d.value blue%d.value","runLed", "Port3","all",0,0,0,
+		["w", "set led %d.lport %d.index red%d.value green%d.value blue%d.value","runLed_101", "Port3","all",0,0,0,
 		{"encode":"{d0}{d1}{d2}{d3}{d4}","setup":"","inc":"","def":"MeRGBLed rgbled_{0}({0}, 4);\n","work":"rgbled_{0}.setColor({1},{2},{3},{4});\nrgbled_{0}.show();\n","loop":""}],
 		
-		["w", "set led strip %d.normalPort %d.slot %d.index2 red%d.value green%d.value blue%d.value","runLedStrip", "Port3","Slot2","all",0,0,0,
-		{"encode":"{d0}{d1}{d2}{d3}{d4}","setup":"","inc":"","def":"MeRGBLed rgbled_{0}_{1}({0}, {1}, 32);\n","work":"rgbled_{0}_{1}.setColor({2},{3},{4},{5});\nrgbled_{0}_{1}.show();\n","loop":""}],
-		
-		["w", "set light sensor %d.blackPorts led as %d.switch","runLightsensor", "Port7", "On",
-		{"encode":"{d0}{d1}","setup":"","inc":"","def":"MeLightSensor lightsensor_{0}({0});\n","work":"lightsensor_{0}.dWrite1({1});\n","loop":""}],
-		
-		["w", "set camera shutter %d.bluePorts as %d.shutter","runShutter","Port3", "Press",
+		["w", "set camera shutter %d.bluePorts as %d.shutter","runShutter_101","Port3", "Press",
 		{"encode":"{d0}{d1}","setup":"","inc":"","def":"MeShutter shutter_{0}({0});\n","work":"shutter_{0}.setState({1});\n","loop":""}],
 		
 		["-"],
 		
-		["R", "ultrasonic sensor %d.whitePorts distance","getUltrasonic","Port3",
+		["R", "ultrasonic sensor %d.whitePorts distance","getUltrasonic_101","Port3",
 		{"encode":"{d0}","setup":"","inc":"","def":"MeUltrasonicSensor ultrasonic_{0}({0});\n","work":"ultrasonic_{0}.distanceCm()","loop":""}],
 		
-		["R", "line follower %d.bluePorts","getLinefollower","Port3",
+		["R", "line follower %d.bluePorts","getLinefollower_101","Port3",
 		{"encode":"{d0}","setup":"","inc":"","def":"MeLineFollower linefollower_{0}({0});\n","work":"linefollower_{0}.readSensors()","loop":""}],
 		
-		["R", "light sensor %d.laport","getLightsensor","Port7",
+		["R", "light sensor %d.laport","getLightsensor_101","Port7",
 		{"encode":"{d0}","setup":"","inc":"","def":"MeLightSensor lightsensor_{0}({0});\n","work":"lightsensor_{0}.read()","loop":""}],
 		
-		["R", "joystick %d.blackPorts %d.Axis","getJoystick","Port7","X-Axis",
+		["R", "joystick %d.blackPorts %d.Axis","getJoystick_101","Port7","X-Axis",
 		{"encode":"{d0}{d1}","setup":"","inc":"","def":"MeJoystick joystick_{0}({0});\n","work":"joystick_{0}.read({1})","loop":""}],
 		
-		["R", "potentiometer %d.blackPorts","getPotentiometer","Port7",
+		["R", "potentiometer %d.blackPorts","getPotentiometer_101","Port7",
 		{"encode":"{d0}","setup":"","inc":"","def":"MePotentiometer potentiometer_{0}({0});\n","work":"potentiometer_{0}.read()","loop":""}],
 		
-		["R", "sound sensor %d.soundPort","getSoundsensor","Port7",
+		["R", "sound sensor %d.soundPort","getSoundsensor_101","Port7",
 		{"encode":"{d0}","setup":"","inc":"","def":"MeSoundSensor soundsensor_{0}({0});\n","work":"soundsensor_{0}.strength()","loop":""}],
 		
-		["R", "infrared receiver %d.bluePorts","getInfrared","Port3",
+		["R", "infrared receiver %d.bluePorts","getInfrared_101","Port3",
 		{"encode":"{d0}","setup":"ir_{0}.begin();\n","inc":"","def":"MeInfraredReceiver ir_{0}({0});\n","work":"ir_{0}.getCode()","loop":"ir_{0}.loop();\n"}],
 		
-		["B", "limit switch %d.normalPort %d.slot","getLimitswitch","Port6","Slot1",
+		["B", "limit switch %d.normalPort %d.slot","getLimitswitch_101","Port6","Slot1",
 		{"encode":"{d0}{d1}","setup":"","inc":"","def":"MeLimitSwitch sw_{0}_{1}({0},{1});\n","work":"sw_{0}_{1}.touched()","loop":""}],
 		
-		["B", "pir motion sensor %d.bluePorts","getPirmotion","Port3",
+		["B", "pir motion sensor %d.bluePorts","getPirmotion_101","Port3",
 		{"encode":"{d0}","setup":"","inc":"","def":"MePIRMotionSensor pir_{0}({0});\n","work":"pir_{0}.isHumanDetected()","loop":""}],
 		
-		["R", "temperature %d.normalPort%d.slot °C","getTemperature","Port3","Slot1",
-		{"encode":"{d0}{d1}","setup":"","inc":"","def":"MeTemperature temperature_{0}_{1}({0},{1});\n","work":"temperature_{0}_{1}.temperature()","loop":""}],
-		
-		["R", "3-axis gyro %d.GyroAxis angle","getGyro","X-Axis",
+		["R", "3-axis gyro %d.GyroAxis angle","getGyro_101","X-Axis",
 		{"encode":"{d0}","setup":"gyro.begin();\n","inc":"","def":"MeGyro gyro;\n","work":"gyro.getAngle({0})","loop":"gyro.update();\n"}],
 		
-		["R", "humiture sensor %d.normalPort %d.humiture", "getHumiture", "Port3", "humidity", {"encode":"", "setup":"", "inc":"", "def":"MeHumiture humiture_{0}({0});\n", "work":"humiture_{0}.getValue({1})", "loop":"humiture_{0}.update();\n"}],
-		["R", "flame sensor %d.blackPorts", "getFlame", "Port7", {"encode":"", "setup":"", "inc":"", "def":"MeFlameSensor flameSensor_{0}({0});\n", "work":"flameSensor_{0}.readAnalog()", "loop":""}],
-		["R", "gas sensor %d.blackPorts", "getGas", "Port7", {"encode":"", "setup":"", "inc":"", "def":"MeGasSensor gasSensor_{0}({0});\n", "work":"gasSensor_{0}.readAnalog()", "loop":""}],
-		["B", "touch sensor %d.bluePorts","getTouchSensor","Port3",{"encode":"{d0}","setup":"","inc":"","def":"MeTouchSensor touchSensor_{0}({0});\n","work":"touchSensor_{0}.touched()","loop":""}],
-		["B", "button %d.blackPorts %m.button_key pressed","getButton","Port7","key1",{"encode":"{d0}","setup":"","inc":"","def":"Me4Button buttonSensor_{0}({0});\n","work":"(buttonSensor_{0}.pressed()=={1})","loop":"buttonSensor_{0}.pressed();"}],
-		["-"],
-		
-		["R", "timer","getTimer", "0",
-		{"encode":"{n0}","setup":"","inc":"","def":"double currentTime = 0;\ndouble lastTime = 0;\ndouble getLastTime(){\n\treturn currentTime = millis()/1000.0 - lastTime;\n}\n","work":"getLastTime()","loop":""}],
-		
-		["w", "reset timer","resetTimer", "0",
-		{"encode":"{n0}","setup":"","inc":"","def":"double currentTime = 0;\ndouble lastTime = 0;\n","work":"lastTime = millis()/1000.0;\n","loop":""}]
-		
+		["R", "humiture sensor %d.normalPort %d.humiture", "getHumiture_101", "Port3", "humidity", {"encode":"", "setup":"", "inc":"", "def":"MeHumiture humiture_{0}({0});\n", "work":"humiture_{0}.getValue({1})", "loop":"humiture_{0}.update();\n"}],
+		["R", "flame sensor %d.blackPorts", "getFlame_101", "Port7", {"encode":"", "setup":"", "inc":"", "def":"MeFlameSensor flameSensor_{0}({0});\n", "work":"flameSensor_{0}.readAnalog()", "loop":""}],
+		["R", "gas sensor %d.blackPorts", "getGas_101", "Port7", {"encode":"", "setup":"", "inc":"", "def":"MeGasSensor gasSensor_{0}({0});\n", "work":"gasSensor_{0}.readAnalog()", "loop":""}],
+		["B", "touch sensor %d.bluePorts","getTouchSensor_101","Port3",{"encode":"{d0}","setup":"","inc":"","def":"MeTouchSensor touchSensor_{0}({0});\n","work":"touchSensor_{0}.touched()","loop":""}]
         ],
     "menus": {
     	"yellowPorts":["Port3","Port4","Port6","Port7","Port8"],
@@ -88,7 +67,7 @@
     	"whitePorts":["Port3","Port4","Port6","Port7","Port8"],
     	"blackPorts":["Port7","Port8"],
     	"soundPort":["Port7","Port8"],
-    	"laport":["Port7","Port8"],
+    	"laport":["Port7"],
 		"normalPort":["Port3","Port4","Port6","Port7","Port8"],
 		"lport":["Port3","Port4","Port6","Port7","Port8"],
 		"motorPort":["Port2","Port9"],
@@ -176,5 +155,8 @@
 		"key4":4
 	},
 	"translators":{
+		"zh_CN":{
+			"set encoder motor%d.normalMotorPort %d.slot speed %d.encoderSpeed distance %n":"设置编码电机%d.normalMotorPort %d.slot 速度 %d.encoderSpeed 距离 %n"
+		}
 	}
  }

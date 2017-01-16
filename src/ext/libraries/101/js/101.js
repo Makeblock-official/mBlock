@@ -70,7 +70,7 @@
 	ext.runArduino = function(){
 		responseValue();
 	};
-	ext.getTouchSensor = function(port){
+	ext.getTouchSensor_101 = function(port){
     	var deviceId = 51;
     	if(typeof port=="string"){
 			port = ports[port];
@@ -87,7 +87,7 @@
 		}
 		getPackage(0,deviceId,port, key);
     };
-	ext.runMotor = function(port,speed) {
+	ext.runMotor_101 = function(port,speed) {
 		if(typeof port=="string"){
 			port = ports[port];
 		}
@@ -108,13 +108,13 @@
 		}
         runPackage(11,port,slot,angle);
     };
-	ext.runStepperMotor = function(port, speed, distance){
+	ext.runStepperMotor_101 = function(port, speed, distance){
 		if(typeof port=="string"){
 			port = ports[port];
 		}
 		runPackage(40,port,short2array(speed),int2array(distance));
 	};
-	ext.runEncoderMotor = function(port, slot, speed, distance){
+	ext.runEncoderMotor_101 = function(port, slot, speed, distance){
 		if(typeof port=="string"){
 			port = ports[port];
 		}
@@ -123,13 +123,13 @@
 		}
 		runPackage(12,0x8,slot,short2array(speed),float2array(distance));
 	};
-	ext.runSevseg = function(port,display){
+	ext.runSevseg_101 = function(port,display){
 		if(typeof port=="string"){
 			port = ports[port];
 		}
 		runPackage(9,port,float2array(display));
 	};
-	ext.runLed = function(port,ledIndex,red,green,blue){
+	ext.runLed_101 = function(port,ledIndex,red,green,blue){
 		ext.runLedStrip(port, 2, ledIndex, red,green,blue);
 	};
 	ext.runLedStrip = function(port,slot,ledIndex,red,green,blue){
@@ -150,7 +150,7 @@
 		}
 		runPackage(3,port,switchStatus[status]);
 	};
-	ext.runShutter = function(port,status){
+	ext.runShutter_101 = function(port,status){
 		if(typeof port=="string"){
 			port = ports[port];
 		}
@@ -188,35 +188,35 @@
 		bytes[2] = bytes.length+13;
 		device.send(bytes);
 	}
-	ext.getUltrasonic = function(nextID,port){
+	ext.getUltrasonic_101 = function(nextID,port){
 		var deviceId = 1;
 		if(typeof port=="string"){
 			port = ports[port];
 		}
 		getPackage(nextID,deviceId,port);
 	};
-	ext.getPotentiometer = function(nextID,port) {
+	ext.getPotentiometer_101 = function(nextID,port) {
 		var deviceId = 4;
 		if(typeof port=="string"){
 			port = ports[port];
 		}
 		getPackage(nextID,deviceId,port);
     };
-	ext.getLinefollower = function(nextID,port) {
+	ext.getLinefollower_101 = function(nextID,port) {
 		var deviceId = 17;
 		if(typeof port=="string"){
 			port = ports[port];
 		}
 		getPackage(nextID,deviceId,port);
     };
-	ext.getLightsensor = function(nextID,port) {
+	ext.getLightsensor_101 = function(nextID,port) {
 		var deviceId = 3;
 		if(typeof port=="string"){
 			port = ports[port];
 		}
 		getPackage(nextID,deviceId,port);
     };
-	ext.getJoystick = function(nextID,port,ax) {
+	ext.getJoystick_101 = function(nextID,port,ax) {
 		var deviceId = 5;
 		if(typeof port=="string"){
 			port = ports[port];
@@ -226,21 +226,21 @@
 		}
 		getPackage(nextID,deviceId,port,ax);
     };
-	ext.getSoundsensor = function(nextID,port) {
+	ext.getSoundsensor_101 = function(nextID,port) {
 		var deviceId = 7;
 		if(typeof port=="string"){
 			port = ports[port];
 		}
 		getPackage(nextID,deviceId,port);
     };
-	ext.getInfrared = function(nextID,port) {
+	ext.getInfrared_101 = function(nextID,port) {
 		var deviceId = 16;
 		if(typeof port=="string"){
 			port = ports[port];
 		}
 		getPackage(nextID,deviceId,port);
     };
-	ext.getLimitswitch = function(nextID,port,slot) {
+	ext.getLimitswitch_101 = function(nextID,port,slot) {
 		var deviceId = 21;
 		if(typeof port=="string"){
 			port = ports[port];
@@ -253,7 +253,7 @@
 		}
 		getPackage(nextID,deviceId,port,slot);
     };
-	ext.getPirmotion = function(nextID,port) {
+	ext.getPirmotion_101 = function(nextID,port) {
 		var deviceId = 15;
 		if(typeof port=="string"){
 			port = ports[port];
@@ -273,14 +273,14 @@
 		}
 		getPackage(nextID,deviceId,port,slot);
     };
-	ext.getGyro = function(nextID,ax) {
+	ext.getGyro_101 = function(nextID,ax) {
 		var deviceId = 6;
 		if(typeof ax=="string"){
 			ax = axis[ax];
 		}
 		getPackage(nextID,deviceId,0,ax);
     };
-    ext.getHumiture = function(nextID,port,valueType){
+    ext.getHumiture_101 = function(nextID,port,valueType){
     	var deviceId = 23;
 		if(typeof port=="string"){
 			port = ports[port];
@@ -290,14 +290,14 @@
 		}
 		getPackage(nextID,deviceId,port,valueType);
     };
-    ext.getFlame = function(nextID,port){
+    ext.getFlame_101 = function(nextID,port){
    		var deviceId = 24;
 		if(typeof port=="string"){
 			port = ports[port];
 		}
 		getPackage(nextID,deviceId,port);
     };
-    ext.getGas = function(nextID,port){
+    ext.getGas_101 = function(nextID,port){
     	var deviceId = 25;
 		if(typeof port=="string"){
 			port = ports[port];
