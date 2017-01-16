@@ -39,7 +39,17 @@ package extensions
 			return "Disconnected";
 		}
 		public function call(method:String,param:Array,ext:ScratchExtension):void{
-			JsUtil.callExt("callJs", [ext.name, method, param]);
+			try
+			{
+				JsUtil.log("method:"+method);
+				JsUtil.log("ext:"+ext.name);
+				JsUtil.callExt("callJs", [ext.name, method, param]);
+			}
+			catch(e:Error)
+			{
+				JsUtil.log("error:"+e.message);
+			}
+			
 		}
 		/*
 		public function requestValue(method:String,param:Array,ext:ScratchExtension, nextID:int):void

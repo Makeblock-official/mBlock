@@ -715,13 +715,13 @@ package {
 		public function toggleHideStage():void
 		{
 			stageIsHided = !stageIsHided;
-			setSmallStageMode(stageIsContracted);
+			setSmallStageMode(false);
 		}
 	
 		public function toggleSmallStage():void {
 			if(stageIsHided){
 				stageIsHided = false;
-				setSmallStageMode(stageIsContracted);
+				setSmallStageMode(false);
 			}else{
 				setSmallStageMode(!stageIsContracted);
 			}
