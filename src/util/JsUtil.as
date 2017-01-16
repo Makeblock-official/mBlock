@@ -172,8 +172,6 @@ package util
 				callApp("openSuccess",[]);
 				//回调成功消息
 			});
-			var projName:String = url.replace(/\\/g,"/").split("/").pop();
-			projName = projName.substr(0,projName.lastIndexOf("."));
 			MBlock.app.setProjectName(projName);
 			loader.addEventListener(IOErrorEvent.IO_ERROR, function(evt:IOErrorEvent):void{
 				trace(evt);
