@@ -59,7 +59,7 @@ function Project(app) {
         _currentProjectPath = path
         var data = fs.readFileSync(path);
         var tmp = path.split(".");
-        var tmpPath =path.split("/");
+        var tmpPath =path.replace(/\\/g,"/").split("/");
         var tmpTitle = tmpPath[tmpPath.length-1];
         var filename = "/tmp/project."+tmp[tmp.length-1];
         fs.writeFileSync("./web"+filename, data);
