@@ -1,0 +1,262 @@
+<xml>
+<category id="0" name="undefined" color="0xD42828"/>
+<category id="1" name="Motion" color="0x4a6cd4"/>
+<category id="2" name="Looks" color="0x8a55d7"/>
+<category id="3" name="Sound" color="0xbb42c3"/>
+<category id="4" name="Pen" color="0x0e9a6c"/>
+<category id="5" name="Events" color="0xc88330"/>
+<category id="6" name="Control" color="0xe1a91a"/>
+<category id="7" name="Sensing" color="0x2ca5e2"/>
+<category id="8" name="Operators" color="0x5cb712"/>
+<category id="9" name="Data&Blocks" color="0xEE7D16"/>
+<category id="10" name="Robots" color="0x0a8698"/>
+<category id="11" name="Parameter" color="0x5947B1"/>
+<category id="12" name="List" color="0xCC5B22"/>
+<category id="20" name="Extension" color="0x0a8698"/>
+<command category="1" type=" " opcode="forward:" spec="move %n steps">[10]</command>
+<command category="1" type=" " opcode="turnRight:" spec="turn @turnRight %n degrees">[15]</command>
+<command category="1" type=" " opcode="turnLeft:" spec="turn @turnLeft %n degrees">[15]</command>
+<command/>
+<command category="1" type=" " opcode="heading:" spec="point in direction %d.direction">[90]</command>
+<command category="1" type=" " opcode="pointTowards:" spec="point towards %m.spriteOrMouse">[""]</command>
+<command/>
+<command category="1" type=" " opcode="gotoX:y:" spec="go to x:%n y:%n"/>
+<command category="1" type=" " opcode="gotoSpriteOrMouse:" spec="go to %m.spriteOrMouse">["mouse-pointer"]</command>
+<command category="1" type=" " opcode="glideSecs:toX:y:elapsed:from:" spec="glide %n secs to x:%n y:%n"/>
+<command/>
+<command category="1" type=" " opcode="changeXposBy:" spec="change x by %n">[10]</command>
+<command category="1" type=" " opcode="xpos:" spec="set x to %n">[0]</command>
+<command category="1" type=" " opcode="changeYposBy:" spec="change y by %n">[10]</command>
+<command category="1" type=" " opcode="ypos:" spec="set y to %n">[0]</command>
+<command/>
+<command category="1" type=" " opcode="bounceOffEdge" spec="if on edge, bounce"/>
+<command/>
+<command category="1" type=" " opcode="setRotationStyle" spec="set rotation style %m.rotationStyle">["left-right"]</command>
+<command/>
+<command category="1" type="r" opcode="xpos" spec="x position"/>
+<command category="1" type="r" opcode="ypos" spec="y position"/>
+<command category="1" type="r" opcode="heading" spec="direction"/>
+<command category="2" type=" " opcode="say:duration:elapsed:from:" spec="say %s for %n secs">["Hello!",2]</command>
+<command category="2" type=" " opcode="say:" spec="say %s">["Hello!"]</command>
+<command category="2" type=" " opcode="think:duration:elapsed:from:" spec="think %s for %n secs">["Hmm...",2]</command>
+<command category="2" type=" " opcode="think:" spec="think %s">["Hmm..."]</command>
+<command/>
+<command category="2" type=" " opcode="show" spec="show"/>
+<command category="2" type=" " opcode="hide" spec="hide"/>
+<command/>
+<command category="2" type=" " opcode="lookLike:" spec="switch costume to %m.costume">["costume1"]</command>
+<command category="2" type=" " opcode="nextCostume" spec="next costume"/>
+<command category="2" type=" " opcode="startScene" spec="switch backdrop to %m.backdrop">["backdrop1"]</command>
+<command/>
+<command category="2" type=" " opcode="changeGraphicEffect:by:" spec="change %m.effect effect by %n">["color",25]</command>
+<command category="2" type=" " opcode="setGraphicEffect:to:" spec="set %m.effect effect to %n">["color",0]</command>
+<command category="2" type=" " opcode="filterReset" spec="clear graphic effects"/>
+<command/>
+<command category="2" type=" " opcode="changeSizeBy:" spec="change size by %n">[10]</command>
+<command category="2" type=" " opcode="setSizeTo:" spec="set size to %n%">[100]</command>
+<command/>
+<command category="2" type=" " opcode="comeToFront" spec="go to front"/>
+<command category="2" type=" " opcode="goBackByLayers:" spec="go back %n layers">[1]</command>
+<command/>
+<command category="2" type="r" opcode="costumeIndex" spec="costume #"/>
+<command category="2" type="r" opcode="sceneName" spec="backdrop name"/>
+<command category="2" type="r" opcode="scale" spec="size"/>
+<command category="102" type=" " opcode="startScene" spec="switch backdrop to %m.backdrop">["backdrop1"]</command>
+<command category="102" type=" " opcode="startSceneAndWait" spec="switch backdrop to %m.backdrop and wait">["backdrop1"]</command>
+<command category="102" type=" " opcode="nextScene" spec="next backdrop"/>
+<command/>
+<command category="102" type=" " opcode="changeGraphicEffect:by:" spec="change %m.effect effect by %n">["color",25]</command>
+<command category="102" type=" " opcode="setGraphicEffect:to:" spec="set %m.effect effect to %n">["color",0]</command>
+<command category="102" type=" " opcode="filterReset" spec="clear graphic effects"/>
+<command/>
+<command category="102" type="r" opcode="sceneName" spec="backdrop name"/>
+<command category="102" type="r" opcode="backgroundIndex" spec="backdrop #"/>
+<command category="3" type=" " opcode="playSound:" spec="play sound %m.sound">["pop"]</command>
+<command category="3" type=" " opcode="doPlaySoundAndWait" spec="play sound %m.sound until done">["pop"]</command>
+<command category="3" type=" " opcode="stopAllSounds" spec="stop all sounds"/>
+<command/>
+<command category="3" type=" " opcode="playDrum" spec="play drum %d.drum for %n beats">[1,0.25]</command>
+<command category="3" type=" " opcode="rest:elapsed:from:" spec="rest for %n beats">[0.25]</command>
+<command/>
+<command category="3" type=" " opcode="noteOn:duration:elapsed:from:" spec="play note %d.note for %n beats">[60,0.5]</command>
+<command category="3" type=" " opcode="instrument:" spec="set instrument to %d.instrument">[1]</command>
+<command/>
+<command category="3" type=" " opcode="changeVolumeBy:" spec="change volume by %n">[-10]</command>
+<command category="3" type=" " opcode="setVolumeTo:" spec="set volume to %n%">[100]</command>
+<command category="3" type="r" opcode="volume" spec="volume"/>
+<command/>
+<command category="3" type=" " opcode="changeTempoBy:" spec="change tempo by %n">[20]</command>
+<command category="3" type=" " opcode="setTempoTo:" spec="set tempo to %n bpm">[60]</command>
+<command category="3" type="r" opcode="tempo" spec="tempo"/>
+<command category="4" type=" " opcode="clearPenTrails" spec="clear"/>
+<command/>
+<command category="4" type=" " opcode="stampCostume" spec="stamp"/>
+<command/>
+<command category="4" type=" " opcode="putPenDown" spec="pen down"/>
+<command category="4" type=" " opcode="putPenUp" spec="pen up"/>
+<command/>
+<command category="4" type=" " opcode="penColor:" spec="set pen color to %c"/>
+<command category="4" type=" " opcode="changePenHueBy:" spec="change pen color by %n"/>
+<command category="4" type=" " opcode="setPenHueTo:" spec="set pen color to %n">[0]</command>
+<command/>
+<command category="4" type=" " opcode="changePenShadeBy:" spec="change pen shade by %n"/>
+<command category="4" type=" " opcode="setPenShadeTo:" spec="set pen shade to %n">[50]</command>
+<command/>
+<command category="4" type=" " opcode="changePenSizeBy:" spec="change pen size by %n">[1]</command>
+<command category="4" type=" " opcode="penSize:" spec="set pen size to %n">[1]</command>
+<command/>
+<command category="104" type=" " opcode="clearPenTrails" spec="clear"/>
+<command category="5" type="h" opcode="whenGreenFlag" spec="when @greenFlag clicked"/>
+<command category="5" type="h" opcode="whenKeyPressed" spec="when %m.key key pressed">["space"]</command>
+<command category="5" type="h" opcode="whenKeyReleased" spec="when %m.key key released">["space"]</command>
+<command category="5" type="h" opcode="whenClicked" spec="when this sprite clicked"/>
+<command category="5" type="h" opcode="whenSceneStarts" spec="when backdrop switches to %m.backdrop">["backdrop1"]</command>
+<command/>
+<command category="5" type="h" opcode="whenSensorGreaterThan" spec="when %m.triggerSensor > %n">["loudness",10]</command>
+<command/>
+<command category="5" type="h" opcode="whenIReceive" spec="when I receive %m.broadcast">[""]</command>
+<command category="5" type=" " opcode="broadcast:" spec="broadcast %m.broadcast">[""]</command>
+<command category="5" type=" " opcode="doBroadcastAndWait" spec="broadcast %m.broadcast and wait">[""]</command>
+<command category="6" type=" " opcode="wait:elapsed:from:" spec="wait %n secs">[1]</command>
+<command/>
+<command category="6" type="c" opcode="doRepeat" spec="repeat %n">[10]</command>
+<command category="6" type="cf" opcode="doForever" spec="forever"/>
+<command/>
+<command category="6" type="c" opcode="doIf" spec="if %b then"/>
+<command category="6" type="e" opcode="doIfElse" spec="if %b then"/>
+<command category="6" type=" " opcode="doWaitUntil" spec="wait until %b"/>
+<command category="6" type="c" opcode="doUntil" spec="repeat until %b"/>
+<command/>
+<command category="6" type="f" opcode="stopScripts" spec="stop %m.stop">["all"]</command>
+<command/>
+<command category="6" type="h" opcode="whenCloned" spec="when I start as a clone"/>
+<command category="6" type=" " opcode="createCloneOf" spec="create clone of %m.spriteOnly"/>
+<command category="6" type="f" opcode="deleteClone" spec="delete this clone"/>
+<command/>
+<command category="106" type=" " opcode="wait:elapsed:from:" spec="wait %n secs">[1]</command>
+<command/>
+<command category="106" type="c" opcode="doRepeat" spec="repeat %n">[10]</command>
+<command category="106" type="cf" opcode="doForever" spec="forever"/>
+<command/>
+<command category="106" type="c" opcode="doIf" spec="if %b then"/>
+<command category="106" type="e" opcode="doIfElse" spec="if %b then"/>
+<command category="106" type=" " opcode="doWaitUntil" spec="wait until %b"/>
+<command category="106" type="c" opcode="doUntil" spec="repeat until %b"/>
+<command/>
+<command category="106" type="f" opcode="stopScripts" spec="stop %m.stop">["all"]</command>
+<command/>
+<command category="106" type=" " opcode="createCloneOf" spec="create clone of %m.spriteOnly"/>
+<command category="7" type="b" opcode="touching:" spec="touching %m.touching?">[""]</command>
+<command category="7" type="b" opcode="touchingColor:" spec="touching color %c?"/>
+<command category="7" type="b" opcode="color:sees:" spec="color %c is touching %c?"/>
+<command category="7" type="r" opcode="distanceTo:" spec="distance to %m.spriteOrMouse">[""]</command>
+<command/>
+<command category="7" type=" " opcode="doAsk" spec="ask %s and wait">["What's your name?"]</command>
+<command category="7" type="r" opcode="answer" spec="answer"/>
+<command/>
+<command category="7" type="b" opcode="keyPressed:" spec="key %m.key pressed?">["space"]</command>
+<command category="7" type="b" opcode="mousePressed" spec="mouse down?"/>
+<command category="7" type="r" opcode="mouseX" spec="mouse x"/>
+<command category="7" type="r" opcode="mouseY" spec="mouse y"/>
+<command/>
+<command category="7" type="r" opcode="soundLevel" spec="loudness"/>
+<command/>
+<command category="7" type="r" opcode="senseVideoMotion" spec="video %m.videoMotionType on %m.stageOrThis">["motion"]</command>
+<command category="7" type=" " opcode="setVideoState" spec="turn video %m.videoState">["on"]</command>
+<command category="7" type=" " opcode="setVideoTransparency" spec="set video transparency to %n%">[50]</command>
+<command/>
+<command category="7" type="r" opcode="timer" spec="timer"/>
+<command category="7" type=" " opcode="timerReset" spec="reset timer"/>
+<command/>
+<command category="7" type="r" opcode="getAttribute:of:" spec="%m.attribute of %m.spriteOrStage"/>
+<command/>
+<command category="7" type="r" opcode="timeAndDate" spec="current %m.timeAndDate">["minute"]</command>
+<command category="7" type="r" opcode="timestamp" spec="days since 2000"/>
+<command category="107" type=" " opcode="doAsk" spec="ask %s and wait">["What's your name?"]</command>
+<command category="107" type="r" opcode="answer" spec="answer"/>
+<command/>
+<command category="107" type="b" opcode="keyPressed:" spec="key %m.key pressed?">["space"]</command>
+<command category="107" type="b" opcode="mousePressed" spec="mouse down?"/>
+<command category="107" type="r" opcode="mouseX" spec="mouse x"/>
+<command category="107" type="r" opcode="mouseY" spec="mouse y"/>
+<command/>
+<command category="107" type="r" opcode="soundLevel" spec="loudness"/>
+<command/>
+<command category="107" type="r" opcode="senseVideoMotion" spec="video %m.videoMotionType on %m.stageOrThis">["motion","Stage"]</command>
+<command category="107" type=" " opcode="setVideoState" spec="turn video %m.videoState">["on"]</command>
+<command category="107" type=" " opcode="setVideoTransparency" spec="set video transparency to %n%">[50]</command>
+<command/>
+<command category="107" type="r" opcode="timer" spec="timer"/>
+<command category="107" type=" " opcode="timerReset" spec="reset timer"/>
+<command/>
+<command category="107" type="r" opcode="getAttribute:of:" spec="%m.attribute of %m.spriteOrStage"/>
+<command/>
+<command category="107" type="r" opcode="timeAndDate" spec="current %m.timeAndDate">["minute"]</command>
+<command category="107" type="r" opcode="timestamp" spec="days since 2000"/>
+<command category="107" type="r" opcode="getUserName" spec="username"/>
+<command category="8" type="r" opcode="+" spec="%n + %n">["",""]</command>
+<command category="8" type="r" opcode="-" spec="%n - %n">["",""]</command>
+<command category="8" type="r" opcode="*" spec="%n * %n">["",""]</command>
+<command category="8" type="r" opcode="/" spec="%n / %n">["",""]</command>
+<command/>
+<command category="8" type="r" opcode="randomFrom:to:" spec="pick random %n to %n">[1,10]</command>
+<command/>
+<command category="8" type="b" opcode="&lt;" spec="%s &lt; %s">["",""]</command>
+<command category="8" type="b" opcode="=" spec="%s = %s">["",""]</command>
+<command category="8" type="b" opcode=">" spec="%s > %s">["",""]</command>
+<command/>
+<command category="8" type="b" opcode="&amp;&amp;" spec="%b and %b"/>
+<command category="8" type="b" opcode="||" spec="%b or %b"/>
+<command category="8" type="b" opcode="not" spec="not %b"/>
+<command/>
+<command category="8" type="r" opcode="concatenate:with:" spec="join %s %s">["hello ","world"]</command>
+<command category="8" type="r" opcode="letter:of:" spec="letter %n of %s">[1,"world"]</command>
+<command category="8" type="r" opcode="stringLength:" spec="length of %s">["world"]</command>
+<command category="8" type="r" opcode="indexOfString:in:" spec="index of %s in %s">["world","hello world"]</command>
+<command category="8" type="r" opcode="castDigitToString:" spec="cast %n to string">[1]</command>
+<command/>
+<command category="8" type="r" opcode="%" spec="%n mod %n">["",""]</command>
+<command category="8" type="r" opcode="rounded" spec="round %n">[""]</command>
+<command/>
+<command category="8" type="r" opcode="computeFunction:of:" spec="%m.mathOp of %n">["sqrt",9]</command>
+<command category="9" type=" " opcode="setVar:to:" spec="set %m.var to %s"/>
+<command category="9" type=" " opcode="changeVar:by:" spec="change %m.var by %n"/>
+<command category="9" type=" " opcode="showVariable:" spec="show variable %m.var"/>
+<command category="9" type=" " opcode="hideVariable:" spec="hide variable %m.var"/>
+<command category="12" type=" " opcode="append:toList:" spec="add %s to %m.list"/>
+<command/>
+<command category="12" type=" " opcode="deleteLine:ofList:" spec="delete %d.listDeleteItem of %m.list"/>
+<command category="12" type=" " opcode="insert:at:ofList:" spec="insert %s at %d.listItem of %m.list"/>
+<command category="12" type=" " opcode="setLine:ofList:to:" spec="replace item %d.listItem of %m.list with %s"/>
+<command/>
+<command category="12" type="r" opcode="getLine:ofList:" spec="item %d.listItem of %m.list"/>
+<command category="12" type="r" opcode="lineCountOfList:" spec="length of %m.list"/>
+<command category="12" type="b" opcode="list:contains:" spec="%m.list contains %s"/>
+<command/>
+<command category="12" type=" " opcode="showList:" spec="show list %m.list"/>
+<command category="12" type=" " opcode="hideList:" spec="hide list %m.list"/>
+<command category="98" type=" " opcode="drum:duration:elapsed:from:" spec="play drum %n for %n beats">[1,0.25]</command>
+<command category="98" type=" " opcode="midiInstrument:" spec="set instrument to %n">[1]</command>
+<command category="98" type="b" opcode="isLoud" spec="loud?"/>
+<command category="98" type="r" opcode="abs" spec="abs %n"/>
+<command category="98" type="r" opcode="sqrt" spec="sqrt %n"/>
+<command category="98" type="f" opcode="doReturn" spec="stop script"/>
+<command category="98" type="f" opcode="stopAll" spec="stop all"/>
+<command category="98" type=" " opcode="showBackground:" spec="switch to background %m.costume">["backdrop1"]</command>
+<command category="98" type=" " opcode="nextBackground" spec="next background"/>
+<command category="98" type="cf" opcode="doForeverIf" spec="forever if %b"/>
+<command category="99" type="r" opcode="COUNT" spec="noop"/>
+<command category="99" type="r" opcode="COUNT" spec="counter"/>
+<command category="99" type=" " opcode="CLR_COUNT" spec="clear counter"/>
+<command category="99" type=" " opcode="INCR_COUNT" spec="incr counter"/>
+<command category="99" type="c" opcode="doForLoop" spec="for each %m.varName in %s">["v",10]</command>
+<command category="99" type="c" opcode="doWhile" spec="while %b"/>
+<command category="99" type="c" opcode="warpSpeed" spec="all at once"/>
+<command category="99" type=" " opcode="scrollRight" spec="scroll right %n">[10]</command>
+<command category="99" type=" " opcode="scrollUp" spec="scroll up %n">[10]</command>
+<command category="99" type=" " opcode="scrollAlign" spec="align scene %m.scrollAlign">["bottom-left"]</command>
+<command category="99" type="r" opcode="xScroll" spec="x scroll"/>
+<command category="99" type="r" opcode="yScroll" spec="y scroll"/>
+<command category="99" type=" " opcode="hideAll" spec="hide all sprites"/>
+<command category="99" type="r" opcode="getUserId" spec="user id"/>
+</xml>

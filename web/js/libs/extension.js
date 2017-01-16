@@ -9,7 +9,6 @@ const _utils = new FlashUtils();
 var _app;
 function Extension(app){
     _app = app;
-    
     this.device = {};
     this.globalExt = {};
     // this.onReceived=null

@@ -11,7 +11,6 @@ package {
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
 	import flash.events.UncaughtErrorEvent;
-	import flash.external.ExternalInterface;
 	import flash.geom.Point;
 	import flash.net.FileReference;
 	import flash.system.Security;
@@ -716,13 +715,13 @@ package {
 		public function toggleHideStage():void
 		{
 			stageIsHided = !stageIsHided;
-			setSmallStageMode(stageIsContracted);
+			setSmallStageMode(false);
 		}
 	
 		public function toggleSmallStage():void {
 			if(stageIsHided){
 				stageIsHided = false;
-				setSmallStageMode(stageIsContracted);
+				setSmallStageMode(false);
 			}else{
 				setSmallStageMode(!stageIsContracted);
 			}

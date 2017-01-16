@@ -156,9 +156,15 @@ function mBlock(){
 		this.getClient().send('logToArduinoConsole', message);
 	};
 	this.allDisconnect = function () { // 断开所有的连接，
-        _bluetooth.close();
-        _hid.close();
-		_serial.close();
+        if (typeof(_bluetooth) != 'undefined') { // 防止flash还没有加载完用户就点击了关闭按钮
+			_bluetooth.close();
+		}
+		if (typeof(_hid) != 'undefined') { // 防止flash还没有加载完用户就点击了关闭按钮
+			_hid.close();
+		}
+        if (typeof(_serial) != 'undefined') { // 防止flash还没有加载完用户就点击了关闭按钮
+			_serial.close();
+		}
 	};
 }
 
