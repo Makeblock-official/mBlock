@@ -23,7 +23,7 @@ function Application(flash){
     self.connected = false;
     self.saved = false;
     ipcRenderer.on('openProject', (sender,obj) => {  
-        _flash.openProject(obj.url);
+        _flash.openProject(obj.url,obj.title);
     });  
     ipcRenderer.on('newProject', (sender,obj) => {  
         _flash.newProject(obj.title);
