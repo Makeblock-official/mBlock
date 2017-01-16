@@ -1,6 +1,7 @@
 const {MenuItem} = require("electron")
 const USBHID = require("node-hid");
 const events = require('events');
+const sudoer = require('./sudoCommands.js');
 /**
  * 2.4G无线串口通讯： HID设备连接、数据收发
  */
@@ -57,7 +58,7 @@ function HID(app){
             }
         }
         if(!isDeviceFound){
-			app.alert("没有找到可用设备");
+			app.alert("Cannot find 2.4G dongle");
             return;
         }
 		$isConnect = false;
@@ -71,8 +72,26 @@ function HID(app){
 			return;
 		}
 		console.log('现在进行2.4G连接。。。');
-		setTimeout(function () {
-			_port = new USBHID.HID(0x0416,0xffff);
+		var tryOpenHID = function() {
+			try {
+				_port = new USBHID.HID(0x0416,0xffff);
+			}
+			catch (error) {
+				// this is because I do not have enough permission to do this.
+				if(process.platform == 'linux') {
+					sudoer.enableHIDInLinux(function(error, stdout, stderr) {
+						console.log(stdout);
+						console.log(stderr);
+						if( error == null ) {
+							tryOpenHID();
+						}
+						else {
+							console.log(error);
+						}
+					});
+				}
+			}
+			if(!_port) return;
 			_port.on('error',function(err){
 				console.log(err);
 			})
@@ -80,7 +99,8 @@ function HID(app){
 				self.onReceived(data);
 			})
 			self.onOpen();
-		}, 1500);
+		}
+		setTimeout(tryOpenHID, 1500);
 	}
 
 	this.on = function(event,listener){
