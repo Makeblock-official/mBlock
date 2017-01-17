@@ -34,7 +34,7 @@ package util
 //			projectUrl = "__proj.sb2"
 			MBlock.app.setEditMode(true);
 			if(projectUrl != null){
-				__openProject(projectUrl, function():void{
+				__openProject(projectUrl, "Untitled",function():void{
 					MBlock.app.fixLayout();
 					setTimeout(__showFullscreen, 0);
 				});
@@ -163,7 +163,7 @@ package util
 			MBlock.app.runtime.installProjectFromData(fileData);
 //			MBlock.app.runtime.selectProjectFile();
 		}
-		static private function __openProject(url:String,callback:Function=null):void
+		static private function __openProject(url:String,projName:String,callback:Function=null):void
 		{
 			var loader:URLLoader = new URLLoader();
 			loader.dataFormat = URLLoaderDataFormat.BINARY;
@@ -172,7 +172,6 @@ package util
 				callApp("openSuccess",[]);
 				//回调成功消息
 			});
-			var projName:String = url.substr(0,url.lastIndexOf("."));
 			MBlock.app.setProjectName(projName);
 			loader.addEventListener(IOErrorEvent.IO_ERROR, function(evt:IOErrorEvent):void{
 				trace(evt);
