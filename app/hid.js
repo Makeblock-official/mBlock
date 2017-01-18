@@ -38,7 +38,7 @@ function HID(app){
 	this.send = function(data){
 		if(_port){
 			var buffer = new Buffer(data)
-			var arr = [buffer.length];
+			var arr = [0,buffer.length];
 			for(var i=0;i<buffer.length;i++){
 				arr.push(buffer[i]);
 			}
