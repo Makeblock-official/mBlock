@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "description": "mblock 4.0",
   "main": "./app/main.js",
+  "homepage": "http://mblock.cc",
+  "email": "tec-support@makeblock.com",
   "scripts": {
     "rebuild-serialport": "electron-rebuild -f -w serialport",
     "rebuild-hid": "electron-rebuild -f -w node-hid",
@@ -10,15 +12,18 @@
     "start": "electron .",
     "debug": "electron --debug=5858 .",
     "pack": "build --dir",
-    "dist-linux": "build --linux AppImage",
+    "dist-linux": "build --linux deb",
     "postinstall": "install-app-deps"
   },
   "repository": "https://git.oschina.net/makeblock/mblock-for-myh",
   "keywords": [
     "mBlock"
   ],
-  "author": "GitHub",
-  "license": "MIT",
+  "author": {
+    "name": "Makeblock",
+    "email": "tec-support@makeblock.com"
+  },
+  "license": "GPL",
   "devDependencies": {
     "electron-builder": "^10.12.0",
     "electron-prebuilt": "^1.4.13",
