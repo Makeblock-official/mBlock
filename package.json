@@ -1,6 +1,6 @@
 {
   "name": "mBlock",
-  "version": "1.0.0",
+  "version": "4.0.0",
   "description": "mblock 4.0",
   "main": "./app/main.js",
   "homepage": "http://mblock.cc",
@@ -12,7 +12,7 @@
     "start": "electron .",
     "debug": "electron --debug=5858 .",
     "pack": "build --dir",
-    "dist-linux": "build --linux deb",
+    "dist-linux": "build --linux AppImage",
     "postinstall": "install-app-deps"
   },
   "repository": "https://git.oschina.net/makeblock/mblock-for-myh",
