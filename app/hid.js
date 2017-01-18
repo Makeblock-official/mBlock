@@ -47,6 +47,7 @@ function HID(app){
 	}
 
 	//连接hid设备
+	var enabledHIDPermission = false;
 	this.connect = function(){
         var devices = USBHID.devices();
         var isDeviceFound = false;
@@ -78,15 +79,12 @@ function HID(app){
 			}
 			catch (error) {
 				// this is because I do not have enough permission to do this.
-				if(process.platform == 'linux') {
+				app.alert('Cannot connect to the 2.4G device. Please check your USB connection or use another USB port.')
+				if(!enabledHIDPermission && process.platform == 'linux') {
+					enabledHIDPermission = true;
 					sudoer.enableHIDInLinux(function(error, stdout, stderr) {
-						console.log(stdout);
-						console.log(stderr);
-						if( error == null ) {
+						if( error === null ) {
 							tryOpenHID();
-						}
-						else {
-							console.log(error);
 						}
 					});
 				}
