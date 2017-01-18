@@ -42,6 +42,9 @@
   "build": {
     "appId": "cc.mblock",
     "files": ["app", "i18n", "node_modules"],
-    "extraResources": ["plugins", "tools", "web"]
+    "extraResources": ["plugins", "tools", "web"],
+    "mac": {
+      "category": ""
+    }
   }
 }
