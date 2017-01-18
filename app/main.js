@@ -17,8 +17,10 @@ var appMain;
 
 // rootPath和__root_path是能找到外部工具（如tools/）到地方。
 var rootPath = path.join(__dirname, "/..");
+global.__is_packaged = false;
 if(rootPath.indexOf('asar') > -1) {
   rootPath = path.join(__dirname, "/../..");
+  global.__is_packaged = true;
 }
 global.__root_path = rootPath;
         
@@ -64,7 +66,9 @@ function createWindow () {
   })
 	mainWindow.loadURL(`file://${rootPath}/web/index.html`);
 
-  mainWindow.webContents.openDevTools()
+  if (!__is_packaged) {
+    mainWindow.webContents.openDevTools()
+  }
 
   mainWindow.on('closed', function () {
     mainWindow = null
