@@ -312,9 +312,9 @@ package util
 			MBlock.app.runtime.stopAll();
 		}
 		
-		static private function __logToArduinoConsole(message:String):void
+		static private function __logToArduinoConsole(message:String,isOut:Boolean):void
 		{
-			MBlock.app.scriptsPart.appendMessage(message);
+			MBlock.app.scriptsPart.appendMsgWithTimestamp(message,isOut);
 		}
 		static private function __setFontSize(size:int):void
 		{
