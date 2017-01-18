@@ -124,8 +124,13 @@ function HID(app){
 	//ipc转发接收的数据包
 	this.onReceived = function(data){
 		if(_client){
-			if(data[0]>0){
-				_client.send("package",{data:data})
+			if(data[1]>0){
+				var arr=[];
+				for(var i=1;i<data.length;i++){
+					arr.push(data[i]);
+				}
+				console.log("#######arr"+arr);
+				_client.send("package",{data:arr})
 			}
 		}
 	}
