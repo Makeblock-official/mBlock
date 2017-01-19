@@ -449,7 +449,7 @@
 		var bytes = [0xff, 0x55, 0, 0, type];
 		for(var i=0;i<argList.length;++i){
 			var val = argList[i];
-			if(val.constructor == "[class Array]"){
+			if(val instanceof Array){
 				bytes = bytes.concat(val);
 			}else{
 				bytes.push(val);
@@ -471,7 +471,7 @@
     var inputArray = [];
 	var _isParseStart = false;
 	var _isParseStartIndex = 0;
-    ext.processData = function (bytes) {
+    ext.processData = function(bytes) {
 		var len = bytes.length;
 		if(_rxBuf.length>30){
 			_rxBuf = [];

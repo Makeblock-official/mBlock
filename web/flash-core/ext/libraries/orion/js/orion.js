@@ -348,7 +348,7 @@
 		var bytes = [0xff, 0x55, 0, 0, type];
 		for(var i=0;i<argList.length;++i){
 			var val = argList[i];
-			if(val.constructor == "[class Array]"){
+			if(val instanceof Array){
 				bytes = bytes.concat(val);
 			}else{
 				bytes.push(val);
@@ -500,11 +500,11 @@
     };
 
     ext._getStatus = function() {
-        if(!device) return {status: 1, msg: 'Orion disconnected'};
-        if(watchdog) return {status: 1, msg: 'Probing for Orion'};
-        return {status: 2, msg: 'Orion connected'};
+        if(!device) return {status: 1, msg: 'Makeblock disconnected'};
+        if(watchdog) return {status: 1, msg: 'Probing for Makeblock'};
+        return {status: 2, msg: 'Makeblock connected'};
     }
 
     var descriptor = {};
-	ScratchExtensions.register('Orion', descriptor, ext, {type: 'serial'});
+	ScratchExtensions.register('Makeblock', descriptor, ext, {type: 'serial'});
 })({});

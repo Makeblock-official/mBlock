@@ -466,7 +466,7 @@
 		var bytes = [0xff, 0x55, 0, 0, type];
 		for(var i=0;i<argList.length;++i){
 			var val = argList[i];
-			if(val.constructor == "[class Array]"){
+			if(val instanceof Array){
 				bytes = bytes.concat(val);
 			}else{
 				bytes.push(val);
