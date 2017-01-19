@@ -278,7 +278,7 @@ public class ScriptsPart extends UIPart {
 	{
 		var date:Date = new Date();
 		var sendType:String = isOut ? " > " : " < ";
-		msg = (date.month+1) + "-" + date.date + " " + date.hours + ":" + date.minutes + ":" + date.seconds + "." +date.milliseconds + sendType + msg;
+		msg = date.hours + ":" + date.minutes + ":" + date.seconds + "." +date.milliseconds + sendType + msg;
 		appendMessage(msg);
 	}
 	public function onSerialDataReceived(bytes:ByteArray):void{
