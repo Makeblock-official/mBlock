@@ -1,7 +1,8 @@
 // mBot.js
 
 (function(ext) {
-    var device = null;
+    var _device = null;
+	var _util = null;
     var _rxBuf = [];
 
     // Sensor states:
@@ -90,10 +91,10 @@
 	var versionIndex = 0xFA;
 	var responsePreprocessor = {};
     ext.resetAll = function(){
-    	device.send([0xff, 0x55, 2, 0, 4]);
+    	_device.send([0xff, 0x55, 2, 0, 4]);
     };
 	ext.runArduino = function(){
-		responseValue();
+		_device.responseValue();
 	};
 	
 	ext.runBot = function(direction,speed) {
@@ -112,7 +113,7 @@
 			leftSpeed = -speed;
 			rightSpeed = -speed;
 		}
-        runPackage(5,short2array(leftSpeed),short2array(rightSpeed));
+        runPackage(5,_util.short2array(leftSpeed),_util.short2array(rightSpeed));
     };
     
 	ext.runMotor = function(port,speed) {
@@ -122,7 +123,7 @@
 		if(port == 9){
 			speed = -speed;
 		}
-        runPackage(10,port,short2array(speed));
+        runPackage(10,port,_util.short2array(speed));
     };
     ext.runServo = function(port,slot,angle) {
 		if(typeof port=="string"){
@@ -143,17 +144,17 @@
 		if(typeof beat == "string"){
 			beat = parseInt(beat) || beats[beat];
 		}
-		runPackage(34,short2array(tone), short2array(beat));
+		runPackage(34,_util.short2array(tone), _util.short2array(beat));
 	};
 	
 	ext.stopBuzzer = function(){
-		runPackage(34,short2array(0));
+		runPackage(34,_util.short2array(0));
 	};
 	ext.runSevseg = function(port,display){
 		if(typeof port=="string"){
 			port = ports[port];
 		}
-		runPackage(9,port,float2array(display));
+		runPackage(9,port,_util.float2array(display));
 	};
 	
 	ext.runLed = function(ledIndex,red,green,blue){
@@ -219,13 +220,13 @@
 		}
 	};
 	ext.runIR = function(message){
-		runPackage(13,string2array(message));
+		runPackage(13,_util.string2array(message));
 	};
 	ext.showNumber = function(port,message){
 		if(typeof port=="string"){
 			port = ports[port];
 		}
-		runPackage(41,port,4,float2array(message));
+		runPackage(41,port,4,_util.float2array(message));
 	};
 	ext.showCharacters = function(port,x,y,message){
 		if(typeof port=="string"){
@@ -239,7 +240,7 @@
 		if(x >  16) x = 16;
 		if(y >  8) y = 8;
 		if(y < -8) y = -8;
-		runPackage(41,port,1,x,y+7,message.length,string2array(message));
+		runPackage(41,port,1,x,y+7,message.length,_util.string2array(message));
 	}
 	ext.showTime = function(port,hour,point,min){
 		if(typeof port=="string"){
@@ -259,7 +260,7 @@
 	}
 	ext.resetTimer = function(){
 		startTimer = (new Date().getTime())/1000.0;
-		responseValue();
+		_device.responseValue();
 	};
 	/*
 	ext.getLightOnBoard = function(nextID){
@@ -442,7 +443,7 @@
 		if(startTimer==0){
 			startTimer = (new Date().getTime())/1000.0;
 		}
-		responseValue(nextID,(new Date().getTime())/1000.0-startTimer);
+		_device.responseValue(nextID,(new Date().getTime())/1000.0-startTimer);
 	}
 	function sendPackage(argList, type){
 		var bytes = [0xff, 0x55, 0, 0, type];
@@ -455,7 +456,7 @@
 			}
 		}
 		bytes[2] = bytes.length - 3;
-		device.send(bytes);
+		_device.send(bytes);
 	}
 	
 	function runPackage(){
@@ -470,7 +471,7 @@
     var inputArray = [];
 	var _isParseStart = false;
 	var _isParseStartIndex = 0;
-    function processData(bytes) {
+    ext.processData = function(bytes) {
 		var len = bytes.length;
 		if(_rxBuf.length>30){
 			_rxBuf = [];
@@ -500,28 +501,28 @@
 						}
 							break;
 						case 2:{
-							value = readFloat(_rxBuf,position);
+							value = _util.readFloat(_rxBuf,position);
 							position+=4;
 						}
 							break;
 						case 3:{
-							value = readInt(_rxBuf,position,2);
+							value = _util.readInt(_rxBuf,position,2);
 							position+=2;
 						}
 							break;
 						case 4:{
 							var l = _rxBuf[position];
 							position++;
-							value = readString(_rxBuf,position,l);
+							value = _util.readString(_rxBuf,position,l);
 						}
 							break;
 						case 5:{
-							value = readDouble(_rxBuf,position);
+							value = _util.readDouble(_rxBuf,position);
 							position+=4;
 						}
 							break;
 						case 6:
-							value = readInt(_rxBuf,position,4);
+							value = _util.readInt(_rxBuf,position,4);
 							position+=4;
 							break;
 					}
@@ -530,80 +531,45 @@
 							value = responsePreprocessor[extId](value);
 							responsePreprocessor[extId] = null;
 						}
-						responseValue(extId,value);
+						_device.responseValue(extId,value);
 					}else{
-						responseValue();
+						_device.responseValue();
 					}
 					_rxBuf = [];
 				}
 			} 
 		}
     }
-	function readFloat(arr,position){
-		var f= [arr[position],arr[position+1],arr[position+2],arr[position+3]];
-		return parseFloat(f);
-	}
-	function readInt(arr,position,count){
-		var result = 0;
-		for(var i=0; i<count; ++i){
-			result |= arr[position+i] << (i << 3);
-		}
-		return result;
-	}
-	function readDouble(arr,position){
-		return readFloat(arr,position);
-	}
-	function readString(arr,position,len){
-		var value = "";
-		for(var ii=0;ii<len;ii++){
-			value += String.fromCharCode(_rxBuf[ii+position]);
-		}
-		return value;
-	}
-    function appendBuffer( buffer1, buffer2 ) {
-        return buffer1.concat( buffer2 );
-    }
 
     // Extension API interactions
-    var potentialDevices = [];
-    ext._deviceConnected = function(dev) {
-        potentialDevices.push(dev);
-        if (!device) {
-            tryNextDevice();
-        }
-    }
 
-    function tryNextDevice() {
-        // If potentialDevices is empty, device will be undefined.
-        // That will get us back here next time a device is connected.
-        device = potentialDevices.shift();
-        if (device) {
-            device.open({ stopBits: 0, bitRate: 115200, ctsFlowControl: 0 }, deviceOpened);
-        }
+    ext._deviceConnected = function(dev,util) {
+        _device = dev;
+		_util = util;
     }
 
     var watchdog = null;
     function deviceOpened(dev) {
         if (!dev) {
             // Opening the port failed.
-            tryNextDevice();
+
             return;
         }
-        device.set_receive_handler('mbot',processData);
+        // device.set_receive_handler('mbot',processData);
     };
 
     ext._deviceRemoved = function(dev) {
-        if(device != dev) return;
-        device = null;
+        if(_device != dev) return;
+        _device = null;
     };
 
     ext._shutdown = function() {
-        if(device) device.close();
-        device = null;
+        if(_device) _device.close();
+        _device = null;
     };
 
     ext._getStatus = function() {
-        if(!device) return {status: 1, msg: 'mBot disconnected'};
+        if(!_device) return {status: 1, msg: 'mBot disconnected'};
         if(watchdog) return {status: 1, msg: 'Probing for mBot'};
         return {status: 2, msg: 'mBot connected'};
     }
