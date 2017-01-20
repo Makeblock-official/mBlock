@@ -786,7 +786,7 @@ package {
 			}
 			_saveNeeded = value;
 			AppTitleMgr.Instance.setProjectModifyInfo(_saveNeeded);
-			JsUtil.Call("setSaveStatus",[value]);
+			JsUtil.callApp("setSaveStatus",[value]);
 		}
 	
 		public function setSaveNeeded(saveNow:Boolean = false):void {
