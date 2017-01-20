@@ -84,6 +84,9 @@ function Application(flash){
         self.saved = isSaved;
         self.updateTitle();
     }
+    this.sendBytesToBoard = function(msg){
+        console.log("sendBytesToBoard msg:",msg);
+    }
     this.updateTitle =function(){
         var textSave = self.saved=="true"? _translator.map('Saved'): _translator.map("Not saved");
         var textConnect = self.connected ? _translator.map('Connected'): _translator.map("Disconnected");
