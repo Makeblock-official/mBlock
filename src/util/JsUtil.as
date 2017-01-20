@@ -218,6 +218,7 @@ package util
 				var base64Str:String = Base64.encode(zipData);
 				//Call("saveProject", [base64Str]);
 				callApp("saveProject",{title: MBlock.app.projectName() + '.sb2', data:base64Str});
+				MBlock.app.saveNeeded = false;
 			}
 			var projIO:ProjectIO = new ProjectIO(MBlock.app);
 			projIO.convertSqueakSounds(MBlock.app.stagePane, squeakSoundsConverted);

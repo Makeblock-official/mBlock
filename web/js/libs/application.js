@@ -44,7 +44,7 @@ function Application(flash){
     })
     ipcRenderer.on('package', (sender,obj) => {
         _ext.onReceived(obj.data);
-        _flash.logToArduinoConsole(obj.data,true);
+        _flash.logToArduinoConsole(obj.data,false);
     });  
     ipcRenderer.on('connected', (sender,obj) => {  
         self.connected = obj.connected;
@@ -54,7 +54,7 @@ function Application(flash){
         self.changeToBoard(obj.board);
     }); 
     ipcRenderer.on('logToArduinoConsole', (sender,obj) => {  
-        _flash.logToArduinoConsole(obj);
+        _flash.logToArduinoConsole(obj,true);
     });
     ipcRenderer.on('setFontSize', (sender,obj) => {
         _flash.setFontSize(obj.size);
@@ -123,7 +123,6 @@ function Application(flash){
         }else{
             _flash.responseValue();
         }
-   //     _flash.logToArduinoConsole(value,false);
     }
     this.setProjectRobotName = function(){
 
