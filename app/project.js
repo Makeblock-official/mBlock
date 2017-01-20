@@ -63,9 +63,10 @@ function Project(app) {
         var tmpPath =path.replace(/\\/g,"/").split("/");
         var tmpTitle = tmpPath[tmpPath.length-1];
         var filename = "./tmp/project."+tmp[tmp.length-1];
-        fs.writeFileSync(pathCore.join("./web",filename), data);
+		var filePath = pathCore.resolve(__root_path, './web', filename);
+        fs.writeFileSync(filePath, data);
         if(_client){
-            _client.send("openProject",{url:filename,title:tmpTitle})
+            _client.send("openProject",{url:filename, title:tmpTitle})
         }
     }
     /**
