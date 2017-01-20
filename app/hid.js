@@ -44,6 +44,7 @@ function HID(app){
 			}
             _port.write(arr);
 		}
+		_app.logToArduinoConsole(data);
 	}
 
 	//连接hid设备
@@ -126,12 +127,11 @@ function HID(app){
 	//ipc转发接收的数据包
 	this.onReceived = function(data){
 		if(_client){
-			if(data[1]>0){
+			if(data[0]>0){
 				var arr=[];
-				for(var i=1;i<data.length;i++){
-					arr.push(data[i]);
+				for(var i=0;i<data[0];i++){
+					arr.push(data[i+1]);
 				}
-				console.log("#######arr"+arr);
 				_client.send("package",{data:arr})
 			}
 		}
