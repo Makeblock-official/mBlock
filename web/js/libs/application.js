@@ -44,7 +44,7 @@ function Application(flash){
     })
     ipcRenderer.on('package', (sender,obj) => {
         _ext.onReceived(obj.data);
-        _flash.logToArduinoConsole(obj.data);
+        _flash.logToArduinoConsole(obj.data,true);
     });  
     ipcRenderer.on('connected', (sender,obj) => {  
         self.connected = obj.connected;
