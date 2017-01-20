@@ -3,6 +3,7 @@
  */
 const {dialog,BrowserWindow} = require('electron')
 const fs = require("fs");
+const pathCore = require('path');
 const events = require('events');
 var _emitter = new events.EventEmitter();  
 var _saveAs=false;
@@ -61,8 +62,8 @@ function Project(app) {
         var tmp = path.split(".");
         var tmpPath =path.replace(/\\/g,"/").split("/");
         var tmpTitle = tmpPath[tmpPath.length-1];
-        var filename = "/tmp/project."+tmp[tmp.length-1];
-        fs.writeFileSync("./web"+filename, data);
+        var filename = "./tmp/project."+tmp[tmp.length-1];
+        fs.writeFileSync(pathCore.join("./web",filename), data);
         if(_client){
             _client.send("openProject",{url:filename,title:tmpTitle})
         }
