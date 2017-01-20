@@ -85,7 +85,7 @@ function Application(flash){
         self.updateTitle();
     }
     this.updateTitle =function(){
-        var textSave = self.saved  ? _translator.map('Saved'): _translator.map("Not saved");
+        var textSave = self.saved=="true"? _translator.map('Saved'): _translator.map("Not saved");
         var textConnect = self.connected ? _translator.map('Connected'): _translator.map("Disconnected");
         var title = package.description +" - " + textConnect+" - " +textSave;
         ipcRenderer.sendToHost("setAppTitle",title);
