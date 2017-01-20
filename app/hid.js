@@ -111,6 +111,7 @@ function HID(app){
 			_client.send("connected",{connected:true})
 		}
 		_isConnected = true;
+		_app.getMenu().update();
 	}
 
 	//设备已断开
@@ -119,6 +120,7 @@ function HID(app){
 			_client.send("connected",{connected:false})
 		}
 		_isConnected = false;
+		_app.getMenu().update();
 	}
 
 	//ipc转发接收的数据包
