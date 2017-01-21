@@ -85,7 +85,7 @@ function Application(flash){
         self.updateTitle();
     }
     this.sendBytesToBoard = function(msg){
-        console.log("sendBytesToBoard msg:",msg);
+        console.log("sendBytesToBoard msg:"+msg);
     }
     this.updateTitle =function(){
         var textSave = self.saved=="true"? _translator.map('Saved'): _translator.map("Not saved");
