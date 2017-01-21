@@ -48,6 +48,7 @@ function Application(flash){
     });  
     ipcRenderer.on('connected', (sender,obj) => {  
         self.connected = obj.connected;
+        ipcRenderer.send("connectionStatus", obj);
         self.updateTitle();
     });  
     ipcRenderer.on('changeToBoard', (sender,obj) => {  
