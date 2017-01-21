@@ -169,7 +169,7 @@ public class ScriptsPart extends UIPart {
 		sendBt.addEventListener(MouseEvent.CLICK,onSendSerial);
 		displayModeBtn.addEventListener(MouseEvent.CLICK,onDisplayModeChange);
 		inputModeBtn.addEventListener(MouseEvent.CLICK,onInputModeChange);
-		
+		onInputModeChange(null);
 		arduinoFrame.addChild(openBt);
 		arduinoFrame.addChild(arduinoTextPane);
 		arduinoFrame.addChild(messageTextPane);
@@ -273,12 +273,35 @@ public class ScriptsPart extends UIPart {
 			appendMsgWithTimestamp(str, true);
 		}
 	}
-	
+	public function appendMsgFromJs(msg:String,isOut:Boolean):void
+	{
+		var arr:Array = msg.split(",");
+		
+		for(var i:int=0;i<arr.length;i++)
+		{
+			if(isByteDisplayMode)
+			{
+				arr[i] = Number(arr[i]).toString(16);
+			}
+			if(arr[i].length<2)
+			{
+				arr[i] = "0"+arr[i];
+			}
+		}
+		var tmpmsg:String = arr.join(" ");
+		appendMsgWithTimestamp(tmpmsg,isOut);
+	}
 	public function appendMsgWithTimestamp(msg:String, isOut:Boolean):void
 	{
 		var date:Date = new Date();
 		var sendType:String = isOut ? " > " : " < ";
-		msg = date.hours + ":" + date.minutes + ":" + date.seconds + "." +date.milliseconds + sendType + msg;
+		
+		var millSeconds:String = date.milliseconds.toString();
+		while(millSeconds.toString().length<3)
+		{
+			millSeconds="0"+millSeconds;
+		}
+		msg = date.hours + ":" + date.minutes + ":" + date.seconds + "." +millSeconds + sendType + msg;
 		appendMessage(msg);
 	}
 	public function onSerialDataReceived(bytes:ByteArray):void{
@@ -301,12 +324,19 @@ public class ScriptsPart extends UIPart {
 		if(str.length <= 0){
 			return;
 		}
+		var sendData:Array = [];
 		var bytes:ByteArray;
 		if(isByteInputMode){
 			bytes = HexUtil.stringToBytes(str);
+			for(var i:int=0;i<bytes.length;i++)
+			{
+				sendData[i] = bytes[i];
+			}
+			JsUtil.callApp("sendBytesToBoard",sendData);
 		}else{
 			bytes = new ByteArray();
 			bytes.writeUTFBytes(str + "\n");
+			JsUtil.callApp("sendBytesToBoard",str);
 		}
 		onSerialSend(bytes);
 		ConnectionManager.sharedManager().sendBytes(bytes);
