@@ -33,11 +33,10 @@ function Serial(app){
 		_currentSerialPort = "";
 	}
 	this.send = function(data){
-		//console.log(data)
 		if(_port&&_port.isOpen()){
 			_port.write(new Buffer(data),function(){
-
 			});
+			_app.logToArduinoConsole(data);
 		}
 	}
 	this.connect = function(name){ // linux : /dev/ttyUSB0
@@ -128,7 +127,11 @@ function Serial(app){
 	}
 	this.onReceived = function(data){
 		if(_client){
-			_client.send("package",{data:data})
+			var arr=[];
+			for(var i=0;i<data.length;i++){
+				arr.push(data[i]);
+			}
+			_client.send("package",{data:arr});
 		}
 	}
 }

@@ -44,9 +44,10 @@ function Project(app) {
                         path += ".sb2";
                     }
                     _currentProjectPath = path;
-                    var temp = path.split("/");
+                    var temp = path.replace(/\\/g,"/").split("/");
                     _title = temp[temp.length-1].split(".sb2")[0];
                     fs.writeFileSync(path, new Buffer(data, 'base64'));
+                    self.setProjectTitle();                    //设置另存后标题
                 }
             })
         }else{
