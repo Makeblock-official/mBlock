@@ -315,7 +315,7 @@ package util
 		
 		static private function __logToArduinoConsole(message:String,isOut:Boolean):void
 		{
-			MBlock.app.scriptsPart.appendMsgWithTimestamp(message,isOut);
+			MBlock.app.scriptsPart.appendMsgFromJs(message,isOut);
 		}
 		static private function __setFontSize(size:int):void
 		{

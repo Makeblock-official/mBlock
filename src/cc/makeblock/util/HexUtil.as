@@ -17,7 +17,19 @@ package cc.makeblock.util
 			}
 			return list.join(" ");
 		}
-		
+		static public function arrayToString(array:Array):String
+		{
+			var n:int = array.length;
+			var list:Array = [];
+			for(var i:int=0; i<n; ++i){
+				var str:String = array[i].toString(16);
+				while(str.length < 2){
+					str = "0" + str;
+				}
+				list.push(str);
+			}
+			return list.join(" ");
+		}
 		static private const blankExp:RegExp = /\s+/;
 		
 		public static function stringToBytes(str:String):ByteArray
