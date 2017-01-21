@@ -341,7 +341,7 @@ function AppMenu(app){
                     },
                     {
                         name:"Others",
-                        label:"Others",
+                        label: _translator.map('Others'),
                         enabled:false
                     },
                     {
