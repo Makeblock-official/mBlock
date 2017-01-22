@@ -75,9 +75,26 @@ function Project(app) {
      */
     this.newProject = function(){
         _currentProjectPath = "";
+        //var ret=self.showCoverDialog();
+        //if(ret==2){
+        //    return;
+        //}else if(ret==0 &&!_saveAs) {
+        //    self.saveAs(true);
+        //    return
+        //}
         if(_client){
             _client.send("newProject",{title:"new-project"})
         }
+    }
+    this.showCoverDialog = function(){
+        var ret = dialog.showMessageBox(BrowserWindow.getFocusedWindow(),{
+             type:'question',
+             title:'',
+             message:'保存项目？',
+             buttons:['保存','不保存','取消'],
+             noLink:true
+         });
+        return ret;
     }
     /**
      * 获得项目标题
