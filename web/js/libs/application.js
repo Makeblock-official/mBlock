@@ -48,6 +48,7 @@ function Application(flash){
     });  
     ipcRenderer.on('connected', (sender,obj) => {  
         self.connected = obj.connected;
+        ipcRenderer.send("connectionStatus", obj);
         self.updateTitle();
     });  
     ipcRenderer.on('changeToBoard', (sender,obj) => {  
@@ -74,8 +75,9 @@ function Application(flash){
         var body = document.getElementById('body');
         loader.parentNode.removeChild(loader);
         body.className = '';
-        // window.responseValue = _flash.responseValue;
-
+        // 解决打开空白的bug
+		_flash.style.height = '99%';
+        _flash.style.width = '99%';
     }
     this.saveProject = function(project){
         ipcRenderer.send("saveProject",project);
@@ -85,7 +87,10 @@ function Application(flash){
         self.updateTitle();
     }
     this.sendBytesToBoard = function(msg){
-        console.log("sendBytesToBoard msg:"+msg);
+        ipcRenderer.send("package", {data:msg});
+    }
+    this.updateMenuStatus = function(obj){
+
     }
     this.updateTitle =function(){
         var textSave = self.saved=="true"? _translator.map('Saved'): _translator.map("Not saved");

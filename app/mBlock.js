@@ -63,6 +63,9 @@ function mBlock(){
 			_bluetooth.send(arg.data);
 		}
 	});
+	ipcMain.on('connectionStatus',function(event,obj){
+		_menu.updateConnectionStatus(obj);
+	})
 	ipcMain.on('openArduinoIDE', function(event, code) {
 		_arduinoIDE.openArduinoIDE(code);
 	});
