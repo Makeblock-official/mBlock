@@ -1,3 +1,6 @@
+/**
+ * 安装固件
+ */
 const spawn = require('child_process').spawn;
 const path = require('path');
 const utils = require('./utils');

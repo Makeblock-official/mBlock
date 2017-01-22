@@ -12,6 +12,7 @@ var contentTextDom = document.querySelector('#alert-box-content');
 var AlertBox = {
     init: function() {
         var self = this;
+		//
         closeButtonDom.addEventListener('click', function() {
             ipcRenderer.send('alertBoxClosed');
             self.close();
