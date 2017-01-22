@@ -12,3 +12,4 @@ node_modules
 /tools/Arduino.app
 /tmp/*
 /dist/*
+/web/tmp/project.sb2
