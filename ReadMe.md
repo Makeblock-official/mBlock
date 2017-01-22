@@ -54,3 +54,15 @@ On Linux
 - Linux: 把arduino.tar.gz解压成为/tools/arduino
 - Mac: 把Arduino.app.zip解压成为/tools/Arduino.app
 - Windows: 
+
+### 编写代码注意事项
+
+获取文件绝对路径时，需用__root_path来拼接，不能直接用node的文件路径，如下：
+需要在web/tmp目录下写入文件project.sb2，假如运行脚本在app目录下，
+正确：var filename = "./tmp/project.sb2";
+var filePath = path.resolve(__root_path, './web', filename);
+fs.writeFileSync(filePath, data);
+错误：
+var filename = "./tmp/project.sb2";
+var filePath = path.resolve(__dirname, '../web', filename);
+fs.writeFileSync(filePath, data);

@@ -38,7 +38,7 @@ var AlertBox = {
     },
 
     setContent: function(content) {
-        contentTextDom.innerText = content;
+        contentTextDom.innerHTML = content;
     },
 
     setButtonText: function(content) {

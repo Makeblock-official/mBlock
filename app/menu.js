@@ -4,7 +4,7 @@
 const{Menu,dialog,MenuItem} = require('electron');
 const events = require('events');
 var _emitter = new events.EventEmitter();
-var _app,_mainMenu,_stage,_translator,_serial,_hid,_project,_fontSize,_undelete=false;
+var _app,_mainMenu,_stage,_translator,_serial,_hid,_project,_fontSize,_undelete=false,_connectionStatus=false;
 function AppMenu(app){
     var self = this;
     _app = app;
@@ -209,13 +209,13 @@ function AppMenu(app){
                     {
                         name: 'Upgrade Firmware', // 安装固件
                         label: _translator.map('Upgrade Firmware'),
-						enabled: true,
+						enabled: _connectionStatus,
                         click: function(item, focusedWindow) { _emitter.emit("upgradeFirmware"); }
                     },
                     {
                         name: 'Reset Default Program', // 恢复出厂程序（仅mBot适用）
                         label: _translator.map('Reset Default Program'),
-                        enabled: _firmwareUploader.allowResetDefaultProgram(),
+                        enabled: _firmwareUploader.allowResetDefaultProgram()&&_connectionStatus,
                         click: function (item, focusedWindow) {
                             _emitter.emit("resetDefaultProgram");
                         }
@@ -341,7 +341,7 @@ function AppMenu(app){
                     },
                     {
                         name:"Others",
-                        label:"Others",
+                        label: _translator.map('Others'),
                         enabled:false
                     },
                     {
@@ -562,6 +562,9 @@ function AppMenu(app){
     this.enableUnDelete = function () {
         _undelete = true;
         self.update();
+    }
+    this.updateConnectionStatus = function(obj){
+        _connectionStatus = obj.connected;
     }
 }
 module.exports = AppMenu;
