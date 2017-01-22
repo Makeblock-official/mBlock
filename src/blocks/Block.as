@@ -925,6 +925,11 @@ public class Block extends Sprite {
 
 	public function click(evt:MouseEvent):void {
 		if (editArg(evt)) return;
+		if(isHat && !MBlock.app.stageIsArduino)
+		{
+			MBlock.app.toggleArduinoMode();
+			return;
+		}
 		MBlock.app.runtime.interp.toggleThread(topBlock(), MBlock.app.viewedObj(), 1);
 	}
 
