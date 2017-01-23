@@ -130,10 +130,9 @@ var FirmwareUploader = {
         });
         avrdude.on('close', function(code){
             if(code == 0) {
-                app.alert(T('Upload Succeeded'));
-            }
-            else {
-                app.alert(T('Upload Failed'));
+				app.alert({'message':T('Upload Succeeded'), 'hasCancel':true});
+            } else {
+                app.alert({'message':T('Upload Failed'), 'hasCancel':true});
             }
             app.getSerial().connect(serialPort);
         });
