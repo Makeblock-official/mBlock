@@ -126,6 +126,9 @@ var FirmwareUploader = {
         });
         avrdude.stderr.on('data', function(data){
             app.logToArduinoConsole(data.toString());
+            if(data.toString().indexOf('programmer is not responding')>=0){
+                avrdude.kill('SIGKILL');
+            }
             app.alert({'message':T('Uploading')+'...'+utils.getProgressCharacter(), 'hasCancel':false});
         });
         avrdude.on('close', function(code){
@@ -134,6 +137,7 @@ var FirmwareUploader = {
             } else {
                 app.alert({'message':T('Upload Failed'), 'hasCancel':true});
             }
+            avrdude.kill('SIGKILL');
             app.getSerial().connect(serialPort);
         });
 
