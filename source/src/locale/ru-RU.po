@@ -508,9 +508,7 @@ msgid "10 ^"
 msgstr "10 ^"
 
 msgid "<b>Information about Cloud variables</b><br>&nbsp;<br>Currently, only numbers are supported<br>Chat rooms are not allowed, and will be removed<br>For more info, <a href="/help/faq/#clouddata" target="_blank">see the cloud data FAQ!</a>"
-msgstr ""
-"<b>Информация об облачных переменных</b><br>&nbsp;<br>В настоящее время, только цифры поддерживаются "
-"tal<br>Чаты не допускается, и будут удалены<br>Для получения дополнительной информации <a href= target=>см облачные данные FAQ!</a>"
+msgstr "<b>Информация об облачных переменных</b><br>&nbsp;<br>В настоящее время, только цифры поддерживаются. <br>Чаты не допускается, и будут удалены<br>Для получения дополнительной информации <a href= target=>см облачные данные FAQ!</a>"
 
 msgid "A connected"
 msgstr "A соединен"
@@ -609,8 +607,7 @@ msgid "Bassoon"
 msgstr "Фагот"
 
 msgid "Because you have a new Scratch account, any changes to cloud data won't be saved yet. Keep participating on the site you'll be able to use cloud data soon!"
-msgstr ""
-"Поскольку вы имеете новую учетную запись Скретч, любые изменения в облачных данных еще не будут сохранены. Участвуйте в просмотре сайта и скоро вы сможете использовать облачные данные!"
+msgstr "Поскольку вы имеете новую учетную запись Скретч, любые изменения в облачных данных еще не будут сохранены. Участвуйте в просмотре сайта и скоро вы сможете использовать облачные данные!"
 
 msgid "Bitmap"
 msgstr "Растровый"
@@ -661,7 +658,7 @@ msgid "Cancel"
 msgstr "Отмена нафик"
 
 msgid "Cannot Delete"
-msgstr "Сори немогу удалить
+msgstr "Сори немогу удалить""
 
 msgid "Can’t find network connection or reach server."
 msgstr "Немогу найти сетевое подключение или связаться с сервером."
@@ -694,7 +691,7 @@ msgid "Choose sprite from library"
 msgstr "Выберите спрайт из библиотеки"
 
 msgid "Circle"
-msgstr ”Круг"
+msgstr "Круг"
 
 msgid "City"
 msgstr "Город"
@@ -1535,12 +1532,10 @@ msgid "Things"
 msgstr "Вещи"
 
 msgid "This project can detect who is using it, through the “username” block. To hide your identity, sign out before using the project."
-msgstr ""
-"Этот проект может обнаружить, кто использует его, через блок “имени пользователя” Чтобы скрыть свою личность, выйдите перед использованием проекта."
+msgstr "Этот проект может обнаружить, кто использует его, через блок “имени пользователя” Чтобы скрыть свою личность, выйдите перед использованием проекта."
 
 msgid "This project uses Cloud data ‒ a feature that is available only to signed in users."
-msgstr ""
-"Этот проект использует данные облачного сервиса ‒ функция, которая доступна только подписанным пользователям."
+msgstr "Этот проект использует данные облачного сервиса ‒ функция, которая доступна только подписанным пользователям."
 
 msgid "this script"
 msgstr "этот скрипт"
@@ -1692,8 +1687,7 @@ msgid "year"
 msgstr "год"
 
 msgid "You cannot edit cloud data in someone else's project.<br>Any change that you make in the editor will be temporary and not persistent."
-msgstr ""
-"Вы не можете редактировать облачные данные в чужом проекте.<br>Любое изменение, которое вы делаете в редакторе будет носить временный характер и не является постоянным."
+msgstr "Вы не можете редактировать облачные данные в чужом проекте.<br>Любое изменение, которое вы делаете в редакторе будет носить временный характер и не является постоянным."
 
 msgid "Eraser width:"
 msgstr "Ширина удаления:"
