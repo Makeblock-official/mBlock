@@ -1,21 +1,21 @@
 # mBlock
-The mBlock is modified based on the [source code](https://github.com/LLK/scratch-flash) of Scratch 2.0 offline version, mBlock plug in for the online version of Scratch is under devoloping. With mBlock, those who are familiar with Scratch can easily interact with electronic modules in Arduino eco-system.
+The mBlock is a branch of on the [Scratch 2.0 offline version](https://github.com/LLK/scratch-flash). It adds support of Makeblock products and other Arduino-based boards.
 
-mBlock add some hardware-related blocks in the original Scratch, with these blocks, users can read sensors, control motors and even a whole robot.
+You can get more information or [download a release build at the mBlock website](http://www.mblock.cc)
 
-Besides blocks for the basic microcontroller functionalities, analog and digital writes and reads, PWM outputs. There are also blocks for each specific electronic modules, such as ultrasonic sensor, temperature sensor, light sensor, DC motor driver, stepper driver, etc. With these blocks, it’s simple to interact with many kinds of electronic modules.
+# Repo Status
 
-#Installer
-Windows : [Download](http://download.makeblock.com/mblock/v_3_3_1/mBlock_win_v3.3.1.zip)
+*The MASTER branch is deprecated and will be replace/force pushed in the future! Do not fire pull requests on the Master branch!*
 
-Mac OSX : [Download](http://download.makeblock.com/mblock/v_3_3_1/mBlock_mac_v3.3.1.zip)
+version 3.4.5(in branch 3.4.5) is the currently released version, is considered a "stable" version and will not be actively updated. However, if you find any bugs, welcome to fire a pull request.
+
+If you want to work with translation, or find errors in the translations, [please read this document on how to translate mBlock](http://www.mblock.cc/posts/note-for-translators). This Git repo does not accept pull requests on translating the texts.
+
+# Installer
+
+[Download for windows/mac at the mBlock website](http://www.mblock.cc)
  
-#Website
-[http://www.mblock.cc](http://mblock.cc) Using Scratch to Program Arduino. 
 
-#Screenshot
-<img src="http://mblock.cc/wp-content/uploads/2014/08/Mblock_web_04.jpg" width = "512"  alt="mBlock|Arduino" />
 
-<img src="http://mblock.cc/wp-content/uploads/2014/08/Mblock_web_02.jpg" width = "512"  alt="mBlock|Arduino" />
 
 ###Learn more from Makeblock official website: www.makeblock.com
