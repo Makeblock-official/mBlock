@@ -23,6 +23,7 @@ if(rootPath.indexOf('asar') > -1) {
   global.__is_packaged = true;
 }
 global.__root_path = rootPath;
+global.__webviewRootURL = 'http://localhost:7070';
         
 console.log(path.join(rootPath,'/tools/arduino'));
 //设置express静态资源目录
