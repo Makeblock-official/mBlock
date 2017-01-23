@@ -1,4 +1,4 @@
-﻿# The language name as it will appear in the language menu
+# The language name as it will appear in the language menu
 msgid "Language-Name"
 msgstr "Dansk"
 

@@ -114,9 +114,6 @@ msgstr "%d.listDeleteItem 번째 항목을 %m.list 에서 삭제하기"
 msgid "delete this clone"
 msgstr "이 복제본 삭제하기"
 
-msgid "direction"
-msgstr "방향"
-
 msgid "distance"
 msgstr "거리"
 
@@ -146,9 +143,6 @@ msgstr "맨 앞으로 나오기"
 
 msgid "go to x:%n y:%n"
 msgstr "x:%n y:%n 로 이동하기"
-
-msgid "hide"
-msgstr "숨기기"
 
 msgid "hide list %m.list"
 msgstr "%m.list 리스트 숨기기"
@@ -188,9 +182,6 @@ msgstr "%n 번째 글자 ( %s )"
 
 msgid "Looks"
 msgstr "형태"
-
-msgid "loudness"
-msgstr "음량"
 
 msgid "More Blocks"
 msgstr "추가 블록"
@@ -422,9 +413,6 @@ msgstr "사용자이름"
 msgid "video %m.videoMotionType on %m.stageOrThis"
 msgstr "비디오 %m.videoMotionType 에 대한 %m.stageOrThis 에서의 관찰값"
 
-msgid "volume"
-msgstr "음량"
-
 msgid "wait %n secs"
 msgstr "%n 초 기다리기"
 
@@ -472,12 +460,6 @@ msgstr "이 스프라이트를 클릭했을 때"
 msgid "when tilt %m.eNe %n"
 msgstr "기울기 %m.eNe %n 일 때"
 
-msgid "x position"
-msgstr "x좌표"
-
-msgid "y position"
-msgstr "y좌표"
-
 # 89%
 msgid "set motor direction %m.motorDirection"
 msgstr "모터 방향을 %m.motorDirection 쪽으로 정하기"
@@ -502,48 +484,17 @@ msgstr "거리 < %n 일 때"
 msgid "when tilt = %n"
 msgstr "기울기 = %n 일 때"
 
-# 89%
-# 86%
-#, fuzzy
-#~ msgid "set %m.motor direction to %m.motorDirection"
-#~ msgstr "모터 방향을 %m.motorDirection 쪽으로 정하기"
-
-#~ msgid "forever if %b"
-#~ msgstr "반복 %b 계속 확인"
-
-#~ msgid "if %b"
-#~ msgstr "만약 %b 라면"
-
-#~ msgid "motor direction %m.motorDirection"
-#~ msgstr "모터 %m.motorDirection 회전"
-
-#~ msgid "motor off"
-#~ msgstr "모터 끄기"
-
-#~ msgid "motor on"
-#~ msgstr "모터 켜기"
-
-#~ msgid "motor on for %n secs"
-#~ msgstr "%n초 동안 모터 켜기"
-
-#~ msgid "motor power %n"
-#~ msgstr "모터 파워 %n"
-
-#~ msgid "play note %n for %n beats"
-#~ msgstr "%d.note 음계 %n 박자로 연주하기"
-
-##################
+# #################
 # User Interface #
-##################
-
+# #################
 msgid "10 ^"
 msgstr "10 ^"
 
-msgid "<b>Information about Cloud variables</b><br>&nbsp;<br>Currently, only numbers are supported<br>Chat rooms are not allowed, and will be removed<br>For more info, <a href="/help/faq/#clouddata" target="_blank">see the cloud data FAQ!</a>"
+msgid ""
+"<b>Information about Cloud variables</b><br>&nbsp;<br>Currently, only numbers are supported<br>Chat rooms are not allowed, and will be removed<br>For more info, <a href=\"/help/faq/#clouddata\" target=\"_blank\">see the cloud data FAQ!</a>"
 msgstr ""
-"<b>클라우드 변수 정보</b><br>&nbsp;<br>현재, 스크래치 웹사이트 회원만 사용할 수 있습니다.<br>채팅방은 현재 허용되지 "
-"않으며, 조만간 없어질 예정입니다.<br>관련 정보는, <a href=\"/help/faq/#clouddata\" target=\""
-"_blank\">cloud data FAQ!</a> 를 참고하세요!"
+"<b>클라우드 변수 정보</b><br>&nbsp;<br>현재, 스크래치 웹사이트 회원만 사용할 수 있습니다.<br>채팅방은 현재 허용되지 않으며, 조만간 없어질 예정입니다.<br>관련 정보는, <a href=\"/help/faq/#clouddata\" target=\"_blank\">cloud data FAQ!</a> 를 "
+"참고하세요!"
 
 msgid "A connected"
 msgstr "A 연결됨"
@@ -638,14 +589,8 @@ msgstr "배경"
 msgid "Backdrop"
 msgstr "배경"
 
-msgid "backdrop #"
-msgstr "배경 번호"
-
 msgid "Backdrop Library"
 msgstr "배경 저장소"
-
-msgid "backdrop name"
-msgstr "배경 이름"
 
 msgid "backdrop1"
 msgstr "배경1"
@@ -784,7 +729,7 @@ msgstr "모두 지우기"
 msgid "clear senders/receivers"
 msgstr "표시 삭제하기"
 
-msgid "Click "Save now" to try again or "Download" to save"
+msgid "Click \"Save now\" to try again or \"Download\" to save"
 msgstr "저장하기 위해서는 \"저장하기\" 를 다시 누르거나 \"다운로드\"를 누르세요."
 
 msgid "Close"
@@ -834,9 +779,6 @@ msgstr "cos"
 
 msgid "Costume"
 msgstr "모양"
-
-msgid "costume #"
-msgstr "모양 번호"
 
 msgid "Costume Library"
 msgstr "모양 저장소"
@@ -1296,9 +1238,6 @@ msgstr "새로운 스프라이트:"
 msgid "New Variable"
 msgstr "새로운 변수"
 
-msgid "next backdrop"
-msgstr ""
-
 msgid "No motion blocks"
 msgstr "사용 가능한 동작 블럭이 없습니다."
 
@@ -1598,9 +1537,6 @@ msgstr "공유됨"
 msgid "Shift:"
 msgstr "Shift 키:"
 
-msgid "show"
-msgstr "보이기"
-
 msgid "show receivers"
 msgstr "메시지 받는 스프라이트 표시하기"
 
@@ -1632,9 +1568,6 @@ msgstr "음량 끄기"
 msgid "sin"
 msgstr "sin"
 
-msgid "size"
-msgstr "크기"
-
 msgid "slider"
 msgstr "슬라이더 사용하기"
 
@@ -1654,9 +1587,6 @@ msgid "softer"
 msgstr "음량 줄이기"
 
 msgid "sound"
-msgstr "소리"
-
-msgid "Sound"
 msgstr "소리"
 
 msgid "Sound Library"
@@ -1749,9 +1679,7 @@ msgid "This is the current version."
 msgstr ""
 
 msgid "This project can detect who is using it, through the “username” block. To hide your identity, sign out before using the project."
-msgstr ""
-"이 프로젝트에는 당신이 누구인지 알 수 있는 \"사용자이름\" 블록이 사용되었습니다. 당신의 계정이름을 숨기고 싶다면, 이 프로젝트를 "
-"시작하기 전에 로그아웃 하세요."
+msgstr "이 프로젝트에는 당신이 누구인지 알 수 있는 \"사용자이름\" 블록이 사용되었습니다. 당신의 계정이름을 숨기고 싶다면, 이 프로젝트를 시작하기 전에 로그아웃 하세요."
 
 msgid "This project uses Cloud data ‒ a feature that is available only to signed in users."
 msgstr "이 프로젝트는 클라우드 데이터를 사용합니다. - 로그인한 사용자만 실행할 수 있습니다."
@@ -1767,9 +1695,6 @@ msgstr "시계방향"
 
 msgid "Throw away all changes since opening this project?"
 msgstr "이 프로젝트를 열고 난 이후의 모든 변화를 삭제할까요?"
-
-msgid "timer"
-msgstr "타이머"
 
 msgid "Tips"
 msgstr "도움말"
@@ -1928,16 +1853,13 @@ msgid "year"
 msgstr "년"
 
 msgid "You cannot edit cloud data in someone else's project.<br>Any change that you make in the editor will be temporary and not persistent."
-msgstr ""
-"다른사람의 프로젝트에 있는 클라우드 데이터는 편집할 수 없습니다.<br>이에 편집기안에서의 모든 변경사항은 임시적이고  영구적이지 "
-"않습니다."
+msgstr "다른사람의 프로젝트에 있는 클라우드 데이터는 편집할 수 없습니다.<br>이에 편집기안에서의 모든 변경사항은 임시적이고  영구적이지 않습니다."
 
 msgid "Your Scratch name"
 msgstr ""
 
 msgid "Your Scratch name is required"
 msgstr ""
-
 
 msgid "Click  to try again or  to save"
 msgstr "저장하기 위해서는 \"저장하기\" 를 다시 누르거나 \"다운로드\"를 누르세요."
@@ -1948,97 +1870,290 @@ msgstr "지우개 크기:"
 msgid "Line width:"
 msgstr "선 굵기:"
 
-#~ msgid "cleanup"
-#~ msgstr "블록 정리하기"
-
-#~ msgid "LEGO WeDo"
-#~ msgstr "LEGO WeDo"
-
-#~ msgid "Microphone Volume:"
-#~ msgstr "마이크로폰 음량:"
-
-# 90%
-#, fuzzy
-#~ msgid "New sprite"
-#~ msgstr "새로운 스프라이트:"
-
-#~ msgid "Paint"
-#~ msgstr "그리기"
-
-#~ msgid "any"
-#~ msgstr "아무"
-
-#~ msgid "High Tom"
-#~ msgstr "하이 탐"
-
-#~ msgid "Long Guiro"
-#~ msgstr "긴 귀로"
-
-#~ msgid "Low Bongo"
-#~ msgstr "로우 봉고"
-
-#~ msgid "Low Conga"
-#~ msgstr "로우 콩가"
-
-#~ msgid "Low Tom"
-#~ msgstr "로우 탐"
-
-#~ msgid "Low Wood Block"
-#~ msgstr "로우 나무블록"
-
-#~ msgid "Maracas"
-#~ msgstr "마라카스"
-
-#~ msgid "More"
-#~ msgstr "더"
-
-#~ msgid "Mute Triangle"
-#~ msgstr "뮤트 트라이앵글"
-
-#~ msgid "Open Triangle"
-#~ msgstr "오픈 트라이앵글"
-
-#~ msgid "Pedal Hi-Hat"
-#~ msgstr "페달 하이 햇"
-
-#~ msgid "Short Guiro"
-#~ msgstr "짧은 귀로"
-
 msgid "X-Axis"
 msgstr "X축"
+
 msgid "Y-Axis"
 msgstr "Y축"
+
 msgid "Z-Axis"
 msgstr "Z축"
+
 msgid "Extensions"
 msgstr "확장"
-msgid"Boards"
-msgstr "보드",
-msgid"Connect" 
-msgstr "연결",
-msgid"Help" 
-msgstr "도와주세요",
-msgid"Forum" 
-msgstr "포럼",
-msgid"Report a Bug" 
-msgstr "버그 신고",
-msgid"License" 
-msgstr "라이센스",
-msgid"Acknowledgements"
-msgstr "감사의 글",
-msgid"Discover" 
-msgstr "발견",
-msgid"View Source" 
-msgstr "소스보기",
-msgid"Install Arduino Driver"
-msgstr "아두 이노 드라이버 설치"
-msgid"Hide Extension" 
-msgstr "확장 숨기기",
-msgid"Show Extension" 
-msgstr "보기 확장"
-msgid"Data&Blocks" 
-msgstr "데이터&블록"
-msgid"Upgrade Firmware" 
-msgstr "펌웨어 업그레이드"
-msgid"Custom Connect"
-msgstr "사용자 정의 연결"
+
+msgid "Arduino Program"
+msgstr ""
+
+msgid "upload to arduino"
+msgstr ""
+
+msgid "set font size"
+msgstr ""
+
+msgid "import translation file"
+msgstr ""
+
+msgid "Back"
+msgstr ""
+
+msgid "Upload to Arduino"
+msgstr ""
+
+msgid "Send"
+msgstr ""
+
+msgid "Please connect the serial port."
+msgstr ""
+
+msgid "Message"
+msgstr ""
+
+msgid "Arduino IDE not found,"
+msgstr ""
+
+msgid "or Click 'Download' to install the Arduino IDE."
+msgstr ""
+
+msgid "Click 'Set Path' to find the install path of Arduino,"
+msgstr ""
+
+msgid "Set Path"
+msgstr ""
+
+msgid "Edit with Arduino IDE"
+msgstr ""
+
+msgid "unsupported block found, remove them to continue."
+msgstr ""
+
+msgid "Arduino Project"
+msgstr ""
+
+msgid "Start Uploading"
+msgstr ""
+
+msgid "Waiting Reset Board"
+msgstr ""
+
+msgid "Uploading"
+msgstr ""
+
+msgid "Upload Finish"
+msgstr ""
+
+msgid "Hide"
+msgstr ""
+
+msgid "Arduino mode"
+msgstr ""
+
+msgid "Current Firmware"
+msgstr ""
+
+msgid "Unknown Firmware"
+msgstr ""
+
+msgid "Firmware"
+msgstr ""
+
+msgid "2.4G Serial"
+msgstr ""
+
+msgid "Discover"
+msgstr ""
+
+msgid "Search Network"
+msgstr ""
+
+msgid "Boards"
+msgstr ""
+
+msgid "Help"
+msgstr ""
+
+msgid "Report a Bug"
+msgstr ""
+
+msgid "License"
+msgstr ""
+
+msgid "Acknowledgements"
+msgstr ""
+
+msgid "Share Your Project"
+msgstr ""
+
+msgid "FAQ"
+msgstr ""
+
+msgid "Install Arduino Driver"
+msgstr ""
+
+msgid "Bluetooth need to install .Net Framework 4.0"
+msgstr ""
+
+msgid "Clear Bluetooth"
+msgstr ""
+
+msgid "Reset Default Program"
+msgstr ""
+
+msgid "random horizontal point"
+msgstr ""
+
+msgid "random vertical point"
+msgstr ""
+
+msgid "random stage point"
+msgstr ""
+
+msgid "top edge"
+msgstr ""
+
+msgid "right edge"
+msgstr ""
+
+msgid "bottom edge"
+msgstr ""
+
+msgid "left edge"
+msgstr ""
+
+msgid "Disconnected"
+msgstr ""
+
+msgid "Hide stage layout"
+msgstr ""
+
+msgid "manage_extentions"
+msgstr ""
+
+msgid "Face Panel"
+msgstr ""
+
+msgid "Clear All"
+msgstr ""
+
+msgid "Light All"
+msgstr ""
+
+msgid "Add To Favourite"
+msgstr ""
+
+msgid "Remove Emotion"
+msgstr ""
+
+msgid "Complete"
+msgstr ""
+
+msgid "Manage Extensions"
+msgstr ""
+
+msgid "Add Extension"
+msgstr ""
+
+msgid "Remove Extension"
+msgstr ""
+
+msgid "file is not a valid extension zip!"
+msgstr ""
+
+msgid "Want to delete?"
+msgstr ""
+
+msgid "Warning"
+msgstr ""
+
+msgid "Language"
+msgstr ""
+
+msgid "Connecting Bluetooth"
+msgstr ""
+
+msgid "Bluetooth Connected"
+msgstr ""
+
+msgid "Connecting Timeout"
+msgstr ""
+
+msgid "Restore Extensions"
+msgstr ""
+
+msgid "Extension Files Updated"
+msgstr ""
+
+msgid "Modified"
+msgstr ""
+
+msgid "Save Project As"
+msgstr ""
+
+msgid "I know"
+msgstr ""
+
+msgid "Update Complete"
+msgstr ""
+
+msgid "There is a newer version"
+msgstr ""
+
+msgid "It's already the newest version"
+msgstr ""
+
+msgid "Download Now"
+msgstr ""
+
+msgid "Download Later"
+msgstr ""
+
+msgid "Others"
+msgstr ""
+
+msgid "Check Software Update"
+msgstr "업데이트 확인"
+
+msgid "Check Assets Update"
+msgstr ""
+
+msgid "Connect"
+msgstr "연결"
+
+msgid "Boards"
+msgstr "보드"
+
+msgid "Language"
+msgstr "언어"
+
+msgid "Help"
+msgstr "도움"
+
+msgid "Forum"
+msgstr "포럼"
+
+msgid "Report a Bug"
+msgstr "제안"
+
+msgid "License"
+msgstr "라이선스"
+
+msgid "Acknowledgements"
+msgstr "치사하다"
+
+msgid "Upload Bug"
+msgstr "업로드 Bug"
+
+msgid "Disconnected"
+msgstr "연결되지 않음"
+
+msgid "Not saved"
+msgstr "저장하지 않은"
+
+msgid "Save project?"
+msgstr "저장 프로그램?"
+
+msgid "Don't save"
+msgstr "저장하지 않음"
+
+msgid "Clear Temp Files"
+msgstr "캐시 비우기"

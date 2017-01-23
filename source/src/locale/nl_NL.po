@@ -15,101 +15,101 @@ msgid "%m.list contains %s"
 msgstr "%m.list bevat %s"
 
 msgid "%m.mathOp of %n"
-msgstr "%m.mathOp van %n"
+msgstr "%m.mathOp %n"
 
 msgid "%m.sensor sensor value"
-msgstr "waarde van sensor %m.sensor"
+msgstr "%m.sensor Sensor Waarde"
 
 msgid "%n mod %n"
-msgstr "%n modulo %n"
+msgstr "%n mod %n"
 
 msgid "add %s to %m.list"
 msgstr "voeg %s toe aan %m.list"
 
 msgid "answer"
-msgstr "antwoord"
+msgstr "Antwoord"
 
 msgid "ask %s and wait"
 msgstr "vraag %s en wacht"
 
 # "backdrop" in Scratch 2.0 is similar to "background" in Scratch 1.4
 msgid "backdrop #"
-msgstr "achtergrond #"
+msgstr "Achtergrond #"
 
 msgid "Hello!"
-msgstr "Hallo!"
+msgstr "Hallo！"
 
 msgid "Hmm..."
 msgstr "Hmm..."
 
 msgid "broadcast %m.broadcast"
-msgstr "zend signaal %m.broadcast"
+msgstr "Stuur %m.broadcast aan alles"
 
 msgid "broadcast %m.broadcast and wait"
-msgstr "zend signaal %m.broadcast en wacht"
+msgstr "Stuur %m.broadcast aan alles en wacht"
 
 msgid "change %m.effect effect by %n"
-msgstr "verander %m.effect-effect met %n"
+msgstr "wijzig %m.effect effect met %n"
 
 msgid "change %m.var by %n"
-msgstr "verander %m.var met %n"
+msgstr "wijzig %m.var met %n"
 
 msgid "change pen color by %n"
-msgstr "verander penkleur met %n"
+msgstr "wijzig pen kleur met %n"
 
 msgid "change pen shade by %n"
-msgstr "verander penhelderheid met %n"
+msgstr "wijzig pen sterkte met %n"
 
 msgid "change pen size by %n"
-msgstr "verander pendikte met %n"
+msgstr "wijzig pen dikte met %n"
 
 msgid "change size by %n"
-msgstr "verander grootte met %n"
+msgstr "wijzig grootte met %n "
 
 msgid "change tempo by %n"
-msgstr "verander tempo met %n"
+msgstr "wijzig tempo met %n"
 
 msgid "change volume by %n"
-msgstr "verander volume met %n"
+msgstr "wijzig volume met %n"
 
 msgid "change x by %n"
-msgstr "verander x met %n"
+msgstr "wijzig x met %n"
 
 msgid "change y by %n"
-msgstr "verander y met %n"
+msgstr "wijzig y met %n"
 
 msgid "clear"
-msgstr "wis alles"
+msgstr "wissen"
 
 msgid "clear graphic effects"
-msgstr "zet alle effecten uit"
+msgstr "wis grafische effecten"
 
 msgid "color %c is touching %c?"
-msgstr "kleur %c raakt %c?"
+msgstr "kleur %c raakt %c ?"
 
 msgid "Control"
-msgstr "Besturen"
+msgstr "Bediening"
 
 msgid "create clone of %m.spriteOnly"
 msgstr "maak kloon van %m.spriteOnly"
 
 msgid "current %m.timeAndDate"
-msgstr "huidige %m.timeAndDate"
+msgstr "huidig %m.timeAndDate"
 
 msgid "Data"
 msgstr "Data"
 
 msgid "Data&Blocks"
-msgstr "Data & Blokken"
+msgstr "Data&Blokken"
 
 msgid "days since 2000"
-msgstr "dagen sinds 2000"
+msgstr "Dagen sinds 2000"
 
 msgid "define"
-msgstr "definieer"
+msgstr "Defineren"
 
 msgid "delete %d.listDeleteItem of %m.list"
-msgstr "verwijder item %d.listDeleteItem van %m.list"
+msgstr "verwijder %d.listDeleteItem uit %m.list"
 
 msgid "delete this clone"
 msgstr "verwijder deze kloon"
@@ -130,25 +130,25 @@ msgid "Events"
 msgstr "Gebeurtenissen"
 
 msgid "forever"
-msgstr "herhaal"
+msgstr "herhaal voor altijd"
 
 msgid "glide %n secs to x:%n y:%n"
-msgstr "schuif in %n sec. naar x:%n y:%n"
+msgstr "glij in %n sec. naar x:%n y:%n"
 
 msgid "go back %n layers"
-msgstr "ga %n lagen naar achteren"
+msgstr "ga %n lagen terug"
 
 msgid "go to %m.spriteOrMouse"
 msgstr "ga naar %m.spriteOrMouse"
 
 msgid "go to front"
-msgstr "ga naar voorgrond"
+msgstr "ga naar voren"
 
 msgid "go to x:%n y:%n"
 msgstr "ga naar x:%n y:%n"
 
 msgid "hide"
-msgstr "verdwijn"
+msgstr "verbergen"
 
 msgid "hide list %m.list"
 msgstr "verberg lijst %m.list"
@@ -160,16 +160,16 @@ msgid "if %b then"
 msgstr "als %b dan"
 
 msgid "if on edge, bounce"
-msgstr "keer om aan de rand"
+msgstr "als op rand, spring terug"
 
 msgid "insert %s at %d.listItem of %m.list"
-msgstr "voeg %s toe op %d.listItem van %m.list"
+msgstr "voeg %s toe bij %d.listItem van %m.list"
 
 msgid "item %d.listItem of %m.list"
 msgstr "item %d.listItem van %m.list"
 
 msgid "join %s %s"
-msgstr "voeg %s en %s samen"
+msgstr "verbind %s met %s"
 
 msgid "key %m.key pressed?"
 msgstr "toets %m.key ingedrukt?"
@@ -181,13 +181,13 @@ msgid "length of %s"
 msgstr "lengte van %s"
 
 msgid "letter %n of %s"
-msgstr "letter %n van %s"
+msgstr "Karakter %n van %s"
 
 msgid "Looks"
-msgstr "Uiterlijken"
+msgstr "Uiterlijk"
 
 msgid "More Blocks"
-msgstr "Meer blokken"
+msgstr "Meer Blokken"
 
 msgid "Motion"
 msgstr "Beweging"
@@ -202,7 +202,7 @@ msgid "mouse y"
 msgstr "muis y"
 
 msgid "move %n steps"
-msgstr "neem %n stappen"
+msgstr "verplaats %n stappen"
 
 # "backdrop" in Scratch 2.0 is similar to "background" in Scratch 1.4
 msgid "next backdrop"
@@ -212,13 +212,13 @@ msgid "previous backdrop"
 msgstr "vorige achtergrond"
 
 msgid "next costume"
-msgstr "volgend uiterlijk"
+msgstr "volgend kostuum"
 
-msgid "not %b"
-msgstr "niet %b"
+msgid "niet %b"
+msgstr "nicht %b"
 
 msgid "Operators"
-msgstr "Functies"
+msgstr "Operatoren"
 
 msgid "Pen"
 msgstr "Pen"
@@ -227,121 +227,121 @@ msgid "pen down"
 msgstr "pen neer"
 
 msgid "pen up"
-msgstr "pen op"
+msgstr "pen omhoog"
 
 msgid "pick random %n to %n"
-msgstr "willekeurig getal tussen %n en %n"
+msgstr "kies willekeurig van %n tot %n"
 
 msgid "play drum %d.drum for %n beats"
-msgstr "speel slagwerk %d.drum %n tellen"
+msgstr "speel drums %d.drum voor %n slagen"
 
 # 83%
 msgid "play note %d.note for %n beats"
-msgstr "speel noot %d.note %n tellen"
+msgstr "speel toon %d.note voor %n slagen"
 
 msgid "play sound %m.sound"
-msgstr "start geluid %m.sound"
+msgstr "speel geluid %m.sound"
 
 msgid "play sound %m.sound until done"
-msgstr "start geluid %m.sound en wacht"
+msgstr "speel geluid %m.sound tot einde"
 
 msgid "point in direction %d.direction"
-msgstr "richt naar %d.direction graden"
+msgstr "wijs richting %d.direction"
 
 msgid "point towards %m.spriteOrMouse"
-msgstr "richt naar %m.spriteOrMouse"
+msgstr "wijs naar %m.spriteOrMouse"
 
 msgid "repeat %n"
-msgstr "herhaal %n keer"
+msgstr "herhaal %n"
 
 msgid "repeat until %b"
 msgstr "herhaal tot %b"
 
 msgid "replace item %d.listItem of %m.list with %s"
-msgstr "vervang item %d.listItem van %m.list door %s"
+msgstr "vervang item %d.listItem van %m.list met %s"
 
 msgid "reset timer"
-msgstr "zet tijdklok op nul"
+msgstr "reset timer"
 
 msgid "rest for %n beats"
-msgstr "pauzeer %n tellen"
+msgstr "wacht voor %n slagen"
 
 msgid "round %n"
-msgstr "afgerond %n"
+msgstr "%n afgerond"
 
 msgid "say %s"
 msgstr "zeg %s"
 
 msgid "say %s for %n secs"
-msgstr "zeg %s %n sec."
+msgstr "zeg %s voor %n seconden"
 
 msgid "Sensing"
-msgstr "Waarnemen"
+msgstr "Voelen"
 
 msgid "What's your name?"
-msgstr "Hoe heet je?"
+msgstr "Wat is je naam?"
 
 msgid "sensor %m.booleanSensor?"
-msgstr "sensor %m.booleanSensor?"
+msgstr "Sensor %m.booleanSensor?"
 
 msgid "set %m.effect effect to %n"
-msgstr "zet effect %m.effect op %n"
+msgstr "wijzig %m.effect effect naar %n"
 
 msgid "set %m.var to %s"
-msgstr "maak %m.var %s"
+msgstr "wijzig %m.var naar %s"
 
 msgid "set instrument to %d.instrument"
-msgstr "gebruik instrument %d.instrument"
+msgstr "wijzig instrument naar %d.instrument"
 
 # 89%
 msgid "set motor direction %m.motorDirection"
-msgstr "zet motorrichting op %m.motorDirection"
+msgstr "wijzig motor richting %m.motorDirection"
 
 # 77%
 msgid "set motor power %n"
-msgstr "zet motorvermogen op %n"
+msgstr "wijzig motorvermogen %n"
 
 msgid "set pen color to %c"
-msgstr "maak penkleur %c"
+msgstr "wijzig pen kleur naar %c"
 
 msgid "set pen color to %n"
-msgstr "maak penkleur %n"
+msgstr "wijzig pen kleur naar  %n"
 
 msgid "set pen shade to %n"
-msgstr "maak penhelderheid %n"
+msgstr "wijzig pen sterkte naar %n"
 
 msgid "set pen size to %n"
-msgstr "maak pendikte %n"
+msgstr "wijzig pen grootte naar %n"
 
 msgid "set rotation style %m.rotationStyle"
-msgstr "maak draaistijl %m.rotationStyle"
+msgstr "wijzig rotatie stijl %m.rotationStyle"
 
 msgid "set size to %n%"
-msgstr "maak grootte %n%"
+msgstr "wijzig grootte naar %n %"
 
 msgid "set tempo to %n bpm"
-msgstr "maak tempo %n bpm"
+msgstr "wijzig tempo naar %n bpm"
 
 msgid "set video transparency to %n%"
-msgstr "maak videodoorzichtigheid %n%"
+msgstr "wijzig video-transparantie naar %n%"
 
 msgid "set volume to %n%"
-msgstr "zet volume op %n%"
+msgstr "wijzig volume naar %n%"
 
 msgid "set x to %n"
-msgstr "maak x %n"
+msgstr "wijzig x naar %n"
 
 msgid "set y to %n"
-msgstr "maak y %n"
+msgstr "wijzig y naar %n"
 
 msgid "show"
-msgstr "verschijn"
+msgstr "weergeven"
 
 msgid "show list %m.list"
-msgstr "toon lijst %m.list"
+msgstr "lijst %m.list weergeven"
 
 msgid "show variable %m.var"
-msgstr "toon variabele %m.var"
+msgstr "variabele %m.var weergeven"
 
 msgid "stamp"
 msgstr "stempel"
@@ -361,7 +361,7 @@ msgid "switch backdrop to %m.backdrop and wait"
 msgstr "verander achtergrond naar %m.backdrop en wacht"
 
 msgid "switch costume to %m.costume"
-msgstr "verander uiterlijk naar %m.costume"
+msgstr "verander naar %m.costume"
 
 msgid "tempo"
 msgstr "tempo"
@@ -370,16 +370,16 @@ msgid "think %s"
 msgstr "denk %s"
 
 msgid "think %s for %n secs"
-msgstr "denk %s %n sec."
+msgstr "denk %s voor %n seconden"
 
 msgid "tilt"
-msgstr "kantel"
+msgstr "tilt"
 
 msgid "touching %m.touching?"
-msgstr "raak ik %m.touching?"
+msgstr "wordt %m.touching aangeraakt?"
 
 msgid "touching color %c?"
-msgstr "raak ik kleur %c?"
+msgstr "wordt kleur %c aangeraakt?"
 
 msgid "turn @turnLeft %n degrees"
 msgstr "draai @turnLeft %n graden"
@@ -395,10 +395,10 @@ msgstr "zet motor aan"
 
 # 80%
 msgid "turn motor on for %n secs"
-msgstr "zet motor %n sec. aan"
+msgstr "zet motor aan voor %n seconden"
 
 msgid "turn video %m.videoState"
-msgstr "zet video %m.videoState"
+msgstr "zet video %m.videoState "
 
 msgid "username"
 msgstr "gebruikersnaam"
@@ -410,51 +410,51 @@ msgid "volume"
 msgstr "volume"
 
 msgid "wait %n secs"
-msgstr "wacht %n sec."
+msgstr "wacht %n seconden"
 
 msgid "wait until %b"
-msgstr "wacht tot %b"
+msgstr "wacht tot %b "
 
 # 75%
 msgid "when %m.booleanSensor"
 msgstr "wanneer %m.booleanSensor"
 
 msgid "when %m.key key pressed"
-msgstr "wanneer %m.key wordt ingedrukt"
+msgstr "wanneer %m.key toets ingedrukt"
 
 msgid "when %m.key key released"
-msgstr "wanneer %m.key losgelaten wordt"
+msgstr "wanneer %m.key toets losgelaten"
 
 msgid "when %m.triggerSensor > %n"
 msgstr "wanneer %m.triggerSensor > %n"
 
 msgid "when @greenFlag clicked"
-msgstr "wanneer @greenFlag wordt aangeklikt"
+msgstr "wanneer @greenFlag geklikt"
 
 # "backdrop" in Scratch 2.0 is similar to "background" in Scratch 1.4
 msgid "when backdrop switches to %m.backdrop"
-msgstr "wanneer achtergrond verandert naar %m.backdrop"
+msgstr "wanneer achtergrond veranderd naar %m.backdrop"
 
 msgid "when Stage clicked"
-msgstr "wanneer op speelveld wordt geklikt"
+msgstr "wanneer op podium geklikt"
 
 msgid "when distance < %n"
 msgstr "wanneer afstand < %n"
 
 msgid "when I receive %m.broadcast"
-msgstr "wanneer ik signaal %m.broadcast ontvang"
+msgstr "wanneer ik %m.broadcast ontvang"
 
 msgid "when I receive %d.broadcast"
-msgstr "wanneer ik signaal %d.broadcast ontvang"
+msgstr "wanneer ik %d.broadcast ontvang"
 
 msgid "when I start as a clone"
-msgstr "wanneer ik als kloon start"
+msgstr "wanneer ik start als een kloon"
 
 msgid "when this sprite clicked"
-msgstr "wanneer op deze sprite wordt geklikt"
+msgstr "wanneer op deze sprite geklikt"
 
 msgid "when tilt = %n"
-msgstr "wanneer draaiing = %n"
+msgstr "wanneer tilt = %n"
 
 # #################
 # User Interface #
@@ -466,13 +466,13 @@ msgid "<b>Information about Cloud variables</b><br>&nbsp;<br>Currently, only num
 msgstr "<b>Informatie over Cloud variabelen</b><br>&nbsp;<br>Op dit moment worden alleen cijfers ondersteund.<br>Chatrooms zijn niet toegestaan en zullen worden verwijderd.<br><a href=\"/help/faq/#clouddata\" target=\"_blank\">Zie de veelgestelde vragen over cloud data voor meer informatie.</a>"
 
 msgid "A connected"
-msgstr "A verbonden"
+msgstr "A aangesloten"
 
 msgid "a copy of the project file on your computer."
 msgstr "een kopie van het projectbestand op je computer."
 
 msgid "abs"
-msgstr "absoluut"
+msgstr "abs"
 
 msgid "Account settings"
 msgstr "Accountinstellingen"
@@ -481,28 +481,28 @@ msgid "acos"
 msgstr "acos"
 
 msgid "Add boolean input:"
-msgstr "Voeg ja/nee-veld toe:"
+msgstr "Voeg booleaans veld toe:"
 
 msgid "add comment"
-msgstr "commentaar toevoegen"
+msgstr "voeg commentaar toe"
 
 msgid "Add label text:"
-msgstr "Voeg een tekstlabel toe:"
+msgstr "Voeg label tekst toe:"
 
 msgid "Add number input:"
-msgstr "Voeg getalveld toe:"
+msgstr "Voeg cijfer veld toe:"
 
-msgid "Add string input:"
-msgstr "Voeg tekstvak toe:"
+msgid "Voeg tekstveld toe:"
+msgstr "Textfeld:"
 
 msgid "All"
-msgstr "Alle"
+msgstr "Alles"
 
 msgid "all"
-msgstr "alle"
+msgstr "alles"
 
 msgid "all around"
-msgstr "helemaal rond"
+msgstr "overal"
 
 msgid "Animal"
 msgstr "Dier"
@@ -520,7 +520,7 @@ msgid "atan"
 msgstr "atan"
 
 msgid "B connected"
-msgstr "B verbonden"
+msgstr "B aangesloten"
 
 msgid "Back a layer"
 msgstr "Een laag terug"
@@ -529,19 +529,19 @@ msgid "Backdrop"
 msgstr "Achtergrond"
 
 msgid "backdrop"
-msgstr "achtergrond"
+msgstr "Achtergrond"
 
 msgid "Backdrop Library"
-msgstr "Achtergrondbibliotheek"
+msgstr "Achtergronden Bibliotheek"
 
 msgid "backdrop name"
-msgstr "achtergrondnaam"
+msgstr "Achtergrondnaam"
 
 msgid "backdrop1"
-msgstr "achtergrond1"
+msgstr "Achtergrond1"
 
 msgid "backdrops"
-msgstr "achtergronden"
+msgstr "Achtergronden"
 
 msgid "Backdrops"
 msgstr "Achtergronden"
@@ -550,7 +550,7 @@ msgid "Backpack"
 msgstr "Rugzak"
 
 msgid "Bass"
-msgstr "Basgitaar"
+msgstr "Bass"
 
 msgid "Bass Drum"
 msgstr "Bass Drum"
@@ -559,16 +559,16 @@ msgid "Bassoon"
 msgstr "Fagot"
 
 msgid "Because you have a new Scratch account, any changes to cloud data won't be saved yet. Keep participating on the site you'll be able to use cloud data soon!"
-msgstr "Omdat je een nieuw Scratch-account hebt, worden veranderingen in cloud-data nu nog niet opgeslagen. Blijf bijdragen op deze site en je kunt binnenkort ook cloud-data gebruiken!"
+msgstr "Omdat je een nieuw Scratch account hebt worden wijzigingen in cloud data nog niet opgeslagen. Blijf meedoen op de site en je kunnen binnenkort cloud data gebruiken!"
 
 msgid "Bitmap"
-msgstr "Afbeelding"
+msgstr "Rasterafbeelding"
 
 msgid "Bitmap Mode"
-msgstr "Afbeeldingmodus"
+msgstr "Raster-Modus"
 
 msgid "Block help"
-msgstr "Blok-uitleg"
+msgstr "Block hulp"
 
 msgid "Bongo"
 msgstr "Bongo"
@@ -577,10 +577,10 @@ msgid "brightness"
 msgstr "helderheid"
 
 msgid "Bring to front"
-msgstr "Naar voorgrond"
+msgstr "Breng naar voren"
 
 msgid "Broadcast"
-msgstr "Zend"
+msgstr "Zend uit"
 
 msgid "Brush"
 msgstr "Kwast"
@@ -589,7 +589,7 @@ msgid "button pressed"
 msgstr "knop ingedrukt"
 
 msgid "by"
-msgstr "van"
+msgstr "met"
 
 msgid "bytes loaded"
 msgstr "bytes geladen"
@@ -604,16 +604,16 @@ msgid "Camera"
 msgstr "Camera"
 
 msgid "can drag in player:"
-msgstr "kan in speler gesleept worden:"
+msgstr "kan slepen in speler:"
 
 msgid "Cancel"
 msgstr "Annuleren"
 
 msgid "Cannot Delete"
-msgstr "Verwijderen niet mogelijk"
+msgstr "Kan niet verwijderen"
 
 msgid "Can’t find network connection or reach server."
-msgstr "Geen netwerkverbinding of kan de server niet vinden."
+msgstr "Geen netwerkverbinding of kan server niet bereiken."
 
 msgid "Castle"
 msgstr "Kasteel"
@@ -622,7 +622,7 @@ msgid "Category"
 msgstr "Categorie"
 
 msgid "ceiling"
-msgstr "boven"
+msgstr "plafond"
 
 msgid "Cello"
 msgstr "Cello "
@@ -634,7 +634,7 @@ msgid "Choose backdrop from library"
 msgstr "Kies achtergrond uit bibliotheek"
 
 msgid "Choose costume from library"
-msgstr "Kies uiterlijk uit bibliotheek"
+msgstr "Kies kostuum uit bibliotheek"
 
 msgid "Choose sound from library"
 msgstr "Kies geluid uit bibliotheek"
@@ -643,7 +643,7 @@ msgid "Choose sprite from library"
 msgstr "Kies sprite uit bibliotheek"
 
 msgid "Circle"
-msgstr "Cirkel"
+msgstr "Circel"
 
 msgid "City"
 msgstr "Stad"
@@ -658,16 +658,16 @@ msgid "cleanup"
 msgstr "opruimen"
 
 msgid "Clear"
-msgstr "Wissen"
+msgstr "Leegmaken"
 
 msgid "clear senders/receivers"
-msgstr "wis zenders/ontvangers"
+msgstr "zenders/ontvangers leegmaken"
 
 msgid "Click \"Save now\" to try again or \"Download\" to save"
-msgstr "Klik op \"Save now\" om het opnieuw te proberen of \"Download\" om te bewaren"
+msgstr "Klik \"Nu opslaan\" om opnieuw te proberen, of \"Download\" om op te slaan"
 
 msgid "Closed Hi-Hat"
-msgstr "Gesloten hi-hat"
+msgstr "Gesloten Hi-Hat"
 
 msgid "Cloud"
 msgstr "Cloud"
@@ -679,19 +679,19 @@ msgid "color"
 msgstr "kleur"
 
 msgid "Color a shape"
-msgstr "Kleur een vorm"
+msgstr "Een vorm kleuren"
 
 msgid "Conga"
 msgstr "Conga"
 
 msgid "Connecting to Cloud data server..."
-msgstr "Verbinden met Cloud-dataserver"
+msgstr "Verbinden met Cloud-data server..."
 
 msgid "Convert to bitmap"
-msgstr "Converteren naar afbeelding"
+msgstr "Converteer naar rasterafbeelding"
 
 msgid "Convert to vector"
-msgstr "Converteer naar vectorafbeelding"
+msgstr "Converteer naar vector"
 
 msgid "Converting mp3..."
 msgstr "MP3 converteren..."
@@ -706,49 +706,49 @@ msgid "cos"
 msgstr "cos"
 
 msgid "Costume"
-msgstr "Uiterlijk"
+msgstr "Kostuum"
 
 msgid "costume #"
-msgstr "uiterlijk #"
+msgstr "Kostuumnummer"
 
 msgid "Costume Library"
-msgstr "Uiterlijkenbibliotheek"
+msgstr "Kostuum bibliotheek"
 
 msgid "costume name"
-msgstr "naam uiterlijk"
+msgstr "Kostuumnaam"
 
 msgid "costume1"
-msgstr "uiterlijk1"
+msgstr "Kostuum 1"
 
 msgid "costume2"
-msgstr "uiterlijk2"
+msgstr "Kostuum 2"
 
 msgid "Costumes"
-msgstr "Uiterlijken"
+msgstr "Kostuums"
 
 msgid "Costumes > 1"
-msgstr "Uiterlijken > 1"
+msgstr "Kostuum > 1"
 
 msgid "Costumes:"
-msgstr "Uiterlijken:"
+msgstr "Kostuums:"
 
 msgid "Cowbell"
 msgstr "Koebel"
 
 msgid "Crash Cymbal"
-msgstr "Crashbekken"
+msgstr "Crashbecken"
 
 msgid "Creating..."
 msgstr "Maken..."
 
 msgid "Currently, only numbers can be stored in Cloud variables."
-msgstr "Op dit moment kunnen alleen nummers opgeslagen worden in Cloud-variabelen."
+msgstr "Op dit moment kunnen alleen cijfers opgeslagen worden in Cloud variabelen."
 
 msgid "cut"
 msgstr "knippen"
 
 msgid "D connected"
-msgstr "D verbonden"
+msgstr "D aangesloten"
 
 msgid "date"
 msgstr "datum"
@@ -773,25 +773,25 @@ msgid "direction:"
 msgstr "richting:"
 
 msgid "don't rotate"
-msgstr "niet draaien"
+msgstr "niet roteren"
 
 msgid "down"
-msgstr "omlaag"
+msgstr "naar beneden"
 
 msgid "down arrow"
-msgstr "pijltje omlaag"
+msgstr "pijl omlaag"
 
 msgid "Download"
 msgstr "Download"
 
 msgid "Download to your computer"
-msgstr "Naar je computer downloaden"
+msgstr "Download naar je computer"
 
 msgid "duplicate"
-msgstr "kopie maken"
+msgstr "dupliceren"
 
 msgid "Duplicate"
-msgstr "Kopie maken"
+msgstr "Dupliceren"
 
 msgid "e ^"
 msgstr "e ^"
@@ -806,45 +806,45 @@ msgid "Edit"
 msgstr "Bewerken"
 
 msgid "Edit Block"
-msgstr "Bewerk blok"
+msgstr "Bewerk Blok"
 
 msgid "Effects"
 msgstr "Effecten"
 
 msgid "Electric Guitar"
-msgstr "Elektrische gitaar"
+msgstr "Elektrische Gitaar"
 
 msgid "Electronic"
 msgstr "Elektronisch"
 
 msgid "Ellipse"
-msgstr "Ovaal"
+msgstr "Ellips"
 
 msgid "Erase"
-msgstr "Wissen"
+msgstr "Wis"
 
 # 92%
 #, fuzzy
 msgid "Eraser width"
-msgstr "Gum-breedte"
+msgstr "Wisser breedte"
 
 msgid "Error!"
 msgstr "Fout!"
 
 msgid "export"
-msgstr "exporteren"
+msgstr "exporteer"
 
 msgid "fade in"
 msgstr "fade in"
 
 msgid "fade out"
-msgstr "fade uit"
+msgstr "fade out"
 
 msgid "Fantasy"
 msgstr "Fantasie"
 
 msgid "Features"
-msgstr "Mogelijkheden"
+msgstr "Kenmerken"
 
 msgid "File"
 msgstr "Bestand"
@@ -853,22 +853,22 @@ msgid "Examples"
 msgstr "Voorbeelden"
 
 msgid "Fill with color"
-msgstr "Met kleur vullen"
+msgstr "Vul met kleur"
 
 msgid "fisheye"
-msgstr "vissenoog"
+msgstr ""
 
 msgid "Flip left-right"
-msgstr "Links-rechts omdraaien"
+msgstr "Horizontaal spiegelen"
 
 msgid "Flip up-down"
-msgstr "Boven-onder omdraaien"
+msgstr "Verticaal spiegelen"
 
 msgid "floor"
-msgstr "beneden"
+msgstr "naar beneden afronden"
 
 msgid "Flute"
-msgstr "Dwarsfluit"
+msgstr "Fluit"
 
 msgid "Flying"
 msgstr "Vliegen"
@@ -889,13 +889,13 @@ msgid "ghost"
 msgstr "geest"
 
 msgid "Go to My Stuff"
-msgstr "Ga naar Mijn projecten"
+msgstr "Ga naar Mijn Spullen"
 
 msgid "Group"
 msgstr "Groeperen"
 
 msgid "Grow"
-msgstr "Groter maken"
+msgstr "Vergroten"
 
 msgid "Guiro"
 msgstr "Güiro"
@@ -904,7 +904,7 @@ msgid "Guitar"
 msgstr "Gitaar"
 
 msgid "Hand Clap"
-msgstr "Handenklap"
+msgstr "Klappen"
 
 msgid "High C"
 msgstr "Hoge C"
@@ -918,10 +918,10 @@ msgstr "Mens"
 # 83%
 #, fuzzy
 msgid "import"
-msgstr "importeren"
+msgstr "Importeer"
 
 msgid "Import"
-msgstr "Importeren"
+msgstr "Importeer"
 
 msgid "Importing sound..."
 msgstr "Geluid importeren..."
@@ -936,7 +936,7 @@ msgid "Instruments"
 msgstr "Instrumenten"
 
 msgid "large readout"
-msgstr "groot uitlezen"
+msgstr ""
 
 msgid "last"
 msgstr "laatste"
@@ -945,7 +945,7 @@ msgid "left"
 msgstr "links"
 
 msgid "left arrow"
-msgstr "pijltje links"
+msgstr "pijl links"
 
 msgid "left-right"
 msgstr "links-rechts"
@@ -957,10 +957,10 @@ msgid "Library"
 msgstr "Bibliotheek"
 
 msgid "light"
-msgstr "licht"
+msgstr "Licht"
 
 msgid "limit reached"
-msgstr "limiet bereikt"
+msgstr "grens bereikt"
 
 msgid "Line"
 msgstr "Lijn"
@@ -968,14 +968,14 @@ msgstr "Lijn"
 # 90%
 #, fuzzy
 msgid "Line width"
-msgstr "Lijn-breedte"
+msgstr "Lijndikte"
 
 # 75%
 msgid "list"
 msgstr "lijst"
 
 msgid "List name"
-msgstr "Lijstnaam"
+msgstr "lijstnaam"
 
 msgid "ln"
 msgstr "ln"
@@ -987,22 +987,22 @@ msgid "log"
 msgstr "log"
 
 msgid "louder"
-msgstr "luider"
+msgstr "harder"
 
 msgid "loudness"
-msgstr "geluid sterkte"
+msgstr "geluidssterkte"
 
 msgid "Low C"
 msgstr "Lage C"
 
 msgid "Make a Block"
-msgstr "Maak een blok"
+msgstr "Maak een Blok"
 
 msgid "Make a List"
-msgstr "Maak een lijst"
+msgstr "Maak een Lijst"
 
 msgid "Make a Variable"
-msgstr "Maak een variabele"
+msgstr "Maak een Variable"
 
 msgid "Marimba"
 msgstr "Marimba"
@@ -1011,19 +1011,19 @@ msgid "Max"
 msgstr "Max"
 
 msgid "meow"
-msgstr "miauw"
+msgstr "Miauw"
 
 msgid "Message Name"
-msgstr "Berichtnaam"
+msgstr "Bericht Naam"
 
 msgid "message1"
-msgstr "bericht1"
+msgstr "message1"
 
 msgid "Microphone Volume:"
-msgstr "Microfoonvolume:"
+msgstr "Microfoon Volume:"
 
 msgid "Middle C"
-msgstr "Midden C"
+msgstr "Midden-C"
 
 msgid "Min"
 msgstr "Min"
@@ -1035,7 +1035,7 @@ msgid "month"
 msgstr "maand"
 
 msgid "mosaic"
-msgstr "mozaïek"
+msgstr "mozaiek"
 
 msgid "motion"
 msgstr "beweging"
@@ -1047,16 +1047,16 @@ msgid "Multiple"
 msgstr "Meerdere"
 
 msgid "Music and Dance"
-msgstr "Muziek en dans"
+msgstr "Muziek en Dans"
 
 msgid "Music Box"
-msgstr "Speeldoos"
+msgstr "Muziekdoos"
 
 msgid "Music Loops"
-msgstr "Muziekherhalingen"
+msgstr "Muziek loops"
 
 msgid "My Stuff"
-msgstr "Mijn projecten"
+msgstr "Mijn Spullen"
 
 msgid "myself"
 msgstr "mijzelf"
@@ -1074,19 +1074,19 @@ msgid "New backdrop:"
 msgstr "Nieuwe achtergrond:"
 
 msgid "New costume from camera"
-msgstr "Nieuw uiterlijk van camera"
+msgstr "Nieuw kostuum van camera"
 
 msgid "New costume:"
-msgstr "Nieuw uiterlijk:"
+msgstr "Nieuw kostuum:"
 
 msgid "New List"
-msgstr "Nieuwe lijst"
+msgstr "Nieuwe Lijst"
 
 msgid "new message..."
 msgstr "nieuw bericht..."
 
 msgid "New name"
-msgstr "Nieuw naam"
+msgstr "Nieuwe naam"
 
 msgid "New sound:"
 msgstr "Nieuw geluid:"
@@ -1098,19 +1098,19 @@ msgid "New sprite:"
 msgstr "Nieuwe sprite:"
 
 msgid "New Variable"
-msgstr "Nieuwe variabele"
+msgstr "Nieuwe Variabele"
 
 msgid "No motion blocks"
-msgstr "Geen beweegblokken"
+msgstr "Geen bewegingsblokken"
 
 msgid "normal readout"
 msgstr "normaal uitlezen"
 
 msgid "Not saved; network or server problem."
-msgstr "Niet opgeslagen; netwerk- of serverprobleem."
+msgstr "Niet opgeslagen; netwerk of server probleem."
 
 msgid "Not saved; project did not load."
-msgstr "Niet bewaard: project werd niet geladen."
+msgstr "Niet opgeslagen; project is niet geladen."
 
 msgid "of"
 msgstr "van"
@@ -1119,7 +1119,7 @@ msgid "off"
 msgstr "uit"
 
 msgid "Offline Editor"
-msgstr "Offline bewerken"
+msgstr ""
 
 msgid "OK"
 msgstr "OK"
@@ -1131,7 +1131,7 @@ msgid "on-flipped"
 msgstr "aan-gespiegeld"
 
 msgid "Open Cuica"
-msgstr "Cuíca"
+msgstr ""
 
 msgid "Open Hi-Hat"
 msgstr "Open Hi-Hat"
@@ -1143,10 +1143,10 @@ msgid "Organ"
 msgstr "Orgel"
 
 msgid "Other"
-msgstr "Andere"
+msgstr "Anders"
 
 msgid "other scripts in sprite"
-msgstr "andere scripts in sprite"
+msgstr "anders scripts in sprite"
 
 msgid "Outdoors"
 msgstr "Buiten"
@@ -1155,7 +1155,7 @@ msgid "Paint new backdrop"
 msgstr "Teken nieuwe achtergrond"
 
 msgid "Paint new costume"
-msgstr "Teken nieuw uiterlijk"
+msgstr "Teken nieuw kostuum"
 
 msgid "Paint new sprite"
 msgstr "Teken nieuwe sprite"
@@ -1164,7 +1164,7 @@ msgid "paste"
 msgstr "plakken"
 
 msgid "Pencil"
-msgstr "Potlood"
+msgstr "Penseel"
 
 msgid "People"
 msgstr "Mensen"
@@ -1179,10 +1179,10 @@ msgid "Piano"
 msgstr "Piano"
 
 msgid "Pick up color"
-msgstr "Kies een kleur"
+msgstr "Kleurkiezer"
 
 msgid "pixelate"
-msgstr "pixeleren"
+msgstr "korrelig maken"
 
 msgid "Pizzicato"
 msgstr "Pizzicato"
@@ -1194,10 +1194,10 @@ msgid "Profile"
 msgstr "Profiel"
 
 msgid "Project did not load."
-msgstr "Project werd niet geladen."
+msgstr "Project is niet geladen."
 
 msgid "Project not saved!"
-msgstr "Project niet opgeslagen!"
+msgstr "Project is niet opgeslagen!"
 
 msgid "random"
 msgstr "willekeurig"
@@ -1206,7 +1206,7 @@ msgid "Record"
 msgstr "Opnemen"
 
 msgid "Record new sound"
-msgstr "Neem nieuw geluid op"
+msgstr "Nieuw geluid opnemen"
 
 msgid "recording1"
 msgstr "opname1"
@@ -1223,22 +1223,22 @@ msgid "redo"
 msgstr "opnieuw"
 
 msgid "Remix"
-msgstr "Remix"
+msgstr "Remixen"
 
 msgid "Remixing..."
 msgstr "Remixen..."
 
 msgid "Rename"
-msgstr "Andere naam"
+msgstr "Hernoemen"
 
 msgid "rename variable"
-msgstr "geef variabele andere naam"
+msgstr "hernoem variabele"
 
 msgid "requires sign in"
 msgstr "inloggen verplicht"
 
 msgid "Reshape"
-msgstr "Opnieuw vormen"
+msgstr "Vervormen"
 
 msgid "resistance-A"
 msgstr "weerstand-A"
@@ -1265,13 +1265,13 @@ msgid "right"
 msgstr "rechts"
 
 msgid "right arrow"
-msgstr "pijltje rechts"
+msgstr "pijl rechts"
 
 msgid "rotation style:"
-msgstr "draaistijl:"
+msgstr "rotatie stijl:"
 
 msgid "Run without screen refresh"
-msgstr "Speel zonder het scherm te verversen"
+msgstr "Uitvoeren zonder scherm verversing"
 
 msgid "Save"
 msgstr "Opslaan"
@@ -1304,34 +1304,34 @@ msgid "Scripts"
 msgstr "Scripts"
 
 msgid "Scripts:"
-msgstr "Scripts:"
+msgstr "Scripts::"
 
 msgid "second"
-msgstr "seconde"
+msgstr "seconden"
 
 msgid "See project page"
-msgstr "Bekijk projectpagina"
+msgstr "Zie projectpagina"
 
 msgid "Select"
 msgstr "Selecteer"
 
 msgid "select all"
-msgstr "alles selecteren"
+msgstr "selecteer alles"
 
 msgid "Select and duplicate"
-msgstr "Selecteer en maak kopie"
+msgstr "Selecteer en dupliceer"
 
 msgid "Send to back"
-msgstr "Naar achtergrond"
+msgstr "Stuur naar acthergrond"
 
 msgid "Set costume center"
-msgstr "Middelpunt van uiterlijk bepalen"
+msgstr "Stel kostuum middelpunt in"
 
 msgid "Set Costume Center"
-msgstr "Middelpunt van uiterlijk bepalen"
+msgstr "Stel Kostuum Middelpunt in"
 
 msgid "set slider min and max"
-msgstr "stel min en max van schuif in"
+msgstr "stel schuifregelaar min en max in"
 
 msgid "Share"
 msgstr "Delen"
@@ -1340,28 +1340,31 @@ msgid "shared"
 msgstr "gedeeld"
 
 msgid "Shift:"
-msgstr "+ shift:"
+msgstr "Opschuiven:"
 
 msgid "show receivers"
 msgstr "ontvangers weergeven"
 
 msgid "show senders"
-msgstr "zenders weergeven"
+msgstr "verzenders weergeven"
 
 msgid "show:"
-msgstr "toon:"
+msgstr "weergeven:"
 
 msgid "Shrink"
-msgstr "Kleiner maken"
+msgstr "Verkleinen"
 
 msgid "Side Stick"
-msgstr "Randklap"
+msgstr "Side-Stick"
 
 msgid "Sign in"
-msgstr "Log in"
+msgstr "Aanmelden"
 
 msgid "Sign in to save"
-msgstr "Log in om op te slaan"
+msgstr "Meldt je aan om op te slaan"
+
+msgid "Sign out"
+msgstr "Afmelden"
 
 msgid "silence"
 msgstr "stilte"
@@ -1373,19 +1376,19 @@ msgid "size"
 msgstr "grootte"
 
 msgid "slider"
-msgstr "schuif"
+msgstr "schuifregelaar"
 
 msgid "Slider Range"
-msgstr "Schuifbereik"
+msgstr "Schuifregelaar Bereik"
 
 msgid "Small stage layout"
-msgstr "Klein speelveld"
+msgstr "Klein podium indeling"
 
 msgid "Smooth"
-msgstr "Zacht"
+msgstr "Vlak"
 
 msgid "Snare Drum"
-msgstr "Kleine trom"
+msgstr "Snare-Drum"
 
 msgid "softer"
 msgstr "zachter"
@@ -1397,59 +1400,59 @@ msgid "Sound"
 msgstr "Geluid"
 
 msgid "Sound Library"
-msgstr "Geluidenbibliotheek"
+msgstr "Geluiden Bibliotheek"
 
 msgid "Sounds"
 msgstr "Geluiden"
 
 msgid "space"
-msgstr "spatiebalk"
+msgstr "spatie"
 
 # 80%
 #, fuzzy
 msgid "Space"
-msgstr "Ruimte"
+msgstr "Spatie"
 
 msgid "Sports"
-msgstr "Sport"
+msgstr "Sporten"
 
 # 85%
 msgid "Sprite"
 msgstr "Sprite"
 
 msgid "Sprite Library"
-msgstr "Spritebibliotheek"
+msgstr "Sprite Bibliotheek"
 
 # 85%
 msgid "Sprite1"
-msgstr "Sprite1"
+msgstr ""
 
 msgid "Sprites"
-msgstr "Sprites"
+msgstr ""
 
 msgid "sqrt"
 msgstr "wortel"
 
 msgid "Square"
-msgstr "Vierkant"
+msgstr "Kwadraat"
 
 msgid "Stage"
-msgstr "Speelveld"
+msgstr "Podium"
 
 msgid "Stage selected:"
-msgstr "Geselecteerd speelveld:"
+msgstr "Podium geselecteerd:"
 
 msgid "Steel Drum"
-msgstr "Steeldrum"
+msgstr "Steel-Drum"
 
 msgid "stored on server"
 msgstr "opgeslagen op server"
 
 msgid "Synth Lead"
-msgstr "Synth Lead"
+msgstr "Lead-Synthesizer"
 
 msgid "Synth Pad"
-msgstr "Synth Pad"
+msgstr "Pad-Synthesizer"
 
 msgid "Tambourine"
 msgstr "Tamboerijn"
@@ -1461,25 +1464,20 @@ msgid "Text"
 msgstr "Tekst"
 
 msgid "that way"
-msgstr "daarheen"
+msgstr ""
 
 #, fuzzy
 msgid "Theme"
 msgstr "Thema"
 
 msgid "Things"
-msgstr "Voorwerpen"
-
-msgid "This project can detect who is using it, through the â€œusernameâ€ block. To hide your identity, sign out before using the project."
-msgstr "Dit project houdt bij wie het gebruikt, door het 'gebruikersnaam'-blok. Wil je je identiteit verbergen, log dan eerst uit voor dat je dit project gebruikt."
+msgstr "Dingen"
 
 msgid "This project can detect who is using it, through the “username” block. To hide your identity, sign out before using the project."
-msgstr ""
-"Dit project houdt bij wie het gebruikt, door het 'gebruikersnaam'-blok. Wil je je identiteit verbergen, log dan eerst uit voor dat je dit "
-"project gebruikt."
+msgstr "Dit project kan detecteren wie het gebruikt door middel van het “gebruikersnaam” blok. Om je identiteit te verbergen dien je af te melden voordat je het project gebruikt."
 
-msgid "This project uses Cloud data - a feature that is available only to signed in users."
-msgstr "Dit project gebruikt cloud-data - een mogelijkheid die beschikbaar is voor ingelogde gebruikers."
+msgid "This project uses Cloud data ‒ a feature that is available only to signed in users."
+msgstr "Dit project maakt gebruik van Cloud data, een mogelijkheid die alleen beschikbaar is voor aangemelde gebruikers."
 
 msgid "this script"
 msgstr "dit script"
@@ -1488,19 +1486,19 @@ msgid "this sprite"
 msgstr "deze sprite"
 
 msgid "this way"
-msgstr "hierheen"
+msgstr "op deze manier"
 
 msgid "Throw away all changes since opening this project?"
-msgstr "Wil je alle veranderingen weggooien die je gemaakt hebt?"
+msgstr "Alle wijziging weggooien sinds het project is geopend?"
 
 msgid "timer"
-msgstr "tijdklok"
+msgstr "timer"
 
 msgid "Tips"
 msgstr "Tips"
 
 msgid "To delete a block definition, first remove all uses of the block."
-msgstr "Om een blokdefinitie te verwijderen, moet je eerst zorgen dat het nergens meer wordt gebruikt."
+msgstr "Om de definitie van een blok te verwijderen dien je eerst alle gebruiken van het blok te verwijderen."
 
 msgid "Transportation"
 msgstr "Vervoer"
@@ -1512,20 +1510,20 @@ msgid "Trombone"
 msgstr "Trombone"
 
 msgid "Turbo mode"
-msgstr "Turbomodus"
+msgstr "Turbo mode"
 
 msgid "Turbo Mode"
-msgstr "Turbomodus"
+msgstr "Turbo Mode"
 
 msgid "Type"
 msgstr "Type"
 
 # 75%
 msgid "Undelete"
-msgstr "Ongedaan maken"
+msgstr "Verwijderen ongedaan maken"
 
 msgid "Underwater"
-msgstr "Onder water"
+msgstr "Onderwater"
 
 # 75%
 msgid "Undo"
@@ -1535,7 +1533,7 @@ msgid "undo"
 msgstr "ongedaan maken"
 
 msgid "Undo Revert"
-msgstr "Terugdraaien ongedaan maken"
+msgstr "Ongedaan maken omkeren"
 
 msgid "Ungroup"
 msgstr "Groep opheffen"
@@ -1547,22 +1545,22 @@ msgid "up"
 msgstr "omhoog"
 
 msgid "up arrow"
-msgstr "pijltje omhoog"
+msgstr "pijl omhoog"
 
 msgid "Upload backdrop from file"
-msgstr "Upload achtergrond"
+msgstr "Upload achtergrond uit bestand"
 
 msgid "Upload costume from file"
-msgstr "Upload uiterlijk"
+msgstr "Upload kostuum uit bestand"
 
 msgid "Upload from your computer"
-msgstr "Uploaden vanaf je computer"
+msgstr "Upload vanaf je computer"
 
 msgid "Upload sound from file"
-msgstr "Upload geluid"
+msgstr "Upload geluid uit bestand"
 
 msgid "Upload sprite from file"
-msgstr "Upload sprite"
+msgstr "Upload sprite uit bestand"
 
 msgid "Uploading image..."
 msgstr "Afbeelding uploaden..."
@@ -1577,13 +1575,13 @@ msgid "variable"
 msgstr "variabele"
 
 msgid "Variable name"
-msgstr "Variabele-naam"
+msgstr "Variabele naam"
 
 msgid "Vector"
 msgstr "Vector"
 
 msgid "Vector Mode"
-msgstr "Vector-modus"
+msgstr "Vector Modus"
 
 msgid "Vibraphone"
 msgstr "Vibrafoon"
@@ -1592,13 +1590,13 @@ msgid "Vibraslap"
 msgstr "Vibraslap"
 
 msgid "video motion"
-msgstr "videobeweging"
+msgstr "video beweging"
 
 msgid "Video on:"
 msgstr "Video op:"
 
 msgid "Vocals"
-msgstr "Stemmen"
+msgstr "Zang"
 
 #, fuzzy
 msgid "Walking"
@@ -1606,206 +1604,206 @@ msgstr "Lopen"
 
 #, fuzzy
 msgid "Want to save? Click remix"
-msgstr "Wil je opslaan? Klik op remix"
+msgstr "Wil je opslaan? Klik remixen"
 
 msgid "Which column do you want to import"
 msgstr "Welke kolom wil je importeren"
 
 msgid "whirl"
-msgstr "draaikolk"
+msgstr "draaien"
 
 #, fuzzy
 msgid "Wood Block"
-msgstr "Woodblock"
+msgstr "Houtblok"
 
 msgid "Wooden Flute"
 msgstr "Blokfluit"
 
 msgid "x position"
-msgstr "x-positie"
+msgstr "x positie"
 
 msgid "y position"
-msgstr "y-positie"
+msgstr "y positie"
 
 msgid "year"
 msgstr "jaar"
 
 msgid "You cannot edit cloud data in someone else's project.<br>Any change that you make in the editor will be temporary and not persistent."
-msgstr "Je kunt geen cloud-data van iemand anders veranderen.<br>Elke verandering die je maakt is tijdelijk en wordt niet bewaard."
+msgstr "Je kunt cloud data in een project van iemand anders niet bewerken.<br>Bewerkingen die je maakt in de editor zijn tijdelijk en worden niet opgeslagen."
 
 msgid "Eraser width:"
-msgstr "Wisser-breedte:"
+msgstr "Wisser dikte:"
 
 msgid "Line width:"
-msgstr "Lijn-breedte:"
+msgstr "Lijn dikte:"
 
 msgid "set motor%d.motorPort speed %d.motorvalue"
-msgstr "maak motor%d.motorPort -snelheid %d.motorvalue"
+msgstr "wijzig motor %d.motorPort snelheid naar %d.motorvalue"
 
 msgid "set servo %d.servoPort %d.slot angle %d.servovalue"
-msgstr "zet servo %d.servoPort %d.slot op %d.servovalue graden"
+msgstr "wijzig servo %d.servoPort %d.slot hoek naar %d.servovalue"
 
 msgid "set 7-segments display%d.normalPort number %n"
-msgstr "zet 7-segment display%d.normalPort op getal %n"
+msgstr "wijzig 7-Segment Display %d.normalPort naar nummer %n"
 
 msgid "set led %d.normalPort %d.index red%d.value green%d.value blue%d.value"
-msgstr "zet RGB-LED %d.normalPort %d.index op rood%d.value groen%d.value blauw%d.value"
+msgstr "wijzig RGB-LED %d.normalPort %d.index Rood%d.value Groen%d.value Blauw%d.value"
 
 msgid "ultrasonic sensor %d.normalPort distance"
-msgstr "afstand ultrasoon-sensor %d.normalPort"
+msgstr "Ultrasonic sensor %d.normalPort afstand"
 
 msgid "sound sensor %d.normalPort"
-msgstr "geluidsensor %d.normalPort"
+msgstr "Sound Sensor %d.normalPort"
 
 msgid "light sensor %d.normalPort"
-msgstr "lichtsensor %d.normalPort"
+msgstr "Light Sensor %d.normalPort"
 
 msgid "set light sensor %d.normalPort led as %d.switch"
-msgstr "zet lichtsensor %d.normalPort %d.switch"
+msgstr "wijzig Light Sensor %d.normalPort LED naar %d.switch"
 
 msgid "line follower %d.normalPort"
-msgstr "lijnvolger %d.normalPort"
+msgstr "Line Follower %d.normalPort"
 
-msgid "limit switch %d.normalPort %d.slot"
-msgstr "limietschakelaar %d.normalPort %d.slot"
+msgid "limit switch %d.normalPort%d.slot"
+msgstr "Limit Switch %d.normalPort%d.slot"
 
 msgid "potentiometer %d.normalPort"
-msgstr "potentiometer %d.normalPort"
+msgstr "Potentiometer %d.normalPort"
 
 msgid "3-axis gyro %d.GyroAxis angle"
-msgstr "%d.GyroAxis -hoek van 3-assige gyro"
+msgstr "3-Assige Gyro %d.GyroAxis hoek"
 
 msgid "infrared receiver %d.normalPort"
-msgstr "infrarood-ontvanger %d.normalPort"
+msgstr "Infrared Receiver %d.normalPort"
 
 msgid "pir motion sensor %d.normalPort"
-msgstr "pir-bewegingssensor %d.normalPort"
+msgstr "PIR Motion Sensor %d.normalPort"
 
 msgid "temperature %d.normalPort%d.slot °C"
-msgstr "temperatuur (°C) %d.normalPort%d.slot"
+msgstr "Temperatuur %d.normalPort%d.slot °C"
 
 msgid "joystick %d.normalPort %d.Axis"
-msgstr "joystick %d.normalPort %d.Axis"
+msgstr "Joystick %d.normalPort %d.Axis"
 
 msgid "set camera shutter %d.normalPort as %d.shutter"
-msgstr "gebruik cameraknop %d.normalPort als %d.shutter"
+msgstr "stel Camera Shutter %d.normalPort in als %d.shutter"
 
 msgid "read digital pin %n"
-msgstr "lees digitale pin %n uit"
+msgstr "lees digitale pin %n"
 
 msgid "read analog pin (A)%n"
-msgstr "lees analoge pin (A%n ) uit"
+msgstr "lees analoge pin (A)%n"
 
 msgid "set digital pin %n output as %d.digital"
-msgstr "maak uitgang digitale pin %n : %d.digital"
+msgstr "stel digitale pin %n output in als %d.digital"
 
 msgid "set analog pin (A)%n output as %n"
-msgstr "maak uitgang analoge pin (A%n ) : %n"
+msgstr "stel analoge pin (A)%n output in als %n"
 
 msgid "set pwm pin %n output as %d.pwmvalue"
-msgstr "maak uitgang analoge/PWM-pin %n : %d.pwmvalue"
+msgstr "stel PWM pin %n output in als %d.pwmvalue"
 
 msgid "set servo pin %n angle as %d.servovalue"
-msgstr "zet servo-pin %n op %d.servovalue graden"
+msgstr "stel servo pin %n hoek in op %d.servovalue graden"
 
 msgid "play tone pin %n on note %d.notes beat %d.beats"
-msgstr "op toon-pin %n : speel noot %d.notes %d.beats tel(len)"
+msgstr "speel toon pin %n op noot %d.notes voor %d.beats tellen"
 
 msgid "Eighth"
-msgstr "achtste"
+msgstr "Achtste"
 
 msgid "Quater"
-msgstr "kwart"
+msgstr "Kwart"
 
 msgid "Half"
-msgstr "halve"
+msgstr "Halve"
 
 msgid "Whole"
-msgstr "hele"
+msgstr "Hele"
 
 msgid "Double"
-msgstr "dubbele"
+msgstr "Dubbele"
 
 msgid "Zero"
-msgstr "nul"
+msgstr "Nul"
 
 msgid "Ultrasonic"
-msgstr "ultrasoon"
+msgstr "Ultrasonic"
 
 msgid "Light Sensor"
-msgstr "lichtsensor"
+msgstr "Light Sensor"
 
 msgid "Sound Sensor"
-msgstr "geluidsensor"
+msgstr "Sound Sensor"
 
 msgid "LED"
 msgstr "LED"
 
 msgid "Joystick"
-msgstr "joystick"
+msgstr "Joystick"
 
 msgid "Line Finder"
-msgstr "lijnvolger"
+msgstr "Line Finder"
 
 msgid "LimitSwitch"
-msgstr "limietschakelijk"
+msgstr "Limit Switch"
 
 msgid "Potentiometer"
-msgstr "potentiometer"
+msgstr "Potentiometer"
 
 msgid "Button"
-msgstr "knop"
+msgstr "Knop"
 
 msgid "HIGH"
-msgstr "HOOG"
+msgstr "HIGH"
 
 msgid "LOW"
-msgstr "LAAG"
+msgstr "LOW"
 
 msgid "X-Axis"
-msgstr "x-as"
+msgstr "X-As"
 
 msgid "Y-Axis"
-msgstr "y-as"
+msgstr "Y-As"
 
 msgid "Z-Axis"
-msgstr "z-as"
+msgstr "Z-As"
 
 msgid "Input"
-msgstr "ingang"
+msgstr "Input"
 
 msgid "Output"
-msgstr "uitgang"
+msgstr "Output"
 
 msgid "Port1"
-msgstr "poort 1"
+msgstr "Poort 1"
 
 msgid "Port2"
-msgstr "poort 2"
+msgstr "Poort 2"
 
 msgid "Port3"
-msgstr "poort 3"
+msgstr "Poort 3"
 
 msgid "Port4"
-msgstr "poort 4"
+msgstr "Poort 4"
 
 msgid "Port5"
-msgstr "poort 5"
+msgstr "Poort 5"
 
 msgid "Port6"
-msgstr "poort 6"
+msgstr "Poort 6"
 
 msgid "Port7"
-msgstr "poort 7"
+msgstr "Poort 7"
 
 msgid "Port8"
-msgstr "poort 8"
+msgstr "Poort 8"
 
 msgid "Slot1"
-msgstr "slot 1"
+msgstr "Slot 1"
 
 msgid "Slot2"
-msgstr "slot 2"
+msgstr "Slot 2"
 
 msgid "M1"
 msgstr "M1"
@@ -1823,7 +1821,7 @@ msgid "About"
 msgstr "Over"
 
 msgid "Open"
-msgstr "Open"
+msgstr "Openen"
 
 msgid "Save as"
 msgstr "Opslaan als"
@@ -1838,13 +1836,13 @@ msgid "Quit"
 msgstr "Afsluiten"
 
 msgid "Share to Scratch Website"
-msgstr "Delen op Scratch-site"
+msgstr "Delen op Scratch Website"
 
 msgid "Project name"
 msgstr "Projectnaam"
 
 msgid "Your Scratch name"
-msgstr "Jouw Scratch-naam"
+msgstr "Jouw Scratch naam"
 
 msgid "Password"
 msgstr "Wachtwoord"
@@ -1856,10 +1854,10 @@ msgid "Connect"
 msgstr "Verbinden"
 
 msgid "Disconnect"
-msgstr "Verbinding verbreken"
+msgstr "Verbingen verbreken"
 
 msgid "save picture of stage"
-msgstr "Afbeelding van speelveld opslaan"
+msgstr "Afbeelding van podium opslaan"
 
 msgid "Load Project"
 msgstr "Project openen"
@@ -1874,13 +1872,13 @@ msgid "Forum"
 msgstr "Forum"
 
 msgid "Upgrade Firmware"
-msgstr "Firmware upgraden"
+msgstr "Firmware Upgraden"
 
 msgid "View Source"
-msgstr "Broncode bekijken"
+msgstr "Bron bekijken"
 
 msgid "Microphone volume:"
-msgstr "Microfoonvolume:"
+msgstr "Microfoon volume:"
 
 msgid "http://forum.makeblock.cc/#scratch"
 msgstr "http://forum.makeblock.cc/#scratch"
@@ -1889,28 +1887,28 @@ msgid "Close"
 msgstr "Sluiten"
 
 msgid "Executing"
-msgstr "Uitvoeren..."
+msgstr "Uitvoeren"
 
 msgid "Replace contents of the current project?"
-msgstr "Inhoud van huidige project vervangen?"
+msgstr "Inhoud van het huidige project vervangen?"
 
 msgid "info"
 msgstr "info"
 
 msgid "New Version Available!"
-msgstr "Er is een nieuwe versie beschikbaar!"
+msgstr "Nieuwe Versie Beschikbaar!"
 
 msgid "Update Now"
-msgstr "Nu bijwerken"
+msgstr "Nu Bijwerken"
 
 msgid "New Block"
-msgstr "Nieuw blok"
+msgstr "Nieuw Blok"
 
 msgid "Updating"
 msgstr "Bijwerken"
 
 msgid "Downloading"
-msgstr "Downloaden..."
+msgstr "Aan het downloaden"
 
 msgid "Connected"
 msgstr "Verbonden"
@@ -1922,112 +1920,85 @@ msgid "No Bluetooth"
 msgstr "Geen Bluetooth"
 
 msgid "Disconnect Bluetooth"
-msgstr "Bluetooth-verbinding verbreken"
+msgstr "Bluetooth Verbinding Verbreken"
 
 msgid "Discovering Bluetooth"
-msgstr "Bluetooth zoeken"
+msgstr "Bluetooth Zoeken"
 
 msgid "Click The Device From List To Connect"
-msgstr "Klik op het apparaat om te verbinden"
+msgstr "Klik op het apparaat in de lijst om te verbinden"
 
 msgid "Device Not Found"
 msgstr "Apparaat niet gevonden"
 
 msgid "Distance Display"
-msgstr "afstand weergeven"
+msgstr "Afstand Weergave"
 
 msgid "Detect Sound"
-msgstr "geluid detecteren"
+msgstr "Geluid Detecteren"
 
 msgid "Temperature"
-msgstr "temperatuur"
+msgstr "Temperatuur"
 
 msgid "Ultrasonic Car"
-msgstr "ultrasone auto"
+msgstr "Ultrasonic Car"
 
 msgid "Play Music"
-msgstr "muziek afspelen"
+msgstr "Muziek Afspelen"
 
 msgid "Voice Command"
-msgstr "spraakcommando"
+msgstr "Spraakcommando"
 
 msgid "Accelerometer X"
-msgstr "accelerometer X"
+msgstr "Accelerometer X"
 
 msgid "Accelerometer Y"
-msgstr "accelerometer Y"
+msgstr "Accelerometer Y"
 
 msgid "Accelerometer Z"
-msgstr "accelerometer Z"
+msgstr "Accelerometer Z"
 
 msgid "Brightness"
-msgstr "helderheid"
+msgstr "Helderheid"
 
 msgid "Start Button Pressed?"
-msgstr "start-knop ingedrukt?"
+msgstr "Start-knop ingedrukt?"
 
 msgid "Select Button Pressed?"
-msgstr "selectie-knop ingedrukt?"
+msgstr "Selectie-knop ingedrukt?"
 
 msgid "Up Button Pressed?"
-msgstr "omhoog-knop ingedrukt?"
+msgstr "Knop Omhoog ingedrukt?"
 
 msgid "Down Button Pressed?"
-msgstr "omlaag-knop ingedrukt?"
+msgstr "Knop Omlaag ingedrukt?"
 
 msgid "Left Button Pressed?"
-msgstr "links-knop ingedrukt?"
+msgstr "Knop Links ingedrukt?"
 
 msgid "Right Button Pressed?"
-msgstr "rechts-knop ingedrukt?"
+msgstr "Knop Rechts ingedrukt?"
 
 msgid "A Button Pressed?"
-msgstr "A-knop ingedrukt?"
+msgstr "A Knop ingedrukt?"
 
 msgid "B Button Pressed?"
-msgstr "B-knop ingedrukt?"
+msgstr "B Knop ingedrukt?"
 
 msgid "X Button Pressed?"
-msgstr "X-knop ingedrukt?"
+msgstr "X Knop ingedrukt?"
 
 msgid "Y Button Pressed?"
-msgstr "Y-knop ingedrukt?"
-
-msgid "Serial Port"
-msgstr "Seriële poort"
-
-msgid "Install Arduino Driver"
-msgstr "Arduino-stuurprogramma installeren"
-
-msgid "Network"
-msgstr "Netwerk"
-
-msgid "Unknown Firmware"
-msgstr "Onbekende firmware"
-
-msgid "Report a Bug"
-msgstr "Bug melden"
-
-msgid "License"
-msgstr "Licentie"
-
-msgid "Acknowledgements"
-msgstr "Met dank aan"
-
-msgid "Custom Connect"
-msgstr "Verbinden (handmatig)"
-
-msgid "Refresh"
-msgstr "Vernieuwen"
+msgstr "Y Knop ingedrukt?"
 
 #~ msgid "forever if %b"
 #~ msgstr "altijd als %b"
 
 #~ msgid "if %b"
-#~ msgstr "als %b"
+#~ msgstr "waneer %b"
 
 #~ msgid "motor direction %m.motorDirection"
-#~ msgstr "motor-richting %m.motorDirection"
+#~ msgstr "motor richting %m.motorDirection"
 
 #~ msgid "motor off"
 #~ msgstr "motor uit"
@@ -2036,13 +2007,13 @@ msgstr "Vernieuwen"
 #~ msgstr "motor aan"
 
 #~ msgid "motor on for %n secs"
-#~ msgstr "motor %n sec. aan"
+#~ msgstr "motor aan voor %n seconden"
 
 #~ msgid "motor power %n"
 #~ msgstr "motorvermogen %n"
 
 #~ msgid "play note %n for %n beats"
-#~ msgstr "speel %n tellen noot %d.note"
+#~ msgstr "speel toon voor %d.note voor %n tellen"
 
 # 90%
 #, fuzzy
@@ -2059,313 +2030,61 @@ msgstr "Vernieuwen"
 #~ msgstr "Hoge Tom"
 
 #~ msgid "Long Guiro"
-#~ msgstr "lange güiro"
+#~ msgstr "Lange Güiro "
 
 #~ msgid "Low Bongo"
-#~ msgstr "lage bongo"
+#~ msgstr "Lage Bongo"
 
 #~ msgid "Low Conga"
-#~ msgstr "lage conga"
+#~ msgstr "Lage Conga"
 
 #~ msgid "Low Tom"
-#~ msgstr "Lage tom"
+#~ msgstr "Lage Tom"
 
 #~ msgid "Low Wood Block"
-#~ msgstr "laag houtblok"
+#~ msgstr "Laag Houtblok"
 
 #~ msgid "Maracas"
-#~ msgstr "maracas"
+#~ msgstr "Maracas"
 
 #~ msgid "More"
-#~ msgstr "meer"
+#~ msgstr "Meer"
 
 #~ msgid "Mute Triangle"
-#~ msgstr "Gedempte triangel"
+#~ msgstr "Gedempte Triangel"
 
 #~ msgid "Open Triangle"
-#~ msgstr "triangel"
+#~ msgstr "Triangel"
 
 #~ msgid "Pedal Hi-Hat"
-#~ msgstr "pedaal-hi-hat"
+#~ msgstr "Hi-Hat met Pedaal"
 
 #~ msgid "Short Guiro"
-#~ msgstr "korte güiro"
+#~ msgstr "Korte Güiro"
 
-msgid "read ultrasonic sensor trig pin %n echo pin %n"
-msgstr "lees ultrasoon sensor uit; trig pin %n, echo pin %n"
+msgid "Serial Port"
+msgstr "Seriële Poort"
 
-msgid "read pulse pin %n timeout %n"
-msgstr "lees pulse pin %n uit met timeout %n"
+msgid "Install Arduino Driver"
+msgstr "Arduino Stuurprogramma Installeren"
 
-msgid "Arduino Program"
-msgstr "Arduino-programma"
+msgid "Network"
+msgstr "Netwerk"
 
-msgid "hello "
-msgstr "hallo "
+msgid "Unknown Firmware"
+msgstr "Onbekende Firmware"
 
-msgid "world"
-msgstr "wereld"
+msgid "Report a Bug"
+msgstr "Bug Rapporteren"
 
-msgid "Hide Extension"
-msgstr "Verberg uitbreiding"
+msgid "License"
+msgstr "Licentie"
 
-msgid "Extensions"
-msgstr "Uitbreidingen"
+msgid "Acknowledgements"
+msgstr "Onbekende Firmware"
 
-msgid "Boards"
-msgstr "Apparaten"
+msgid "Custom Connect"
+msgstr "Verbinden"
 
-msgid "Boards ( mBot )"
-msgstr "Apparaat (mBot)"
-
-msgid "Boards ( Arduino Uno )"
-msgstr "Apparaat (Arduino Uno)"
-
-msgid "Boards ( Arduino Leonardo )"
-msgstr "Apparaat (Arduino Leonardo)"
-
-msgid "Boards ( Arduino Nano328 )"
-msgstr "Apparaat (Arduino Nano328)"
-
-msgid "Arduino Nano ( mega328 )"
-msgstr "Arduino Nano (mega328)"
-
-msgid "Boards ( Arduino Mega1280 )"
-msgstr "Apparaat (Arduino Mega1280)"
-
-msgid "Boards ( Arduino Mega2560 )"
-msgstr "Apparaat (Arduino Mega2560)"
-
-msgid "Boards ( Me Orion )"
-msgstr "Apparaat (Me Orion)"
-
-msgid "Boards ( Me Baseboard )"
-msgstr "Apparaat (Me Baseboard)"
-
-msgid "Boards ( PicoBoard )"
-msgstr "Apparaat (PicoBoard)"
-
-msgid "Arduino mode"
-msgstr "Arduino-modus"
-
-msgid "Discover"
-msgstr "Zoeken"
-
-msgid "Reset Default Program"
-msgstr "Reset standaardprogramma"
-
-msgid "IP Address"
-msgstr "IP-adres"
-
-msgid "Port"
-msgstr "Poort"
-
-msgid "Others"
-msgstr "Overige"
-
-msgid "Communication"
-msgstr "Communicatie"
-
-msgid "mBot Program"
-msgstr "mBot-programma"
-
-msgid "%m.direction at speed %d.motorvalue"
-msgstr "%m.direction met snelheid %d.motorvalue"
-
-msgid "run forward"
-msgstr "ga vooruit"
-
-msgid "run backward"
-msgstr "ga achteruit"
-
-msgid "turn right"
-msgstr "draai rechtsom"
-
-msgid "turn left"
-msgstr "draai linksom"
-
-msgid "play tone on note %d.note"
-msgstr "speel toon met noot %d.note"
-
-msgid "stop tone"
-msgstr "stop toon"
-
-msgid "show face %d.normalPort x: %n y: %n characters: %s"
-msgstr "toon gezicht %d.normalPort x: %n y: %n tekens: %s"
-
-msgid "show time %d.normalPort hour: %n %s min: %n"
-msgstr "toon tijd %d.normalPort uur: %n %s min: %n"
-
-msgid "light intensity"
-msgstr "lichtsterkte"
-
-msgid "when button %m.button_state"
-msgstr "wanneer knop is %m.button_state"
-
-msgid "button %m.button_state"
-msgstr "knop %m.button_state"
-
-msgid "pressed"
-msgstr "ingedrukt"
-
-msgid "released"
-msgstr "losgelaten"
-
-msgid "ultrasonic sensor %d.normalPort distance"
-msgstr "afstand ultrasoon-sensor %d.normalPort"
-
-msgid "line follower %d.normalPort"
-msgstr "lijnvolger %d.normalPort"
-
-msgid "ir message received"
-msgstr "infraroodsignaal ontvangen"
-
-msgid "Back"
-msgstr "Terug"
-
-msgid "Upload to Arduino"
-msgstr "Upload naar Arduino"
-
-msgid "upload to arduino"
-msgstr "upload naar Arduino"
-
-msgid "Edit with Arduino IDE"
-msgstr "Bewerk in Arduino IDE"
-
-msgid "Message"
-msgstr "Bericht"
-
-msgid "Please connect the serial port."
-msgstr "Verbind de seriële poort."
-
-msgid "Arduino IDE not found,"
-msgstr "Arduino IDE niet gevonden."
-
-msgid "Click 'Set Path' to find the install path of Arduino,"
-msgstr "Klik op 'Selecteer' om het installatiepad te selecteren,"
-
-msgid "or Click 'Download' to install the Arduino IDE."
-msgstr "of klik op 'Download' om de IDE te installeren."
-
-msgid "Set Path"
-msgstr "Selecteer"
-
-msgid "Download"
-msgstr "Download"
-
-msgid "Send"
-msgstr "Zend"
-
-msgid "Makeblock Program"
-msgstr "Makeblock-programma"
-
-msgid "all"
-msgstr "alle"
-
-msgid "On"
-msgstr "aan"
-
-msgid "Off"
-msgstr "uit"
-
-msgid "Press"
-msgstr "indrukken"
-
-msgid "Release"
-msgstr "loslaten"
-
-msgid "Focus On"
-msgstr "focus aan"
-
-msgid "Focus Off"
-msgstr "focus uit"
-
-#msgid "set motor%d.motorPort speed %d.motorvalue"
-#msgstr "faire tourner le moteur %d.motorPort à puissance %d.motorvalue"
-
-#msgid "set servo %d.servoPort %d.slot angle %d.servovalue"
-#msgstr "orienter le servomoteur du %d.servoPort %d.slot d'un angle de %d.servovalue °"
-
-msgid "set stepper motor%d.exMotorPort speed %d.stepperSpeed distance %n"
-msgstr "zet steppermotor %d.exMotorPort op snelheid %d.stepperSpeed en afstand %n"
-
-msgid "set encoder motor%d.slot speed %d.encoderSpeed distance %n"
-msgstr "zet encodermotor %d.slot op snelheid %d.encoderSpeed en afstand %n"
-
-msgid "set 7-segments display%d.normalPort number %n"
-msgstr "zet 7-segmentscherm %d.normalPort op getal %n"
-
-msgid "set led %d.normalPort %d.index red%d.value green%d.value blue%d.value"
-msgstr "zet RGB-LED %d.normalPort nr. %d.index op rood %d.value groen %d.value blauw %d.value"
-
-msgid "set light sensor %d.normalPort led as %d.switch"
-msgstr "zet lichtsensor %d.normalPort %d.switch"
-
-msgid "set camera shutter %d.normalPort as %d.shutter"
-msgstr "zet cameraknop %d.normalPort in modus %d.shutter"				
-
-msgid "when %m.sensor %m.lessMore %n"
-msgstr "wanneer %m.sensor %m.lessMore %n"
-
-msgid "set led %d.index red%d.value green%d.value blue%d.value"
-msgstr "zet RGB-LED nr. %d.index op rood %d.value groen %d.value blauw %d.value"
-
-msgid "ultrasonic sensor %d.port distance"
-msgstr "afstand ultrasoon-sensor %d.port"
-
-msgid "line follower %d.port"
-msgstr "lijnvolger %d.port"
-
-msgid "pir motion sensor %d.port"
-msgstr "pir-bewegingssensor %d.port"
-
-msgid "joystick %d.port %d.Axis"
-msgstr "joystick1 %d.port %d.Axis"
-
-msgid "ir remote %m.ircode pressed"
-msgstr "knop %m.ircode van afstandsbediening"
-
-msgid "send ir message %s"
-msgstr "verzend infraroodsignaal %s"
-
-msgid "hello"
-msgstr "hallo"
-
-msgid "when data received"
-msgstr "wanneer data ontvangen wordt"
-
-msgid "data available?"
-msgstr "data beschikbaar?"
-
-msgid "read line"
-msgstr "lees regel"
-
-msgid "write line %s"
-msgstr "schrijf regel %s"
-
-msgid "read command %s"
-msgstr "lees commando %s"
-
-msgid "send command %s = %s"
-msgstr "verstuur commando %s = %s"
-
-msgid "%s is equal %s?"
-msgstr "%s is gelijk aan %s ?"
-
-msgid "clear buffer"
-msgstr "buffer leegmaken"
-
-msgid "value"
-msgstr "waarde"
-
-msgid "Holiday"
-msgstr "Kerstmis"
-
-msgid "set font size"
-msgstr "lettergrootte"
-
-msgid "unsupported block found, remove them to continue."
-msgstr "Deze blokken worden niet ondersteund. Verwijder ze om verder te gaan."
-
-msgid "thing"
-msgstr "ding"
+msgid "Refresh"
+msgstr "Vernieuwen"
