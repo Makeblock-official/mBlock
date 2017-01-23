@@ -945,5 +945,5 @@
 	"Microsoft Cognitive Service Setting": "Microsoft Cognitive Service Setting",
 	"Ellipse": "타원",
 	"New Project": "New Project",
-	"set encoder motor on board %d.slot power to %d.motorvalue": "set encoder motor on board %d.slot power to %d.motorvalue"
+	"set encoder motor on board %d.slot power to %d.motorvalue": "보드위에엔코더모터설정%d.slot %d.motorvalue"
 }

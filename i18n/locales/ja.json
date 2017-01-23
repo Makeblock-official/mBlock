@@ -946,5 +946,5 @@
 	"Ellipse": "楕円",
 	"New Project": "New Project",
 	"About mBlock": "About mBlock",
-	"set encoder motor on board %d.slot power to %d.motorvalue": "set encoder motor on board %d.slot power to %d.motorvalue"
+	"set encoder motor on board %d.slot power to %d.motorvalue": "オンボードエンコーダモーター %d.slot パワーを %d.motorvalue にする"
 }

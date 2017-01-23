@@ -958,5 +958,5 @@
 	"No Bluetooth devices found around it!": "No Bluetooth devices found around it!",
 	"Discovering": "正在发现中",
 	"No such device": "没有该设备",
-	"set encoder motor on board %d.slot power to %d.motorvalue": "set encoder motor on board %d.slot power to %d.motorvalue"
+	"set encoder motor on board %d.slot power to %d.motorvalue": "设置板载编码电机%d.slot 动力为 %d.motorvalue"
 }

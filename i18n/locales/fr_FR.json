@@ -945,5 +945,5 @@
 	"Microsoft Cognitive Service Setting": "Microsoft Cognitive Service Setting",
 	"Ellipse": "Ellipse",
 	"New Project": "New Project",
-	"set encoder motor on board %d.slot power to %d.motorvalue": "set encoder motor on board %d.slot power to %d.motorvalue"
+	"set encoder motor on board %d.slot power to %d.motorvalue": "Mettez le moteur encodeur de la carte %d.slot la puissance à %d.motorvalue"
 }
