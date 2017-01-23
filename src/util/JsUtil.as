@@ -218,6 +218,7 @@ package util
 				var base64Str:String = Base64.encode(zipData);
 				//Call("saveProject", [base64Str]);
 				callApp("saveProject",{title: MBlock.app.projectName() + '.sb2', data:base64Str});
+				MBlock.app.saveNeeded = false;
 			}
 			var projIO:ProjectIO = new ProjectIO(MBlock.app);
 			projIO.convertSqueakSounds(MBlock.app.stagePane, squeakSoundsConverted);
@@ -314,7 +315,7 @@ package util
 		
 		static private function __logToArduinoConsole(message:String,isOut:Boolean):void
 		{
-			MBlock.app.scriptsPart.appendMsgWithTimestamp(message,isOut);
+			MBlock.app.scriptsPart.appendMsgFromJs(message,isOut);
 		}
 		static private function __setFontSize(size:int):void
 		{

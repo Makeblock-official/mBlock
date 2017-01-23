@@ -1,14 +1,15 @@
 /**
  * 项目文件管理：创建、保存、加载
  */
-const {dialog,BrowserWindow} = require('electron')
+const {dialog, BrowserWindow} = require('electron')
 const fs = require("fs");
 const pathModule = require('path');
 const events = require('events');
-var _emitter = new events.EventEmitter();  
-var _saveAs=false;
+var _emitter = new events.EventEmitter();
+var _saveAs = false;
 var _currentProjectPath = "";
-var _client,_app,_title;
+var _client, _app, _title;
+var _saveAndNew = false;
 function Project(app) {
     var self = this;
     _app = app;
@@ -16,7 +17,7 @@ function Project(app) {
     /**
      * 打开保存窗口，将项目文件写入到本地文件系统
      */
-    this.saveProject = function(title,data){
+    this.saveProject = function (title, data) {
 
         // ret = dialog.showMessageBox(BrowserWindow.getFocusedWindow(),{
         //     type:'question',
@@ -27,36 +28,43 @@ function Project(app) {
         // });
         // console.log("return "+ret);
 
-        if(_saveAs||_currentProjectPath==""|| _currentProjectPath == "."){
-		    var mainWindow = BrowserWindow.getFocusedWindow();
-            if(title==" .sb2"){
+        if (_saveAs || _currentProjectPath == "" || _currentProjectPath == ".") {
+            var mainWindow = BrowserWindow.getFocusedWindow();
+            if (title == " .sb2") {
                 title = "project";
             }
-            if(_currentProjectPath==""){
+            if (_currentProjectPath == "") {
                 _currentProjectPath = "."
             }
-            if (title.lastIndexOf('.sb2') != title.length-4 ){
+            if (title.lastIndexOf('.sb2') != title.length - 4) {
                 title += ".sb2";
             }
-            dialog.showSaveDialog(mainWindow,{defaultPath:fs.realpathSync(_currentProjectPath+'/../')+"/"+title},function(path){
-                if(path){
-                    if (path.lastIndexOf('.sb2') != path.length-4 ){
+            dialog.showSaveDialog(mainWindow, {defaultPath: fs.realpathSync(_currentProjectPath + '/../') + "/" + title}, function (path) {
+                if (path) {
+                    if (path.lastIndexOf('.sb2') != path.length - 4) {
                         path += ".sb2";
                     }
                     _currentProjectPath = path;
-                    var temp = path.split("/");
-                    _title = temp[temp.length-1].split(".sb2")[0];
+                    var temp = path.replace(/\\/g, "/").split("/");
+                    _title = temp[temp.length - 1].split(".sb2")[0];
                     fs.writeFileSync(path, new Buffer(data, 'base64'));
+                    self.setProjectTitle();                    //设置另存后标题
+                    if (_saveAndNew) {
+                        self.doNewProject();
+                    }
                 }
             })
-        }else{
+        } else {
             fs.writeFileSync(_currentProjectPath, new Buffer(data, 'base64'));
+            if (_saveAndNew) {
+                self.doNewProject();
+            }
         }
     }
     /**
      * 从本地文件系统加载项目文件，并上传到express服务器，生成url链接发送给flash加载
      */
-    this.openProject = function(path){
+    this.openProject = function (path) {
         _currentProjectPath = path
         var data = fs.readFileSync(path);
         var tmp = path.split(".");
@@ -72,37 +80,61 @@ function Project(app) {
     /**
      * 向flash发送创建新项目的请求，flash收到请求会清空当前舞台所有内容。
      */
-    this.newProject = function(){
-        _currentProjectPath = "";
-        if(_client){
-            _client.send("newProject",{title:"new-project"})
+    this.newProject = function () {
+
+        var ret = dialog.showMessageBox(BrowserWindow.getFocusedWindow(), {
+            type: 'question',
+            title: '',
+            message: '保存项目？',
+            buttons: ['保存', '不保存', '取消'],
+            noLink: true
+        });
+
+        if (ret == 0) {
+            if (_client) {
+                _saveAndNew = true;
+                _client.send("saveProject", {}); //这里是异步模式，保存后才能执行新建
+            }
         }
+
+        if (ret == 1) {
+            self.doNewProject();
+        }
+
     }
+    this.doNewProject = function () {
+        _currentProjectPath = "";
+        if (_client) {
+            _client.send("newProject", {title: "new-project"})
+        }
+        _saveAndNew = false;         //清除 保存后新建   标识
+    }
+
     /**
      * 获得项目标题
      */
-    this.getProjectTitle = function() {
+    this.getProjectTitle = function () {
         return _title;
     }
     /**
      * 向flash发送项目名称（名称由保存的文件名决定）
      */
-    this.setProjectTitle = function(){
-        if(_client){
-            _client.send("setProjectTitle",{title:_title});
+    this.setProjectTitle = function () {
+        if (_client) {
+            _client.send("setProjectTitle", {title: _title});
         }
     }
     /**
      * 向flash发送保存请求，等待flash返回项目文件（base64）和项目名称
      */
-    this.saveAs = function(b){
+    this.saveAs = function (b) {
         _saveAs = b;
-        if(_client){
-            _client.send("saveProject",{})
+        if (_client) {
+            _client.send("saveProject", {})
         }
     }
-    this.on = function(event,listener){
-        _emitter.on(event,listener);
+    this.on = function (event, listener) {
+        _emitter.on(event, listener);
     }
 }
 module.exports = Project;

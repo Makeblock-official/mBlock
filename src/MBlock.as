@@ -77,7 +77,7 @@ package {
 	import util.SharedObjectManager;
 	
 	import watchers.ListWatcher;
-
+	import flash.utils.getQualifiedClassName;
 	[SWF(frameRate="30", width="1280", height="768")]
 	public class MBlock extends Sprite {
 		// Version
@@ -149,6 +149,7 @@ package {
 			}
 			errorFlag = true;
 			ErrorReportFrame.OpenSendWindow(errorText);
+			JsUtil.log("flash error:"+errorText);
 		}
 		
 		private function initStage(evt:Event):void{
@@ -786,7 +787,7 @@ package {
 			}
 			_saveNeeded = value;
 			AppTitleMgr.Instance.setProjectModifyInfo(_saveNeeded);
-			JsUtil.Call("setSaveStatus",[value]);
+			JsUtil.callApp("setSaveStatus",[!value]);
 		}
 	
 		public function setSaveNeeded(saveNow:Boolean = false):void {

@@ -8,12 +8,18 @@ const {ipcRenderer} = require('electron');
 
 var closeButtonDom = document.querySelector('#alert-box-close');
 var contentTextDom = document.querySelector('#alert-box-content');
+var receiveData; // 后台或前台传过来的数据
 
 var AlertBox = {
     init: function() {
         var self = this;
+		// 当用户点击了“取消”按钮
         closeButtonDom.addEventListener('click', function() {
             ipcRenderer.send('alertBoxClosed');
+
+			if (typeof(receiveData.cancelCallback) == 'string') { // 取消按钮回调函数
+				eval('window["' + receiveData.cancelCallback + '"]()');
+			}
             self.close();
         });
         /**
@@ -26,8 +32,26 @@ var AlertBox = {
         });
         return self;
     },
+	/**
+	 * 显示弹框
+	 * @param {string} | {object} content 需要显示的内容，如果为对象，则: {'message':'提示消息，支持html','hasCancel':'是否有取消按钮，默认true:需要“取消”按钮，false：不要“取消”按钮','cancelCallback':'取消按钮回调函数',...}
+	 */
     show: function(content) {
-        this.setContent(content);
+	    var message = '';
+		receiveData = content;
+		if (typeof(content) == 'object') { // 传对象
+		    if (typeof(content.hasCancel) != 'undefined') {
+				if (!content.hasCancel) { // 不要取消按钮 
+				    closeButtonDom.style.display = 'none';
+			    } else {
+					closeButtonDom.style.display = 'inline';
+				}
+			}
+			message = content.message
+		} else { // 兼容之前的直接传字符串
+			message = content;
+		}
+        this.setContent(message);
         if(!dom.open) {
             dom.showModal();
         }
@@ -38,7 +62,7 @@ var AlertBox = {
     },
 
     setContent: function(content) {
-        contentTextDom.innerText = content;
+        contentTextDom.innerHTML = content;
     },
 
     setButtonText: function(content) {

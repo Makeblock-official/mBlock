@@ -13,7 +13,7 @@ const mBlock = require('./mBlock.js');
 const express = require('express');
 const httpPort = 7070
 var http = express();
-var appMain;
+var mBlockObject;
 
 // rootPath和__root_path是能找到外部工具（如tools/）到地方。
 var rootPath = path.join(__dirname, "/..");
@@ -75,12 +75,13 @@ function createWindow () {
     mainWindow = null
   })
   Menu.setApplicationMenu(new Menu());
-  appMain = new mBlock();
+  mBlockObject = new mBlock();
 }
-app.on('ready', createWindow)
+app.on('ready', createWindow);
 app.on('window-all-closed', function () {
-    appMain.quit();
-    app.quit()
+    mBlockObject.quit();
+    app.quit();
+	process.kill(process.pid, 'SIGKILL');
 })
 
 app.on('activate', function () {

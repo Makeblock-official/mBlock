@@ -44,17 +44,18 @@ function Application(flash){
     })
     ipcRenderer.on('package', (sender,obj) => {
         _ext.onReceived(obj.data);
-        _flash.logToArduinoConsole(obj.data);
+        _flash.logToArduinoConsole(obj.data,false);
     });  
     ipcRenderer.on('connected', (sender,obj) => {  
         self.connected = obj.connected;
+        ipcRenderer.send("connectionStatus", obj);
         self.updateTitle();
     });  
     ipcRenderer.on('changeToBoard', (sender,obj) => {  
         self.changeToBoard(obj.board);
     }); 
     ipcRenderer.on('logToArduinoConsole', (sender,obj) => {  
-        _flash.logToArduinoConsole(obj);
+        _flash.logToArduinoConsole(obj,true);
     });
     ipcRenderer.on('setFontSize', (sender,obj) => {
         _flash.setFontSize(obj.size);
@@ -74,8 +75,9 @@ function Application(flash){
         var body = document.getElementById('body');
         loader.parentNode.removeChild(loader);
         body.className = '';
-        // window.responseValue = _flash.responseValue;
-
+        // 解决打开空白的bug
+		_flash.style.height = '99%';
+        _flash.style.width = '99%';
     }
     this.saveProject = function(project){
         ipcRenderer.send("saveProject",project);
@@ -84,8 +86,14 @@ function Application(flash){
         self.saved = isSaved;
         self.updateTitle();
     }
+    this.sendBytesToBoard = function(msg){
+        ipcRenderer.send("package", {data:msg});
+    }
+    this.updateMenuStatus = function(obj){
+
+    }
     this.updateTitle =function(){
-        var textSave = self.saved  ? _translator.map('Saved'): _translator.map("Not saved");
+        var textSave = self.saved=="true"? _translator.map('Saved'): _translator.map("Not saved");
         var textConnect = self.connected ? _translator.map('Connected'): _translator.map("Disconnected");
         var title = package.description +" - " + textConnect+" - " +textSave;
         ipcRenderer.sendToHost("setAppTitle",title);
@@ -123,7 +131,6 @@ function Application(flash){
         }else{
             _flash.responseValue();
         }
-   //     _flash.logToArduinoConsole(value,false);
     }
     this.setProjectRobotName = function(){
 

@@ -944,5 +944,6 @@
 	"Wooden Flute": "나무 플루트",
 	"Microsoft Cognitive Service Setting": "Microsoft Cognitive Service Setting",
 	"Ellipse": "타원",
-	"New Project": "New Project"
+	"New Project": "New Project",
+	"set encoder motor on board %d.slot power to %d.motorvalue": "set encoder motor on board %d.slot power to %d.motorvalue"
 }
