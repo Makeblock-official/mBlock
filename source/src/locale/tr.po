@@ -1,0 +1,2018 @@
+# The language name as it will appear in the language menu
+msgid "Language-Name"
+msgstr "Türkçe"
+
+msgid "%b and %b"
+msgstr "%b ve %b"
+
+msgid "%b or %b"
+msgstr "%b veya %b"
+
+msgid "%m.attribute of %m.spriteOrStage"
+msgstr "%m.attribute değeri %m.spriteOrStage 'in"
+
+msgid "%m.list contains %s"
+msgstr "%m.list %s 'de var"
+
+msgid "%m.mathOp of %n"
+msgstr "%m.mathOp %n"
+
+msgid "%m.sensor sensor value"
+msgstr "%m.sensor algılayıcısının değeri"
+
+msgid "%n mod %n"
+msgstr "%n mod %n"
+
+msgid "add %s to %m.list"
+msgstr "%s i %m.list e ekle"
+
+msgid "answer"
+msgstr "cevap"
+
+msgid "ask %s and wait"
+msgstr "%s diye sor ve bekle"
+
+# "backdrop" in Scratch 2.0 is similar to "background" in Scratch 1.4
+msgid "backdrop #"
+msgstr "dekor #"
+
+# "backdrop" in Scratch 2.0 is similar to "background" in Scratch 1.4
+msgid "backdrop name"
+msgstr "dekorun adı"
+
+msgid "Hello!"
+msgstr "Merhaba！"
+
+msgid "Hmm..."
+msgstr "Eee..."
+
+msgid "broadcast %m.broadcast"
+msgstr "%m.broadcast i ilet"
+
+msgid "broadcast %m.broadcast and wait"
+msgstr "%m.broadcast i ilet ve bekle"
+
+msgid "change %m.effect effect by %n"
+msgstr "%m.effect etkisini %n arttır"
+
+msgid "change %m.var by %n"
+msgstr "%m.var 'i %n arttır"
+
+msgid "change pen color by %n"
+msgstr "kalem rengini %n arttır"
+
+msgid "change pen shade by %n"
+msgstr "kalem tonunu %n arttır"
+
+msgid "change pen size by %n"
+msgstr "kalem kalınlığını %n arttır"
+
+msgid "change size by %n"
+msgstr "%n birim büyüt"
+
+msgid "change tempo by %n"
+msgstr "tempoyu %n arttır"
+
+msgid "change volume by %n"
+msgstr "sesi %n birim yükselt"
+
+msgid "change x by %n"
+msgstr "x'i %n arttır"
+
+msgid "change y by %n"
+msgstr "y'yi %n arttır"
+
+msgid "clear"
+msgstr "temizle"
+
+msgid "clear graphic effects"
+msgstr "görsel etkileri temizle"
+
+msgid "color %c is touching %c?"
+msgstr "%c rengi %c rengine değdi (mi?)"
+
+msgid "Control"
+msgstr "Kontrol"
+
+msgid "costume #"
+msgstr "kılık no"
+
+msgid "create clone of %m.spriteOnly"
+msgstr "%m.spriteOnly in kopyasını çıkar"
+
+msgid "current %m.timeAndDate"
+msgstr "şimdiki %m.timeAndDate"
+
+msgid "Data"
+msgstr "Veri"
+
+msgid "Data&Blocks"
+msgstr "Veri&Blok"
+
+msgid "days since 2000"
+msgstr "2000'den beri geçen gün"
+
+msgid "define"
+msgstr "tanımla"
+
+msgid "delete %d.listDeleteItem of %m.list"
+msgstr "sil %d.listDeleteItem sırasındakini %m.list in"
+
+msgid "delete this clone"
+msgstr "bu kopyayı sil"
+
+msgid "delete list"
+msgstr "listeyi sil"
+
+msgid "direction"
+msgstr "yönü"
+
+msgid "distance"
+msgstr "mesafe"
+
+msgid "distance to %m.spriteOrMouse"
+msgstr "%m.spriteOrMouse a mesafe"
+
+msgid "else"
+msgstr "değilse"
+
+msgid "Events"
+msgstr "Olaylar"
+
+msgid "forever"
+msgstr "sürekli tekrarla"
+
+msgid "glide %n secs to x:%n y:%n"
+msgstr "%n sn.de x:%n y:%n a süzül"
+
+msgid "go back %n layers"
+msgstr "%n katman alta in"
+
+msgid "go to %m.spriteOrMouse"
+msgstr "%m.spriteOrMouse 'na git"
+
+msgid "go to front"
+msgstr "üste çık"
+
+msgid "go to x:%n y:%n"
+msgstr "x:%n y:%n noktasına git"
+
+msgid "hide"
+msgstr "gizlen"
+
+msgid "hide list %m.list"
+msgstr "%m.list listesini gizle"
+
+msgid "hide variable %m.var"
+msgstr "%m.var değişkenini gizle"
+
+msgid "if %b then"
+msgstr "eğer %b ise"
+
+msgid "if on edge, bounce"
+msgstr "kenara geldiysen sek"
+
+msgid "insert %s at %d.listItem of %m.list"
+msgstr "koy %s 'yi, %d.listItem sırasına %m.list 'nin"
+
+msgid "item %d.listItem of %m.list"
+msgstr "%d.listItem sırasındaki %m.list 'in"
+
+msgid "join %s %s"
+msgstr "%s ile %s i birleştir"
+
+msgid "key %m.key pressed?"
+msgstr "%m.key tuşu basılı (mı?)"
+
+msgid "length of %m.list"
+msgstr "%m.list in uzunluğu"
+
+msgid "length of %s"
+msgstr "%s in uzunluğu"
+
+msgid "letter %n of %s"
+msgstr "%n . harfi %s in"
+
+msgid "Looks"
+msgstr "Görünüm"
+
+msgid "loudness"
+msgstr "ses şiddeti"
+
+msgid "More Blocks"
+msgstr "Özel Taşlar"
+
+msgid "Motion"
+msgstr "Hareket"
+
+msgid "mouse down?"
+msgstr "fareye basılı (mı?)"
+
+msgid "mouse x"
+msgstr "farenin x'i"
+
+msgid "mouse y"
+msgstr "farenin y'si"
+
+msgid "move %n steps"
+msgstr "%n adım git"
+
+# "backdrop" in Scratch 2.0 is similar to "background" in Scratch 1.4
+msgid "next backdrop"
+msgstr "sonraki dekor"
+
+msgid "previous backdrop"
+msgstr "önceki dekor"
+
+msgid "next costume"
+msgstr "sonraki kılık"
+
+msgid "not %b"
+msgstr "%b değil"
+
+msgid "Operators"
+msgstr "İşlemler"
+
+msgid "Pen"
+msgstr "Kalem"
+
+msgid "pen down"
+msgstr "kalemi bastır"
+
+msgid "pen up"
+msgstr "kalemi kaldır"
+
+msgid "pick random %n to %n"
+msgstr "%n ile %n arasında bir sayı (tut)"
+
+msgid "play drum %d.drum for %n beats"
+msgstr "%d.drum davulunu %n vuruş çal"
+
+# 83%
+msgid "play note %d.note for %n beats"
+msgstr "%d.note notasını %n vuruş çal"
+
+msgid "play sound %m.sound"
+msgstr "%m.sound sesini çal"
+
+msgid "play sound %m.sound until done"
+msgstr "%m.sound sesini bitene kadar çal"
+
+msgid "point in direction %d.direction"
+msgstr "%d.direction yönüne dön"
+
+msgid "point towards %m.spriteOrMouse"
+msgstr "%m.spriteOrMouse 'ye doğru dön"
+
+msgid "repeat %n"
+msgstr "%n defa tekrarla"
+
+msgid "repeat until %b"
+msgstr "%b olana kadar tekrarla"
+
+msgid "replace item %d.listItem of %m.list with %s"
+msgstr "değiştir %d.listItem sırasındakini %m.list listesinin %s ile"
+
+msgid "reset timer"
+msgstr "süre ölçeri sıfırla"
+
+msgid "rest for %n beats"
+msgstr "%n vuruş sus"
+
+msgid "round %n"
+msgstr "%n i yuvarla"
+
+msgid "say %s"
+msgstr "%s de"
+
+msgid "say %s for %n secs"
+msgstr "%s de %n saniye"
+
+msgid "Sensing"
+msgstr "Algılama"
+
+msgid "What's your name?"
+msgstr "İsmin ne?"
+
+msgid "sensor %m.booleanSensor?"
+msgstr "algılayıcı %m.booleanSensor (mı?)"
+
+msgid "set %m.effect effect to %n"
+msgstr "%m.effect etkisi %n olsun"
+
+msgid "set %m.var to %s"
+msgstr "%m.var , %s olsun"
+
+msgid "set instrument to %d.instrument"
+msgstr "çalgıyı %d.instrument yap"
+
+# 89%
+msgid "set %m.motor2 direction to %m.motorDirection"
+msgstr "%m.motor2 yönünü %m.motorDirection çevir"
+
+# 77%
+msgid "set %m.motor power to %n"
+msgstr "%m.motor gücünü %n yap"
+
+msgid "set pen color to %c"
+msgstr "kalem rengini %c yap"
+
+msgid "set pen color to %n"
+msgstr "kalem rengini %n yap"
+
+msgid "set pen shade to %n"
+msgstr "kalem tonunu %n yap"
+
+msgid "set pen size to %n"
+msgstr "kalem kalınlığını %n yap"
+
+msgid "set rotation style %m.rotationStyle"
+msgstr "kuklanın şekli %m.rotationStyle"
+
+msgid "set size to %n%"
+msgstr "büyüklüğü %%n yap"
+
+msgid "set tempo to %n bpm"
+msgstr "tempo %n vuruş/dk olsun"
+
+msgid "set video transparency to %n%"
+msgstr "video saydamlığı %%n olsun"
+
+msgid "set volume to %n%"
+msgstr "ses şiddeti %%n olsun"
+
+msgid "set x to %n"
+msgstr "x, %n olsun"
+
+msgid "set y to %n"
+msgstr "y, %n olsun"
+
+msgid "show"
+msgstr "görün"
+
+msgid "show list %m.list"
+msgstr "%m.list listesini göster"
+
+msgid "show variable %m.var"
+msgstr "%m.var değişkenini göster"
+
+msgid "size"
+msgstr "büyüklük"
+
+msgid "Sound"
+msgstr "Ses"
+
+msgid "stamp"
+msgstr "iz bırak"
+
+msgid "stop %m.stop"
+msgstr "%m.stop durdur"
+
+msgid "stop all sounds"
+msgstr "tüm sesleri durdur"
+
+# "backdrop" in Scratch 2.0 is similar to "background" in Scratch 1.4
+msgid "switch backdrop to %m.backdrop"
+msgstr "%m.backdrop dekoruna geç"
+
+# "backdrop" in Scratch 2.0 is similar to "background" in Scratch 1.4
+msgid "switch backdrop to %m.backdrop and wait"
+msgstr "%m.backdrop dekoruna geç ve bekle"
+
+msgid "switch costume to %m.costume"
+msgstr "%m.costume kılığına geç"
+
+msgid "tempo"
+msgstr "tempo"
+
+msgid "think %s"
+msgstr "%s diye düşün"
+
+msgid "think %s for %n secs"
+msgstr "%s diye düşün %n saniye"
+
+msgid "tilt"
+msgstr "yana eğil"
+
+msgid "timer"
+msgstr "süre ölçer"
+
+msgid "touching %m.touching?"
+msgstr "%m.touching a değdi (mi?)"
+
+msgid "touching color %c?"
+msgstr "%c rengine değdi (mi?)"
+
+msgid "turn @turnLeft %n degrees"
+msgstr "@turnLeft %n derece dön"
+
+msgid "turn @turnRight %n degrees"
+msgstr "@turnRight %n derece dön"
+
+msgid "turn motor off"
+msgstr "motoru durdur"
+
+msgid "turn motor on"
+msgstr "motoru çalıştır"
+
+# 80%
+msgid "turn %m.motor on for %n secs"
+msgstr "%m.motor işlevini başlat %n saniye boyunca"
+
+msgid "turn video %m.videoState"
+msgstr "videoyu %m.videoState"
+
+msgid "username"
+msgstr "kullanıcı adı"
+
+msgid "video %m.videoMotionType on %m.stageOrThis"
+msgstr "video %m.videoMotionType , %m.stageOrThis üzerindeki"
+
+msgid "volume"
+msgstr "ses şiddeti"
+
+msgid "wait %n secs"
+msgstr "%n saniye bekle"
+
+msgid "wait until %b"
+msgstr "%b olana kadar bekle"
+
+# 75%
+msgid "when %m.booleanSensor"
+msgstr "%m.booleanSensor olunca"
+
+msgid "when %m.key key pressed"
+msgstr "%m.key tuşu basılınca"
+
+msgid "when %m.key key released"
+msgstr "%m.key tuşu bırakılınca"
+
+msgid "when %m.triggerSensor > %n"
+msgstr "%m.triggerSensor > %n olunca"
+
+msgid "when @greenFlag clicked"
+msgstr "@greenFlag tıklanınca"
+
+# "backdrop" in Scratch 2.0 is similar to "background" in Scratch 1.4
+msgid "when backdrop switches to %m.backdrop"
+msgstr "dekor %m.backdrop olunca"
+
+msgid "when Stage clicked"
+msgstr "Sahne tıklandığında"
+
+msgid "when distance < %n"
+msgstr "Mesafe  < %n olduğunda"
+
+msgid "when I receive %m.broadcast"
+msgstr "%m.broadcast ileti gelince"
+
+msgid "when I receive %d.broadcast"
+msgstr "%d.broadcast ileti gelince"
+
+msgid "when I start as a clone"
+msgstr "kopya olarak başladığımda"
+
+msgid "when this sprite clicked"
+msgstr "bu kukla tıklanınca"
+
+msgid "when tilt %m.eNe %n"
+msgstr "eğiklik %m.eNe %n olduğunda"
+
+msgid "x position"
+msgstr "x konumu"
+
+msgid "y position"
+msgstr "y konumu"
+
+#~ msgid "forever if %b"
+#~ msgstr "%b ise sürekli"
+
+#~ msgid "if %b"
+#~ msgstr "%b ise"
+
+#~ msgid "motor direction %m.motorDirection"
+#~ msgstr  %m.motorDirection motorun yönü"
+
+#~ msgid "motor off"
+#~ msgstr "motoru durdur"
+
+#~ msgid "motor on"
+#~ msgstr "motoru çalıştır"
+
+#~ msgid "motor on for %n secs"
+#~ msgstr "%n saniye motoru çalıştır"
+
+#~ msgid "motor power %n"
+#~ msgstr "%n motora güç ver"
+
+#~ msgid "play note %n for %n beats"
+#~ msgstr " %n süresince %n notasını çal"
+
+##################
+# User Interface #
+##################
+
+msgid "10 ^"
+msgstr "10 ^"
+
+msgid "<b>Information about Cloud variables</b><br>&nbsp;<br>Currently, only numbers are supported<br>Chat rooms are not allowed, and will be removed<br>For more info, <a href=\"/help/faq/#clouddata\" target=\"_blank">see the cloud data FAQ!</a>"
+msgstr ""
+"<b>Bulut değişkenleri hakkında bilgi</b><br>&nbsp;<br>Şimdilik, sadece "
+"sayısal değerler destekleniyor<br>Sohbet odalarına izin yok, ve "
+"kaldırılacaklar<br>Daha fazla bilgi için, <a href=\"/help/faq/#clouddata" target="_blank">bulut veriler SSS'sine bakın!</a>"
+
+msgid "A connected"
+msgstr "A bağlandı"
+
+msgid "a copy of the project file on your computer."
+msgstr "bilgisayarındaki proje dosyasının bir kopyası."
+
+msgid "abs"
+msgstr "mutlak değer"
+
+msgid "Account settings"
+msgstr "Hesap ayarları"
+
+msgid "acos"
+msgstr "acos"
+
+msgid "Add boolean input:"
+msgstr "Mantıksal girdi ekle:"
+
+msgid "add comment"
+msgstr "yorum ekle"
+
+msgid "Add label text:"
+msgstr "Etiket yazısı ekle:"
+
+msgid "Add number input:"
+msgstr "Rakamsal girdi ekle:"
+
+msgid "Add string input:"
+msgstr "Sözel girdi ekle:"
+
+msgid "All"
+msgstr "hepsi"
+
+msgid "All"
+msgstr "Tümü"
+
+msgid "all around"
+msgstr "her yöne dönebilsin"
+
+msgid "Animal"
+msgstr "Hayvan"
+
+msgid "Animals"
+msgstr "Hayvanlar"
+
+msgid "asin"
+msgstr "asin"
+
+msgid "assets loaded"
+msgstr "unsur yüklendi"
+
+msgid "atan"
+msgstr "atan"
+
+msgid "B connected"
+msgstr "B bağlandı"
+
+msgid "Back a layer"
+msgstr "Bir seviye alta"
+
+msgid "Bckdrop"
+msgstr "Dekor"
+
+msgid "backdrop"
+msgstr "dekor"
+
+msgid "backdrop #"
+msgstr "dekor numarası"
+
+msgid "Backdrop Library"
+msgstr "Dekor Kütüphanesi"
+
+msgid "backdrop name"
+msgstr "dekor ismi"
+
+msgid "backdrop1"
+msgstr "dekor1"
+
+msgid "backdrops"
+msgstr "dekorlar"
+
+msgid "Backdrops"
+msgstr "Dekorlar"
+
+msgid "Backpack"
+msgstr "Sırt çantası"
+
+msgid "Bass"
+msgstr "Bas"
+
+msgid "Bass Drum"
+msgstr "Bas Davul"
+
+msgid "Bassoon"
+msgstr "Fagot"
+
+msgid "Because you have a new Scratch account, any changes to cloud data won't be saved yet. Keep participating on the site you'll be able to use cloud data soon!"
+msgstr "Scratch hesabın henüz çok yeni olduğu için, bulut verilerin şimdilik kaydedilmeyecek. Sitedeki faaliyetlerine devam edersen çok yakında bulut verilerini kullanabileceksin!"
+
+msgid "Bitmap"
+msgstr "Biteşlem"
+
+msgid "Bitmap Mode"
+msgstr "Biteşlem Halde"
+
+msgid "Block help"
+msgstr "Taşlarla ilgili yardım"
+
+msgid "Bongo"
+msgstr "Bongo"
+
+msgid "brightness"
+msgstr "parlaklık"
+
+msgid "Bring to front"
+msgstr "Öne getir"
+
+msgid "Broadcast"
+msgstr "İlet"
+
+msgid "Brush"
+msgstr "Fırça"
+
+msgid "button pressed"
+msgstr "düğmeye basıldı"
+
+msgid "by"
+msgstr "yapan"
+
+msgid "bytes loaded"
+msgstr "bayt yüklendi"
+
+msgid "C connected"
+msgstr "C bağlandı"
+
+msgid "Cabasa"
+msgstr "Cabasa"
+
+msgid "Camera"
+msgstr "Kamera"
+
+msgid "can drag in player:"
+msgstr "fareyle sürüklenebilir:"
+
+msgid "Cancel"
+msgstr "İptal"
+
+msgid "Cannot Delete"
+msgstr "Silinemiyor"
+
+msgid "Can’t find network connection or reach server."
+msgstr "Ağ bağlantısı bulunamıyor ya da sunucuya ulaşılamıyor."
+
+msgid "Castle"
+msgstr "Kale"
+
+msgid "Category"
+msgstr "Kategori"
+
+msgid "ceiling"
+msgstr "yukarı yuvarla"
+
+msgid "Cello"
+msgstr "Viyolonsel"
+
+msgid "Choir"
+msgstr "Koro"
+
+msgid "Choose backdrop from library"
+msgstr "Dekoru kütüphaneden seç"
+
+msgid "Choose costume from library"
+msgstr "Kılığı kütüphaneden seç"
+
+msgid "Choose sound from library"
+msgstr "Sesi kütüphaneden seç"
+
+msgid "Choose sprite from library"
+msgstr "Kuklayı kütüphaneden seç"
+
+msgid "Circle"
+msgstr "Çember"
+
+msgid "City"
+msgstr "Şehir"
+
+msgid "Clarinet"
+msgstr "Klarnet"
+
+msgid "Claves"
+msgstr "Tahta çubuk"
+
+msgid "cleanup"
+msgstr "temizle"
+
+msgid "Clear"
+msgstr "Boşalt"
+
+msgid "clear senders/receivers"
+msgstr "göndericileri/alıcıları temizle"
+
+msgid "Click \"Save now\" to try again or \"Download\" to save"
+msgstr "Tekrar denemek için \"Şimdi kaydet\"e, bilgisayarına kaydetmek için \"İndir\"e tıkla"
+
+msgid "Close"
+msgstr "Kapat"
+
+msgid "Closed Hi-Hat"
+msgstr "Kapalı Zil"
+
+msgid "Cloud"
+msgstr "Bulut"
+
+msgid "Cloud data"
+msgstr "Bulut verisi"
+
+msgid "color"
+msgstr "renk"
+
+msgid "Color a shape"
+msgstr "Bir şekli boya"
+
+msgid "Conga"
+msgstr "Tumba"
+
+msgid "Connecting to Cloud data server..."
+msgstr "Bulut veri sunucusuna bağlanıyor..."
+
+msgid "Convert to bitmap"
+msgstr "Biteşleme dönüştür"
+
+msgid "Convert to vector"
+msgstr "Vektöre dönüştür"
+
+msgid "Converting mp3..."
+msgstr "Mp3 dönüştürülüyor..."
+
+msgid "copy"
+msgstr "kopyala"
+
+msgid "Copying..."
+msgstr "Kopyalanıyor..."
+
+msgid "cos"
+msgstr "cos"
+
+msgid "Costume"
+msgstr "Kılık"
+
+msgid "costume #"
+msgstr "lılık numarası"
+
+msgid "Costume Library"
+msgstr "Kılık Kütüphanesi"
+
+msgid "costume name"
+msgstr "kılığının ismi"
+
+msgid "costume1"
+msgstr "kılık1"
+
+msgid "costume2"
+msgstr "kılık2"
+
+msgid "Costumes"
+msgstr "Kılıklar"
+
+msgid "Costumes > 1"
+msgstr "Kılıklar > 1"
+
+msgid "Costumes:"
+msgstr "Kılıklar:"
+
+msgid "Cowbell"
+msgstr "İnek Çanı"
+
+msgid "Crash Cymbal"
+msgstr "Büyük Zil"
+
+msgid "Creating..."
+msgstr "Oluşturuluyor..."
+
+msgid "Currently, only numbers can be stored in Cloud variables."
+msgstr "Şimdilik, Bulut değişkenlerinde sadece sayılar saklanabiliyor."
+
+msgid "cut"
+msgstr "kes"
+
+msgid "D connected"
+msgstr "D bağlandı"
+
+msgid "date"
+msgstr "tarih"
+
+msgid "day of week"
+msgstr "haftanın günü"
+
+# 83%
+msgid "Delete"
+msgstr "Sil"
+
+msgid "delete"
+msgstr "sil"
+
+msgid "delete variable"
+msgstr "değişkeni sil"
+
+msgid "direction"
+msgstr "yön"
+
+msgid "direction:"
+msgstr "yön:"
+
+msgid "don't rotate"
+msgstr "döndürme"
+
+msgid "down"
+msgstr "aşağı"
+
+msgid "down arrow"
+msgstr "aşağı ok"
+
+msgid "Download"
+msgstr "İndir"
+
+msgid "Download to your computer"
+msgstr "Bilgisayarına indir"
+
+msgid "duplicate"
+msgstr "kopyasını çıkart"
+
+msgid "Duplicate"
+msgstr "İkinci nüshasını çıkar"
+
+msgid "e ^"
+msgstr "e ^"
+
+msgid "edge"
+msgstr "kenar"
+
+msgid "Edit"
+msgstr "Düzenle"
+
+msgid "edit"
+msgstr "düzenle"
+
+msgid "Edit Block"
+msgstr "Bloğu Değiştir"
+
+msgid "Effects"
+msgstr "Efektler"
+
+msgid "Electric Guitar"
+msgstr "Elektro Gitar"
+
+msgid "Electric Piano"
+msgstr "Elektro Piano"
+
+msgid "Electronic"
+msgstr "Elektronik"
+
+msgid "Ellipse"
+msgstr "Elips"
+
+msgid "Erase"
+msgstr "Sil"
+
+# 92%
+#, fuzzy
+msgid "Eraser width"
+msgstr "Silgi eni"
+
+msgid "Error!"
+msgstr "Hata!"
+
+msgid "export"
+msgstr "dışa aktar"
+
+msgid "fade in"
+msgstr "giderek yükselt"
+
+msgid "fade out"
+msgstr "giderek alçalt"
+
+msgid "Fantasy"
+msgstr "Fantezi"
+
+msgid "Features"
+msgstr "Özellikler"
+
+msgid "File"
+msgstr "Dosya"
+
+msgid "Examples"
+msgstr "Örnekler"
+
+msgid "Fill with color"
+msgstr "Renkle doldur"
+
+msgid "fisheye"
+msgstr "balık gözü"
+
+msgid "Flip left-right"
+msgstr "Sağı-sol yap"
+
+msgid "Flip up-down"
+msgstr "Başaşağı döndür"
+
+msgid "floor"
+msgstr "aşağı yuvarla"
+
+msgid "Flute"
+msgstr "Flüt"
+
+msgid "Flying"
+msgstr "Yukarıdan"
+
+msgid "Font:"
+msgstr "Font:"
+
+msgid "For all sprites"
+msgstr "Tüm kuklalar için"
+
+msgid "For this sprite only"
+msgstr "Sadece bu kukla için"
+
+msgid "Forward a layer"
+msgstr "Bir katman üste çıkart"
+
+msgid "ghost"
+msgstr "hayalet"
+
+msgid "Go to My Stuff"
+msgstr "Benimkilere git"
+
+msgid "Group"
+msgstr "Grup"
+
+msgid "Grow"
+msgstr "Büyüt"
+
+msgid "Guiro"
+msgstr "Guiro (tırtıklı ahşap)"
+
+msgid "Guitar"
+msgstr "Gitar"
+
+msgid "Hand Clap"
+msgstr "El Çırpma"
+
+msgid "hide"
+msgstr "gizle"
+
+msgid "High C"
+msgstr "Yüksek C"
+
+msgid "hour"
+msgstr "saat"
+
+msgid "Human"
+msgstr "İnsan"
+
+# 83%
+#, fuzzy
+msgid "import"
+msgstr "içe aktar"
+
+msgid "Import"
+msgstr "İçe aktar"
+
+msgid "Importing sound..."
+msgstr "Sesi içeri aktarılıyor"
+
+msgid "Indoors"
+msgstr "Kapalı mekan"
+
+msgid "Installing..."
+msgstr "Kuruluyor..."
+
+msgid "Instruments"
+msgstr "Çalgılar"
+
+msgid "large readout"
+msgstr "geniş görünüm"
+
+msgid "last"
+msgstr "son"
+
+msgid "left"
+msgstr "sol"
+
+msgid "left arrow"
+msgstr "sol ok"
+
+msgid "left-right"
+msgstr "sağa-sola dönebilsin"
+
+msgid "length"
+msgstr "uzunluk"
+
+msgid "Library"
+msgstr "Kütüphane"
+
+msgid "light"
+msgstr "ışık"
+
+msgid "limit reached"
+msgstr "sınıra ulaşıldı"
+
+msgid "Line"
+msgstr "Çizgi"
+
+# 90%
+#, fuzzy
+msgid "Line width"
+msgstr "Çizgi kalınlığı"
+
+# 75%
+msgid "list"
+msgstr "liste"
+
+msgid "List name"
+msgstr "Liste ismi"
+
+msgid "ln"
+msgstr "ln"
+
+msgid "Loading project..."
+msgstr "Projeyi yükleniyor..."
+
+msgid "log"
+msgstr "log"
+
+msgid "louder"
+msgstr "daha sesli"
+
+msgid "loudness"
+msgstr "ses şiddeti"
+
+msgid "Low C"
+msgstr "Alçak C"
+
+msgid "Make a Block"
+msgstr "Bir Blok Oluştur"
+
+msgid "Make a List"
+msgstr "Bir Liste Oluştur"
+
+msgid "Make a Variable"
+msgstr "Bir Değişken Oluştur"
+
+msgid "Marimba"
+msgstr "Marimba"
+
+msgid "Max"
+msgstr "En fazla"
+
+msgid "meow"
+msgstr "miyav"
+
+msgid "Message Name"
+msgstr "İleti Adı"
+
+msgid "message1"
+msgstr "ileti1"
+
+msgid "Microphone volume:"
+msgstr "Mikrofon sesi şiddeti:"
+
+msgid "Middle C"
+msgstr "Orta C"
+
+msgid "Min"
+msgstr "En az"
+
+msgid "minute"
+msgstr "dakika"
+
+msgid "month"
+msgstr "ay"
+
+msgid "mosaic"
+msgstr "mozaik"
+
+msgid "motion"
+msgstr "hareketi"
+
+msgid "mouse-pointer"
+msgstr "imleç"
+
+msgid "Multiple"
+msgstr "Çoklu"
+
+msgid "Music and Dance"
+msgstr "Müzik ve Dans"
+
+msgid "Music Box"
+msgstr "Müzik Kutusu"
+
+msgid "Music Loops"
+msgstr "Müzik Döngüleri"
+
+msgid "My Stuff"
+msgstr "Benimkiler"
+
+msgid "myself"
+msgstr "kendim"
+
+msgid "Nature"
+msgstr "Doğa"
+
+msgid "New"
+msgstr "Yeni"
+
+msgid "New backdrop from camera"
+msgstr "Kameradan yeni dekor oluştur"
+
+msgid "New backdrop:"
+msgstr "Yeni dekor:"
+
+msgid "New costume from camera"
+msgstr "Kameradan yeni kılık oluştur"
+
+msgid "New costume:"
+msgstr "Yeni kılık:"
+
+msgid "New List"
+msgstr "Yeni Liste"
+
+msgid "new message..."
+msgstr "yeni ileti..."
+
+msgid "New name"
+msgstr "Yeni isim"
+
+msgid "New sound:"
+msgstr "Yeni ses:"
+
+msgid "New sprite from camera"
+msgstr "Kameradan yeni kukla oluştur"
+
+msgid "New sprite:"
+msgstr "Yeni kukla:"
+
+msgid "New Variable"
+msgstr "Yeni Değişken"
+
+msgid "No motion blocks"
+msgstr "Hareketli blok yok"
+
+msgid "normal readout"
+msgstr "normal görünüm"
+
+msgid "Not saved; network or server problem."
+msgstr "Kaydedilmedi; ağ veya sunucuda sorun var."
+
+msgid "Not saved; project did not load."
+msgstr "Kaydedilmedi; proje yüklenmedi."
+
+msgid "of"
+msgstr "'nin"
+
+msgid "off"
+msgstr "kapat"
+
+msgid "Offline Editor"
+msgstr "Çevrimdışı Düzenleyici"
+
+msgid "OK"
+msgstr "Tamam"
+
+msgid "on"
+msgstr "aç"
+
+msgid "on-flipped"
+msgstr "aç - solu sağ yap"
+
+msgid "Open Cuica"
+msgstr "Açık Cuica"
+
+msgid "Open Hi-Hat"
+msgstr "Açık Zil"
+
+msgid "Options"
+msgstr "Seçenekler"
+
+msgid "Organ"
+msgstr "Org"
+
+msgid "Other"
+msgstr "Diğer"
+
+msgid "other scripts in sprite"
+msgstr "kuklanın diğer betikleri"
+
+msgid "Outdoors"
+msgstr "Açık mekan"
+
+msgid "Paint new backdrop"
+msgstr "Yeni dekor çiz"
+
+msgid "Paint new costume"
+msgstr "Yeni kılık çiz"
+
+msgid "Paint new sprite"
+msgstr "Yeni kukla çiz"
+
+msgid "paste"
+msgstr "yapıştır"
+
+msgid "Pencil"
+msgstr "Kalem"
+
+msgid "People"
+msgstr "İnsanlar"
+
+msgid "Percussion"
+msgstr "Vurmalılar"
+
+msgid "photo1"
+msgstr "foto1"
+
+msgid "Piano"
+msgstr "Piyano"
+
+msgid "Pick up color"
+msgstr "Rengi seç"
+
+msgid "pixelate"
+msgstr "mozaikle"
+
+msgid "Pizzicato"
+msgstr "Pizzicato"
+
+msgid "pop"
+msgstr "patlat"
+
+msgid "previous backdrop"
+msgstr "önceki dekor"
+
+msgid "Project did not load."
+msgstr "Proje yüklenmedi."
+
+msgid "Project not saved!"
+msgstr "Proje kaydedilmedi!"
+
+msgid "random"
+msgstr "rastgele"
+
+msgid "Record"
+msgstr "Kaydet"
+
+msgid "Record new sound"
+msgstr "Yeni ses kaydet"
+
+msgid "recording1"
+msgstr "kayıt1"
+
+msgid "Rectangle"
+msgstr "Dikdörtgen"
+
+# 75%
+#, fuzzy
+msgid "Redo"
+msgstr "Yinele"
+
+msgid "redo"
+msgstr "yinele"
+
+msgid "Remix"
+msgstr "Karıştır"
+
+msgid "Remixing..."
+msgstr "Karıştırıyorum..."
+
+msgid "Rename"
+msgstr "Yeniden adlandır"
+
+msgid "rename variable"
+msgstr "değişkeni yeniden adlandır"
+
+msgid "requires sign in"
+msgstr "giriş yapmayı gerektirir"
+
+msgid "Reshape"
+msgstr "Şekli değiştir"
+
+msgid "resistance-A"
+msgstr "direnç-A"
+
+msgid "resistance-B"
+msgstr "direnç-B"
+
+msgid "resistance-C"
+msgstr "direnç-C"
+
+msgid "resistance-D"
+msgstr "direnç-D"
+
+msgid "reverse"
+msgstr "tersine"
+
+msgid "Revert"
+msgstr "Başa al"
+
+msgid "Reverting..."
+msgstr "Başa alıyorum..."
+
+msgid "right"
+msgstr "sağ"
+
+msgid "right arrow"
+msgstr "sağ ok"
+
+msgid "rotation style:"
+msgstr "dönme tarzı:"
+
+msgid "Run without screen refresh"
+msgstr "Ekranı tazelemeden çalıştır"
+
+msgid "Save"
+msgstr "Kaydet"
+
+msgid "Save as a copy"
+msgstr "Kopya olarak kaydet"
+
+msgid "Save now"
+msgstr "Şimdi kaydet"
+
+msgid "save to local file"
+msgstr "bilgisayarıma kaydet"
+
+msgid "Saved"
+msgstr "Kaydedildi"
+
+msgid "Saving changes..."
+msgstr "Değişiklikler kaydediliyor..."
+
+msgid "Saving..."
+msgstr "Kaydediliyor..."
+
+msgid "Saxophone"
+msgstr "Saksafon"
+
+msgid "Script"
+msgstr "Betik"
+
+msgid "Scripts"
+msgstr "Betikler"
+
+msgid "Scripts:"
+msgstr "Betikler:"
+
+msgid "second"
+msgstr "saniye"
+
+msgid "See project page"
+msgstr "Proje sayfasına bak"
+
+msgid "Select"
+msgstr "Seç"
+
+msgid "select all"
+msgstr "tümünü seç"
+
+msgid "Select and duplicate"
+msgstr "Seç ve kopya çıkart"
+
+msgid "Send to back"
+msgstr "En alta gönder"
+
+msgid "Set costume center"
+msgstr "Kılık merkezini belirle"
+
+msgid "Set Costume Center"
+msgstr "Kılık Merkezini Belirle"
+
+msgid "set slider min and max"
+msgstr "sürgü sınır değerlerini belirle"
+
+msgid "Share"
+msgstr "Paylaş"
+
+msgid "shared"
+msgstr "paylaştın"
+
+msgid "Shift:"
+msgstr "Kaydır:"
+
+msgid "show"
+msgstr "göster"
+
+msgid "show receivers"
+msgstr "haber alanları göster"
+
+msgid "show senders"
+msgstr "haber gönderenleri göster"
+
+msgid "show:"
+msgstr "göster:"
+
+msgid "Shrink"
+msgstr "Küçült"
+
+msgid "Side Stick"
+msgstr "Kenara Vuruş"
+
+msgid "Sign in"
+msgstr "Giriş yap"
+
+msgid "Sign in to save"
+msgstr "Kaydetmek için giriş yap"
+
+msgid "Sign out"
+msgstr "Çıkış"
+
+msgid "silence"
+msgstr "sessizlik"
+
+msgid "sin"
+msgstr "sin"
+
+msgid "size"
+msgstr "büyüklük"
+
+msgid "slider"
+msgstr "sürgü"
+
+msgid "Slider Range"
+msgstr "Sürgü Sınırları"
+
+msgid "Small stage layout"
+msgstr "Küçük sahne düzeni"
+
+msgid "Smooth"
+msgstr "Yumuşak"
+
+msgid "Snare Drum"
+msgstr "Trampet"
+
+msgid "softer"
+msgstr "daha yumuşak"
+
+msgid "sound"
+msgstr "ses"
+
+msgid "Sound"
+msgstr "Ses"
+
+msgid "Sound Library"
+msgstr "Ses Kütüphanesi"
+
+msgid "Sounds"
+msgstr "Sesler"
+
+msgid "space"
+msgstr "boşluk"
+
+# 80%
+#, fuzzy
+msgid "Space"
+msgstr "Boşluk"
+
+msgid "Sports"
+msgstr "Sporlar"
+
+# 85%
+msgid "Sprite"
+msgstr "Kukla"
+
+msgid "Sprite Library"
+msgstr "Kukla Kütüphanesi"
+
+# 85%
+msgid "Sprite1"
+msgstr "Kukla1"
+
+msgid "Sprites"
+msgstr "Kuklalar"
+
+msgid "sqrt"
+msgstr "karekök"
+
+msgid "Square"
+msgstr "Kare"
+
+msgid "Stage"
+msgstr "Sahne"
+
+msgid "Stage selected:"
+msgstr "Sahne seçildi:"
+
+msgid "Steel Drum"
+msgstr "Çelik Davul"
+
+msgid "stored on server"
+msgstr "sunucuda saklandı"
+
+msgid "Synth Lead"
+msgstr "Synth Lead"
+
+msgid "Synth Pad"
+msgstr "Synth Pad"
+
+msgid "Tambourine"
+msgstr "Zilli Tef"
+
+msgid "tan"
+msgstr "tan"
+
+msgid "Text"
+msgstr "Metin"
+
+#, fuzzy
+msgid "that way"
+msgstr "diğer tarafa"
+
+#, fuzzy
+msgid "Theme"
+msgstr "Tema"
+
+msgid "Things"
+msgstr "Muhtelif"
+
+msgid "This project can detect who is using it, through the “username” block. To hide your identity, sign out before using the project."
+msgstr "Bu proje “kullanıcı adı” bloğunu kullanarak kendisini kimin kullandığını tespit edebilir. Kimliğini gizlemek istiyorsan, projeyi kullanmadan önce çıkış yap."
+
+msgid "This project uses Cloud data ‒ a feature that is available only to signed in users."
+msgstr "Bu proje Bulut verisi kullanıyor - bu özellik sadece giriş yapmış olan kullanıcılara açıktır."
+
+msgid "this script"
+msgstr "bu betik"
+
+msgid "this sprite"
+msgstr "bu kukla"
+
+msgid "this way"
+msgstr "bu tarafa"
+
+msgid "Throw away all changes since opening this project?"
+msgstr "Projeyi açtığından beri yaptığın tüm değişikliker atılsın mı?"
+
+msgid "timer"
+msgstr "kronometre"
+
+msgid "Tips"
+msgstr "İpuçları"
+
+msgid "To delete a block definition, first remove all uses of the block."
+msgstr "Bir taşın tanımını silebilmek için, önce o taşın kullanıldığı yerleri bul ve sil."
+
+msgid "Transportation"
+msgstr "Ulaşım"
+
+msgid "Triangle"
+msgstr "Üçgen"
+
+msgid "Trombone"
+msgstr "Trombon"
+
+msgid "Turbo mode"
+msgstr "Jet hızında"
+
+msgid "Turbo Mode"
+msgstr "Jet Hızında"
+
+msgid "Type"
+msgstr "Tür"
+
+# 75%
+msgid "Undelete"
+msgstr "Silmeseydim"
+
+msgid "Underwater"
+msgstr "Su altı"
+
+# 75%
+msgid "Undo"
+msgstr "Geri al"
+
+msgid "undo"
+msgstr "geri al"
+
+msgid "Undo Revert"
+msgstr "Başa Dönmekten Caydım"
+
+msgid "Ungroup"
+msgstr "Grubu dağıt"
+
+msgid "unshared"
+msgstr "paylaşmadın"
+
+msgid "up"
+msgstr "yukarı"
+
+msgid "up arrow"
+msgstr "yukarı ok"
+
+msgid "Upload backdrop from file"
+msgstr "Dekoru bilgisayarından seç"
+
+msgid "Upload costume from file"
+msgstr "Kılığı bilgisayarından seç"
+
+msgid "Upload from your computer"
+msgstr "Bilgisayarımdan yükle"
+
+msgid "Upload sound from file"
+msgstr "Sesi bilgisayarından seç"
+
+msgid "Upload sprite from file"
+msgstr "Kuklayı bilgisayarından seç"
+
+msgid "Uploading image..."
+msgstr "Resim yükleniyor..."
+
+msgid "Uploading sound..."
+msgstr "Ses yükleniyor..."
+
+msgid "Uploading sprite..."
+msgstr "Kukla yükleniyor..."
+
+msgid "variable"
+msgstr "değişken"
+
+msgid "Variable name"
+msgstr "Değişken ismi"
+
+msgid "Vector"
+msgstr "Vektör"
+
+msgid "Vector Mode"
+msgstr "Vektör Hali"
+
+msgid "Vibraphone"
+msgstr "Vibrafon"
+
+msgid "Vibraslap"
+msgstr "Vibraslap"
+
+msgid "video motion"
+msgstr "video hareketi"
+
+msgid "Video on:"
+msgstr "Video açık:"
+
+msgid "Vocals"
+msgstr "Vokaller"
+
+msgid "volume"
+msgstr "Lautstärke"
+
+#, fuzzy
+msgid "Walking"
+msgstr "Yürüme"
+
+#, fuzzy
+msgid "Want to save? Click remix"
+msgstr "Kaydetmek istersen karıştıra tıkla"
+
+msgid "Which column do you want to import"
+msgstr "Hangi sütunu içeri aktarmak istersin"
+
+msgid "whirl"
+msgstr "fırılda"
+#, fuzzy
+
+msgid "Wood Block"
+msgstr "Tahta Blok"
+
+msgid "Wooden Flute"
+msgstr "Ahşap Flüt"
+
+msgid "year"
+msgstr "yıl"
+
+msgid "You cannot edit cloud data in someone else's project.<br>Any change that you make in the editor will be temporary and not persistent."
+msgstr "Başkasının projesindeki bulut verisini değiştiremezsin.<br>Bu verilerde yaptığın her değişiklik kalıcı olamayacak."
+
+msgid "Eraser width:"
+msgstr "Silgi genişliği:"
+
+msgid "Line width:"
+msgstr "Çizgi genişliği"
+
+# 90%
+#, fuzzy
+#~ msgid "New sprite"
+#~ msgstr "Yeni kukla"
+
+#~ msgid "Paint"
+#~ msgstr "Boya"
+
+#~ msgid "any"
+#~ msgstr "hiç"
+
+#~ msgid "High Tom"
+#~ msgstr "Uzun Davul"
+
+#~ msgid "Long Guiro"
+#~ msgstr "Uzun Guiro"
+
+#~ msgid "Low Bongo"
+#~ msgstr "Kısa Bongo"
+
+#~ msgid "Low Conga"
+#~ msgstr "Kısa Tomba"
+
+#~ msgid "Low Tom"
+#~ msgstr "Kısa Davul"
+
+#~ msgid "Low Wood Block"
+#~ msgstr "Kısa Tahta Blok"
+
+#~ msgid "Maracas"
+#~ msgstr "Maracas"
+
+#~ msgid "More"
+#~ msgstr "daha fazla"
+
+#~ msgid "Mute Triangle"
+#~ msgstr "Sessiz Üçgen"
+
+#~ msgid "Open Triangle"
+#~ msgstr "Açık Üçgen"
+
+#~ msgid "Pedal Hi-Hat"
+#~ msgstr "Ayaklı Zil"
+
+#~ msgid "Short Guiro"
+#~ msgstr "Kısa Guiro"
+
+msgid "mBot Program"
+msgstr "mBot Programı"
+
+msgid "set motor%d.motorPort speed %d.motorvalue"
+msgstr "%d.motorPort motorunun hızını %d.motorvalue 'a ayarla"
+msgid "set servo %d.servoPort %d.slot angle %d.servovalue"
+msgstr "%d.servoPort %d.slot servosunun açısını  %d.servovalue 'e ayarla"
+msgid "set 7-segments display%d.normalPort number %n"
+msgstr "7 parçalı ekran %d.normalPort 'ın değerini %n 'e ayarla"
+msgid "set led %d.normalPort %d.index red%d.value green%d.value blue%d.value"
+msgstr "LED ayarı %d.normalPort Index%d.index Kırmızı%d.value Yeşil%d.value Mavi%d.value"
+msgid "show face %d.normalPort x: %n y: %n characters: %s"
+msgstr "göster %d.normalPort x: %n y: %n harfleri: %s"
+
+msgid "show time %d.normalPort hour: %n %s min: %n"
+msgstr "saati göster %d.normalPort saat: %n %s dakika: %n"
+
+msgid "show drawing %d.normalPort x: %n y: %n draw: %s"
+msgstr "çizimi göster %d.normalPort x: %n y: %n çizim: %s"
+
+msgid "when button %m.button_state"
+msgstr "%m.button_state düğmesi basıldığında"
+
+msgid "ultrasonic sensor %d.normalPort distance"
+msgstr "ultrasonik algılayıcı %d.normalPort mesafesi"
+msgid "sound sensor %d.normalPort"
+msgstr "ses algılayıcı %d.normalPort"
+msgid "light sensor %d.normalPort"
+msgstr "ışık algılayıcı %d.normalPort"
+
+msgid "light sensoe on board"
+msgstr "araçta ışık sensörü"
+
+msgid "set light sensor %d.normalPort led as %d.switch"
+msgstr "ışık algılayıcı %d.normalPort 'nın LEDini %d.switch 'e ayarla"
+msgid "line follower %d.normalPort"
+msgstr "çizgi izleyen %d.normalPort"
+msgid "limit switch %d.normalPort%d.slot"
+msgstr "tahdit anahtarı %d.normalPort%d.slot"
+msgid "potentiometer %d.normalPort"
+msgstr "voltmetre %d.normalPort"
+msgid "3-axis gyro %d.GyroAxis angle"
+msgstr "3-eksenli jirosjop %d.GyroAxis açısı"
+msgid "infrared receiver %d.normalPort"
+msgstr "kızıl ötesi algılayıcı %d.normalPort"
+msgid "pir motion sensor %d.normalPort"
+msgstr "PIR hareket algılayıcı %d.normalPort"
+msgid "temperature %d.normalPort%d.slot °C"
+msgstr "sıcaklık %d.normalPort%d.slot °C"
+msgid "joystick %d.normalPort %d.Axis"
+msgstr "joystick %d.normalPort %d.Axis"
+msgid "set camera shutter %d.normalPort as %d.shutter"
+msgstr "kamera perdesi %d.normalPort 'iyi %d.shutter 'e ayarla"
+msgid "read digital pin %n"
+msgstr "sayısal pimi oku %n"
+msgid "read analog pin (A)%n"
+msgstr "analog pimi oku (A)%n"
+msgid "set digital pin %n output as %d.digital"
+msgstr "sayısal pim çıkışını %n 'i  %d.digital 'e ayarla"
+msgid "set analog pin (A)%n output as %n"
+msgstr "analog pim (A) %n çıkışını %n 'e ayarla"
+msgid "set pwm pin %n output as %d.pwmvalue"
+msgstr "pwm pimi %n çıkışını %d.pwmvalue 'e ayarla"
+msgid "set servo pin %n angle as %d.servovalue"
+msgstr "servo pimi %n 'in açısını %d.servovalue 'e ayarla"
+msgid "play tone pin %n on note %d.notes beat %d.beats"
+msgstr "ses tonu pimini %n 'i %d.notes 'e notasında %d.beats süresince çal"
+msgid "Eighth"
+msgstr "Sekizde bir"
+msgid "Quater"
+msgstr "Çeyrek"
+msgid "Half"
+msgstr "Yarım"
+msgid "Whole"
+msgstr "Tam"
+msgid "Double"
+msgstr "Çift"
+msgid "Zero"
+msgstr "Sıfır"
+msgid "Ultrasonic"
+msgstr "Ultrasonik"
+msgid "Light Sensor"
+msgstr "Işık Algılayıcı"
+msgid "Sound Sensor"
+msgstr "Ses Algılayıcı"
+msgid "LED"
+msgstr "LED"
+msgid "Joystick"
+msgstr "Joystick"
+msgid "Line Finder"
+msgstr "Hat İzler"
+msgid "LimitSwitch"
+msgstr "Tahdit Anahtarı"
+msgid "Temperature"
+msgstr "Sıcaklık"
+msgid "Potentiometer"
+msgstr "Voltmetre"
+msgid "Button"
+msgstr "Düğme"
+msgid "HIGH"
+msgstr "YÜKSEK"
+msgid "LOW"
+msgstr "DÜŞÜK"
+msgid "X-Axis"
+msgstr "X-ekseni"
+msgid "Y-Axis"
+msgstr "Y-ekseni"
+msgid "Z-Axis"
+msgstr "Z-ekseni"
+msgid "Input"
+msgstr "Girdi"
+msgid "Output"
+msgstr "Çıktı"
+msgid "Port1"
+msgstr "Kapı 1"
+msgid "Port2"
+msgstr "Kapı 2"
+msgid "Port3"
+msgstr "Kapı 3"
+msgid "Port4"
+msgstr "Kapı 4"
+msgid "Port5"
+msgstr "Kapı 5"
+msgid "Port6"
+msgstr "Kapı 6"
+msgid "Port7"
+msgstr "Kapı 7"
+msgid "Port8"
+msgstr "Kapı 8"
+msgid "Slot1"
+msgstr "Yarık 1"
+msgid "Slot2"
+msgstr "Yarık 2"
+msgid "M1"
+msgstr "M1"
+msgid "M2"
+msgstr "M2"
+msgid "Don't save"
+msgstr "Kaydetme!"
+msgid "Save project?"
+msgstr "Proje kaydedilsin mi?"
+msgid "About"
+msgstr "Hakkında"
+msgid "Open"
+msgstr "Aç"
+msgid "Save as"
+msgstr "Farklı kaydet"
+msgid "Share to website"
+msgstr "Web sitesinde paylaş"
+msgid "Check for updates"
+msgstr "Güncelleme var mı bak"
+msgid "Quit"
+msgstr "Sonlandır"
+msgid "Share to Scratch Website"
+msgstr "Scratch Web Sitesinde Paylaş"
+msgid "Project name"
+msgstr "Proje ismi"
+msgid "Your Scratch name"
+msgstr "Scratch isminiz"
+msgid "Password"
+msgstr "Şifre"
+msgid "Setting"
+msgstr "Ayar"
+msgid "Connect"
+msgstr "Bağlan"
+msgid "Disconnect"
+msgstr "Bağlantıyı kes"
+msgid "save picture of stage"
+msgstr "sahnenin resmini yükle"
+msgid "Load Project"
+msgstr "Proje Yükle"
+msgid "Save Project"
+msgstr "Projeyi Kaydet"
+msgid "Robots"
+msgstr "Robotlar"
+msgid "Forum"
+msgstr "Forum"
+msgid "Upgrade Firmware"
+msgstr "Firmware Güncellemesi"
+msgid "View Source"
+msgstr "Kaynağı Göster"
+msgid "cleanup"
+msgstr "temizle"
+msgid "Microphone volume:"
+msgstr "Mikrofon sesi"
+msgid "http://forum.makeblock.cc/#scratch"
+msgstr "http://forum.makeblock.cc/#scratch"
+msgid "Close"
+msgstr "Kapat"
+msgid "Executing"
+msgstr "Uygulanıyor"
+msgid "Replace contents of the current project?"
+msgstr "Mevcut projenin içeriği değiştirilsin mi?"
+msgid "OK"
+msgstr "Tamam"
+msgid "info"
+msgstr "bilgi"
+msgid "New Version Available!"
+msgstr "Yeni Sürüm Çıktı!"
+msgid "Update Now"
+msgstr "Şimdi Güncelle"
+msgid "New Block"
+msgstr "Yeni Blok"
+msgid "Updating"
+msgstr "Güncelleniyor"
+msgid "Downloading"
+msgstr "İndiriliyor"
+msgid "Connected"
+msgstr "Bağlandı"
+msgid "Bluetooth"
+msgstr "Bluetooth"
+msgid "No Bluetooth"
+msgstr "Bluetooth Yok"
+msgid "Disconnect Bluetooth"
+msgstr "Bluetooth Bağlantısını Kes"
+msgid "Discovering Bluetooth"
+msgstr "Bluetooth Aranıyor"
+msgid "Click The Device From List To Connect"
+msgstr "Listeden Bağlanmak İstediğiniz Cihaza Tıklayın"
+msgid "Device Not Found"
+msgstr "Cihaz Bulunamadı"
+msgid "Distance Display"
+msgstr "Mesafe Göstergesi"
+msgid "Detect Sound"
+msgstr "Sesi Algıla"
+msgid "Temperature"
+msgstr "Sıcaklık"
+msgid "Joystick"
+msgstr "Joystick"
+msgid "Ultrasonic Car"
+msgstr "Ultrasonik Araba"
+msgid "Play Music"
+msgstr "Müzik Çal"
+msgid "Voice Command"
+msgstr "Ses Komutu"
+msgid "Accelerometer X"
+msgstr "İvme Ölçer X"
+msgid "Accelerometer Y"
+msgstr "İvme Ölçer Y"
+msgid "Accelerometer Z"
+msgstr "İvme Ölçer Z"
+msgid "Brightness"
+msgstr "Parlaklık"
+msgid "Start Button Pressed?"
+msgstr "Başla Düğmesi Basıldı mı？"
+msgid "Select Button Pressed?"
+msgstr "Seç Düğmesi Basıldı mı?"
+msgid "Up Button Pressed?"
+msgstr "Yukarıya Düğmesi Basıldı mı?"
+msgid "Down Button Pressed?"
+msgstr "Aşağıya Düğmesi Basıldı mı?"
+msgid "Left Button Pressed?"
+msgstr "Sola Düğmesi Basıldı mı?"
+msgid "Right Button Pressed?"
+msgstr "Sağa Düğmesi Basıldı mı?"
+msgid "A Button Pressed?"
+msgstr "A Düğmesi Basıldı mı?"
+msgid "B Button Pressed?"
+msgstr "B Düğmesi Basıldı mı?"
+msgid "X Button Pressed?"
+msgstr "X Düğmesi Basıldı mı?"
+msgid "Y Button Pressed?"
+msgstr "Y Düğmesi Basıldı mı?"
