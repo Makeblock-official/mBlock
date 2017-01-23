@@ -944,5 +944,6 @@
 	"Wooden Flute": "Blok-flauta",
 	"Microsoft Cognitive Service Setting": "Microsoft Cognitive Service Setting",
 	"Ellipse": "Elipsa",
-	"New Project": "New Project"
+	"New Project": "New Project",
+	"set encoder motor on board %d.slot power to %d.motorvalue": "set encoder motor on board %d.slot power to %d.motorvalue"
 }

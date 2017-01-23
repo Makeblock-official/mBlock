@@ -957,5 +957,6 @@
 	"Please restart your computer to enable serial ports.": "Please restart your computer to enable serial ports.",
 	"No Bluetooth devices found around it!": "No Bluetooth devices found around it!",
 	"Discovering": "正在发现中",
-	"No such device": "没有该设备"
+	"No such device": "没有该设备",
+	"set encoder motor on board %d.slot power to %d.motorvalue": "set encoder motor on board %d.slot power to %d.motorvalue"
 }

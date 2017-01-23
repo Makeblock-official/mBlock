@@ -945,5 +945,6 @@
 	"Microsoft Cognitive Service Setting": "微軟認知服務設置",
 	"Ellipse": "橢圓",
 	"New Project": "New Project",
-	"About mBlock": "About mBlock"
+	"About mBlock": "About mBlock",
+	"set encoder motor on board %d.slot power to %d.motorvalue": "set encoder motor on board %d.slot power to %d.motorvalue"
 }
