@@ -392,9 +392,9 @@ public class StagePart extends UIPart {
 	
 	private function __toggleStageSize(evt:MouseEvent):void
 	{
-		app.stageIsArduino = false;
-		app.toggleSmallStage();
-		var obj:Object = [{name:"small stage layout",value:true},{name:"hide stage layout",value:false},{name:"arduino mode",value:false}];
+		//app.toggleSmallStage();
+		var obj:Object = ["small stage layout"];
+		//通知js要切换的状态，flash本身不再另外做调整displaymode，统一由js来调用
 		JsUtil.callApp("updateMenuStatus",obj);
 	}
 
