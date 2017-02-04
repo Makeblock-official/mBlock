@@ -45,6 +45,7 @@ package ui.parts {
 	
 	import uiwidgets.EditableLabel;
 	import uiwidgets.IconButton;
+	import util.JsUtil;
 
 public class StagePart extends UIPart {
 
@@ -391,7 +392,10 @@ public class StagePart extends UIPart {
 	
 	private function __toggleStageSize(evt:MouseEvent):void
 	{
+		app.stageIsArduino = false;
 		app.toggleSmallStage();
+		var obj:Object = [{name:"Small stage layout",value:true},{name:"Hide stage layout",value:false},{name:"Arduino mode",value:false}];
+		JsUtil.callApp("updateMenuStatus",obj);
 	}
 
 	private function drawStageSizeButton():void {
