@@ -89,8 +89,8 @@ function Application(flash){
     this.sendBytesToBoard = function(msg){
         ipcRenderer.send("package", {data:msg});
     }
-    this.updateMenuStatus = function(obj){
-
+    this.updateMenuStatus = function(arr){
+        ipcRenderer.send("updateMenuStatus",arr);
     }
     this.updateTitle =function(){
         var textSave = self.saved=="true"? _translator.map('Saved'): _translator.map("Not saved");
