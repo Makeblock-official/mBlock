@@ -62,6 +62,7 @@ function mBlock(){
 		if(_bluetooth.isConnected()){
 			_bluetooth.send(arg.data);
 		}
+		self.logToArduinoConsole(arg.data);
 	});
 	ipcMain.on('connectionStatus',function(event,obj){
 		_menu.updateConnectionStatus(obj);
