@@ -394,7 +394,7 @@ public class StagePart extends UIPart {
 	{
 		app.stageIsArduino = false;
 		app.toggleSmallStage();
-		var obj:Object = [{name:"Small stage layout",value:true},{name:"Hide stage layout",value:false},{name:"Arduino mode",value:false}];
+		var obj:Object = [{name:"small stage layout",value:true},{name:"hide stage layout",value:false},{name:"arduino mode",value:false}];
 		JsUtil.callApp("updateMenuStatus",obj);
 	}
 
