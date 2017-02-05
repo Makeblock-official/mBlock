@@ -62,6 +62,7 @@ function Application(flash){
     });
     // 表情面板前端操作监听
     ipcRenderer.on('responseEmotions', (sender, obj) => {
+        console.log('into responseEmotions');
         if ('single' === obj.code) {
             _flash.responseCommonData(obj.data);
         } else if('more' === obj.code) {

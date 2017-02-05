@@ -5,12 +5,13 @@
 const fs = require("fs");
 const path = require('path');
 
-var _dir, _app, _this, _translator;
+var _dir, _app, _this, _translator, _client;
 var Emotions = function(app) {
     _this = this;
     _app = app;
     _dir = path.join(__root_path, "/src/assets/emotions");
     _translator = app.getTranslator();
+    _client = app.getClient();
 
     this.path = function(filename) {
         return path.resolve(_dir, filename);
@@ -43,9 +44,9 @@ var Emotions = function(app) {
         fs.readFile(file, 'utf8', function (err, data) {
             if (err) {
                 console.log(file + ' read fail!');
-                return null;
+                return;
             }
-            return data;
+            _client.send('responseEmotions', {code:'single', data: data});
         });
     }
 
@@ -53,9 +54,9 @@ var Emotions = function(app) {
         fs.readdir(_dir,function(err,files){
             if(err) {
                 console.log(err);
-                return [];
+                return;
             }
-            return files;
+            _client.send('responseEmotions', {code:'more', data: files});
         });
     }
 }

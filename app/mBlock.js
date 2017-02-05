@@ -99,10 +99,10 @@ function mBlock(){
     });
 	// 读取表情面板文件
 	ipcMain.on('readDrawFile', function (event, arg) {
-        event.sender.send('responseEmotions', {code:'single', data: _emotions.read(arg.filename)});
+        _emotions.read(arg.filename);
     });
 	ipcMain.on('getDirectoryListing', function (event, arg) {
-        event.sender.send('responseEmotions', {code:'more', data: _emotions.list()});
+        _emotions.list();
     });
 	this.getClient = function(){
 		return _client;
