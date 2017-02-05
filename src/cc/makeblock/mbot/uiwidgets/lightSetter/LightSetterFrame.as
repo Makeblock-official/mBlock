@@ -162,18 +162,23 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 		{
 			trace(this, "loadPresets");
 			
-			var fileList:Array = JsUtil.callApp("getDirectoryListing");
-			for each(var item:String in fileList){
-				var str:String = JsUtil.callApp("readDrawFile",item)//FileUtil.ReadString(item);
-				if(!str)
-				{
-					continue;
+			JsUtil.callApp("getDirectoryListing",tmpFunc);
+			JsUtil.callBack = function(fileList:Array):void{
+				for each(var item:String in fileList){
+					var str:String = JsUtil.callApp("readDrawFile",item)//FileUtil.ReadString(item);
+					JsUtil.callBack = function(str:String):void{
+						if(str)
+						{
+							thumbPane.addThumb(item, genBitmapData(str), true);
+						}
+					}
 				}
-				thumbPane.addThumb(item, genBitmapData(str), true);
 			}
-			
 		}
-		
+		private function tmpFunc(a:String):void
+		{
+			JsUtil.log("回调函数："+a)
+		}
 		/*private function getCustomEmotionDir():File
 		{
 			return File.documentsDirectory.resolvePath("mBlock/emotions");
@@ -209,10 +214,12 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 			return fileName;
 			
 			return "";*/
-			var fileList:Array = JsUtil.callApp("getDirectoryListing");//dir.getDirectoryListing();
-			while(fileList && fileList.length >= MAX_CUSTOM_ITEMS){
-				var tmpfileName:String = fileList.shift();
-				JsUtil.callApp("deleteDrawFile",tmpfileName);
+			JsUtil.callApp("getDirectoryListing");//dir.getDirectoryListing();
+			JsUtil.callBack = function(fileList:Array):void{
+				while(fileList && fileList.length >= MAX_CUSTOM_ITEMS){
+					var tmpfileName:String = fileList.shift();
+					JsUtil.callApp("deleteDrawFile",tmpfileName);
+				}
 			}
 			var fileName:String = new Date().getTime() + ".txt";
 			JsUtil.callApp("saveDrawFile",[fileName,result]);

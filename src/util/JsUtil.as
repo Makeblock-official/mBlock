@@ -25,6 +25,7 @@ package util
 	public class JsUtil
 	{
 		static private var _app:Object;
+		static public var callBack:Function;
 		static public function Init(stage:Stage):void
 		{
 //			stage.addEventListener(MouseEvent.CLICK, function(e){
@@ -68,6 +69,7 @@ package util
 				ExternalInterface.addCallback("stopCode", __stopCode);
 				ExternalInterface.addCallback("logToArduinoConsole", __logToArduinoConsole);
 				ExternalInterface.addCallback("setFontSize", __setFontSize);
+				ExternalInterface.addCallback("responseCommonData", __responseCommonData);
 				callApp("readyForFlash");
 			}catch(e:*){
 				
@@ -320,6 +322,14 @@ package util
 		static private function __setFontSize(size:int):void
 		{
 			Translator.setFontSize(size);
+		}
+		static private function __responseCommonData(...args):void
+		{
+			if(callBack!=null)
+			{
+				callBack(args);
+				callBack = null;
+			}
 		}
 	}
 }
