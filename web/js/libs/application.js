@@ -66,7 +66,7 @@ function Application(flash){
         if ('single' === obj.code) {
             _flash.responseCommonData(obj.data);
         } else if('more' === obj.code) {
-            _flash.responseCommonData(obj.data);
+            _flash.responseCommonData(['a.txt','b.txt']);
         }
     });
     this.getExt = function(){
@@ -202,6 +202,7 @@ function Application(flash){
 
     this.readDrawFile = function (fileName) {
         console.log('into readDrawFile');
+        console.log(fileName);
         ipcRenderer.send('readDrawFile', {fileName: fileName});
     }
     /**
