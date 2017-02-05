@@ -70,6 +70,9 @@ function Application(flash){
             _flash.responseCommonData(obj.data);
         }
     });
+    ipcRenderer.on('setSaveStatus', (sender,obj) => {
+        self.setSaveStatus(obj.isSaved);
+    });
     this.getExt = function(){
         return _ext;
     }
@@ -103,7 +106,7 @@ function Application(flash){
         ipcRenderer.send("updateMenuStatus",arr);
     }
     this.updateTitle =function(){
-        var textSave = self.saved=="true"? _translator.map('Saved'): _translator.map("Not saved");
+        var textSave = self.saved ? _translator.map('Saved'): _translator.map("Not saved");
         var textConnect = self.connected ? _translator.map('Connected'): _translator.map("Disconnected");
         var title = package.description +" - " + textConnect+" - " +textSave;
         ipcRenderer.sendToHost("setAppTitle",title);

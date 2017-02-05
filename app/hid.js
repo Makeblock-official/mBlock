@@ -10,6 +10,7 @@ var _currentHidPath=""
 var _port;
 var _client,_app,_items=[];
 var _isConnected = false;
+var _canSend = true;
 function HID(app){
 	var self = this;
 	_app = app;
@@ -37,12 +38,19 @@ function HID(app){
 	//发送数据
 	this.send = function(data){
 		if(_port){
-			var buffer = new Buffer(data)
-			var arr = [0,buffer.length];
-			for(var i=0;i<buffer.length;i++){
-				arr.push(buffer[i]);
+			if (_canSend){
+				var buffer = new Buffer(data)
+				var arr = [0,buffer.length];
+				for(var i=0;i<buffer.length;i++){
+					arr.push(buffer[i]);
+				}
+				_canSend = false; //已发送，需要等待收到返回的数据后，才能再次发送
+				_port.write(arr);
+
+			}else{
+				app.alert('the 2.4G cannot connect to machine !');
 			}
-            _port.write(arr);
+
 		}
 	}
 
@@ -92,10 +100,13 @@ function HID(app){
 			if(!_port) return;
 			_port.on('error',function(err){
 				console.log(err);
+				_canSend = true; //重置
+				self.close();//关闭连接
 			})
 			_port.on('data',function(data){
 				self.onReceived(data);
 			})
+
 			self.onOpen();
 		}
 		setTimeout(tryOpenHID, 1500);
@@ -127,6 +138,7 @@ function HID(app){
 	this.onReceived = function(data){
 		if(_client){
 			if(data[0]>0){
+				_canSend = true; //已收到，可以再次发送了
 				var arr=[];
 				for(var i=0;i<data[0];i++){
 					arr.push(data[i+1]);
