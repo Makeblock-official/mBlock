@@ -9,7 +9,6 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 	
 	import cc.makeblock.mbot.uiwidgets.MyFrame;
 	import cc.makeblock.mbot.util.PopupUtil;
-	import cc.makeblock.util.FileUtil;
 	
 	import org.aswing.ASColor;
 	import org.aswing.ASFont;
@@ -161,25 +160,44 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 		private function loadPresets():void
 		{
 			trace(this, "loadPresets");
-			
-			JsUtil.callApp("getDirectoryListing",tmpFunc);
+			//先读取预设表情列表
+			JsUtil.callApp("getDirectoryListing","preset");
+			var cnt:int=0;
 			JsUtil.callBack = function(fileListStr:String):void{
 				var fileList:Array = fileListStr.split(",");
-				JsUtil.log("fileList="+fileList);
 				for each(var item:String in fileList){
-					var str:String = JsUtil.callApp("readDrawFile",item)//FileUtil.ReadString(item);
+					//通过列表读取每个文件的内容
+					JsUtil.callApp("readDrawFile",["preset",item])//FileUtil.ReadString(item);
 					JsUtil.callBack = function(str:String):void{
 						if(str)
-						{
+						{	
 							thumbPane.addThumb(item, genBitmapData(str), true);
+						}
+						cnt++;
+						//如果累计读取次数等于列表长度，说明预设文件夹读取完了，可以读取用户定义目录了
+						if(cnt>=fileList.length)
+						{
+							cnt = 0;
+							//读取用户定义目录
+							JsUtil.callApp("getDirectoryListing","custom");
+							JsUtil.callBack = function(fileListStr:String):void{
+								var fileList:Array = fileListStr.split(",");
+								for each(var item2:String in fileList){
+									//挨个读取文件内容
+									JsUtil.callApp("readDrawFile",["custom",item2])//FileUtil.ReadString(item);
+									JsUtil.callBack = function(str:String):void{
+										if(str)
+										{
+											thumbPane.addThumb(item2, genBitmapData(str), false);
+										}
+									}
+								}
+							}
 						}
 					}
 				}
+				
 			}
-		}
-		private function tmpFunc(a:String):void
-		{
-			JsUtil.log("回调函数："+a)
 		}
 		/*private function getCustomEmotionDir():File
 		{
