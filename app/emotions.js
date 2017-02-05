@@ -9,7 +9,7 @@ var _dir, _app, _this, _translator, _client;
 var Emotions = function(app) {
     _this = this;
     _app = app;
-    _dir = path.join(__root_path, "/src/assets/emotions");
+    _dir = path.join(__root_path, "/web/flash-core/assets/emotions");
     _translator = app.getTranslator();
     _client = app.getClient();
 
