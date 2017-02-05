@@ -101,7 +101,7 @@ function mBlock(){
 	ipcMain.on('readDrawFile', function (event, arg) {
         _emotions.read(arg.fileName, arg.label);
     });
-	ipcMain.on('getDirectoryListing', function (event, arg) {
+	ipcMain.on('getEmotionList', function (event, arg) {
         _emotions.list(arg.label);
     });
 	this.getClient = function(){
