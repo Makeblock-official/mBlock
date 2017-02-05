@@ -325,10 +325,11 @@ package util
 		}
 		static private function __responseCommonData(...args):void
 		{
+			log("__responseCommonData "+args)
+			log("callBack!=null "+(callBack!=null))
 			if(callBack!=null)
 			{
 				callBack(args);
-				callBack = null;
 			}
 		}
 	}
