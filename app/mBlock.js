@@ -91,15 +91,15 @@ function mBlock(){
 	});
     // 保存收藏表情面板文件
     ipcMain.on('saveDrawFile', function (event, arg) {
-		_emotions.save(arg.filename, arg.data);
+		_emotions.save(arg.fileName, arg.data);
     });
     // 删除表情面板文件
 	ipcMain.on('deleteDrawFile', function (event, arg) {
-		_emotions.del(arg.filename);
+		_emotions.del(arg.fileName);
     });
 	// 读取表情面板文件
 	ipcMain.on('readDrawFile', function (event, arg) {
-        _emotions.read(arg.filename);
+        _emotions.read(arg.fileName);
     });
 	ipcMain.on('getDirectoryListing', function (event, arg) {
         _emotions.list();
