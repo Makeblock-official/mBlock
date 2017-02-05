@@ -86,7 +86,7 @@ package util
 			}
 		}
 		static public function callApp(method:String,args:Object=null):*{
-			return Call("_app."+method,[args]);
+			return Call("_app."+method,args is Array?args as Array:[args]);
 		}
 		static public function callUtils(method:String,args:Object=null):*{
 			return Call("_app.getUtil()."+method,[args]);

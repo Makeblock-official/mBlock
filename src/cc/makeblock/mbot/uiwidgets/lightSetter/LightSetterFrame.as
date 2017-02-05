@@ -33,6 +33,7 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 	import translation.Translator;
 	
 	import util.ApplicationManager;
+	import util.JsUtil;
 	
 	public class LightSetterFrame extends MyFrame
 	{
@@ -160,32 +161,28 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 		private function loadPresets():void
 		{
 			trace(this, "loadPresets");
-			/*
-			var file:File = File.applicationDirectory.resolvePath("assets/emotions");
-			for each(var item:File in file.getDirectoryListing()){
-				var str:String = FileUtil.ReadString(item);
-				thumbPane.addThumb(item.name, genBitmapData(str), true);
+			
+			var fileList:Array = JsUtil.callApp("getDirectoryListing");
+			for each(var item:String in fileList){
+				var str:String = JsUtil.callApp("readDrawFile",item)//FileUtil.ReadString(item);
+				if(!str)
+				{
+					continue;
+				}
+				thumbPane.addThumb(item, genBitmapData(str), true);
 			}
-			file = getCustomEmotionDir();
-			if(!file.exists){
-				return;
-			}
-			for each(item in file.getDirectoryListing()){
-				str = FileUtil.ReadString(item);
-				thumbPane.addThumb(item.name, genBitmapData(str), false);
-			}
-			*/
+			
 		}
-		/*
-		private function getCustomEmotionDir():File
+		
+		/*private function getCustomEmotionDir():File
 		{
 			return File.documentsDirectory.resolvePath("mBlock/emotions");
-		}
-		*/
+		}*/
+		
 		private function saveToFile(bmd:BitmapData):String
 		{
 			trace(this, "saveToFile");
-			/*
+			
 			var result:String = "";
 			for(var i:int=0; i< LightSensor.COUNT_H; i++){
 				for (var j:int = 0; j < LightSensor.COUNT_W; j++) 
@@ -198,7 +195,8 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 				}
 				result += "\r\n";
 			}
-			var dir:File = getCustomEmotionDir();
+			
+			/*var dir:File = getCustomEmotionDir();
 			if(!dir.exists){
 				dir.createDirectory();
 			}
@@ -209,8 +207,16 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 			var fileName:String = new Date().getTime() + ".txt";
 			FileUtil.WriteString(dir.resolvePath(fileName), result);
 			return fileName;
-			*/
-			return "";
+			
+			return "";*/
+			var fileList:Array = JsUtil.callApp("getDirectoryListing");//dir.getDirectoryListing();
+			while(fileList.length >= MAX_CUSTOM_ITEMS){
+				var tmpfileName:String = fileList.shift();
+				JsUtil.callApp("deleteDrawFile",tmpfileName);
+			}
+			var fileName:String = new Date().getTime() + ".txt";
+			JsUtil.callApp("saveDrawFile",[fileName,result]);
+			return fileName;
 		}
 		
 		private function __onSelect(evt:Event):void
@@ -281,6 +287,18 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 			
 			showDeleteBtn(false);
 			*/
+			
+			if(null == focusThumb){
+			return;
+			}
+			JsUtil.callApp("deleteDrawFile",focusThumb.getName());
+			
+			thumbPane.removeData(focusThumb.getName());
+			focusThumb.setBorder(ThumbPane.normalBorder);
+			focusThumb = null;
+			
+			showDeleteBtn(false);
+			
 			trace(this, "__onDeleteFavorite");
 		}
 		
