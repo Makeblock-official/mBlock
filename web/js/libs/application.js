@@ -60,6 +60,16 @@ function Application(flash){
     ipcRenderer.on('setFontSize', (sender,obj) => {
         _flash.setFontSize(obj.size);
     });
+    // 表情面板前端操作监听
+    ipcRenderer.on('responseEmotions', (sender, obj) => {
+        console.log('into responseEmotions');
+        console.log(obj.data);
+        if ('single' === obj.code) {
+            _flash.responseCommonData(obj.data);
+        } else if('more' === obj.code) {
+            _flash.responseCommonData(obj.data);
+        }
+    });
     this.getExt = function(){
         return _ext;
     }
@@ -167,6 +177,42 @@ function Application(flash){
 				_flash.setRobotName('mega pi');
 			});
 		} 
+    }
+    /**
+     * 保存收藏表情面板文件
+     * @param string fileName
+     * @param string data
+     */
+    this.saveDrawFile = function (fileName,data) {
+        console.log('into saveDrawFile');
+        ipcRenderer.send('saveDrawFile', {fileName:fileName, data: data});
+    }
+    /**
+     * 删除表情面板文件
+     * @param string fileName
+     */
+    this.deleteDrawFile = function (fileName) {
+        console.log('into deleteDrawFile');
+        ipcRenderer.send('deleteDrawFile', {fileName: fileName});
+    }
+    /**
+     * 读取表情面板文件
+     * @param string fileName
+     * @return string Or null
+     */
+
+    this.readDrawFile = function (fileName) {
+        console.log('into readDrawFile');
+        console.log(fileName);
+        ipcRenderer.send('readDrawFile', {fileName: fileName});
+    }
+    /**
+     * 获取表情面板文件列表
+     * @return array
+     */
+    this.getDirectoryListing = function () {
+        console.log('into getDirectoryListing');
+        ipcRenderer.send('getDirectoryListing');
     }
 }
 module.exports = Application;
