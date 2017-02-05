@@ -85,7 +85,7 @@ var Emotions = function(app) {
                 console.log(file + ' read fail!');
                 return;
             }
-            _client.send('responseEmotions', {code:'single', data: data});
+            _client.send('responseEmotions', {code:'single', data: data, fileName: filename});
         });
     }
 

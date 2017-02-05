@@ -65,7 +65,7 @@ function Application(flash){
         console.log('into responseEmotions');
         console.log(obj.data);
         if ('single' === obj.code) {
-            _flash.responseCommonData(obj.data);
+            _flash.responseCommonData(obj.fileName, obj.data);
         } else if('more' === obj.code) {
             _flash.responseCommonData(obj.data);
         }
@@ -210,10 +210,10 @@ function Application(flash){
      * 获取表情面板文件列表
      * @param string label (preset-预设，custom-添加)
      */
-    this.getDirectoryListing = function (label) {
-        console.log('into getDirectoryListing');
+    this.getEmotionList = function (label) {
+        console.log('into getEmotionList');
         console.log(label);
-        ipcRenderer.send('getDirectoryListing', {label: label});
+        ipcRenderer.send('getEmotionList', {label: label});
     }
 }
 module.exports = Application;
