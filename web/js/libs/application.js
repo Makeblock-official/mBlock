@@ -198,21 +198,21 @@ function Application(flash){
     /**
      * 读取表情面板文件
      * @param string fileName
-     * @return string Or null
+     * @param string label (preset-预设，custom-添加)
      */
 
-    this.readDrawFile = function (fileName) {
+    this.readDrawFile = function (fileName, label) {
         console.log('into readDrawFile');
         console.log(fileName);
-        ipcRenderer.send('readDrawFile', {fileName: fileName});
+        ipcRenderer.send('readDrawFile', {fileName: fileName, label: label});
     }
     /**
      * 获取表情面板文件列表
-     * @return array
+     * @param string label (preset-预设，custom-添加)
      */
-    this.getDirectoryListing = function () {
+    this.getDirectoryListing = function (label) {
         console.log('into getDirectoryListing');
-        ipcRenderer.send('getDirectoryListing');
+        ipcRenderer.send('getDirectoryListing', {label: label});
     }
 }
 module.exports = Application;
