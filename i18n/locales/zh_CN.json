@@ -953,5 +953,8 @@
 	"Wooden Flute": "木笛",
 	"Microsoft Cognitive Service Setting": "微软认知服务设置",
 	"Ellipse": "椭圆",
-	"New Project": "New Project"
+	"New Project": "New Project",
+	"Please restart your computer to enable serial ports.": "Please restart your computer to enable serial ports.",
+	"You do not have sufficient rights to save properties": "You do not have sufficient rights to save properties",
+	"It doesn't exist": "It doesn't exist"
 }

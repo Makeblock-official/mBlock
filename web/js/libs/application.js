@@ -65,7 +65,7 @@ function Application(flash){
         console.log('into responseEmotions');
         console.log(obj.data);
         if ('single' === obj.code) {
-            _flash.responseCommonData(obj.data);
+            _flash.responseCommonData(obj.fileName, obj.data);
         } else if('more' === obj.code) {
             _flash.responseCommonData(obj.data);
         }
@@ -198,21 +198,22 @@ function Application(flash){
     /**
      * 读取表情面板文件
      * @param string fileName
-     * @return string Or null
+     * @param string label (preset-预设，custom-添加)
      */
 
-    this.readDrawFile = function (fileName) {
+    this.readDrawFile = function (label, fileName) {
         console.log('into readDrawFile');
         console.log(fileName);
-        ipcRenderer.send('readDrawFile', {fileName: fileName});
+        ipcRenderer.send('readDrawFile', {fileName: fileName, label: label});
     }
     /**
      * 获取表情面板文件列表
-     * @return array
+     * @param string label (preset-预设，custom-添加)
      */
-    this.getDirectoryListing = function () {
-        console.log('into getDirectoryListing');
-        ipcRenderer.send('getDirectoryListing');
+    this.getEmotionList = function (label) {
+        console.log('into getEmotionList');
+        console.log(label);
+        ipcRenderer.send('getEmotionList', {label: label});
     }
 }
 module.exports = Application;
