@@ -212,6 +212,7 @@ function Application(flash){
      */
     this.getDirectoryListing = function (label) {
         console.log('into getDirectoryListing');
+        console.log(label);
         ipcRenderer.send('getDirectoryListing', {label: label});
     }
 }

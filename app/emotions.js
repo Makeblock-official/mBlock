@@ -23,7 +23,7 @@ var Emotions = function(app) {
         return path.resolve(dir, filename);
     }
 
-    this.mkdirsSync = function(dirpath, mode) {
+    this.mkdirsSync = function(dirpath) {
         if (!fs.existsSync(dirpath)) {
             var pathtmp;
             dirpath.split(path.sep).forEach(function(dirname) {
@@ -32,8 +32,13 @@ var Emotions = function(app) {
                 } else {
                     pathtmp = dirname;
                 }
+                if ('' === pathtmp) {
+                    pathtmp = '/';
+                    return;
+                }
+
                 if (!fs.existsSync(pathtmp)) {
-                    if (!fs.mkdirSync(pathtmp, mode)) {
+                    if (!fs.mkdirSync(pathtmp)) {
                         return false;
                     }
                 }
@@ -44,7 +49,7 @@ var Emotions = function(app) {
 
     this.save = function (filename, data) {
         var file = _this.pathfile(filename);
-        if (!_this.mkdirsSync(_this.pathdir(), 777)) {
+        if (!_this.mkdirsSync(_this.pathdir())) {
             _app.alert(_translator.map('Directory could not be created'));
             return;
         }
