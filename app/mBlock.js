@@ -62,9 +62,18 @@ function mBlock(){
 		if(_bluetooth.isConnected()){
 			_bluetooth.send(arg.data);
 		}
+		self.logToArduinoConsole(arg.data);
 	});
 	ipcMain.on('connectionStatus',function(event,obj){
 		_menu.updateConnectionStatus(obj);
+	})
+	ipcMain.on('updateMenuStatus',function(event,arr){
+		for (i=0;i< arr.length;i++){
+			if(arr[i] == "small stage layout")
+			{
+				_stage.changeStageMode(arr[i]);
+			}
+		}
 	})
 	ipcMain.on('openArduinoIDE', function(event, code) {
 		_arduinoIDE.openArduinoIDE(code);

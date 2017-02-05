@@ -44,7 +44,6 @@ function HID(app){
 			}
             _port.write(arr);
 		}
-		_app.logToArduinoConsole(data);
 	}
 
 	//连接hid设备

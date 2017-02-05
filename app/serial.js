@@ -36,7 +36,6 @@ function Serial(app){
 		if(_port&&_port.isOpen()){
 			_port.write(new Buffer(data),function(){
 			});
-			_app.logToArduinoConsole(data);
 		}
 	}
 	this.connect = function(name){ // linux : /dev/ttyUSB0
