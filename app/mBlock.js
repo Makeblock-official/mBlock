@@ -91,18 +91,18 @@ function mBlock(){
 	});
     // 保存收藏表情面板文件
     ipcMain.on('saveDrawFile', function (event, arg) {
-		_emotions.save(filename, data);
+		_emotions.save(arg.filename, arg.data);
     });
     // 删除表情面板文件
 	ipcMain.on('deleteDrawFile', function (event, arg) {
-		_emotions.del(filename);
+		_emotions.del(arg.filename);
     });
 	// 读取表情面板文件
 	ipcMain.on('readDrawFile', function (event, arg) {
-        event.returnValue = _emotions.read(filename);
+        event.sender.send('responseEmotions', {code:'single', data: _emotions.read(arg.filename)});
     });
 	ipcMain.on('getDirectoryListing', function (event, arg) {
-        event.returnValue = _emotions.list();
+        event.sender.send('responseEmotions', {code:'more', data: _emotions.list()});
     });
 	this.getClient = function(){
 		return _client;

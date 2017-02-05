@@ -5,11 +5,12 @@
 const fs = require("fs");
 const path = require('path');
 
-var _dir, _app, _this;
+var _dir, _app, _this, _translator;
 var Emotions = function(app) {
     _this = this;
     _app = app;
     _dir = path.join(__root_path, "/src/assets/emotions");
+    _translator = app.getTranslator();
 
     this.path = function(filename) {
         return path.resolve(_dir, filename);
@@ -19,8 +20,8 @@ var Emotions = function(app) {
         var file = _this.path(filename);
         fs.writeFile(file, data, function (err) {
             if (err) {
-                _app.alert()
-                return false;
+                _app.alert(_translator.map('You do not have sufficient rights to save properties'));
+                return;
             }
             console.log(file + ' is saved!');
         });
@@ -30,7 +31,8 @@ var Emotions = function(app) {
         var file = _this.path(filename);
         fs.unlink(file, function (err) {
             if (err) {
-                return false;
+                _app.alert(_translator.map('It doesn\'t exist'));
+                return;
             }
             console.log(file + ' is delete!');
         });

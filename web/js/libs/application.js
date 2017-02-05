@@ -60,6 +60,14 @@ function Application(flash){
     ipcRenderer.on('setFontSize', (sender,obj) => {
         _flash.setFontSize(obj.size);
     });
+    // 表情面板前端操作监听
+    ipcRenderer.on('responseEmotions', (sender, obj) => {
+        if ('single' === obj.code) {
+            _flash.responseCommonData(obj.data);
+        } else if('more' === obj.code) {
+            _flash.responseCommonData(obj.data);
+        }
+    });
     this.getExt = function(){
         return _ext;
     }
@@ -193,7 +201,7 @@ function Application(flash){
 
     this.readDrawFile = function (fileName) {
         console.log('into readDrawFile');
-        return ipcRenderer.sendSync('readDrawFile', {fileName: fileName});
+        ipcRenderer.send('readDrawFile', {fileName: fileName});
     }
     /**
      * 获取表情面板文件列表
@@ -201,7 +209,7 @@ function Application(flash){
      */
     this.getDirectoryListing = function () {
         console.log('into getDirectoryListing');
-        return ipcRenderer.sendSync('getDirectoryListing');
+        ipcRenderer.send('getDirectoryListing');
     }
 }
 module.exports = Application;
