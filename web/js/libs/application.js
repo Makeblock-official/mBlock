@@ -168,5 +168,36 @@ function Application(flash){
 			});
 		} 
     }
+    /**
+     * 保存收藏表情面板文件
+     * @param string fileName
+     * @param string data
+     */
+    this.saveDrawFile = function (fileName,data) {
+        console.log('into saveDrawFile');
+    }
+    /**
+     * 删除表情面板文件
+     * @param string fileName
+     */
+    this.deleteDrawFile = function (fileName) {
+        console.log('into deleteDrawFile');
+    }
+    /**
+     * 读取表情面板文件
+     * @param string fileName
+     * @return string Or null
+     */
+
+    this.readDrawFile = function (fileName) {
+        console.log('into readDrawFile');
+    }
+    /**
+     * 获取表情面板文件列表
+     * @return array
+     */
+    this.getDirectoryListing = function () {
+        console.log('into getDirectoryListing');
+    }
 }
 module.exports = Application;

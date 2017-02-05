@@ -23,7 +23,8 @@ const HID = require("./hid.js");
 const LocalStorage = require("./localStorage.js");
 const FirmwareUploader = require('./firmwareUploader.js');
 const ArduinoIDE = require('./arduinoIDE.js');
-var _project,_menu,_serial,_hid,_translator,_fontSize,_stage,_firmwareUploader,_bluetooth,_localStorage,_arduinoIDE;
+const Emotions = require('./emotions.js');
+var _project,_menu,_serial,_hid,_translator,_fontSize,_stage,_firmwareUploader,_bluetooth,_localStorage,_arduinoIDE,_emotions;
 function mBlock(){
 	var self = this;
 	ipcMain.on('flashReady',function(event,arg){
@@ -41,6 +42,7 @@ function mBlock(){
 		_firmwareUploader = FirmwareUploader.init(self);
 		_arduinoIDE = ArduinoIDE.init(self);
 		_menu = new AppMenu(self);
+        _emotions = new Emotions(self);
 		
 		self.init();
 		_boards.selectBoard("me/mbot_uno");
@@ -87,6 +89,21 @@ function mBlock(){
 	ipcMain.on('itemDeleted', function(event, arg) {
 		_menu.enableUnDelete();
 	});
+    // 保存收藏表情面板文件
+    ipcMain.on('saveDrawFile', function (event, arg) {
+		// _emotions.save(filename, data);
+    });
+    // 删除表情面板文件
+	ipcMain.on('deleteDrawFile', function (event, arg) {
+		// _emotions.del(filename);
+    });
+	// 读取表情面板文件
+	ipcMain.on('readDrawFile', function (event, arg) {
+        event.returnValue = _emotions.read(filename);
+    });
+	ipcMain.on('getDirectoryListing', function (event, arg) {
+        event.returnValue = _emotions.list();
+    });
 	this.getClient = function(){
 		return _client;
 	}
