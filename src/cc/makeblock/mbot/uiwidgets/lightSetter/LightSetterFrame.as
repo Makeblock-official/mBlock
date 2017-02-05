@@ -210,7 +210,7 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 			
 			return "";*/
 			var fileList:Array = JsUtil.callApp("getDirectoryListing");//dir.getDirectoryListing();
-			while(fileList.length >= MAX_CUSTOM_ITEMS){
+			while(fileList && fileList.length >= MAX_CUSTOM_ITEMS){
 				var tmpfileName:String = fileList.shift();
 				JsUtil.callApp("deleteDrawFile",tmpfileName);
 			}
