@@ -955,5 +955,6 @@
 	"Ellipse": "椭圆",
 	"New Project": "New Project",
 	"Please restart your computer to enable serial ports.": "Please restart your computer to enable serial ports.",
-	"You do not have sufficient rights to save properties": "You do not have sufficient rights to save properties"
+	"You do not have sufficient rights to save properties": "You do not have sufficient rights to save properties",
+	"It doesn't exist": "It doesn't exist"
 }

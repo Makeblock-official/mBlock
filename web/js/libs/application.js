@@ -201,7 +201,7 @@ function Application(flash){
      * @param string label (preset-预设，custom-添加)
      */
 
-    this.readDrawFile = function (fileName, label) {
+    this.readDrawFile = function (label, fileName) {
         console.log('into readDrawFile');
         console.log(fileName);
         ipcRenderer.send('readDrawFile', {fileName: fileName, label: label});
