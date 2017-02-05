@@ -161,17 +161,17 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 		{
 			trace(this, "loadPresets");
 			//先读取预设表情列表
-			JsUtil.callApp("getDirectoryListing","preset");
+			JsUtil.callApp("getEmotionList","preset");
 			var cnt:int=0;
 			JsUtil.callBack = function(fileListStr:String):void{
 				var fileList:Array = fileListStr.split(",");
 				for each(var item:String in fileList){
 					//通过列表读取每个文件的内容
 					JsUtil.callApp("readDrawFile",["preset",item])//FileUtil.ReadString(item);
-					JsUtil.callBack = function(str:String):void{
+					JsUtil.callBack = function(fn:String,str:String):void{
 						if(str)
 						{	
-							thumbPane.addThumb(item, genBitmapData(str), true);
+							thumbPane.addThumb(fn, genBitmapData(str), true);
 						}
 						cnt++;
 						//如果累计读取次数等于列表长度，说明预设文件夹读取完了，可以读取用户定义目录了
@@ -179,16 +179,16 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 						{
 							cnt = 0;
 							//读取用户定义目录
-							JsUtil.callApp("getDirectoryListing","custom");
+							JsUtil.callApp("getEmotionList","custom");
 							JsUtil.callBack = function(fileListStr:String):void{
 								var fileList:Array = fileListStr.split(",");
 								for each(var item2:String in fileList){
 									//挨个读取文件内容
 									JsUtil.callApp("readDrawFile",["custom",item2])//FileUtil.ReadString(item);
-									JsUtil.callBack = function(str:String):void{
+									JsUtil.callBack = function(fn:String,str:String):void{
 										if(str)
 										{
-											thumbPane.addThumb(item2, genBitmapData(str), false);
+											thumbPane.addThumb(fn, genBitmapData(str), false);
 										}
 									}
 								}
@@ -234,7 +234,7 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 			return fileName;
 			
 			return "";*/
-			JsUtil.callApp("getDirectoryListing");//dir.getDirectoryListing();
+			JsUtil.callApp("getEmotionList");//dir.getDirectoryListing();
 			JsUtil.callBack = function(fileList:Array):void{
 				while(fileList && fileList.length >= MAX_CUSTOM_ITEMS){
 					var tmpfileName:String = fileList.shift();

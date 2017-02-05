@@ -329,7 +329,7 @@ package util
 			log("callBack!=null "+(callBack!=null))
 			if(callBack!=null)
 			{
-				callBack(args);
+				callBack.apply(null,args);
 			}
 		}
 	}
