@@ -163,7 +163,9 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 			trace(this, "loadPresets");
 			
 			JsUtil.callApp("getDirectoryListing",tmpFunc);
-			JsUtil.callBack = function(fileList:Array):void{
+			JsUtil.callBack = function(fileListStr:String):void{
+				var fileList:Array = fileListStr.split(",");
+				JsUtil.log("fileList="+fileList);
 				for each(var item:String in fileList){
 					var str:String = JsUtil.callApp("readDrawFile",item)//FileUtil.ReadString(item);
 					JsUtil.callBack = function(str:String):void{
