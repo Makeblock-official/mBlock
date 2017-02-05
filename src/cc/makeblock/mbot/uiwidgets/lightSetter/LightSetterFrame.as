@@ -188,7 +188,7 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 									JsUtil.callBack = function(str:String):void{
 										if(str)
 										{
-											thumbPane.addThumb(item2, genBitmapData(str), true);
+											thumbPane.addThumb(item2, genBitmapData(str), false);
 										}
 									}
 								}
