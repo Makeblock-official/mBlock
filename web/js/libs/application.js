@@ -175,6 +175,7 @@ function Application(flash){
      */
     this.saveDrawFile = function (fileName,data) {
         console.log('into saveDrawFile');
+        ipcRenderer.send('saveDrawFile', {fileName:fileName, data: data});
     }
     /**
      * 删除表情面板文件
@@ -182,6 +183,7 @@ function Application(flash){
      */
     this.deleteDrawFile = function (fileName) {
         console.log('into deleteDrawFile');
+        ipcRenderer.send('deleteDrawFile', {fileName: fileName});
     }
     /**
      * 读取表情面板文件
@@ -191,6 +193,7 @@ function Application(flash){
 
     this.readDrawFile = function (fileName) {
         console.log('into readDrawFile');
+        return ipcRenderer.sendSync('readDrawFile', {fileName: fileName});
     }
     /**
      * 获取表情面板文件列表
@@ -198,6 +201,7 @@ function Application(flash){
      */
     this.getDirectoryListing = function () {
         console.log('into getDirectoryListing');
+        return ipcRenderer.sendSync('getDirectoryListing');
     }
 }
 module.exports = Application;

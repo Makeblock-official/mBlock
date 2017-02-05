@@ -5,14 +5,14 @@
 const fs = require("fs");
 const path = require('path');
 
-var dir = path.join(__root_path, "/src/assets/emotions");
-var _app, _this;
+var _dir, _app, _this;
 var Emotions = function(app) {
     _this = this;
     _app = app;
+    _dir = path.join(__root_path, "/src/assets/emotions");
 
     this.path = function(filename) {
-        return path.resolve(dir, filename);
+        return path.resolve(_dir, filename);
     }
 
     this.save = function (filename, data) {
@@ -48,7 +48,7 @@ var Emotions = function(app) {
     }
 
     this.list = function () {
-        fs.readdir(dir,function(err,files){
+        fs.readdir(_dir,function(err,files){
             if(err) {
                 console.log(err);
                 return [];

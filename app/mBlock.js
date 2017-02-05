@@ -91,11 +91,11 @@ function mBlock(){
 	});
     // 保存收藏表情面板文件
     ipcMain.on('saveDrawFile', function (event, arg) {
-		// _emotions.save(filename, data);
+		_emotions.save(filename, data);
     });
     // 删除表情面板文件
 	ipcMain.on('deleteDrawFile', function (event, arg) {
-		// _emotions.del(filename);
+		_emotions.del(filename);
     });
 	// 读取表情面板文件
 	ipcMain.on('readDrawFile', function (event, arg) {
