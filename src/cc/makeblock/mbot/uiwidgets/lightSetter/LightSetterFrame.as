@@ -162,7 +162,7 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 		{
 			trace(this, "loadPresets");
 			
-			JsUtil.callApp("getDirectoryListing",tmpFunc);
+			JsUtil.callApp("getDirectoryListing");
 			JsUtil.callBack = function(fileListStr:String):void{
 				var fileList:Array = fileListStr.split(",");
 				JsUtil.log("fileList="+fileList);
@@ -176,10 +176,6 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 					}
 				}
 			}
-		}
-		private function tmpFunc(a:String):void
-		{
-			JsUtil.log("回调函数："+a)
 		}
 		/*private function getCustomEmotionDir():File
 		{
