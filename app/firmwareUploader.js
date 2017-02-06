@@ -7,6 +7,7 @@ const utils = require('./utils');
 var Boards = require('./boards.js');
 var app = null;
 var T = null;
+var checkUSB;
 const boardFirmwareMap = {
     'arduino_uno': 'uno.hex',
     'arduino_leonardo': 'leonardo.hex',
@@ -101,10 +102,23 @@ var FirmwareUploader = {
         this.uploadWithAvrdude(boardDefaultProgramMap[boardName]);
     },
 
+    uploadingWatchDog: function (on, avrdude) {
+        if (!on) return;
+        var serialPort = app.getSerial().currentSerialPort();
+        var conn;
+        checkUSB = setInterval(function() {
+            // conn = app.getSerial().isConnected(serialPort);
+            // if (!conn) {
+                app.alert({'message':T('Upload Failed'), 'hasCancel':true});
+                avrdude.kill('SIGKILL');
+                clearInterval(checkUSB);
+            // }
+        }, 7000);
+    },
+
     uploadWithAvrdude: function(hexFileName) {
         var serialPort = app.getSerial().currentSerialPort();
         var boardName = app.getBoards().currentBoardName();
-
 
         if(!hexFileName) {
             app.alert(T('No firmware available for this type of board'));
@@ -121,6 +135,7 @@ var FirmwareUploader = {
         var command = self.getArduinoPath() + '/hardware/tools/avr/bin/avrdude';
         var args = self.getAvrdudeParameter(serialPort, hexFileName); 
         app.getSerial().close();
+        var uploading = false;
         var avrdude = spawn(command, args, {cwd: __root_path});
         avrdude.stdout.on('data', function(data){
         });
@@ -130,6 +145,8 @@ var FirmwareUploader = {
                 avrdude.kill('SIGKILL');
             }
             app.alert({'message':T('Uploading')+'...'+utils.getProgressCharacter(), 'hasCancel':false});
+            self.uploadingWatchDog(!uploading, avrdude);
+            uploading = true;
         });
         avrdude.on('close', function(code){
             if(code == 0) {
@@ -139,8 +156,8 @@ var FirmwareUploader = {
             }
             avrdude.kill('SIGKILL');
             app.getSerial().connect(serialPort);
+            clearInterval(checkUSB);
         });
-
     },
 
 }
