@@ -68,6 +68,7 @@ function Bluetooth(app){
 	this.createBluetoothChildProcess = function () { // 创建蓝牙子进程，并托管各消息处理函数
 	    var childProcessPath = __root_path + '/app/bluetoothChildProcess.js';
 		console.log('child process js path:'+childProcessPath);
+		console.log('__root_path路径为：'+__root_path);
 		bluetoothChildProcess = childProcess.fork(childProcessPath);
 		// 监控所有子进程过来的消息
 		bluetoothChildProcess.on('message', function (message) {
