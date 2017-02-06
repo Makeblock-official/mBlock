@@ -260,6 +260,10 @@ package util
 					DeviceManager.sharedManager().onSelectBoard("me/mega_pi");
 					break;
 			}
+			if(value.toLowerCase().indexOf("arduino")>-1)
+			{
+				DeviceManager.sharedManager().onSelectBoard("arduino");
+			}
 		}
 		
 		static private function __getRobotName():String
