@@ -52,6 +52,7 @@ function Project(app) {
                     if (_saveAndNew) {
                         self.doNewProject();
                     }
+                    _client.send("setSaveStatus", {isSaved:true}); //通知前端UI保存成功
                 }
             })
         } else {
@@ -59,6 +60,7 @@ function Project(app) {
             if (_saveAndNew) {
                 self.doNewProject();
             }
+            _client.send("setSaveStatus", {isSaved:true}); //通知前端UI保存成功
         }
     }
     /**
