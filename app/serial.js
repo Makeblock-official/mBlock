@@ -100,7 +100,7 @@ function Serial(app){
 				})
 				_items.push(item);
 			}
-			_app.getMenu().update();
+			_app.getMenu().update();console.log('已更新菜单');
 		})
 	}
 	this.on = function(event,listener){
