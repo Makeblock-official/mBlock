@@ -220,7 +220,8 @@ package util
 				var base64Str:String = Base64.encode(zipData);
 				//Call("saveProject", [base64Str]);
 				callApp("saveProject",{title: MBlock.app.projectName() + '.sb2', data:base64Str});
-				MBlock.app.saveNeeded = false;
+				//由于保存的时候，确认框是在js做的，如果点了取消，则保存不成功，所以保存状态放在js做
+				//MBlock.app.saveNeeded = false;
 			}
 			var projIO:ProjectIO = new ProjectIO(MBlock.app);
 			projIO.convertSqueakSounds(MBlock.app.stagePane, squeakSoundsConverted);
