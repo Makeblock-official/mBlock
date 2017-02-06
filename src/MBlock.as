@@ -782,9 +782,6 @@ package {
 			return _saveNeeded;
 		}
 		public function set saveNeeded(value:Boolean):void{
-			if(_saveNeeded == value){
-				return;
-			}
 			_saveNeeded = value;
 			AppTitleMgr.Instance.setProjectModifyInfo(_saveNeeded);
 			JsUtil.callApp("setSaveStatus",[!value]);
