@@ -66,7 +66,9 @@ function Bluetooth(app){
 	};
 	
 	this.createBluetoothChildProcess = function () { // 创建蓝牙子进程，并托管各消息处理函数
-		bluetoothChildProcess = childProcess.fork(__root_path + '/app/bluetoothChildProcess.js');
+	    var childProcessPath = __root_path + '/app/bluetoothChildProcess.js';
+		console.log('child process js path:'+childProcessPath);
+		bluetoothChildProcess = childProcess.fork(childProcessPath);
 		// 监控所有子进程过来的消息
 		bluetoothChildProcess.on('message', function (message) {
 			if (message.method == 'noBluetoothDevices') { // 周围未找到任何蓝牙设备或最后一个蓝牙设备未找到通道
