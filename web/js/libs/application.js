@@ -60,6 +60,19 @@ function Application(flash){
     ipcRenderer.on('setFontSize', (sender,obj) => {
         _flash.setFontSize(obj.size);
     });
+    // 表情面板前端操作监听
+    ipcRenderer.on('responseEmotions', (sender, obj) => {
+        console.log('into responseEmotions');
+        console.log(obj.data);
+        if ('single' === obj.code) {
+            _flash.responseCommonData(obj.fileName, obj.data);
+        } else if('more' === obj.code) {
+            _flash.responseCommonData(obj.data);
+        }
+    });
+    ipcRenderer.on('setSaveStatus', (sender,obj) => {
+        self.setSaveStatus(obj.isSaved);
+    });
     this.getExt = function(){
         return _ext;
     }
@@ -89,11 +102,11 @@ function Application(flash){
     this.sendBytesToBoard = function(msg){
         ipcRenderer.send("package", {data:msg});
     }
-    this.updateMenuStatus = function(obj){
-
+    this.updateMenuStatus = function(arr){
+        ipcRenderer.send("updateMenuStatus",arr);
     }
     this.updateTitle =function(){
-        var textSave = self.saved=="true"? _translator.map('Saved'): _translator.map("Not saved");
+        var textSave = self.saved ? _translator.map('Saved'): _translator.map("Not saved");
         var textConnect = self.connected ? _translator.map('Connected'): _translator.map("Disconnected");
         var title = package.description +" - " + textConnect+" - " +textSave;
         ipcRenderer.sendToHost("setAppTitle",title);
@@ -167,6 +180,43 @@ function Application(flash){
 				_flash.setRobotName('mega pi');
 			});
 		} 
+    }
+    /**
+     * 保存收藏表情面板文件
+     * @param string fileName
+     * @param string data
+     */
+    this.saveDrawFile = function (fileName,data) {
+        console.log('into saveDrawFile');
+        ipcRenderer.send('saveDrawFile', {fileName:fileName, data: data});
+    }
+    /**
+     * 删除表情面板文件
+     * @param string fileName
+     */
+    this.deleteDrawFile = function (fileName) {
+        console.log('into deleteDrawFile');
+        ipcRenderer.send('deleteDrawFile', {fileName: fileName});
+    }
+    /**
+     * 读取表情面板文件
+     * @param string fileName
+     * @param string label (preset-预设，custom-添加)
+     */
+
+    this.readDrawFile = function (label, fileName) {
+        console.log('into readDrawFile');
+        console.log(fileName);
+        ipcRenderer.send('readDrawFile', {fileName: fileName, label: label});
+    }
+    /**
+     * 获取表情面板文件列表
+     * @param string label (preset-预设，custom-添加)
+     */
+    this.getEmotionList = function (label) {
+        console.log('into getEmotionList');
+        console.log(label);
+        ipcRenderer.send('getEmotionList', {label: label});
     }
 }
 module.exports = Application;

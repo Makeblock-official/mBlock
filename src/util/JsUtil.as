@@ -25,6 +25,7 @@ package util
 	public class JsUtil
 	{
 		static private var _app:Object;
+		static public var callBack:Function;
 		static public function Init(stage:Stage):void
 		{
 //			stage.addEventListener(MouseEvent.CLICK, function(e){
@@ -68,6 +69,7 @@ package util
 				ExternalInterface.addCallback("stopCode", __stopCode);
 				ExternalInterface.addCallback("logToArduinoConsole", __logToArduinoConsole);
 				ExternalInterface.addCallback("setFontSize", __setFontSize);
+				ExternalInterface.addCallback("responseCommonData", __responseCommonData);
 				callApp("readyForFlash");
 			}catch(e:*){
 				
@@ -86,7 +88,7 @@ package util
 			}
 		}
 		static public function callApp(method:String,args:Object=null):*{
-			return Call("_app."+method,[args]);
+			return Call("_app."+method,args is Array?args as Array:[args]);
 		}
 		static public function callUtils(method:String,args:Object=null):*{
 			return Call("_app.getUtil()."+method,[args]);
@@ -218,7 +220,8 @@ package util
 				var base64Str:String = Base64.encode(zipData);
 				//Call("saveProject", [base64Str]);
 				callApp("saveProject",{title: MBlock.app.projectName() + '.sb2', data:base64Str});
-				MBlock.app.saveNeeded = false;
+				//由于保存的时候，确认框是在js做的，如果点了取消，则保存不成功，所以保存状态放在js做
+				//MBlock.app.saveNeeded = false;
 			}
 			var projIO:ProjectIO = new ProjectIO(MBlock.app);
 			projIO.convertSqueakSounds(MBlock.app.stagePane, squeakSoundsConverted);
@@ -320,6 +323,15 @@ package util
 		static private function __setFontSize(size:int):void
 		{
 			Translator.setFontSize(size);
+		}
+		static private function __responseCommonData(...args):void
+		{
+			log("__responseCommonData "+args)
+			log("callBack!=null "+(callBack!=null))
+			if(callBack!=null)
+			{
+				callBack.apply(null,args);
+			}
 		}
 	}
 }

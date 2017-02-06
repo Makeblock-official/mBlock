@@ -3,13 +3,14 @@
  */
 const {dialog, BrowserWindow} = require('electron')
 const fs = require("fs");
-const pathCore = require('path');
+const pathModule = require('path');
 const events = require('events');
 var _emitter = new events.EventEmitter();
 var _saveAs = false;
 var _currentProjectPath = "";
 var _client, _app, _title;
 var _saveAndNew = false;
+var newProject = true;
 function Project(app) {
     var self = this;
     _app = app;
@@ -52,6 +53,7 @@ function Project(app) {
                     if (_saveAndNew) {
                         self.doNewProject();
                     }
+                    _client.send("setSaveStatus", {isSaved:true}); //通知前端UI保存成功
                 }
             })
         } else {
@@ -59,6 +61,7 @@ function Project(app) {
             if (_saveAndNew) {
                 self.doNewProject();
             }
+            _client.send("setSaveStatus", {isSaved:true}); //通知前端UI保存成功
         }
     }
     /**
@@ -68,13 +71,27 @@ function Project(app) {
         _currentProjectPath = path
         var data = fs.readFileSync(path);
         var tmp = path.split(".");
-        var tmpPath = path.replace(/\\/g, "/").split("/");
-        var tmpTitle = tmpPath[tmpPath.length - 1];
-        var filename = "./tmp/project." + tmp[tmp.length - 1];
-        var filePath = pathCore.resolve(__root_path, './web', filename);
+        var tmpPath =path.replace(/\\/g,"/").split("/");
+        var tmpTitle = tmpPath[tmpPath.length-1];
+        var filename = "project."+tmp[tmp.length-1];
+		var filePath = pathModule.resolve(__root_path, 'web', 'tmp', filename);
         fs.writeFileSync(filePath, data);
-        if (_client) {
-            _client.send("openProject", {url: filename, title: tmpTitle})
+        if(newProject) {
+            if(_client){
+                _client.send("openProject",{url:__webviewRootURL+'/tmp/'+filename, title:tmpTitle});
+            }
+            newProject=false;
+        } else {
+            var ret = dialog.showMessageBox(BrowserWindow.getFocusedWindow(), {
+                type: 'question',
+                title: '',
+                message: '替换当前项目吗？',
+                buttons: ['确定', '取消'],
+                noLink: true
+            });
+            if(_client &&ret==0){
+                _client.send("openProject",{url:__webviewRootURL+'/tmp/'+filename, title:tmpTitle});
+            }
         }
     }
     /**

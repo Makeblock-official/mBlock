@@ -9,7 +9,6 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 	
 	import cc.makeblock.mbot.uiwidgets.MyFrame;
 	import cc.makeblock.mbot.util.PopupUtil;
-	import cc.makeblock.util.FileUtil;
 	
 	import org.aswing.ASColor;
 	import org.aswing.ASFont;
@@ -33,6 +32,7 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 	import translation.Translator;
 	
 	import util.ApplicationManager;
+	import util.JsUtil;
 	
 	public class LightSetterFrame extends MyFrame
 	{
@@ -160,32 +160,54 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 		private function loadPresets():void
 		{
 			trace(this, "loadPresets");
-			/*
-			var file:File = File.applicationDirectory.resolvePath("assets/emotions");
-			for each(var item:File in file.getDirectoryListing()){
-				var str:String = FileUtil.ReadString(item);
-				thumbPane.addThumb(item.name, genBitmapData(str), true);
+			//先读取预设表情列表
+			JsUtil.callApp("getEmotionList","preset");
+			var cnt:int=0;
+			JsUtil.callBack = function(fileListStr:String):void{
+				var fileList:Array = fileListStr.split(",");
+				for each(var item:String in fileList){
+					//通过列表读取每个文件的内容
+					JsUtil.callApp("readDrawFile",["preset",item])//FileUtil.ReadString(item);
+					JsUtil.callBack = function(fn:String,str:String):void{
+						if(str)
+						{	
+							thumbPane.addThumb(fn, genBitmapData(str), true);
+						}
+						cnt++;
+						//如果累计读取次数等于列表长度，说明预设文件夹读取完了，可以读取用户定义目录了
+						if(cnt>=fileList.length)
+						{
+							cnt = 0;
+							//读取用户定义目录
+							JsUtil.callApp("getEmotionList","custom");
+							JsUtil.callBack = function(fileListStr:String):void{
+								var fileList:Array = fileListStr.split(",");
+								for each(var item2:String in fileList){
+									//挨个读取文件内容
+									JsUtil.callApp("readDrawFile",["custom",item2])//FileUtil.ReadString(item);
+									JsUtil.callBack = function(fn:String,str:String):void{
+										if(str)
+										{
+											thumbPane.addThumb(fn, genBitmapData(str), false);
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+				
 			}
-			file = getCustomEmotionDir();
-			if(!file.exists){
-				return;
-			}
-			for each(item in file.getDirectoryListing()){
-				str = FileUtil.ReadString(item);
-				thumbPane.addThumb(item.name, genBitmapData(str), false);
-			}
-			*/
 		}
-		/*
-		private function getCustomEmotionDir():File
+		/*private function getCustomEmotionDir():File
 		{
 			return File.documentsDirectory.resolvePath("mBlock/emotions");
-		}
-		*/
+		}*/
+		
 		private function saveToFile(bmd:BitmapData):String
 		{
 			trace(this, "saveToFile");
-			/*
+			
 			var result:String = "";
 			for(var i:int=0; i< LightSensor.COUNT_H; i++){
 				for (var j:int = 0; j < LightSensor.COUNT_W; j++) 
@@ -198,7 +220,8 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 				}
 				result += "\r\n";
 			}
-			var dir:File = getCustomEmotionDir();
+			
+			/*var dir:File = getCustomEmotionDir();
 			if(!dir.exists){
 				dir.createDirectory();
 			}
@@ -209,8 +232,18 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 			var fileName:String = new Date().getTime() + ".txt";
 			FileUtil.WriteString(dir.resolvePath(fileName), result);
 			return fileName;
-			*/
-			return "";
+			
+			return "";*/
+			JsUtil.callApp("getEmotionList");//dir.getDirectoryListing();
+			JsUtil.callBack = function(fileList:Array):void{
+				while(fileList && fileList.length >= MAX_CUSTOM_ITEMS){
+					var tmpfileName:String = fileList.shift();
+					JsUtil.callApp("deleteDrawFile",tmpfileName);
+				}
+			}
+			var fileName:String = new Date().getTime() + ".txt";
+			JsUtil.callApp("saveDrawFile",[fileName,result]);
+			return fileName;
 		}
 		
 		private function __onSelect(evt:Event):void
@@ -281,6 +314,18 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 			
 			showDeleteBtn(false);
 			*/
+			
+			if(null == focusThumb){
+			return;
+			}
+			JsUtil.callApp("deleteDrawFile",focusThumb.getName());
+			
+			thumbPane.removeData(focusThumb.getName());
+			focusThumb.setBorder(ThumbPane.normalBorder);
+			focusThumb = null;
+			
+			showDeleteBtn(false);
+			
 			trace(this, "__onDeleteFavorite");
 		}
 		

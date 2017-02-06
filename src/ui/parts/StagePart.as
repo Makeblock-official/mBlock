@@ -45,6 +45,7 @@ package ui.parts {
 	
 	import uiwidgets.EditableLabel;
 	import uiwidgets.IconButton;
+	import util.JsUtil;
 
 public class StagePart extends UIPart {
 
@@ -391,7 +392,10 @@ public class StagePart extends UIPart {
 	
 	private function __toggleStageSize(evt:MouseEvent):void
 	{
-		app.toggleSmallStage();
+		//app.toggleSmallStage();
+		var obj:Object = ["small stage layout"];
+		//通知js要切换的状态，flash本身不再另外做调整displaymode，统一由js来调用
+		JsUtil.callApp("updateMenuStatus",obj);
 	}
 
 	private function drawStageSizeButton():void {

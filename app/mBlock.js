@@ -23,7 +23,8 @@ const HID = require("./hid.js");
 const LocalStorage = require("./localStorage.js");
 const FirmwareUploader = require('./firmwareUploader.js');
 const ArduinoIDE = require('./arduinoIDE.js');
-var _project,_menu,_serial,_hid,_translator,_fontSize,_stage,_firmwareUploader,_bluetooth,_localStorage,_arduinoIDE;
+const Emotions = require('./emotions.js');
+var _project,_menu,_serial,_hid,_translator,_fontSize,_stage,_firmwareUploader,_bluetooth,_localStorage,_arduinoIDE,_emotions;
 function mBlock(){
 	var self = this;
 	ipcMain.on('flashReady',function(event,arg){
@@ -41,6 +42,7 @@ function mBlock(){
 		_firmwareUploader = FirmwareUploader.init(self);
 		_arduinoIDE = ArduinoIDE.init(self);
 		_menu = new AppMenu(self);
+        _emotions = new Emotions(self);
 		
 		self.init();
 		_boards.selectBoard("me/mbot_uno");
@@ -62,9 +64,18 @@ function mBlock(){
 		if(_bluetooth.isConnected()){
 			_bluetooth.send(arg.data);
 		}
+		self.logToArduinoConsole(arg.data);
 	});
 	ipcMain.on('connectionStatus',function(event,obj){
 		_menu.updateConnectionStatus(obj);
+	})
+	ipcMain.on('updateMenuStatus',function(event,arr){
+		for (i=0;i< arr.length;i++){
+			if(arr[i] == "small stage layout")
+			{
+				_stage.changeStageMode(arr[i]);
+			}
+		}
 	})
 	ipcMain.on('openArduinoIDE', function(event, code) {
 		_arduinoIDE.openArduinoIDE(code);
@@ -78,6 +89,21 @@ function mBlock(){
 	ipcMain.on('itemDeleted', function(event, arg) {
 		_menu.enableUnDelete();
 	});
+    // 保存收藏表情面板文件
+    ipcMain.on('saveDrawFile', function (event, arg) {
+		_emotions.save(arg.fileName, arg.data);
+    });
+    // 删除表情面板文件
+	ipcMain.on('deleteDrawFile', function (event, arg) {
+		_emotions.del(arg.fileName);
+    });
+	// 读取表情面板文件
+	ipcMain.on('readDrawFile', function (event, arg) {
+        _emotions.read(arg.fileName, arg.label);
+    });
+	ipcMain.on('getEmotionList', function (event, arg) {
+        _emotions.list(arg.label);
+    });
 	this.getClient = function(){
 		return _client;
 	}
