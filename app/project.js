@@ -10,6 +10,7 @@ var _saveAs = false;
 var _currentProjectPath = "";
 var _client, _app, _title;
 var _saveAndNew = false;
+var newProject = true;
 function Project(app) {
     var self = this;
     _app = app;
@@ -75,8 +76,22 @@ function Project(app) {
         var filename = "project."+tmp[tmp.length-1];
 		var filePath = pathModule.resolve(__root_path, 'web', 'tmp', filename);
         fs.writeFileSync(filePath, data);
-        if(_client){
-            _client.send("openProject",{url:__webviewRootURL+'/tmp/'+filename, title:tmpTitle});
+        if(newProject) {
+            if(_client){
+                _client.send("openProject",{url:__webviewRootURL+'/tmp/'+filename, title:tmpTitle});
+            }
+            newProject=false;
+        } else {
+            var ret = dialog.showMessageBox(BrowserWindow.getFocusedWindow(), {
+                type: 'question',
+                title: '',
+                message: '替换当前项目吗？',
+                buttons: ['确定', '取消'],
+                noLink: true
+            });
+            if(_client &&ret==0){
+                _client.send("openProject",{url:__webviewRootURL+'/tmp/'+filename, title:tmpTitle});
+            }
         }
     }
     /**
