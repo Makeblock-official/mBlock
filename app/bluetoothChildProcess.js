@@ -73,7 +73,10 @@ process.on('message', function (message) { // 主进程传过来的消息
         });	
 	} else if (message.method == 'writeData') {
 	    bluetoothSerialPort.write(new Buffer(message.data), function(err, bytesWritten) {
-            if (err) console.log(err);
+            if (err) {
+				console.log('蓝牙写数据出错了：');
+				console.log(err);
+			}
         });	
 	}
 	
