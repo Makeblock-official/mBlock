@@ -159,7 +159,11 @@ function Application(flash){
     }
     this.changeToBoard=function(name){ // 菜单控制板中的Makeblock选项
         name = name.toLowerCase();
-		if (name.indexOf('orion_uno') > -1) { // Starter/Ultimate (Orion)
+        if(name.indexOf('arduino') > -1){
+            window.loadScript('arduino', 'flash-core/ext/libraries/arduino/js/arduino.js', function () {
+                _flash.setRobotName(name);
+            });
+        }else if (name.indexOf('orion_uno') > -1) { // Starter/Ultimate (Orion)
 		    window.loadScript('orion', 'flash-core/ext/libraries/orion/js/orion.js', function () {
 				_flash.setRobotName('orion');
 			});

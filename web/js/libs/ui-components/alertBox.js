@@ -46,6 +46,8 @@ var AlertBox = {
 			    } else {
 					closeButtonDom.style.display = 'inline';
 				}
+			} else {
+				closeButtonDom.style.display = 'inline';
 			}
 			message = content.message
 		} else { // 兼容之前的直接传字符串

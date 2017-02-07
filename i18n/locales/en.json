@@ -45,5 +45,6 @@
 	"Set FirmWare Mode": "Set FirmWare Mode",
 	"Not saved": "Not saved",
 	"Disconnected": "Disconnected",
-	"set encoder motor on board %d.slot power to %d.motorvalue": "set encoder motor on board %d.slot power to %d.motorvalue"
+	"set encoder motor on board %d.slot power to %d.motorvalue": "set encoder motor on board %d.slot power to %d.motorvalue",
+	"Saved": "Saved"
 }

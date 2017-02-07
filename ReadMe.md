@@ -46,6 +46,10 @@ On Linux
 
 > ```cnpm start```
 
+6、 打包(linux)
+
+> ```npm run dist-linux```
+
 
 
 ### Arduino
@@ -57,7 +61,7 @@ On Linux
 
 ### 编写代码注意事项
 
-获取文件绝对路径时，需用__root_path来拼接，不能直接用node的文件路径，如下：
+如需读取未打包的目录中的文件时，获取文件绝对路径，需用__root_path来拼接，不能直接用node的文件路径，如下：
 需要在web/tmp目录下写入文件project.sb2，假如运行脚本在app目录下，
 正确：var filename = "./tmp/project.sb2";
 var filePath = path.resolve(__root_path, './web', filename);
