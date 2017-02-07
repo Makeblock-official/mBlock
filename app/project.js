@@ -74,7 +74,6 @@ function Project(app) {
         var tmpPath =path.replace(/\\/g,"/").split("/");
         var tmpTitle = tmpPath[tmpPath.length-1];
         var filename = "project."+tmp[tmp.length-1];
-		console.log('__root_path路径为：'+__root_path);
 		var filePath = pathModule.resolve(__root_path, 'web', 'tmp', filename);
         fs.writeFileSync(filePath, data);
         if(newProject) {
