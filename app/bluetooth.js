@@ -26,7 +26,11 @@ function Bluetooth(app){
 		} else if (_currentBluetooth == '') {
 			return false;
 		} else {
-		    return !(bluetoothChildProcess.killed);
+			if (typeof(name) == 'undefined') { // 直接读取
+			    return !(bluetoothChildProcess.killed);
+			} else { // 显示
+				return (name == _currentBluetooth) && (!(bluetoothChildProcess.killed));
+			}
 		}
 	};
 	
