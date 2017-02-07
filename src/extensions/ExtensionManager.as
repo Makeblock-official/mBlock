@@ -217,6 +217,8 @@ public class ExtensionManager {
 			case "Auriga":
 			case "MegaPi":
 			case "Orion":
+			//由于扩展菜单还不完善，这里先这样改，将arduino当成公司的板 20170207
+			case "Arduino":
 				return true;
 		}
 		return false;
