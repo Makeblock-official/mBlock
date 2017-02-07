@@ -385,7 +385,7 @@
 	"Transportation": "运输工具",
 	"temperature": "温度",
 	"Nature": "自然",
-	"Left Thumb": "左摇杆",
+	"Left Stick": "左摇杆",
 	"line follower %d.bluePorts": "巡线传感器%d.bluePorts",
 	"Down Button Pressed?": "向下按钮被按下了吗？",
 	"UNO Shield Program": "UNO Shield 主程序",
@@ -448,7 +448,7 @@
 	"broadcast %m.broadcast and wait": "广播 %m.broadcast 并等待",
 	"Cowbell": "牛铃",
 	"Half": "二分之一",
-	"Right Thumb": "右摇杆",
+	"Right Stick": "右摇杆",
 	"wait %n secs": "等待 %n 秒",
 	"Examples": "示例程序",
 	"Remix": "再创作",
@@ -649,7 +649,7 @@
 	"else": "否则",
 	"when on board button %m.button_state": "当板载按钮%m.button_state",
 	"Connecting Bluetooth": "连接蓝牙中",
-	"2.4G Joystick %m.joystickKyes pressed": "2.4G摇杆 %m.joystickKyes 被按下",
+	"2.4G Joystick %m.joystickKyes pressed": "2.4G手柄 %m.joystickKyes 被按下",
 	"Sign out": "退出系统",
 	"Uploading sprite...": "正在上传角色...",
 	"sound": "声音",
@@ -960,5 +960,6 @@
 	"Uploading...": "Uploading...",
 	"Upload Succeeded": "Upload Succeeded",
 	"Hardware communication timeout, please confirm whether the serial connection": "Hardware communication timeout, please confirm whether the serial connection",
-    "No Bluetooth devices found around it!": "No Bluetooth devices found around it!"
+	"No Bluetooth devices found around it!": "No Bluetooth devices found around it!",
+	"the 2.4G cannot connect to machine !": "the 2.4G cannot connect to machine !"
 }
