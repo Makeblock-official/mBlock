@@ -7,7 +7,7 @@ const utils = require('./utils');
 var Boards = require('./boards.js');
 var app = null;
 var T = null;
-var checkUSB;
+var checkUSB, errorStatus;
 const boardFirmwareMap = {
     'arduino_uno': 'uno.hex',
     'arduino_leonardo': 'leonardo.hex',
@@ -102,12 +102,19 @@ var FirmwareUploader = {
         this.uploadWithAvrdude(boardDefaultProgramMap[boardName]);
     },
 
+    /**
+     * 通过小内存机多次测试刷新固件经验得出超时时间，range最多3分钟，mbot最多20秒
+     * @param on
+     * @param callback
+     */
     uploadingWatchDog: function (on, callback) {
         if (!on) return;
+        // mbot : me/mbot_uno , ranger : me/auriga_mega2560
+        var boardName = app.getBoards().currentBoardName();
+        var timeout = ('me/mbot_uno' === boardName) ? 20000 : 180000;
         checkUSB = setInterval(function() {
-            app.alert({'message':T('Upload Failed'), 'hasCancel':true});
             callback();
-        }, 7000);
+        }, timeout);
     },
 
     uploadWithAvrdude: function(hexFileName) {
@@ -142,11 +149,17 @@ var FirmwareUploader = {
             // 第一次进入上传状态，看门狗启动，超时未完成上传即kill进程
             self.uploadingWatchDog(!uploading, function () {
                 avrdude.kill('SIGKILL');
+                errorStatus = 'TIMEOUT';
+                app.alert({'message':T('Hardware communication timeout, please confirm whether the serial connection'), 'hasCancel':true});
                 clearInterval(checkUSB);
             });
             uploading = true;
         });
         avrdude.on('close', function(code){
+            clearInterval(checkUSB);
+            if ('TIMEOUT' === errorStatus) {
+                return;
+            }
             if(code == 0) {
 				app.alert({'message':T('Upload Succeeded'), 'hasCancel':true});
             } else {
@@ -154,7 +167,6 @@ var FirmwareUploader = {
             }
             avrdude.kill('SIGKILL');
             app.getSerial().connect(serialPort);
-            clearInterval(checkUSB);
         });
     },
 

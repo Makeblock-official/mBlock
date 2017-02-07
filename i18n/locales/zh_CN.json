@@ -958,5 +958,6 @@
 	"You do not have sufficient rights to save properties": "You do not have sufficient rights to save properties",
 	"It doesn't exist": "It doesn't exist",
 	"Uploading...": "Uploading...",
-	"Upload Succeeded": "Upload Succeeded"
+	"Upload Succeeded": "Upload Succeeded",
+	"Hardware communication timeout, please confirm whether the serial connection": "Hardware communication timeout, please confirm whether the serial connection"
 }
