@@ -14,11 +14,11 @@ Just standard npm stuff. You know that.
 
 (If you want to use the Arduino features, put the arduino executable folder under /tools)
 
-> npm install
-> npm run rebuild-serialport
-> npm run rebuild-hid
-> npm run rebuild-bluetooth
-> npm start
+npm install  
+npm run rebuild-serialport  
+npm run rebuild-hid  
+npm run rebuild-bluetooth  
+npm start
 
 
 # Repo Status
