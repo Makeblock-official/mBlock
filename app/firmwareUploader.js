@@ -102,17 +102,11 @@ var FirmwareUploader = {
         this.uploadWithAvrdude(boardDefaultProgramMap[boardName]);
     },
 
-    uploadingWatchDog: function (on, avrdude) {
+    uploadingWatchDog: function (on, callback) {
         if (!on) return;
-        var serialPort = app.getSerial().currentSerialPort();
-        var conn;
         checkUSB = setInterval(function() {
-            // conn = app.getSerial().isConnected(serialPort);
-            // if (!conn) {
-                app.alert({'message':T('Upload Failed'), 'hasCancel':true});
-                avrdude.kill('SIGKILL');
-                clearInterval(checkUSB);
-            // }
+            app.alert({'message':T('Upload Failed'), 'hasCancel':true});
+            callback();
         }, 7000);
     },
 
@@ -145,7 +139,11 @@ var FirmwareUploader = {
                 avrdude.kill('SIGKILL');
             }
             app.alert({'message':T('Uploading')+'...'+utils.getProgressCharacter(), 'hasCancel':false});
-            self.uploadingWatchDog(!uploading, avrdude);
+            // 第一次进入上传状态，看门狗启动，超时未完成上传即kill进程
+            self.uploadingWatchDog(!uploading, function () {
+                avrdude.kill('SIGKILL');
+                clearInterval(checkUSB);
+            });
             uploading = true;
         });
         avrdude.on('close', function(code){
