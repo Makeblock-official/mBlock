@@ -960,5 +960,6 @@
 	"Uploading...": "Uploading...",
 	"Upload Succeeded": "Upload Succeeded",
 	"Hardware communication timeout, please confirm whether the serial connection": "Hardware communication timeout, please confirm whether the serial connection",
-    "No Bluetooth devices found around it!": "No Bluetooth devices found around it!"
+	"No Bluetooth devices found around it!": "No Bluetooth devices found around it!",
+	"the 2.4G cannot connect to machine !": "the 2.4G cannot connect to machine !"
 }

@@ -15,6 +15,7 @@ function HID(app){
 	var self = this;
 	_app = app;
 	_client = _app.getClient();
+    var _translator = app.getTranslator();
 
 	//返回hid设备列表
 	this.list = function(callback) {
@@ -48,7 +49,7 @@ function HID(app){
 				_port.write(arr);
 
 			}else{
-				app.alert('the 2.4G cannot connect to machine !');
+				app.alert(_translator.map('the 2.4G cannot connect to machine !'));
 			}
 
 		}
@@ -67,7 +68,7 @@ function HID(app){
             }
         }
         if(!isDeviceFound){
-			app.alert("Cannot find 2.4G dongle");
+			app.alert(_translator.map("Cannot find 2.4G dongle"));
             return;
         }
 		$isConnect = false;
