@@ -161,11 +161,6 @@ var FirmwareUploader = {
         });
         avrdude.on('close', function(code){
             clearInterval(checkUSB);
-            console.log('avedude.close====>');
-            console.log(avrdude.connected);
-            console.log(code);
-            console.log(avrdude.killed);
-            console.log(errorStatus);
             if ('TIMEOUT' === errorStatus) {
                 errorStatus = '';
                 return;
@@ -179,8 +174,6 @@ var FirmwareUploader = {
             app.getSerial().connect(serialPort);
         });
         avrdude.on('exit', function (code) {
-            console.log('avedude.exit====>');
-            console.log(code);
         });
     },
 
