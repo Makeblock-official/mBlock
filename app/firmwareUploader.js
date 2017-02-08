@@ -156,23 +156,16 @@ var FirmwareUploader = {
                 app.alert({'message':T('Hardware communication timeout, please confirm whether the serial connection'), 'hasCancel':true});
                 clearInterval(checkUSB);
             });
-            // 刷固件成功
-            if (data.toString().indexOf('avrdude done.')>=0 && data.toString().indexOf('Thank you.')>=0) {
-                uploaderSuccess = true;
-            }
+
             uploading = true;
         });
         avrdude.on('close', function(code){
             clearInterval(checkUSB);
-            console.log('avedude.close====>');
-            console.log(avrdude.connected);
-            console.log(code);
-            console.log(avrdude.killed);
-            console.log(errorStatus);
-            if ('TIMEOUT' === errorStatus && !uploaderSuccess) {
+            if ('TIMEOUT' === errorStatus) {
+                errorStatus = '';
                 return;
             }
-            if(code == 0 && uploaderSuccess) {
+            if(code == 0) {
 				app.alert({'message':T('Upload Succeeded'), 'hasCancel':true});
             } else {
                 app.alert({'message':T('Upload Failed'), 'hasCancel':true});
@@ -181,8 +174,6 @@ var FirmwareUploader = {
             app.getSerial().connect(serialPort);
         });
         avrdude.on('exit', function (code) {
-            console.log('avedude.exit====>');
-            console.log(code);
         });
     },
 
