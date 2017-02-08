@@ -563,7 +563,7 @@ function AppMenu(app){
         _undelete = true;
         self.update();
     }
-    this.updateConnectionStatus = function(obj){
+    this.updateConnectionStatus = function(obj){ // 仅是串口连接状态，true：已连接，false：未连接
         _connectionStatus = obj.connected;
     }
 }

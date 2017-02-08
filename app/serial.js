@@ -114,9 +114,12 @@ function Serial(app){
 		_emitter.on(event,listener);
 	}
 	this.onOpen = function(){
+		// 更新菜单前，需要更新串口连接状态
+		var objectConnected = {'connected':self.isConnected()};
+		_app.getMenu().updateConnectionStatus(objectConnected);
         self.update();
 		if(_client){
-			_client.send("connected",{connected:self.isConnected()})
+			_client.send("connected", objectConnected);
 		}
 	}
 	this.onDisconnect = function(){ // 主动断开连接或直接拔掉串口线
