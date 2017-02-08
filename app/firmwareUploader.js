@@ -103,7 +103,7 @@ var FirmwareUploader = {
     },
 
     /**
-     * 通过小内存机多次测试刷新固件经验得出超时时间，range最多3分钟，mbot最多20秒
+     * 通过小内存机多次测试刷新固件经验得出超时时间，range最多2分钟，mbot最多20秒
      * @param on
      * @param callback
      */
@@ -111,7 +111,7 @@ var FirmwareUploader = {
         if (!on) return;
         // mbot : me/mbot_uno , ranger : me/auriga_mega2560
         var boardName = app.getBoards().currentBoardName();
-        var timeout = ('me/mbot_uno' === boardName) ? 20000 : 180000;
+        var timeout = ('me/mbot_uno' === boardName) ? 20000 : 120000;
         checkUSB = setInterval(function() {
             callback();
         }, timeout);
