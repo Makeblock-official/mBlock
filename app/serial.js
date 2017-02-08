@@ -40,14 +40,14 @@ function Serial(app){
 	}
 	this.connect = function(name){ // linux : /dev/ttyUSB0
 	    _currentSerialPort = name;
-		
 		_port = new SerialPort(_currentSerialPort,{ baudRate:115200 })
 		_port.on('open',function(){ // 串口连接，进行连接
 			self.onOpen();
 		})
 		_port.on('error',function(err){
             if (err.message.indexOf('cannot open') > -1) { // cannot open XXX : 无权限
-				sudoer.enableSerialInLinux(errorCallbackHander);
+				// sudoer.enableSerialInLinux(errorCallbackHander);
+                sudoer.enableSerialRule(errorCallbackHander);
 			} else if (err.message.indexOf('Cannot lock port') > -1) { // Cannot lock port : 端口被锁
 				console.log('port is locked:');
 			}
