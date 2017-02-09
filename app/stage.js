@@ -27,6 +27,7 @@ function Stage(app) {
             self.onClickSmallStageLayout();
         if (name == 'turbo mode')
             _stageMode[name] = !_stageMode[name];
+        _client.send("changeStageMode", {name: name});
         _app.getMenu().update();
     }
     this.onClickHideStageLayout = function () {
