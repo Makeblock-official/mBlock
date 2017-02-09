@@ -25,8 +25,10 @@ function Stage(app) {
             self.onClickArduinoMode();
         if (name == 'small stage layout')
             self.onClickSmallStageLayout();
-        if (name == 'turbo mode')
+        if (name == 'turbo mode') {
             _stageMode[name] = !_stageMode[name];
+            _client.send("changeStageMode", {name: name});
+        }
         _app.getMenu().update();
     }
     this.onClickHideStageLayout = function () {
@@ -68,7 +70,7 @@ function Stage(app) {
         //_stageMode["small stage layout"] = _stageMode[name];为了和旧版本的行为保持一致，界面效果修改为下面。
         _stageMode["small stage layout"] = false;
 
-    }
+   }
     this.onlyChangeArduinoStageMode = function (bool) {
         _stageMode["arduino mode"] = bool;
         _app.getMenu().update();
