@@ -5,6 +5,7 @@ const {MenuItem} = require("electron")
 const SerialPort = require("serialport");
 const events = require('events');
 const sudoer = require('./sudoCommands.js');
+const fs = require("fs");
 var _emitter = new events.EventEmitter();  
 var _currentSerialPort=""
 var _port;
@@ -40,14 +41,20 @@ function Serial(app){
 	}
 	this.connect = function(name){ // linux : /dev/ttyUSB0
 	    _currentSerialPort = name;
-		
 		_port = new SerialPort(_currentSerialPort,{ baudRate:115200 })
 		_port.on('open',function(){ // 串口连接，进行连接
 			self.onOpen();
 		})
 		_port.on('error',function(err){
             if (err.message.indexOf('cannot open') > -1) { // cannot open XXX : 无权限
-				sudoer.enableSerialInLinux(errorCallbackHander);
+				// sudoer.enableSerialInLinux(errorCallbackHander);
+                fs.exists('/etc/udev/rules.d/20-usb-serial.rules', function (exists) {
+					if (exists) {
+                        _app.alert(_translator.map("Serial port is not connected, please disconnect retry."));
+					} else {
+                        sudoer.enableSerialRule(errorCallbackHander);
+					}
+                });
 			} else if (err.message.indexOf('Cannot lock port') > -1) { // Cannot lock port : 端口被锁
 				console.log('port is locked:');
 			}
@@ -107,9 +114,12 @@ function Serial(app){
 		_emitter.on(event,listener);
 	}
 	this.onOpen = function(){
+		// 更新菜单前，需要更新串口连接状态
+		var objectConnected = {'connected':self.isConnected()};
+		_app.getMenu().updateConnectionStatus(objectConnected);
         self.update();
 		if(_client){
-			_client.send("connected",{connected:self.isConnected()})
+			_client.send("connected", objectConnected);
 		}
 	}
 	this.onDisconnect = function(){ // 主动断开连接或直接拔掉串口线

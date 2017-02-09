@@ -136,11 +136,14 @@ var FirmwareUploader = {
         var command = self.getArduinoPath() + '/hardware/tools/avr/bin/avrdude';
         var args = self.getAvrdudeParameter(serialPort, hexFileName); 
         app.getSerial().close();
-        var uploading = false;
+        var uploading = false, uploaderSuccess = false;
         var avrdude = spawn(command, args, {cwd: __root_path});
         avrdude.stdout.on('data', function(data){
+            console.log('avdude.stdout.data'+data);
         });
         avrdude.stderr.on('data', function(data){
+            console.log('avedude.stderr.data====>');
+            console.log(data.toString());
             app.logToArduinoConsole(data.toString());
             if(data.toString().indexOf('programmer is not responding')>=0){
                 avrdude.kill('SIGKILL');
@@ -153,11 +156,13 @@ var FirmwareUploader = {
                 app.alert({'message':T('Hardware communication timeout, please confirm whether the serial connection'), 'hasCancel':true});
                 clearInterval(checkUSB);
             });
+
             uploading = true;
         });
         avrdude.on('close', function(code){
             clearInterval(checkUSB);
             if ('TIMEOUT' === errorStatus) {
+                errorStatus = '';
                 return;
             }
             if(code == 0) {
@@ -167,6 +172,8 @@ var FirmwareUploader = {
             }
             avrdude.kill('SIGKILL');
             app.getSerial().connect(serialPort);
+        });
+        avrdude.on('exit', function (code) {
         });
     },
 
