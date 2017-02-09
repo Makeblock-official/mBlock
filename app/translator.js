@@ -16,7 +16,6 @@ const _languages = [
 			{name:"ko",label:"한국어"},
 			{name:"da",label:"Dansk"},
             {name:"ru_RU",label:"Русский"},
-            {name:"ja_HIRA",label:"にほんご"},
             {name:"ja",label:"日本語"},
             {name:"nl_NL",label:"Nederlands"},
             {name:"de_DE",label:"Deutsch"},
