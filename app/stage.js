@@ -51,9 +51,9 @@ function Stage(app) {
             //说明当前是从 arduino mode 进行 小舞台模式，此时需要先取消 arduino mode
             self.onClickArduinoMode();
         } else if (_stageMode["hide stage layout"]) {
-            //说明当前是从 隐藏模式 进入 小舞台模式，此时直接取消隐藏模式即可，不需要进入小舞台模式
+            //说明当前是从 隐藏模式 进入 小舞台模式，此时直接取消隐藏模式即可，不需要进入小舞台模式(后面应测试要求改成进入小舞台)
             self.onClickHideStageLayout();
-            return;
+            //return;//(后面应测试要求改成进入小舞台因而注掉此行)
         }
         //执行切换小舞台模式操作
         var name = "small stage layout";
