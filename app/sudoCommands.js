@@ -10,8 +10,6 @@ var SudoCommands = {
      * @param callback
      */
     enableSerialRule: function (callback) {
-        this.enableSerialInLinux(function (error, stderr, stdout) {
-        });
         this.spawn( 'bash '+path.join(__root_path, 'tools/enableSerial.sh') , [], callback);
     },
     enableHIDInLinux: function(callback) {
