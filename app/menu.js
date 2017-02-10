@@ -66,14 +66,14 @@ function AppMenu(app){
                     {
                         type: 'separator'
                     },
-                    {
+                    /*{
                         name:'Import Image',
                         label: _translator.map('Import Image')
                     },
                     {
                         name:'Export Image',
                         label: _translator.map('Export Image')
-                    },
+                    },*/
                     {
                         type: 'separator'
                     },
