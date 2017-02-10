@@ -489,7 +489,7 @@
 	"repeat until %b": "重复执行直到 %b",
 	"Port3A": "接口3A",
 	"limit switch %d.normalPort %d.slot": "限位开关 %d.normalPort %d.slot",
-	"Okey": "已连接",
+	"Okay": "已连接",
 	"left-right": "左-右翻转",
 	"fear": "恐惧",
 	"No Bluetooth": "蓝牙未开启",
@@ -953,5 +953,14 @@
 	"Wooden Flute": "木笛",
 	"Microsoft Cognitive Service Setting": "微软认知服务设置",
 	"Ellipse": "椭圆",
-	"New Project": "New Project"
+	"Serial port is not connected, please disconnect retry.": "Serial port is not connected, please disconnect retry.",
+	"port is locked:":"port is locked:",
+	"Please restart your computer to enable serial ports.": "Please restart your computer to enable serial ports.",
+	"Please connect the serial port.": "Please connect the serial port.",
+	"No Bluetooth devices found around it!": "No Bluetooth devices found around it!",
+	"You do not have sufficient rights to save properties": "You do not have sufficient rights to save properties",
+	"It doesn't exist": "It doesn't exist",
+	"Directory could not be created": "Directory could not be created",
+	"Cannot find 2.4G dongle": "Cannot find 2.4G dongle",
+	"Cannot connect to the 2.4G device. Please check your USB connection or use another USB port.": "Cannot connect to the 2.4G device. Please check your USB connection or use another USB port."
 }

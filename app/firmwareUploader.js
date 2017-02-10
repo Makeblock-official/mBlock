@@ -132,18 +132,15 @@ var FirmwareUploader = {
         
         var self = this;
         console.log('upgrade firmware');
-        app.alert({'message':T('Uploading...'), 'hasCancel':false});
+        app.alert({'message':T('Uploading') + '...', 'hasCancel':false});
         var command = self.getArduinoPath() + '/hardware/tools/avr/bin/avrdude';
         var args = self.getAvrdudeParameter(serialPort, hexFileName); 
         app.getSerial().close();
         var uploading = false, uploaderSuccess = false;
         var avrdude = spawn(command, args, {cwd: __root_path});
         avrdude.stdout.on('data', function(data){
-            console.log('avdude.stdout.data'+data);
         });
         avrdude.stderr.on('data', function(data){
-            console.log('avedude.stderr.data====>');
-            console.log(data.toString());
             app.logToArduinoConsole(data.toString());
             if(data.toString().indexOf('programmer is not responding')>=0){
                 avrdude.kill('SIGKILL');
@@ -166,7 +163,7 @@ var FirmwareUploader = {
                 return;
             }
             if(code == 0) {
-				app.alert({'message':T('Upload Succeeded'), 'hasCancel':true});
+				app.alert({'message':T('Upload Finish'), 'hasCancel':true});
             } else {
                 app.alert({'message':T('Upload Failed'), 'hasCancel':true});
             }
