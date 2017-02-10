@@ -70,7 +70,25 @@ function Translator(app){
         }
         return items;
     }
-    this.setLanguage("zh_CN");
+    this.setOsDefaultLang = function () {
+        console.log(process.env.LANGUAGE);
+        var defaultLang = process.env.LANGUAGE.toLowerCase();
+        if (defaultLang.indexOf('zh_cn') > -1) {
+            this.setLanguage("zh_CN");
+        } else if (defaultLang.indexOf('zh_tw') > -1) {
+            this.setLanguage("zh_TW");
+        } else if (defaultLang.indexOf('fr') > -1) {
+            this.setLanguage("fr_FR");
+        } else if (defaultLang.indexOf('es') > -1) {
+            this.setLanguage("es_ES");
+        } else if (defaultLang.indexOf('ja') > -1) {
+            this.setLanguage("ja");
+        } else {
+            this.setLanguage("en");
+        }
+    }
+    // this.setLanguage("zh_CN");
+    this.setOsDefaultLang();    // 设置系统默认语言
     this.map = function(str){
         return i18n.__(str);
     }
