@@ -631,11 +631,11 @@ public class ExtensionManager {
 //				MBlock.app.topBarPart.setBluetoothTitle(false);
 			}
 			else if (ext.problem != '') indicator.setColorAndMsg(0xE0E000, ext.problem);
-			else indicator.setColorAndMsg(0x00C000, ext.success);
+			else indicator.setColorAndMsg(0x00C000, Translator.map(ext.success));
 		}else{
 			if (msecsSinceLastResponse > 500) indicator.setColorAndMsg(0xE00000, Translator.map('Disconnected'));
 			else if (ext.problem != '') indicator.setColorAndMsg(0xE0E000, ext.problem);
-			else indicator.setColorAndMsg(0x00C000, ext.success);
+			else indicator.setColorAndMsg(0x00C000, Translator.map(ext.success));
 		}
 		
 	}
