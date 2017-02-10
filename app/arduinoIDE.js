@@ -127,7 +127,7 @@ var ArduinoIDE = {
         });
         arduinoProcess.on('close', function(code){
             if (code == 0) {
-                app.alert(T('Upload Succeeded'));
+                app.alert(T('Upload Finish'));
             }
             else {
                 app.alert(T('Upload Failed'));

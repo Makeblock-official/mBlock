@@ -26,7 +26,7 @@ function AppMenu(app){
                 submenu: [
                     {
                         name:'New',
-                        label: _translator.map('New Project'),
+                        label: _translator.map('New'),
                         accelerator: 'CmdOrCtrl+N',
                         click: function (item, focusedWindow) {
                             _emitter.emit("newProject");

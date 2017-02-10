@@ -11,10 +11,12 @@ var _currentProjectPath = "";
 var _client, _app, _title;
 var _saveAndNew = false;
 var newProject = true;
+var _translator;
 function Project(app) {
     var self = this;
     _app = app;
     _client = _app.getClient();
+    _translator = app.getTranslator();
     /**
      * 打开保存窗口，将项目文件写入到本地文件系统
      */
@@ -85,8 +87,8 @@ function Project(app) {
             var ret = dialog.showMessageBox(BrowserWindow.getFocusedWindow(), {
                 type: 'question',
                 title: '',
-                message: '替换当前项目吗？',
-                buttons: ['确定', '取消'],
+                message: _translator.map('Replace contents of the current project?'),
+                buttons: [_translator.map('OK'), _translator.map('Cancel')],
                 noLink: true
             });
             if(_client &&ret==0){
@@ -102,8 +104,8 @@ function Project(app) {
         var ret = dialog.showMessageBox(BrowserWindow.getFocusedWindow(), {
             type: 'question',
             title: '',
-            message: '保存项目？',
-            buttons: ['保存', '不保存', '取消'],
+            message: _translator.map('Save project?'),
+            buttons: [_translator.map('Save'), _translator.map("Don't save"), _translator.map('Cancel')],
             noLink: true
         });
 
