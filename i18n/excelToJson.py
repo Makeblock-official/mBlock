@@ -12,6 +12,7 @@ def read_xlsx(file= '../src/locale/locale.xlsx',by_name=u'locale'):
     col = list()
     pr_list = list()
     ret = {}
+    print 'double KEY========>:'
     for rowidx in range(booksheet.nrows):
         # print rowidx
         if rowidx == 1:
@@ -28,7 +29,6 @@ def read_xlsx(file= '../src/locale/locale.xlsx',by_name=u'locale'):
             #     valzero = valzero.replace('\"','\'')
             # if string.find(valzero,'<') != -1:
             #     continue
-            print 'Repeated KEY========>:'
             if valzero in pr_list:
                 print valzero
             pr_list.append(valzero)
