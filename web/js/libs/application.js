@@ -27,6 +27,7 @@ function Application(flash){
     });  
     ipcRenderer.on('newProject', (sender,obj) => {  
         _flash.newProject(obj.title);
+        self.setSaveStatus(false);
     });   
     ipcRenderer.on('setProjectTitle', (sender,obj) => {  
         _flash.setProjectTitle(obj.title);
