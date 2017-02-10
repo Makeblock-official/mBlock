@@ -489,7 +489,7 @@
 	"repeat until %b": "重复执行直到 %b",
 	"Port3A": "接口3A",
 	"limit switch %d.normalPort %d.slot": "限位开关 %d.normalPort %d.slot",
-	"Okey": "已连接",
+	"Okay": "已连接",
 	"left-right": "左-右翻转",
 	"fear": "恐惧",
 	"No Bluetooth": "蓝牙未开启",
