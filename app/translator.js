@@ -72,7 +72,7 @@ function Translator(app){
     }
     this.setOsDefaultLang = function () {
         console.log(process.env.LANGUAGE);
-        var defaultLang = process.env.LANGUAGE.toLowerCase();
+        var defaultLang = process.env&&process.env.LANGUAGE ? process.env.LANGUAGE.toLowerCase() : '';
         if (defaultLang.indexOf('zh_cn') > -1) {
             this.setLanguage("zh_CN");
         } else if (defaultLang.indexOf('zh_tw') > -1) {
