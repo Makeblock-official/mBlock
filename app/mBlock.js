@@ -31,7 +31,6 @@ function mBlock(){
 		console.log("ready")
 		_client = event.sender;
 		_localStorage = new LocalStorage();
-		_project = new Project(self);
 		_translator = new Translator(self);
 		_fontSize = new FontSize(self);
 		_serial = new Serial(self);
@@ -39,6 +38,7 @@ function mBlock(){
 		_stage = new Stage(self);
 		_hid = new HID(self);
 		_bluetooth = new Bluetooth(self);
+        _project = new Project(self);
 		_firmwareUploader = FirmwareUploader.init(self);
 		_arduinoIDE = ArduinoIDE.init(self);
 		_menu = new AppMenu(self);

@@ -3,7 +3,9 @@
  */
 
 const{MenuItem} = require('electron') ;
-var _client,_size,_app;
+const Configuration = require('./configuration.js');
+
+var _client,_size,_app,_configuration;
 const _fontSize = [
 			{label:"8"},
 			{label:"10"},
@@ -18,6 +20,7 @@ const _fontSize = [
 function FontSize(app){
     _app = app;
     _client = _app.getClient();
+    _configuration = new Configuration();
     var _translator = _app.getTranslator();
     var self = this;
     this.setFontSize = function (size){
@@ -40,6 +43,7 @@ function FontSize(app){
                 type:'checkbox',
                 click:function(item,focusedWindow){
                     self.setFontSize(item.label);
+                    _configuration.set('setFontSize', item.label);
                     _app.getMenu().update();
                 }
             })
@@ -47,7 +51,18 @@ function FontSize(app){
         }
         return m;
     }
-    this.setFontSize("12");
+
+    this.setDefaultSize = function () {
+        var setSize = _configuration.get('setFontSize');
+        if (!setSize) {
+            this.setFontSize("12");
+        } else {
+            this.setFontSize(setSize);
+        }
+    }
+
+    this.setDefaultSize();
+    // this.setFontSize("12");
 
 }
 module.exports = FontSize;

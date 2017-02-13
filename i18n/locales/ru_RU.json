@@ -1,1 +1,25 @@
-{}
+{
+	"File": "File",
+	"New": "New",
+	"Load Project": "Load Project",
+	"Save Project": "Save Project",
+	"Save Project As": "Save Project As",
+	"Edit": "Edit",
+	"Hide stage layout": "Hide stage layout",
+	"Small stage layout": "Small stage layout",
+	"Turbo mode": "Turbo mode",
+	"Arduino mode": "Arduino mode",
+	"Connect": "Connect",
+	"Serial Port": "Serial Port",
+	"Refresh": "Refresh",
+	"Bluetooth": "Bluetooth",
+	"Discover": "Discover",
+	"Clear Bluetooth": "Clear Bluetooth",
+	"2.4G Serial": "2.4G Serial",
+	"Upgrade Firmware": "Upgrade Firmware",
+	"Reset Default Program": "Reset Default Program",
+	"Boards": "Boards",
+	"Language": "Language",
+	"set font size": "set font size",
+	"Set FirmWare Mode": "Set FirmWare Mode"
+}

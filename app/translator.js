@@ -4,8 +4,10 @@
 const i18n = require('i18n');
 const{MenuItem} = require('electron')
 const events = require('events');
+const Configuration = require('./configuration.js');
+
 var _emitter = new events.EventEmitter();  
-var _client,_lang,_app;
+var _client,_lang,_app,_configuration;
 const _languages = [
 			{name:"en",label:"English"},
 			{name:"zh_CN",label:"简体中文"},
@@ -32,6 +34,7 @@ function Translator(app){
     _app = app;
     _client = _app.getClient();
     _lang = _app.getLocale().split("-").join("_");
+    _configuration = new Configuration();
     var self = this;
     var locales = ['en'];
     for(var i in _languages){
@@ -63,6 +66,7 @@ function Translator(app){
                 type:'checkbox',
                 click:function(item,focusedWindow){
                     self.setLanguage(item.name);
+                    _configuration.set('setLang', item.name);  // 记录用户选择什么语言
                     _app.getMenu().update();
                 }
             })
@@ -72,7 +76,14 @@ function Translator(app){
     }
     this.setOsDefaultLang = function () {
         console.log(process.env.LANGUAGE);
-        var defaultLang = process.env&&process.env.LANGUAGE ? process.env.LANGUAGE.toLowerCase() : '';
+        var setLang = _configuration.get('setLang');
+        var defaultLang;
+        if (!setLang) {
+            defaultLang = process.env&&process.env.LANGUAGE ? process.env.LANGUAGE.toLowerCase() : '';
+        } else {
+            defaultLang = setLang.toString().toLowerCase();
+        }
+
         if (defaultLang.indexOf('zh_cn') > -1) {
             this.setLanguage("zh_CN");
         } else if (defaultLang.indexOf('zh_tw') > -1) {
