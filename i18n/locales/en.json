@@ -45,5 +45,15 @@
 	"Feedback": "Feedback",
 	"set font size": "set font size",
 	"Set FirmWare Mode": "Set FirmWare Mode",
-	"New": "New"
+	"New": "New",
+	"Serial port is not connected, please disconnect retry.": "Serial port is not connected, please unplug the usb and redo the process.",
+	"port is locked:":"The serial port is used by other devices, please reconnect.",
+	"Please restart your computer to enable serial ports.": "The permission has changed, please restart your computer.",
+	"Please connect the serial port.": "Please check the serial port is connected.",
+	"No Bluetooth devices found around it!": "Bluetooth device is not found.",
+	"You do not have sufficient rights to save properties": "Please set the permission to write the file.",
+	"It doesn't exist": "The file is not exist.",
+	"Directory could not be created": "Please set the permission to create the directory.",
+	"Cannot find 2.4G dongle": "2.4G device is not found.",
+	"Cannot connect to the 2.4G device. Please check your USB connection or use another USB port.": "Cannot find 2.4G transmitter, please check the connection or use another USB port."
 }
