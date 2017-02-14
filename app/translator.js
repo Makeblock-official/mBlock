@@ -77,25 +77,23 @@ function Translator(app){
     this.setOsDefaultLang = function () {
         console.log(process.env.LANGUAGE);
         var setLang = _configuration.get('setLang');
-        var defaultLang;
         if (!setLang) {
-            defaultLang = process.env&&process.env.LANGUAGE ? process.env.LANGUAGE.toLowerCase() : '';
+            var defaultLang = process.env&&process.env.LANGUAGE ? process.env.LANGUAGE.toLowerCase() : '';
+            if (defaultLang.indexOf('zh_cn') > -1) {
+                this.setLanguage("zh_CN");
+            } else if (defaultLang.indexOf('zh_tw') > -1) {
+                this.setLanguage("zh_TW");
+            } else if (defaultLang.indexOf('fr') > -1) {
+                this.setLanguage("fr_FR");
+            } else if (defaultLang.indexOf('es') > -1) {
+                this.setLanguage("es_ES");
+            } else if (defaultLang.indexOf('ja') > -1) {
+                this.setLanguage("ja");
+            } else {
+                this.setLanguage("en");
+            }
         } else {
-            defaultLang = setLang.toString().toLowerCase();
-        }
-
-        if (defaultLang.indexOf('zh_cn') > -1) {
-            this.setLanguage("zh_CN");
-        } else if (defaultLang.indexOf('zh_tw') > -1) {
-            this.setLanguage("zh_TW");
-        } else if (defaultLang.indexOf('fr') > -1) {
-            this.setLanguage("fr_FR");
-        } else if (defaultLang.indexOf('es') > -1) {
-            this.setLanguage("es_ES");
-        } else if (defaultLang.indexOf('ja') > -1) {
-            this.setLanguage("ja");
-        } else {
-            this.setLanguage("en");
+            this.setLanguage(setLang);
         }
     }
     // this.setLanguage("zh_CN");
