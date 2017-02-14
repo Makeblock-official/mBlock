@@ -953,7 +953,7 @@
 	"Wooden Flute": "木笛",
 	"Microsoft Cognitive Service Setting": "微软认知服务设置",
 	"Ellipse": "椭圆",
-	"Serial port is not connected, please disconnect retry.": "串口没有连接，请重新链接设备。",
+	"Serial port is not connected, please disconnect retry.": "串口没有连接，请重新连接设备。",
 	"port is locked:":"串口被占用，请重新链接设备。",
 	"Please restart your computer to enable serial ports.": "权限已经更新，请重新启动计算机。",
 	"Please connect the serial port.": "请检查串口已经链接。",
