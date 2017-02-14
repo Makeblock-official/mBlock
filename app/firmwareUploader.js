@@ -22,7 +22,8 @@ const boardFirmwareMap = {
 };
 
 const boardDefaultProgramMap = {
-    'me/mbot_uno': 'mbot_reset.hex',
+    'me/mbot_uno'  : 'mbot_reset.hex',
+	'me/orion_uno' : 'starter_factory_firmware.hex'
 };
 
 var FirmwareUploader = {
@@ -86,7 +87,7 @@ var FirmwareUploader = {
 
     allowResetDefaultProgram: function() {
         var boardName = app.getBoards().currentBoardName();
-        if(boardName == 'me/mbot_uno') {
+        if(boardName == 'me/mbot_uno' || boardName == 'me/orion_uno') {
             return true;
         }
         return false;
@@ -98,7 +99,7 @@ var FirmwareUploader = {
     },
 
     resetDefaultProgram: function() {
-        var boardName = app.getBoards().currentBoardName();
+        var boardName = app.getBoards().currentBoardName();console.log('版：');console.log(boardName);
         this.uploadWithAvrdude(boardDefaultProgramMap[boardName]);
     },
 
