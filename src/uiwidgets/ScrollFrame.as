@@ -225,7 +225,7 @@ public class ScrollFrame extends Sprite implements DragClient {
 		}
 		if (vScrollbar) {
 			vScrollbar.setWidthHeight(vScrollbar.w, mask.height - (2 * inset));
-			vScrollbar.x = mask.width - vScrollbar.w - inset;
+			vScrollbar.x = 260;//mask.width - vScrollbar.w - inset;
 			vScrollbar.y = inset;
 		}
 		updateScrollbars();

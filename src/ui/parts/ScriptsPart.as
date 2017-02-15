@@ -265,7 +265,7 @@ public class ScriptsPart extends UIPart {
 		if(!MBlock.app.stageIsArduino){
 			return;
 		}
-		if(isByteDisplayMode){
+		if(isByteInputMode){
 			appendMsgWithTimestamp(HexUtil.bytesToString(bytes), true);
 		}else{
 			bytes.position = 0;
@@ -276,19 +276,30 @@ public class ScriptsPart extends UIPart {
 	public function appendMsgFromJs(msg:String,isOut:Boolean):void
 	{
 		var arr:Array = msg.split(",");
-		
-		for(var i:int=0;i<arr.length;i++)
+		JsUtil.log("isByteDisplayMode:"+isByteDisplayMode);
+		if(isByteDisplayMode)
 		{
-			if(isByteDisplayMode)
+			for(var i:int=0;i<arr.length;i++)
 			{
 				arr[i] = Number(arr[i]).toString(16);
+				if(arr[i].length<2)
+				{
+					arr[i] = "0"+arr[i];
+				}
 			}
-			if(arr[i].length<2)
-			{
-				arr[i] = "0"+arr[i];
-			}
+			var tmpmsg:String = arr.join(" ");
 		}
-		var tmpmsg:String = arr.join(" ");
+		else
+		{
+			var ba:ByteArray = new ByteArray();
+			for(i=0;i<arr.length;i++)
+			{
+				ba[i] = arr[i];
+			}
+			tmpmsg = ba.readUTFBytes(ba.length);
+			JsUtil.log("no isByteDisplayMode:"+tmpmsg);
+		}
+		
 		appendMsgWithTimestamp(tmpmsg,isOut);
 	}
 	public function appendMsgWithTimestamp(msg:String, isOut:Boolean):void
