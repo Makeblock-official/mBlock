@@ -84,7 +84,7 @@ var FirmwareUploader = {
         }
         return path.join(__root_path, 'tools/arduino');
     },
-
+    // 是否允许恢复出厂程序，true：允许，false：不允许
     allowResetDefaultProgram: function() {
         var boardName = app.getBoards().currentBoardName();
         if(boardName == 'me/mbot_uno' || boardName == 'me/orion_uno') {
