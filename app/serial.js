@@ -1,91 +1,145 @@
 /**
  * USB串口通讯
+ * zhangkun
  */
 const {MenuItem} = require("electron")
 const SerialPort = require("serialport");
 const events = require('events');
+const childProcess = require('child_process');
 const sudoer = require('./sudoCommands.js');
-const fs = require("fs");
 var _emitter = new events.EventEmitter();  
 var _currentSerialPort=""
-var _port;
+var serialChild, _isopen, opening;
 var _client,_app,_items=[];
 function Serial(app){
 	_app = app;
 	var self = this;
 	var _translator = app.getTranslator();
+    var childProcessPath = __dirname + '/serialChild.js';
 	_client = _app.getClient();
+    _isopen = false;
+	// 需要即时返回，不能有时序
 	this.list = function(callback) {
-		SerialPort.list(callback);
+        SerialPort.list(callback);
 	}
 	this.currentSerialPort = function() { return _currentSerialPort; }
+
+	// 需要即时返回，不能有时序
 	this.isConnected = function(name){
-		//return _port&&_port.isOpen();
-		if(name){
-            return _currentSerialPort==name&&_port&&_port.isOpen();
-		}else{
-            return _currentSerialPort!=""&&_port&&_port.isOpen();
-		}
+        if(name){
+            return _currentSerialPort==name&&_isopen;
+        }else{
+            return _currentSerialPort!=""&&_isopen;
+        }
 	}
 	this.close = function(){
-		if(_port&&_port.isOpen()){
-			_port.close();
-		}
-		_currentSerialPort = "";
+        this.killChildProcess();
+        self.onConnecting();
 	}
 	this.send = function(data){
-		if(_port&&_port.isOpen()){
-			_port.write(new Buffer(data),function(){
-			});
-		}
+        if (serialChild && serialChild.connected) {
+            serialChild.send({func: 'write()', data: data, port: _currentSerialPort});
+        }
 	}
+    /**
+	 * 创建串口子进程伴随着看门狗检查串口状态
+     */
+	this.createChildProcess = function () {
+		serialChild = childProcess.fork(childProcessPath);
+        serialChild.on('message', function (rtn) {
+			if (typeof(rtn.isopen) != "undefined") {
+				if (_isopen != rtn.isopen) {
+                    _isopen = rtn.isopen;
+                    self.onConnecting();
+				}
+			}
+        });
+        opening = setInterval(function() {
+            if (!serialChild || !serialChild.connected) {
+                clearInterval(opening);
+            	return;
+			}
+            serialChild.send({ func: 'isOpen()', port:_currentSerialPort});
+        }, 3000);
+    }
+
+    /**
+	 * 杀死子进程
+     * @param name
+     */
+    this.killChildProcess = function () {
+        if (serialChild && serialChild.connected) {
+            clearInterval(opening);
+            serialChild.kill('SIGKILL');
+        }
+        _isopen = false;
+        _currentSerialPort = "";
+    }
+
+    /**
+	 * 更新flash及菜单状态
+     */
+    this.onConnecting = function(){
+        // 更新菜单前，需要更新串口连接状态
+        var objectConnected = {'connected':self.isConnected()};
+        _app.getMenu().updateConnectionStatus(objectConnected);
+        self.update();
+        if(_client){
+            _client.send("connected", objectConnected);
+        }
+    }
+
 	this.connect = function(name){ // linux : /dev/ttyUSB0
-	    _currentSerialPort = name;
-		_port = new SerialPort(_currentSerialPort,{ baudRate:115200 })
-		_port.on('open',function(){ // 串口连接，进行连接
-			self.onOpen();
-		})
-		_port.on('error',function(err){
-            if (err.message.indexOf('cannot open') > -1) { // cannot open XXX : 无权限
-				// sudoer.enableSerialInLinux(errorCallbackHander);
-                fs.exists('/etc/udev/rules.d/20-usb-serial.rules', function (exists) {
-					if (exists) {
-                        _app.alert(_translator.map("Serial port is not connected, please disconnect retry."));
-					} else {
-                        sudoer.enableSerialRule(errorCallbackHander);
-					}
-                });
-			} else if (err.message.indexOf('Cannot lock port') > -1) { // Cannot lock port : 端口被锁
-				console.log('port is locked:');
-                _app.alert(_translator.map("port is locked: ") + _currentSerialPort);
-			}
-			console.log(err);
-		})
-		_port.on('data',function(data){
-			self.onReceived(data);
-		})
-		_port.on('close', function() { // 主动点击取消连接
-			self.onDisconnect()
-			_currentSerialPort = "";
-		})
-		_port.on('disconnect', function(){ // 拔出
-			self.onDisconnect()
-			_currentSerialPort = "";
-		})
-		var errorCallbackHander = function (error, stderr, stdout) {
-            if (error == null) { // 正常流程：密码输对的情况
-				_app.alert(_translator.map("Please restart your computer to enable serial ports."));
-				//_port.open(); // 死循环，因为没有重启电脑的情况下，还是需要输入密码
-			}
-		    self.update(); // 更新菜单
-		};
+        _app.allDisconnect();	// 链接前断开所有链接
+        _currentSerialPort = name;
+        setTimeout(function () {
+        	self.createChildProcess();
+            serialChild.on('message', function(rtn) {
+                if (!rtn.method) return;
+                switch (rtn.method) {
+                    case 'open':
+                        self.onOpen();
+                        break;
+                    case 'error':
+                        sudoer.enableSerialInLinux(errorCallbackHander);
+                        self.killChildProcess();
+                        break;
+                    case 'locked':
+                        _app.alert(_translator.map("port is locked: ") + name);
+                        self.killChildProcess();
+                        break;
+                    case 'data':
+                        self.onReceived(rtn.rtn);
+                        break;
+                    case 'close':
+                        self.onDisconnect();
+                        self.killChildProcess();
+                        break;
+                    case 'disconnect':
+                        self.onDisconnect();
+                        self.killChildProcess();
+                        break;
+                    default:
+                        break;
+                }
+            });
+
+            serialChild.send({ port: name });
+            var errorCallbackHander = function (error, stderr, stdout) {
+                if (error == null) { // 正常流程：密码输对的情况
+                    _app.alert(_translator.map("Please restart your computer to enable serial ports."));
+                    //_port.open(); // 死循环，因为没有重启电脑的情况下，还是需要输入密码
+                }
+                self.update(); // 更新菜单
+            };
+        }, 1500);
 	}
 	this.getMenuItems = function(){
 		return _items;
 	}
 	this.update = function(){ // 更新菜单
 		_items = [];
-		SerialPort.list(function(err,ports){
+        SerialPort.list(function(err,ports){
 			for(var i=0;i<ports.length;i++){
 				if (ports[i].comName.indexOf('/dev/ttyS') > -1) {
 					continue;
@@ -96,20 +150,17 @@ function Serial(app){
 					checked:self.isConnected(ports[i].comName),
 					type:'checkbox',
 					click:function(item,focusedWindow){
-						var isConnect = false;
-					    if(_currentSerialPort != item.name){ // 需要连接串口
-                            isConnect = true;
-						}
-						_app.allDisconnect(); // 断开之前的所有连接
-						if (isConnect) {
-							setTimeout(function () {self.connect(item.name);}, 1500);
+						if (self.isConnected(item.name)){
+                            self.close();
+						} else {
+                            self.connect(item.name);
 						}
 					}
 				})
 				_items.push(item);
 			}
 			_app.getMenu().update();
-		})
+        });
 	}
 	this.on = function(event,listener){
 		_emitter.on(event,listener);
