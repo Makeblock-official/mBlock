@@ -119,7 +119,7 @@ function Serial(app){
                         self.killChildProcess();
                         break;
                     case 'data':
-                        self.onReceived(rtn.rtn);
+                        self.onReceived(rtn.data.data);
                         break;
                     case 'close':
                         self.onDisconnect();
