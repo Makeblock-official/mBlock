@@ -19,9 +19,9 @@ function Extension(app){
         if(!self.globalExt[extName]){
             return;
         }console.log('call js');
-		console.log(extName);
-		console.log(method);
-		console.log(args);
+		console.log(extName);  // extName     : mBot
+		console.log(method);   // 类似：method : runMotor
+		console.log(args);     // 类似：args   : M1,0
         var handler = self.globalExt[extName][method];
 
         if(args.length < handler.length){
