@@ -119,7 +119,7 @@ function Serial(app){
                         self.killChildProcess();
                         break;
                     case 'data':
-                        self.onReceived(rtn.data);
+                        self.onReceived(rtn.data.data);
                         break;
                     case 'close':
                         self.onDisconnect();
@@ -198,12 +198,11 @@ function Serial(app){
 	}
 	this.onReceived = function(data){
 		if(_client){
-			// var arr=[];
-			// for(var i=0;i<data.length;i++){
-			// 	arr.push(data[i]);
-			// }
-			// _client.send("package",{data:arr});
-            _client.send("package",{data:data});
+			var arr=[];
+			for(var i=0;i<data.length;i++){
+				arr.push(data[i]);
+			}
+			_client.send("package",{data:arr});
 		}
 	}
 }

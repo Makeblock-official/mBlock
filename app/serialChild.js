@@ -45,7 +45,7 @@ process.on('message', function(port) {
     });
     _port.on('data',function(data){
         console.log('serial is data ing...');
-        process.send({ method: 'data', data: data.toString(), portchannel:_port});
+        process.send({ method: 'data', data: data, portchannel:_port});
     });
     _port.on('close', function() { // 主动点击取消连接
         console.log('serial is close');

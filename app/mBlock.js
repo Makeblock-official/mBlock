@@ -181,8 +181,12 @@ function mBlock(){
 	this.alert = function(message) {
 		this.getClient().send('alertBox', 'show', message);
 	};
-	this.logToArduinoConsole = function(message) {
-		this.getClient().send('logToArduinoConsole', message);
+	this.logToArduinoConsole = function(data) {
+        var arr=[];
+        for(var i=0;i<data.length;i++){
+            arr.push(data[i]);
+        }
+		this.getClient().send('logToArduinoConsole', arr);
 	};
 	this.allDisconnect = function () { // 断开所有的连接，
         if (typeof(_bluetooth) != 'undefined') { // 防止flash还没有加载完用户就点击了关闭按钮
