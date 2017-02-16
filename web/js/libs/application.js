@@ -55,7 +55,9 @@ function Application(flash){
     ipcRenderer.on('changeToBoard', (sender,obj) => {  
         self.changeToBoard(obj.board);
     }); 
-    ipcRenderer.on('logToArduinoConsole', (sender,obj) => {  
+    ipcRenderer.on('logToArduinoConsole', (sender,obj) => {
+        console.log('logToArduinoConsole============================>');
+        console.log(obj);
         _flash.logToArduinoConsole(obj,true);
     });
     ipcRenderer.on('setFontSize', (sender,obj) => {
