@@ -41,6 +41,7 @@ package uiwidgets {
 	import flash.filters.GlowFilter;
 	
 	import util.DragClient;
+	import ui.BlockPalette;
 
 public class ScrollFrame extends Sprite implements DragClient {
 
@@ -65,7 +66,7 @@ public class ScrollFrame extends Sprite implements DragClient {
 	private var yHistory:Array;
 	private var xVelocity:Number = 0;
 	private var yVelocity:Number = 0;
-	
+	public var paletteShape:Sprite;
 	public function ScrollFrame(dragScrolling:Boolean = false) {
 		this.dragScrolling = dragScrolling;
 		if (dragScrolling) scrollbarThickness = 3;
@@ -216,7 +217,7 @@ public class ScrollFrame extends Sprite implements DragClient {
 		return Math.max(0, contents.height - visibleH());
 	}
 
-	private function fixLayout():void {
+	public function fixLayout():void {
 		var inset:int = 2;
 		if (hScrollbar) {
 			hScrollbar.setWidthHeight(mask.width - 14, hScrollbar.h);
@@ -225,8 +226,9 @@ public class ScrollFrame extends Sprite implements DragClient {
 		}
 		if (vScrollbar) {
 			vScrollbar.setWidthHeight(vScrollbar.w, mask.height - (2 * inset));
-			vScrollbar.x = 260;//mask.width - vScrollbar.w - inset;
+			vScrollbar.x = paletteShape?paletteShape.width - vScrollbar.w - inset:BlockPalette.WIDTH-vScrollbar.w-inset;///mask.width - vScrollbar.w - inset;//260;
 			vScrollbar.y = inset;
+			trace("vScrollbar.x="+vScrollbar.x)
 		}
 		updateScrollbars();
 	}

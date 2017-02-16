@@ -84,7 +84,7 @@ package util
 
 				return ExternalInterface.call.apply(null, args);
 			}else{
-				trace("ExternalInterface is not available!");
+				//trace("ExternalInterface is not available!");
 			}
 		}
 		static public function callApp(method:String,args:Object=null):*{
