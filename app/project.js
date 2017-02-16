@@ -21,16 +21,6 @@ function Project(app) {
      * 打开保存窗口，将项目文件写入到本地文件系统
      */
     this.saveProject = function (title, data) {
-
-        // ret = dialog.showMessageBox(BrowserWindow.getFocusedWindow(),{
-        //     type:'question',
-        //     title:'我是标题',
-        //     message:'我是内容',
-        //     buttons:['确定','取消'],
-        //     noLink:false
-        // });
-        // console.log("return "+ret);
-
         if (_saveAs || _currentProjectPath == "" || _currentProjectPath == ".") {
             var mainWindow = BrowserWindow.getFocusedWindow();
             if (title == " .sb2") {
@@ -87,11 +77,12 @@ function Project(app) {
             var ret = dialog.showMessageBox(BrowserWindow.getFocusedWindow(), {
                 type: 'question',
                 title: '',
+				'cancelId' : 1,
                 message: _translator.map('Replace contents of the current project?'),
                 buttons: [_translator.map('OK'), _translator.map('Cancel')],
                 noLink: true
             });
-            if(_client &&ret==0){
+            if(_client && (ret==0)) {
                 _client.send("openProject",{url:__webviewRootURL+'/tmp/'+filename, title:tmpTitle});
             }
         }
@@ -104,11 +95,11 @@ function Project(app) {
         var ret = dialog.showMessageBox(BrowserWindow.getFocusedWindow(), {
             type: 'question',
             title: '',
+			'cancelId':2,
             message: _translator.map('Save project?'),
             buttons: [_translator.map('Save'), _translator.map("Don't save"), _translator.map('Cancel')],
             noLink: true
         });
-
         if (ret == 0) {
             if (_client) {
                 _saveAndNew = true;

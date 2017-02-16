@@ -40,7 +40,7 @@ function AppMenu(app){
                         label: _translator.map('Load Project'),
                         accelerator: 'CmdOrCtrl+O',
                         click: function (item, focusedWindow) {
-                            dialog.showOpenDialog({title:"打开项目",properties: ['openFile'],filters: [{ name: 'Scratch', extensions: ['sb2'] }  ]},function(path){
+                            dialog.showOpenDialog({title:_translator.map('Load Project'),properties: ['openFile'],filters: [{ name: 'Scratch', extensions: ['sb2'] }  ]},function(path){
                                 if(path&&path.length>0){
                                     _project.openProject(path[0]);
                                 }
@@ -209,13 +209,13 @@ function AppMenu(app){
                     {
                         name: 'Upgrade Firmware', // 安装固件
                         label: _translator.map('Upgrade Firmware'),
-						enabled: _connectionStatus,
+						enabled: _serial.isConnected(), // 只有串口连接上了才能更新固件
                         click: function(item, focusedWindow) { _emitter.emit("upgradeFirmware"); }
                     },
                     {
                         name: 'Reset Default Program', // 恢复出厂程序（仅mBot适用）
                         label: _translator.map('Reset Default Program'),
-                        enabled: _firmwareUploader.allowResetDefaultProgram()&&_connectionStatus,
+                        enabled: _firmwareUploader.allowResetDefaultProgram()&&_serial.isConnected(), // 只有串口连接上了才能恢复出厂程序
                         click: function (item, focusedWindow) {
                             _emitter.emit("resetDefaultProgram");
                         }
@@ -565,7 +565,8 @@ function AppMenu(app){
         _undelete = true;
         self.update();
     }
-    this.updateConnectionStatus = function(obj){ // 仅是串口连接状态，true：已连接，false：未连接
+	// 所有连接的连接状态;，true：已连接，false：未连接
+    this.updateConnectionStatus = function(obj){
         _connectionStatus = obj.connected;
     }
 }
