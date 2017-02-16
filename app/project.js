@@ -90,7 +90,7 @@ function Project(app) {
                 message: _translator.map('Replace contents of the current project?'),
                 buttons: [_translator.map('OK'), _translator.map('Cancel')],
                 noLink: true
-            });
+            });console.log(ret);
             if(_client &&ret==0){
                 _client.send("openProject",{url:__webviewRootURL+'/tmp/'+filename, title:tmpTitle});
             }

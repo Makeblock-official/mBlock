@@ -40,7 +40,7 @@ function AppMenu(app){
                         label: _translator.map('Load Project'),
                         accelerator: 'CmdOrCtrl+O',
                         click: function (item, focusedWindow) {
-                            dialog.showOpenDialog({title:"打开项目",properties: ['openFile'],filters: [{ name: 'Scratch', extensions: ['sb2'] }  ]},function(path){
+                            dialog.showOpenDialog({title:_translator.map('Load Project'),properties: ['openFile'],filters: [{ name: 'Scratch', extensions: ['sb2'] }  ]},function(path){
                                 if(path&&path.length>0){
                                     _project.openProject(path[0]);
                                 }

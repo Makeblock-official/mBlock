@@ -36,7 +36,7 @@ function Serial(app){
         this.killChildProcess();
         self.onConnecting();
 	}
-	this.send = function(data){
+	this.send = function(data){console.log('+++++++++++++++++++++++++++++++++++');
         if (serialChild && serialChild.connected) {
             serialChild.send({func: 'write()', data: data, port: _currentSerialPort});
         }
