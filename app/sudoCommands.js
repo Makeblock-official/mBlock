@@ -5,13 +5,6 @@ var SudoCommands = {
     enableSerialInLinux: function(callback) {
         this.spawn('usermod -a -G dialout `whoami`', [], callback);
     },
-    /**
-     * 增加串口权限规则
-     * @param callback
-     */
-    enableSerialRule: function (callback) {
-        this.spawn( 'bash '+path.join(__root_path, 'tools/enableSerial.sh') , [], callback);
-    },
     enableHIDInLinux: function(callback) {
         this.spawn( 'bash '+path.join(__root_path, 'tools/enableHID.sh') , [], callback);
     },
