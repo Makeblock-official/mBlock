@@ -475,5 +475,5 @@
     }
 
     var descriptor = {};
-	ScratchExtensions.register('orion', descriptor, ext, {type: 'serial'});
+	ScratchExtensions.register('Orion', descriptor, ext, {type: 'serial'});
 })({});

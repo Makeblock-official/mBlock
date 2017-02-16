@@ -455,5 +455,5 @@
     }
 
     var descriptor = {};
-	ScratchExtensions.register('Shield', descriptor, ext, {type: 'serial'});
+	ScratchExtensions.register('UNO Shield', descriptor, ext, {type: 'serial'});
 })({});
