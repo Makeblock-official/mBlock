@@ -142,7 +142,7 @@ var FirmwareUploader = {
         avrdude.stdout.on('data', function(data){
         });
         avrdude.stderr.on('data', function(data){
-            app.logToArduinoConsole(data);
+            app.logToArduinoConsole(data.toString());
             if(data.toString().indexOf('programmer is not responding')>=0){
                 avrdude.kill('SIGKILL');
             }
