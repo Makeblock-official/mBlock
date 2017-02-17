@@ -56,5 +56,6 @@
 	"Directory could not be created": "Please set the permission to create the directory.",
 	"Cannot find 2.4G dongle": "2.4G device is not found.",
 	"Cannot connect to the 2.4G device. Please check your USB connection or use another USB port.": "Cannot find 2.4G transmitter, please check the connection or use another USB port.",
+	"Cannot connect to serial port. Please check your USB connection or restart your computer.": "Cannot connect to serial port. Please check your USB connection or restart your computer.",
 	"Connected": "Connected"
 }

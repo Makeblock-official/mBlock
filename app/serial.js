@@ -107,7 +107,7 @@ function Serial(app){
                                 return;
                             }
                             if (stderr.indexOf('dialout ') > -1) {
-                                _app.alert(_translator.map("Cannot connect to the 2.4G device. Please check your USB connection or restart your computer."));
+                                _app.alert(_translator.map("Cannot connect to serial port. Please check your USB connection or restart your computer."));
                             } else {
                                 sudoer.enableSerialInLinux(errorCallbackHander);
                             }
