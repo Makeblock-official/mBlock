@@ -962,6 +962,7 @@
 	"It doesn't exist": "文件不存在。",
 	"Directory could not be created": "请设置权限创建文件夹。",
 	"Cannot find 2.4G dongle": "没有找到2.4G设备。",
-	"Cannot connect to the 2.4G device. Please check your USB connection or restart your computer.": "没有找到2.4G发射器，请检查链接或尝试重新启动计算机。",
+	"Cannot connect to the 2.4G device. Please check your USB connection or use another USB port.": "没有找到2.4G发射器，请检查链接或尝试连接其他USB口。",
+	"Cannot connect to serial port. Please check your USB connection or restart your computer.": "串口无法连接，请尝试连接其他串口或重启计算机。",
 	"Hardware communication timeout, please confirm whether the serial connection": "固件上传超时，请确认串口是否连接。"
 }
