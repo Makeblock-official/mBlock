@@ -222,6 +222,13 @@ function Application(flash){
         console.log('into getEmotionList');
         console.log(label);
         ipcRenderer.send('getEmotionList', {label: label});
-    }
+    };
+    /**
+	 * 设置当前的主控板
+	 * @param string currentBoardName 主控板名；如：me/mbot_uno、me/auriga_mega2560、me/mega_pi_mega2560、arduino_leonardo
+	 */
+    this.setCurrentBoardName = function(currentBoardName) {
+        ipcRenderer.send("setCurrentBoardName", currentBoardName);
+    };
 }
 module.exports = Application;

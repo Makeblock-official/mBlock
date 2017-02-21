@@ -9,7 +9,7 @@ function Boards(app){
     _client = _app.getClient();
     
     //切换主控板，通过ipc向flash发送切换主控板的请求
-    this.selectBoard = function(name){
+    this.selectBoard = function(name){console.log('++++++++++');console.log(name);console.log('++++++++++');
         _currentBoardName = name;
         if(_client){
             _client.send("changeToBoard",{board:name})
@@ -23,7 +23,12 @@ function Boards(app){
     }
     this.currentBoardName = function() {
         return _currentBoardName;
-    }
+    };
+	// 设置当前的主控板
+    this.setCurrentBoardName = function (currentBoardName) {
+        _currentBoardName = currentBoardName;
+        _app.getMenu().update();
+	};
     //auriga指令集
     this.aurigaInstructions = {
         bluetooth_mode: [0xff, 0x55, 0x05, 0x00, 0x02, 0x3c, 0x11, 0x00],
