@@ -299,7 +299,6 @@ public class ScriptsPart extends UIPart {
 	public function appendMsgFromJs(msg:String,isOut:Boolean):void
 	{
 		var arr:Array = msg.split(",");
-		JsUtil.log("isByteDisplayMode:"+isByteDisplayMode);
 		if(isByteDisplayMode)
 		{
 			for(var i:int=0;i<arr.length;i++)
@@ -320,7 +319,6 @@ public class ScriptsPart extends UIPart {
 				ba[i] = arr[i];
 			}
 			tmpmsg = ba.readUTFBytes(ba.length);
-			JsUtil.log("no isByteDisplayMode:"+tmpmsg);
 		}
 		
 		appendMsgWithTimestamp(tmpmsg,isOut);
@@ -330,13 +328,17 @@ public class ScriptsPart extends UIPart {
 		var date:Date = new Date();
 		var sendType:String = isOut ? " > " : " < ";
 		
-		var millSeconds:String = date.milliseconds.toString();
-		while(millSeconds.toString().length<3)
-		{
-			millSeconds="0"+millSeconds;
-		}
-		msg = date.hours + ":" + date.minutes + ":" + date.seconds + "." +millSeconds + sendType + msg;
+		msg = changeStamp(date.hours) + ":" + changeStamp(date.minutes) + ":" + changeStamp(date.seconds) + "." +changeStamp(date.milliseconds,3) + sendType + msg;
 		appendMessage(msg);
+	}
+	private function changeStamp(value:Number,count:int=2):String
+	{
+		var result:String=value.toString();
+		while(result.length<count)
+		{
+			result='0'+result;
+		}
+		return result;
 	}
 	public function onSerialDataReceived(bytes:ByteArray):void{
 		appendMsgWithTimestamp(HexUtil.bytesToString(bytes), false);
