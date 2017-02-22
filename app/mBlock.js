@@ -106,7 +106,11 @@ function mBlock(){
     });
 	// 设置当前的主控板(flash请求过来)
 	ipcMain.on('setCurrentBoardName', function (event, arg) {console.log('AAAAAAAAAAAA');console.log(arg);console.log('AAAAAAAAAAAA');
-        _boards.setCurrentBoardName(arg.currentBoardName);
+        var currentBoardName = arg.currentBoardName;
+		if (currentBoardName == 'mbot_uno') { // 兼容以前保存的文件
+            currentBoardName = 'me/mbot_uno';
+        }
+		_boards.setCurrentBoardName();
     });
 	
 	this.getClient = function(){
