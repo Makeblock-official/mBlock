@@ -105,8 +105,8 @@ function mBlock(){
         _emotions.list(arg.label);
     });
 	// 设置当前的主控板(flash请求过来)
-	ipcMain.on('setCurrentBoardName', function (event, arg) {
-        _boards.setCurrentBoardName(arg);
+	ipcMain.on('setCurrentBoardName', function (event, arg) {console.log('AAAAAAAAAAAA');console.log(arg);console.log('AAAAAAAAAAAA');
+        _boards.setCurrentBoardName(arg.currentBoardName);
     });
 	
 	this.getClient = function(){
