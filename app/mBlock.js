@@ -8,7 +8,7 @@
  * 		|----hid.js			//无线2.4G串口通讯
  * 		|----autoupdater.js	//自动更新
  */
-const {ipcMain,dialog,BrowserWindow,MenuItem,Menu,app} = require('electron')
+const {ipcMain,dialog,BrowserWindow,MenuItem,Menu,app} = require('electron');
 
 const path = require('path');
 const Serial = require("./serial.js")
@@ -104,6 +104,11 @@ function mBlock(){
 	ipcMain.on('getEmotionList', function (event, arg) {
         _emotions.list(arg.label);
     });
+	// 设置当前的主控板(flash请求过来)
+	ipcMain.on('setCurrentBoardName', function (event, arg) {
+        _boards.setCurrentBoardName(arg);
+    });
+	
 	this.getClient = function(){
 		return _client;
 	}
