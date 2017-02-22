@@ -21,6 +21,7 @@ package util
 	import extensions.DeviceManager;
 	
 	import translation.Translator;
+	import org.aswing.JOptionPane;
 
 	public class JsUtil
 	{
@@ -70,6 +71,7 @@ package util
 				ExternalInterface.addCallback("logToArduinoConsole", __logToArduinoConsole);
 				ExternalInterface.addCallback("setFontSize", __setFontSize);
 				ExternalInterface.addCallback("responseCommonData", __responseCommonData);
+				ExternalInterface.addCallback("interruptThread", __interruptThread);
 				callApp("readyForFlash");
 			}catch(e:*){
 				
@@ -240,7 +242,8 @@ package util
 		
 		static private function __setRobotName(value:String):void
 		{
-			switch(value.toLowerCase()){
+			DeviceManager.sharedManager().onSelectBoard(value);
+			/*switch(value.toLowerCase()){
 				case "mbot":
 					DeviceManager.sharedManager().onSelectBoard("mbot_uno");
 					break;
@@ -263,7 +266,7 @@ package util
 			if(value.toLowerCase().indexOf("arduino")>-1)
 			{
 				DeviceManager.sharedManager().onSelectBoard("arduino");
-			}
+			}*/
 		}
 		
 		static private function __getRobotName():String
@@ -336,6 +339,11 @@ package util
 			{
 				callBack.apply(null,args);
 			}
+		}
+		static private function __interruptThread(msg:String):void
+		{
+			RemoteCallMgr.Instance.interruptThread();
+			JOptionPane.showMessageDialog("", msg);
 		}
 	}
 }
