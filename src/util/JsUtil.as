@@ -242,7 +242,8 @@ package util
 		
 		static private function __setRobotName(value:String):void
 		{
-			switch(value.toLowerCase()){
+			DeviceManager.sharedManager().onSelectBoard(value);
+			/*switch(value.toLowerCase()){
 				case "mbot":
 					DeviceManager.sharedManager().onSelectBoard("mbot_uno");
 					break;
@@ -265,7 +266,7 @@ package util
 			if(value.toLowerCase().indexOf("arduino")>-1)
 			{
 				DeviceManager.sharedManager().onSelectBoard("arduino");
-			}
+			}*/
 		}
 		
 		static private function __getRobotName():String
