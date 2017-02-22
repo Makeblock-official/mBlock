@@ -21,6 +21,7 @@ package util
 	import extensions.DeviceManager;
 	
 	import translation.Translator;
+	import org.aswing.JOptionPane;
 
 	public class JsUtil
 	{
@@ -70,6 +71,7 @@ package util
 				ExternalInterface.addCallback("logToArduinoConsole", __logToArduinoConsole);
 				ExternalInterface.addCallback("setFontSize", __setFontSize);
 				ExternalInterface.addCallback("responseCommonData", __responseCommonData);
+				ExternalInterface.addCallback("interruptThread", __interruptThread);
 				callApp("readyForFlash");
 			}catch(e:*){
 				
@@ -336,6 +338,11 @@ package util
 			{
 				callBack.apply(null,args);
 			}
+		}
+		static private function __interruptThread(msg:String):void
+		{
+			RemoteCallMgr.Instance.interruptThread();
+			JOptionPane.showMessageDialog("", msg);
 		}
 	}
 }
