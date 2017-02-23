@@ -105,12 +105,28 @@ function mBlock(){
         _emotions.list(arg.label);
     });
 	// 设置当前的主控板(flash请求过来)
-	ipcMain.on('setCurrentBoardName', function (event, arg) {console.log('AAAAAAAAAAAA');console.log(arg);console.log('AAAAAAAAAAAA');
+	ipcMain.on('setCurrentBoardName', function (event, arg) {
         var currentBoardName = arg.currentBoardName;
-		if (currentBoardName == 'mbot_uno') { // 兼容以前保存的文件
+        // 下面兼容以前保存的文件
+		if (currentBoardName == 'mbot_uno') { 
             currentBoardName = 'me/mbot_uno';
         }
-		_boards.setCurrentBoardName();
+		if(currentBoardName.indexOf('auriga') > -1) {
+		    currentBoardName = 'me/auriga_mega2560';
+		}
+		if(currentBoardName.indexOf('mega_pi') > -1) {
+		    currentBoardName = 'me/mega_pi_mega2560';
+		}
+		if(currentBoardName.indexOf('uno_shield_uno') > -1) {
+		    currentBoardName = 'me/uno_shield_uno';
+		}
+		if(currentBoardName.indexOf('orion_uno') > -1) {
+		    currentBoardName = 'me/orion_uno';
+		}
+		/*if(currentBoardName.indexOf('') > -1) {
+		    currentBoardName = 'me/';
+		}*/
+		_boards.setCurrentBoardName(currentBoardName);
     });
 	
 	this.getClient = function(){
