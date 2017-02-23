@@ -109,7 +109,7 @@ package util
 		*/
 		static public function setProjectRobotName(name:String):void
 		{
-			callApp("setProjectRobotName", [name]);
+			callApp("setProjectRobotName", name);
 		}
 		static public function readyToRun():Boolean
 		{
