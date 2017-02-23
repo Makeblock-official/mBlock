@@ -1,7 +1,7 @@
 /**
  * 控制板管理：主控板选择、主控板选中状态
  */
-var _currentBoardName;
+var _currentBoardName; // me/mega_pi_mega2560、me/mbot_uno
 var _client,_app;
 function Boards(app){
     var self = this;
@@ -9,7 +9,7 @@ function Boards(app){
     _client = _app.getClient();
     
     //切换主控板，通过ipc向flash发送切换主控板的请求
-    this.selectBoard = function(name){console.log('++++++++++');console.log(name);console.log('++++++++++');
+    this.selectBoard = function(name){
         _currentBoardName = name;
         if(_client){
             _client.send("changeToBoard",{board:name})
