@@ -109,3 +109,7 @@ function array2string(bytes){
     var dataView = castArray2DataView(bytes);
     return decoder.decode(dataView);
 }
+
+function interruptThread(msg) {
+    flashCore.interruptThread(msg);
+}

@@ -152,7 +152,7 @@ function Application(flash){
 	 * @param string currentBoardName 主控板名；如：me/mbot_uno、me/auriga_mega2560、me/mega_pi_mega2560、arduino_leonardo
 	 */
     this.setProjectRobotName = function(currentBoardName){
-        ipcRenderer.send("setCurrentBoardName", currentBoardName);
+        ipcRenderer.send("setCurrentBoardName", {'currentBoardName' : currentBoardName});
     }
 	
     this.readyToRun = function(){
@@ -172,23 +172,23 @@ function Application(flash){
             });
         }else if (name.indexOf('orion_uno') > -1) { // Starter/Ultimate (Orion)
 		    window.loadScript('orion', 'flash-core/ext/libraries/orion/js/orion.js', function () {
-				_flash.setRobotName('orion');
+				_flash.setRobotName(name); // me/orion_uno
 			});
 		} else if (name.indexOf('uno_shield_uno') > -1) { // Me Uno Shield
 			window.loadScript('uno_shield', 'flash-core/ext/libraries/uno_shield/js/shield.js', function () {
-				_flash.setRobotName('uno shield');
+				_flash.setRobotName(name); // me/uno_shield_uno
 			});
 		} else if(name.indexOf('mbot_uno') > -1) { // mBot (mCore)
             window.loadScript("mBot","flash-core/ext/libraries/mbot/js/mbot.js",function(){
-                _flash.setRobotName("mbot");
+                _flash.setRobotName(name); // me/mbot_uno
             });
         } else if(name.indexOf('auriga_mega2560') > -1) { // mBot Ranger (Auriga)
             window.loadScript("Auriga","flash-core/ext/libraries/Auriga/js/Auriga.js",function(){
-                _flash.setRobotName("mbot ranger");
+                _flash.setRobotName(name); // me/auriga_mega2560
             });
         }  else if (name.indexOf('mega_pi_mega2560') > -1) { // Ultimate 2.0 (Mega Pi)
 			window.loadScript('mega_pi', 'flash-core/ext/libraries/mega_pi/js/MegaPi.js', function () {
-				_flash.setRobotName('mega pi');
+				_flash.setRobotName(name); // me/mega_pi_mega2560
 			});
 		} 
     }
