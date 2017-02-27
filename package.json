@@ -13,6 +13,8 @@
     "debug": "electron --debug=5858 .",
     "pack": "build --dir",
     "dist-linux": "build --linux AppImage",
+    "dist-windows": "build --windows dir",
+    "dist-windows-store": "build --windows appx",
     "postinstall": "install-app-deps"
   },
   "repository": "https://git.oschina.net/makeblock/mblock-for-myh",
@@ -20,7 +22,7 @@
     "mBlock"
   ],
   "author": {
-    "name": "Makeblock",
+    "name": "Makeblock Co., Ltd.",
     "email": "tec-support@makeblock.com"
   },
   "license": "GPL",
@@ -43,6 +45,9 @@
     "appId": "cc.mblock",
     "files": ["app", "i18n", "node_modules"],
     "extraResources": ["plugins", "tools", "web"],
+    "appx": {
+      "publisher": "CN=92193A5C-5088-4483-8766-AB5E50CFDC9F"
+    },
     "mac": {
       "category": ""
     }

@@ -115,22 +115,22 @@ var ArduinoIDE = {
             sketchFilePath
         ];
 
-        app.alert(T('Uploading'));
+        app.alert({'message':T('Uploading'), 'hasCancel':false});
         app.getSerial().close();
         var arduinoProcess = spawn(this.getArduinoExecutable(), arduinoCommandArguments);
         arduinoProcess.stdout.on('data', function(data) {
             app.logToArduinoConsole(data.toString());
         });
         arduinoProcess.stderr.on('data', function(data) {
-            app.alert(T('Uploading')+'...'+utils.getProgressCharacter());
-            app.logToArduinoConsole(data.toString());
+            app.alert({'message':T('Uploading')+'...'+utils.getProgressCharacter(), 'hasCancel':false});
+            app.logToArduinoConsole(data);
         });
         arduinoProcess.on('close', function(code){
             if (code == 0) {
-                app.alert(T('Upload Succeeded'));
+                app.alert({'message':T('Upload Finish'), 'hasCancel':true});
             }
             else {
-                app.alert(T('Upload Failed'));
+                app.alert({'message':T('Upload Failed'), 'hasCancel':true});
             }
             app.getSerial().connect(serialPort);
         });

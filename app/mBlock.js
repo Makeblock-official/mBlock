@@ -8,7 +8,7 @@
  * 		|----hid.js			//无线2.4G串口通讯
  * 		|----autoupdater.js	//自动更新
  */
-const {ipcMain,dialog,BrowserWindow,MenuItem,Menu,app} = require('electron')
+const {ipcMain,dialog,BrowserWindow,MenuItem,Menu,app} = require('electron');
 
 const path = require('path');
 const Serial = require("./serial.js")
@@ -31,7 +31,6 @@ function mBlock(){
 		console.log("ready")
 		_client = event.sender;
 		_localStorage = new LocalStorage();
-		_project = new Project(self);
 		_translator = new Translator(self);
 		_fontSize = new FontSize(self);
 		_serial = new Serial(self);
@@ -39,6 +38,7 @@ function mBlock(){
 		_stage = new Stage(self);
 		_hid = new HID(self);
 		_bluetooth = new Bluetooth(self);
+        _project = new Project(self);
 		_firmwareUploader = FirmwareUploader.init(self);
 		_arduinoIDE = ArduinoIDE.init(self);
 		_menu = new AppMenu(self);
@@ -69,11 +69,13 @@ function mBlock(){
 	ipcMain.on('connectionStatus',function(event,obj){
 		_menu.updateConnectionStatus(obj);
 	})
-	ipcMain.on('updateMenuStatus',function(event,arr){
+	ipcMain.on('updateMenuStatus',function(event,arr) { // "单击"编辑菜单
 		for (i=0;i< arr.length;i++){
 			if(arr[i] == "small stage layout")
 			{
 				_stage.changeStageMode(arr[i]);
+			} else if (arr[i] == 'arduino mode') {
+                _stage.changeStageMode(arr[i]);   
 			}
 		}
 	})
@@ -104,6 +106,31 @@ function mBlock(){
 	ipcMain.on('getEmotionList', function (event, arg) {
         _emotions.list(arg.label);
     });
+	// 设置当前的主控板(flash请求过来)
+	ipcMain.on('setCurrentBoardName', function (event, arg) {
+        var currentBoardName = arg.currentBoardName;
+        // 下面兼容以前保存的文件
+		if (currentBoardName == 'mbot_uno') { 
+            currentBoardName = 'me/mbot_uno';
+        }
+		if(currentBoardName.indexOf('auriga') > -1) {
+		    currentBoardName = 'me/auriga_mega2560';
+		}
+		if(currentBoardName.indexOf('mega_pi') > -1) {
+		    currentBoardName = 'me/mega_pi_mega2560';
+		}
+		if(currentBoardName.indexOf('uno_shield_uno') > -1) {
+		    currentBoardName = 'me/uno_shield_uno';
+		}
+		if(currentBoardName.indexOf('orion_uno') > -1) {
+		    currentBoardName = 'me/orion_uno';
+		}
+		/*if(currentBoardName.indexOf('') > -1) {
+		    currentBoardName = 'me/';
+		}*/
+		_boards.setCurrentBoardName(currentBoardName);
+    });
+	
 	this.getClient = function(){
 		return _client;
 	}
@@ -181,8 +208,12 @@ function mBlock(){
 	this.alert = function(message) {
 		this.getClient().send('alertBox', 'show', message);
 	};
-	this.logToArduinoConsole = function(message) {
-		this.getClient().send('logToArduinoConsole', message);
+	this.logToArduinoConsole = function(data) {
+        var arr=[];
+        for(var i=0;i<data.length;i++){
+            arr.push(data[i]);
+        }
+		this.getClient().send('logToArduinoConsole', arr);
 	};
 	this.allDisconnect = function () { // 断开所有的连接，
         if (typeof(_bluetooth) != 'undefined') { // 防止flash还没有加载完用户就点击了关闭按钮

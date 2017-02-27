@@ -30,7 +30,7 @@ package extensions
 //			if(_board=="picoboard_unknown"){
 //				MBlock.app.extensionManager.singleSelectExtension("PicoBoard");
 //			}else{
-				if(_board=="mbot_uno"){
+				if(_board.indexOf("mbot_uno")>-1){
 					MBlock.app.extensionManager.singleSelectExtension("mBot");
 				}else if(_board.indexOf("arduino")>-1){
 					MBlock.app.extensionManager.singleSelectExtension("Arduino");
@@ -65,6 +65,9 @@ package extensions
 				_name = "UNO Shield";
 			}else if(_board.indexOf("auriga") >= 0){
 				_name = "Me Auriga";
+			}
+			else if(_board.indexOf("mega_pi")>=0){
+				_name = "Mega Pi";
 			}
 			return _name;
 		}

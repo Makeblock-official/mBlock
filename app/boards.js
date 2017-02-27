@@ -1,7 +1,7 @@
 /**
  * 控制板管理：主控板选择、主控板选中状态
  */
-var _currentBoardName;
+var _currentBoardName; // me/mega_pi_mega2560、me/mbot_uno
 var _client,_app;
 function Boards(app){
     var self = this;
@@ -23,7 +23,12 @@ function Boards(app){
     }
     this.currentBoardName = function() {
         return _currentBoardName;
-    }
+    };
+	// 设置当前的主控板
+    this.setCurrentBoardName = function (currentBoardName) {
+        _currentBoardName = currentBoardName;
+        _app.getMenu().update();
+	};
     //auriga指令集
     this.aurigaInstructions = {
         bluetooth_mode: [0xff, 0x55, 0x05, 0x00, 0x02, 0x3c, 0x11, 0x00],

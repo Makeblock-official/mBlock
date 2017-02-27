@@ -26,7 +26,11 @@ function Bluetooth(app){
 		} else if (_currentBluetooth == '') {
 			return false;
 		} else {
-		    return !(bluetoothChildProcess.killed);
+			if (typeof(name) == 'undefined') { // 直接读取
+			    return !(bluetoothChildProcess.killed);
+			} else { // 显示
+				return (name == _currentBluetooth) && (!(bluetoothChildProcess.killed));
+			}
 		}
 	};
 	
@@ -66,7 +70,8 @@ function Bluetooth(app){
 	};
 	
 	this.createBluetoothChildProcess = function () { // 创建蓝牙子进程，并托管各消息处理函数
-		bluetoothChildProcess = childProcess.fork(__root_path + '/app/bluetoothChildProcess.js');
+	    var childProcessPath = __dirname + '/bluetoothChildProcess.js';
+		bluetoothChildProcess = childProcess.fork(childProcessPath);
 		// 监控所有子进程过来的消息
 		bluetoothChildProcess.on('message', function (message) {
 			if (message.method == 'noBluetoothDevices') { // 周围未找到任何蓝牙设备或最后一个蓝牙设备未找到通道

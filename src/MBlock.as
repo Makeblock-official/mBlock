@@ -365,7 +365,7 @@ package {
 			removeLoadProgressBox();
 			System.gc();
 //			if (autostart) runtime.startGreenFlags(true);
-			saveNeeded = false;
+			//saveNeeded = false;
 	
 			// translate the blocks of the newly loaded project
 			for each (var o:ScratchObj in stagePane.allObjects()) {
@@ -782,12 +782,9 @@ package {
 			return _saveNeeded;
 		}
 		public function set saveNeeded(value:Boolean):void{
-			if(_saveNeeded == value){
-				return;
-			}
 			_saveNeeded = value;
 			AppTitleMgr.Instance.setProjectModifyInfo(_saveNeeded);
-			JsUtil.callApp("setSaveStatus",[!value]);
+			JsUtil.callApp("setSaveStatus",!value);
 		}
 	
 		public function setSaveNeeded(saveNow:Boolean = false):void {

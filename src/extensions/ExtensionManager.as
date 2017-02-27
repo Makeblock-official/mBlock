@@ -217,6 +217,8 @@ public class ExtensionManager {
 			case "Auriga":
 			case "MegaPi":
 			case "Orion":
+			//由于扩展菜单还不完善，这里先这样改，将arduino当成公司的板 20170207
+			case "Arduino":
 				return true;
 		}
 		return false;
@@ -629,11 +631,11 @@ public class ExtensionManager {
 //				MBlock.app.topBarPart.setBluetoothTitle(false);
 			}
 			else if (ext.problem != '') indicator.setColorAndMsg(0xE0E000, ext.problem);
-			else indicator.setColorAndMsg(0x00C000, ext.success);
+			else indicator.setColorAndMsg(0x00C000, Translator.map(ext.success));
 		}else{
 			if (msecsSinceLastResponse > 500) indicator.setColorAndMsg(0xE00000, Translator.map('Disconnected'));
 			else if (ext.problem != '') indicator.setColorAndMsg(0xE0E000, ext.problem);
-			else indicator.setColorAndMsg(0x00C000, ext.success);
+			else indicator.setColorAndMsg(0x00C000, Translator.map(ext.success));
 		}
 		
 	}

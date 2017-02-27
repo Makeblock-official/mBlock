@@ -25,8 +25,10 @@ function Stage(app) {
             self.onClickArduinoMode();
         if (name == 'small stage layout')
             self.onClickSmallStageLayout();
-        if (name == 'turbo mode')
+        if (name == 'turbo mode') {
             _stageMode[name] = !_stageMode[name];
+            _client.send("changeStageMode", {name: name});
+        }
         _app.getMenu().update();
     }
     this.onClickHideStageLayout = function () {
@@ -49,9 +51,9 @@ function Stage(app) {
             //说明当前是从 arduino mode 进行 小舞台模式，此时需要先取消 arduino mode
             self.onClickArduinoMode();
         } else if (_stageMode["hide stage layout"]) {
-            //说明当前是从 隐藏模式 进入 小舞台模式，此时直接取消隐藏模式即可，不需要进入小舞台模式
+            //说明当前是从 隐藏模式 进入 小舞台模式，此时直接取消隐藏模式即可，不需要进入小舞台模式(后面应测试要求改成进入小舞台)
             self.onClickHideStageLayout();
-            return;
+            //return;//(后面应测试要求改成进入小舞台因而注掉此行)
         }
         //执行切换小舞台模式操作
         var name = "small stage layout";
@@ -68,7 +70,7 @@ function Stage(app) {
         //_stageMode["small stage layout"] = _stageMode[name];为了和旧版本的行为保持一致，界面效果修改为下面。
         _stageMode["small stage layout"] = false;
 
-    }
+   }
     this.onlyChangeArduinoStageMode = function (bool) {
         _stageMode["arduino mode"] = bool;
         _app.getMenu().update();

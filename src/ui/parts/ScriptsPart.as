@@ -187,22 +187,38 @@ public class ScriptsPart extends UIPart {
 	
 	private var paletteIndex:int;
 	private var maskWidth:int;
-	
+	//private var paletteShape:Sprite = new Sprite();
 	private function __onMouseOver(event:MouseEvent):void
 	{
 		setChildIndex(paletteFrame, numChildren-1);
 		paletteFrame.addEventListener(Event.ENTER_FRAME, __onEnterFrame);
 		maskWidth = 0;
+		if(app.palette.width>BlockPalette.WIDTH)
+		{
+			
+			if(!paletteFrame.paletteShape)
+			{
+				paletteFrame.paletteShape = new Sprite();
+			}
+			paletteFrame.paletteShape.graphics.clear();
+			paletteFrame.paletteShape.graphics.lineStyle(0.1,0xABABAB,0.5);
+			paletteFrame.paletteShape.graphics.beginFill(0xE6E8E8,1);
+			paletteFrame.paletteShape.graphics.drawRect(0,0,app.palette.width+10,h - paletteFrame.y - 2);
+			paletteFrame.paletteShape.graphics.endFill();
+			paletteFrame.addChildAt(paletteFrame.paletteShape,0);
+			paletteFrame.fixLayout();
+		}
+		
 	}
-	
+
 	private function __onEnterFrame(event:Event):void
 	{
-		if(maskWidth < 1200){
+		if(maskWidth < app.palette.width){
 			maskWidth += 30;
 			paletteFrame.showRightPart(maskWidth);
 		}
 		if(paletteFrame.mouseX > BlockPalette.WIDTH){
-			__onMouseOut(null);
+			//__onMouseOut(null);
 		}
 	}
 	
@@ -211,6 +227,13 @@ public class ScriptsPart extends UIPart {
 		paletteFrame.removeEventListener(Event.ENTER_FRAME, __onEnterFrame);
 		paletteFrame.hideRightPart();
 		setChildIndex(paletteFrame, paletteIndex);
+		if(paletteFrame.paletteShape && paletteFrame.paletteShape.parent)
+		{
+			paletteFrame.removeChild(paletteFrame.paletteShape);
+			paletteFrame.paletteShape = null;
+		}
+		paletteFrame.fixLayout();
+		trace("paletteFrame.width2="+paletteFrame.width)
 	}
 	
 	private function onInputModeChange(evt:MouseEvent):void
@@ -265,7 +288,7 @@ public class ScriptsPart extends UIPart {
 		if(!MBlock.app.stageIsArduino){
 			return;
 		}
-		if(isByteDisplayMode){
+		if(isByteInputMode){
 			appendMsgWithTimestamp(HexUtil.bytesToString(bytes), true);
 		}else{
 			bytes.position = 0;
@@ -276,19 +299,28 @@ public class ScriptsPart extends UIPart {
 	public function appendMsgFromJs(msg:String,isOut:Boolean):void
 	{
 		var arr:Array = msg.split(",");
-		
-		for(var i:int=0;i<arr.length;i++)
+		if(isByteDisplayMode)
 		{
-			if(isByteDisplayMode)
+			for(var i:int=0;i<arr.length;i++)
 			{
 				arr[i] = Number(arr[i]).toString(16);
+				if(arr[i].length<2)
+				{
+					arr[i] = "0"+arr[i];
+				}
 			}
-			if(arr[i].length<2)
-			{
-				arr[i] = "0"+arr[i];
-			}
+			var tmpmsg:String = arr.join(" ");
 		}
-		var tmpmsg:String = arr.join(" ");
+		else
+		{
+			var ba:ByteArray = new ByteArray();
+			for(i=0;i<arr.length;i++)
+			{
+				ba[i] = arr[i];
+			}
+			tmpmsg = ba.readUTFBytes(ba.length);
+		}
+		
 		appendMsgWithTimestamp(tmpmsg,isOut);
 	}
 	public function appendMsgWithTimestamp(msg:String, isOut:Boolean):void
@@ -296,13 +328,17 @@ public class ScriptsPart extends UIPart {
 		var date:Date = new Date();
 		var sendType:String = isOut ? " > " : " < ";
 		
-		var millSeconds:String = date.milliseconds.toString();
-		while(millSeconds.toString().length<3)
-		{
-			millSeconds="0"+millSeconds;
-		}
-		msg = date.hours + ":" + date.minutes + ":" + date.seconds + "." +millSeconds + sendType + msg;
+		msg = changeStamp(date.hours) + ":" + changeStamp(date.minutes) + ":" + changeStamp(date.seconds) + "." +changeStamp(date.milliseconds,3) + sendType + msg;
 		appendMessage(msg);
+	}
+	private function changeStamp(value:Number,count:int=2):String
+	{
+		var result:String=value.toString();
+		while(result.length<count)
+		{
+			result='0'+result;
+		}
+		return result;
 	}
 	public function onSerialDataReceived(bytes:ByteArray):void{
 		appendMsgWithTimestamp(HexUtil.bytesToString(bytes), false);
@@ -338,7 +374,7 @@ public class ScriptsPart extends UIPart {
 			bytes.writeUTFBytes(str + "\n");
 			JsUtil.callApp("sendBytesToBoard",str);
 		}
-		onSerialSend(bytes);
+		//onSerialSend(bytes);
 		ConnectionManager.sharedManager().sendBytes(bytes);
 //		var date:Date = new Date;
 //		messageTextPane.append(""+(date.month+1)+"-"+date.date+" "+date.hours+":"+date.minutes+":"+(date.seconds+date.milliseconds/1000)+" > "+sendTextPane.textField.text+"\n");

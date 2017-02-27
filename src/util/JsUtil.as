@@ -21,6 +21,7 @@ package util
 	import extensions.DeviceManager;
 	
 	import translation.Translator;
+	import org.aswing.JOptionPane;
 
 	public class JsUtil
 	{
@@ -70,6 +71,7 @@ package util
 				ExternalInterface.addCallback("logToArduinoConsole", __logToArduinoConsole);
 				ExternalInterface.addCallback("setFontSize", __setFontSize);
 				ExternalInterface.addCallback("responseCommonData", __responseCommonData);
+				ExternalInterface.addCallback("interruptThread", __interruptThread);
 				callApp("readyForFlash");
 			}catch(e:*){
 				
@@ -84,11 +86,11 @@ package util
 
 				return ExternalInterface.call.apply(null, args);
 			}else{
-				trace("ExternalInterface is not available!");
+				//trace("ExternalInterface is not available!");
 			}
 		}
 		static public function callApp(method:String,args:Object=null):*{
-			return Call("_app."+method,args is Array?args as Array:[args]);
+			return Call("_app."+method,[args]);
 		}
 		static public function callUtils(method:String,args:Object=null):*{
 			return Call("_app.getUtil()."+method,[args]);
@@ -107,7 +109,7 @@ package util
 		*/
 		static public function setProjectRobotName(name:String):void
 		{
-			callApp("setProjectRobotName", [name]);
+			callApp("setProjectRobotName", name);
 		}
 		static public function readyToRun():Boolean
 		{
@@ -220,7 +222,8 @@ package util
 				var base64Str:String = Base64.encode(zipData);
 				//Call("saveProject", [base64Str]);
 				callApp("saveProject",{title: MBlock.app.projectName() + '.sb2', data:base64Str});
-				MBlock.app.saveNeeded = false;
+				//由于保存的时候，确认框是在js做的，如果点了取消，则保存不成功，所以保存状态放在js做
+				//MBlock.app.saveNeeded = false;
 			}
 			var projIO:ProjectIO = new ProjectIO(MBlock.app);
 			projIO.convertSqueakSounds(MBlock.app.stagePane, squeakSoundsConverted);
@@ -239,7 +242,8 @@ package util
 		
 		static private function __setRobotName(value:String):void
 		{
-			switch(value.toLowerCase()){
+			DeviceManager.sharedManager().onSelectBoard(value);
+			/*switch(value.toLowerCase()){
 				case "mbot":
 					DeviceManager.sharedManager().onSelectBoard("mbot_uno");
 					break;
@@ -259,6 +263,10 @@ package util
 					DeviceManager.sharedManager().onSelectBoard("me/mega_pi");
 					break;
 			}
+			if(value.toLowerCase().indexOf("arduino")>-1)
+			{
+				DeviceManager.sharedManager().onSelectBoard("arduino");
+			}*/
 		}
 		
 		static private function __getRobotName():String
@@ -331,6 +339,11 @@ package util
 			{
 				callBack.apply(null,args);
 			}
+		}
+		static private function __interruptThread(msg:String):void
+		{
+			RemoteCallMgr.Instance.interruptThread();
+			JOptionPane.showMessageDialog("", msg);
 		}
 	}
 }

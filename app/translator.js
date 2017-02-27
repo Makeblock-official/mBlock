@@ -4,8 +4,10 @@
 const i18n = require('i18n');
 const{MenuItem} = require('electron')
 const events = require('events');
+const Configuration = require('./configuration.js');
+
 var _emitter = new events.EventEmitter();  
-var _client,_lang,_app;
+var _client,_lang,_app,_configuration;
 const _languages = [
 			{name:"en",label:"English"},
 			{name:"zh_CN",label:"简体中文"},
@@ -16,7 +18,6 @@ const _languages = [
 			{name:"ko",label:"한국어"},
 			{name:"da",label:"Dansk"},
             {name:"ru_RU",label:"Русский"},
-            {name:"ja_HIRA",label:"にほんご"},
             {name:"ja",label:"日本語"},
             {name:"nl_NL",label:"Nederlands"},
             {name:"de_DE",label:"Deutsch"},
@@ -33,6 +34,7 @@ function Translator(app){
     _app = app;
     _client = _app.getClient();
     _lang = _app.getLocale().split("-").join("_");
+    _configuration = new Configuration();
     var self = this;
     var locales = ['en'];
     for(var i in _languages){
@@ -64,6 +66,7 @@ function Translator(app){
                 type:'checkbox',
                 click:function(item,focusedWindow){
                     self.setLanguage(item.name);
+                    _configuration.set('setLang', item.name);  // 记录用户选择什么语言
                     _app.getMenu().update();
                 }
             })
@@ -71,7 +74,30 @@ function Translator(app){
         }
         return items;
     }
-    this.setLanguage("zh_CN");
+    this.setOsDefaultLang = function () {
+        console.log(process.env.LANGUAGE);
+        var setLang = _configuration.get('setLang');
+        if (!setLang) {
+            var defaultLang = process.env&&process.env.LANGUAGE ? process.env.LANGUAGE.toLowerCase() : '';
+            if (defaultLang.indexOf('zh_cn') > -1) {
+                this.setLanguage("zh_CN");
+            } else if (defaultLang.indexOf('zh_tw') > -1) {
+                this.setLanguage("zh_TW");
+            } else if (defaultLang.indexOf('fr') > -1) {
+                this.setLanguage("fr_FR");
+            } else if (defaultLang.indexOf('es') > -1) {
+                this.setLanguage("es_ES");
+            } else if (defaultLang.indexOf('ja') > -1) {
+                this.setLanguage("ja");
+            } else {
+                this.setLanguage("en");
+            }
+        } else {
+            this.setLanguage(setLang);
+        }
+    }
+    // this.setLanguage("zh_CN");
+    this.setOsDefaultLang();    // 设置系统默认语言
     this.map = function(str){
         return i18n.__(str);
     }

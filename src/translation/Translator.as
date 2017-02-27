@@ -170,13 +170,13 @@ package translation {
 	//		if (font12.indexOf(lang) > -1) Block.setFonts(11, 10, false, 0);
 	//		if (font13.indexOf(lang) > -1) Block.setFonts(13, 12, false, 0);
 			if(lang.indexOf('zh_CN')>-1||lang.indexOf('zh_TW')>-1){
-				labelSize = 13;
-				Block.setFonts(13, 12, false, 0);
+				//labelSize = 13;
+				Block.setFonts(labelSize, labelSize-1, false, 0);
 	//			Block.setFonts(13, 12, false, 0);
 				
 			}else{
-				labelSize = 12;
-				Block.setFonts(12, 12, false, 0);
+				//labelSize = 12;
+				Block.setFonts(labelSize, labelSize, false, 0);
 			}
 			//Block.setFonts(28, 26, true, 0);
 		}

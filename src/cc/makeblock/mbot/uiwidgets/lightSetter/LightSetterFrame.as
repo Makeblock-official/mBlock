@@ -167,7 +167,8 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 				var fileList:Array = fileListStr.split(",");
 				for each(var item:String in fileList){
 					//通过列表读取每个文件的内容
-					JsUtil.callApp("readDrawFile",["preset",item])//FileUtil.ReadString(item);
+					
+					JsUtil.Call("_app."+"readDrawFile",["preset",item])//FileUtil.ReadString(item);
 					JsUtil.callBack = function(fn:String,str:String):void{
 						if(str)
 						{	
@@ -184,7 +185,7 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 								var fileList:Array = fileListStr.split(",");
 								for each(var item2:String in fileList){
 									//挨个读取文件内容
-									JsUtil.callApp("readDrawFile",["custom",item2])//FileUtil.ReadString(item);
+									JsUtil.Call("_app."+"readDrawFile",["custom",item2])//FileUtil.ReadString(item);
 									JsUtil.callBack = function(fn:String,str:String):void{
 										if(str)
 										{
@@ -242,7 +243,7 @@ package cc.makeblock.mbot.uiwidgets.lightSetter
 				}
 			}
 			var fileName:String = new Date().getTime() + ".txt";
-			JsUtil.callApp("saveDrawFile",[fileName,result]);
+			JsUtil.Call("_app."+"saveDrawFile",[fileName,result])
 			return fileName;
 		}
 		

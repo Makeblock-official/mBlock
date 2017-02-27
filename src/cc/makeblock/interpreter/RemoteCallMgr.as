@@ -28,7 +28,7 @@ package cc.makeblock.interpreter
 		}
 	
 		//TODO: huzige: 需要重新调整，用了Air Runtime不支持目前的flash环境
-		/*
+		
 		public function interruptThread():void
 		{
 			if(requestList.length <= 0){
@@ -39,7 +39,7 @@ package cc.makeblock.interpreter
 			thread.interrupt();
 			clearTimeout(timerId);
 			send();
-		}
+		}/*
 		private function __onSerialRecv(bytes:Array):void
 		{
 			if(SocketManager.sharedManager().isConnected){

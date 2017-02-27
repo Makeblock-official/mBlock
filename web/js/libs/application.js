@@ -27,6 +27,7 @@ function Application(flash){
     });  
     ipcRenderer.on('newProject', (sender,obj) => {  
         _flash.newProject(obj.title);
+        self.setSaveStatus(false);
     });   
     ipcRenderer.on('setProjectTitle', (sender,obj) => {  
         _flash.setProjectTitle(obj.title);
@@ -54,7 +55,7 @@ function Application(flash){
     ipcRenderer.on('changeToBoard', (sender,obj) => {  
         self.changeToBoard(obj.board);
     }); 
-    ipcRenderer.on('logToArduinoConsole', (sender,obj) => {  
+    ipcRenderer.on('logToArduinoConsole', (sender,obj) => {
         _flash.logToArduinoConsole(obj,true);
     });
     ipcRenderer.on('setFontSize', (sender,obj) => {
@@ -69,6 +70,9 @@ function Application(flash){
         } else if('more' === obj.code) {
             _flash.responseCommonData(obj.data);
         }
+    });
+    ipcRenderer.on('setSaveStatus', (sender,obj) => {
+        self.setSaveStatus(obj.isSaved);
     });
     this.getExt = function(){
         return _ext;
@@ -103,7 +107,7 @@ function Application(flash){
         ipcRenderer.send("updateMenuStatus",arr);
     }
     this.updateTitle =function(){
-        var textSave = self.saved=="true"? _translator.map('Saved'): _translator.map("Not saved");
+        var textSave = self.saved ? _translator.map('Saved'): _translator.map("Not saved");
         var textConnect = self.connected ? _translator.map('Connected'): _translator.map("Disconnected");
         var title = package.description +" - " + textConnect+" - " +textSave;
         ipcRenderer.sendToHost("setAppTitle",title);
@@ -142,9 +146,15 @@ function Application(flash){
             _flash.responseValue();
         }
     }
-    this.setProjectRobotName = function(){
-
+	
+	/**
+	 * 设置当前的主控板
+	 * @param string currentBoardName 主控板名；如：me/mbot_uno、me/auriga_mega2560、me/mega_pi_mega2560、arduino_leonardo
+	 */
+    this.setProjectRobotName = function(currentBoardName){
+        ipcRenderer.send("setCurrentBoardName", {'currentBoardName' : currentBoardName});
     }
+	
     this.readyToRun = function(){
         return true;
     }
@@ -156,25 +166,29 @@ function Application(flash){
     }
     this.changeToBoard=function(name){ // 菜单控制板中的Makeblock选项
         name = name.toLowerCase();
-		if (name.indexOf('orion_uno') > -1) { // Starter/Ultimate (Orion)
+        if(name.indexOf('arduino') > -1){
+            window.loadScript('arduino', 'flash-core/ext/libraries/arduino/js/arduino.js', function () {
+                _flash.setRobotName(name);
+            });
+        }else if (name.indexOf('orion_uno') > -1) { // Starter/Ultimate (Orion)
 		    window.loadScript('orion', 'flash-core/ext/libraries/orion/js/orion.js', function () {
-				_flash.setRobotName('orion');
+				_flash.setRobotName(name); // me/orion_uno
 			});
 		} else if (name.indexOf('uno_shield_uno') > -1) { // Me Uno Shield
 			window.loadScript('uno_shield', 'flash-core/ext/libraries/uno_shield/js/shield.js', function () {
-				_flash.setRobotName('uno shield');
+				_flash.setRobotName(name); // me/uno_shield_uno
 			});
 		} else if(name.indexOf('mbot_uno') > -1) { // mBot (mCore)
             window.loadScript("mBot","flash-core/ext/libraries/mbot/js/mbot.js",function(){
-                _flash.setRobotName("mbot");
+                _flash.setRobotName(name); // me/mbot_uno
             });
         } else if(name.indexOf('auriga_mega2560') > -1) { // mBot Ranger (Auriga)
             window.loadScript("Auriga","flash-core/ext/libraries/Auriga/js/Auriga.js",function(){
-                _flash.setRobotName("mbot ranger");
+                _flash.setRobotName(name); // me/auriga_mega2560
             });
         }  else if (name.indexOf('mega_pi_mega2560') > -1) { // Ultimate 2.0 (Mega Pi)
 			window.loadScript('mega_pi', 'flash-core/ext/libraries/mega_pi/js/MegaPi.js', function () {
-				_flash.setRobotName('mega pi');
+				_flash.setRobotName(name); // me/mega_pi_mega2560
 			});
 		} 
     }
@@ -214,6 +228,7 @@ function Application(flash){
         console.log('into getEmotionList');
         console.log(label);
         ipcRenderer.send('getEmotionList', {label: label});
-    }
+    };
+
 }
 module.exports = Application;

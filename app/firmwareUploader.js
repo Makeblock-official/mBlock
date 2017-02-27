@@ -7,6 +7,7 @@ const utils = require('./utils');
 var Boards = require('./boards.js');
 var app = null;
 var T = null;
+var checkUSB, errorStatus;
 const boardFirmwareMap = {
     'arduino_uno': 'uno.hex',
     'arduino_leonardo': 'leonardo.hex',
@@ -21,7 +22,8 @@ const boardFirmwareMap = {
 };
 
 const boardDefaultProgramMap = {
-    'me/mbot_uno': 'mbot_reset.hex',
+    'me/mbot_uno'  : 'mbot_reset.hex',
+	'me/orion_uno' : 'starter_factory_firmware.hex'
 };
 
 var FirmwareUploader = {
@@ -82,10 +84,10 @@ var FirmwareUploader = {
         }
         return path.join(__root_path, 'tools/arduino');
     },
-
+    // 是否允许恢复出厂程序，true：允许，false：不允许
     allowResetDefaultProgram: function() {
         var boardName = app.getBoards().currentBoardName();
-        if(boardName == 'me/mbot_uno') {
+        if(boardName == 'me/mbot_uno' || boardName == 'me/orion_uno') {
             return true;
         }
         return false;
@@ -97,14 +99,28 @@ var FirmwareUploader = {
     },
 
     resetDefaultProgram: function() {
-        var boardName = app.getBoards().currentBoardName();
+        var boardName = app.getBoards().currentBoardName();console.log('版：');console.log(boardName);
         this.uploadWithAvrdude(boardDefaultProgramMap[boardName]);
+    },
+
+    /**
+     * 通过小内存机多次测试刷新固件经验得出超时时间，range最多2分钟，mbot最多20秒
+     * @param on
+     * @param callback
+     */
+    uploadingWatchDog: function (on, callback) {
+        if (!on) return;
+        // mbot : me/mbot_uno , ranger : me/auriga_mega2560
+        var boardName = app.getBoards().currentBoardName();
+        var timeout = ('me/mbot_uno' === boardName) ? 20000 : 120000;
+        checkUSB = setInterval(function() {
+            callback();
+        }, timeout);
     },
 
     uploadWithAvrdude: function(hexFileName) {
         var serialPort = app.getSerial().currentSerialPort();
         var boardName = app.getBoards().currentBoardName();
-
 
         if(!hexFileName) {
             app.alert(T('No firmware available for this type of board'));
@@ -117,30 +133,46 @@ var FirmwareUploader = {
         
         var self = this;
         console.log('upgrade firmware');
-        app.alert({'message':T('Uploading...'), 'hasCancel':false});
+        app.alert({'message':T('Uploading') + '...', 'hasCancel':false});
         var command = self.getArduinoPath() + '/hardware/tools/avr/bin/avrdude';
         var args = self.getAvrdudeParameter(serialPort, hexFileName); 
         app.getSerial().close();
+        var uploading = false, uploaderSuccess = false;
         var avrdude = spawn(command, args, {cwd: __root_path});
         avrdude.stdout.on('data', function(data){
         });
         avrdude.stderr.on('data', function(data){
-            app.logToArduinoConsole(data.toString());
+            app.logToArduinoConsole(data);
             if(data.toString().indexOf('programmer is not responding')>=0){
                 avrdude.kill('SIGKILL');
             }
             app.alert({'message':T('Uploading')+'...'+utils.getProgressCharacter(), 'hasCancel':false});
+            // 第一次进入上传状态，看门狗启动，超时未完成上传即kill进程
+            self.uploadingWatchDog(!uploading, function () {
+                avrdude.kill('SIGKILL');
+                errorStatus = 'TIMEOUT';
+                app.alert({'message':T('Hardware communication timeout, please confirm whether the serial connection'), 'hasCancel':true});
+                clearInterval(checkUSB);
+            });
+
+            uploading = true;
         });
         avrdude.on('close', function(code){
+            clearInterval(checkUSB);
+            if ('TIMEOUT' === errorStatus) {
+                errorStatus = '';
+                return;
+            }
             if(code == 0) {
-				app.alert({'message':T('Upload Succeeded'), 'hasCancel':true});
+				app.alert({'message':T('Upload Finish'), 'hasCancel':true});
             } else {
                 app.alert({'message':T('Upload Failed'), 'hasCancel':true});
             }
             avrdude.kill('SIGKILL');
             app.getSerial().connect(serialPort);
         });
-
+        avrdude.on('exit', function (code) {
+        });
     },
 
 }

@@ -10,7 +10,7 @@ var Emotions = function(app) {
     _this = this;
     _app = app;
     _dir_preset = path.join(__root_path, "/web/flash-core/assets/emotions");
-    _dir_custom = path.join(__root_path, "/../mblock-emotions");
+    _dir_custom = path.join(__root_path, "/../mblock-setting/mblock-emotions");
     _translator = app.getTranslator();
     _client = app.getClient();
 
@@ -66,7 +66,7 @@ var Emotions = function(app) {
         var file = _this.pathfile(filename);
         fs.unlink(file, function (err) {
             if (err) {
-                _app.alert(_translator.map('It doesn\'t exist'));
+                _app.alert(_translator.map("It doesn't exist"));
                 return;
             }
             console.log(file + ' is delete!');

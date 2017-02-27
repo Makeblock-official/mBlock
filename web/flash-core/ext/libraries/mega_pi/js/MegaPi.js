@@ -1,8 +1,10 @@
 // makeblock.js
 
 (function(ext) {
-    var device = null;
+    var _device = null;
+	var _util = null;
     var _rxBuf = [];
+
 
     // Sensor states:
     var ports = {
@@ -86,7 +88,7 @@
 		"turn left":3,
 		"turn right":4};
     ext.resetAll = function(){
-    	device.send([0xff, 0x55, 2, 0, 4]);
+    	_device.send([0xff, 0x55, 2, 0, 4]);
     };
     ext.runArduino = function(){
 		responseValue();
@@ -113,11 +115,11 @@
 			leftSpeed = speed;
 			rightSpeed = speed;
 		}
-        runPackage(5,short2array(leftSpeed),short2array(rightSpeed));
+        runPackage(5,_util.short2array(leftSpeed),_util.short2array(rightSpeed));
     };
     ext.runDegreesBot = function(direction,distance,speed){
     	direction = values[direction];
-        runPackage(62,05,direction,int2array(distance),short2array(Math.abs(speed)));
+        runPackage(62,05,direction,_util.int2array(distance),_util.short2array(Math.abs(speed)));
     };
 	ext.getTouchSensor = function(port){
     	var deviceId = 51;
@@ -150,7 +152,7 @@
 		if(typeof port=="string"){
 			port = ports[port];
 		}
-        runPackage(10,port,short2array(speed));
+        runPackage(10,port,_util.short2array(speed));
     };
     ext.runServoByPin = function(pin,angle){
     	if(typeof pin=="string"){
@@ -174,33 +176,33 @@
 		if(typeof port=="string"){
 			port = ports[port];
 		}
-		runPackage(40,port,short2array(speed),int2array(distance));
+		runPackage(40,port,_util.short2array(speed),_util.int2array(distance));
 	};
 	ext.runEncoderMotor = function(port, speed){
 		if(typeof port=="string"){
 			port = ports[port];
 		}
-		runPackage(62,02,port,short2array(speed));
+		runPackage(62,02,port,_util.short2array(speed));
 	};
 	ext.runEncoderMotorPWM = function(port,speed){
 		if(typeof port=="string")
 		{
 			port = ports[port];
 		}
-		runPackage(61,0,port,short2array(-speed));
+		runPackage(61,0,port,_util.short2array(-speed));
 	};
 	ext.runEncoderMotorRotate = function(port,distance,speed){
 		if(typeof port=="string"){
 			port = ports[port];
 		}
-		runPackage(62, 01,port, int2array(distance),short2array(Math.abs(speed)));
+		runPackage(62, 01,port, _util.int2array(distance),_util.short2array(Math.abs(speed)));
 		
 	};
 	ext.runSevseg = function(port,display){
 		if(typeof port=="string"){
 			port = ports[port];
 		}
-		runPackage(9,port,float2array(display));
+		runPackage(9,port,_util.float2array(display));
 	};
 	ext.runLed = function(port,ledIndex,red,green,blue){
 		ext.runLedStrip(port, 2, ledIndex, red,green,blue);
@@ -253,7 +255,7 @@
 		if(typeof port=="string"){
 			port = ports[port];
 		}
-		runPackage(41,port,4,float2array(message));
+		runPackage(41,port,4,_util.float2array(message));
 	};
 	ext.showCharacters = function(port,x,y,message){
 		if(typeof port=="string"){
@@ -267,7 +269,7 @@
 		if(x >  16) x = 16;
 		if(y >  8) y = 8;
 		if(y < -8) y = -8;
-		runPackage(41,port,1,x,y+7,message.length,string2array(message));
+		runPackage(41,port,1,x,y+7,message.length,_util.string2array(message));
 	}
 	ext.showTime = function(port,hour,point,min){
 		if(typeof port=="string"){
@@ -441,7 +443,7 @@
 			}
 		}
 		bytes[2] = bytes.length - 3;
-		device.send(bytes);
+		_device.send(bytes);
 	}
 	
 	function runPackage(){
@@ -456,7 +458,7 @@
     var inputArray = [];
 	var _isParseStart = false;
 	var _isParseStartIndex = 0;
-    function processData(bytes) {
+    ext.processData = function(bytes) {
 		var len = bytes.length;
 		if(_rxBuf.length>30){
 			_rxBuf = [];
@@ -486,111 +488,78 @@
 						}
 							break;
 						case 2:{
-							value = readFloat(_rxBuf,position);
+							value = _util.readFloat(_rxBuf,position);
 							position+=4;
 						}
 							break;
 						case 3:{
-							value = readInt(_rxBuf,position,2);
+							value = _util.readInt(_rxBuf,position,2);
 							position+=2;
 						}
 							break;
 						case 4:{
 							var l = _rxBuf[position];
 							position++;
-							value = readString(_rxBuf,position,l);
+							value = _util.readString(_rxBuf,position,l);
 						}
 							break;
 						case 5:{
-							value = readDouble(_rxBuf,position);
+							value = _util.readDouble(_rxBuf,position);
 							position+=4;
 						}
 							break;
 						case 6:
-							value = readInt(_rxBuf,position,4);
+							value = _util.readInt(_rxBuf,position,4);
 							position+=4;
 							break;
 					}
 					if(type<=6){
-						responseValue(extId,value);
+						if (responsePreprocessor[extId] && responsePreprocessor[extId] != null) {
+							value = responsePreprocessor[extId](value);
+							responsePreprocessor[extId] = null;
+						}
+						_device.responseValue(extId,value);
 					}else{
-						responseValue();
+						_device.responseValue();
 					}
 					_rxBuf = [];
 				}
 			} 
 		}
     }
-	function readFloat(arr,position){
-		var f= [arr[position],arr[position+1],arr[position+2],arr[position+3]];
-		return parseFloat(f);
-	}
-	function readInt(arr,position,count){
-		var result = 0;
-		for(var i=0; i<count; ++i){
-			result |= arr[position+i] << (i << 3);
-		}
-		return result;
-	}
-	function readDouble(arr,position){
-		return readFloat(arr,position);
-	}
-	function readString(arr,position,len){
-		var value = "";
-		for(var ii=0;ii<len;ii++){
-			value += String.fromCharCode(_rxBuf[ii+position]);
-		}
-		return value;
-	}
-    function appendBuffer( buffer1, buffer2 ) {
-        return buffer1.concat( buffer2 );
-    }
 
     // Extension API interactions
     var potentialDevices = [];
-    ext._deviceConnected = function(dev) {
-        potentialDevices.push(dev);
-
-        if (!device) {
-            tryNextDevice();
-        }
+    ext._deviceConnected = function(dev,util) {
+        _device = dev;
+		_util = util;
     }
-
-    function tryNextDevice() {
-        // If potentialDevices is empty, device will be undefined.
-        // That will get us back here next time a device is connected.
-        device = potentialDevices.shift();
-        if (device) {
-            device.open({ stopBits: 0, bitRate: 115200, ctsFlowControl: 0 }, deviceOpened);
-        }
-    }
-
     var watchdog = null;
     function deviceOpened(dev) {
         if (!dev) {
             // Opening the port failed.
-            tryNextDevice();
+
             return;
         }
-        device.set_receive_handler('makeblock',processData);
+       // device.set_receive_handler('makeblock',processData);
     };
 
     ext._deviceRemoved = function(dev) {
-        if(device != dev) return;
-        device = null;
+        if(_device != dev) return;
+        _device = null;
     };
 
     ext._shutdown = function() {
-        if(device) device.close();
-        device = null;
+        if(_device) _device.close();
+        _device = null;
     };
 
     ext._getStatus = function() {
-        if(!device) return {status: 1, msg: 'Makeblock disconnected'};
+        if(!_device) return {status: 1, msg: 'Makeblock disconnected'};
         if(watchdog) return {status: 1, msg: 'Probing for Makeblock'};
         return {status: 2, msg: 'Makeblock connected'};
     }
 
     var descriptor = {};
-	ScratchExtensions.register('Makeblock', descriptor, ext, {type: 'serial'});
+	ScratchExtensions.register('MegaPi', descriptor, ext, {type: 'serial'});
 })({});

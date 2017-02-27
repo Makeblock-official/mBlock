@@ -26,7 +26,7 @@ function AppMenu(app){
                 submenu: [
                     {
                         name:'New',
-                        label: _translator.map('New Project'),
+                        label: _translator.map('New'),
                         accelerator: 'CmdOrCtrl+N',
                         click: function (item, focusedWindow) {
                             _emitter.emit("newProject");
@@ -40,7 +40,7 @@ function AppMenu(app){
                         label: _translator.map('Load Project'),
                         accelerator: 'CmdOrCtrl+O',
                         click: function (item, focusedWindow) {
-                            dialog.showOpenDialog({title:"打开项目",properties: ['openFile'],filters: [{ name: 'Scratch', extensions: ['sb2'] }  ]},function(path){
+                            dialog.showOpenDialog({title:_translator.map('Load Project'),properties: ['openFile'],filters: [{ name: 'Scratch', extensions: ['sb2'] }  ]},function(path){
                                 if(path&&path.length>0){
                                     _project.openProject(path[0]);
                                 }
@@ -66,7 +66,7 @@ function AppMenu(app){
                     {
                         type: 'separator'
                     },
-                    {
+                    /*{
                         name:'Import Image',
                         label: _translator.map('Import Image')
                     },
@@ -84,13 +84,13 @@ function AppMenu(app){
                     {
                         name:'Revert',
                         label: _translator.map('Revert')
-                    }
+                    }*/
                 ]
             },{
                 name:'Edit',
                 label: _translator.map('Edit'),
                 submenu: [
-                    {
+                    /*{
                         name:'Undelete',
                         label: _translator.map('Undelete'),
                         enabled:_undelete,
@@ -99,7 +99,7 @@ function AppMenu(app){
                             _undelete = false;
                             self.update();
                         }
-                    },
+                    },*/
                     {
                         type: 'separator'
                     },
@@ -209,25 +209,25 @@ function AppMenu(app){
                     {
                         name: 'Upgrade Firmware', // 安装固件
                         label: _translator.map('Upgrade Firmware'),
-						enabled: _connectionStatus,
+						enabled: _serial.isConnected(), // 只有串口连接上了才能更新固件
                         click: function(item, focusedWindow) { _emitter.emit("upgradeFirmware"); }
                     },
                     {
                         name: 'Reset Default Program', // 恢复出厂程序（仅mBot适用）
                         label: _translator.map('Reset Default Program'),
-                        enabled: _firmwareUploader.allowResetDefaultProgram()&&_connectionStatus,
+                        enabled: _firmwareUploader.allowResetDefaultProgram()&&_serial.isConnected(), // 只有串口连接上了才能恢复出厂程序
                         click: function (item, focusedWindow) {
                             _emitter.emit("resetDefaultProgram");
                         }
-                    },
-                    {
+                    }
+                    /*,{
                         name:'View Source',
                         label: _translator.map('View Source')
                     },
                     {
                         name:'Install Arduino Driver',
                         label: _translator.map('Install Arduino Driver')
-                    }
+                    }*/
                 ]
             },{
                 name:'Boards',
@@ -338,7 +338,7 @@ function AppMenu(app){
                     },
                     {
                         type:"separator"
-                    },
+                    }/*,
                     {
                         name:"Others",
                         label: _translator.map('Others'),
@@ -352,9 +352,9 @@ function AppMenu(app){
                         click:function(item, focusedWindow){
                             _boards.selectBoard(item.name);
                         }
-                    }
+                    }*/
                 ]
-            },{
+            },/*{
                 name:'Extensions',
                 label: _translator.map('Extensions'),
                 submenu: [
@@ -393,11 +393,11 @@ function AppMenu(app){
                         type:"separator"
                     }
                 ]
-            },{
+            },*/{
                 name:'Language',
                 label: _translator.map('Language'),
                 submenu: []
-            },{
+            }/*,{
                 name:'Help',
                 label: _translator.map('Help'),
                 submenu: [
@@ -448,7 +448,7 @@ function AppMenu(app){
                         }
                     }
                 ]
-            }
+            }*/
         ];
         var template = _menu.concat([]);
         if (process.platform === 'darwin') {
@@ -469,12 +469,14 @@ function AppMenu(app){
         _mainMenu = Menu.buildFromTemplate(template);
         //字体菜单
         var item = _fontSize.getMenuItem();
-        _mainMenu.items[process.platform === 'darwin'?6:5].submenu.insert(0,item);
+        //_mainMenu.items[process.platform === 'darwin'?6:5].submenu.insert(0,item);
+		_mainMenu.items[process.platform === 'darwin'?5:4].submenu.insert(0,item);
 
         var items = _translator.getMenuItems();
         for(var i=0;i<items.length;i++){
             var item = items[i];
-            _mainMenu.items[process.platform === 'darwin'?6:5].submenu.insert(0,item);
+            //_mainMenu.items[process.platform === 'darwin'?6:5].submenu.insert(0,item);
+			_mainMenu.items[process.platform === 'darwin'?5:4].submenu.insert(0,item);
         }
 
         items = _serial.getMenuItems();
@@ -496,7 +498,7 @@ function AppMenu(app){
 	}
     this.update = function(){
 		self.reset();
-        Menu.setApplicationMenu(_mainMenu);
+        Menu.setApplicationMenu(_mainMenu);console.log('已更新菜单');
     }
     this.on = function(event,listener){
         _emitter.removeListener(event,listener);
@@ -555,7 +557,7 @@ function AppMenu(app){
                 enabled: false
             });
         }
-        _mainMenu.items[process.platform === 'darwin' ? 3 : 2].submenu.insert(7, firmwareMode);
+        _mainMenu.items[process.platform === 'darwin' ? 3 : 2].submenu.insert(6, firmwareMode);
     }
 
     //允许撤销删除操作
@@ -563,6 +565,7 @@ function AppMenu(app){
         _undelete = true;
         self.update();
     }
+	// 所有连接的连接状态;，true：已连接，false：未连接
     this.updateConnectionStatus = function(obj){
         _connectionStatus = obj.connected;
     }
