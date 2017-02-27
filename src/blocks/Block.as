@@ -54,6 +54,7 @@ import translation.Translator;
 
 import uiwidgets.ScriptsPane;
 
+import util.JsUtil;
 import util.ReadStream;
 
 public class Block extends Sprite {
@@ -928,6 +929,7 @@ public class Block extends Sprite {
 		if(isHat && op.indexOf("runArduino")>=0 && !MBlock.app.stageIsArduino)
 		{
 			MBlock.app.toggleArduinoMode();
+			JsUtil.callApp("updateMenuStatus",["arduino mode"]);
 			return;
 		}
 		MBlock.app.runtime.interp.toggleThread(topBlock(), MBlock.app.viewedObj(), 1);
