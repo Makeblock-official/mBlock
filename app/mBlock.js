@@ -69,11 +69,13 @@ function mBlock(){
 	ipcMain.on('connectionStatus',function(event,obj){
 		_menu.updateConnectionStatus(obj);
 	})
-	ipcMain.on('updateMenuStatus',function(event,arr){
+	ipcMain.on('updateMenuStatus',function(event,arr) { // "单击"编辑菜单
 		for (i=0;i< arr.length;i++){
 			if(arr[i] == "small stage layout")
 			{
 				_stage.changeStageMode(arr[i]);
+			} else if (arr[i] == 'arduino mode') {
+                _stage.changeStageMode(arr[i]);   
 			}
 		}
 	})
