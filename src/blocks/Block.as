@@ -928,7 +928,6 @@ public class Block extends Sprite {
 		if (editArg(evt)) return;
 		if(isHat && op.indexOf("runArduino")>=0 && !MBlock.app.stageIsArduino)
 		{
-			MBlock.app.toggleArduinoMode();
 			JsUtil.callApp("updateMenuStatus",["arduino mode"]);
 			return;
 		}
